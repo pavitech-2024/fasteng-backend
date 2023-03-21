@@ -5,7 +5,11 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   // cria uma instância da aplicação
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: ['error', 'warn', 'log'],
+  });
+
+  app.enableCors();
 
   // garante que todos os endpoints sejam protegidos contra o recebimento de dados incorretos.
   app.useGlobalPipes(new ValidationPipe());

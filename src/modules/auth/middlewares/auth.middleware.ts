@@ -1,4 +1,4 @@
-import { NestMiddleware, Injectable } from '@nestjs/common';
+import { NestMiddleware, Injectable, Logger } from '@nestjs/common';
 import { NextFunction, Response, Request } from 'express';
 import { verify } from 'jsonwebtoken';
 import { UsersService } from 'src/modules/users/service';
@@ -9,6 +9,7 @@ import { tokenSecret } from 'src/utils/token';
  */
 @Injectable() // Para que o NestJS possa injetar o middleware em outros lugares
 export class AuthMiddleware implements NestMiddleware {
+  private logger = new Logger(AuthMiddleware.name);
   constructor(private readonly usersService: UsersService) {}
 
   /**Authorization Middleware
@@ -20,22 +21,34 @@ export class AuthMiddleware implements NestMiddleware {
 
    */
   use(req: Request, res: Response, next: NextFunction) {
-    // Obtém o token do header da requisição
+    // Obtém o token do header da requisiçãoturn res.status(500)
     const token = req.headers.authorization;
 
     // Se não houver token, retorna erro
-    if (!token) return res.status(401).json({ message: 'Token não definido.' });
+    if (!token) {
+      // informa erro no log e retorna 500 para cliente
+      this.logger.error(`error on auth middleware > [error]: Token not found.`);
+      return res.status(500).json({ statusCode: 500, message: 'Internal Server Error' });
+    }
 
     // Obtém o hash do token
     const hash = token.split(' ')[1];
 
     // Se o token não for composto por duas partes (Bearer e Hash), retorna erro
-    if (!(token.split(' ').length === 2)) return res.status(401).json({ message: 'Token inválido.' });
+    if (!(token.split(' ').length === 2)) {
+      // informa erro no log e retorna 500 para cliente
+      this.logger.error(`error on auth middleware > [error]: Invalid token.`);
+      return res.status(500).json({ statusCode: 500, message: 'Internal Server Error' });
+    }
 
     // Verifica o token
     verify(hash, tokenSecret, async (error, decoded) => {
       // Se o token for inválido, retorna erro
-      if (error) return res.status(401).json({ message: error });
+      if (error) {
+        // informa erro no log e retorna 500 para cliente
+        this.logger.error(`error on auth middleware > [error]: ${error}`);
+        return res.status(500).json({ statusCode: 500, message: 'Internal Server Error' });
+      }
 
       const { lastLoginList } = await this.usersService.getUser(decoded.userId);
 
@@ -45,8 +58,11 @@ export class AuthMiddleware implements NestMiddleware {
             Math.abs(new Date(list_date).getTime() - new Date(decoded.lastLogin).getTime()) === 0 ? (acc = true) : acc,
           false,
         )
-      )
-        return res.status(401).json({ message: 'Token inválido.' });
+      ) {
+        // informa erro no log e retorna 500 para cliente
+        this.logger.error(`error on auth middleware > [error]: Invalid token.`);
+        return res.status(500).json({ statusCode: 500, message: 'Internal Server Error' });
+      }
 
       // Se o token for válido, adiciona o usuário à requisição
       req.user = decoded;
