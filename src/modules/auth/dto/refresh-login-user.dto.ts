@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 
-export class InputAutoLoginDto {
+export class InputRefreshLoginDto {
   @IsNotEmpty()
   @ApiProperty({
     required: true,

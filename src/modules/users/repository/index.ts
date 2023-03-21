@@ -25,4 +25,9 @@ export class UsersRepository implements IUserRepository {
   async findOneAndDelete(userFilterQuery: FilterQuery<User>): Promise<User> {
     return this.userModel.findByIdAndDelete(userFilterQuery);
   }
+
+  updateUserLastLogin(user: User): void {
+    user.lastLoginList.length >= user.connections && user.lastLoginList.shift();
+    user.lastLoginList.push(new Date());
+  }
 }

@@ -1,25 +1,16 @@
 import { NestMiddleware, Injectable, Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { NextFunction, Response, Request } from 'express';
 import { verify } from 'jsonwebtoken';
 import { UsersService } from 'src/modules/users/service';
-import { tokenSecret } from 'src/utils/token';
-/**
- * @class AuthMiddleware
- * @description Middleware para autenticação de token e autorização de rotas
- */
+
 @Injectable() // Para que o NestJS possa injetar o middleware em outros lugares
 export class AuthMiddleware implements NestMiddleware {
   private logger = new Logger(AuthMiddleware.name);
+  private config = new ConfigService();
+
   constructor(private readonly usersService: UsersService) {}
 
-  /**Authorization Middleware
-   * @author Pedro Foltram (FastEng Migration) (2023-03)
-   *
-   * @param req             Requisição
-   * @param res             Resposta
-   * @param next            Método para passar pelo Middleware
-
-   */
   use(req: Request, res: Response, next: NextFunction) {
     // Obtém o token do header da requisiçãoturn res.status(500)
     const token = req.headers.authorization;
@@ -42,7 +33,7 @@ export class AuthMiddleware implements NestMiddleware {
     }
 
     // Verifica o token
-    verify(hash, tokenSecret, async (error, decoded) => {
+    verify(hash, this.config.get('TOKEN_SECRET'), async (error, decoded) => {
       // Se o token for inválido, retorna erro
       if (error) {
         // informa erro no log e retorna 500 para cliente
