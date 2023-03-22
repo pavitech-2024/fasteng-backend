@@ -5,10 +5,9 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   // cria uma instância da aplicação
-  const app = await NestFactory.create(AppModule, {
-    logger: ['error', 'warn', 'log'],
-  });
+  const app = await NestFactory.create(AppModule, {});
 
+  // habilita o CORS para que a aplicação possa ser acessada de qualquer origem.
   app.enableCors();
 
   // garante que todos os endpoints sejam protegidos contra o recebimento de dados incorretos.
@@ -25,6 +24,6 @@ async function bootstrap() {
   SwaggerModule.setup('docs', app, document);
 
   // define a porta em que a aplicação será executada.
-  await app.listen(8080);
+  await app.listen(8080, () => console.log('Server is running on port 8080'));
 }
 bootstrap();
