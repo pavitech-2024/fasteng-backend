@@ -12,8 +12,19 @@ import { AuthMiddleware } from './modules/auth/middlewares';
 import { DatabaseModule } from './infra/mongoose/database.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
+import { AsphaltModule } from './modules/asphalt/asphalt.module';
+import { SoilsModule } from './modules/soils/soils.module';
+import { ConcreteModule } from './modules/concrete/concrete.module';
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }), DatabaseModule, AuthModule, UsersModule],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
+    DatabaseModule,
+    AuthModule,
+    UsersModule,
+    AsphaltModule,
+    SoilsModule,
+    ConcreteModule,
+  ],
   controllers: [],
   providers: [{ provide: APP_INTERCEPTOR, useClass: ErrorsInterceptor }],
 })
