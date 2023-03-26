@@ -33,8 +33,8 @@ export class AppModule implements NestModule {
     consumer
       .apply(AuthMiddleware) // aplica o AuthMiddleWare para todas as rotas excluindo a de login
       .exclude(
-        { path: 'auth/login', method: RequestMethod.POST }, // libera a rota de login da autenticação
         { path: 'auth/refresh-login', method: RequestMethod.POST }, // libera a rota de refresh login da autenticação
+        { path: 'auth/login', method: RequestMethod.POST }, // libera a rota de login da autenticação
         { path: 'users', method: RequestMethod.POST }, // libera a rota de cadastro de usuários
       )
       .forRoutes('*');

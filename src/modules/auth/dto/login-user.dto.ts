@@ -19,15 +19,9 @@ export class InputLoginUserDto {
 
 export class OutputLoginUserDto {
   statusCode: number;
-
-  // sucesso
-  token?: string;
-  user?: User;
-  email?: string;
-  name?: string;
-  planName?: string;
-
-  // erro
-  message?: string;
-  error?: string;
+  token: string;
+  user: User;
+  email: string;
+  name: string;
+  planName: string;
 }

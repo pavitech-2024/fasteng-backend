@@ -3,7 +3,7 @@ import { CreateUserDto } from '../dto';
 import { User } from '../schemas';
 import { UsersRepository } from '../repository';
 import { IUsersService } from '../interfaces';
-import { AlreadyExists, NotFound } from 'src/utils/exceptions';
+import { AlreadyExists, NotFound } from '../../../utils/exceptions';
 @Injectable() // permite que a classe seja injetada em outros lugares
 /** @see (Document){IUsersService} */
 export class UsersService implements IUsersService {

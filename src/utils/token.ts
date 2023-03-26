@@ -39,16 +39,3 @@ export class Token {
     }
   }
 }
-
-/* 
-
-
-export class Token {
-  value: string;
-  private config = new ConfigService();
-
-  constructor(tokenData: tokenData, expiresIn: string) {
-    this.value = this.createToken(tokenData, expiresIn);
-  }
-
-*/

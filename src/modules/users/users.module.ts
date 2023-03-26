@@ -4,7 +4,7 @@ import { User, UserSchema } from './schemas/';
 import { UsersController } from './controller';
 import { UsersRepository } from './repository';
 import { UsersService } from './service';
-import { DATABASE_CONNECTION } from 'src/infra/mongoose/database.config';
+import { DATABASE_CONNECTION } from '../../infra/mongoose/database.config';
 
 @Module({
   imports: [MongooseModule.forFeature([{ name: User.name, schema: UserSchema }], DATABASE_CONNECTION.COMMON)],

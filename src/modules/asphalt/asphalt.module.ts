@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ModelDefinition, MongooseModule } from '@nestjs/mongoose';
-import { DATABASE_CONNECTION } from 'src/infra/mongoose/database.config';
+import { DATABASE_CONNECTION } from '../../infra/mongoose/database.config';
 
 const Models: ModelDefinition[] = [];
 

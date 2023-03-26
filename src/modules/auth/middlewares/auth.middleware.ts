@@ -2,7 +2,7 @@ import { NestMiddleware, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NextFunction, Response, Request } from 'express';
 import { verify } from 'jsonwebtoken';
-import { UsersService } from 'src/modules/users/service';
+import { UsersService } from '../../../modules/users/service';
 
 @Injectable() // Para que o NestJS possa injetar o middleware em outros lugares
 export class AuthMiddleware implements NestMiddleware {

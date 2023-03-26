@@ -1,9 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { UnauthorizedException } from '@nestjs/common/exceptions';
 import axios from 'axios';
-import { UsersRepository } from 'src/modules/users/repository';
-import { User } from 'src/modules/users/schemas';
-import { Token } from 'src/utils';
+import { UsersRepository } from '../../users/repository';
+import { User } from '../../users/schemas';
+import { Token } from '../../../utils';
 import { InputLoginUserDto, OutputLoginUserDto, InputRefreshLoginDto, RoxUser } from '../dto';
 import { IAuthService } from '../interfaces';
 
@@ -111,6 +111,7 @@ export class AuthService implements IAuthService {
           user,
           name: roxUser.name,
           planName: roxUser.plan_name,
+          email: roxUser.email,
         };
       }
     } catch (error) {

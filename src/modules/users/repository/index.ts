@@ -2,7 +2,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
 import { User, UserDocument } from '../schemas/user.schema';
 import { IUserRepository } from '../interfaces';
-import { DATABASE_CONNECTION } from 'src/infra/mongoose/database.config';
+import { DATABASE_CONNECTION } from '../../../infra/mongoose/database.config';
 
 export class UsersRepository implements IUserRepository {
   constructor(@InjectModel(User.name, DATABASE_CONNECTION.COMMON) private userModel: Model<UserDocument>) {}
