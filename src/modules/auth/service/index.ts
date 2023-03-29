@@ -14,10 +14,10 @@ export class AuthService implements IAuthService {
 
   constructor(private readonly usersRepository: UsersRepository) {}
 
-  private async roxConnection(url: string, axiosMethod: string, data?: any): Promise<RoxUser> {
+  private async roxConnection(url: string, axiosMethod: string, config?: any, data?: any): Promise<RoxUser> {
     try {
-      // verifica se o usuário está ativo na rox
-      const roxResponse = await axios[axiosMethod](url, data);
+      // verifica se o usuário está ativo na roxd
+      const roxResponse = await axios[axiosMethod](url, data, config);
 
       if (!roxResponse) throw new UnauthorizedException('Erro ao conectar com a Rox');
 
@@ -38,7 +38,7 @@ export class AuthService implements IAuthService {
   async login(data: InputLoginUserDto): Promise<OutputLoginUserDto> {
     try {
       // busca o usuário no banco de dados da rox
-      const roxUser = await this.roxConnection('https://fastengapp.com.br/minhaconta/api/auth', 'post', data);
+      const roxUser = await this.roxConnection('https://fastengapp.com.br/minhaconta/api/auth', 'post', null, data);
 
       // busca o usuário no banco de dados do fasteng
       const user = await this.usersRepository.findOne({ _id: roxUser.uuid });
@@ -85,7 +85,12 @@ export class AuthService implements IAuthService {
       // verifica se o usuário existe no banco de dados
       if (!user) throw new UnauthorizedException('Usuário não encontrado');
 
-      const roxUser = await this.roxConnection(`<aqui a rota da rox by ID>`, 'get');
+      const roxUser = await this.roxConnection(`https://fastengapp.com.br/minhaconta/api/user/${_id}`, 'get', null, {
+        headers: {
+          Accept: 'application/json',
+          Authorization: 'Bearer pZcbMoog4bSjWZYGP2GM1FMyjj4o96ZjtYeDJdRsPus3bwNcWklR0HnO0CFm',
+        },
+      });
 
       // verifica se o token é válido
       if (!this.tokenService.verifyToken(token)) throw new UnauthorizedException('Usuário com token inválido');
