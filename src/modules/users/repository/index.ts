@@ -1,6 +1,6 @@
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
-import { User, UserDocument } from '../schemas/user.schema';
+import { User, UserDocument } from '../schemas';
 import { IUserRepository } from '../interfaces';
 import { DATABASE_CONNECTION } from '../../../infra/mongoose/database.config';
 

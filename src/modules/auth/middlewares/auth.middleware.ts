@@ -41,19 +41,7 @@ export class AuthMiddleware implements NestMiddleware {
         return res.status(500).json({ statusCode: 500, message: 'Internal Server Error' });
       }
 
-      const { lastLoginList } = await this.usersService.getUser(decoded.userId);
-
-      if (
-        !lastLoginList.reduce(
-          (acc, list_date) =>
-            Math.abs(new Date(list_date).getTime() - new Date(decoded.lastLogin).getTime()) === 0 ? (acc = true) : acc,
-          false,
-        )
-      ) {
-        // informa erro no log e retorna 500 para cliente
-        this.logger.error(`error on auth middleware > [error]: Invalid token.`);
-        return res.status(500).json({ statusCode: 500, message: 'Internal Server Error' });
-      }
+      /**@Todo realizar verificação se a data de ultimo login do token é igual a data do ultimo login do usuário */
 
       // Se o token for válido, adiciona o usuário à requisição
       req.user = decoded;
