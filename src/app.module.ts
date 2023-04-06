@@ -36,6 +36,9 @@ export class AppModule implements NestModule {
         { path: 'auth/refresh-login', method: RequestMethod.POST }, // libera a rota de refresh login da autenticação
         { path: 'auth/login', method: RequestMethod.POST }, // libera a rota de login da autenticação
         { path: 'users', method: RequestMethod.POST }, // libera a rota de cadastro de usuários
+        { path: 'docs/asphalt', method: RequestMethod.GET }, // libera a rota de documentação da API
+        { path: 'docs/soils', method: RequestMethod.GET }, // libera a rota de documentação da API
+        { path: 'docs/concrete', method: RequestMethod.GET }, // libera a rota de documentação da API
       )
       .forRoutes('*');
   }

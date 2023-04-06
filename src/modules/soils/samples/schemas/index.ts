@@ -9,6 +9,27 @@ export class Sample {
   @IsNotEmpty()
   @Prop()
   name: string;
+
+  @IsNotEmpty()
+  @Prop()
+  type: 'inorganicSoil' | 'organicSoil' | 'pavimentLayer';
+
+  @IsNotEmpty()
+  @Prop()
+  userId: string;
+
+  @Prop({ type: Object })
+  description: {
+    construction?: string; // obra
+    provenance?: string; // procedência
+    snippet?: string; // trecho
+    stake?: string; // estaca
+    exd?: string; // lado E-X-D
+    depth?: string; // profundidade (cm)
+    layer?: string; // camada
+    collectionDate?: Date; // data da coleta
+    observation?: string; // observação
+  };
 }
 
 export const SampleSchema = SchemaFactory.createForClass(Sample);

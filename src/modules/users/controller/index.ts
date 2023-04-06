@@ -13,9 +13,9 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post() // define a rota
-  @ApiOperation({ summary: 'Cria um usuário no banco de dados' }) // detalha a operação no swagger
+  @ApiOperation({ summary: 'Cria um usuário no banco de dados.' }) // detalha a operação no swagger
   @ApiResponse({ status: 201, description: 'Usuário criado com sucesso!' }) // detalha a resposta no swagger
-  @ApiResponse({ status: 400, description: 'Bad Request' }) // detalha a resposta no swagger
+  @ApiResponse({ status: 400, description: 'Bad Request.' }) // detalha a resposta no swagger
   async createUser(@Body() body: InputCreateUserDto): Promise<User> {
     this.logger.log(`create user with params > [body]: ${JSON.stringify(body)}`);
 
@@ -32,7 +32,7 @@ export class UsersController {
   }
 
   @Get(':id') // define a rota
-  @ApiOperation({ summary: 'Retorna um usuário do banco de dados' }) // detalha a operação no swagger
+  @ApiOperation({ summary: 'Retorna um usuário do banco de dados.' }) // detalha a operação no swagger
   @ApiResponse({ status: 200, description: 'Usuário encontrado com sucesso!' }) // detalha a resposta no swagger
   @ApiResponse({ status: 400, description: 'Usuário não encontrado!' }) // detalha a resposta no swagger
   async getUser(@Param('id') id: string): Promise<User> {
