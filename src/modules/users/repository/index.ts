@@ -8,7 +8,10 @@ export class UsersRepository implements IUserRepository {
   constructor(@InjectModel(User.name, DATABASE_CONNECTION.COMMON) private userModel: Model<UserDocument>) {}
 
   async create(user: User): Promise<User> {
-    const createdUser = new this.userModel(user);
+    const createdUser = new this.userModel({
+      ...user,
+      createdAt: new Date(),
+    });
     return createdUser.save();
   }
 

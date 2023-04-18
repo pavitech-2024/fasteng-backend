@@ -6,6 +6,8 @@ export type SampleDocument = HydratedDocument<Sample>;
 
 @Schema({ collection: 'samples' })
 export class Sample {
+  _id: string;
+
   @IsNotEmpty()
   @Prop()
   name: string;
@@ -17,6 +19,10 @@ export class Sample {
   @IsNotEmpty()
   @Prop()
   userId: string;
+
+  @IsNotEmpty()
+  @Prop()
+  createdAt: Date;
 
   @Prop({ type: Object })
   description: {
