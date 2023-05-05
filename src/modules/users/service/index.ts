@@ -21,6 +21,10 @@ export class UsersService implements IUsersService {
         connections,
         lastLoginList,
         photo,
+        preferences: {
+          language: 'pt-BR',
+          decimal: 2,
+        },
       });
     } catch (error) {
       // se ocorrer algum erro, retorna o erro
@@ -47,16 +51,16 @@ export class UsersService implements IUsersService {
     }
   }
 
-  async updateUser(body: User): Promise<User> {
+  async updateUser(id: string, body: User): Promise<User> {
     try {
       // busca um usuário com o id passado no banco de dados
-      const user = await this.usersRepository.findOne({ _id: body._id });
+      const user = await this.usersRepository.findOne({ _id: id });
 
       // se não encontrar o usuário, retorna um erro
       if (!user) throw new NotFound('User');
 
       // atualiza o usuário no banco de dados
-      return this.usersRepository.findOneAndUpdate({ _id: body._id }, body);
+      return this.usersRepository.findOneAndUpdate({ _id: id }, body);
     } catch (error) {
       this.logger.error(`error on update user > [error]: ${error}`);
 
