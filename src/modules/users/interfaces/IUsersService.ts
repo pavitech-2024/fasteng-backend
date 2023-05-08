@@ -6,7 +6,7 @@ export interface IUsersService {
 
   getUser(id: string): Promise<User>;
 
-  updateUser(user: User): Promise<User>;
+  updateUser(id: string, user: User): Promise<User>;
 
   deleteUser(id: string): Promise<User>;
 }

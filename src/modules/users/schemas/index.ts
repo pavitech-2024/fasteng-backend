@@ -19,6 +19,12 @@ export class User {
   @IsNotEmpty()
   @Prop()
   connections: number;
+
+  @Prop({ type: Object })
+  preferences: {
+    language: string;
+    decimal: number;
+  };
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
