@@ -1,31 +1,11 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { IsNotEmpty } from 'class-validator';
-import { HydratedDocument } from 'mongoose';
 import { Sieve } from '../../../../utils/interfaces';
 
-export type MaterialDocument = HydratedDocument<Material>;
-
-@Schema({ collection: 'materials' })
-export class Material {
-  _id: string;
-
+export class CreateAsphaltMaterialDto {
   @IsNotEmpty()
-  @Prop()
   name: string;
 
-  @IsNotEmpty()
-  @Prop()
   type: 'coarseAggregate' | 'fineAggregate' | 'filler' | 'asphaltBinder' | 'CAP' | 'other';
-
-  @IsNotEmpty()
-  @Prop()
-  userId: string;
-
-  @IsNotEmpty()
-  @Prop()
-  createdAt: Date;
-
-  @Prop({ type: Object })
   description?: {
     source?: string;
     responsible?: string;
@@ -40,5 +20,3 @@ export class Material {
     observation?: string;
   };
 }
-
-export const MaterialSchema = SchemaFactory.createForClass(Material);
