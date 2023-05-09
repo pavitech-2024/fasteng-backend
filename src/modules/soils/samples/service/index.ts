@@ -3,7 +3,6 @@ import { SamplesRepository } from '../repository';
 import { Sample } from '../schemas';
 import { AlreadyExists, NotFound } from '../../../../utils/exceptions';
 import { CreateSampleDto } from '../dto/create-sample.dto';
-import { Request } from 'express';
 
 @Injectable()
 export class SamplesService {
@@ -11,17 +10,17 @@ export class SamplesService {
 
   constructor(private readonly samplesRepository: SamplesRepository) {}
 
-  async createSample(sample: CreateSampleDto, req: Request): Promise<Sample> {
+  async createSample(sample: CreateSampleDto, userId: string): Promise<Sample> {
     try {
-      // verifica se já existe uma amostra com o mesmo nome no banco de dados
-      if (await this.samplesRepository.findOne({ name: sample.name }))
+      // verifica se existe uma sample com mesmo nome e userId no banco de dados
+      if (await this.samplesRepository.findOne({ name: sample.name, userId }))
         throw new AlreadyExists(`Sample with name "${sample.name}"`);
 
       // cria uma amostra no banco de dados
       return this.samplesRepository.create({
         ...sample,
         createdAt: new Date(),
-        user: req.user._id,
+        userId,
       });
     } catch (error) {
       this.logger.error(`error on create sample > [error]: ${error}`);
@@ -47,13 +46,13 @@ export class SamplesService {
     }
   }
 
-  async getAllSamples(): Promise<Sample[]> {
+  async getAllSamples(userId: string): Promise<Sample[]> {
     try {
       // busca todas as amostras no banco de dados
       const samples = await this.samplesRepository.find();
 
-      // retorna as amostras encontradas
-      return samples;
+      // retorna as amostras encontradas que pertencem ao usuário
+      return samples.filter((sample) => sample.userId === userId);
     } catch (error) {
       this.logger.error(`error on get all samples > [error]: ${error}`);
 
