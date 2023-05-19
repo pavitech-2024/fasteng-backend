@@ -14,8 +14,8 @@ export class ReportErrorService {
     const transporter = nodemailer.createTransport({
       service: 'Gmail',
       auth: {
-        user: 'teixeirahist1988@gmail.com',
-        pass: '',
+        user: 'pavitechjbr@gmail.com',
+        pass: 'pavitech2021',
       },
     });
 
