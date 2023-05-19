@@ -15,7 +15,7 @@ export class ReportErrorService {
       service: 'Gmail',
       auth: {
         user: 'teixeirahist1988@gmail.com',
-        pass: 'tongtaz1984',
+        pass: '',
       },
     });
 
