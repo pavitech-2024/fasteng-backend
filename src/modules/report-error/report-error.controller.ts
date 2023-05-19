@@ -4,12 +4,11 @@ import { ReportErrorService } from './report-error.service';
 @Controller('report-error')
 export class ReportErrorController {
   private logger = new Logger(ReportErrorController.name)
-
   constructor(
     private readonly reportErrorService: ReportErrorService
   ){}
 
-  @Post('send-email')
+  @Post()
   async sendEmail(
     @Body('subject') subject: string,
     @Body('contact') contact: string,

@@ -44,6 +44,7 @@ export class AppModule implements NestModule {
         { path: 'docs/asphalt', method: RequestMethod.GET }, // libera a rota de documentação da API
         { path: 'docs/soils', method: RequestMethod.GET }, // libera a rota de documentação da API
         { path: 'docs/concrete', method: RequestMethod.GET }, // libera a rota de documentação da API
+        { path: 'report-error', method: RequestMethod.ALL }
       )
       .forRoutes('*');
   }
