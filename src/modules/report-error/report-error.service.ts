@@ -34,9 +34,7 @@ export class ReportErrorService {
       console.log('Email enviado com sucesso!');
     } catch (error) {
       console.error('Erro ao enviar o email:', error);
-      // Aqui você pode lançar uma exceção personalizada ou retornar uma mensagem de erro adequada
       throw new Error('Falha ao enviar o email');
     }
   }
-
 }
