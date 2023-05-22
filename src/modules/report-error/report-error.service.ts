@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
 
 @Injectable()
 export class ReportErrorService {
+  private readonly logger = new Logger(ReportErrorService.name);
 
   async sendEmail(
     subject: string,
@@ -31,9 +32,9 @@ export class ReportErrorService {
       };
   
       await transporter.sendMail(mailOptions);
-      console.log('Email enviado com sucesso!');
+      this.logger.log('Email enviado com sucesso!');
     } catch (error) {
-      console.error('Erro ao enviar o email:', error);
+      this.logger.error('Erro ao enviar o email:', error);
       throw new Error('Falha ao enviar o email');
     }
   }
