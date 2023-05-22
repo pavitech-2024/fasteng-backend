@@ -19,8 +19,8 @@ export class GeneralData_CBR_Service {
       // se não existir, retorna erro
       if (!sampleExists) throw new NotFound('Chosen sample of CBR');
 
-      // verificar se existe uma cbr com mesmo nome e userId no banco de dados
-      const cbrExists = await this.cbrRepository.findOne({ name, userId: sample.userId });
+      // verificar se existe uma cbr com mesmo nome e sampleId no banco de dados
+      const cbrExists = await this.cbrRepository.findOne({ generalData: { name, sample: { _id: sample._id } } });
 
       // se existir, retorna erro
       if (cbrExists) throw new AlreadyExists(`CBR with name "${name} from user "${sample.userId}"`);

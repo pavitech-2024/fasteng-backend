@@ -21,7 +21,11 @@ export class CbrController {
   @ApiResponse({
     status: 200,
     description: 'Não é possível criar uma CBR com os dados enviados.',
-    content: { 'application/json': { schema: { example: { success: false, error: 'Already exists.' } } } },
+    content: {
+      'application/json': {
+        schema: { example: { success: false, error: { message: 'Sample Not Found.', status: 400, name: 'NotFound' } } },
+      },
+    },
   })
   @ApiResponse({ status: 400, description: 'Erro ao verificar se é possível criar uma CBR com os dados enviados.' })
   async verifyInitCbr(@Res() response: Response, @Body() body: CbrInitDto) {
