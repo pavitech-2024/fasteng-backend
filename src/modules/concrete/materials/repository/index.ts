@@ -8,8 +8,26 @@ export class MaterialsRepository {
     @InjectModel(Material.name, DATABASE_CONNECTION.CONCRETE) private materialModel: Model<MaterialDocument>,
   ) {}
 
-  async create(material: Material): Promise<Material> {
+  async create(material: any): Promise<Material> {
     const createdMaterial = new this.materialModel(material);
     return createdMaterial.save();
+  }
+
+  async findOne(materialsFilterQuery: any): Promise<Material> {
+    return this.materialModel.findOne(materialsFilterQuery);
+  }
+
+  async find(): Promise<Material[]> {
+    return this.materialModel.find();
+  }
+
+  async findOneAndUpdate(materialsFilterQuery: any, material: Partial<Material>): Promise<Material> {
+    return this.materialModel.findOneAndUpdate(materialsFilterQuery, material, {
+      new: true,
+    });
+  }
+
+  async findOneAndDelete(materialsFilterQuery: any): Promise<Material> {
+    return this.materialModel.findByIdAndDelete(materialsFilterQuery);
   }
 }
