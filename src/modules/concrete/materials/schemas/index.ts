@@ -15,7 +15,7 @@ export class Material {
 
   @IsNotEmpty()
   @Prop()
-  type: 'coarseAggregate' | 'fineAggregate' | 'concrete';
+  type: 'coarseAggregate' | 'fineAggregate' | 'cement';
 
   @IsNotEmpty()
   @Prop()
