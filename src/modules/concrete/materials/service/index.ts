@@ -12,7 +12,7 @@ export class MaterialsService {
 
   async createMaterial(material: CreateConcreteMaterialDto, userId: string) {
     try {
-      if(await this.materialsRepository.findOne({ name: material.name, userId }))
+      if (await this.materialsRepository.findOne({ name: material.name, userId }))
         throw new AlreadyExists(`Material with name "${material.name}"`);
 
       this.logger.log(userId);

@@ -1,6 +1,5 @@
-import { IsNotEmpty } from "class-validator";
-import { Sieve } from "utils/interfaces";
-
+import { IsNotEmpty } from 'class-validator';
+import { Sieve } from 'utils/interfaces';
 
 export class CreateConcreteMaterialDto {
   @IsNotEmpty()

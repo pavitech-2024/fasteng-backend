@@ -6,6 +6,6 @@ import { ReportErrorService } from './report-error.service';
   imports: [],
   controllers: [ReportErrorController],
   providers: [ReportErrorService],
-  exports: [ReportErrorService]
+  exports: [ReportErrorService],
 })
 export class ReportErrorModule {}

@@ -21,7 +21,7 @@ export class MaterialsController {
 
     const createdMaterial = await this.materialsService.createMaterial(material, userId);
 
-    if(createdMaterial) this.logger.log(`material created > [id]: ${createdMaterial._id}`);
+    if (createdMaterial) this.logger.log(`material created > [id]: ${createdMaterial._id}`);
 
     return createdMaterial;
   }

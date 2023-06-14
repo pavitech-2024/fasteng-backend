@@ -5,17 +5,15 @@ import { ApiResponse } from '@nestjs/swagger';
 
 @Controller('report-error')
 export class ReportErrorController {
-  private logger = new Logger(ReportErrorController.name)
+  private logger = new Logger(ReportErrorController.name);
 
-  constructor(private readonly reportErrorService: ReportErrorService){}
+  constructor(private readonly reportErrorService: ReportErrorService) {}
 
   @Post()
   @ApiResponse({ status: 201, description: 'E-mail enviado com sucesso' })
   @ApiResponse({ status: 400, description: 'Erro ao enviar o e-mail' })
-  async sendEmail(
-    @Body() reportErrorDto: ReportErrorDto,
-  ) {
-    this.logger.log({}, 'start sendEmail')
-    await this.reportErrorService.sendEmail(reportErrorDto)
+  async sendEmail(@Body() reportErrorDto: ReportErrorDto) {
+    this.logger.log({}, 'start sendEmail');
+    await this.reportErrorService.sendEmail(reportErrorDto);
   }
 }

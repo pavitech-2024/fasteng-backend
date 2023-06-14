@@ -20,14 +20,14 @@ export class ReportErrorService {
           rejectUnauthorized: false,
         },
       });
-  
+
       const mailOptions = {
         from: sender,
         to: process.env.EMAIL_USERNAME,
         subject: subject,
         text: `Email: ${contact}\n\nMensagem: ${body}`,
       };
-  
+
       await transporter.sendMail(mailOptions);
       this.logger.log('Email enviado com sucesso!');
     } catch (error) {
