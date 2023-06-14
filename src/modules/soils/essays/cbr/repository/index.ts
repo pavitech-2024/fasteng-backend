@@ -9,4 +9,14 @@ export class CbrRepository {
   async findOne(cbrFilterQuery: any): Promise<Cbr> {
     return this.cbrModel.findOne(cbrFilterQuery);
   }
+
+  async findAll(): Promise<Cbr[]> {
+    return this.cbrModel.find();
+  }
+
+  async create(cbr: any): Promise<Cbr> {
+    const createdCbr = new this.cbrModel(cbr);
+
+    return createdCbr.save();
+  }
 }
