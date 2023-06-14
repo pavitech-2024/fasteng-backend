@@ -15,8 +15,6 @@ export class AuthMiddleware implements NestMiddleware {
     // Obtém o token do header da requisiçãoturn res.status(500)
     const token = req.headers.authorization;
 
-    console.log(req.headers)
-
     // Se não houver token, retorna erro
     if (!token) {
       // informa erro no log e retorna 500 para cliente
