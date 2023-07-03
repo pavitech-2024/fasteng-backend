@@ -2,8 +2,9 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { IsNotEmpty } from "class-validator";
 import { Sample } from "modules/soils/samples/schemas";
 import { HydratedDocument } from "mongoose";
+import { Calc_Compression_Out } from "../dto/calc.compression.dto";
 
-export type CompressionDocument = HydratedDocument<Compression>
+export type CompressionDocument = HydratedDocument<Compression>;
 
 export type CompressionGeneralData = {
   userId: string
@@ -17,7 +18,7 @@ export type CompressionGeneralData = {
 
 type compression_step2Data = {
 
-}
+};
 
 @Schema({ collection: 'compression' })
 export class Compression {
@@ -30,6 +31,12 @@ export class Compression {
   @IsNotEmpty()
   @Prop({ type: Object })
   step2Data: compression_step2Data;
+
+  @IsNotEmpty()
+  @Prop({ type: Object })
+  results: {
+    data: Calc_Compression_Out
+  }
 }
 
 export const CompressionSchema = SchemaFactory.createForClass(Compression);

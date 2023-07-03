@@ -9,4 +9,8 @@ export class CompressionRepository {
     @InjectModel(Compression.name, DATABASE_CONNECTION.SOILS)
     private compressionModel: Model<CompressionDocument>
   ) {}
+
+  async findOne(ccompressionFilterQuery: any): Promise<Compression> {
+    return this.compressionModel.findOne(ccompressionFilterQuery);
+  }
 }

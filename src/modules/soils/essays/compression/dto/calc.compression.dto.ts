@@ -8,5 +8,8 @@ export class Calc_Compression_Dto {
 
   @IsNotEmpty()
   step2Data: Compression['step2Data'];
+}
 
+export interface Calc_Compression_Out {
+  
 }
