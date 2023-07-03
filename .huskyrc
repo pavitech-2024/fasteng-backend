@@ -1,0 +1,8 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Pre-commit hook
+npx lint-staged
+
+# Pre-push hook
+npm run test
