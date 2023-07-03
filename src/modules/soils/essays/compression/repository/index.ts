@@ -10,7 +10,13 @@ export class CompressionRepository {
     private compressionModel: Model<CompressionDocument>
   ) {}
 
-  async findOne(ccompressionFilterQuery: any): Promise<Compression> {
-    return this.compressionModel.findOne(ccompressionFilterQuery);
+  async findOne(compressionFilterQuery: any): Promise<Compression> {
+    return this.compressionModel.findOne(compressionFilterQuery);
+  }
+
+  async create(compression: any): Promise<Compression> {
+    const createdCompression = new this.compressionModel(compression);
+
+    return createdCompression.save();
   }
 }
