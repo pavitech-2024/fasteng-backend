@@ -16,7 +16,6 @@ import { AsphaltModule } from './modules/asphalt/asphalt.module';
 import { SoilsModule } from './modules/soils/soils.module';
 import { ConcreteModule } from './modules/concrete/concrete.module';
 import { ReportErrorModule } from './modules/report-error/report-error.module';
-import { ReportErrorController } from 'modules/report-error/report-error.controller';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
@@ -27,9 +26,6 @@ import { ReportErrorController } from 'modules/report-error/report-error.control
     SoilsModule,
     ConcreteModule,
     ReportErrorModule,
-  ],
-  controllers: [
-    ReportErrorController
   ],
   providers: [{ provide: APP_INTERCEPTOR, useClass: ErrorsInterceptor }],
 })
