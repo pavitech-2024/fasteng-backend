@@ -11,5 +11,5 @@ export class Calc_Compression_Dto {
 }
 
 export interface Calc_Compression_Out {
-  
+   
 }
