@@ -1,12 +1,11 @@
-import { Injectable } from "@nestjs/common";
-import { CompressionRepository } from "../repository";
-import { GeneralData_Compression_Service } from "./general-data.compression.service";
-import { Calc_Compression_Service } from "./calc.compression.service";
-import { CompressionInitDto } from "../dto/compression-init.dto";
-import { Calc_Compression_Dto, Calc_Compression_Out } from "../dto/calc.compression.dto";
-import { Calc_CBR_Dto, Calc_CBR_Out } from "../../cbr/dto/calc.cbr.dto";
-import { AlreadyExists } from "utils/exceptions";
-
+import { Injectable } from '@nestjs/common';
+import { CompressionRepository } from '../repository';
+import { GeneralData_Compression_Service } from './general-data.compression.service';
+import { Calc_Compression_Service } from './calc.compression.service';
+import { CompressionInitDto } from '../dto/compression-init.dto';
+import { Calc_Compression_Dto, Calc_Compression_Out } from '../dto/calc.compression.dto';
+import { Calc_CBR_Dto, Calc_CBR_Out } from '../../cbr/dto/calc.cbr.dto';
+import { AlreadyExists } from 'utils/exceptions';
 
 @Injectable()
 export class CompressionService {

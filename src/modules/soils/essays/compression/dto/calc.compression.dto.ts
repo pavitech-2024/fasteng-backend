@@ -1,6 +1,5 @@
-import { IsNotEmpty } from "class-validator";
-import { Compression } from "../schema";
-
+import { IsNotEmpty } from 'class-validator';
+import { Compression } from '../schema';
 
 export class Calc_Compression_Dto {
   @IsNotEmpty()
@@ -10,6 +9,4 @@ export class Calc_Compression_Dto {
   step2Data: Compression['step2Data'];
 }
 
-export interface Calc_Compression_Out {
-   
-}
+export interface Calc_Compression_Out {}

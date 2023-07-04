@@ -1,9 +1,9 @@
-import { Body, Controller, Logger, Post, Res } from "@nestjs/common";
-import { CompressionService } from "../service";
-import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { Body, Controller, Logger, Post, Res } from '@nestjs/common';
+import { CompressionService } from '../service';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
-import { CompressionInitDto } from "../dto/compression-init.dto";
-import { Calc_Compression_Dto, Calc_Compression_Out } from "../dto/calc.compression.dto";
+import { CompressionInitDto } from '../dto/compression-init.dto';
+import { Calc_Compression_Dto, Calc_Compression_Out } from '../dto/calc.compression.dto';
 
 @ApiTags('compression')
 @Controller('soils/essays/compression')
@@ -28,8 +28,10 @@ export class CompressionController {
       },
     },
   })
-  @ApiResponse({ status: 400, description: 'Erro ao verificar se é possível criar um ensaio de compactação com os dados enviados.' })
-
+  @ApiResponse({
+    status: 400,
+    description: 'Erro ao verificar se é possível criar um ensaio de compactação com os dados enviados.',
+  })
   async verifyInitCompression(@Res() response: Response, @Body() body: CompressionInitDto) {
     this.logger.log('verify init compression > [body]');
 
@@ -45,7 +47,10 @@ export class CompressionController {
     description: 'Resultados do ensaio de compactação calculados com sucesso.',
     content: { 'application/json': { schema: { example: { success: true, data: 'essay data' } } } },
   })
-  @ApiResponse({ status: 400, description: 'Erro ao calcular os resultados do ensaio de compactação com os dados enviados.' })
+  @ApiResponse({
+    status: 400,
+    description: 'Erro ao calcular os resultados do ensaio de compactação com os dados enviados.',
+  })
   async calculateCompression(@Body() body: Calc_Compression_Dto) {
     this.logger.log('calculate compression > [body]');
 
@@ -72,7 +77,11 @@ export class CompressionController {
         schema: {
           example: {
             success: false,
-            error: { message: 'Compression essay with name "Compression 1" from user "user 1"', status: 400, name: 'AlreadyExists' },
+            error: {
+              message: 'Compression essay with name "Compression 1" from user "user 1"',
+              status: 400,
+              name: 'AlreadyExists',
+            },
           },
         },
       },

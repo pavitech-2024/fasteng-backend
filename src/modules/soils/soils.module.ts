@@ -11,7 +11,7 @@ import { Compression, CompressionSchema } from './essays/compression/schema';
 const Models: ModelDefinition[] = [
   { name: Sample.name, schema: SampleSchema },
   { name: Cbr.name, schema: CbrSchema },
-  { name: Compression.name, schema: CompressionSchema}
+  { name: Compression.name, schema: CompressionSchema },
 ];
 
 const Modules = [SamplesModule, CbrModule, CompressionModule];

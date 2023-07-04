@@ -28,9 +28,7 @@ import { ReportErrorController } from 'modules/report-error/report-error.control
     ConcreteModule,
     ReportErrorModule,
   ],
-  controllers: [
-    ReportErrorController
-  ],
+  controllers: [ReportErrorController],
   providers: [{ provide: APP_INTERCEPTOR, useClass: ErrorsInterceptor }],
 })
 export class AppModule implements NestModule {
