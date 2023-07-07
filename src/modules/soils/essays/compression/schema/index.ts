@@ -32,7 +32,7 @@ type compression_step2Data = {
   capsules: string[];
   capsules_tare: number[];
   wet_gross_weights_capsule: number[];
-  dry_gross_weights: number[]
+  dry_gross_weights: number[];
 };
 
 @Schema({ collection: 'compression' })

@@ -4,7 +4,6 @@ import { GeneralData_Compression_Service } from './general-data.compression.serv
 import { Calc_Compression_Service } from './calc.compression.service';
 import { CompressionInitDto } from '../dto/compression-init.dto';
 import { Calc_Compression_Dto, Calc_Compression_Out } from '../dto/calc.compression.dto';
-import { Calc_CBR_Dto, Calc_CBR_Out } from '../../cbr/dto/calc.cbr.dto';
 import { AlreadyExists } from 'utils/exceptions';
 
 @Injectable()
@@ -19,7 +18,7 @@ export class CompressionService {
     try {
       const success = await this.generalData_Service.verifyInitCompression(body);
 
-      return { success }
+      return { success };
     } catch (error) {
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };

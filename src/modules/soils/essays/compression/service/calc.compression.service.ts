@@ -13,7 +13,7 @@ export class Calc_Compression_Service {
   ) {}
 
   async calculateCompression({
-    step2Data
+    step2Data,
   }: Calc_Compression_Dto): Promise<{ success: boolean; result: Calc_Compression_Out }> {
     try {
       this.logger.log('calculate compression on calc.compression.service.ts > [body]');
@@ -49,7 +49,7 @@ export class Calc_Compression_Service {
         step2Data.wet_gross_weights_capsule,
         step2Data.dry_gross_weights,
         step2Data.capsules,
-        step2Data.capsule
+        step2Data.capsule,
       );
 
       // Calculos;
@@ -74,7 +74,7 @@ export class Calc_Compression_Service {
     wet_gross_weights_capsule: number[],
     dry_gross_weights: number[],
     capsules: string[],
-    capsule: string[]
+    capsule: string[],
   ): void {
     // Validações do app antigo
     if (!capsule_tare) throw new BadRequestException('Informe a tara da capsula.');
@@ -83,12 +83,22 @@ export class Calc_Compression_Service {
 
     capsule_tare.forEach((capsule_step_1, i) => {
       if (capsule_step_1 >= dry_gross_weight[i]) {
-        if (capsule[i]) throw new BadRequestException(`Tara da capsula ${capsule[i]} é maior ou igual do que o peso bruto seco.`);
-        else throw new BadRequestException(`Tara da capsula do ${i + 1}º ponto é maior ou igual do que o peso bruto seco.`);
+        if (capsule[i])
+          throw new BadRequestException(`Tara da capsula ${capsule[i]} é maior ou igual do que o peso bruto seco.`);
+        else
+          throw new BadRequestException(
+            `Tara da capsula do ${i + 1}º ponto é maior ou igual do que o peso bruto seco.`,
+          );
       }
       if (dry_gross_weight[i] >= wet_gross_weight_capsule[i]) {
-        if (capsule[i]) throw new BadRequestException(`Peso bruto seco da capsula ${capsule[i]} é maior ou igual do que o peso bruto úmido.`);
-        else throw new BadRequestException(`Peso bruto seco do ${i + 1}º ponto é maior ou igual do que o peso bruto úmido.`);
+        if (capsule[i])
+          throw new BadRequestException(
+            `Peso bruto seco da capsula ${capsule[i]} é maior ou igual do que o peso bruto úmido.`,
+          );
+        else
+          throw new BadRequestException(
+            `Peso bruto seco do ${i + 1}º ponto é maior ou igual do que o peso bruto úmido.`,
+          );
       }
     });
 
@@ -101,12 +111,22 @@ export class Calc_Compression_Service {
 
     capsules_tare.forEach((capsule_step_2, i) => {
       if (capsule_step_2 >= dry_gross_weight[i]) {
-        if (capsules[i]) throw new BadRequestException(`Tara da capsula ${capsules[i]} é maior ou igual do que o peso bruto seco.`);
-        else throw new BadRequestException(`Tara da capsula do ${i + 1}º ponto é maior ou igual do que o peso bruto seco.`);
+        if (capsules[i])
+          throw new BadRequestException(`Tara da capsula ${capsules[i]} é maior ou igual do que o peso bruto seco.`);
+        else
+          throw new BadRequestException(
+            `Tara da capsula do ${i + 1}º ponto é maior ou igual do que o peso bruto seco.`,
+          );
       }
       if (dry_gross_weight[i] >= wet_gross_weight_capsule[i]) {
-        if (capsules[i]) throw new BadRequestException(`Peso bruto seco da capsula ${capsules[i]} é maior ou igual do que o peso bruto úmido.`);
-        else throw new BadRequestException(`Peso bruto seco do ${i + 1}º ponto é maior ou igual do que o peso bruto úmido.`);
+        if (capsules[i])
+          throw new BadRequestException(
+            `Peso bruto seco da capsula ${capsules[i]} é maior ou igual do que o peso bruto úmido.`,
+          );
+        else
+          throw new BadRequestException(
+            `Peso bruto seco do ${i + 1}º ponto é maior ou igual do que o peso bruto úmido.`,
+          );
       }
     });
   }
