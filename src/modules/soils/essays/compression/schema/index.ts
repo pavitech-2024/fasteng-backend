@@ -16,7 +16,24 @@ export type CompressionGeneralData = {
   description?: string;
 };
 
-type compression_step2Data = {};
+type compression_step2Data = {
+  capsule: string[];
+  capsule_tare: number[];
+  wet_gross_weight_capsule: number[];
+  dry_gross_weight: number[];
+  mold_weight: number;
+  mold_volume: number;
+  mold_number: string;
+  socket_weight: number;
+  space_disc_thickness: number;
+  strokes_per_layer: number;
+  layers: number;
+  wet_gross_weights: number[];
+  capsules: string[];
+  capsules_tare: number[];
+  wet_gross_weights_capsule: number[];
+  dry_gross_weights: number[]
+};
 
 @Schema({ collection: 'compression' })
 export class Compression {

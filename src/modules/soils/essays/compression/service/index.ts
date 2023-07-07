@@ -18,6 +18,8 @@ export class CompressionService {
   async verifyInitCompression(body: CompressionInitDto) {
     try {
       const success = await this.generalData_Service.verifyInitCompression(body);
+
+      return { success }
     } catch (error) {
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
