@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { CompressionRepository } from '../repository';
 import { SamplesRepository } from 'modules/soils/samples/repository';
 import { Calc_Compression_Dto, Calc_Compression_Out } from '../dto/calc.compression.dto';
+import * as PolynomialRegression from 'ml-regression-polynomial';
 
 @Injectable()
 export class Calc_Compression_Service {
@@ -10,7 +11,7 @@ export class Calc_Compression_Service {
   constructor(
     private readonly compressionRepository: CompressionRepository,
     private readonly sampleRepository: SamplesRepository,
-  ) {}
+  ) { }
 
   async calculateCompression({
     step2Data,
@@ -54,13 +55,81 @@ export class Calc_Compression_Service {
 
       // Calculos;
 
+      const essay: any = {};
+      essay.water_weight = wet_gross_weight_capsule.map((element, i) => element - dry_gross_weight[i]);
+      essay.net_weight_dry_soil = dry_gross_weight.map((element, i) => element - capsule_tare[i]);
+      essay.hygroscopic_moisture = essay.water_weight.reduce((acc, element, i) => (acc = (element * 100) / essay.net_weight_dry_soil[i]), 0) / essay.water_weight.length;
+
+      essay.wet_soil_weights = wet_gross_weights.map((element) => element - mold_weight);
+      essay.wet_soil_densitys = essay.wet_soil_weights.map((element) => element / mold_volume);
+      essay.water_weights = wet_gross_weights_capsule.map((element, i) => element - dry_gross_weights[i]);
+      essay.net_weights_dry_soil = dry_gross_weights.map((element, i) => element - capsules_tare[i]);
+      essay.moistures = essay.water_weights.map((element, i) => (element * 100) / essay.net_weights_dry_soil[i]);
+      essay.dry_soil_densitys = essay.wet_soil_densitys.map((element, i) => (element * 10000) / ((essay.moistures[i] + 100) * 100));
+      essay.dry_soil_densitys = essay.wet_soil_densitys.map((element, i) => (element * 10000) / ((essay.moistures[i] + 100) * 100));
+
+      const regression = PolynomialRegression(essay.moistures, essay.dry_soil_densitys, 4);
+
+      const { a_index, b_index } = this.findAB(essay.dry_soil_densitys);
+
+      essay.optimum_moisture = this.bisection(essay.moistures[a_index], essay.moistures[b_index], regression.coefficients);
+      essay.optimum_density = regression.coefficients[0] +
+        (regression.coefficients[1] * essay.optimum_moisture) +
+        (regression.coefficients[2] * Math.pow(essay.optimum_moisture, 2)) +
+        (regression.coefficients[3] * Math.pow(essay.optimum_moisture, 3)) +
+        (regression.coefficients[4] * Math.pow(essay.optimum_moisture, 4));
+
+      essay.graph = essay.moistures.map((element, i) => [element, essay.dry_soil_densitys[i]])
+
       return {
         success: true,
-        result: {},
+        result: essay,
       };
     } catch (error) {
       throw error;
     }
+  }
+
+  private bisection(a: number, b: number, coefficients: number[]): number {
+    let x;
+    while (b - a > 0.0000001) {
+      x = (a + b) / 2;
+      const fa =
+        4 * coefficients[4] * Math.pow(a, 3) +
+        3 * coefficients[3] * Math.pow(a, 2) +
+        2 * coefficients[2] * a +
+        coefficients[1];
+      const fx =
+        4 * coefficients[4] * Math.pow(x, 3) +
+        3 * coefficients[3] * Math.pow(x, 2) +
+        2 * coefficients[2] * x +
+        coefficients[1];
+      if (fa * fx < 0) b = x;
+      else a = x;
+    }
+    return x;
+  }
+
+  private findAB(array: number[]): { a_index: number; b_index: number } {
+    let b_index = 0;
+    let b = 0;
+    array.forEach((element, i) => {
+      if (element !== b && element > b) {
+        b_index = i;
+        b = element;
+      }
+    });
+
+    let a_index = 0;
+    let a = 0;
+    array.forEach((element, i) => {
+      if (element !== b && element !== a && element > a) {
+        a_index = i;
+        a = element;
+      }
+    });
+
+    return { a_index, b_index };
   }
 
   private validateData(

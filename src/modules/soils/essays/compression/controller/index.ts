@@ -54,12 +54,12 @@ export class CompressionController {
   async calculateCompression(@Body() body: Calc_Compression_Dto) {
     this.logger.log('calculate compression > [body]');
 
-    const cbr = await this.compressionService.calculateCompression(body);
+    const compression = await this.compressionService.calculateCompression(body);
 
-    if (cbr.success) this.logger.log('calculate compression > [success]');
+    if (compression.success) this.logger.log('calculate compression > [success]');
     else this.logger.error('calculate compression > [error]');
 
-    return cbr;
+    return compression;
   }
 
   @Post('save-essay')
