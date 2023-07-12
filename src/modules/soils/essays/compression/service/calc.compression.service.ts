@@ -13,9 +13,7 @@ export class Calc_Compression_Service {
     private readonly sampleRepository: SamplesRepository,
   ) { }
 
-  async calculateCompression({
-    step2Data,
-  }: Calc_Compression_Dto): Promise<{ success: boolean; result: Calc_Compression_Out }> {
+  async calculateCompression({ calculation }: Calc_Compression_Dto): Promise<{ success: boolean; result: Calc_Compression_Out }> {
     try {
       this.logger.log('calculate compression on calc.compression.service.ts > [body]');
 
@@ -36,54 +34,60 @@ export class Calc_Compression_Service {
         space_disc_thickness,
         strokes_per_layer,
         layers,
-      } = step2Data;
-
-      // Validações;
-      this.validateData(
-        step2Data.capsule_tare,
-        step2Data.wet_gross_weight_capsule,
-        step2Data.dry_gross_weight,
-        step2Data.mold_weight,
-        step2Data.mold_volume,
-        step2Data.wet_gross_weights,
-        step2Data.capsules_tare,
-        step2Data.wet_gross_weights_capsule,
-        step2Data.dry_gross_weights,
-        step2Data.capsules,
-        step2Data.capsule,
-      );
+      } = calculation;
 
       // Calculos;
+      const water_weight = wet_gross_weight_capsule.map((element, i) => element - dry_gross_weight[i]);
+      
+      const net_weight_dry_soil = dry_gross_weight.map((element, i) => element - capsule_tare[i]);
 
-      const essay: any = {};
-      essay.water_weight = wet_gross_weight_capsule.map((element, i) => element - dry_gross_weight[i]);
-      essay.net_weight_dry_soil = dry_gross_weight.map((element, i) => element - capsule_tare[i]);
-      essay.hygroscopic_moisture = essay.water_weight.reduce((acc, element, i) => (acc = (element * 100) / essay.net_weight_dry_soil[i]), 0) / essay.water_weight.length;
+      const hygroscopic_moisture = water_weight.reduce((acc, element, i) => (acc = (element * 100) / net_weight_dry_soil[i]), 0) / water_weight.length;
 
-      essay.wet_soil_weights = wet_gross_weights.map((element) => element - mold_weight);
-      essay.wet_soil_densitys = essay.wet_soil_weights.map((element) => element / mold_volume);
-      essay.water_weights = wet_gross_weights_capsule.map((element, i) => element - dry_gross_weights[i]);
-      essay.net_weights_dry_soil = dry_gross_weights.map((element, i) => element - capsules_tare[i]);
-      essay.moistures = essay.water_weights.map((element, i) => (element * 100) / essay.net_weights_dry_soil[i]);
-      essay.dry_soil_densitys = essay.wet_soil_densitys.map((element, i) => (element * 10000) / ((essay.moistures[i] + 100) * 100));
-      essay.dry_soil_densitys = essay.wet_soil_densitys.map((element, i) => (element * 10000) / ((essay.moistures[i] + 100) * 100));
+      const wet_soil_weights = wet_gross_weights.map((element) => element - mold_weight);
 
-      const regression = PolynomialRegression(essay.moistures, essay.dry_soil_densitys, 4);
+      const wet_soil_densitys = wet_soil_weights.map((element) => element / mold_volume);
 
-      const { a_index, b_index } = this.findAB(essay.dry_soil_densitys);
+      const water_weights = wet_gross_weights_capsule.map((element, i) => element - dry_gross_weights[i]);
 
-      essay.optimum_moisture = this.bisection(essay.moistures[a_index], essay.moistures[b_index], regression.coefficients);
-      essay.optimum_density = regression.coefficients[0] +
-        (regression.coefficients[1] * essay.optimum_moisture) +
-        (regression.coefficients[2] * Math.pow(essay.optimum_moisture, 2)) +
-        (regression.coefficients[3] * Math.pow(essay.optimum_moisture, 3)) +
-        (regression.coefficients[4] * Math.pow(essay.optimum_moisture, 4));
+      const net_weights_dry_soil = dry_gross_weights.map((element, i) => element - capsules_tare[i]);
 
-      essay.graph = essay.moistures.map((element, i) => [element, essay.dry_soil_densitys[i]])
+      const moistures = water_weights.map((element, i) => (element * 100) / net_weights_dry_soil[i]);
+
+      const dry_soil_densitys = wet_soil_densitys.map((element, i) => (element * 10000) / ((moistures[i] + 100) * 100));
+
+      const regression = new PolynomialRegression(moistures, dry_soil_densitys, 4);
+
+      const { a_index, b_index } = this.findAB(dry_soil_densitys);
+
+      const optimum_moisture = this.bisection(moistures[a_index], moistures[b_index], regression.coefficients);
+
+      const optimum_density = regression.coefficients[0] +
+        (regression.coefficients[1] * optimum_moisture) +
+        (regression.coefficients[2] * Math.pow(optimum_moisture, 2)) +
+        (regression.coefficients[3] * Math.pow(optimum_moisture, 3)) +
+        (regression.coefficients[4] * Math.pow(optimum_moisture, 4));
+
+      const graph = moistures.map((element, i) => [element, dry_soil_densitys[i]])
 
       return {
         success: true,
-        result: essay,
+        result: {
+          water_weight,
+          net_weight_dry_soil,
+          hygroscopic_moisture,
+          wet_soil_weights,
+          wet_soil_densitys,
+          water_weights,
+          net_weights_dry_soil,
+          moistures,
+          dry_soil_densitys,
+          regression,
+          a_index,
+          b_index,
+          optimum_moisture,
+          optimum_density,
+          graph
+        }
       };
     } catch (error) {
       throw error;
@@ -130,73 +134,5 @@ export class Calc_Compression_Service {
     });
 
     return { a_index, b_index };
-  }
-
-  private validateData(
-    capsule_tare: number[],
-    wet_gross_weight_capsule: number[],
-    dry_gross_weight: number[],
-    mold_weight: number,
-    mold_volume: number,
-    wet_gross_weights: number[],
-    capsules_tare: number[],
-    wet_gross_weights_capsule: number[],
-    dry_gross_weights: number[],
-    capsules: string[],
-    capsule: string[],
-  ): void {
-    // Validações do app antigo
-    if (!capsule_tare) throw new BadRequestException('Informe a tara da capsula.');
-    if (!wet_gross_weight_capsule) throw new BadRequestException('Informe o peso bruto úmido na capsula.');
-    if (!dry_gross_weight) throw new BadRequestException('Informe o peso bruto seco.');
-
-    capsule_tare.forEach((capsule_step_1, i) => {
-      if (capsule_step_1 >= dry_gross_weight[i]) {
-        if (capsule[i])
-          throw new BadRequestException(`Tara da capsula ${capsule[i]} é maior ou igual do que o peso bruto seco.`);
-        else
-          throw new BadRequestException(
-            `Tara da capsula do ${i + 1}º ponto é maior ou igual do que o peso bruto seco.`,
-          );
-      }
-      if (dry_gross_weight[i] >= wet_gross_weight_capsule[i]) {
-        if (capsule[i])
-          throw new BadRequestException(
-            `Peso bruto seco da capsula ${capsule[i]} é maior ou igual do que o peso bruto úmido.`,
-          );
-        else
-          throw new BadRequestException(
-            `Peso bruto seco do ${i + 1}º ponto é maior ou igual do que o peso bruto úmido.`,
-          );
-      }
-    });
-
-    if (!mold_weight) throw new BadRequestException('Informe peso do molde.');
-    if (!mold_volume) throw new BadRequestException('Informe volume do molde.');
-    if (!wet_gross_weights) throw new BadRequestException('Informe os pesos brutos úmidos.');
-    if (!capsules_tare) throw new BadRequestException('Informe as taras das capsulas.');
-    if (!wet_gross_weights_capsule) throw new BadRequestException('Informe os pesos brutos úmido.');
-    if (!dry_gross_weights) throw new BadRequestException('Informe os pesos brutos secos.');
-
-    capsules_tare.forEach((capsule_step_2, i) => {
-      if (capsule_step_2 >= dry_gross_weight[i]) {
-        if (capsules[i])
-          throw new BadRequestException(`Tara da capsula ${capsules[i]} é maior ou igual do que o peso bruto seco.`);
-        else
-          throw new BadRequestException(
-            `Tara da capsula do ${i + 1}º ponto é maior ou igual do que o peso bruto seco.`,
-          );
-      }
-      if (dry_gross_weight[i] >= wet_gross_weight_capsule[i]) {
-        if (capsules[i])
-          throw new BadRequestException(
-            `Peso bruto seco da capsula ${capsules[i]} é maior ou igual do que o peso bruto úmido.`,
-          );
-        else
-          throw new BadRequestException(
-            `Peso bruto seco do ${i + 1}º ponto é maior ou igual do que o peso bruto úmido.`,
-          );
-      }
-    });
   }
 }

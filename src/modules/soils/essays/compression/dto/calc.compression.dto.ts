@@ -6,7 +6,7 @@ export class Calc_Compression_Dto {
   generalData: Compression['generalData'];
 
   @IsNotEmpty()
-  step2Data: Compression['step2Data'];
+  calculation: Compression['calculation'];
 }
 
 export interface Calc_Compression_Out {}

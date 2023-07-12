@@ -16,7 +16,7 @@ export type CompressionGeneralData = {
   description?: string;
 };
 
-type compression_step2Data = {
+type calculation = {
   capsule: string[];
   capsule_tare: number[];
   wet_gross_weight_capsule: number[];
@@ -45,7 +45,7 @@ export class Compression {
 
   @IsNotEmpty()
   @Prop({ type: Object })
-  step2Data: compression_step2Data;
+  calculation: calculation;
 
   @IsNotEmpty()
   @Prop({ type: Object })
