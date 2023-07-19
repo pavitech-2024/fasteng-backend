@@ -16,24 +16,51 @@ export type CompressionGeneralData = {
   description?: string;
 };
 
-type calculation = {
-  capsule: string[];
-  capsule_tare: number[];
-  wet_gross_weight_capsule: number[];
-  dry_gross_weight: number[];
-  mold_weight: number;
-  mold_volume: number;
-  mold_number: string;
-  socket_weight: number;
-  space_disc_thickness: number;
-  strokes_per_layer: number;
-  layers: number;
-  wet_gross_weights: number[];
-  capsules: string[];
-  capsules_tare: number[];
-  wet_gross_weights_capsule: number[];
-  dry_gross_weights: number[];
+type hygroscopicData = {
+  // capsule: string[];
+  // capsule_tare: number[];
+  // wet_gross_weight_capsule: number[];
+  // dry_gross_weight: number[];
+  // mold_weight: number;
+  // mold_volume: number;
+  // mold_number: string;
+  // socket_weight: number;
+  // space_disc_thickness: number;
+  // strokes_per_layer: number;
+  // layers: number;
+  // wet_gross_weights: number[];
+  // capsules: string[];
+  // capsules_tare: number[];
+  // wet_gross_weights_capsule: number[];
+  // dry_gross_weights: number[];
+  hygroscopicTable: hygTable[];
+  moldNumber: number; // número de molde
+  moldVolume: number; // volume do molde (cm³)
+  moldWeight: number; // peso do molde (g)
+  socketWeight: number; // peso do soquete (g)
+  spaceDiscThickness: number; // espessura do disco espaçador (cm)
+  strokesPerLayer: number; // golpes/camada
+  layers: number; 
 };
+
+export type hygTable = {
+  id: number;
+  capsulesNumberHyg: number; // número de cápsulas
+  wetGrossWeightsCapsuleHyg: number; // peso bruto úmido (g)
+  dryGrossWeightsHyg: number; // peso bruto seco (g)
+  capsulesWeightsHyg: number; // peso da cápsula (g)
+};
+
+type humidityDeterminationData = {
+  humidityTable: {
+    id: number;
+    capsulesNumberHum: number; // número de capsulas
+    wetGrossWeightsCapsuleHum: number; // peso bruto úmido (g)
+    wetWeightsCapsules: number; // peso úmido da amostra + cápsula (g)
+    dryWeightsCapsules: number; // peso seco da amostra + capsula (g)
+    capsulesWeightsHum: number; // peso da cápsula (g)
+  }[];
+}
 
 @Schema({ collection: 'compression' })
 export class Compression {
@@ -45,7 +72,11 @@ export class Compression {
 
   @IsNotEmpty()
   @Prop({ type: Object })
-  calculation: calculation;
+  hygroscopicData: hygroscopicData;
+
+  @IsNotEmpty()
+  @Prop({ type: Object })
+  humidityDeterminationData: humidityDeterminationData;
 
   @IsNotEmpty()
   @Prop({ type: Object })

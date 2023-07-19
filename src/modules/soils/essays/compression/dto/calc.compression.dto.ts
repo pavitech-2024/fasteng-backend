@@ -6,7 +6,10 @@ export class Calc_Compression_Dto {
   generalData: Compression['generalData'];
 
   @IsNotEmpty()
-  calculation: Compression['calculation'];
+  hygroscopicData: Compression['hygroscopicData'];
+
+  @IsNotEmpty()
+  humidityDeterminationData: Compression['humidityDeterminationData'];
 }
 
 export interface Calc_Compression_Out {}
