@@ -7,14 +7,17 @@ import { Cbr, CbrSchema } from './essays/cbr/schemas';
 import { CbrModule } from './essays/cbr/cbr.module';
 import { HrbModule } from './essays/hrb/hrb.module';
 import { Hrb, HrbSchema } from './essays/hrb/schemas';
+import { Sucs, SucsSchema } from './essays/sucs/schemas';
+import { SucsModule } from './essays/sucs/sucs.module';
 
 const Models: ModelDefinition[] = [
   { name: Sample.name, schema: SampleSchema },
   { name: Cbr.name, schema: CbrSchema },
   { name: Hrb.name, schema: HrbSchema },
+  { name: Sucs.name, schema: SucsSchema },
 ];
 
-const Modules = [SamplesModule, CbrModule, HrbModule];
+const Modules = [SamplesModule, CbrModule, HrbModule, SucsModule];
 
 @Global()
 @Module({

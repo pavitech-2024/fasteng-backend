@@ -54,7 +54,7 @@ async function bootstrap() {
   SwaggerModule.setup('docs/concrete', app, SwaggerModule.createDocument(app, swagger_concrete));
 
   // define a porta em que a aplicação será executada.
-  const port = process.env.PORT || 8080;
+  const port = process.env.PORT || 8082;
 
   // inicia a aplicação.
   await app.listen(port, () => console.log(`Server is running on port ${port}`));
