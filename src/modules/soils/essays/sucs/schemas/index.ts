@@ -17,10 +17,9 @@ export type SucsGeneralData = {
 };
 
 type sucs_step2Data = {
-  initial_sample_mass: number;
   liquidity_limit: number;
   plasticity_limit: number;
-  tableData: [{ sieve: number; passant: number }, { seive: number; passant: number }];
+  sieves: { sieve: string; passant: number }[];
   organic_matter: boolean;
 };
 
