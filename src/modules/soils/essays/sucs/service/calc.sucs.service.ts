@@ -1,10 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Calc_SUCS_Dto, Calc_SUCS_Out } from '../dto/calc.sucs.dto';
 import sucs_classifications, { Sucs_Classification } from '../utils/sucs-classifications';
-import { sieves } from 'modules/soils/util/ListSieves';
 import { SucsRepository } from '../repository';
 import { SamplesRepository } from 'modules/soils/samples/repository';
-import { Type } from 'class-transformer';
 
 type limit = {value: number, index: number};
 
@@ -12,15 +10,11 @@ type limit = {value: number, index: number};
 export class Calc_SUCS_Service {
     private logger = new Logger(Calc_SUCS_Service.name);
 
-    
-
     constructor(private readonly sucsRepository: SucsRepository, private readonly sampleRepository: SamplesRepository) {}
 
     async calculateSucs ({ step2Data }: Calc_SUCS_Dto): Promise<{ success: boolean; result: Calc_SUCS_Out }> {
         try {
             this.logger.log('calculate sucs on calc.sucs.service.ts > [body]');
-
-            console.log(step2Data)
 
             const classifications: Sucs_Classification[] = sucs_classifications;
             const { sieves, liquidity_limit, plasticity_limit, organic_matter } = step2Data;
