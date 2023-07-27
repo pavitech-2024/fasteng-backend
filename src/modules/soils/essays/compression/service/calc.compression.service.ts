@@ -11,9 +11,12 @@ export class Calc_Compression_Service {
   constructor(
     private readonly compressionRepository: CompressionRepository,
     private readonly sampleRepository: SamplesRepository,
-  ) { }
+  ) {}
 
-  async calculateCompression({ hygroscopicData, humidityDeterminationData }: Calc_Compression_Dto): Promise<{ success: boolean; result: Calc_Compression_Out }> {
+  async calculateCompression({
+    hygroscopicData,
+    humidityDeterminationData,
+  }: Calc_Compression_Dto): Promise<{ success: boolean; result: Calc_Compression_Out }> {
     try {
       this.logger.log('calculate compression on calc.compression.service.ts > [body]');
 
@@ -31,19 +34,24 @@ export class Calc_Compression_Service {
       const { humidityTable } = humidityDeterminationData;
 
       // Calculos;
-      const waterWeight = hygroscopicTable.map((element, i) => element.wetGrossWeightsCapsuleHyg - element.dryGrossWeightsHyg[i]);
-      
-      const netWeightDrySoil = hygroscopicTable.map((element, i) => element.dryGrossWeightsHyg - element.capsulesNumberHyg[i]);
+      const waterWeight = hygroscopicTable.map(
+        (element, i) => element.wetGrossWeightCapsule - element.dryGrossWeight[i],
+      );
 
-      const hygroscopic_moisture = waterWeight.reduce((acc, element, i) => (acc = (element * 100) / netWeightDrySoil[i]), 0) / waterWeight.length;
+      const netWeightDrySoil = hygroscopicTable.map((element, i) => element.dryGrossWeight - element.capsule[i]);
 
-      const wetSoilWeights = hygroscopicTable.map((element) => element.dryGrossWeightsHyg - moldWeight);
+      const hygroscopic_moisture =
+        waterWeight.reduce((acc, element, i) => (acc = (element * 100) / netWeightDrySoil[i]), 0) / waterWeight.length;
+
+      const wetSoilWeights = hygroscopicTable.map((element) => element.dryGrossWeight - moldWeight);
 
       const wetSoilDensitys = wetSoilWeights.map((element) => element / moldVolume);
 
-      const waterWeights = hygroscopicTable.map((element, i) => element.wetGrossWeightsCapsuleHyg - element.dryGrossWeightsHyg[i]);
+      const waterWeights = hygroscopicTable.map(
+        (element, i) => element.wetGrossWeightCapsule - element.dryGrossWeight[i],
+      );
 
-      const netWeightsDrySoil = hygroscopicTable.map((element, i) => element.dryGrossWeightsHyg - element.capsulesNumberHyg[i]);
+      const netWeightsDrySoil = hygroscopicTable.map((element, i) => element.dryGrossWeight - element.capsule[i]);
 
       const moistures = waterWeights.map((element, i) => (element * 100) / netWeightsDrySoil[i]);
 
@@ -55,13 +63,14 @@ export class Calc_Compression_Service {
 
       const optimum_moisture = this.bisection(moistures[a_index], moistures[b_index], regression.coefficients);
 
-      const optimumDensity = regression.coefficients[0] +
-        (regression.coefficients[1] * optimum_moisture) +
-        (regression.coefficients[2] * Math.pow(optimum_moisture, 2)) +
-        (regression.coefficients[3] * Math.pow(optimum_moisture, 3)) +
-        (regression.coefficients[4] * Math.pow(optimum_moisture, 4));
+      const optimumDensity =
+        regression.coefficients[0] +
+        regression.coefficients[1] * optimum_moisture +
+        regression.coefficients[2] * Math.pow(optimum_moisture, 2) +
+        regression.coefficients[3] * Math.pow(optimum_moisture, 3) +
+        regression.coefficients[4] * Math.pow(optimum_moisture, 4);
 
-      const graph = moistures.map((element, i) => [element, drySoilDensitys[i]])
+      const graph = moistures.map((element, i) => [element, drySoilDensitys[i]]);
 
       return {
         success: true,
@@ -85,8 +94,8 @@ export class Calc_Compression_Service {
           spaceDiscThickness,
           strokesPerLayer,
           layers,
-          moldNumber
-        }
+          moldNumber,
+        },
       };
     } catch (error) {
       throw error;
