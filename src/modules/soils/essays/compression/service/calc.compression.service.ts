@@ -31,35 +31,81 @@ export class Calc_Compression_Service {
       const { humidityTable } = humidityDeterminationData;
 
       // Calculos;
-      const waterWeight = hygroscopicTable.map((element, i) => element.wetGrossWeightsCapsuleHyg - element.dryGrossWeightsHyg[i]);
+      // const waterWeight = hygroscopicTable.map((element, i) => element.wetGrossWeightsCapsuleHyg - element.dryGrossWeightsHyg[i]);
       
-      const netWeightDrySoil = hygroscopicTable.map((element, i) => element.dryGrossWeightsHyg - element.capsulesNumberHyg[i]);
+      // const netWeightDrySoil = hygroscopicTable.map((element, i) => element.dryGrossWeightsHyg - element.capsulesNumberHyg[i]);
 
-      const hygroscopic_moisture = waterWeight.reduce((acc, element, i) => (acc = (element * 100) / netWeightDrySoil[i]), 0) / waterWeight.length;
+      // const hygroscopic_moisture = waterWeight.reduce((acc, element, i) => (acc = (element * 100) / netWeightDrySoil[i]), 0) / waterWeight.length;
 
-      const wetSoilWeights = hygroscopicTable.map((element) => element.dryGrossWeightsHyg - moldWeight);
+      // const wetSoilWeights = hygroscopicTable.map((element) => element.dryGrossWeightsHyg - moldWeight);
 
-      const wetSoilDensitys = wetSoilWeights.map((element) => element / moldVolume);
+      // const wetSoilDensitys = wetSoilWeights.map((element) => element / moldVolume);
 
-      const waterWeights = hygroscopicTable.map((element, i) => element.wetGrossWeightsCapsuleHyg - element.dryGrossWeightsHyg[i]);
+      // const waterWeights = hygroscopicTable.map((element, i) => element.wetGrossWeightsCapsuleHyg - element.dryGrossWeightsHyg[i]);
 
-      const netWeightsDrySoil = hygroscopicTable.map((element, i) => element.dryGrossWeightsHyg - element.capsulesNumberHyg[i]);
+      // const netWeightsDrySoil = hygroscopicTable.map((element, i) => element.dryGrossWeightsHyg - element.capsulesNumberHyg[i]);
 
-      const moistures = waterWeights.map((element, i) => (element * 100) / netWeightsDrySoil[i]);
+      // const moistures = waterWeights.map((element, i) => (element * 100) / netWeightsDrySoil[i]);
 
-      const drySoilDensitys = wetSoilDensitys.map((element, i) => (element * 10000) / ((moistures[i] + 100) * 100));
+      // const drySoilDensitys = wetSoilDensitys.map((element, i) => (element * 10000) / ((moistures[i] + 100) * 100));
+
+      const calculatedProperties = hygroscopicTable.reduce(
+        (acc, element) => {
+          const {
+            wetGrossWeightsCapsuleHyg,
+            dryGrossWeightsHyg,
+            capsulesNumberHyg,
+          } = element;
+      
+          const waterWeight = wetGrossWeightsCapsuleHyg - dryGrossWeightsHyg;
+          const netWeightDrySoil = dryGrossWeightsHyg - capsulesNumberHyg;
+      
+          const wetSoilWeight = dryGrossWeightsHyg - moldWeight;
+          const wetSoilDensity = wetSoilWeight / moldVolume;
+      
+          const waterWeightPercentage = (waterWeight * 100) / netWeightDrySoil;
+          const drySoilDensity = (wetSoilDensity * 10000) / ((waterWeightPercentage + 100) * 100);
+      
+          acc.waterWeights.push(waterWeight);
+          acc.netWeightsDrySoil.push(netWeightDrySoil);
+          acc.wetSoilWeights.push(wetSoilWeight);
+          acc.wetSoilDensitys.push(wetSoilDensity);
+          acc.waterWeightPercentages.push(waterWeightPercentage);
+          acc.drySoilDensitys.push(drySoilDensity);
+      
+          return acc;
+        },
+        {
+          waterWeights: [],
+          netWeightsDrySoil: [],
+          wetSoilWeights: [],
+          wetSoilDensitys: [],
+          waterWeightPercentages: [],
+          drySoilDensitys: [],
+        }
+      );
+
+      const waterWeight = calculatedProperties.waterWeights;
+      const netWeightDrySoil = calculatedProperties.netWeightsDrySoil;
+      const hygroscopic_moisture = calculatedProperties.waterWeights.reduce((acc, element) => acc + element, 0) / calculatedProperties.waterWeights.length;
+      const wetSoilWeights = calculatedProperties.wetSoilWeights;
+      const wetSoilDensitys = calculatedProperties.wetSoilDensitys;
+      const waterWeights = calculatedProperties.waterWeights;
+      const netWeightsDrySoil = calculatedProperties.netWeightsDrySoil;
+      const moistures = calculatedProperties.waterWeightPercentages;
+      const drySoilDensitys = calculatedProperties.drySoilDensitys;
 
       const regression = new PolynomialRegression(moistures, drySoilDensitys, 4);
 
       const { a_index, b_index } = this.findAB(drySoilDensitys);
 
-      const optimum_moisture = this.bisection(moistures[a_index], moistures[b_index], regression.coefficients);
+      const optimumMoisture = this.bisection(moistures[a_index], moistures[b_index], regression.coefficients);
 
       const optimumDensity = regression.coefficients[0] +
-        (regression.coefficients[1] * optimum_moisture) +
-        (regression.coefficients[2] * Math.pow(optimum_moisture, 2)) +
-        (regression.coefficients[3] * Math.pow(optimum_moisture, 3)) +
-        (regression.coefficients[4] * Math.pow(optimum_moisture, 4));
+        (regression.coefficients[1] * optimumMoisture) +
+        (regression.coefficients[2] * Math.pow(optimumMoisture, 2)) +
+        (regression.coefficients[3] * Math.pow(optimumMoisture, 3)) +
+        (regression.coefficients[4] * Math.pow(optimumMoisture, 4));
 
       const graph = moistures.map((element, i) => [element, drySoilDensitys[i]])
 
@@ -78,7 +124,7 @@ export class Calc_Compression_Service {
           regression,
           a_index,
           b_index,
-          optimum_moisture,
+          optimumMoisture,
           optimumDensity,
           graph,
           socketWeight,
