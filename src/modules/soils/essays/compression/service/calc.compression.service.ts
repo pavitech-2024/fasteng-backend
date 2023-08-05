@@ -52,15 +52,15 @@ export class Calc_Compression_Service {
       const calculatedProperties = hygroscopicTable.reduce(
         (acc, element) => {
           const {
-            wetGrossWeightsCapsuleHyg,
-            dryGrossWeightsHyg,
-            capsulesNumberHyg,
+            wetGrossWeightCapsule,
+            dryGrossWeight,
+            capsule,
           } = element;
       
-          const waterWeight = wetGrossWeightsCapsuleHyg - dryGrossWeightsHyg;
-          const netWeightDrySoil = dryGrossWeightsHyg - capsulesNumberHyg;
+          const waterWeight = wetGrossWeightCapsule - dryGrossWeight;
+          const netWeightDrySoil = dryGrossWeight - capsule;
       
-          const wetSoilWeight = dryGrossWeightsHyg - moldWeight;
+          const wetSoilWeight = dryGrossWeight - moldWeight;
           const wetSoilDensity = wetSoilWeight / moldVolume;
       
           const waterWeightPercentage = (waterWeight * 100) / netWeightDrySoil;

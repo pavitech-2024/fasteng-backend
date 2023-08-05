@@ -24,15 +24,15 @@ type hygroscopicData = {
   socketWeight: number; // peso do soquete (g)
   spaceDiscThickness: number; // espessura do disco espaçador (cm)
   strokesPerLayer: number; // golpes/camada
-  layers: number; 
+  layers: number; // número de camadas
 };
 
 export type hygTable = {
   id: number;
-  capsulesNumberHyg: number; // número de cápsulas
-  wetGrossWeightsCapsuleHyg: number; // peso bruto úmido (g)
-  dryGrossWeightsHyg: number; // peso bruto seco (g)
-  capsulesWeightsHyg: number; // peso da cápsula (g)
+  capsule: number; // número de cápsulas
+  wetGrossWeightCapsule: number; // peso bruto úmido (g)
+  dryGrossWeight: number; // peso bruto seco (g)
+  capsuleTare: number; // peso da cápsula (g)
 };
 
 type humidityDeterminationData = {
