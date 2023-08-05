@@ -12,4 +12,5 @@ export class Calc_Compression_Dto {
   humidityDeterminationData: Compression['humidityDeterminationData'];
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface Calc_Compression_Out {}

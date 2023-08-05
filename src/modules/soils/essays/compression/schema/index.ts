@@ -38,13 +38,13 @@ export type hygTable = {
 type humidityDeterminationData = {
   humidityTable: {
     id: number;
-    capsulesNumberHum: number; // número de capsulas
-    wetGrossWeightsCapsuleHum: number; // peso bruto úmido (g)
-    wetWeightsCapsules: number; // peso úmido da amostra + cápsula (g)
-    dryWeightsCapsules: number; // peso seco da amostra + capsula (g)
-    capsulesWeightsHum: number; // peso da cápsula (g)
+    capsules: number; // número de capsulas
+    wetGrossWeightsCapsule: number; // peso bruto úmido (g)
+    wetGrossWeights: number; // peso úmido da amostra + cápsula (g)
+    dryGrossWeights: number; // peso seco da amostra + capsula (g)
+    capsulesTare: number; // peso da cápsula (g)
   }[];
-}
+};
 
 @Schema({ collection: 'compression' })
 export class Compression {
