@@ -27,7 +27,10 @@ export class Calc_GRANULOMETRY_Service {
 
             const accumulated_retained: number[] = []
 
-            const graph_data : [number, number][] = []
+            const passant: number[] = []
+            const retained_porcentage: number[] = []
+
+            const graph_data: [number, number][] = []
 
             let total_retained = 0;
 
@@ -42,15 +45,19 @@ export class Calc_GRANULOMETRY_Service {
             for (let i = 0; i < length; i++) {
 
                 const label = table_data[i].sieve;
-                const passant = table_data[i].passant;
+                const passant_porcentage = table_data[i].passant;
                 const retained = table_data[i].retained;
 
                 total_retained += retained;
 
+                passant.push(Math.round( 100 * (sample_mass - total_retained)) / 100);
+                
+                accumulated_retained.push(Math.round( 100 * (100 - passant_porcentage)) / 100);
+                
                 if (i === 0) {
-                    accumulated_retained.push(retained);
+                    retained_porcentage.push(accumulated_retained[i]);
                 } else {
-                    accumulated_retained.push(accumulated_retained[i - 1] + retained);
+                    retained_porcentage.push(Math.round( 100 * (accumulated_retained[i] - accumulated_retained[i-1])) / 100);
                 }
 
                 fineness_module += accumulated_retained[i]
@@ -69,8 +76,8 @@ export class Calc_GRANULOMETRY_Service {
                     if (i === 1) nominal_diameter = getSieveValue(label);
                     else nominal_diameter = getSieveValue(table_data[i - 1].sieve);
                 }
-                
-                graph_data.push(([getSieveValue(label), passant]));
+
+                graph_data.push(([getSieveValue(label), passant_porcentage]));
 
             }
 
@@ -97,6 +104,8 @@ export class Calc_GRANULOMETRY_Service {
                 result: {
                     accumulated_retained,
                     graph_data,
+                    passant,
+                    retained_porcentage,
                     total_retained,
                     nominal_diameter,
                     nominal_size,
