@@ -39,7 +39,6 @@ export class CompressionController {
 
     return response.status(200).json(status);
   }
-  
 
   @Post('calculate-results')
   @ApiOperation({ summary: 'Calcula os resultados do ensaio de compactação com os dados enviados.' })
