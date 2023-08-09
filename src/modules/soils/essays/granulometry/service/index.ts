@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { GeneralData_GRANULOMETRY_Service } from './general-data.granulometry.service';
 import { GranulometryInitDto } from '../dto/granulometry-init.dto';
 import { Calc_GRANULOMETRY_Dto, Calc_GRANULOMETRY_Out } from '../dto/calc.granulometry.dto';
@@ -8,6 +8,8 @@ import { Calc_GRANULOMETRY_Service } from './calc.granulometry.service';
 
 @Injectable()
 export class GranulometryService {
+  private logger = new Logger(GranulometryService.name);
+
   constructor(
     private readonly generalData_Service: GeneralData_GRANULOMETRY_Service,
     private readonly calc_Service: Calc_GRANULOMETRY_Service,
@@ -30,7 +32,6 @@ export class GranulometryService {
       return await this.calc_Service.calculateGranulometry(body);
     } catch (error) {
       const { status, name, message } = error;
-
       return { success: false, error: { status, message, name } };
     }
   }

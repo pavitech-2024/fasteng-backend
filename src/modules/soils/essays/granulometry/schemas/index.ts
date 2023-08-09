@@ -18,7 +18,7 @@ export type GranulometryGeneralData = {
 
 type granulometry_step2Data = {
   sample_mass: number;
-  passant_percentage: { sieve: string; passant: number }[];
+  table_data: { sieve: string; passant: number, retained: number }[];
   bottom: number;
 };
 
