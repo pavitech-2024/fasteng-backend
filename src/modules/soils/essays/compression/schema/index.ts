@@ -39,9 +39,9 @@ type humidityDeterminationData = {
   humidityTable: {
     id: number;
     capsules: number; // número de capsulas
-    wetGrossWeightsCapsule: number; // peso bruto úmido (g)
-    wetGrossWeights: number; // peso úmido da amostra + cápsula (g)
-    dryGrossWeights: number; // peso seco da amostra + capsula (g)
+    wetGrossWeights: number; // peso bruto úmido (g)
+    wetGrossWeightsCapsule: number; // peso úmido da amostra + cápsula (g)
+    dryGrossWeightsCapsule: number; // peso seco da amostra + capsula (g)
     capsulesTare: number; // peso da cápsula (g)
   }[];
 };
