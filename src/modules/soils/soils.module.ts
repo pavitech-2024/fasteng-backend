@@ -7,14 +7,20 @@ import { Cbr, CbrSchema } from './essays/cbr/schemas';
 import { CbrModule } from './essays/cbr/cbr.module';
 import { HrbModule } from './essays/hrb/hrb.module';
 import { Hrb, HrbSchema } from './essays/hrb/schemas';
+import { Sucs, SucsSchema } from './essays/sucs/schemas';
+import { SucsModule } from './essays/sucs/sucs.module';
+import { Granulometry, GranulometrySchema } from './essays/granulometry/schemas';
+import { GranulometryModule } from './essays/granulometry/granulometry.module';
 
 const Models: ModelDefinition[] = [
   { name: Sample.name, schema: SampleSchema },
   { name: Cbr.name, schema: CbrSchema },
   { name: Hrb.name, schema: HrbSchema },
+  { name: Sucs.name, schema: SucsSchema },
+  { name: Granulometry.name, schema: GranulometrySchema },
 ];
 
-const Modules = [SamplesModule, CbrModule, HrbModule];
+const Modules = [SamplesModule, CbrModule, HrbModule, SucsModule, GranulometryModule];
 
 @Global()
 @Module({
