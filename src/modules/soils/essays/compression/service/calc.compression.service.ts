@@ -117,23 +117,18 @@ export class Calc_Compression_Service {
   }
 
   private findAB(array: number[]): { a_index: number; b_index: number } {
-    let b_index = 0;
-    let b = 0;
-    array.forEach((element, i) => {
-      if (element !== b && element > b) {
-        b_index = i;
-        b = element;
-      }
-    });
 
     let a_index = 0;
-    let a = 0;
-    array.forEach((element, i) => {
-      if (element !== b && element !== a && element > a) {
+    let b_index = 0;
+
+    for (let i = 0; i < array.length; i++) {
+      if (array[i] > array[b_index]) {
+        a_index = b_index;
+        b_index = i;
+      } else if (array[i] > array[a_index]) {
         a_index = i;
-        a = element;
       }
-    });
+    }
 
     return { a_index, b_index };
   }
