@@ -3,7 +3,7 @@ import { GeneralData_SandSwelling_Service } from './service/general-data.sand-sw
 import { Calc_SandSwelling_Service } from './service/calc.sand-swelling.service';
 import { SandSwellingRepository } from './repository';
 import { SandSwellingService } from './service';
-import { SandSwellingController } from './controller/sand-swelling.controller';
+import { SandSwellingController } from './controller';
 
 const services = [SandSwellingService, GeneralData_SandSwelling_Service, Calc_SandSwelling_Service];
 
