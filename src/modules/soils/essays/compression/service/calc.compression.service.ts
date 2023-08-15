@@ -36,7 +36,7 @@ export class Calc_Compression_Service {
       // Calculos;
       const waterWeight = hygroscopicTable.map((element, i) => element.wetGrossWeightCapsule - element.dryGrossWeight);
       
-      const netWeightDrySoil = hygroscopicTable.map((element, i) => element.dryGrossWeight - element.capsule);
+      const netWeightDrySoil = hygroscopicTable.map((element, i) => element.dryGrossWeight - element.capsuleTare);
 
       const hygroscopicMoisture = waterWeight.reduce((acc, element, i) => (acc = (element * 100) / netWeightDrySoil[i]), 0) / waterWeight.length;
 
@@ -44,9 +44,9 @@ export class Calc_Compression_Service {
 
       const wetSoilDensitys = wetSoilWeights.map((element) => element / moldVolume);
 
-      const waterWeights = humidityTable.map((element, i) => element.wetGrossWeightsCapsule - element.dryGrossWeightsCapsule);
+      const waterWeights = humidityTable.map((element) => element.wetGrossWeightsCapsule - element.dryGrossWeightsCapsule); //
 
-      const netWeightsDrySoil = humidityTable.map((element, i) => element.dryGrossWeightsCapsule - element.capsules);
+      const netWeightsDrySoil = humidityTable.map((element) => element.dryGrossWeightsCapsule - element.capsulesTare); //
 
       const moistures = waterWeights.map((element, i) => (element * 100) / netWeightsDrySoil[i]);
 
