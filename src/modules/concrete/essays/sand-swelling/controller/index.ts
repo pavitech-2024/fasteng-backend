@@ -2,11 +2,12 @@ import { Body, Controller, Logger, Post, Res } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { SandSwellingService } from '../service';
-import { SandSwellingInitDto } from '../dto/sand-swelling-init.dto';
 import { Calc_SandSwelling_Dto } from '../dto/calc.sand-swelling.dto';
+import { SandSwellingInitDto } from '../dto/sand-swelling-init.dto';
 
-@ApiTags('sandSwelling')
-@Controller('concrete/essays/sand-swelling')
+
+@ApiTags('sandIncrease')
+@Controller('concrete/essays/sand-increase')
 export class SandSwellingController {
   private logger = new Logger(SandSwellingController.name);
 
@@ -32,7 +33,7 @@ export class SandSwellingController {
   })
   @ApiResponse({ status: 400, description: 'Erro ao verificar se é possível criar um ensaio de Inchamento de Areia com os dados enviados.' })
   async verifyInitSandSwelling(@Res() response: Response, @Body() body: SandSwellingInitDto) {
-    this.logger.log('verify init sand swelling > [body]');
+    this.logger.log('verify init sand increase > [body]');
 
     const status = await this.sandSwellingService.verifyInitSandSwelling(body);
 
@@ -48,12 +49,12 @@ export class SandSwellingController {
   })
   @ApiResponse({ status: 400, description: 'Erro ao calcular os resultados do ensaio de Inchamento de Areia com os dados enviados.' })
   async calculateSandSwelling(@Body() body: Calc_SandSwelling_Dto) {
-    this.logger.log('calculate sand-swelling > [body]');
+    this.logger.log('calculate sand-increase > [body]');
 
     const sandSwelling = await this.sandSwellingService.calculateSandSwelling(body);
 
-    if (sandSwelling.success) this.logger.log('calculate sand-swelling > [success]');
-    else this.logger.error('calculate sand-swelling > [error]');
+    if (sandSwelling.success) this.logger.log('calculate sand-increase > [success]');
+    else this.logger.error('calculate sand-increase > [error]');
 
     return sandSwelling;
   }
