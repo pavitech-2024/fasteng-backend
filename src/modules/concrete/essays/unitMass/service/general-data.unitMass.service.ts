@@ -6,6 +6,9 @@ import { UnitMassRepository } from '../repository';
 
 @Injectable()
 export class GeneralData_UnitMass_Service {
+  verifyInitUnitMass(body: UnitMassInitDto) {
+    throw new Error('Method not implemented.');
+  }
   private logger = new Logger(GeneralData_UnitMass_Service.name);
 
   constructor(
