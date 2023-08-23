@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { MaterialsRepository } from '../repository';
 import { CreateConcreteMaterialDto } from '../dto/create-concrete-material.dto';
-import { AlreadyExists, NotFound } from 'utils/exceptions';
+import { AlreadyExists, NotFound } from '../../../../utils/exceptions';
 import { Material } from '../schemas';
 
 @Injectable()
