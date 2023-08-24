@@ -28,7 +28,7 @@ import { ReportErrorModule } from './modules/report-error/report-error.module';
     ConcreteModule,
     ReportErrorModule,
   ],
-  controllers: [ReportErrorController],
+  // controllers: [ReportErrorController],
   providers: [{ provide: APP_INTERCEPTOR, useClass: ErrorsInterceptor }],
 })
 
