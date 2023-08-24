@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Logger, Param, Post, Put } from '@nestjs
 import { MaterialsService } from '../service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateConcreteMaterialDto } from '../dto/create-concrete-material.dto';
-import { User } from 'config/decorators/user.decorator';
+import { User } from '../../../../config/decorators/user.decorator';
 import { Material } from '../schemas';
 
 @ApiTags('materials')
