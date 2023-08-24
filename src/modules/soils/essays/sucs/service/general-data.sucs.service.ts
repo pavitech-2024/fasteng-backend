@@ -15,7 +15,7 @@ export class GeneralData_SUCS_Service {
 
   async verifyInitSucs({ name, sample }: SucsInitDto) {
     try {
-      this.logger.log('verify init sucs on general-data.sucs.service.ts > [body]');
+      // this.logger.log('verify init sucs on general-data.sucs.service.ts > [body]');
       // verificar se existe uma amostra com mesmo nome e userId no banco de dados
       const sampleExists = await this.sampleRepository.findOne({ 
         "_id": sample._id 
@@ -34,7 +34,6 @@ export class GeneralData_SUCS_Service {
       if (sucsExists) throw new AlreadyExists('name');
 
       // verificar se existe uma granulometria para a sampleId no banco de dados
-      // const granulometryExists = await this.granulometryRepository.findOne({ generalData: { sample: { _id: sample._id } } });
       const granulometryExists = await this.granulometryRepository.findOne({ 
         "generalData.sample._id": sample._id  
       });

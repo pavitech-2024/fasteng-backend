@@ -10,7 +10,6 @@ export class SucsRepository {
   constructor(@InjectModel(Sucs.name, DATABASE_CONNECTION.SOILS) private sucsModel: Model<SucsDocument>) {}
 
   async findOne(sucsFilterQuery: any): Promise<Sucs> {
-    this.logger.log(sucsFilterQuery);
     return this.sucsModel.findOne(sucsFilterQuery);
   }
 

@@ -10,8 +10,11 @@ export class GranulometryRepository {
   constructor(@InjectModel(Granulometry.name, DATABASE_CONNECTION.SOILS) private granulometryModel: Model<GranulometryDocument>) {}
 
   async findOne(granulometryFilterQuery: any): Promise<Granulometry> {
-    this.logger.log(granulometryFilterQuery);
     return this.granulometryModel.findOne(granulometryFilterQuery);
+  }
+
+  async findAllBySample(granulometryFilterQuery: any): Promise<Granulometry[]> {
+    return this.granulometryModel.find(granulometryFilterQuery)
   }
 
   async findAll(): Promise<Granulometry[]> {

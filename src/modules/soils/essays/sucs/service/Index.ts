@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { GeneralData_SUCS_Service } from './general-data.sucs.service';
 import { SucsInitDto } from '../dto/sucs-init.dto';
 import { Calc_SUCS_Dto, Calc_SUCS_Out } from '../dto/calc.sucs.dto';
@@ -14,14 +14,16 @@ export class SucsService {
     private readonly Sucs_Repository: SucsRepository,
   ) {}
 
+  private logger = new Logger(SucsService.name);
+
   async verifyInitSucs(body: SucsInitDto) {
     try {
-      const success = await this.generalData_Service.verifyInitSucs(body);
+      const result = await this.generalData_Service.verifyInitSucs(body);
 
-      return { success };
+      return { result };
     } catch (error) {
       const { status, name, message } = error;
-      return { success: false, error: { status, message, name } };
+      return { result: { success: false, granulometry: []}, error: { status, message, name } };
     }
   }
 
