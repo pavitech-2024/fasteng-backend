@@ -23,7 +23,7 @@ type sucs_step2Data = {
   organic_matter: boolean;
 };
 
-@Schema({ collection: 'sucs' })
+@Schema({ collection: 'sucss' })
 export class Sucs {
   _id: string;
 
