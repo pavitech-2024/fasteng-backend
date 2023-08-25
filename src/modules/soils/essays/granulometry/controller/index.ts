@@ -1,4 +1,4 @@
-import { Body, Controller, Logger, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, Logger, Param, Post, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GranulometryService } from '../service';
@@ -88,4 +88,19 @@ export class GranulometryController {
 
         return response.status(200).json(granulometry);
     }
+
+    @Get('get/:sample_id')
+    @ApiOperation({ summary: 'Retorna um ensaio de Granulometria do banco de dados.' })
+    @ApiResponse({ 
+        status: 200, 
+        description: 'Granulometria encontrada com sucesso!' 
+    })
+    @ApiResponse({ status: 400, description: 'Granulometria não encontrada!' })
+    async getGranulometryBySampleId(@Res() response: Response, @Param('sample_id') sample_id: string) {
+    this.logger.log(`get granulometry by sample id > [sample_id]: ${sample_id}`);
+
+    const granulometry = await this.granulometryService.getGranulometryBySampleId(sample_id);
+
+    return response.status(200).json(granulometry);
+  }
 }

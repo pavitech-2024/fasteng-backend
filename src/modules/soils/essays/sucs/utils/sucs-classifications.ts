@@ -19,7 +19,7 @@ export class Sucs_Classification {
         sieve200?: SUCS_references;
         liquidity_limit?: SUCS_references;
         organic_matter?: boolean;
-        plasticity_index_greater_ref?: boolean;
+        ip_condition?: boolean;
         cnu: SUCS_references;
         cc: SUCS_references;
     };
@@ -31,7 +31,7 @@ export class Sucs_Classification {
         sieve200,
         liquidity_limit,
         organic_matter,
-        plasticity_index_greater_ref,
+        ip_condition,
         cnu,
         cc,
     }) {
@@ -43,7 +43,7 @@ export class Sucs_Classification {
             sieve200,
             liquidity_limit,
             organic_matter,
-            plasticity_index_greater_ref,
+            ip_condition,
             cnu,
             cc,
         };
@@ -98,7 +98,7 @@ const sucs_classifications: Sucs_Classification[] = [
         sieve200: { value: 50, type: 'min' },
         liquidity_limit: { value: 50, type: 'min' },
         organic_matter: null,
-        plasticity_index_greater_ref: true,
+        ip_condition: true,
         cnu: null,
         cc: null
     }),
@@ -109,7 +109,7 @@ const sucs_classifications: Sucs_Classification[] = [
         sieve200: { value: 50, type: 'min' },
         liquidity_limit: { value: 50, type: 'max' },
         organic_matter: null,
-        plasticity_index_greater_ref: true,
+        ip_condition: true,
         cnu: null,
         cc: null
     }),
@@ -120,7 +120,7 @@ const sucs_classifications: Sucs_Classification[] = [
         sieve200: { value: 50, type: 'min' },
         liquidity_limit: { value: 50, type: 'equal' },
         organic_matter: null,
-        plasticity_index_greater_ref: true,
+        ip_condition: true,
         cnu: null,
         cc: null
     }),
@@ -131,7 +131,7 @@ const sucs_classifications: Sucs_Classification[] = [
         sieve200: { value: 50, type: 'min' },
         liquidity_limit: { value: 50, type: 'min' },
         organic_matter: true,
-        plasticity_index_greater_ref: false,
+        ip_condition: false,
         cnu: null,
         cc: null
     }),
@@ -142,7 +142,7 @@ const sucs_classifications: Sucs_Classification[] = [
         sieve200: { value: 50, type: 'min' },
         liquidity_limit: { value: 50, type: 'max' },
         organic_matter: true,
-        plasticity_index_greater_ref: false,
+        ip_condition: false,
         cnu: null,
         cc: null
     }),
@@ -153,7 +153,7 @@ const sucs_classifications: Sucs_Classification[] = [
         sieve200: { value: 50, type: 'min' },
         liquidity_limit: { value: 50, type: 'equal' },
         organic_matter: true,
-        plasticity_index_greater_ref: false,
+        ip_condition: false,
         cnu: null,
         cc: null
     }),
@@ -164,7 +164,7 @@ const sucs_classifications: Sucs_Classification[] = [
         sieve200: { value: 50, type: 'min' },
         liquidity_limit: { value: 50, type: 'min' },
         organic_matter: false,
-        plasticity_index_greater_ref: false,
+        ip_condition: false,
         cnu: null,
         cc: null
     }),
@@ -175,7 +175,7 @@ const sucs_classifications: Sucs_Classification[] = [
         sieve200: { value: 50, type: 'min' },
         liquidity_limit: { value: 50, type: 'max' },
         organic_matter: false,
-        plasticity_index_greater_ref: false,
+        ip_condition: false,
         cnu: null,
         cc: null
     }),
@@ -186,7 +186,7 @@ const sucs_classifications: Sucs_Classification[] = [
         sieve200: { value: 50, type: 'min' },
         liquidity_limit: { value: 50, type: 'equal' },
         organic_matter: false,
-        plasticity_index_greater_ref: false,
+        ip_condition: false,
         cnu: null,
         cc: null
     }),
@@ -199,7 +199,7 @@ const sucs_classifications: Sucs_Classification[] = [
         sieve200: { value: 5, type: 'max' },
         liquidity_limit: null,
         organic_matter: null,
-        plasticity_index_greater_ref: null,
+        ip_condition: null,
         cnu: { value: 4, type: 'min' },
         cc: { range: { gt: 1, lt: 3 }, type: 'range' }
     }),
@@ -210,7 +210,7 @@ const sucs_classifications: Sucs_Classification[] = [
         sieve200: { value: 5, type: 'max' },
         liquidity_limit: null,
         organic_matter: null,
-        plasticity_index_greater_ref: null,
+        ip_condition: null,
         cnu: { value: 4, type: 'max' },
         cc: { range: { gt: 3, lt: 1 }, type: 'range' }
     }),
@@ -221,7 +221,7 @@ const sucs_classifications: Sucs_Classification[] = [
         sieve200: { value: 12, type: 'min' },
         liquidity_limit: null,
         organic_matter: null,
-        plasticity_index_greater_ref: true,
+        ip_condition: true,
         cnu: null,
         cc: null
     }),
@@ -232,7 +232,7 @@ const sucs_classifications: Sucs_Classification[] = [
         sieve200: { value: 12, type: 'min' },
         liquidity_limit: null,
         organic_matter: null,
-        plasticity_index_greater_ref: false,
+        ip_condition: false,
         cnu: null,
         cc: null
     }),
@@ -243,7 +243,7 @@ const sucs_classifications: Sucs_Classification[] = [
         sieve200: { range: { gt: 5, lt: 12}, type: 'range' },
         liquidity_limit: null,
         organic_matter: null,
-        plasticity_index_greater_ref: true,
+        ip_condition: true,
         cnu: { value: 4, type: 'min' },
         cc: { range: { gt: 1, lt: 3 }, type: 'range' }
     }),
@@ -254,7 +254,7 @@ const sucs_classifications: Sucs_Classification[] = [
         sieve200: { range: { gt: 5, lt: 12}, type: 'range' },
         liquidity_limit: null,
         organic_matter: null,
-        plasticity_index_greater_ref: false,
+        ip_condition: false,
         cnu: { value: 4, type: 'min' },
         cc: { range: { gt: 1, lt: 3 }, type: 'range' }
     }),
@@ -265,7 +265,7 @@ const sucs_classifications: Sucs_Classification[] = [
         sieve200: { range: { gt: 5, lt: 12}, type: 'range' },
         liquidity_limit: null,
         organic_matter: null,
-        plasticity_index_greater_ref: true,
+        ip_condition: true,
         cnu: { value: 4, type: 'max' },
         cc: { range: { gt: 3, lt: 1 }, type: 'range' }
     }),
@@ -276,7 +276,7 @@ const sucs_classifications: Sucs_Classification[] = [
         sieve200: { range: { gt: 5, lt: 12}, type: 'range' },
         liquidity_limit: null,
         organic_matter: null,
-        plasticity_index_greater_ref: false,
+        ip_condition: false,
         cnu: { value: 4, type: 'max' },
         cc: { range: { gt: 3, lt: 1 }, type: 'range' }
     }),
@@ -288,7 +288,7 @@ const sucs_classifications: Sucs_Classification[] = [
         sieve200: { value: 5, type: 'max' },
         liquidity_limit: null,
         organic_matter: null,
-        plasticity_index_greater_ref: null,
+        ip_condition: null,
         cnu: { value: 4, type: 'min' },
         cc: { range: { gt: 1, lt: 3 }, type: 'range' }
     }),
@@ -299,7 +299,7 @@ const sucs_classifications: Sucs_Classification[] = [
         sieve200: { value: 5, type: 'max' },
         liquidity_limit: null,
         organic_matter: null,
-        plasticity_index_greater_ref: null,
+        ip_condition: null,
         cnu: { value: 4, type: 'max' },
         cc: { range: { gt: 3, lt: 1 }, type: 'range' }
     }),
@@ -310,7 +310,7 @@ const sucs_classifications: Sucs_Classification[] = [
         sieve200: { value: 12, type: 'min' },
         liquidity_limit: null,
         organic_matter: null,
-        plasticity_index_greater_ref: true,
+        ip_condition: true,
         cnu: null,
         cc: null
     }),
@@ -321,7 +321,7 @@ const sucs_classifications: Sucs_Classification[] = [
         sieve200: { value: 12, type: 'min' },
         liquidity_limit: null,
         organic_matter: null,
-        plasticity_index_greater_ref: false,
+        ip_condition: false,
         cnu: null,
         cc: null
     }),
@@ -332,7 +332,7 @@ const sucs_classifications: Sucs_Classification[] = [
         sieve200: { range: { gt: 5, lt: 12}, type: 'range' },
         liquidity_limit: null,
         organic_matter: null,
-        plasticity_index_greater_ref: true,
+        ip_condition: true,
         cnu: { value: 4, type: 'min' },
         cc: { range: { gt: 1, lt: 3 }, type: 'range' }
     }),
@@ -343,7 +343,7 @@ const sucs_classifications: Sucs_Classification[] = [
         sieve200: { range: { gt: 5, lt: 12}, type: 'range' },
         liquidity_limit: null,
         organic_matter: null,
-        plasticity_index_greater_ref: false,
+        ip_condition: false,
         cnu: { value: 4, type: 'min' },
         cc: { range: { gt: 1, lt: 3 }, type: 'range' }
     }),
@@ -354,7 +354,7 @@ const sucs_classifications: Sucs_Classification[] = [
         sieve200: { range: { gt: 5, lt: 12}, type: 'range' },
         liquidity_limit: null,
         organic_matter: null,
-        plasticity_index_greater_ref: true,
+        ip_condition: true,
         cnu: { value: 4, type: 'max' },
         cc: { range: { gt: 3, lt: 1 }, type: 'range' }
     }),
@@ -365,7 +365,7 @@ const sucs_classifications: Sucs_Classification[] = [
         sieve200: { range: { gt: 5, lt: 12}, type: 'range' },
         liquidity_limit: null,
         organic_matter: null,
-        plasticity_index_greater_ref: false,
+        ip_condition: false,
         cnu: { value: 4, type: 'max' },
         cc: { range: { gt: 3, lt: 1 }, type: 'range' }
     }),

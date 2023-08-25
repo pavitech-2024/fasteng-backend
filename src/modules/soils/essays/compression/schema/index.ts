@@ -46,7 +46,7 @@ type humidityDeterminationData = {
   }[];
 };
 
-@Schema({ collection: 'compression' })
+@Schema({ collection: 'compressions' })
 export class Compression {
   _id: string;
 
