@@ -5,6 +5,7 @@ import { Calc_GRANULOMETRY_Dto, Calc_GRANULOMETRY_Out } from '../dto/calc.granul
 import { AlreadyExists } from '../../../../../utils/exceptions';
 import { GranulometryRepository } from '../repository';
 import { Calc_GRANULOMETRY_Service } from './calc.granulometry.service';
+import { GranulometryNotFound } from 'utils/exceptions/granulometryNotFound';
 
 @Injectable()
 export class GranulometryService {
@@ -61,6 +62,25 @@ export class GranulometryService {
     } catch (error) {
       const { status, name, message } = error;
 
+      return { success: false, error: { status, message, name } };
+    }
+  }
+
+  async getGranulometryBySampleId(sample_id: string) {
+    try {
+
+      // verificar se existe uma granulometria para a sampleId no banco de dados
+      const granulometry = await this.Granulometry_Repository.findOne({
+        'generalData.sample._id': sample_id,
+      });
+
+      // se não existir, retorna erro
+      if (!granulometry) throw new GranulometryNotFound('essay');
+
+      return granulometry;
+
+    } catch (error) {
+      const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
     }
   }

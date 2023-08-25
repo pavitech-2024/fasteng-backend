@@ -22,7 +22,7 @@ type granulometry_step2Data = {
   bottom: number;
 };
 
-@Schema({ collection: 'granulometry' })
+@Schema({ collection: 'granulometrys' })
 export class Granulometry {
   _id: string;
 
