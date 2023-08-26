@@ -1,6 +1,18 @@
-import { IsNotEmpty, IsNumber, IsString } from "class-validator"
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator"
 
 export class CalculateUnitMassDto {
+  @IsNotEmpty()
+  @IsNumber()
+  containerVolume: number
+
+  @IsOptional()
+  @IsNumber()
+  containerWeight: number
+
+  tableData: CalculateUnitMassTableDataDto[]
+}
+
+export class CalculateUnitMassTableDataDto {
   @IsNotEmpty()
   @IsNumber()
   containerWeightSample: number
@@ -12,4 +24,4 @@ export class CalculateUnitMassDto {
   @IsNotEmpty()
   @IsString()
   sample: string
-}[]
+}

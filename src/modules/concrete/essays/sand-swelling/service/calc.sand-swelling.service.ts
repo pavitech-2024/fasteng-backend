@@ -27,25 +27,27 @@ export class Calc_SandSwelling_Service {
     }
   }
 
-  async calculateUnitMass(body: CalculateUnitMassDto): Promise<{success: boolean; result: Calc_SandSwelling_Out }> {
+  async calculateUnitMass(body: any): Promise<{success: boolean; result: any }> {
     try {
       this.logger.log('calculate sand-swelling on calc.cbr.service.ts > [body]');
 
-      const array = body;
+      const tableData: any = body.calculateUnitMass.tableData;
+      const calculateUnitMass = body.calculateUnitMass;
+      const unitMasses = [];
 
-      const dd = array.forEach(element => {
-        
+      tableData.forEach(item => {
+        if(item.containerWeightSample !== null) {
+          const unitMass = (item.containerWeightSample - Number(calculateUnitMass.containerWeight)) / calculateUnitMass.containerVolume;
+          unitMasses.push(unitMass);
+        } 
       });
 
 
-      // data.forEach( weight => {
-      //   if(weight !== null) return unitMasses.push(( weight - containerWeight) / containerVolume);
-      //   else return unitMasses.push(null);
-      // })
+      const result = unitMasses;
 
       return {
         success: true,
-        result: {},
+        result,
       };
     } catch (error) {
       throw error;
