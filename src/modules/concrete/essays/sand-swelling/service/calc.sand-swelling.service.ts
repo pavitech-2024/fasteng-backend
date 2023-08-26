@@ -3,6 +3,7 @@ import { SandSwellingRepository } from "../repository";
 import { MaterialsRepository } from "modules/concrete/materials/repository";
 import { Calc_SandSwelling_Dto, Calc_SandSwelling_Out } from "../dto/calc.sand-swelling.dto";
 import { CalculateUnitMassDto } from "../dto/calc-unit-mass.dto";
+import { Calc_MoistureContent_Dto } from "../dto/calc-moisture-content.dto";
 
 
 @Injectable()
@@ -29,7 +30,7 @@ export class Calc_SandSwelling_Service {
 
   async calculateUnitMass(body: any): Promise<{success: boolean; result: any }> {
     try {
-      this.logger.log('calculate sand-swelling on calc.cbr.service.ts > [body]');
+      this.logger.log('calculate unit mass on calc.cbr.service.ts > [body]');
 
       const tableData: any = body.calculateUnitMass.tableData;
       const calculateUnitMass = body.calculateUnitMass;
@@ -42,8 +43,32 @@ export class Calc_SandSwelling_Service {
         } 
       });
 
-
       const result = unitMasses;
+
+      return {
+        success: true,
+        result,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async calculateMoistureContent(body: any): Promise<{success: boolean; result: any }> {
+    try {
+      this.logger.log('calculate moisture content on calc.cbr.service.ts > [body]');
+
+      const tableData = body.calculateMoistureContent.tableData;
+
+      const result = [];
+
+      tableData.map((data) => {
+        if (data.dryGrossWeight !== data.capsuleWeight) {
+           result.push((data.wetGrossWeight - data.dryGrossWeight) / (data.dryGrossWeight - data.capsuleWeight)) * 100;
+        } else {
+          result.push(0);
+        }
+      });
 
       return {
         success: true,

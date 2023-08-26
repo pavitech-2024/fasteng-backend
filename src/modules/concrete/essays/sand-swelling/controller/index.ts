@@ -4,7 +4,6 @@ import { Response } from 'express';
 import { SandSwellingService } from '../service';
 import { Calc_SandSwelling_Dto } from '../dto/calc.sand-swelling.dto';
 import { SandSwellingInitDto } from '../dto/sand-swelling-init.dto';
-import { CalculateUnitMassDto } from '../dto/calc-unit-mass.dto';
 
 
 @ApiTags('sandIncrease')
@@ -43,9 +42,18 @@ export class SandSwellingController {
 
   @Post('calculate-unit-mass')
   async calculateUnitMass(@Res() response: Response, @Body() body: any) {
-    this.logger.log('verify init sand increase - calculate unit mass > [body]');
+    this.logger.log('sand increase - calculate unit mass > [body]');
 
     const status = await this.sandSwellingService.calculateUnitMass(body);
+
+    return response.status(200).json(status);
+  }
+
+  @Post('calculate-moisture-content')
+  async calculateMoistureContent(@Res() response: Response, @Body() body: any) {
+    this.logger.log('sand increase - calculate moisture content > [body]');
+
+    const status = await this.sandSwellingService.calculateMoistureContent(body);
 
     return response.status(200).json(status);
   }

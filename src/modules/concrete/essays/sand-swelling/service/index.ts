@@ -5,6 +5,7 @@ import { Calc_SandSwelling_Service } from './calc.sand-swelling.service';
 import { SandSwellingInitDto } from '../dto/sand-swelling-init.dto';
 import { Calc_SandSwelling_Dto } from '../dto/calc.sand-swelling.dto';
 import { CalculateUnitMassDto } from '../dto/calc-unit-mass.dto';
+import { Calc_MoistureContent_Dto } from '../dto/calc-moisture-content.dto';
 
 @Injectable()
 export class SandSwellingService {
@@ -28,6 +29,16 @@ export class SandSwellingService {
   async calculateUnitMass(body: CalculateUnitMassDto) {
     try {
       return await this.calc_Service.calculateUnitMass(body);
+    } catch (error) {
+      const { status, name, message } = error;
+
+      return { success: false, error: { status, message, name } };
+    }
+  }
+
+  async calculateMoistureContent(body: any) {
+    try {
+      return await this.calc_Service.calculateMoistureContent(body);
     } catch (error) {
       const { status, name, message } = error;
 
