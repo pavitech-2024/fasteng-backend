@@ -25,3 +25,20 @@ export class CalculateUnitMassTableDataDto {
   @IsString()
   sample: string
 }
+
+export class CalculateUnitMassTableDataDtoTest {
+  @IsNotEmpty()
+  @IsNumber()
+  containerWeightSample: number
+
+  @IsNotEmpty()
+  @IsString()
+  moistureContent: string
+
+  @IsNotEmpty()
+  @IsString()
+  sample: string
+
+  @IsNotEmpty()
+  unitMass: null
+}

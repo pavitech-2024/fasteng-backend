@@ -40,23 +40,23 @@ export class SandSwellingController {
     return response.status(200).json(status);
   }
 
-  @Post('calculate-unit-mass')
-  async calculateUnitMass(@Res() response: Response, @Body() body: any) {
-    this.logger.log('sand increase - calculate unit mass > [body]');
+  // @Post('calculate-unit-mass')
+  // async calculateUnitMass(@Res() response: Response, @Body() body: any) {
+  //   this.logger.log('sand increase - calculate unit mass > [body]');
 
-    const status = await this.sandSwellingService.calculateUnitMass(body);
+  //   const status = await this.sandSwellingService.calculateUnitMass(body);
 
-    return response.status(200).json(status);
-  }
+  //   return response.status(200).json(status);
+  // }
 
-  @Post('calculate-moisture-content')
-  async calculateMoistureContent(@Res() response: Response, @Body() body: any) {
-    this.logger.log('sand increase - calculate moisture content > [body]');
+  // @Post('calculate-moisture-content')
+  // async calculateMoistureContent(@Res() response: Response, @Body() body: any) {
+  //   this.logger.log('sand increase - calculate moisture content > [body]');
 
-    const status = await this.sandSwellingService.calculateMoistureContent(body);
+  //   const status = await this.sandSwellingService.calculateMoistureContent(body);
 
-    return response.status(200).json(status);
-  }
+  //   return response.status(200).json(status);
+  // }
 
   @Post('calculate-results')
   @ApiOperation({ summary: 'Calcula os resultados do ensaio de Inchamento de Areia com os dados enviados.' })
@@ -66,7 +66,7 @@ export class SandSwellingController {
     content: { 'application/json': { schema: { example: { success: true, data: 'essay data' } } } },
   })
   @ApiResponse({ status: 400, description: 'Erro ao calcular os resultados do ensaio de Inchamento de Areia com os dados enviados.' })
-  async calculateSandSwelling(@Body() body: Calc_SandSwelling_Dto) {
+  async calculateSandSwelling(@Body() body: any) {
     this.logger.log('calculate sand-increase > [body]');
 
     const sandSwelling = await this.sandSwellingService.calculateSandSwelling(body);
