@@ -16,6 +16,7 @@ import { AsphaltModule } from './modules/asphalt/asphalt.module';
 import { SoilsModule } from './modules/soils/soils.module';
 import { ConcreteModule } from './modules/concrete/concrete.module';
 import { ReportErrorModule } from './modules/report-error/report-error.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
@@ -27,8 +28,10 @@ import { ReportErrorModule } from './modules/report-error/report-error.module';
     ConcreteModule,
     ReportErrorModule,
   ],
+  // controllers: [ReportErrorController],
   providers: [{ provide: APP_INTERCEPTOR, useClass: ErrorsInterceptor }],
 })
+
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
