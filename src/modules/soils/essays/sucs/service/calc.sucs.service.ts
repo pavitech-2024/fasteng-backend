@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Calc_SUCS_Dto, Calc_SUCS_Out } from '../dto/calc.sucs.dto';
 import sucs_classifications, { Sucs_Classification } from '../utils/sucs-classifications';
 import { SucsRepository } from '../repository';
-import { SamplesRepository } from 'modules/soils/samples/repository';
+import { SamplesRepository } from '../../../../../modules/soils/samples/repository';
 
 type limit = {value: number, index: number};
 
