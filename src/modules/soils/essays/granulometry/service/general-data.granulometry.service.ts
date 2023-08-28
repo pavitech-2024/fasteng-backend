@@ -3,7 +3,7 @@ import { GranulometryRepository } from '../repository';
 import { GranulometryInitDto } from '../dto/granulometry-init.dto';
 import { SamplesRepository } from '../../../samples/repository';
 import { AlreadyExists } from '../../../../../utils/exceptions';
-import { GranulometryNotFound } from 'utils/exceptions/granulometryNotFound';
+import { GranulometryNotFound } from 'utils/exceptions';
 
 @Injectable()
 export class GeneralData_GRANULOMETRY_Service {
