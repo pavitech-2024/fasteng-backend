@@ -1,4 +1,4 @@
-import { AllSieves, Sieve } from 'utils/interfaces';
+import { AllSieves, Sieve } from '../../../utils/interfaces';
 
 /* Example:
     label: N° 10 - 2.00 mm 
