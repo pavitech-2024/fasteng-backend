@@ -4,8 +4,8 @@ import { SucsInitDto } from '../dto/sucs-init.dto';
 import { SamplesRepository } from '../../../samples/repository';
 import { AlreadyExists } from '../../../../../utils/exceptions';
 import { GranulometryRepository } from '../../granulometry/repository/index';
-import { GranulometryNotFound } from 'utils/exceptions';
-import { SucsNotFound } from 'utils/exceptions';
+import { GranulometryNotFound } from '../../../../../utils/exceptions';
+import { SucsNotFound } from '../../../../../utils/exceptions';
 
 @Injectable()
 export class GeneralData_SUCS_Service {

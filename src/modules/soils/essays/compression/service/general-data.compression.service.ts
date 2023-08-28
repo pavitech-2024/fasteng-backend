@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { CompressionRepository } from '../repository';
 import { SamplesRepository } from 'modules/soils/samples/repository';
 import { CompressionInitDto } from '../dto/compression-init.dto';
-import { AlreadyExists, NotFound } from 'utils/exceptions';
+import { AlreadyExists, NotFound } from '../../../../../utils/exceptions';
 
 @Injectable()
 export class GeneralData_Compression_Service {

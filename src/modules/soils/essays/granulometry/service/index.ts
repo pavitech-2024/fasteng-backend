@@ -5,7 +5,7 @@ import { Calc_GRANULOMETRY_Dto, Calc_GRANULOMETRY_Out } from '../dto/calc.granul
 import { AlreadyExists } from '../../../../../utils/exceptions';
 import { GranulometryRepository } from '../repository';
 import { Calc_GRANULOMETRY_Service } from './calc.granulometry.service';
-import { GranulometryNotFound } from 'utils/exceptions';
+import { GranulometryNotFound } from '../../../../../utils/exceptions';
 
 @Injectable()
 export class GranulometryService {
