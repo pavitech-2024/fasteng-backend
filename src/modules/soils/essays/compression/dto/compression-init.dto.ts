@@ -1,5 +1,5 @@
 import { IsNotEmpty } from 'class-validator';
-import { Sample } from 'modules/soils/samples/schemas';
+import { Sample } from '../../../../../modules/soils/samples/schemas';
 
 export class CompressionInitDto {
   @IsNotEmpty()

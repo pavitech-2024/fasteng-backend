@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { CompressionRepository } from '../repository';
-import { SamplesRepository } from 'modules/soils/samples/repository';
+import { SamplesRepository } from '../../../../../modules/soils/samples/repository';
 import { Calc_Compression_Dto, Calc_Compression_Out } from '../dto/calc.compression.dto';
 import * as PolynomialRegression from 'ml-regression-polynomial';
 

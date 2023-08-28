@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { IsNotEmpty } from 'class-validator';
-import { Sample } from 'modules/soils/samples/schemas';
+import { Sample } from '../../../../../modules/soils/samples/schemas';
 import { HydratedDocument } from 'mongoose';
 import { Calc_Compression_Out } from '../dto/calc.compression.dto';
 
