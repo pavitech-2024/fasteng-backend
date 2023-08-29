@@ -1,7 +1,7 @@
 import { IsNotEmpty } from 'class-validator';
 import { Material } from 'modules/concrete/materials/schemas';
 
-export class UnitMassInitDto {
+export class UnitMass_Init_Dto {
   @IsNotEmpty()
   experimentName: string;
 

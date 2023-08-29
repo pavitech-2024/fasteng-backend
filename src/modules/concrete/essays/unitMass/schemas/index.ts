@@ -13,13 +13,13 @@ export type UnitMassGeneralData = {
 };
 
 type UnitMass_step2Data = {
-  containerVolume: string;
-  containerWeight: string;
-  sampleContainerWeight: string;
+  containerVolume: number;
+  containerWeight: number;
+  sampleContainerWeight: number;
 };
 
 type UnitMass_Result = {
-  result: string;
+  result: number;
 };
 
 @Schema({ collection: 'unitMass' })
@@ -37,7 +37,7 @@ export class UnitMass {
   @IsNotEmpty()
   @Prop({ type: Object })
   result: {
-    //data: Calc_UnitMass_Out;
+    result: UnitMass_Result;
   };
 }
 
