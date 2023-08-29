@@ -46,7 +46,7 @@ export class SandSwellingService {
   //   }
   // }
 
-  async calculateSandSwelling(body: Calc_SandSwelling_Dto) {
+  async calculateSandSwelling(body: any) {
     try {
       return await this.calc_Service.calculateSandSwelling(body);
     } catch (error) {

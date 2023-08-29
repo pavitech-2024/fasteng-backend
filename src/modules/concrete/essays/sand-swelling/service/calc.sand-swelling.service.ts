@@ -19,7 +19,7 @@ export class Calc_SandSwelling_Service {
     try {
       this.logger.log('calculate sand-swelling on calc.cbr.service.ts > [body]');
 
-      const step = calc_SandSwellingDto.step;
+      const step = calc_SandSwellingDto.step ? calc_SandSwellingDto.step : 3;
       const result: Calc_SandSwelling_Out = {
         unitMasses: [],
         moistureContent: [], 
@@ -49,7 +49,7 @@ export class Calc_SandSwelling_Service {
           result.unitMasses = unitMasses;
           break;
         case 2:
-          const moistureContentData = calc_SandSwellingDto['moistureContentData'].calculateMoistureContent.tableData;
+          const moistureContentData = calc_SandSwellingDto.calculateMoistureContent.tableData;
           const moistureContents = [];
 
           moistureContentData.forEach(data => {
@@ -62,78 +62,42 @@ export class Calc_SandSwelling_Service {
 
           result.moistureContent = moistureContents;
           break
+        case 3:
+          const tableData2: any = calc_SandSwellingDto.unitMassDeterminationData.tableData;
+          const calculateUnitMass2 = calc_SandSwellingDto.unitMassDeterminationData;
+          const unitMasses2 = [];
+
+          tableData2.forEach(item => {
+            if(item.containerWeightSample !== null) {
+              const unitMass = (item.containerWeightSample - calculateUnitMass2.containerWeight) / calculateUnitMass2.containerVolume;
+              unitMasses2.push(unitMass);
+            } 
+          });
+          
+          result.unitMasses = unitMasses2;
+
+          const moistureContentData2 = calc_SandSwellingDto.humidityFoundData.tableData;
+          const moistureContents2 = [];
+
+          moistureContentData2.forEach(data => {
+            if (data.dryGrossWeight !== data.capsuleWeight) {
+              moistureContents2.push(((data.wetGrossWeight - data.dryGrossWeight) / (data.dryGrossWeight - data.capsuleWeight)) * 100);
+            } else {
+              moistureContents2.push(0);
+            }
+          });
+
+          result.moistureContent = moistureContents2;
         default:
           break;
       }
 
       return {
         success: true,
-        result: {
-          unitMasses: result.unitMasses,
-          moistureContent: result.moistureContent,
-          swellings: [],
-          curve: undefined,
-          retaR: undefined,
-          retaS: undefined,
-          retaT: undefined,
-          retaU: undefined,
-          averageCoefficient: 0,
-          criticalHumidity: 0
-        },
+        result,
       };
     } catch (error) {
       throw error;
     }
   }
-
-  // async calculateUnitMass(body: any): Promise<{success: boolean; result: any }> {
-  //   try {
-  //     this.logger.log('calculate unit mass on calc.cbr.service.ts > [body]');
-
-  //     const tableData: any = body.calculateUnitMass.tableData;
-  //     const calculateUnitMass = body.calculateUnitMass;
-  //     const unitMasses = [];
-
-  //     tableData.forEach(item => {
-  //       if(item.containerWeightSample !== null) {
-  //         const unitMass = (item.containerWeightSample - Number(calculateUnitMass.containerWeight)) / calculateUnitMass.containerVolume;
-  //         unitMasses.push(unitMass);
-  //       } 
-  //     });
-
-  //     const result = unitMasses;
-
-  //     return {
-  //       success: true,
-  //       result,
-  //     };
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // }
-
-  // async calculateMoistureContent(body: any): Promise<{success: boolean; result: any }> {
-  //   try {
-  //     this.logger.log('calculate moisture content on calc.cbr.service.ts > [body]');
-
-  //     const tableData = body.calculateMoistureContent.tableData;
-
-  //     const result = [];
-
-  //     tableData.map((data) => {
-  //       if (data.dryGrossWeight !== data.capsuleWeight) {
-  //          result.push(((data.wetGrossWeight - data.dryGrossWeight) / (data.dryGrossWeight - data.capsuleWeight)) * 100);
-  //       } else {
-  //         result.push(0);
-  //       }
-  //     });
-
-  //     return {
-  //       success: true,
-  //       result,
-  //     };
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // }
 }
