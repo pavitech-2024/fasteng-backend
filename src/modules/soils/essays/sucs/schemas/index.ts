@@ -17,13 +17,15 @@ export type SucsGeneralData = {
 };
 
 type sucs_step2Data = {
+  cc: number;
+  cnu: number;
   liquidity_limit: number;
   plasticity_limit: number;
   sieves: { sieve: string; passant: number }[];
   organic_matter: boolean;
 };
 
-@Schema({ collection: 'sucs' })
+@Schema({ collection: 'sucss' })
 export class Sucs {
   _id: string;
 

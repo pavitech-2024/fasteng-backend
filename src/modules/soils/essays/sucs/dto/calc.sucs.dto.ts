@@ -12,6 +12,6 @@ export class Calc_SUCS_Dto {
 export interface Calc_SUCS_Out {
   cc: number,
   cnu: number,
-  plasticity_index: number,
+  ip: number,
   classification: string,
 }

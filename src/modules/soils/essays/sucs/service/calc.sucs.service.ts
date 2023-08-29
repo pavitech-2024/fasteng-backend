@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Calc_SUCS_Dto, Calc_SUCS_Out } from '../dto/calc.sucs.dto';
 import sucs_classifications, { Sucs_Classification } from '../utils/sucs-classifications';
 import { SucsRepository } from '../repository';
-import { SamplesRepository } from 'modules/soils/samples/repository';
+import { SamplesRepository } from '../../../../../modules/soils/samples/repository';
 
 type limit = {value: number, index: number};
 
@@ -19,23 +19,15 @@ export class Calc_SUCS_Service {
             const classifications: Sucs_Classification[] = sucs_classifications;
             const { sieves, liquidity_limit, plasticity_limit, organic_matter } = step2Data;
 
-            const plasticity_index = liquidity_limit - plasticity_limit;
+            const ip = liquidity_limit - plasticity_limit;
 
-            const plasticity_index_greater_ref = plasticity_index > (0.73 * (liquidity_limit - 20));
+            const ip_condition = ip > (0.73 * (liquidity_limit - 20));
 
-            const limit_10 = this.getPercentage(10, sieves);
-            const limit_30 = this.getPercentage(30, sieves);
-            const limit_60 = this.getPercentage(60, sieves);
+            const cnu = step2Data.cnu;
 
-            const diameter10 = this.getDiameter(sieves, 10, limit_10);
-            const diameter30 = this.getDiameter(sieves, 30, limit_30);
-            const diameter60 = this.getDiameter(sieves, 60, limit_60);
+            const cc = step2Data.cc;        
 
-            const cnu = diameter60 / diameter10;
-
-            const cc = Math.pow(diameter30, 2) / (diameter60 * diameter10);        
-
-            const sucs_classification = classifications.find((classification) => ['sieve4', 'sieve200', 'liquidity_limit', 'organic_matter', 'plasticity_index_greater_ref', 'cnu', 'cc'].every(
+            const sucs_classification = classifications.find((classification) => ['sieve4', 'sieve200', 'liquidity_limit', 'organic_matter', 'ip_condition', 'cnu', 'cc'].every(
                 (field, ranges) => classification.validateParams ( 
                     field, 
                     {
@@ -43,7 +35,7 @@ export class Calc_SUCS_Service {
                         sieve200: sieves[1].passant,
                         liquidity_limit: liquidity_limit as number,
                         organic_matter,
-                        plasticity_index_greater_ref,
+                        ip_condition,
                         cnu, 
                         cc
                     }, 
@@ -53,12 +45,14 @@ export class Calc_SUCS_Service {
 
             const classification = sucs_classification.code;
 
+            this.logger.log(ip)
+
             return {
                 success: true,
                 result: {
                     cc,
                     cnu,
-                    plasticity_index,
+                    ip,
                     classification,
                 }
             };

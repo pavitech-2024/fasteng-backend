@@ -1,7 +1,7 @@
 import { Body, Controller, Logger, Post, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { SucsService } from '../service';
+import { SucsService } from '../service/index';
 import { SucsInitDto } from '../dto/sucs-init.dto';
 import { Calc_SUCS_Dto, Calc_SUCS_Out } from '../dto/calc.sucs.dto';
 
