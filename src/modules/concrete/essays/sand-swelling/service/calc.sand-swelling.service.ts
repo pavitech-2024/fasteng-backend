@@ -35,59 +35,41 @@ export class Calc_SandSwelling_Service {
 
       switch (step) {
         case 1:
-          const tableData: any = calc_SandSwellingDto.unitMassDeterminationData.tableData;
-          const calculateUnitMass = calc_SandSwellingDto.unitMassDeterminationData;
-          const unitMasses = [];
-
-          tableData.forEach(item => {
-            if(item.containerWeightSample !== null) {
-              const unitMass = (item.containerWeightSample - calculateUnitMass.containerWeight) / calculateUnitMass.containerVolume;
-              unitMasses.push(unitMass);
-            } 
-          });
-          
-          result.unitMasses = unitMasses;
+          result.unitMasses = calculateUnitMasses(
+            calc_SandSwellingDto.unitMassDeterminationData.tableData, 
+            calc_SandSwellingDto.unitMassDeterminationData
+          );
           break;
         case 2:
-          const moistureContentData = calc_SandSwellingDto.calculateMoistureContent.tableData;
-          const moistureContents = [];
-
-          moistureContentData.forEach(data => {
-            if (data.dryGrossWeight !== data.capsuleWeight) {
-              moistureContents.push(((data.wetGrossWeight - data.dryGrossWeight) / (data.dryGrossWeight - data.capsuleWeight)) * 100);
-            } else {
-              moistureContents.push(0);
-            }
-          });
-
-          result.moistureContent = moistureContents;
+          result.moistureContent = calculateMoistureContents(calc_SandSwellingDto.calculateMoistureContent.tableData);
           break
         case 3:
-          const tableData2: any = calc_SandSwellingDto.unitMassDeterminationData.tableData;
-          const calculateUnitMass2 = calc_SandSwellingDto.unitMassDeterminationData;
-          const unitMasses2 = [];
+          const findedUnitMasses = calc_SandSwellingDto.unitMassDeterminationData.tableData.map((item) => item.unitMass);
+          const findedContents = calc_SandSwellingDto.humidityFoundData.tableData.map((item) => item.moistureContent);
+          const dryUnitMass = calc_SandSwellingDto.humidityFoundData.dryGrossWeight.map((item) => item.dryGrossWeight);
+          let swellings = [];
 
-          tableData2.forEach(item => {
-            if(item.containerWeightSample !== null) {
-              const unitMass = (item.containerWeightSample - calculateUnitMass2.containerWeight) / calculateUnitMass2.containerVolume;
-              unitMasses2.push(unitMass);
-            } 
-          });
-          
-          result.unitMasses = unitMasses2;
-
-          const moistureContentData2 = calc_SandSwellingDto.humidityFoundData.tableData;
-          const moistureContents2 = [];
-
-          moistureContentData2.forEach(data => {
-            if (data.dryGrossWeight !== data.capsuleWeight) {
-              moistureContents2.push(((data.wetGrossWeight - data.dryGrossWeight) / (data.dryGrossWeight - data.capsuleWeight)) * 100);
+          for (let i = 0; i < findedUnitMasses.length; i++) {
+            if (findedUnitMasses[i] !== 0) {
+              const swelling = (dryUnitMass[i] / findedUnitMasses[i]) * ((100 + findedContents[i]) / 100);
+              swellings.push(swelling);
             } else {
-              moistureContents2.push(0);
+              swellings.push(null);
             }
-          });
+          }
 
-          result.moistureContent = moistureContents2;
+          result.swellings = swellings;
+
+          result.unitMasses = calculateUnitMasses(
+            calc_SandSwellingDto.unitMassDeterminationData.tableData, 
+            calc_SandSwellingDto.unitMassDeterminationData
+          );
+
+          result.moistureContent = calculateMoistureContents(
+            calc_SandSwellingDto.humidityFoundData.tableData
+          );
+
+
         default:
           break;
       }
@@ -100,4 +82,27 @@ export class Calc_SandSwelling_Service {
       throw error;
     }
   }
+}
+
+function calculateUnitMasses(tableData: any, calculationData: any): number[] {
+  const unitMasses: number[] = [];
+  tableData.forEach(item => {
+    if (item.containerWeightSample !== null) {
+      const unitMass = (item.containerWeightSample - calculationData.containerWeight) / calculationData.containerVolume;
+      unitMasses.push(unitMass);
+    }
+  });
+  return unitMasses;
+}
+
+function calculateMoistureContents(moistureContentData: any): number[] {
+  const moistureContents: number[] = [];
+  moistureContentData.forEach(data => {
+    if (data.dryGrossWeight !== data.capsuleWeight) {
+      moistureContents.push(((data.wetGrossWeight - data.dryGrossWeight) / (data.dryGrossWeight - data.capsuleWeight)) * 100);
+    } else {
+      moistureContents.push(0);
+    }
+  });
+  return moistureContents;
 }

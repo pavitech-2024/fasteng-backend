@@ -19,7 +19,7 @@ export class Calc_SandSwelling_Dto {
 
 export interface Calc_SandSwelling_Out {
   unitMasses: number[];
-  moistureContent: MoistureContent[];
+  moistureContent: number[];
   swellings: number[];
   curve: any;
   retaR: any;

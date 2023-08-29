@@ -26,26 +26,6 @@ export class SandSwellingService {
     }
   }
 
-  // async calculateUnitMass(body: CalculateUnitMassDto) {
-  //   try {
-  //     return await this.calc_Service.calculateUnitMass(body);
-  //   } catch (error) {
-  //     const { status, name, message } = error;
-
-  //     return { success: false, error: { status, message, name } };
-  //   }
-  // }
-
-  // async calculateMoistureContent(body: any) {
-  //   try {
-  //     return await this.calc_Service.calculateMoistureContent(body);
-  //   } catch (error) {
-  //     const { status, name, message } = error;
-
-  //     return { success: false, error: { status, message, name } };
-  //   }
-  // }
-
   async calculateSandSwelling(body: any) {
     try {
       return await this.calc_Service.calculateSandSwelling(body);
