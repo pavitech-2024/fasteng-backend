@@ -25,11 +25,11 @@ export class GeneralData_GRANULOMETRY_Service {
       // verificar se existe uma granulometry com mesmo nome e sampleId no banco de dados
       const granulometryExists = await this.granulometryRepository.findOne({
         "generalData.name": name,
-        "generalData.sample._id": sample._id
+        "generalData.sample._id": sample._id,
       });
 
       // se existir, retorna erro
-      if (granulometryExists) throw new AlreadyExists(`name`);
+      if (granulometryExists) throw new AlreadyExists('name');
 
       return true;
     } catch (error) {
