@@ -1,5 +1,5 @@
 import { IsNotEmpty } from 'class-validator';
-import { Material } from 'modules/asphalt/materials/schemas';
+import { Material } from 'modules/concrete/materials/schemas';
 
 export class ConcreteGranulometryInitDto {
   @IsNotEmpty()
