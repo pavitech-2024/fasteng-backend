@@ -6,6 +6,16 @@ import { CalculateUnitMassDto } from "../dto/calc-unit-mass.dto";
 import { Calc_MoistureContent_Dto } from "../dto/calc-moisture-content.dto";
 import { regression } from "utils/leastSquaresRegression";
 
+// interface GraphLinesResult {
+//   averageCoefficient: number;
+//   curve: any;
+//   retaR: any;
+//   retaS: any;
+//   retaT: any;
+//   retaU: any;
+//   criticalHumidity: number;
+// }
+
 
 @Injectable()
 export class Calc_SandSwelling_Service {
@@ -45,23 +55,6 @@ export class Calc_SandSwelling_Service {
           result.moistureContent = calculateMoistureContents(calc_SandSwellingDto.calculateMoistureContent.tableData);
           break
         case 3:
-          const findedUnitMasses = calc_SandSwellingDto.unitMassDeterminationData.tableData.map((item) => item.unitMass);
-          const findedContents = calc_SandSwellingDto.humidityFoundData.tableData.map((item) => item.moistureContent);
-          const dryUnitMass = calc_SandSwellingDto.humidityFoundData.dryGrossWeight.map((item) => item.dryGrossWeight);
-          let swellings = [];
-          let graphLinesResult = {}
-
-          for (let i = 0; i < findedUnitMasses.length; i++) {
-            if (findedUnitMasses[i] !== 0) {
-              const swelling = (dryUnitMass[i] / findedUnitMasses[i]) * ((100 + findedContents[i]) / 100);
-              swellings.push(swelling);
-            } else {
-              swellings.push(null);
-            }
-          }
-
-          result.swellings = swellings;
-
           result.unitMasses = calculateUnitMasses(
             calc_SandSwellingDto.unitMassDeterminationData.tableData, 
             calc_SandSwellingDto.unitMassDeterminationData
@@ -71,7 +64,32 @@ export class Calc_SandSwelling_Service {
             calc_SandSwellingDto.humidityFoundData.tableData
           );
 
-          graphLines(findedContents, swellings);
+          const findedUnitMasses = calc_SandSwellingDto.unitMassDeterminationData.tableData.map((item) => item.unitMass);
+          const findedContents = calc_SandSwellingDto.humidityFoundData.tableData.map((item) => item.moistureContent);
+          // const dryUnitMass = calc_SandSwellingDto.humidityFoundData.dryGrossWeight.map((item) => item.dryGrossWeight);
+          const dryUnitMass = result.unitMasses[0];
+          let swellings = [];
+
+          for (let i = 0; i < findedUnitMasses.length; i++) {
+            if (findedUnitMasses[i] !== 0) {
+              const swelling = (dryUnitMass / findedUnitMasses[i]) * ((100 + findedContents[i]) / 100);
+              swellings.push(swelling);
+            } else {
+              swellings.push(null);
+            }
+          }
+
+          result.swellings = swellings;
+
+          const g = graphLines(findedContents, swellings);
+
+          result.curve = g.curve;
+          result.retaR = g.retaR;
+          result.retaS = g.retaS;
+          result.retaT = g.retaT;
+          result.retaU = g.retaU;
+          result.averageCoefficient = g.averageCoefficient;
+          result.criticalHumidity = g.criticalHumidity;
 
         default:
           break;
@@ -180,7 +198,6 @@ function graphLines(listaDeX: number[], listaDeY: number[]): any {
   const yDoPontoB = coeficiente[2] * retaU ** 2 + retaU * coeficiente[1] + coeficiente[0];
   const PontosDaRetaU = [[retaU, 0], [retaU, yDoPontoB], [retaU, retaR]];
   console.log('reta U:', PontosDaRetaU);
-
 
   const coeficienteDeInchamento = (pontoMaximo[1] + yDoPontoB) / 2;
   console.log('coeficiente de inchamento: ', coeficienteDeInchamento);
