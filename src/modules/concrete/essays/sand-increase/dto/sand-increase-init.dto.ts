@@ -1,7 +1,7 @@
 import { Material } from 'modules/concrete/materials/schemas';
 import { IsNotEmpty } from 'class-validator';
 
-export class SandSwellingInitDto {
+export class SandIncreaseInitDto {
   @IsNotEmpty()
   name: string;
 

@@ -1,37 +1,26 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { SandSwellingRepository } from "../repository";
+import { SandIncreaseRepository } from "../repository";
 import { MaterialsRepository } from "modules/concrete/materials/repository";
-import { Calc_SandSwelling_Dto, Calc_SandSwelling_Out } from "../dto/calc.sand-swelling.dto";
+import { Calc_SandIncrease_Dto, Calc_SandIncrease_Out } from "../dto/calc.sand-increase.dto";
 import { CalculateUnitMassDto } from "../dto/calc-unit-mass.dto";
 import { Calc_MoistureContent_Dto } from "../dto/calc-moisture-content.dto";
 import { regression } from "utils/leastSquaresRegression";
 
-// interface GraphLinesResult {
-//   averageCoefficient: number;
-//   curve: any;
-//   retaR: any;
-//   retaS: any;
-//   retaT: any;
-//   retaU: any;
-//   criticalHumidity: number;
-// }
-
-
 @Injectable()
-export class Calc_SandSwelling_Service {
-  private logger = new Logger(Calc_SandSwelling_Service.name);
+export class Calc_SandIncrease_Service {
+  private logger = new Logger(Calc_SandIncrease_Service.name);
 
   constructor(
-    private readonly sandSwellingRepository: SandSwellingRepository,
+    private readonly sandIncreaseRepository: SandIncreaseRepository,
     private readonly materialsRepository: MaterialsRepository,
   ) {}
 
-  async calculateSandSwelling(calc_SandSwellingDto: any): Promise<{ success: boolean; result: Calc_SandSwelling_Out}> {
+  async calculateSandIncrease(calc_SandIncreaseDto: any): Promise<{ success: boolean; result: Calc_SandIncrease_Out}> {
     try {
       this.logger.log('calculate sand-swelling on calc.cbr.service.ts > [body]');
 
-      const step = calc_SandSwellingDto.step ? calc_SandSwellingDto.step : 3;
-      const result: Calc_SandSwelling_Out = {
+      const step = calc_SandIncreaseDto.step ? calc_SandIncreaseDto.step : 3;
+      const result: Calc_SandIncrease_Out = {
         unitMasses: [],
         moistureContent: [], 
         swellings: [], 
@@ -47,26 +36,25 @@ export class Calc_SandSwelling_Service {
       switch (step) {
         case 1:
           result.unitMasses = calculateUnitMasses(
-            calc_SandSwellingDto.unitMassDeterminationData.tableData, 
-            calc_SandSwellingDto.unitMassDeterminationData
+            calc_SandIncreaseDto.unitMassDeterminationData.unitMassDeterminationData.tableData, 
+            calc_SandIncreaseDto.unitMassDeterminationData
           );
           break;
         case 2:
-          result.moistureContent = calculateMoistureContents(calc_SandSwellingDto.calculateMoistureContent.tableData);
+          result.moistureContent = calculateMoistureContents(calc_SandIncreaseDto.calculateMoistureContent.tableData);
           break
         case 3:
           result.unitMasses = calculateUnitMasses(
-            calc_SandSwellingDto.unitMassDeterminationData.tableData, 
-            calc_SandSwellingDto.unitMassDeterminationData
+            calc_SandIncreaseDto.unitMassDeterminationData.tableData, 
+            calc_SandIncreaseDto.unitMassDeterminationData
           );
 
           result.moistureContent = calculateMoistureContents(
-            calc_SandSwellingDto.humidityFoundData.tableData
+            calc_SandIncreaseDto.humidityFoundData.tableData
           );
 
-          const findedUnitMasses = calc_SandSwellingDto.unitMassDeterminationData.tableData.map((item) => item.unitMass);
-          const findedContents = calc_SandSwellingDto.humidityFoundData.tableData.map((item) => item.moistureContent);
-          // const dryUnitMass = calc_SandSwellingDto.humidityFoundData.dryGrossWeight.map((item) => item.dryGrossWeight);
+          const findedUnitMasses = calc_SandIncreaseDto.unitMassDeterminationData.tableData.map((item) => item.unitMass);
+          const findedContents = calc_SandIncreaseDto.humidityFoundData.tableData.map((item) => item.moistureContent);
           const dryUnitMass = result.unitMasses[0];
           let swellings = [];
 

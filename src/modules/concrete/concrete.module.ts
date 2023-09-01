@@ -3,16 +3,15 @@ import { ModelDefinition, MongooseModule } from '@nestjs/mongoose';
 import { DATABASE_CONNECTION } from '../../infra/mongoose/database.config';
 import { MaterialsModule } from './materials/materials.module';
 import { Material, MaterialSchema } from './materials/schemas';
-import { SandSwellingModule } from './essays/sand-swelling/sand-swelling.module';
-import { SandSwelling, SandSwellingSchema } from './essays/sand-swelling/schema';
-
+import { SandIncreaseModule } from './essays/sand-increase/sand-increase.module';
+import { SandIncrease, SandIncreaseSchema } from './essays/sand-increase/schema';
 
 const Models: ModelDefinition[] = [
   { name: Material.name, schema: MaterialSchema },
-  { name: SandSwelling.name, schema: SandSwellingSchema },
+  { name: SandIncrease.name, schema: SandIncreaseSchema },
 ];
 
-const Modules = [MaterialsModule, SandSwellingModule];
+const Modules = [MaterialsModule, SandIncreaseModule];
 
 @Global()
 @Module({
