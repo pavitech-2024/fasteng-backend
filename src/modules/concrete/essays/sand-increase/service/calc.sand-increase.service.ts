@@ -36,7 +36,7 @@ export class Calc_SandIncrease_Service {
       switch (step) {
         case 1:
           result.unitMasses = calculateUnitMasses(
-            calc_SandIncreaseDto.unitMassDeterminationData.unitMassDeterminationData.tableData, 
+            calc_SandIncreaseDto.unitMassDeterminationData.tableData, 
             calc_SandIncreaseDto.unitMassDeterminationData
           );
           break;

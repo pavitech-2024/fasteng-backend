@@ -10,11 +10,14 @@ export class Calc_SandIncrease_Dto {
   @IsNotEmpty()
   generalData: SandIncrease['generalData'];
 
-  @ValidateIf(obj => obj.step == 1)
+  @ValidateIf(obj => obj.step === 1)
   unitMassDeterminationData: SandIncrease['unitMassDeterminationData']
 
-  @ValidateIf(obj => obj.step == 2)
+  @ValidateIf(obj => obj.step === 2)
   humidityFoundData: SandIncrease['humidityFoundData']
+
+  @ValidateIf(obj => obj.step === 3)
+  resultsData: SandIncrease['resultsData']
 }
 
 export interface Calc_SandIncrease_Out {

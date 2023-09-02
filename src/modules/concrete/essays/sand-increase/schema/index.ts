@@ -28,12 +28,9 @@ export type HumidityFoundTableData = {
 }
 
 export type SandIncreaseUnitMassDeterminationData = {
-  step: number,
-  unitMassDeterminationData: {
-    containerVolume: number,
-    containerWeight: number,
-    tableData: UnitMassTableData[]
-  }
+  containerVolume: number,
+  containerWeight: number,
+  tableData: UnitMassTableData[]
 }
 
 export type SandIncreaseHumidityFoundData = {
@@ -46,6 +43,22 @@ export type SandIncreaseHumidityFoundData = {
   }
 }
 
+export type SandIncreaseResultsData = {
+  step: number,
+  unitMassDeterminationData: {
+    containerVolume: number,
+    containerWeight: number,
+    containerWeightSample: UnitMassTableData[],
+    tableData: UnitMassTableData[]
+  },
+  humidityFoundData: {
+    capsuleWeight: HumidityFoundTableData[],
+    dryGrossWeight: HumidityFoundTableData[],
+    wetGrossWeight: HumidityFoundTableData[],
+    tableData: HumidityFoundTableData[]
+  },
+  sandIncreaseGeneralData: SandIncreaseGeneralData
+}
 
 @Schema({ collection: 'sandIncrease' })
 export class SandIncrease {
@@ -62,6 +75,10 @@ export class SandIncrease {
   @IsNotEmpty()
   @Prop({ type: Object })
   humidityFoundData: SandIncreaseHumidityFoundData
+
+  @IsNotEmpty()
+  @Prop({ type: Object })
+  resultsData: SandIncreaseResultsData
 
   @IsNotEmpty()
   @Prop({ type: Object })
