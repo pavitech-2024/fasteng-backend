@@ -1,4 +1,4 @@
-import { Body, Controller, Logger, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, Logger, Param, Post, Res } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { ABCPService } from '../service';
@@ -34,5 +34,15 @@ export class ABCPController {
         const status = await this.abcpService.verifyInitABCP(body);
 
         return response.status(200).json(status);
+    }
+
+    @Get('material-selection/:id')
+    @ApiOperation({ summary: 'Retorna todos os materiais do banco de dados de um usuário, que possuam os ensaios para a dosagem.' })
+    @ApiResponse({ status: 200, description: 'Materiais encontrados com sucesso!' })
+    @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
+    async getAllByUserId(@Param('id') userId: string) {
+        this.logger.log(`get all materials by user id > [id]: ${userId}`);
+
+        return await this.abcpService.getAllMaterials(userId);
     }
 }
