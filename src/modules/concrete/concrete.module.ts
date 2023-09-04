@@ -5,13 +5,26 @@ import { MaterialsModule } from './materials/materials.module';
 import { Material, MaterialSchema } from './materials/schemas';
 import { SandIncreaseModule } from './essays/sand-increase/sand-increase.module';
 import { SandIncrease, SandIncreaseSchema } from './essays/sand-increase/schema';
+import { ChapmanModule } from './essays/chapman/champan.module';
+import { Chapman, ChapmanSchema } from './essays/chapman/schemas';
+import { ABCP, ABCPSchema } from './dosages/abcp/schemas';
+import { ABCPModule } from './dosages/abcp/abcp.module';
+import { Granulometry, GranulometrySchema } from './essays/granulometry/schemas';
+import { ConcreteGranulometryModule } from './essays/granulometry/granulometry.module';
+import { UnitMassModule } from './essays/unitMass/unitMass.module';
+import { UnitMass, UnitMassSchema } from './essays/unitMass/schemas';
 
 const Models: ModelDefinition[] = [
   { name: Material.name, schema: MaterialSchema },
   { name: SandIncrease.name, schema: SandIncreaseSchema },
+  { name: Material.name, schema: MaterialSchema },
+  { name: Chapman.name, schema: ChapmanSchema },
+  { name: ABCP.name, schema: ABCPSchema },
+  { name: Granulometry.name, schema: GranulometrySchema },
+  { name: UnitMass.name, schema: UnitMassSchema }
 ];
 
-const Modules = [MaterialsModule, SandIncreaseModule];
+const Modules = [MaterialsModule, SandIncreaseModule, ChapmanModule, ABCPModule, ConcreteGranulometryModule, UnitMassModule];
 
 @Global()
 @Module({
@@ -24,4 +37,5 @@ const Modules = [MaterialsModule, SandIncreaseModule];
     ...Modules
   ],
 })
-export class ConcreteModule {}
+
+export class ConcreteModule { }

@@ -46,15 +46,12 @@ export type SandIncreaseHumidityFoundData = {
 export type SandIncreaseResultsData = {
   step: number,
   unitMassDeterminationData: {
-    containerVolume: number,
-    containerWeight: number,
+    containerVolume: string,
+    containerWeight: string,
     containerWeightSample: UnitMassTableData[],
     tableData: UnitMassTableData[]
   },
   humidityFoundData: {
-    capsuleWeight: HumidityFoundTableData[],
-    dryGrossWeight: HumidityFoundTableData[],
-    wetGrossWeight: HumidityFoundTableData[],
     tableData: HumidityFoundTableData[]
   },
   sandIncreaseGeneralData: SandIncreaseGeneralData

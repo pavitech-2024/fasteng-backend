@@ -19,7 +19,7 @@ export class Calc_SandIncrease_Service {
     try {
       this.logger.log('calculate sand-swelling on calc.cbr.service.ts > [body]');
 
-      const step = calc_SandIncreaseDto.step ? calc_SandIncreaseDto.step : 3;
+      const step = calc_SandIncreaseDto.step;
       const result: Calc_SandIncrease_Out = {
         unitMasses: [],
         moistureContent: [], 
@@ -45,16 +45,16 @@ export class Calc_SandIncrease_Service {
           break
         case 3:
           result.unitMasses = calculateUnitMasses(
-            calc_SandIncreaseDto.unitMassDeterminationData.tableData, 
-            calc_SandIncreaseDto.unitMassDeterminationData
+            calc_SandIncreaseDto.resultsData.unitMassDeterminationData.tableData, 
+            calc_SandIncreaseDto.resultsData.unitMassDeterminationData
           );
 
           result.moistureContent = calculateMoistureContents(
-            calc_SandIncreaseDto.humidityFoundData.tableData
+            calc_SandIncreaseDto.resultsData.humidityFoundData
           );
 
-          const findedUnitMasses = calc_SandIncreaseDto.unitMassDeterminationData.tableData.map((item) => item.unitMass);
-          const findedContents = calc_SandIncreaseDto.humidityFoundData.tableData.map((item) => item.moistureContent);
+          const findedUnitMasses = calc_SandIncreaseDto.resultsData.unitMassDeterminationData.tableData.map((item) => item.unitMass);
+          const findedContents = calc_SandIncreaseDto.resultsData.humidityFoundData.map((item) => item.moistureContent);
           const dryUnitMass = result.unitMasses[0];
           let swellings = [];
 
@@ -66,6 +66,7 @@ export class Calc_SandIncrease_Service {
               swellings.push(null);
             }
           }
+
 
           result.swellings = swellings;
 
@@ -82,6 +83,7 @@ export class Calc_SandIncrease_Service {
         default:
           break;
       }
+
 
       return {
         success: true,

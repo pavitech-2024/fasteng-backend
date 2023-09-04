@@ -12,7 +12,7 @@ export type CbrGeneralData = {
   sample: Sample;
   createdAt: Date;
   operator?: string;
-  cauculist?: string;
+  calculist?: string;
   description?: string;
 };
 
