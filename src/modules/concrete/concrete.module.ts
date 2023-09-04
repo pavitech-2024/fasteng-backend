@@ -8,20 +8,23 @@ import { Chapman, ChapmanSchema } from './essays/chapman/schemas';
 import { ABCP, ABCPSchema } from './dosages/abcp/schemas';
 import { ABCPModule } from './dosages/abcp/abcp.module';
 import { Granulometry, GranulometrySchema } from './essays/granulometry/schemas';
-import { GranulometryModule } from 'modules/soils/essays/granulometry/granulometry.module';
+import { ConcreteGranulometryModule } from './essays/granulometry/granulometry.module';
+import { UnitMassModule } from './essays/unitMass/unitMass.module';
+import { UnitMass, UnitMassSchema } from './essays/unitMass/schemas';
 
 const Models: ModelDefinition[] = [
   { name: Material.name, schema: MaterialSchema },
   { name: Chapman.name, schema: ChapmanSchema },
   { name: ABCP.name, schema: ABCPSchema },
-  { name: Granulometry.name, schema: GranulometrySchema}
+  { name: Granulometry.name, schema: GranulometrySchema },
+  { name: UnitMass.name, schema: UnitMassSchema }
 ];
 
-const Modules = [MaterialsModule, ChapmanModule, ABCPModule, GranulometryModule];
+const Modules = [MaterialsModule, ChapmanModule, ABCPModule, ConcreteGranulometryModule, UnitMassModule];
 
 @Global()
 @Module({
   imports: [MongooseModule.forFeature(Models, DATABASE_CONNECTION.CONCRETE), ...Modules],
   exports: [MongooseModule, ...Modules],
 })
-export class ConcreteModule {}
+export class ConcreteModule { }

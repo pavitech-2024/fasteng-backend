@@ -1,9 +1,7 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { ABCPInitDto } from "../dto/abcp-init.dto";
-import { ABCPRepository } from "../repository";
 import { GeneralData_ABCP_Service } from "./general-data.abcp.service";
-import { Material } from "modules/concrete/materials/schemas";
-import { MaterialsRepository } from "modules/concrete/materials/repository";
+import { MaterialSelection_ABCP_Service } from "./material-selection.abcp.service";
 
 @Injectable()
 export class ABCPService {
@@ -11,10 +9,7 @@ export class ABCPService {
 
     constructor(
         private readonly generalData_Service: GeneralData_ABCP_Service,
-        private readonly material_repository: MaterialsRepository,
-        private readonly abcp_repository: ABCPRepository,
-        // private readonly granulometry_repository: GranulometryRepository,
-        // private readonly unit_mass_repository: UnitMassRepository,
+        private readonly materialSelection_Service: MaterialSelection_ABCP_Service,
     ) { }
 
     async verifyInitABCP(body: ABCPInitDto) {
@@ -23,22 +18,23 @@ export class ABCPService {
 
             return { success };
         } catch (error) {
+            this.logger.error(`error on verify init > [error]: ${error}`);
             const { status, name, message } = error;
             return { success: false, error: { status, message, name }};
         }
     }
 
-    async getAllMaterials(userId: string): Promise<Material[]> {
+    async getUserMaterials(userId: string) {
         try {
-          // busca todos os materiais no banco de dados que possuam os ensaios para a dosagem
-          const materials = await this.material_repository.find();
+          const materials = await this.materialSelection_Service.getMaterials(userId);
+
+          this.logger.log(`materials returned > [materials]: ${materials}`)
     
-          // retorna os materiais encontrados que pertencem ao usuário
-          return materials.filter((material) => material.userId === userId);
+          return { materials, success: true };
         } catch (error) {
-          this.logger.error(`error on get all materials > [error]: ${error}`);
-    
-          throw error;
+          this.logger.error(`error on get all materials by user id > [error]: ${error}`);
+          const { status, name, message } = error;
+          return { materials: [], success: false, error: { status, message, name }};
         }
       }
 }

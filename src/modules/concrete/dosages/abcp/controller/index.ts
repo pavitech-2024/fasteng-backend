@@ -40,9 +40,11 @@ export class ABCPController {
     @ApiOperation({ summary: 'Retorna todos os materiais do banco de dados de um usuário, que possuam os ensaios para a dosagem.' })
     @ApiResponse({ status: 200, description: 'Materiais encontrados com sucesso!' })
     @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
-    async getAllByUserId(@Param('id') userId: string) {
-        this.logger.log(`get all materials by user id > [id]: ${userId}`);
+    async getMaterialsByUserId(@Res() response: Response, @Param('id') userId: string) {
+        this.logger.log(`get all materials by user id with the abcp essays > [id]: ${userId}`);
 
-        return await this.abcpService.getAllMaterials(userId);
+        const status = await this.abcpService.getUserMaterials(userId);
+
+        return response.status(200).json(status);
     }
 }

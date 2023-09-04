@@ -1,7 +1,8 @@
 import { Controller, Logger, Post, Res, Body } from '@nestjs/common';
+import { Response } from 'express';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UnitMass_Init_Dto } from '../dto/unitMass-init.dto';
-import { UnitMassService } from '../service/unitMass.service';
+import { UnitMassService } from '../service';
 import { UnitMass_Step2_Dto } from '../dto/unitMass-step2.dto';
 import { UnitMass } from '../schemas';
 import { Result_UnitMass_Dto, UnitMass_Result } from '../dto/unitMass-result.dto';
@@ -38,7 +39,7 @@ export class UnitMassController {
 
     const status = await this.UnitMassService.verifyInitUnitMass(body);
 
-    return response;
+    return response.status(200).json(status);
   }
 
   @Post('step2-unitMass-data')
