@@ -15,7 +15,7 @@ export class Calc_SandIncrease_Service {
 
   async calculateSandIncrease(calc_SandIncreaseDto: any): Promise<{ success: boolean; result: Calc_SandIncrease_Out}> {
     try {
-      this.logger.log('calculate sand-swelling on calc.cbr.service.ts > [body]');
+      this.logger.log('calculate sand-increase on calc.sand-increase.service.ts > [body]');
 
       const step = calc_SandIncreaseDto.step;
       const result: Calc_SandIncrease_Out = {

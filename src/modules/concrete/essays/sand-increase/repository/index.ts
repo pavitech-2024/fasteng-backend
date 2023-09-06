@@ -10,7 +10,7 @@ export class SandIncreaseRepository {
     private sandIncreaseModel: Model<SandIncreaseDocument>,
   ) {}
 
-  async findOne(sandIncreaseFilterQuery: FilterQuery<SandIncrease>): Promise<any> {
+  async findOne(sandIncreaseFilterQuery: FilterQuery<SandIncrease>): Promise<SandIncrease> {
     return this.sandIncreaseModel.findOne(sandIncreaseFilterQuery);
   }
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { GeneralData_SandIncrease_Service } from './general-data.sand-increase.service';
 import { Calc_SandIncrease_Service } from './calc.sand-increase.service';
 import { SandIncreaseRepository } from '../repository';
@@ -8,6 +8,7 @@ import { AlreadyExists } from 'utils/exceptions';
 
 @Injectable()
 export class SandIncreaseService {
+  private logger = new Logger(SandIncreaseService.name);
   constructor(
     private readonly generalData_Service: GeneralData_SandIncrease_Service,
     private readonly calc_Service: Calc_SandIncrease_Service,
@@ -35,6 +36,14 @@ export class SandIncreaseService {
     }
   }
 
+  // async calculateUnitMass(body: any) {
+  //   try {
+  //     return await this.calc_Service.
+  //   } catch (error) {
+      
+  //   }
+  // }
+
   async saveEssay(body: any) {
     try {
       const {
@@ -50,7 +59,6 @@ export class SandIncreaseService {
         'generalData.material._id': materialId,
         'generalData.userId': userId,
       });
-      
 
       // se existir, retorna erro
       if (alreadyExists) throw new AlreadyExists(`Sand increase with name "${name}" from user "${userId}"`);
@@ -60,6 +68,7 @@ export class SandIncreaseService {
 
       return { success: true, data: sandIncrease };
     } catch (error) {
+      this.logger.error(error)
       const { status, name, message } = error;
 
       return { success: false, error: { status, message, name } };

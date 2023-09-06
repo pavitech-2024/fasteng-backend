@@ -79,12 +79,8 @@ export class SandIncrease {
 
   @IsNotEmpty()
   @Prop({ type: Object })
-  resultsData: SandIncreaseResultsData
-
-  @IsNotEmpty()
-  @Prop({ type: Object })
   results: {
-    data: Calc_SandIncrease_Out;
+    data: Calc_SandIncrease_Out
   };
 }
 

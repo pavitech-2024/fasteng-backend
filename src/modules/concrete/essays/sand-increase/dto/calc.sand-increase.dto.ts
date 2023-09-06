@@ -15,9 +15,6 @@ export class Calc_SandIncrease_Dto {
 
   @ValidateIf(obj => obj.step === 2)
   humidityFoundData: SandIncrease['humidityFoundData']
-
-  @ValidateIf(obj => obj.step === 3)
-  resultsData: SandIncrease['resultsData']
 }
 
 export interface Calc_SandIncrease_Out {
