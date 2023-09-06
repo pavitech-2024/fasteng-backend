@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { IsNotEmpty } from "class-validator";
+import { IsArray, IsNotEmpty } from "class-validator";
 import { Material } from "modules/concrete/materials/schemas";
 import { HydratedDocument } from "mongoose";
 import { Calc_SandIncrease_Out } from "../dto/calc.sand-increase.dto";
@@ -23,12 +23,12 @@ export type UnitMassTableData = {
   unitMass: number
 }
 
-export type HumidityFoundTableData = {
+export type MoistureContentTableData = {
   capsuleWeight: number,
   dryGrossWeight: number,
   wetGrossWeight: number,
   sample: string,
-  moistureContent: number
+  moistureContent: null
 }
 
 export type SandIncreaseUnitMassDeterminationData = {
@@ -38,13 +38,11 @@ export type SandIncreaseUnitMassDeterminationData = {
 }
 
 export type SandIncreaseHumidityFoundData = {
-  step: number,
-  calculateMoistureContent: {
-    capsuleWeight: number[],
-    dryGrossWeight: number[],
-    wetGrossWeight: number[],
-    tableData: HumidityFoundTableData[]
-  }
+  capsuleWeight: number,
+  dryGrossWeight: number,
+  moistureContent: number,
+  wetGrossWeight: number,
+  sample: string
 }
 
 export type SandIncreaseResultsData = {
@@ -56,7 +54,7 @@ export type SandIncreaseResultsData = {
     tableData: UnitMassTableData[]
   },
   humidityFoundData: {
-    tableData: HumidityFoundTableData[]
+    tableData: MoistureContentTableData[]
   },
   sandIncreaseGeneralData: SandIncreaseGeneralData
 }
@@ -74,8 +72,9 @@ export class SandIncrease {
   unitMassDeterminationData: SandIncreaseUnitMassDeterminationData
 
   @IsNotEmpty()
-  @Prop({ type: Object })
-  humidityFoundData: SandIncreaseHumidityFoundData
+  @IsArray()
+  //@Prop({ type: Object })
+  humidityFoundData: SandIncreaseHumidityFoundData[]
 
   @IsNotEmpty()
   @Prop({ type: Object })

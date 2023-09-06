@@ -17,10 +17,9 @@ export class Calc_SandIncrease_Service {
     try {
       this.logger.log('calculate sand-increase on calc.sand-increase.service.ts > [body]');
 
-      const step = calc_SandIncreaseDto.step;
       const result: Calc_SandIncrease_Out = {
         unitMasses: [],
-        moistureContent: [], 
+        moistureContent: [],
         swellings: [], 
         curve: {}, 
         retaR: {}, 
@@ -31,56 +30,35 @@ export class Calc_SandIncrease_Service {
         criticalHumidity: 0,
       };
 
-      switch (step) {
-        case 1:
-          result.unitMasses = calculateUnitMasses(
-            calc_SandIncreaseDto.unitMassDeterminationData.tableData, 
-            calc_SandIncreaseDto.unitMassDeterminationData
-          );
-          break;
-        case 2:
-          result.moistureContent = calculateMoistureContents(calc_SandIncreaseDto.calculateMoistureContent.tableData);
-          break
-        case 3:
-          result.unitMasses = calculateUnitMasses(
-            calc_SandIncreaseDto.resultsData.unitMassDeterminationData.tableData, 
-            calc_SandIncreaseDto.resultsData.unitMassDeterminationData
-          );
 
-          result.moistureContent = calculateMoistureContents(
-            calc_SandIncreaseDto.resultsData.humidityFoundData
-          );
+      const findedUnitMasses = calc_SandIncreaseDto.unitMassDeterminationData.tableData.map((item) => item.unitMass);
+      const findedContents = calc_SandIncreaseDto.humidityFoundData.map((item) => item.moistureContent);
+      const dryUnitMass = calc_SandIncreaseDto.unitMassDeterminationData.tableData[0].unitMass;
+      let swellings = [];
 
-          const findedUnitMasses = calc_SandIncreaseDto.resultsData.unitMassDeterminationData.tableData.map((item) => item.unitMass);
-          const findedContents = calc_SandIncreaseDto.resultsData.humidityFoundData.map((item) => item.moistureContent);
-          const dryUnitMass = result.unitMasses[0];
-          let swellings = [];
-
-          for (let i = 0; i < findedUnitMasses.length; i++) {
-            if (findedUnitMasses[i] !== 0) {
-              const swelling = (dryUnitMass / findedUnitMasses[i]) * ((100 + findedContents[i]) / 100);
-              swellings.push(swelling);
-            } else {
-              swellings.push(null);
-            }
-          }
-
-
-          result.swellings = swellings;
-
-          const g = graphLines(findedContents, swellings);
-
-          result.curve = g.curve;
-          result.retaR = g.retaR;
-          result.retaS = g.retaS;
-          result.retaT = g.retaT;
-          result.retaU = g.retaU;
-          result.averageCoefficient = g.averageCoefficient;
-          result.criticalHumidity = g.criticalHumidity;
-
-        default:
-          break;
+      for (let i = 0; i < findedUnitMasses.length; i++) {
+        if (findedUnitMasses[i] !== 0) {
+          const swelling = (dryUnitMass / findedUnitMasses[i]) * ((100 + findedContents[i]) / 100);
+          swellings.push(swelling);
+        } else {
+          swellings.push(null);
+        }
       }
+
+
+      result.swellings = swellings;
+
+      const g = graphLines(findedContents, swellings);
+
+      result.unitMasses = findedUnitMasses;
+      result.moistureContent = findedContents;
+      result.curve = g.curve;
+      result.retaR = g.retaR;
+      result.retaS = g.retaS;
+      result.retaT = g.retaT;
+      result.retaU = g.retaU;
+      result.averageCoefficient = g.averageCoefficient;
+      result.criticalHumidity = g.criticalHumidity;
 
 
       return {
@@ -93,16 +71,17 @@ export class Calc_SandIncrease_Service {
   }
 }
 
-function calculateUnitMasses(tableData: any, calculationData: any): number[] {
-  const unitMasses: number[] = [];
-  tableData.forEach(item => {
-    if (item.containerWeightSample !== null) {
-      const unitMass = (item.containerWeightSample - calculationData.containerWeight) / calculationData.containerVolume;
-      unitMasses.push(unitMass);
-    }
-  });
-  return unitMasses;
-}
+// function calculateUnitMasses(tableData: any, calculationData: any): number[] {
+//   const unitMasses: number[] = [];
+//   tableData.forEach(item => {
+//     if (item.containerWeightSample !== null) {
+//       const unitMass = (item.containerWeightSample - calculationData.containerWeight) / calculationData.containerVolume;
+//       unitMasses.push(unitMass);
+//     }
+//   });
+//   return unitMasses;
+// }
+
 
 function calculateMoistureContents(moistureContentData: any): number[] {
   const moistureContents: number[] = [];

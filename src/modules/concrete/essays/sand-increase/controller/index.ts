@@ -2,7 +2,7 @@ import { Body, Controller, Logger, Post, Res } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { SandIncreaseService } from '../service';
-import { Calc_SandIncrease_Dto, Calc_SandIncrease_Out } from '../dto/calc.sand-increase.dto';
+import { Calc_MoistureContentDto, Calc_SandIncrease_Dto, Calc_SandIncrease_Out, Calc_UnitMassDto } from '../dto/calc.sand-increase.dto';
 import { SandIncreaseInitDto } from '../dto/sand-increase-init.dto';
 import { Calc_Compression_Out } from 'modules/soils/essays/compression/dto/calc.compression.dto';
 
@@ -40,6 +40,46 @@ export class SandIncreaseController {
 
     return response.status(200).json(status);
   }
+
+
+  @Post('calculate-unit-mass')
+  @ApiOperation({ summary: 'Calcula a massa unitária do ensaio de Inchamento de Areia com os dados enviados.' })
+  @ApiResponse({
+    status: 200,
+    description: 'Massa unitária do ensaio de Inchamento de Areia calculada com sucesso.',
+    content: { 'application/json': { schema: { example: { success: true, data: 'essay data' } } } },
+  })
+  @ApiResponse({ status: 400, description: 'Erro ao calcular a massa unitária do ensaio de Inchamento de Areia com os dados enviados.' })
+  async calculateUnitMass(@Body() body: Calc_UnitMassDto) {
+    this.logger.log(`'calculate sand-increase unit mass > [body]' ${body}`);
+
+    const sandIncrease = await this.sandIncreaseService.calculateUnitMass(body);
+
+    if (sandIncrease.success) this.logger.log('calculate sand-increase unit mass > [success]');
+    else this.logger.error('calculate sand-increase unit mass > [error]');
+
+    return sandIncrease;
+  }
+
+
+  @Post('calculate-moisture-content')
+  @ApiOperation({ summary: 'Calcula o teor de umidade do ensaio de Inchamento de Areia com os dados enviados.' })
+  @ApiResponse({
+    status: 200,
+    description: 'Teor de umidade do ensaio de Inchamento de Areia calculada com sucesso.',
+    content: { 'application/json': { schema: { example: { success: true, data: 'essay data' } } } },
+  })
+  @ApiResponse({ status: 400, description: 'Erro ao calcular o teor de umidade do ensaio de Inchamento de Areia com os dados enviados.' })
+  async calculateMoistureContent(@Body() body: Calc_MoistureContentDto) {
+    this.logger.log(`'calculate sand-increase moisture content > [body]' ${body}`);
+
+    const sandIncrease = await this.sandIncreaseService.calculateMoistureContent(body);
+
+    if (sandIncrease.success) this.logger.log('calculate sand-increase moisture content > [success]');
+    else this.logger.error('calculate sand-increase moisture content > [error]');
+
+    return sandIncrease;
+  }
   
 
   @Post('calculate-results')
@@ -50,9 +90,8 @@ export class SandIncreaseController {
     content: { 'application/json': { schema: { example: { success: true, data: 'essay data' } } } },
   })
   @ApiResponse({ status: 400, description: 'Erro ao calcular os resultados do ensaio de Inchamento de Areia com os dados enviados.' })
-  async calculateSandIncrease(@Body() body: any) {
+  async calculateSandIncrease(@Body() body: Calc_SandIncrease_Dto) {
     this.logger.log(`'calculate sand-increase > [body]' ${body}`);
-
 
     const sandIncrease = await this.sandIncreaseService.calculateSandIncrease(body);
 
