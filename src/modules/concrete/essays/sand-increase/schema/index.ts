@@ -3,13 +3,17 @@ import { IsNotEmpty } from "class-validator";
 import { Material } from "modules/concrete/materials/schemas";
 import { HydratedDocument } from "mongoose";
 import { Calc_SandIncrease_Out } from "../dto/calc.sand-increase.dto";
-import { MoistureContent } from "../dto/calc-moisture-content.dto";
 
 export type SandIncreaseDocument = HydratedDocument<SandIncrease>;
 
 export type SandIncreaseGeneralData = {
+  userId: string;
   name: string;
-  material: Material
+  material: Material;
+  createdAt: Date;
+  operator?: string;
+  calculist?: string;
+  description?: string;
 };
 
 export type UnitMassTableData = {

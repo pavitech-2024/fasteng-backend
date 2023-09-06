@@ -39,16 +39,18 @@ export class SandIncreaseService {
     try {
       const {
         name,
-        sample: { _id: sampleId },
+        material: { _id: materialId },
         userId,
       } = body.generalData;
+      
 
       // verifica se existe um ensaio de compressão com mesmo nome , sampleId e userId no banco de dados
       const alreadyExists = await this.sandIncreaseRepository.findOne({
         'generalData.name': name,
-        'generalData.material._id': sampleId,
+        'generalData.material._id': materialId,
         'generalData.userId': userId,
       });
+      
 
       // se existir, retorna erro
       if (alreadyExists) throw new AlreadyExists(`Sand increase with name "${name}" from user "${userId}"`);

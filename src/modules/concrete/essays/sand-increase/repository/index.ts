@@ -1,6 +1,6 @@
 import { InjectModel } from "@nestjs/mongoose";
 import { DATABASE_CONNECTION } from "infra/mongoose/database.config";
-import { Model } from "mongoose";
+import { FilterQuery, Model } from "mongoose";
 import { SandIncrease, SandIncreaseDocument } from "../schema";
 
 
@@ -10,7 +10,7 @@ export class SandIncreaseRepository {
     private sandIncreaseModel: Model<SandIncreaseDocument>,
   ) {}
 
-  async findOne(sandIncreaseFilterQuery: any): Promise<SandIncrease> {
+  async findOne(sandIncreaseFilterQuery: FilterQuery<SandIncrease>): Promise<any> {
     return this.sandIncreaseModel.findOne(sandIncreaseFilterQuery);
   }
 

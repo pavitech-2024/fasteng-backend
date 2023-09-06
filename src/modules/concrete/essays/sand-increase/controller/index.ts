@@ -33,7 +33,7 @@ export class SandIncreaseController {
     },
   })
   @ApiResponse({ status: 400, description: 'Erro ao verificar se é possível criar um ensaio de Inchamento de Areia com os dados enviados.' })
-  async verifyInitSandIncrease(@Res() response: Response, @Body() body: SandIncreaseInitDto) {
+  async verifyInitSandIncrease(@Res() response: Response, @Body() body: any) {
     this.logger.log('verify init sand increase > [body]');
 
     const status = await this.sandIncreaseService.verifyInitSandIncrease(body);
@@ -99,4 +99,3 @@ export class SandIncreaseController {
     return response.status(200).json(sandIncrease);
   }
 }
-
