@@ -15,23 +15,33 @@ export class MaterialSelection_ABCP_Service {
 
     async getMaterials(userId: string) {
         try {
-            this.logger.log(`getting materials from user > [userId]: ${userId}`)
             const materials = await this.material_repository.findByUserId({
                 "userId": userId,
             });
 
-            const filteredMaterials = materials.filter(async ({ _id, type }) => {
-                return type === 'cement' || (async () => {
-                    return (
-                        await this.granulometry_repository.findOne({
-                            'material._id': _id
-                        })
-                        &&
-                        await this.unit_mass_repository.findOne({
-                            'material._id': _id
-                        }))
-                })
-            })
+            
+            const granulometrys = await this.granulometry_repository.findAll();
+            const unit_masses = await this.unit_mass_repository.findAll();
+
+            const cements = materials.filter(({ type }) => {
+                return type === 'cement'
+            });
+
+            const aggregates = materials.filter(({ _id, type }) => {
+                if (type === 'cement') return false
+                const granulometry = granulometrys.some(({ generalData }) => { 
+                    const { material } = generalData
+                    return _id.toString() === material._id.toString()
+                });
+                const unit_mass = unit_masses.some(({ generalData }) => { 
+                    const { material } = generalData
+                    return _id.toString() === material._id.toString()
+                });
+                return granulometry //&& unit_mass;
+
+            });
+
+            const filteredMaterials = cements.concat(aggregates);
 
             return filteredMaterials;
         } catch (error) {

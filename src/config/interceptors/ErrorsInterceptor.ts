@@ -19,7 +19,7 @@ export class ErrorsInterceptor implements NestInterceptor {
   intercept(_: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
       catchError((error: HttpException) => {
-        this.logger.error('interceptor > exception > internal server');
+        this.logger.error(`interceptor > exception > internal server > [error] > ${error.message}`);
 
         //Exceção de login
         if (error instanceof UnauthorizedException) throw new ForbiddenException();

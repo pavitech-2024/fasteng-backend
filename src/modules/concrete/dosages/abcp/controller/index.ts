@@ -3,6 +3,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { ABCPService } from '../service';
 import { ABCPInitDto } from '../dto/abcp-init.dto';
+import { ABCPEssaySelectionDto } from '../dto/abcp-essay-selection.dto';
 
 @ApiTags('abcp')
 @Controller('concrete/dosages/abcp')
@@ -44,6 +45,18 @@ export class ABCPController {
         this.logger.log(`get all materials by user id with the abcp essays > [id]: ${userId}`);
 
         const status = await this.abcpService.getUserMaterials(userId);
+
+        return response.status(200).json(status);
+    }
+
+    @Post('essay-selection')
+    @ApiOperation({ summary: 'Retorna todos os materiais do banco de dados de um usuário, que possuam os ensaios para a dosagem.' })
+    @ApiResponse({ status: 200, description: 'Materiais encontrados com sucesso!' })
+    @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
+    async getEssaysByUserId(@Res() response: Response, @Body() data: ABCPEssaySelectionDto) {
+        this.logger.log(`get all essays by user id with the abcp essays`);
+
+        const status = await this.abcpService.getEssaysByMaterials(data);
 
         return response.status(200).json(status);
     }
