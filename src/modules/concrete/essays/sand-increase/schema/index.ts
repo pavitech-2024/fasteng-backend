@@ -10,7 +10,7 @@ export type SandIncreaseGeneralData = {
   userId: string;
   name: string;
   material: Material;
-  createdAt: Date;
+  //createdAt: Date;
   operator?: string;
   calculist?: string;
   description?: string;
@@ -73,7 +73,7 @@ export class SandIncrease {
 
   @IsNotEmpty()
   @IsArray()
-  //@Prop({ type: Object })
+  @Prop({ type: Object })
   humidityFoundData: SandIncreaseHumidityFoundData[]
 
   @IsNotEmpty()

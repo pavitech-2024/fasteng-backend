@@ -33,15 +33,29 @@ export class Calc_MoistureContentDto {
   tableData: MoistureContentTableData[]
 }
 
+export class Save_SandIncreaseDto {
+  @IsNotEmpty()
+  generalData: SandIncrease['generalData'];
+
+  @IsNotEmpty()
+  unitMassDeterminationData: SandIncrease['unitMassDeterminationData']
+
+  @IsNotEmpty()
+  humidityFoundData: SandIncrease['humidityFoundData']
+
+  @IsNotEmpty()
+  results: SandIncrease['results']
+}
+
 export interface Calc_SandIncrease_Out {
   unitMasses: number[],
   moistureContent: number[],
   swellings: number[];
-  curve: any;
-  retaR: any;
-  retaS: any;
-  retaT: any;
-  retaU: any;
+  curve: [number, number][];
+  retaR: [number, number][];
+  retaS: [number, number][];
+  retaT: [number, number][];
+  retaU: [number, number][];
   averageCoefficient: number;
   criticalHumidity: number;
 }

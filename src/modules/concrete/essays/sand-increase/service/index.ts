@@ -3,8 +3,8 @@ import { GeneralData_SandIncrease_Service } from './general-data.sand-increase.s
 import { Calc_SandIncrease_Service } from './calc.sand-increase.service';
 import { SandIncreaseRepository } from '../repository';
 import { SandIncreaseInitDto } from '../dto/sand-increase-init.dto';
-import { Calc_MoistureContentDto, Calc_SandIncrease_Dto, Calc_UnitMassDto } from '../dto/calc.sand-increase.dto';
-import { AlreadyExists } from 'utils/exceptions';
+import { Calc_MoistureContentDto, Calc_SandIncrease_Dto, Calc_UnitMassDto, Save_SandIncreaseDto } from '../dto/calc.sand-increase.dto';
+import { AlreadyExists } from '../../../../../utils/exceptions';
 import { Calc_UnitMass_Service } from './calc.unitMass.service';
 import { Calc_MoistureContent_Service } from './calc.moistureContents.service';
 
@@ -60,7 +60,7 @@ export class SandIncreaseService {
     }
   }
 
-  async saveEssay(body: any) {
+  async saveEssay(body: Save_SandIncreaseDto) {
     try {
       const {
         name,
