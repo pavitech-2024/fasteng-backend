@@ -13,6 +13,7 @@ export class SandIncreaseRepository {
   async findOne(sandIncreaseFilterQuery: FilterQuery<any>): Promise<any> {
     return this.sandIncreaseModel.findOne(sandIncreaseFilterQuery);
   }
+  
 
   async create(sandIncrease: any): Promise<SandIncrease> {
     const createdSandIncrease = new this.sandIncreaseModel(sandIncrease);
