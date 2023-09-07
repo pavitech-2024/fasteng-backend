@@ -1,6 +1,4 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { SandIncreaseRepository } from "../repository";
-import { MaterialsRepository } from "modules/concrete/materials/repository";
 import { Calc_SandIncrease_Dto, Calc_SandIncrease_Out } from "../dto/calc.sand-increase.dto";
 import { regression } from "utils/leastSquaresRegression";
 
@@ -8,12 +6,9 @@ import { regression } from "utils/leastSquaresRegression";
 export class Calc_SandIncrease_Service {
   private logger = new Logger(Calc_SandIncrease_Service.name);
 
-  constructor(
-    private readonly sandIncreaseRepository: SandIncreaseRepository,
-    private readonly materialsRepository: MaterialsRepository,
-  ) {}
+  constructor() {}
 
-  async calculateSandIncrease(calc_SandIncreaseDto: any): Promise<{ success: boolean; result: Calc_SandIncrease_Out}> {
+  async calculateSandIncrease(calc_SandIncreaseDto: Calc_SandIncrease_Dto): Promise<{ success: boolean; result: Calc_SandIncrease_Out}> {
     try {
       this.logger.log('calculate sand-increase on calc.sand-increase.service.ts > [body]');
 
@@ -69,30 +64,6 @@ export class Calc_SandIncrease_Service {
       throw error;
     }
   }
-}
-
-// function calculateUnitMasses(tableData: any, calculationData: any): number[] {
-//   const unitMasses: number[] = [];
-//   tableData.forEach(item => {
-//     if (item.containerWeightSample !== null) {
-//       const unitMass = (item.containerWeightSample - calculationData.containerWeight) / calculationData.containerVolume;
-//       unitMasses.push(unitMass);
-//     }
-//   });
-//   return unitMasses;
-// }
-
-
-function calculateMoistureContents(moistureContentData: any): number[] {
-  const moistureContents: number[] = [];
-  moistureContentData.forEach(data => {
-    if (data.dryGrossWeight !== data.capsuleWeight) {
-      moistureContents.push(((data.wetGrossWeight - data.dryGrossWeight) / (data.dryGrossWeight - data.capsuleWeight)) * 100);
-    } else {
-      moistureContents.push(0);
-    }
-  });
-  return moistureContents;
 }
 
 function graphLines(listaDeX: number[], listaDeY: number[]): any {

@@ -4,7 +4,6 @@ import { Response } from 'express';
 import { SandIncreaseService } from '../service';
 import { Calc_MoistureContentDto, Calc_SandIncrease_Dto, Calc_SandIncrease_Out, Calc_UnitMassDto, Save_SandIncreaseDto } from '../dto/calc.sand-increase.dto';
 import { SandIncreaseInitDto } from '../dto/sand-increase-init.dto';
-import { Calc_Compression_Out } from 'modules/soils/essays/compression/dto/calc.compression.dto';
 
 
 @ApiTags('sandIncrease')
@@ -33,7 +32,7 @@ export class SandIncreaseController {
     },
   })
   @ApiResponse({ status: 400, description: 'Erro ao verificar se é possível criar um ensaio de Inchamento de Areia com os dados enviados.' })
-  async verifyInitSandIncrease(@Res() response: Response, @Body() body: any) {
+  async verifyInitSandIncrease(@Res() response: Response, @Body() body: SandIncreaseInitDto) {
     this.logger.log('verify init sand increase > [body]');
 
     const status = await this.sandIncreaseService.verifyInitSandIncrease(body);
@@ -127,7 +126,7 @@ export class SandIncreaseController {
     },
   })
   @ApiResponse({ status: 400, description: 'Erro ao salvar os dados do ensaio de inchamento de areia no banco de dados.' })
-  async saveEssay(@Res() response: any, @Body() body: any) {
+  async saveEssay(@Res() response: Response, @Body() body: Save_SandIncreaseDto) {
     this.logger.log('save essay > [body]');
 
     const sandIncrease = await this.sandIncreaseService.saveEssay(body);
