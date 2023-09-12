@@ -4,7 +4,6 @@ import { IsNotEmpty } from 'class-validator';
 import { HydratedDocument } from 'mongoose';
 import {Calc_CONCRETEGRANULOMETRY_Out } from '../dto/calc.granulometry.dto';
 
-
 export type GranulometryDocument = HydratedDocument<Granulometry>;
 
 export type GranulometryGeneralData = {

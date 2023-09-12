@@ -4,8 +4,8 @@ import { SucsInitDto } from '../dto/sucs-init.dto';
 import { SamplesRepository } from '../../../samples/repository';
 import { AlreadyExists } from '../../../../../utils/exceptions';
 import { GranulometryRepository } from '../../granulometry/repository/index';
-import { GranulometryNotFound } from 'utils/exceptions/granulometryNotFound';
-import { SucsNotFound } from 'utils/exceptions/sucsNotFound';
+import { GranulometryNotFound } from '../../../../../utils/exceptions';
+import { SucsNotFound } from '../../../../../utils/exceptions';
 
 @Injectable()
 export class GeneralData_SUCS_Service {
@@ -15,7 +15,7 @@ export class GeneralData_SUCS_Service {
 
   async verifyInitSucs({ name, sample }: SucsInitDto) {
     try {
-      // this.logger.log('verify init sucs on general-data.sucs.service.ts > [body]');
+      this.logger.log('verify init sucs on general-data.sucs.service.ts > [body]');
       // verificar se existe uma amostra com mesmo nome e userId no banco de dados
       const sampleExists = await this.sampleRepository.findOne({ 
         "_id": sample._id 

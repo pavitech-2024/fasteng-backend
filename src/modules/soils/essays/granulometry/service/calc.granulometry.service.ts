@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Calc_GRANULOMETRY_Dto, Calc_GRANULOMETRY_Out } from '../dto/calc.granulometry.dto';
 import { GranulometryRepository } from '../repository';
-import { SamplesRepository } from 'modules/soils/samples/repository';
-import { getSieveValue } from 'modules/soils/util/sieves';
+import { SamplesRepository } from '../../../../../modules/soils/samples/repository';
+import { getSieveValue } from '../../../../../modules/soils/util/sieves';
 
 type limit = { value: number, index: number };
 
