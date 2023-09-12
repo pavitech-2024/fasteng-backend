@@ -4,7 +4,7 @@ import { GeneralData_Compression_Service } from './general-data.compression.serv
 import { Calc_Compression_Service } from './calc.compression.service';
 import { CompressionInitDto } from '../dto/compression-init.dto';
 import { Calc_Compression_Dto, Calc_Compression_Out } from '../dto/calc.compression.dto';
-import { AlreadyExists } from 'utils/exceptions';
+import { AlreadyExists } from '../../../../../utils/exceptions';
 
 @Injectable()
 export class CompressionService {

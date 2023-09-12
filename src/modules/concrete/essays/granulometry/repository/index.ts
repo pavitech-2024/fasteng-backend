@@ -1,13 +1,12 @@
 import { InjectModel } from '@nestjs/mongoose';
 import { ConcreteGranulometry, ConcreteGranulometryDocument } from '../schemas';
 import { DATABASE_CONNECTION } from '../../../../../infra/mongoose/database.config';
-import { Model } from 'mongoose';
-
+import { Model, FilterQuery } from 'mongoose';
 
 export class ConcreteGranulometryRepository {
   constructor(@InjectModel(ConcreteGranulometry.name, DATABASE_CONNECTION.CONCRETE) private granulometryModel: Model<ConcreteGranulometryDocument>) {}
 
-  async findOne(granulometryFilterQuery: any): Promise<ConcreteGranulometry> {
+  async findOne(granulometryFilterQuery: FilterQuery<ConcreteGranulometry>): Promise<ConcreteGranulometry> {
     return this.granulometryModel.findOne(granulometryFilterQuery);
   }
 
