@@ -16,9 +16,9 @@ export class UnitMassService {
     private readonly result_UnitMass_Service: Result_UnitMass_Service,
   ) {}
 
-  async verifyInitUnitMass(body: UnitMass_Init_Dto) {
+  async verifyInitUnitMass({ experimentName, method, material }: UnitMass_Init_Dto) {
     try {
-      const success = await this.generalData_Service.verifyInitUnitMass(body);
+      const success = await this.generalData_Service.verifyInitUnitMass({ experimentName, method, material });
 
       return { success };
     } catch (error) {

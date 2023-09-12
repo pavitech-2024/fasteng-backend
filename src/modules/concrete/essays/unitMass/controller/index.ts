@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Controller, Logger, Post, Res, Body } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UnitMass_Init_Dto } from '../dto/unitMass-init.dto';
 import { UnitMassService } from '../service/unitMass.service';
 import { UnitMass_Step2_Dto } from '../dto/unitMass-step2.dto';
-import { UnitMass } from '../schemas';
 import { Result_UnitMass_Dto, UnitMass_Result } from '../dto/unitMass-result.dto';
+import { Response } from 'express';
 
 @ApiTags('unitMass')
 @Controller('concrete/essays/unitMass')
@@ -38,7 +39,7 @@ export class UnitMassController {
 
     const status = await this.UnitMassService.verifyInitUnitMass(body);
 
-    return response;
+    return response.status(200).json(status);
   }
 
   @Post('step2-unitMass-data')
@@ -85,7 +86,7 @@ export class UnitMassController {
     if (unitMass.success) this.logger.log('calculate unitMass > [success]');
     else this.logger.error('calculate unitMass > [error]');
 
-    return UnitMass;
+    return unitMass;
   }
 
   @Post('save-essay')
