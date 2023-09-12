@@ -3,9 +3,9 @@ import { Response } from 'express';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ConcreteGranulometryService } from '../service'; 
 import { ConcreteGranulometryInitDto } from '../dto/concretegranulometry-init.dto';  
-import { Calc_CONCRETEGRANULOMETRY_Dto, Calc_CONCRETEGRANULOMETRY_Out } from '../dto/calc.granulometry.dto';
+import { Calc_ConcreteGranulometry_Dto, Calc_ConcreteGranulometry_Out } from '../dto/calc.granulometry.dto';
 
-@ApiTags('concrete-granulometry')
+@ApiTags('granulometry')
 @Controller('concrete/essays/granulometry')
 export class ConcreteGranulometryController {
     private logger = new Logger(ConcreteGranulometryController.name);
@@ -24,7 +24,7 @@ export class ConcreteGranulometryController {
         description: 'Não é possível criar uma granulometria de ensaio de concreto com os dados enviados.',
         content: {
             'application/json': {
-                schema: { example: { success: false, error: { message: 'Sample Not Found.', status: 400, name: 'NotFound' } } },
+                schema: { example: { success: false, error: { message: 'Material Not Found.', status: 400, name: 'NotFound' } } },
             },
         },
     })
@@ -45,7 +45,7 @@ export class ConcreteGranulometryController {
         content: { 'application/json': { schema: { example: { success: true, data: 'essay data' } } } },
     })
     @ApiResponse({ status: 400, description: 'Erro ao calcular os resultados da granulometria de ensaio de concreto com os dados enviados.' })
-    async calculateConcreteGranulometry(@Body() body:  Calc_CONCRETEGRANULOMETRY_Dto) {
+    async calculateConcreteGranulometry(@Body() body:  Calc_ConcreteGranulometry_Dto) {
         this.logger.log('calculate concrete granulometry > [body]');
 
         const granulometry = await this.concretegranulometryService.calculateGranulometry(body);
@@ -78,7 +78,7 @@ export class ConcreteGranulometryController {
         },
     })
     @ApiResponse({ status: 400, description: 'Erro ao salvar os dados da granulometria de ensaio de concreto no banco de dados.' })
-    async saveConcreteEssay(@Res() response: Response, @Body() body: Calc_CONCRETEGRANULOMETRY_Dto & Calc_CONCRETEGRANULOMETRY_Out) {
+    async saveConcreteEssay(@Res() response: Response, @Body() body: Calc_ConcreteGranulometry_Dto & Calc_ConcreteGranulometry_Out) {
         this.logger.log('save concrete essay > [body]');
 
         const granulometry = await this.concretegranulometryService.saveEssay(body);

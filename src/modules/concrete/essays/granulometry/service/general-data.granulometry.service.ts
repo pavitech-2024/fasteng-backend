@@ -6,8 +6,8 @@ import { AlreadyExists, NotFound } from '../../../../../utils/exceptions';
 
 
 @Injectable()
-export class GeneralData_CONCRETEGRANULOMETRY_Service {
-  private logger = new Logger(GeneralData_CONCRETEGRANULOMETRY_Service.name);
+export class GeneralData_ConcreteGranulometry_Service {
+  private logger = new Logger(GeneralData_ConcreteGranulometry_Service.name);
 
   constructor(private readonly granulometryRepository: ConcreteGranulometryRepository, private readonly materialRepository: MaterialsRepository) {}
 

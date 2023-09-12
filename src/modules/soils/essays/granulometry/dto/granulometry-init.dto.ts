@@ -1,7 +1,7 @@
 import { Sample } from '../../../samples/schemas';
 import { IsNotEmpty } from 'class-validator';
 
-export class GranulometryInitDto {
+export class SoilsGranulometryInitDto {
   @IsNotEmpty()
   name: string;
 

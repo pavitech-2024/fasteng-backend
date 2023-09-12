@@ -5,16 +5,16 @@ import { MaterialsModule } from './materials/materials.module';
 import { Material, MaterialSchema } from './materials/schemas';
 import { ChapmanModule } from './essays/chapman/champan.module';
 import { Chapman, ChapmanSchema } from './essays/chapman/schemas';
-import { Granulometry, GranulometrySchema } from './essays/granulometry/schemas';
-import { GranulometryModule } from 'modules/soils/essays/granulometry/granulometry.module';
+import { ConcreteGranulometry, ConcreteGranulometrySchema } from './essays/granulometry/schemas';
+import { ConcreteGranulometryModule } from 'modules/concrete/essays/granulometry/granulometry.module';
 
 const Models: ModelDefinition[] = [
   { name: Material.name, schema: MaterialSchema },
   { name: Chapman.name, schema: ChapmanSchema },
-  { name: Granulometry.name, schema: GranulometrySchema}
+  { name: ConcreteGranulometry.name, schema: ConcreteGranulometrySchema}
 ];
 
-const Modules = [MaterialsModule, ChapmanModule, GranulometryModule];
+const Modules = [MaterialsModule, ChapmanModule, ConcreteGranulometryModule];
 
 @Global()
 @Module({

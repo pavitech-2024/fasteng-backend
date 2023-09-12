@@ -1,21 +1,21 @@
 import { InjectModel } from '@nestjs/mongoose';
-import { Granulometry, GranulometryDocument } from '../schemas';
+import { ConcreteGranulometry, ConcreteGranulometryDocument } from '../schemas';
 import { DATABASE_CONNECTION } from '../../../../../infra/mongoose/database.config';
 import { Model } from 'mongoose';
 
 
 export class ConcreteGranulometryRepository {
-  constructor(@InjectModel(Granulometry.name, DATABASE_CONNECTION.CONCRETE) private granulometryModel: Model<GranulometryDocument>) {}
+  constructor(@InjectModel(ConcreteGranulometry.name, DATABASE_CONNECTION.CONCRETE) private granulometryModel: Model<ConcreteGranulometryDocument>) {}
 
-  async findOne(granulometryFilterQuery: any): Promise<Granulometry> {
+  async findOne(granulometryFilterQuery: any): Promise<ConcreteGranulometry> {
     return this.granulometryModel.findOne(granulometryFilterQuery);
   }
 
-  async findAll(): Promise<Granulometry[]> {
+  async findAll(): Promise<ConcreteGranulometry[]> {
     return this.granulometryModel.find();
   }
 
-  async create(granulometry: any): Promise<Granulometry> {
+  async create(granulometry: any): Promise<ConcreteGranulometry> {
     const createdGranulometry = new this.granulometryModel(granulometry);
 
     return createdGranulometry.save();

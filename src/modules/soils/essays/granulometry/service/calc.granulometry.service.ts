@@ -1,23 +1,18 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Calc_GRANULOMETRY_Dto, Calc_GRANULOMETRY_Out } from '../dto/calc.granulometry.dto';
-import { GranulometryRepository } from '../repository';
-import { SamplesRepository } from 'modules/soils/samples/repository';
+import { Calc_SoilsGranulometry_Dto, Calc_SoilsGranulometry_Out } from '../dto/calc.granulometry.dto';
+import { SoilsGranulometryRepository } from '../repository';
 import { getSieveValue } from 'modules/soils/util/sieves';
+import { SamplesRepository } from 'modules/soils/samples/repository';
 
 type limit = { value: number, index: number };
 
-interface curve_point {
-    0: number,
-    1: number
-}
-
 @Injectable()
-export class Calc_GRANULOMETRY_Service {
-    private logger = new Logger(Calc_GRANULOMETRY_Service.name);
+export class Calc_SoilsGranulometry_Service {
+    private logger = new Logger(Calc_SoilsGranulometry_Dto.name);
 
-    constructor(private readonly granulometryRepository: GranulometryRepository, private readonly sampleRepository: SamplesRepository) { }
+    constructor(private readonly granulometryRepository: SoilsGranulometryRepository, private readonly sampleRepository: SamplesRepository) { }
 
-    async calculateGranulometry({ step2Data }: Calc_GRANULOMETRY_Dto): Promise<{ success: boolean; result: Calc_GRANULOMETRY_Out }> {
+    async calculateGranulometry({ step2Data }: Calc_SoilsGranulometry_Dto): Promise<{ success: boolean; result: Calc_SoilsGranulometry_Out }> {
         try {
             this.logger.log('calculate granulometry on calc.granulometry.service.ts > [body]');
 
@@ -87,23 +82,13 @@ export class Calc_GRANULOMETRY_Service {
 
             const error = Math.round(100 * (sample_mass - total_retained - bottom) * 100 / sample_mass) / 100;
 
-            
-
             const limit_10 = this.getPercentage(10, table_data);
             const limit_30 = this.getPercentage(30, table_data);
             const limit_60 = this.getPercentage(60, table_data);
 
-            console.log(limit_10)
-            console.log(limit_30)
-            console.log(limit_60)
-
             const diameter10 = this.getDiameter(table_data, 10, limit_10);
             const diameter30 = this.getDiameter(table_data, 30, limit_30);
             const diameter60 = this.getDiameter(table_data, 60, limit_60);
-
-            console.log(diameter10)
-            console.log(diameter30)
-            console.log(diameter60)
 
             const cnu = Math.round(100 * diameter60 / diameter10) / 100;
 

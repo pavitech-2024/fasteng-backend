@@ -3,7 +3,7 @@ import { SucsRepository } from '../repository';
 import { SucsInitDto } from '../dto/sucs-init.dto';
 import { SamplesRepository } from '../../../samples/repository';
 import { AlreadyExists } from '../../../../../utils/exceptions';
-import { GranulometryRepository } from '../../granulometry/repository/index';
+import { SoilsGranulometryRepository } from '../../granulometry/repository/index';
 import { GranulometryNotFound } from 'utils/exceptions/granulometryNotFound';
 import { SucsNotFound } from 'utils/exceptions/sucsNotFound';
 
@@ -11,7 +11,7 @@ import { SucsNotFound } from 'utils/exceptions/sucsNotFound';
 export class GeneralData_SUCS_Service {
   private logger = new Logger(GeneralData_SUCS_Service.name);
 
-  constructor(private readonly sucsRepository: SucsRepository, private readonly granulometryRepository: GranulometryRepository, private readonly sampleRepository: SamplesRepository) {}
+  constructor(private readonly sucsRepository: SucsRepository, private readonly granulometryRepository: SoilsGranulometryRepository, private readonly sampleRepository: SamplesRepository) {}
 
   async verifyInitSucs({ name, sample }: SucsInitDto) {
     try {

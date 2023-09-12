@@ -1,27 +1,27 @@
 import { InjectModel } from '@nestjs/mongoose';
-import { Granulometry, GranulometryDocument } from '../schemas';
+import { SoilsGranulometry, SoilsGranulometryDocument } from '../schemas';
 import { DATABASE_CONNECTION } from '../../../../../infra/mongoose/database.config';
 import { Model } from 'mongoose';
 import { Logger } from '@nestjs/common';
 
-export class GranulometryRepository {
-  private logger = new Logger(GranulometryRepository.name);
+export class SoilsGranulometryRepository {
+  private logger = new Logger(SoilsGranulometryRepository.name);
 
-  constructor(@InjectModel(Granulometry.name, DATABASE_CONNECTION.SOILS) private granulometryModel: Model<GranulometryDocument>) {}
+  constructor(@InjectModel(SoilsGranulometry.name, DATABASE_CONNECTION.SOILS) private granulometryModel: Model<SoilsGranulometryDocument>) {}
 
-  async findOne(granulometryFilterQuery: any): Promise<Granulometry> {
+  async findOne(granulometryFilterQuery: any): Promise<SoilsGranulometry> {
     return this.granulometryModel.findOne(granulometryFilterQuery);
   }
 
-  async findAllBySample(granulometryFilterQuery: any): Promise<Granulometry[]> {
+  async findAllBySample(granulometryFilterQuery: any): Promise<SoilsGranulometry[]> {
     return this.granulometryModel.find(granulometryFilterQuery)
   }
 
-  async findAll(): Promise<Granulometry[]> {
+  async findAll(): Promise<SoilsGranulometry[]> {
     return this.granulometryModel.find();
   }
 
-  async create(granulometry: any): Promise<Granulometry> {
+  async create(granulometry: any): Promise<SoilsGranulometry> {
     const createdGranulometry = new this.granulometryModel(granulometry);
 
     return createdGranulometry.save();

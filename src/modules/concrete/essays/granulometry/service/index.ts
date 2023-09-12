@@ -1,18 +1,18 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { GeneralData_CONCRETEGRANULOMETRY_Service } from './general-data.granulometry.service';
+import { GeneralData_ConcreteGranulometry_Service } from './general-data.granulometry.service';
 import { ConcreteGranulometryInitDto } from '../dto/concretegranulometry-init.dto';
-import { Calc_CONCRETEGRANULOMETRY_Dto, Calc_CONCRETEGRANULOMETRY_Out } from '../dto/calc.granulometry.dto';
+import { Calc_ConcreteGranulometry_Dto, Calc_ConcreteGranulometry_Out } from '../dto/calc.granulometry.dto';
 import { AlreadyExists } from '../../../../../utils/exceptions';
 import { ConcreteGranulometryRepository } from '../repository';
-import { Calc_CONCRETEGRANULOMETRY_Service } from './calc.granulometry.service';
+import { Calc_ConcreteGranulometry_Service } from './calc.granulometry.service';
 
 @Injectable()
 export class ConcreteGranulometryService {
   private logger = new Logger(ConcreteGranulometryService.name);
 
   constructor(
-    private readonly generalData_Service: GeneralData_CONCRETEGRANULOMETRY_Service,
-    private readonly calc_Service: Calc_CONCRETEGRANULOMETRY_Service,
+    private readonly generalData_Service: GeneralData_ConcreteGranulometry_Service,
+    private readonly calc_Service: Calc_ConcreteGranulometry_Service,
     private readonly Granulometry_Repository: ConcreteGranulometryRepository,
   ) {}
 
@@ -27,7 +27,7 @@ export class ConcreteGranulometryService {
     }
   }
 
-  async calculateGranulometry(body: Calc_CONCRETEGRANULOMETRY_Dto) {
+  async calculateGranulometry(body: Calc_ConcreteGranulometry_Dto) {
     try {
       return await this.calc_Service.calculateGranulometry(body);
     } catch (error) {
@@ -36,7 +36,7 @@ export class ConcreteGranulometryService {
     }
   }
 
-  async saveEssay(body: Calc_CONCRETEGRANULOMETRY_Dto & Calc_CONCRETEGRANULOMETRY_Out) {
+  async saveEssay(body: Calc_ConcreteGranulometry_Dto & Calc_ConcreteGranulometry_Out) {
     try {
       const {
         name,

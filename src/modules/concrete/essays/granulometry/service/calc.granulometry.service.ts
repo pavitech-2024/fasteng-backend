@@ -1,27 +1,22 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Calc_CONCRETEGRANULOMETRY_Dto, Calc_CONCRETEGRANULOMETRY_Out } from '../dto/calc.granulometry.dto';
+import { Calc_ConcreteGranulometry_Dto, Calc_ConcreteGranulometry_Out } from '../dto/calc.granulometry.dto';
 import { ConcreteGranulometryRepository } from '../repository';
 import { getSieveValue } from 'modules/soils/util/sieves';
 import { MaterialsRepository } from 'modules/concrete/materials/repository';
 
 type limit = { value: number, index: number };
 
-interface curve_point {
-    0: number,
-    1: number
-}
-
 @Injectable()
-export class Calc_CONCRETEGRANULOMETRY_Service {
-    private logger = new Logger(Calc_CONCRETEGRANULOMETRY_Service.name);
+export class Calc_ConcreteGranulometry_Service {
+    private logger = new Logger(Calc_ConcreteGranulometry_Service.name);
 
     constructor(private readonly granulometryRepository: ConcreteGranulometryRepository, private readonly materialsRepository: MaterialsRepository) { }
 
-    async calculateGranulometry({ step2Data }: Calc_CONCRETEGRANULOMETRY_Dto): Promise<{ success: boolean; result: Calc_CONCRETEGRANULOMETRY_Out }> {
+    async calculateGranulometry({ step2Data }: Calc_ConcreteGranulometry_Dto): Promise<{ success: boolean; result: Calc_ConcreteGranulometry_Out }> {
         try {
             this.logger.log('calculate granulometry on calc.granulometry.service.ts > [body]');
 
-            const { table_data, sample_mass, bottom } = step2Data;
+            const { table_data, material_mass, bottom } = step2Data;
 
             const length = table_data.length;
 
@@ -50,7 +45,7 @@ export class Calc_CONCRETEGRANULOMETRY_Service {
 
                 total_retained += retained;
 
-                passant.push(Math.round( 100 * (sample_mass - total_retained)) / 100);
+                passant.push(Math.round( 100 * (material_mass - total_retained)) / 100);
                 
                 accumulated_retained.push(Math.round( 100 * (100 - passant_porcentage)) / 100);
                 
@@ -85,7 +80,7 @@ export class Calc_CONCRETEGRANULOMETRY_Service {
 
             total_retained = Math.round(100 * total_retained) / 100;
 
-            const error = Math.round(100 * (sample_mass - total_retained - bottom) * 100 / sample_mass) / 100;
+            const error = Math.round(100 * (material_mass - total_retained - bottom) * 100 / material_mass) / 100;
 
             const limit_10 = this.getPercentage(10, table_data);
             const limit_30 = this.getPercentage(30, table_data);
