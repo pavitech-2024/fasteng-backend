@@ -67,7 +67,7 @@ export class UnitMassController {
 
     const status = await this.UnitMassService.verifyStep2DataUnitMass(body);
 
-    return response;
+    return response.status(200).json(status);
   }
 
   @Post('calculate-results')
@@ -105,6 +105,6 @@ export class UnitMassController {
     if (unitMass.success) this.logger.log('save unitMass > [success]');
     else this.logger.error('save unitMass > [error]');
 
-    return response;
+    return response.status(200).json(unitMass);
   }
 }
