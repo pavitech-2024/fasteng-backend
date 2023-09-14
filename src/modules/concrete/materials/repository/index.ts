@@ -13,6 +13,10 @@ export class MaterialsRepository {
     return createdMaterial.save();
   }
 
+  async findById(materialsFilterQuery: any): Promise<Material> {
+    return this.materialModel.findById(materialsFilterQuery);
+  }
+
   async findOne(materialsFilterQuery: any): Promise<Material> {
     return this.materialModel.findOne(materialsFilterQuery);
   }

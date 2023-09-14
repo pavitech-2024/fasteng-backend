@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { MaterialsRepository } from 'modules/asphalt/materials/repository';
+import { MaterialsRepository } from 'modules/concrete/materials/repository';
 import { NotFound, AlreadyExists } from 'utils/exceptions';
 import { UnitMass_Init_Dto } from '../dto/unitMass-init.dto';
 import { UnitMassRepository } from '../repository';
@@ -17,7 +17,7 @@ export class GeneralData_UnitMass_Service {
     try {
       this.logger.log('verify init unitMass on general-data.unitMass.service.ts > [body]');
       // verificar se existe um material com mesmo nome e userId no banco de dados
-      const materialExists = await this.materialsRepository.findOne({ _id: material._id });
+      const materialExists = await this.materialsRepository.findById(material._id);
 
       // se não existir, retorna erro
       if (!materialExists) throw new NotFound('Chosen material of unitMass');
@@ -30,8 +30,6 @@ export class GeneralData_UnitMass_Service {
       // se existir, retorna erro
       if (unitMassExists)
         throw new AlreadyExists(`UnitMass with name "${experimentName} from user "${material.userId}"`);
-
-      return true;
     } catch (error) {
       throw error;
     }
