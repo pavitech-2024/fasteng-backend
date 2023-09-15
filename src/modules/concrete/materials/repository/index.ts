@@ -1,6 +1,6 @@
 import { InjectModel } from '@nestjs/mongoose';
 import { DATABASE_CONNECTION } from '../../../../infra/mongoose/database.config';
-import { Model } from 'mongoose';
+import { FilterQuery, Model } from 'mongoose';
 import { Material, MaterialDocument } from '../schemas';
 
 export class MaterialsRepository {
@@ -17,15 +17,19 @@ export class MaterialsRepository {
     return this.materialModel.findById(materialsFilterQuery);
   }
 
-  async findOne(materialsFilterQuery: any): Promise<Material> {
+  async findOne(materialsFilterQuery: FilterQuery<Material>): Promise<Material> {
     return this.materialModel.findOne(materialsFilterQuery);
+  }
+
+  async findByUserId(materialsFilterQuery: FilterQuery<Material>): Promise<Material[]> {
+    return this.materialModel.find(materialsFilterQuery);
   }
 
   async find(): Promise<Material[]> {
     return this.materialModel.find();
   }
 
-  async findOneAndUpdate(materialsFilterQuery: any, material: Partial<Material>): Promise<Material> {
+  async findOneAndUpdate(materialsFilterQuery: FilterQuery<Material>, material: Partial<Material>): Promise<Material> {
     return this.materialModel.findOneAndUpdate(materialsFilterQuery, material, {
       new: true,
     });

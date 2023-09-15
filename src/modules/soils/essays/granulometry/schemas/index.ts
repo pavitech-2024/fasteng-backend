@@ -1,12 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 import { Sample } from '../../../samples/schemas';
-import { Calc_GRANULOMETRY_Out } from '../dto/calc.granulometry.dto';
+import { Calc_SoilsGranulometry_Out } from '../dto/calc.granulometry.dto';
 import { IsNotEmpty } from 'class-validator';
 
-export type GranulometryDocument = HydratedDocument<Granulometry>;
+export type SoilsGranulometryDocument = HydratedDocument<SoilsGranulometry>;
 
-export type GranulometryGeneralData = {
+export type SoilsGranulometryGeneralData = {
   userId: string;
   name: string;
   sample: Sample;
@@ -16,29 +16,29 @@ export type GranulometryGeneralData = {
   description?: string;
 };
 
-type granulometry_step2Data = {
+type SoilsGranulometry_step2Data = {
   sample_mass: number;
   table_data: { sieve: string; passant: number, retained: number }[];
   bottom: number;
 };
 
 @Schema({ collection: 'granulometrys' })
-export class Granulometry {
+export class SoilsGranulometry {
   _id: string;
 
   @IsNotEmpty()
   @Prop({ type: Object })
-  generalData: GranulometryGeneralData;
+  generalData: SoilsGranulometryGeneralData;
 
   @IsNotEmpty()
   @Prop({ type: Object })
-  step2Data: granulometry_step2Data;
+  step2Data: SoilsGranulometry_step2Data;
 
   @IsNotEmpty()
   @Prop({ type: Object })
   results: {
-    data: Calc_GRANULOMETRY_Out;
+    data: Calc_SoilsGranulometry_Out;
   };
 }
 
-export const GranulometrySchema = SchemaFactory.createForClass(Granulometry);
+export const SoilsGranulometrySchema = SchemaFactory.createForClass(SoilsGranulometry);

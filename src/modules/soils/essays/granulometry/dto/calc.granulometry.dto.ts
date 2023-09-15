@@ -1,15 +1,15 @@
 import { IsNotEmpty } from 'class-validator';
-import { Granulometry } from '../schemas';
+import { SoilsGranulometry } from '../schemas';
 
-export class Calc_GRANULOMETRY_Dto {
+export class Calc_SoilsGranulometry_Dto {
   @IsNotEmpty()
-  generalData: Granulometry['generalData'];
+  generalData: SoilsGranulometry['generalData'];
 
   @IsNotEmpty()
-  step2Data: Granulometry['step2Data'];
+  step2Data: SoilsGranulometry['step2Data'];
 }
 
-export interface Calc_GRANULOMETRY_Out {
+export interface Calc_SoilsGranulometry_Out {
   accumulated_retained: number[];
   graph_data: [number, number][];
   passant: number[];
