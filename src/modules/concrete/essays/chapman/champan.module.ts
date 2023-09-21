@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ChapmanController } from './controller';
-import { ChapmanService } from './service/champan.service';
+import { ChapmanService } from './service';
 import { ChapmanRepository } from './repository';
 import { GeneralData_Chapman_Service } from './service/general-data.chapman.service';
 import { Calc_CHAPMAN_Service } from './service/calc.chapman.service';

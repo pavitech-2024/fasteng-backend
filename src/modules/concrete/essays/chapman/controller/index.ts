@@ -1,7 +1,7 @@
 import { Body, Controller, Logger, Post, Res } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ChapmanInitDto } from '../dto/chapman-init.dto';
-import { ChapmanService } from '../service/champan.service';
+import { ChapmanService } from '../service';
 import { Calc_CHAPMAN_Out, Calc_CHAPMAN_dto } from '../dto/calc.chapman.dto';
 import { Response } from 'express';
 

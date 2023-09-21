@@ -21,6 +21,10 @@ export class MaterialsRepository {
     return this.materialModel.findOne(materialsFilterQuery);
   }
 
+  async findById(materialsFilterQuery: any): Promise<Material> {
+    return this.materialModel.findById(materialsFilterQuery);
+  }
+
   async findOneAndUpdate(materialsFilterQuery: any, material: Partial<Material>): Promise<Material> {
     return this.materialModel.findOneAndUpdate(materialsFilterQuery, material, {
       new: true,
