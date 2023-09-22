@@ -14,8 +14,8 @@ import { UsersModule } from './modules/users/users.module';
 import { AsphaltModule } from './modules/asphalt/asphalt.module';
 import { SoilsModule } from './modules/soils/soils.module';
 import { ConcreteModule } from './modules/concrete/concrete.module';
-import { ReportErrorModule } from './modules/report-error/report-error.module';
-import { ReportErrorController } from './modules/report-error/report-error.controller';
+//import { ReportErrorModule } from './modules/report-error/report-error.module';
+//import { ReportErrorController } from './modules/report-error/report-error.controller';
 import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [
@@ -26,9 +26,9 @@ import { ConfigModule } from '@nestjs/config';
     AsphaltModule,
     SoilsModule,
     ConcreteModule,
-    ReportErrorModule,
+   // ReportErrorModule,
   ],
-  controllers: [ReportErrorController],
+  //controllers: [ReportErrorController],
   providers: [{ provide: APP_INTERCEPTOR, useClass: ErrorsInterceptor }],
 })
 
