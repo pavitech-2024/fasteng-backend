@@ -69,6 +69,7 @@ export class Calc_AsphaltGranulometry_Service {
         if (total_retained > 10 && nominal_diameter_flag) {
           nominal_diameter_flag = false;
           if (i === 1) nominal_diameter = getSieveValue(label);
+          else if (i === 0) nominal_diameter = getSieveValue(table_data[i].sieve);
           else nominal_diameter = getSieveValue(table_data[i - 1].sieve);
         }
 
