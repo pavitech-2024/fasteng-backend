@@ -1,23 +1,23 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { GeneralData_SoilsGranulometry_Service } from './general-data.granulometry.service';
-import { SoilsGranulometryInitDto } from '../dto/granulometry-init.dto';
-import { Calc_SoilsGranulometry_Dto, Calc_SoilsGranulometry_Out } from '../dto/calc.granulometry.dto';
+import { GeneralData_GRANULOMETRY_Service } from './general-data.granulometry.service';
+import { GranulometryInitDto } from '../dto/granulometry-init.dto';
+import { Calc_GRANULOMETRY_Dto, Calc_GRANULOMETRY_Out } from '../dto/calc.granulometry.dto';
 import { AlreadyExists } from '../../../../../utils/exceptions';
-import { SoilsGranulometryRepository } from '../repository';
-import { Calc_SoilsGranulometry_Service } from './calc.granulometry.service';
-import { GranulometryNotFound } from 'utils/exceptions/granulometryNotFound';
+import { GranulometryRepository } from '../repository';
+import { Calc_GRANULOMETRY_Service } from './calc.granulometry.service';
+import { GranulometryNotFound } from '../../../../../utils/exceptions';
 
 @Injectable()
-export class SoilsGranulometryService {
-  private logger = new Logger(SoilsGranulometryService.name);
+export class GranulometryService {
+  private logger = new Logger(GranulometryService.name);
 
   constructor(
-    private readonly generalData_Service: GeneralData_SoilsGranulometry_Service,
-    private readonly calc_Service: Calc_SoilsGranulometry_Service,
-    private readonly Granulometry_Repository: SoilsGranulometryRepository,
+    private readonly generalData_Service: GeneralData_GRANULOMETRY_Service,
+    private readonly calc_Service: Calc_GRANULOMETRY_Service,
+    private readonly Granulometry_Repository: GranulometryRepository,
   ) {}
 
-  async verifyInitGranulometry(body: SoilsGranulometryInitDto) {
+  async verifyInitGranulometry(body: GranulometryInitDto) {
     try {
       const success = await this.generalData_Service.verifyInitGranulometry(body);
 
@@ -28,7 +28,7 @@ export class SoilsGranulometryService {
     }
   }
 
-  async calculateGranulometry(body: Calc_SoilsGranulometry_Dto) {
+  async calculateGranulometry(body: Calc_GRANULOMETRY_Dto) {
     try {
       return await this.calc_Service.calculateGranulometry(body);
     } catch (error) {
@@ -37,7 +37,7 @@ export class SoilsGranulometryService {
     }
   }
 
-  async saveEssay(body: Calc_SoilsGranulometry_Dto & Calc_SoilsGranulometry_Out) {
+  async saveEssay(body: Calc_GRANULOMETRY_Dto & Calc_GRANULOMETRY_Out) {
     try {
       const {
         name,
@@ -53,7 +53,7 @@ export class SoilsGranulometryService {
       });
 
       // se existir, retorna erro
-      if (alreadyExists) throw new AlreadyExists(`Granulometry with name "${name}" from user "${userId}"`);
+      if (alreadyExists) throw new AlreadyExists(`GRANULOMETRY with name "${name}" from user "${userId}"`);
 
       // se não existir, salva no banco de dados
       const granulometry = await this.Granulometry_Repository.create(body);
