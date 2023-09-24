@@ -12,6 +12,6 @@ export class Calc_Penetration_Dto {
 export interface Calc_Penetration_Out {
   penetration: number;
   cap: string;
-  alerts: string;
+  alerts: string[];
   indexOfSusceptibility: number
 }

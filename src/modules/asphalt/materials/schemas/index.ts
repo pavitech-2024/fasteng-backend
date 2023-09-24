@@ -39,6 +39,37 @@ export class Material {
     classification_AMP?: 'AMP 50/65' | 'AMP 55/75' | 'AMP 60/85' | 'AMP 65/90'; // for AMP
     observation?: string;
   };
+
+  @Prop({ type: Map, of: Object })
+  patternExperiments: Map<string, any>;
+
+  @Prop()
+  indexOfSusceptibility?: number;
+
+  getLastExperimentId(isPenetration: boolean): { catch: boolean; experiment?: any } {
+    if (!isPenetration && this.patternExperiments.has('Softening Point')) {
+      return { catch: true, experiment: this.patternExperiments.get('Softening Point') };
+    } else if (isPenetration && this.patternExperiments.has('Penetration')) {
+      return { catch: true, experiment: this.patternExperiments.get('Penetration') };
+    }
+    return { catch: false };
+  }
+
+  // Método para calcular o índice de susceptibilidade e atualizá-lo no próprio objeto Material
+  async setIndexOfSusceptibility(softeningPoint: number, penetration: number): Promise<void> {
+    if (
+      this.description?.classification_CAP === 'CAP 30/45' ||
+      this.description?.classification_CAP === 'CAP 50/70' ||
+      this.description?.classification_CAP === 'CAP 85/100' ||
+      this.description?.classification_CAP === 'CAP 150/200'
+    ) {
+      // Implemente a lógica de cálculo do índice de susceptibilidade aqui
+      const indexOfSusceptibility = (softeningPoint + penetration) / 2;
+
+      // Atualize o índice de susceptibilidade no objeto Material
+      this.indexOfSusceptibility = indexOfSusceptibility ;
+    }
+  }
 }
 
 export const MaterialSchema = SchemaFactory.createForClass(Material);

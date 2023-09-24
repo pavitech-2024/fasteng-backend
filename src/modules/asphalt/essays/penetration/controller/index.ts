@@ -6,7 +6,7 @@ import { Response } from 'express';
 import { Calc_Penetration_Dto, Calc_Penetration_Out } from "../dto/calc.penetration.dto";
 
 @ApiTags('penetration')
-@Controller('soils/essays/penetration')
+@Controller('asphalt/essays/penetration')
 export class PenetrationController {
   private logger = new Logger(PenetrationController.name);
 
@@ -24,7 +24,7 @@ export class PenetrationController {
     description: 'Não é possível criar um ensaio de penetração com os dados enviados.',
     content: {
       'application/json': {
-        schema: { example: { success: false, error: { message: 'Sample Not Found.', status: 400, name: 'NotFound' } } },
+        schema: { example: { success: false, error: { message: 'Material Not Found.', status: 400, name: 'NotFound' } } },
       },
     },
   })
@@ -35,6 +35,7 @@ export class PenetrationController {
     const status = await this.penetrationService.verifyInitPenetration(body);
 
     return response.status(200).json(status);
+    
   }
 
   @Post('calculate-results')
