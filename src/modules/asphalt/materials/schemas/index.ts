@@ -63,10 +63,9 @@ export class Material {
       this.description?.classification_CAP === 'CAP 85/100' ||
       this.description?.classification_CAP === 'CAP 150/200'
     ) {
-      // Implemente a lógica de cálculo do índice de susceptibilidade aqui
+
       const indexOfSusceptibility = (softeningPoint + penetration) / 2;
 
-      // Atualize o índice de susceptibilidade no objeto Material
       this.indexOfSusceptibility = indexOfSusceptibility ;
     }
   }
