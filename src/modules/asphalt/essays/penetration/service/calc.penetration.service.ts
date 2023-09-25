@@ -13,6 +13,7 @@ export class Calc_Penetration_Service {
     try {
       this.logger.log('calculate penetration on calc.penetration.service.ts > [body]');
 
+
       // Implementa os cálculos de penetração;
       const points = calcPenetrationDto.penetrationCalc.points;
       const penetration = points.reduce((soma, valor) => soma += valor) / points.length;
@@ -20,7 +21,7 @@ export class Calc_Penetration_Service {
       // Implementa a lógica para definir o índice de susceptibilidade;
       let indexOfSusceptibility = 0;
       const materialId = calcPenetrationDto.generalData.material._id;
-      const materialFinded = await this.materialRepository.findOne(materialId);
+      const materialFinded = await this.materialRepository.findOne({ _id: materialId });
 
       if (materialFinded) {
         if (materialFinded.description?.classification_CAP === "CAP 30/45" || materialFinded.description?.classification_CAP === "CAP 50/70"
@@ -38,7 +39,7 @@ export class Calc_Penetration_Service {
 
       // Implementa a lógica para comparar o resultado de penetração com a norma DNIT;
       const maxDifference = this.calculateMaxDifference(penetration);
-      const alert = this.compareHighAndLower(points, maxDifference); // Chame diretamente o método da classe
+      const alert = this.compareHighAndLower(points, maxDifference);
 
       // Implementa a lógica para classificar o CAP
       const cap = this.classifyCap(penetration, materialFinded?.description?.classification_CAP, alert);
