@@ -14,11 +14,11 @@ export class Calc_Penetration_Service {
       this.logger.log('calculate penetration on calc.penetration.service.ts > [body]');
 
 
-      // Implementa os cálculos de penetração;
+      // Cálculos de penetração;
       const points = calcPenetrationDto.penetrationCalc.points;
       const penetration = points.reduce((soma, valor) => soma += valor) / points.length;
 
-      // Implementa a lógica para definir o índice de susceptibilidade;
+      // Lgica para definir o índice de susceptibilidade;
       let indexOfSusceptibility = 0;
       const materialId = calcPenetrationDto.generalData.material._id;
       const materialFinded = await this.materialRepository.findOne({ _id: materialId });
@@ -37,14 +37,13 @@ export class Calc_Penetration_Service {
         }
       }
 
-      // Implementa a lógica para comparar o resultado de penetração com a norma DNIT;
+      // Lógica para comparar o resultado de penetração com a norma DNIT;
       const maxDifference = this.calculateMaxDifference(penetration);
       const alert = this.compareHighAndLower(points, maxDifference);
 
-      // Implementa a lógica para classificar o CAP
+      // Lógica para classificar o CAP
       const cap = this.classifyCap(penetration, materialFinded?.description?.classification_CAP, alert);
 
-      // Retorne os resultados no formato apropriado
       const result: Calc_Penetration_Out = {
         penetration: penetration,
         cap: cap.type,
@@ -96,7 +95,6 @@ export class Calc_Penetration_Service {
 
     if (!materialRanking && (materialRanking === "asphalt binder" || materialRanking === "other")) {
       materialRanking = type;
-      // Implemente a lógica para salvar o material aqui
     } else {
       if (!materialRanking && materialRanking === "modified asphalt binder" && materialRanking.includes("AMP")) {
         capAlert += this.ampAlert(penetration, materialRanking);
