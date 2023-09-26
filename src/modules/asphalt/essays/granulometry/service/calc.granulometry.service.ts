@@ -9,6 +9,7 @@ type limit = { value: number, index: number };
 @Injectable()
 export class Calc_AsphaltGranulometry_Service {
   private logger = new Logger(Calc_AsphaltGranulometry_Service.name);
+  
 
   constructor(private readonly granulometryRepository: AsphaltGranulometryRepository, private readonly materialsRepository: MaterialsRepository) { }
 
