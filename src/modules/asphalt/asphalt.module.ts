@@ -5,13 +5,17 @@ import { MaterialsModule } from './materials/materials.module';
 import { Material, MaterialSchema } from './materials/schemas';
 import { SpecifyMass, SpecifyMassSchema } from './essays/specifyMass/schemas';
 import { SpecifyMassModule } from './essays/specifyMass/specifyMass.module';
+import { FlashPoint, FlashPointSchema } from './essays/flashPoint/schemas';
+import { FlashPointModule } from './essays/flashPoint/flashPoint.module';
+
 
 const Models: ModelDefinition[] = [
   { name: Material.name, schema: MaterialSchema },
   { name: SpecifyMass.name, schema: SpecifyMassSchema },
+  { name: FlashPoint.name, schema: FlashPointSchema },
 ];
 
-const Modules = [MaterialsModule, SpecifyMassModule];
+const Modules = [MaterialsModule, SpecifyMassModule, FlashPointModule];
 
 @Global()
 @Module({
