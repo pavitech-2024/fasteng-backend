@@ -3,12 +3,19 @@ import { ModelDefinition, MongooseModule } from '@nestjs/mongoose';
 import { DATABASE_CONNECTION } from '../../infra/mongoose/database.config';
 import { MaterialsModule } from './materials/materials.module';
 import { Material, MaterialSchema } from './materials/schemas';
+import { SpecifyMass, SpecifyMassSchema } from './essays/specifyMass/schemas';
+import { SpecifyMassModule } from './essays/specifyMass/specifyMass.module';
 
-const Models: ModelDefinition[] = [{ name: Material.name, schema: MaterialSchema }];
+const Models: ModelDefinition[] = [
+  { name: Material.name, schema: MaterialSchema },
+  { name: SpecifyMass.name, schema: SpecifyMassSchema },
+];
+
+const Modules = [MaterialsModule, SpecifyMassModule];
 
 @Global()
 @Module({
-  imports: [MongooseModule.forFeature(Models, DATABASE_CONNECTION.ASPHALT), MaterialsModule],
-  exports: [MongooseModule, MaterialsModule],
+  imports: [MongooseModule.forFeature(Models, DATABASE_CONNECTION.ASPHALT), ...Modules],
+  exports: [MongooseModule, ...Modules],
 })
 export class AsphaltModule {}
