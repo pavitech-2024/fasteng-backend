@@ -6,7 +6,7 @@ import { AdhesionService } from "../service/adhesion.service";
 import { Calc_Adhesion_Dto, Calc_Adhesion_Out } from "../dto/calc.adhesion.dto";
 
 @ApiTags('adhesion')
-@Controller('concrete/essays/adhesion')
+@Controller('asphalt/essays/adhesion')
 export class AdhesionController {
   private logger = new Logger(AdhesionController.name);
 
@@ -24,7 +24,7 @@ export class AdhesionController {
     description: 'Não é possível criar um ensaio de adesão com os dados enviados.',
     content: {
       'application/json': {
-        schema: { example: { success: false, error: { message: 'Sample Not Found.', status: 400, name: 'NotFound' } } },
+        schema: { example: { success: false, error: { message: 'Material Not Found.', status: 400, name: 'NotFound' } } },
       },
     },
   })

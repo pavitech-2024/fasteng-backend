@@ -5,13 +5,16 @@ import { MaterialsModule } from './materials/materials.module';
 import { Material, MaterialSchema } from './materials/schemas';
 import { Penetration, PenetrationSchema } from './essays/penetration/schema';
 import { PenetrationModule } from './essays/penetration/penetration.module';
+import { Adhesion, AdhesionSchema } from './essays/adhesion/schemas';
+import { AdhesionModule } from './essays/adhesion/adhesion.module';
 
 const Models: ModelDefinition[] = [
   { name: Material.name, schema: MaterialSchema },
-  { name: Penetration.name, schema: PenetrationSchema }
+  { name: Penetration.name, schema: PenetrationSchema },
+  { name: Adhesion.name, schema: AdhesionSchema },
 ];
 
-const Modules = [MaterialsModule, PenetrationModule];
+const Modules = [MaterialsModule, PenetrationModule, AdhesionModule];
 
 @Global()
 @Module({

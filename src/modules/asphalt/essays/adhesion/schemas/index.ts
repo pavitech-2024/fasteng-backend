@@ -3,6 +3,7 @@ import { IsNotEmpty } from "class-validator";
 import { Material } from "modules/asphalt/materials/schemas";
 import { Calc_CHAPMAN_Out } from "modules/concrete/essays/chapman/dto/calc.chapman.dto";
 import { HydratedDocument } from "mongoose";
+import { Calc_Adhesion_Out } from "../dto/calc.adhesion.dto";
 
 export type AdhesionDocument = HydratedDocument<Adhesion>;
 
@@ -31,7 +32,7 @@ export class Adhesion {
   @IsNotEmpty()
   @Prop({ type: Object })
   results: {
-    data: Calc_CHAPMAN_Out;
+    data: Calc_Adhesion_Out;
   };
 }
 
