@@ -16,6 +16,9 @@ export class MaterialsRepository {
   async find(): Promise<Material[]> {
     return this.materialModel.find();
   }
+  async findAllBinders(materialsFilterQuery: any): Promise<any> {
+    return this.materialModel.find(materialsFilterQuery)
+  }
 
   async findOne(materialsFilterQuery: any): Promise<Material> {
     return this.materialModel.findOne(materialsFilterQuery);

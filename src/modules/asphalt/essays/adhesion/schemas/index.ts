@@ -1,7 +1,6 @@
 import { Prop, SchemaFactory, Schema } from "@nestjs/mongoose";
 import { IsNotEmpty } from "class-validator";
 import { Material } from "modules/asphalt/materials/schemas";
-import { Calc_CHAPMAN_Out } from "modules/concrete/essays/chapman/dto/calc.chapman.dto";
 import { HydratedDocument } from "mongoose";
 import { Calc_Adhesion_Out } from "../dto/calc.adhesion.dto";
 
@@ -14,7 +13,7 @@ export type AdhesionGeneralData = {
 };
 
 type Adhesion_calc = {
-  filmDisplacement: number;
+  filmDisplacement: boolean;
 };
 
 @Schema({ collection: 'adhesions' })
