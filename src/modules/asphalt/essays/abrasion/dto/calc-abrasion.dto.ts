@@ -10,8 +10,6 @@ export class Calc_Abrasion_Dto {
 }
 
 export interface Calc_Abrasion_Out {
-  abrasion: number;
-  cap: string;
+  losAngelesAbrasion: number
   alerts: string[];
-  indexOfSusceptibility: number
 }

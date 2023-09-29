@@ -13,107 +13,37 @@ export class Calc_Abrasion_Service {
     try {
       this.logger.log('calculate abrasion on calc.abrasion.service.ts > [body]');
 
+      const { initialMass, finalMass } = calcAbrasionDto.abrasionCalc;
 
-      // Cálculos de penetração;
-      const points = calcAbrasionDto.abrasionCalc.points;
-      const abrasion = points.reduce((soma, valor) => soma += valor) / points.length;
+      const losAngelesAbrasionResult = this.calculateLosAngelesAbrasion(initialMass, finalMass);
 
-      // Lgica para definir o índice de susceptibilidade;
-      let indexOfSusceptibility = 0;
-      const materialId = calcAbrasionDto.generalData.material._id;
-      const materialFinded = await this.materialRepository.findOne({ _id: materialId });
-
-      if (materialFinded) {
-        if (materialFinded.description?.classification_CAP === "CAP 30/45" || materialFinded.description?.classification_CAP === "CAP 50/70"
-          || materialFinded.description?.classification_CAP === "CAP 85/100" || materialFinded.description?.classification_CAP === "CAP 150/200") {
-          const softeningPointQuery = materialFinded.getLastExperimentId(false);
-
-          if (!softeningPointQuery.catch) {
-            const softeningPointFinded = await this.materialRepository.findOne(softeningPointQuery.experiment);
-            if (softeningPointFinded) {
-              indexOfSusceptibility = softeningPointFinded.indexOfSusceptibility || 0;
-            }
-          }
-        }
-      }
-
-      // Lógica para comparar o resultado de penetração com a norma DNIT;
-      const maxDifference = this.calculateMaxDifference(abrasion);
-      const alert = this.compareHighAndLower(points, maxDifference);
-
-      // Lógica para classificar o CAP
-      const cap = this.classifyCap(abrasion, materialFinded?.description?.classification_CAP, alert);
-
-      const result: Calc_Abrasion_Out = {
-        abrasion: abrasion,
-        cap: cap.type,
-        alerts: alert ? ["Atenção: diferença máxima entre o valor mais alto e mais baixo das determinações acima do valor recomendado (DNIT-ME 155/2010)."] : [],
-        indexOfSusceptibility: indexOfSusceptibility
-      };
+      const alerts = this.verifyResult(losAngelesAbrasionResult);
 
       return {
         success: true,
-        result: result,
+        result: {
+          losAngelesAbrasion: losAngelesAbrasionResult,
+          alerts: alerts,
+        },
       };
     } catch (error) {
       throw error;
     }
   }
 
-  private calculateMaxDifference(abrasion: number): number {
-    if (abrasion >= 0 && abrasion <= 4.9) {
-      return 0.2;
-    } else if (abrasion >= 5 && abrasion <= 14.9) {
-      return 0.4;
-    } else if (abrasion >= 15 && abrasion <= 24.9) {
-      return 1.2;
-    } else if (abrasion >= 25 && abrasion <= 50) {
-      return 2;
-    }
-    return 0;
-  }
-
-  private compareHighAndLower(points: number[], maxDifference: number): boolean {
-    const max = Math.max(...points);
-    const min = Math.min(...points);
-    return maxDifference !== 0 && Math.abs(max - min) > maxDifference;
-  }
-
-  private classifyCap(abrasion: number, materialRanking: string, alert: boolean): { type: string; alert: string } {
-    let type = "";
-    let capAlert = "";
-
-    if (abrasion >= 3 && abrasion <= 4.5) {
-      type = "CAP 30/45";
-    } else if (abrasion >= 5 && abrasion <= 7) {
-      type = "CAP 50/70";
-    } else if (abrasion >= 8.5 && abrasion <= 10) {
-      type = "CAP 85/100";
-    } else if (abrasion >= 15 && abrasion <= 20) {
-      type = "CAP 150/200";
-    }
-
-    if (!materialRanking && (materialRanking === "asphalt binder" || materialRanking === "other")) {
-      materialRanking = type;
+  private calculateLosAngelesAbrasion(inicialMass: number, finalMass: number): number {
+    if (inicialMass > finalMass) {
+      return ((inicialMass - finalMass) * 100) / inicialMass;
     } else {
-      if (!materialRanking && materialRanking === "modified asphalt binder" && materialRanking.includes("AMP")) {
-        capAlert += this.ampAlert(abrasion, materialRanking);
-      }
+      throw new Error("Atenção: a massa inicial deve ser maior que a massa final.");
     }
-
-    return { type: type, alert: capAlert };
   }
 
-  private ampAlert(abrasion: number, ranking: string): string {
-    let out = false;
-    if ((ranking === "AMP 50/65" || ranking === "AMP 55/75") && (abrasion < 4.5 || abrasion > 7)) {
-      out = true;
-    } else if ((ranking === "AMP 60/85" || ranking === "AMP 65/90") && (abrasion < 4 || abrasion > 7)) {
-      out = true;
+  private verifyResult(losAngelesAbrasionResult: number): string[] {
+    const alerts: string[] = [];
+    if (losAngelesAbrasionResult > 50) {
+      alerts.push("Alerta: de acordo com a especificação DNIT 031/2006, o desgaste Los Angeles deve ser igual ou inferior a 50%, admitindo-se excepcionalmente agregados com valores maiores, no caso de terem apresentado comprovadamente desempenho satisfatório em utilização anterior.");
     }
-    if (out) {
-      return `Atenção: resultado de penetração fora dos limites especificados para o ${ranking}.`;
-    }
-    return "";
+    return alerts;
   }
 }

@@ -13,9 +13,9 @@ export type AbrasionGeneralData = {
 };
 
 type abrasion_Calc = {
-  resultMode: boolean
-  experimentDate: Date
-  points: number[]
+  initialMass: number
+  finalMass: number
+  graduation: string
 };
 
 
