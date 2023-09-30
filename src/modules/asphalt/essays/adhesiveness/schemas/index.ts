@@ -2,38 +2,38 @@ import { Prop, SchemaFactory, Schema } from "@nestjs/mongoose";
 import { IsNotEmpty } from "class-validator";
 import { Material } from "modules/asphalt/materials/schemas";
 import { HydratedDocument } from "mongoose";
-import { Calc_Adhesion_Out } from "../dto/calc.adhesion.dto";
+import { Calc_Adhesiveness_Out } from "../dto/calc.adhesiveness.dto";
 
-export type AdhesionDocument = HydratedDocument<Adhesion>;
+export type AdhesivenessDocument = HydratedDocument<Adhesiveness>;
 
-export type AdhesionGeneralData = {
+export type AdhesivenessGeneralData = {
   userId: string;
   name: string;
   material: Material;
 };
 
-type Adhesion_calc = {
+type Adhesiveness_calc = {
   filmDisplacement: boolean;
   binder: Material
 };
 
 @Schema({ collection: 'adhesions' })
-export class Adhesion {
+export class Adhesiveness {
   _id: string;
 
   @IsNotEmpty()
   @Prop({ type: Object })
-  generalData: AdhesionGeneralData;
+  generalData: AdhesivenessGeneralData;
 
   @IsNotEmpty()
   @Prop({ type: Object })
-  adhesiveness: Adhesion_calc;
+  adhesiveness: Adhesiveness_calc;
 
   @IsNotEmpty()
   @Prop({ type: Object })
   results: {
-    data: Calc_Adhesion_Out;
+    data: Calc_Adhesiveness_Out;
   };
 }
 
-export const AdhesionSchema = SchemaFactory.createForClass(Adhesion);
+export const AdhesivenessSchema = SchemaFactory.createForClass(Adhesiveness);
