@@ -6,7 +6,7 @@ export class Calc_Adhesion_Dto {
   generalData: Adhesion['generalData'];
 
   @IsNotEmpty()
-  adhesion: Adhesion['adhesion'];
+  adhesiveness: Adhesion['adhesiveness'];
 }
 
 export interface Calc_Adhesion_Out {

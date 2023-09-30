@@ -65,7 +65,7 @@ export class MaterialsService {
     try {
       // busca todos os materiais no banco de dados
       const materials = await this.materialsRepository.findAllBinders({
-        "generalData.type": "asphaltBinder"
+        "type": "asphaltBinder"
       });
 
       // retorna os materiais ligantes encontrados que pertencem ao usuário

@@ -14,6 +14,7 @@ export type AdhesionGeneralData = {
 
 type Adhesion_calc = {
   filmDisplacement: boolean;
+  binder: Material
 };
 
 @Schema({ collection: 'adhesions' })
@@ -26,7 +27,7 @@ export class Adhesion {
 
   @IsNotEmpty()
   @Prop({ type: Object })
-  adhesion: Adhesion_calc;
+  adhesiveness: Adhesion_calc;
 
   @IsNotEmpty()
   @Prop({ type: Object })
