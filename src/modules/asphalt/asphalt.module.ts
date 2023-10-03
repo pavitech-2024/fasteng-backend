@@ -3,8 +3,12 @@ import { ModelDefinition, MongooseModule } from '@nestjs/mongoose';
 import { DATABASE_CONNECTION } from '../../infra/mongoose/database.config';
 import { MaterialsModule } from './materials/materials.module';
 import { Material, MaterialSchema } from './materials/schemas';
+import { Rtfo, RtfoSchema } from './essays/rtfo/schemas';
 
-const Models: ModelDefinition[] = [{ name: Material.name, schema: MaterialSchema }];
+const Models: ModelDefinition[] = [
+  { name: Material.name, schema: MaterialSchema },
+  { name: Rtfo.name, schema: RtfoSchema },
+];
 
 @Global()
 @Module({
