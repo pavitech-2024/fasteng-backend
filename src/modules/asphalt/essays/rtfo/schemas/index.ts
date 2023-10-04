@@ -18,7 +18,7 @@ type RtfoSamples = {
 }
 
 type Rtfo_calc = {
-  samples: RtfoSamples[]
+  list: RtfoSamples[]
 };
 
 @Schema({ collection: 'rtfo' })

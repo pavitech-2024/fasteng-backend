@@ -9,7 +9,7 @@ export class Calc_Rtfo_Service {
     try {
       this.logger.log('calculate rtfo on calc.rtfo.service.ts > [body]');
 
-      const resultList = rtfo.samples.map(sample => ({
+      const resultList = rtfo.list.map(sample => ({
         initialSetWeight: sample.sampleWeight,
         weightLoss: ((sample.sampleWeight - sample.finalSampleWeight) / sample.sampleWeight) * 100,
       }));
