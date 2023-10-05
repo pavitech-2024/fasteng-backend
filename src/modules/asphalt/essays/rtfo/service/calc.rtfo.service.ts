@@ -33,7 +33,6 @@ export class Calc_Rtfo_Service {
         alerts.push(`A variação de massa para o ${material.description.classification_AMP} não deve ser superior a 1%.`);
       }
 
-      // Defina o resultado final.
       const result: Calc_Rtfo_Out = {
         list: resultList,
         weightLossAverage,
