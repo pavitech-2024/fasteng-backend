@@ -11,5 +11,6 @@ export class Calc_SofteningPoint_Dto {
 
 export interface Calc_SofteningPoint_Out {
   softeningPoint: number,
+  indexOfSusceptibility: number,
   alerts: string[]
 }

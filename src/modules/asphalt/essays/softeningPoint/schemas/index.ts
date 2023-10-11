@@ -13,8 +13,8 @@ export type SofteningPointGeneralData = {
 };
 
 type SofteningPoint_calc = {
-  sandLevel: number,
-  clayLevel: number
+  temperature1: number,
+  temperature2: number
 };
 
 @Schema({ collection: 'softeningPoint' })
