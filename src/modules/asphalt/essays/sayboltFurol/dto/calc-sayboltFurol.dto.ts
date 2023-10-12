@@ -26,7 +26,7 @@ export interface Calc_SayboltFurol_Out {
     lower: number,
     average: number
   },
-  curvePoints: [[], [], [], [], [], []],
+  curvePoints: number[][],
   equation: {
     aIndex: number,
     bIndex: number
