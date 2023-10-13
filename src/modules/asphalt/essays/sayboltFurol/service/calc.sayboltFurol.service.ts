@@ -44,10 +44,10 @@ export class Calc_SayboltFurol_Service {
         let cont = 120;
         for (let i = 0; i < 120; i++) {
           temperatures[i] = cont;
-          viscositys[i] = this.calculateViscosity(cont, equation);
+          viscositys[i] = this.calculateViscosity(cont, equation) !== Infinity ? this.calculateViscosity(cont, equation) : 0;
           cont += 1;
         }
-        const ranges = this.insertValuesInRanges(75, 95, 125, 155, dataPoints, equation);
+        const ranges = this.insertValuesInRanges(75, 95, 125, 155, equation);
 
         const bandsOfCurve = this.insertBandsOfCurve(temperatures, viscositys, viscosityType, 75, 95, 125, 155);
 
@@ -56,6 +56,9 @@ export class Calc_SayboltFurol_Service {
         result.compressionTemperatureRange = ranges.compressionTemperatureRange;
         result.machiningTemperatureRange = ranges.machiningTemperatureRange;
 
+        result.equation.aIndex = equation.aIndex;
+        result.equation.bIndex = equation.bIndex;
+
       } else if (viscosityType === "Rotacional") {
         let cont = 120;
         for (let i = 0; i < 120; i++) {
@@ -63,7 +66,7 @@ export class Calc_SayboltFurol_Service {
           viscositys[i] = this.calculateViscosity(cont, equation);
           cont += 1;
         }
-        const ranges = this.insertValuesInRanges(75, 95, 125, 155, dataPoints, equation);
+        const ranges = this.insertValuesInRanges(150, 190, 250, 310, equation);
 
         const bandsOfCurve = this.insertBandsOfCurve(temperatures, viscositys, viscosityType, 150, 190, 250, 310);
 
@@ -71,6 +74,9 @@ export class Calc_SayboltFurol_Service {
         result.aggregateTemperatureRange = ranges.aggregateTemperatureRange;
         result.compressionTemperatureRange = ranges.compressionTemperatureRange;
         result.machiningTemperatureRange = ranges.machiningTemperatureRange;
+
+        result.equation.aIndex = equation.aIndex;
+        result.equation.bIndex = equation.bIndex;
       }
 
       return {
@@ -84,7 +90,7 @@ export class Calc_SayboltFurol_Service {
 
   private calculateEquation(dataPoints: any[]) {
     //posicao 0 = a da equacao
-    const aIndex = ((dataPoints.length * this.sumXY(dataPoints)) - (this.sumXY(dataPoints) * this.sumPow2X(dataPoints))) / (this.Pow2SumX(dataPoints) - (dataPoints.length * this.sumPow2X(dataPoints)));
+    const aIndex = ((dataPoints.length * this.sumXY(dataPoints)) - (this.sumX(dataPoints) * this.sumY(dataPoints))) / (dataPoints.length * this.sumPow2X(dataPoints) - this.Pow2SumX(dataPoints));
 
     //posicao 1 = b da equacao
     const bIndex = Math.exp(((this.sumX(dataPoints) * this.sumXY(dataPoints)) - (this.sumY(dataPoints) * this.sumPow2X(dataPoints))) / (this.Pow2SumX(dataPoints) - (dataPoints.length * this.sumPow2X(dataPoints))));
@@ -134,7 +140,7 @@ export class Calc_SayboltFurol_Service {
     for (let i = 0; i < dataPoints.length; i++) {
       exit += dataPoints[i].temperature;
     }
-    return exit;
+    return exit * exit;
   }
 
   private calculateViscosity(temperature: number, equation) {
@@ -148,7 +154,7 @@ export class Calc_SayboltFurol_Service {
     return temperature;
   }
 
-  private insertValuesInRanges(temp1, temp2, temp3, temp4, dataPoints, equation) {
+  private insertValuesInRanges(temp1, temp2, temp3, temp4, equation) {
 
     const lowerMachiningTemperatureRange = this.calculateTemperature(temp2, equation);
     const higherMachiningTemperatureRange = this.calculateTemperature(temp1, equation);
