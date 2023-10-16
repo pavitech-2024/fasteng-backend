@@ -11,6 +11,8 @@ import { Ductility, DuctilitySchema } from './essays/ductility/schemas';
 import { DuctilityModule } from './essays/ductility/ductility.module';
 import { Angularity, AngularitySchema } from './essays/angularity/schemas';
 import { AngularityModule } from './essays/angularity/angularity.module';
+import { ShapeIndex, ShapeIndexSchema } from './essays/shapeIndex/schemas';
+import { ShapeIndexModule } from './essays/shapeIndex/shapeIndex.module';
 
 
 const Models: ModelDefinition[] = [
@@ -19,9 +21,10 @@ const Models: ModelDefinition[] = [
   { name: FlashPoint.name, schema: FlashPointSchema },
   { name: Ductility.name, schema: DuctilitySchema },
   { name: Angularity.name, schema: AngularitySchema },
+  { name: ShapeIndex.name, schema: ShapeIndexSchema },
 ];
 
-const Modules = [MaterialsModule, SpecifyMassModule, FlashPointModule, DuctilityModule, AngularityModule];
+const Modules = [MaterialsModule, SpecifyMassModule, FlashPointModule, DuctilityModule, AngularityModule, ShapeIndexModule];
 
 @Global()
 @Module({
