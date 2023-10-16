@@ -9,7 +9,7 @@ export class Calc_SayboltFurol_Service {
     try {
       this.logger.log('calculate saybolt-furol on calc.sayboltFurol.service.ts > [body]');
 
-      const { dataPoints, viscosityType } = sayboltFurol;
+      const { dataPoints } = sayboltFurol;
 
       const result: Calc_SayboltFurol_Out = {
         graph: "",
@@ -40,44 +40,25 @@ export class Calc_SayboltFurol_Service {
 
       const equation = this.calculateEquation(dataPoints);
 
-      if (viscosityType === "Saybolt Furol") {
-        let cont = 120;
-        for (let i = 0; i < 120; i++) {
-          temperatures[i] = cont;
-          viscositys[i] = this.calculateViscosity(cont, equation) !== Infinity ? this.calculateViscosity(cont, equation) : 0;
-          cont += 1;
-        }
-        const ranges = this.insertValuesInRanges(75, 95, 125, 155, equation);
+      let cont = 120;
 
-        const bandsOfCurve = this.insertBandsOfCurve(temperatures, viscositys, viscosityType, 75, 95, 125, 155);
-
-        result.curvePoints = bandsOfCurve;
-        result.aggregateTemperatureRange = ranges.aggregateTemperatureRange;
-        result.compressionTemperatureRange = ranges.compressionTemperatureRange;
-        result.machiningTemperatureRange = ranges.machiningTemperatureRange;
-
-        result.equation.aIndex = equation.aIndex;
-        result.equation.bIndex = equation.bIndex;
-
-      } else if (viscosityType === "Rotacional") {
-        let cont = 120;
-        for (let i = 0; i < 120; i++) {
-          temperatures[i] = cont;
-          viscositys[i] = this.calculateViscosity(cont, equation);
-          cont += 1;
-        }
-        const ranges = this.insertValuesInRanges(150, 190, 250, 310, equation);
-
-        const bandsOfCurve = this.insertBandsOfCurve(temperatures, viscositys, viscosityType, 150, 190, 250, 310);
-
-        result.curvePoints = bandsOfCurve;
-        result.aggregateTemperatureRange = ranges.aggregateTemperatureRange;
-        result.compressionTemperatureRange = ranges.compressionTemperatureRange;
-        result.machiningTemperatureRange = ranges.machiningTemperatureRange;
-
-        result.equation.aIndex = equation.aIndex;
-        result.equation.bIndex = equation.bIndex;
+      for (let i = 0; i < 120; i++) {
+        temperatures[i] = cont;
+        viscositys[i] = this.calculateViscosity(cont, equation) !== Infinity ? this.calculateViscosity(cont, equation) : 0;
+        cont += 1;
       }
+      
+      const ranges = this.insertValuesInRanges(75, 95, 125, 155, equation);
+
+      const bandsOfCurve = this.insertBandsOfCurve(temperatures, viscositys, 75, 95, 125, 155);
+
+      result.curvePoints = bandsOfCurve;
+      result.aggregateTemperatureRange = ranges.aggregateTemperatureRange;
+      result.compressionTemperatureRange = ranges.compressionTemperatureRange;
+      result.machiningTemperatureRange = ranges.machiningTemperatureRange;
+
+      result.equation.aIndex = equation.aIndex;
+      result.equation.bIndex = equation.bIndex;
 
       return {
         success: true,
@@ -200,20 +181,13 @@ export class Calc_SayboltFurol_Service {
     };
   }
 
-  private insertBandsOfCurve(temperatures, viscositys, viscosityType, bandsLowerMachiningY, bandsHigherMachiningY, bandsLowerCompressionY, bandsHigherCompressionY) {
+  private insertBandsOfCurve(temperatures, viscositys, bandsLowerMachiningY, bandsHigherMachiningY, bandsLowerCompressionY, bandsHigherCompressionY) {
 
     let points = [];
     let temperature: number[];
     let viscosity;
-    let viscosityUnit;
 
-    if (viscosityType === "Saybolt Furol") {
-        viscosityUnit = "SSF";
-    } else if (viscosityType === "Rotacional") {
-        viscosityUnit = "cP";
-    }
-
-    points.push(["Temperatura (ºC)", "Viscosidade (" + viscosityUnit + ")", "Faixa de usinagem", "Faixa de usinagem", "Faixa de compactação", "Faixa de compactação"]);
+    points.push(["Temperatura (ºC)", "Viscosidade (SSF)", "Faixa de usinagem", "Faixa de usinagem", "Faixa de compactação", "Faixa de compactação"]);
 
     for (let index = 0; index < temperatures.length; index++) {
       temperature = temperatures[index];
