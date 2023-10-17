@@ -3,6 +3,7 @@ import { MaterialsRepository } from "modules/asphalt/materials/repository";
 import { NotFound, AlreadyExists } from "utils/exceptions";
 import { SofteningPointInitDto } from "../dto/init-softeningPoint.dto";
 import { SofteningPointRepository } from "../repository";
+import { PenetrationRepository } from "../../penetration/repository";
 
 @Injectable()
 export class GeneralData_SofteningPoint_Service {
@@ -11,6 +12,7 @@ export class GeneralData_SofteningPoint_Service {
   constructor(
     private readonly softeningPointRepository: SofteningPointRepository,
     private readonly materialsRepository: MaterialsRepository,
+    private readonly penetrationRepository: PenetrationRepository
   ) {}
 
   async verifyInitSofteningPoint({ name, material }: SofteningPointInitDto) {
@@ -24,11 +26,21 @@ export class GeneralData_SofteningPoint_Service {
 
       // verificar se existe uma softeningPoint com mesmo nome e materialId no banco de dados
       const softeningPointExists = await this.softeningPointRepository.findOne({
-        generalData: { name, material: { _id: material._id } },
+        // generalData: { name, material: { _id: material._id } },
+        "generalData.name": name,
+        "generalData.material._id": material._id
       });
 
       // se existir, retorna erro
       if (softeningPointExists) throw new AlreadyExists(`Softening point with name "${name} from user "${material.userId}"`);
+
+      // verificar se existe uma granulometria para a sampleId no banco de dados
+      const penetrationExists = await this.penetrationRepository.findOne({ 
+        "generalData.material._id": material._id  
+      });
+
+      // se não existir, retorna erro
+      if (!penetrationExists) throw new NotFound('essay');
 
       return true;
     } catch (error) {
