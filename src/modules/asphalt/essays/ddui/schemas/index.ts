@@ -12,17 +12,17 @@ export type DduiGeneralData = {
   material: Material;
 };
 
-type Ddui_calc = {
-  laboratoryName: string,
-  responsible: string,
-  selectedDosage: string,
-  dnitRange: string,
-  sampleOrigin: string,
-  sampleVoidVolume: string,
-  pressSpecification: string,
+type Ddui_Step2 = {
+  // laboratoryName: string,
+  // responsible: string,
+  // selectedDosage: string,
+  // dnitRange: string,
+  // sampleOrigin: string,
+  // sampleVoidVolume: string,
+  // pressSpecification: string,
   pressConstant: number,
-  experimentDate: Date,
-  minRrt: number,
+  // experimentDate: Date,
+  // minRrt: number,
   data: {
     sampleName: string,
     condicionamento: string,
@@ -46,7 +46,7 @@ export class Ddui {
 
   @IsNotEmpty()
   @Prop({ type: Object })
-  ddui: Ddui_calc;
+  dduiStep2: Ddui_Step2;
 
   @IsNotEmpty()
   @Prop({ type: Object })
