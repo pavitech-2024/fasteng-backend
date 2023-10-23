@@ -13,6 +13,8 @@ import { Angularity, AngularitySchema } from './essays/angularity/schemas';
 import { AngularityModule } from './essays/angularity/angularity.module';
 import { ShapeIndex, ShapeIndexSchema } from './essays/shapeIndex/schemas';
 import { ShapeIndexModule } from './essays/shapeIndex/shapeIndex.module';
+import { ElongatedParticles, ElongatedParticlesSchema } from './essays/elongatedParticles/schemas';
+import { ElongatedParticlesModule } from './essays/elongatedParticles/elongatedParticles.module';
 
 
 const Models: ModelDefinition[] = [
@@ -22,9 +24,10 @@ const Models: ModelDefinition[] = [
   { name: Ductility.name, schema: DuctilitySchema },
   { name: Angularity.name, schema: AngularitySchema },
   { name: ShapeIndex.name, schema: ShapeIndexSchema },
+  { name: ElongatedParticles.name, schema: ElongatedParticlesSchema },
 ];
 
-const Modules = [MaterialsModule, SpecifyMassModule, FlashPointModule, DuctilityModule, AngularityModule, ShapeIndexModule];
+const Modules = [MaterialsModule, SpecifyMassModule, FlashPointModule, DuctilityModule, AngularityModule, ShapeIndexModule, ElongatedParticlesModule];
 
 @Global()
 @Module({

@@ -31,7 +31,7 @@ export class Calc_SHAPEINDEX_Service {
 
       if (shape_index < 0.5) {
 
-        alerts.push("shapeIndex.alert.minimum_value");
+        alerts.push("shapeIndex.warning.minimum_value");
 
       }
 
