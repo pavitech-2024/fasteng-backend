@@ -1,18 +1,18 @@
 import { IsNotEmpty } from 'class-validator';
-import { Rt } from '../schemas';
+import { Rtcd } from '../schemas';
 
-export class Calc_Rt_Dto {
+export class Calc_Rtcd_Dto {
   @IsNotEmpty()
-  generalData: Rt['generalData'];
+  generalData: Rtcd['generalData'];
 
   @IsNotEmpty()
-  rt: Rt['rtStep2'];
+  rtcd: Rtcd['rtcdStep2'];
 }
 
-export interface Calc_Rt_Out {
+export interface Calc_Rtcd_Out {
   //Lembrar de depois ver no Front para trocar o any pelo tipo certo
-  everyRtsMpa: any[];
-  everyRtsKgf: any[];
+  everyRtcdsMpa: any[];
+  everyRtcdsKgf: any[];
   conditionedAverage: number;
   unconditionedAverage: number;
   rrt: number;

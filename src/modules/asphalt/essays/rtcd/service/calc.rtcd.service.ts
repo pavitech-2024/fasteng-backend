@@ -1,13 +1,19 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Calc_Rt_Dto } from '../dto/calc-rt.dto';
+import { Calc_Rtcd_Dto, Calc_Rtcd_Out } from '../dto/calc-rtcd.dto';
 
 @Injectable()
-export class Calc_Rt_Service {
-  private logger = new Logger(Calc_Rt_Service.name);
+export class Calc_Rtcd_Service {
+  private logger = new Logger(Calc_Rtcd_Service.name);
 
-  async calculateRt({ rt, generalData }: Calc_Rt_Dto): Promise<{ success: boolean; result: any }> {
+  async calculateRtcd({ rtcd, generalData }: Calc_Rtcd_Dto): Promise<{ success: boolean; result: any }> {
     try {
-      this.logger.log('calculate sand equivalent on calc.rt.service.ts > [body]');
+      this.logger.log('calculate resistence to traction by diametrical compression on calc.rtcd.service.ts > [body]');
+      const { data } = rtcd;
+      console.log(data);
+      // const diametersArray = [d1, d2, d3];
+      // const averageDiameter = diametersArray.reduce((sum, value) => (sum += value)) / diametersArray.length;
+      // const averageHeight = heightsArray.reduce((sum, value) => sum += value) / heightsArray.length;
+      // const
 
       // const result = {
       //   laboratoryName: "",
@@ -19,10 +25,8 @@ export class Calc_Rt_Service {
       //   pressSpecification: "",
       //   pressConstant: 0,
       //   experimentDate: "",
-      //   minRrt: 0,
       //   data: [{
       //     sampleName: "",
-      //     condicionamento: "",
       //     d1: 0,
       //     d2: 0,
       //     d3: 0,

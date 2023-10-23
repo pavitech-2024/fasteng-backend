@@ -2,17 +2,17 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { IsNotEmpty } from 'class-validator';
 import { Material } from 'modules/asphalt/materials/schemas';
 import { HydratedDocument } from 'mongoose';
-import { Calc_Rt_Out } from '../dto/calc-rt.dto';
+import { Calc_Rtcd_Out } from '../dto/calc-rtcd.dto';
 
-export type RtDocument = HydratedDocument<Rt>;
+export type RtcdDocument = HydratedDocument<Rtcd>;
 
-export type RtGeneralData = {
+export type RtcdGeneralData = {
   userId: string;
   name: string;
   material: Material;
 };
 
-type Rt_Step2 = {
+type Rtcd_Step2 = {
   // laboratoryName: string,
   // responsible: string,
   // selectedDosage: string,
@@ -35,23 +35,23 @@ type Rt_Step2 = {
   }[];
 };
 
-@Schema({ collection: 'rt' })
-export class Rt {
+@Schema({ collection: 'rtcd' })
+export class Rtcd {
   _id: string;
 
   @IsNotEmpty()
   @Prop({ type: Object })
-  generalData: RtGeneralData;
+  generalData: RtcdGeneralData;
 
   @IsNotEmpty()
   @Prop({ type: Object })
-  rtStep2: Rt_Step2;
+  rtcdStep2: Rtcd_Step2;
 
   @IsNotEmpty()
   @Prop({ type: Object })
   results: {
-    data: Calc_Rt_Out;
+    data: Calc_Rtcd_Out;
   };
 }
 
-export const RtSchema = SchemaFactory.createForClass(Rt);
+export const RtcdSchema = SchemaFactory.createForClass(Rtcd);
