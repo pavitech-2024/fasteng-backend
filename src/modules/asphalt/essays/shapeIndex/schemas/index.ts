@@ -28,12 +28,20 @@ export type ShapeIndexSieveRow = {
     grains_count: number;
 }
 
+export type ShapeIndexReadRow = {
+  id: number;
+  sieve: string;
+  length: number;
+  thickness: number;
+}
+
 type ShapeIndex_step2Data = {
     method: 'sieve' | 'pachymeter';
     total_mass: number;
     graduation: 'A' | 'B' | 'C' | 'D';
-    circular_sieves: ShapeIndexCircularSieveRow[];
+    circular_sieves_table_data: ShapeIndexCircularSieveRow[];
     sieves_table_data: ShapeIndexSieveRow[];
+    reads_table_data: ShapeIndexReadRow[];
 };
 
 @Schema({ collection: 'shapeIndexs' })

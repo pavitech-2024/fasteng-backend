@@ -10,5 +10,6 @@ export class Calc_SHAPEINDEX_Dto {
 }
 
 export interface Calc_SHAPEINDEX_Out {
-  shapeIndex: number;
+  shape_index: number,
+  alerts: string[]
 }
