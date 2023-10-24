@@ -6,7 +6,10 @@ export class Calc_Ddui_Dto {
   generalData: Ddui['generalData'];
 
   @IsNotEmpty()
-  ddui: Ddui['dduiStep2'];
+  dduiStep2: Ddui['dduiStep2'];
+
+  @IsNotEmpty()
+  dduiStep3: Ddui['dduiStep3']
 }
 
 export interface Calc_Ddui_Out {

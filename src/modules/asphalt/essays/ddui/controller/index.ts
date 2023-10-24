@@ -46,7 +46,7 @@ export class DduiController {
     content: { 'application/json': { schema: { example: { success: true, data: 'essay data' } } } },
   })
   @ApiResponse({ status: 400, description: 'Erro ao calcular os resultados do ensaio ddui com os dados enviados.' })
-  async calculateDdui(@Body() body: Calc_Ddui_Dto) {
+  async calculateDdui(@Body() body: any) {
     this.logger.log('calculate ddui > [body]');
 
     const ddui = await this.dduiService.calculateDdui(body);
