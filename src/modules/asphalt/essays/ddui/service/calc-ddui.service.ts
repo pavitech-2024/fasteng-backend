@@ -11,7 +11,7 @@ export class Calc_Ddui_Service {
     data.forEach((row) => {
       Object.keys(row).forEach((key) => {
         if (key === "condicionamento") {
-          if (row[key] === "Sim") {
+          if (row[key] === true) {
             conditionedData.push(row);
           } else {
             unconditionedData.push(row);
@@ -31,6 +31,7 @@ export class Calc_Ddui_Service {
       rtsKgf: conditionedRtsKgf,
       average: conditionedAverage,
     } = this.calculateRtsValues(conditionedData, pressConst);
+
 
     const {
       rtsMpa: unconditionedRtsMpa,
@@ -56,7 +57,7 @@ export class Calc_Ddui_Service {
       // Coloque aqui o restante do seu código para processar generalData...
 
       // Chamar a função confirmResults diretamente
-      const result = this.confirmResults(dduiStep3.data, dduiStep2.pressConstant);
+      const result = this.confirmResults(dduiStep3.ddui_data, dduiStep2.pressConstant);
 
       // Continuar com o resto do seu código...
 
@@ -67,6 +68,7 @@ export class Calc_Ddui_Service {
     } catch (error) {
       throw error;
     }
+
   }
 
   private calculateRtsValues(data: any[], pressConst: number) {
@@ -96,10 +98,7 @@ export class Calc_Ddui_Service {
 
       const averageDiameter = sumDiameter / nDiameter;
       const averageHeight = sumHeight / nHeight;
-      const rtMpa =
-        ((2 * pressConst * row["pressReading"]) /
-          (Math.PI * (averageDiameter / 10) * (averageHeight / 10))) /
-        10;
+      const rtMpa = ((2 * pressConst * row["pressReading"]) / (Math.PI * (averageDiameter / 10) * (averageHeight / 10)) / 10);
       const rtKgf = rtMpa * 10;
       rtsMpa.push(rtMpa);
       rtsKgf.push(rtKgf);

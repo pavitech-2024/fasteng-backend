@@ -21,7 +21,7 @@ export type Ddui_Step2 = {
 };
 
 export type Ddui_Step3 = {
-  data: {
+  ddui_data: {
     sampleName: string,
     condicionamento: string,
     d1: number,
