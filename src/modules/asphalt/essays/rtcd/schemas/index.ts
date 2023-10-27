@@ -12,17 +12,15 @@ export type RtcdGeneralData = {
   material: Material;
 };
 
-type Rtcd_Step2 = {
-  // laboratoryName: string,
-  // responsible: string,
-  // selectedDosage: string,
-  // dnitRange: string,
-  // sampleOrigin: string,
-  // sampleVoidVolume: string,
-  // pressSpecification: string,
+export type Rtcd_Step2 = {
+  dnitRange: string;
+  sampleVoidVolume: number;
   pressConstant: number;
-  // experimentDate: Date,
-  // minRrt: number,
+  pressSpecification: string;
+  sampleOrigin: string;
+};
+
+type Rtcd_Step3 = {
   data: {
     sampleName: string;
     d1: number;
@@ -46,6 +44,10 @@ export class Rtcd {
   @IsNotEmpty()
   @Prop({ type: Object })
   rtcdStep2: Rtcd_Step2;
+
+  @IsNotEmpty()
+  @Prop({ type: Object })
+  rtcdStep3: Rtcd_Step3;
 
   @IsNotEmpty()
   @Prop({ type: Object })

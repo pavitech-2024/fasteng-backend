@@ -31,7 +31,6 @@ import { ReportErrorModule } from './modules/report-error/report-error.module';
   // controllers: [ReportErrorController],
   providers: [{ provide: APP_INTERCEPTOR, useClass: ErrorsInterceptor }],
 })
-
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer

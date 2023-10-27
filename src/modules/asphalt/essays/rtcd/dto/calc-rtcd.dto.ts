@@ -6,14 +6,15 @@ export class Calc_Rtcd_Dto {
   generalData: Rtcd['generalData'];
 
   @IsNotEmpty()
-  rtcd: Rtcd['rtcdStep2'];
+  rtcdStep2: Rtcd['rtcdStep2'];
+
+  @IsNotEmpty()
+  rtcdStep3: Rtcd['rtcdStep3'];
 }
 
 export interface Calc_Rtcd_Out {
   //Lembrar de depois ver no Front para trocar o any pelo tipo certo
-  everyRtcdsMpa: any[];
-  everyRtcdsKgf: any[];
-  conditionedAverage: number;
-  unconditionedAverage: number;
-  rrt: number;
+  everyRtsMpa: number[];
+  everyRtsKgf: number[];
+  average: number;
 }
