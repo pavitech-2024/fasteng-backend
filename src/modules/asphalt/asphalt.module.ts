@@ -9,6 +9,8 @@ import { FlashPoint, FlashPointSchema } from './essays/flashPoint/schemas';
 import { FlashPointModule } from './essays/flashPoint/flashPoint.module';
 import { Ductility, DuctilitySchema } from './essays/ductility/schemas';
 import { DuctilityModule } from './essays/ductility/ductility.module';
+import { Angularity, AngularitySchema } from './essays/angularity/schemas';
+import { AngularityModule } from './essays/angularity/angularity.module';
 import { Rtfo, RtfoSchema } from './essays/rtfo/schemas';
 import { RtfoModule } from './essays/rtfo/rtfo.module';
 import { AsphaltGranulometry, AsphaltGranulometrySchema } from './essays/granulometry/schemas';
@@ -30,6 +32,7 @@ const Models: ModelDefinition[] = [
   { name: SpecifyMass.name, schema: SpecifyMassSchema },
   { name: FlashPoint.name, schema: FlashPointSchema },
   { name: Ductility.name, schema: DuctilitySchema },
+  { name: Angularity.name, schema: AngularitySchema },
   { name: Adhesiveness.name, schema: AdhesivenessSchema },
 ];
 
@@ -43,6 +46,7 @@ const Modules = [
   FlashPointModule, 
   DuctilityModule,
   AdhesivenessModule,
+  AngularityModule,
 ]
 
 @Global()
