@@ -11,17 +11,43 @@ import { Ductility, DuctilitySchema } from './essays/ductility/schemas';
 import { DuctilityModule } from './essays/ductility/ductility.module';
 import { Angularity, AngularitySchema } from './essays/angularity/schemas';
 import { AngularityModule } from './essays/angularity/angularity.module';
-
+import { Rtfo, RtfoSchema } from './essays/rtfo/schemas';
+import { RtfoModule } from './essays/rtfo/rtfo.module';
+import { AsphaltGranulometry, AsphaltGranulometrySchema } from './essays/granulometry/schemas';
+import { AsphaltGranulometryModule } from './essays/granulometry/granulometry.module';
+import { Penetration, PenetrationSchema } from './essays/penetration/schema';
+import { PenetrationModule } from './essays/penetration/penetration.module';
+import { Adhesiveness, AdhesivenessSchema } from './essays/adhesiveness/schemas';
+import { AdhesivenessModule } from './essays/adhesiveness/adhesiveness.module';
+import { AbrasionModule } from './essays/abrasion/abrasion.module';
+import { Abrasion, AbrasionSchema } from './essays/abrasion/schemas';
 
 const Models: ModelDefinition[] = [
+  
   { name: Material.name, schema: MaterialSchema },
+  { name: Rtfo.name, schema: RtfoSchema },
+  { name: AsphaltGranulometry.name, schema: AsphaltGranulometrySchema },
+  { name: Penetration.name, schema: PenetrationSchema },
+  { name: Abrasion.name, schema: AbrasionSchema },
   { name: SpecifyMass.name, schema: SpecifyMassSchema },
   { name: FlashPoint.name, schema: FlashPointSchema },
   { name: Ductility.name, schema: DuctilitySchema },
   { name: Angularity.name, schema: AngularitySchema },
+  { name: Adhesiveness.name, schema: AdhesivenessSchema },
 ];
 
-const Modules = [MaterialsModule, SpecifyMassModule, FlashPointModule, DuctilityModule, AngularityModule];
+const Modules = [
+  MaterialsModule, 
+  RtfoModule,
+  AsphaltGranulometryModule,
+  PenetrationModule,
+  AbrasionModule,
+  SpecifyMassModule, 
+  FlashPointModule, 
+  DuctilityModule,
+  AdhesivenessModule,
+  AngularityModule,
+]
 
 @Global()
 @Module({
