@@ -3,6 +3,8 @@ import { ModelDefinition, MongooseModule } from '@nestjs/mongoose';
 import { DATABASE_CONNECTION } from '../../infra/mongoose/database.config';
 import { MaterialsModule } from './materials/materials.module';
 import { Material, MaterialSchema } from './materials/schemas';
+import { SandEquivalentModule } from './essays/sandEquivalent/sandEquivalent.module';
+import { SandEquivalent, SandEquivalentSchema } from './essays/sandEquivalent/schemas';
 import { SpecifyMass, SpecifyMassSchema } from './essays/specifyMass/schemas';
 import { SpecifyMassModule } from './essays/specifyMass/specifyMass.module';
 import { FlashPoint, FlashPointSchema } from './essays/flashPoint/schemas';
@@ -34,6 +36,7 @@ const Models: ModelDefinition[] = [
   { name: Ductility.name, schema: DuctilitySchema },
   { name: Angularity.name, schema: AngularitySchema },
   { name: Adhesiveness.name, schema: AdhesivenessSchema },
+  { name: SandEquivalent.name, schema: SandEquivalentSchema },
 ];
 
 const Modules = [
@@ -47,6 +50,7 @@ const Modules = [
   DuctilityModule,
   AdhesivenessModule,
   AngularityModule,
+  SandEquivalentModule,
 ]
 
 @Global()
@@ -54,4 +58,5 @@ const Modules = [
   imports: [MongooseModule.forFeature(Models, DATABASE_CONNECTION.ASPHALT), ...Modules],
   exports: [MongooseModule, ...Modules],
 })
+
 export class AsphaltModule {}
