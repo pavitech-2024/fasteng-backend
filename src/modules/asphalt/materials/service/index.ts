@@ -61,22 +61,6 @@ export class MaterialsService {
     }
   }
 
-  async getAllBinders(userId: string): Promise<Material[]> {
-    try {
-      // busca todos os materiais no banco de dados
-      const materials = await this.materialsRepository.findAllBinders({
-        "type": "asphaltBinder"
-      });
-
-      // retorna os materiais ligantes encontrados que pertencem ao usuário
-      return materials.filter((material) => material.userId === userId);
-    } catch (error) {
-      this.logger.error(`error on get all materials > [error]: ${error}`);
-
-      throw error;
-    }
-  }
-
   async updateMaterial(material: Material): Promise<Material> {
     try {
       // busca um material com o id passado no banco de dados
