@@ -36,6 +36,16 @@ export class MaterialsController {
     return this.materialsService.getAllMaterials(userId);
   }
 
+  @Get('binders/:id')
+  @ApiOperation({ summary: 'Retorna todos os materiais do tipo ligante do banco de dados de um usuário.' })
+  @ApiResponse({ status: 200, description: 'Materiais ligantes encontrados com sucesso!' })
+  @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
+  async getAllBindersByUserId(@Param('id') userId: string) {
+    this.logger.log(`get all binders by user id > [id]: ${userId}`);
+
+    return this.materialsService.getAllBinders(userId);
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'Retorna um material do banco de dados.' })
   @ApiResponse({ status: 200, description: 'Material encontrado com sucesso!' })
