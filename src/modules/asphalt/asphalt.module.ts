@@ -3,6 +3,8 @@ import { ModelDefinition, MongooseModule } from '@nestjs/mongoose';
 import { DATABASE_CONNECTION } from '../../infra/mongoose/database.config';
 import { MaterialsModule } from './materials/materials.module';
 import { Material, MaterialSchema } from './materials/schemas';
+import { AsphaltGranulometry, AsphaltGranulometrySchema } from './essays/granulometry/schemas';
+import { AsphaltGranulometryModule } from './essays/granulometry/granulometry.module';
 import { Penetration, PenetrationSchema } from './essays/penetration/schema';
 import { PenetrationModule } from './essays/penetration/penetration.module';
 import { AbrasionModule } from './essays/abrasion/abrasion.module';
@@ -10,11 +12,17 @@ import { Abrasion, AbrasionSchema } from './essays/abrasion/schemas';
 
 const Models: ModelDefinition[] = [
   { name: Material.name, schema: MaterialSchema },
+  { name: AsphaltGranulometry.name, schema: AsphaltGranulometrySchema },
   { name: Penetration.name, schema: PenetrationSchema },
   { name: Abrasion.name, schema: AbrasionSchema }
 ];
 
-const Modules = [MaterialsModule, PenetrationModule, AbrasionModule];
+const Modules = [
+  MaterialsModule,
+  AsphaltGranulometryModule,
+  PenetrationModule,
+  AbrasionModule,
+]
 
 @Global()
 @Module({
