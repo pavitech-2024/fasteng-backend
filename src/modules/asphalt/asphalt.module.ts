@@ -3,6 +3,12 @@ import { ModelDefinition, MongooseModule } from '@nestjs/mongoose';
 import { DATABASE_CONNECTION } from '../../infra/mongoose/database.config';
 import { MaterialsModule } from './materials/materials.module';
 import { Material, MaterialSchema } from './materials/schemas';
+import { SpecifyMass, SpecifyMassSchema } from './essays/specifyMass/schemas';
+import { SpecifyMassModule } from './essays/specifyMass/specifyMass.module';
+import { FlashPoint, FlashPointSchema } from './essays/flashPoint/schemas';
+import { FlashPointModule } from './essays/flashPoint/flashPoint.module';
+import { Ductility, DuctilitySchema } from './essays/ductility/schemas';
+import { DuctilityModule } from './essays/ductility/ductility.module';
 import { AsphaltGranulometry, AsphaltGranulometrySchema } from './essays/granulometry/schemas';
 import { AsphaltGranulometryModule } from './essays/granulometry/granulometry.module';
 import { Penetration, PenetrationSchema } from './essays/penetration/schema';
@@ -14,7 +20,10 @@ const Models: ModelDefinition[] = [
   { name: Material.name, schema: MaterialSchema },
   { name: AsphaltGranulometry.name, schema: AsphaltGranulometrySchema },
   { name: Penetration.name, schema: PenetrationSchema },
-  { name: Abrasion.name, schema: AbrasionSchema }
+  { name: Abrasion.name, schema: AbrasionSchema },
+  { name: SpecifyMass.name, schema: SpecifyMassSchema },
+  { name: FlashPoint.name, schema: FlashPointSchema },
+  { name: Ductility.name, schema: DuctilitySchema },
 ];
 
 const Modules = [
@@ -22,6 +31,9 @@ const Modules = [
   AsphaltGranulometryModule,
   PenetrationModule,
   AbrasionModule,
+  SpecifyMassModule, 
+  FlashPointModule, 
+  DuctilityModule
 ]
 
 @Global()
