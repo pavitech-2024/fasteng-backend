@@ -15,7 +15,7 @@ export class GeneralData_SUCS_Service {
 
   async verifyInitSucs({ name, sample }: SucsInitDto) {
     try {
-      this.logger.log('verify init sucs on general-data.sucs.service.ts > [body]');
+      // this.logger.log('verify init sucs on general-data.sucs.service.ts > [body]');
       // verificar se existe uma amostra com mesmo nome e userId no banco de dados
       const sampleExists = await this.sampleRepository.findOne({ 
         "_id": sample._id 
