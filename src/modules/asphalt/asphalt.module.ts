@@ -13,6 +13,8 @@ import { AsphaltGranulometry, AsphaltGranulometrySchema } from './essays/granulo
 import { AsphaltGranulometryModule } from './essays/granulometry/granulometry.module';
 import { Penetration, PenetrationSchema } from './essays/penetration/schema';
 import { PenetrationModule } from './essays/penetration/penetration.module';
+import { Adhesiveness, AdhesivenessSchema } from './essays/adhesiveness/schemas';
+import { AdhesivenessModule } from './essays/adhesiveness/adhesiveness.module';
 import { AbrasionModule } from './essays/abrasion/abrasion.module';
 import { Abrasion, AbrasionSchema } from './essays/abrasion/schemas';
 
@@ -24,6 +26,7 @@ const Models: ModelDefinition[] = [
   { name: SpecifyMass.name, schema: SpecifyMassSchema },
   { name: FlashPoint.name, schema: FlashPointSchema },
   { name: Ductility.name, schema: DuctilitySchema },
+  { name: Adhesiveness.name, schema: AdhesivenessSchema },
 ];
 
 const Modules = [
@@ -33,7 +36,8 @@ const Modules = [
   AbrasionModule,
   SpecifyMassModule, 
   FlashPointModule, 
-  DuctilityModule
+  DuctilityModule,
+  AdhesivenessModule,
 ]
 
 @Global()
