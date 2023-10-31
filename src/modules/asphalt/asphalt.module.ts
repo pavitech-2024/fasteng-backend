@@ -9,16 +9,32 @@ import { FlashPoint, FlashPointSchema } from './essays/flashPoint/schemas';
 import { FlashPointModule } from './essays/flashPoint/flashPoint.module';
 import { Ductility, DuctilitySchema } from './essays/ductility/schemas';
 import { DuctilityModule } from './essays/ductility/ductility.module';
-
+import { AsphaltGranulometry, AsphaltGranulometrySchema } from './essays/granulometry/schemas';
+import { AsphaltGranulometryModule } from './essays/granulometry/granulometry.module';
+import { Penetration, PenetrationSchema } from './essays/penetration/schema';
+import { PenetrationModule } from './essays/penetration/penetration.module';
+import { AbrasionModule } from './essays/abrasion/abrasion.module';
+import { Abrasion, AbrasionSchema } from './essays/abrasion/schemas';
 
 const Models: ModelDefinition[] = [
   { name: Material.name, schema: MaterialSchema },
+  { name: AsphaltGranulometry.name, schema: AsphaltGranulometrySchema },
+  { name: Penetration.name, schema: PenetrationSchema },
+  { name: Abrasion.name, schema: AbrasionSchema },
   { name: SpecifyMass.name, schema: SpecifyMassSchema },
   { name: FlashPoint.name, schema: FlashPointSchema },
   { name: Ductility.name, schema: DuctilitySchema },
 ];
 
-const Modules = [MaterialsModule, SpecifyMassModule, FlashPointModule, DuctilityModule];
+const Modules = [
+  MaterialsModule,
+  AsphaltGranulometryModule,
+  PenetrationModule,
+  AbrasionModule,
+  SpecifyMassModule, 
+  FlashPointModule, 
+  DuctilityModule
+]
 
 @Global()
 @Module({

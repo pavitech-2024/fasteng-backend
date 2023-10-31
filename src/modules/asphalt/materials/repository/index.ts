@@ -30,4 +30,8 @@ export class MaterialsRepository {
   async findOneAndDelete(materialsFilterQuery: any): Promise<Material> {
     return this.materialModel.findByIdAndDelete(materialsFilterQuery);
   }
+
+  async findById(id: string): Promise<Material> {
+    return this.materialModel.findById(id).exec();
+  }
 }
