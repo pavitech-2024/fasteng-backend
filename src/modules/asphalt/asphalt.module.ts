@@ -7,17 +7,21 @@ import { AsphaltGranulometry, AsphaltGranulometrySchema } from './essays/granulo
 import { AsphaltGranulometryModule } from './essays/granulometry/granulometry.module';
 import { Penetration, PenetrationSchema } from './essays/penetration/schema';
 import { PenetrationModule } from './essays/penetration/penetration.module';
+import { AbrasionModule } from './essays/abrasion/abrasion.module';
+import { Abrasion, AbrasionSchema } from './essays/abrasion/schemas';
 
 const Models: ModelDefinition[] = [
   { name: Material.name, schema: MaterialSchema },
   { name: AsphaltGranulometry.name, schema: AsphaltGranulometrySchema },
-  { name: Penetration.name, schema: PenetrationSchema }
+  { name: Penetration.name, schema: PenetrationSchema },
+  { name: Abrasion.name, schema: AbrasionSchema }
 ];
 
 const Modules = [
   MaterialsModule,
   AsphaltGranulometryModule,
-  PenetrationModule
+  PenetrationModule,
+  AbrasionModule,
 ]
 
 @Global()
