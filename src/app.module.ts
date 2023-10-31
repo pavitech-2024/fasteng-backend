@@ -1,5 +1,6 @@
 import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+import { ConfigModule } from '@nestjs/config';
 
 //Interceptors
 import { ErrorsInterceptor } from './config/interceptors/ErrorsInterceptor';
@@ -15,8 +16,7 @@ import { AsphaltModule } from './modules/asphalt/asphalt.module';
 import { SoilsModule } from './modules/soils/soils.module';
 import { ConcreteModule } from './modules/concrete/concrete.module';
 import { ReportErrorModule } from './modules/report-error/report-error.module';
-import { ReportErrorController } from './modules/report-error/report-error.controller';
-import { ConfigModule } from '@nestjs/config';
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
@@ -28,7 +28,7 @@ import { ConfigModule } from '@nestjs/config';
     ConcreteModule,
     ReportErrorModule,
   ],
-  controllers: [ReportErrorController],
+  // controllers: [ReportErrorController],
   providers: [{ provide: APP_INTERCEPTOR, useClass: ErrorsInterceptor }],
 })
 
