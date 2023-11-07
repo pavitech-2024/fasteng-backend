@@ -4,7 +4,7 @@ import { SpecifyMassInitDto } from '../dto/specifyMass-init.dto';
 import { Calc_SPECIFYMASS_Dto, Calc_SPECIFYMASS_Out } from '../dto/calc.specifyMass.dto';
 import { AlreadyExists } from '../../../../../utils/exceptions';
 import { SpecifyMassRepository } from '../repository';
-import { Calc_SPECIFYMASS_Service } from './calc.specifymass.service';
+import { Calc_SPECIFYMASS_Service } from './calc.specifyMass.service';
 
 @Injectable()
 export class SpecifyMassService {
