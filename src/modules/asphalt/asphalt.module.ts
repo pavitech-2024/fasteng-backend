@@ -27,6 +27,8 @@ import { SayboltFurolModule } from './essays/sayboltFurol/sayboltFurol.module';
 import { SayboltFurol, SayboltFurolSchema } from './essays/sayboltFurol/schemas';
 import { SofteningPoint, SofteningPointSchema } from './essays/softeningPoint/schemas';
 import { SofteningPointModule } from './essays/softeningPoint/softeningPoint.module';
+import { Ddui, DduiSchema } from './essays/ddui/schemas';
+import { DduiModule } from './essays/ddui/ddui.module';
 
 const Models: ModelDefinition[] = [
   
@@ -43,6 +45,7 @@ const Models: ModelDefinition[] = [
   { name: SandEquivalent.name, schema: SandEquivalentSchema },
   { name: SayboltFurol.name, schema: SayboltFurolSchema },
   { name: SofteningPoint.name, schema: SofteningPointSchema },
+  { name: Ddui.name, schema: DduiSchema },
 ];
 
 const Modules = [
@@ -59,6 +62,7 @@ const Modules = [
   SandEquivalentModule,
   SayboltFurolModule,
   SofteningPointModule,
+  DduiModule,
 ]
 
 @Global()
