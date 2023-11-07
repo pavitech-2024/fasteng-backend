@@ -3,7 +3,7 @@ import { ApiTags, ApiOperation, ApiResponse } from "@nestjs/swagger";
 import { Calc_SayboltFurol_Dto, Calc_SayboltFurol_Out } from "../dto/calc-sayboltFurol.dto";
 import { SayboltFurolInitDto } from "../dto/init-sayboltFurol.dto";
 import { Response } from 'express';
-import { SayboltFurolService } from "../service/sayboltFurol.service";
+import { SayboltFurolService } from "../service";
 
 @ApiTags('sayboltFurol')
 @Controller('asphalt/essays/sayboltFurol')

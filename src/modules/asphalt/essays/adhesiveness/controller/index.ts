@@ -2,7 +2,7 @@ import { Controller, Logger, Post, Res, Body } from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiResponse } from "@nestjs/swagger";
 import { Response } from 'express';
 import { AdhesivenessInitDto } from "../dto/adhesiveness-init.dto";
-import { AdhesivenessService } from "../service/adhesiveness.service";
+import { AdhesivenessService } from "../service";
 import { Calc_Adhesiveness_Dto, Calc_Adhesiveness_Out } from "../dto/calc.adhesiveness.dto";
 
 @ApiTags('adhesiveness')

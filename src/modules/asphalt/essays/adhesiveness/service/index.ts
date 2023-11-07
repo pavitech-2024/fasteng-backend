@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { AlreadyExists } from "utils/exceptions";
+import { AlreadyExists } from "../../../../../utils/exceptions";
 import { AdhesivenessRepository } from "../repository";
 import { AdhesivenessInitDto } from "../dto/adhesiveness-init.dto";
 import { Calc_Adhesiveness_Service } from "./calc.adhesiveness.service";

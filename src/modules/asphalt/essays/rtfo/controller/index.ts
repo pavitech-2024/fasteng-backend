@@ -3,7 +3,7 @@ import { ApiTags, ApiOperation, ApiResponse } from "@nestjs/swagger";
 import { Response } from 'express';
 import { Calc_Rtfo_Dto, Calc_Rtfo_Out } from "../dto/calc-rtfo.dto";
 import { RtfoInitDto } from "../dto/rtfo-init.dto";
-import { RtfoService } from "../service/rtfo.service";
+import { RtfoService } from "../service";
 
 @ApiTags('rtfo')
 @Controller('asphalt/essays/rtfo')

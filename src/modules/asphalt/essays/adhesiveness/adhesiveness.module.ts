@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
 import { AdhesivenessController } from "./controller";
 import { AdhesivenessRepository } from "./repository";
-import { AdhesivenessService } from "./service/adhesiveness.service";
+import { AdhesivenessService } from "./service";
 import { GeneralData_Adhesiveness_Service } from "./service/general-data.adhesiveness.service";
 import { Calc_Adhesiveness_Service } from "./service/calc.adhesiveness.service";
 

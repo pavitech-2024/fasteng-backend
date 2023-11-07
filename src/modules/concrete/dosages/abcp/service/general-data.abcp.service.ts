@@ -1,7 +1,7 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { ABCPRepository } from '../repository/index';
 import { ABCPInitDto } from "../dto/abcp-init.dto";
-import { AlreadyExists } from "utils/exceptions";
+import { AlreadyExists } from "../../../../../utils/exceptions";
 
 @Injectable()
 export class GeneralData_ABCP_Service {
