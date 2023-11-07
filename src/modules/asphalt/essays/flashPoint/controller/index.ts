@@ -48,12 +48,12 @@ export class FlashPointController {
     async calculateFlashPoint(@Body() body: Calc_FLASHPOINT_Dto) {
         this.logger.log('calculate flashpoint > [body]');
 
-        const flashpoint = await this.flashPointService.calculateFlashPoint(body);
+        const flashPoint = await this.flashPointService.calculateFlashPoint(body);
 
-        if (flashpoint.success) this.logger.log('calculate flashpoint > [success]');
+        if (flashPoint.success) this.logger.log('calculate flashpoint > [success]');
         else this.logger.error('calculate flashpoint > [error]');
 
-        return flashpoint;
+        return flashPoint;
     }
 
     @Post('save-essay')
@@ -81,11 +81,11 @@ export class FlashPointController {
     async saveEssay(@Res() response: Response, @Body() body: Calc_FLASHPOINT_Dto & Calc_FLASHPOINT_Out) {
         this.logger.log('save essay > [body]');
 
-        const flashpoint = await this.flashPointService.saveEssay(body);
+        const flashPoint = await this.flashPointService.saveEssay(body);
 
-        if (flashpoint.success) this.logger.log('save flashpoint essay > [success]');
+        if (flashPoint.success) this.logger.log('save flashpoint essay > [success]');
         else this.logger.error('save flashpoint essay > [error]');
 
-        return response.status(200).json(flashpoint);
+        return response.status(200).json(flashPoint);
     }
 }

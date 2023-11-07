@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Calc_FLASHPOINT_Dto, Calc_FLASHPOINT_Out } from '../dto/calc.flashpoint.dto';
+import { Calc_FLASHPOINT_Dto, Calc_FLASHPOINT_Out } from '../dto/calc.flashPoint.dto';
 import { FlashPointRepository } from '../repository';
 import { MaterialsRepository } from '../../../../../modules/asphalt/materials/repository';
 
