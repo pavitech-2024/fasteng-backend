@@ -35,7 +35,6 @@ import { Ddui, DduiSchema } from './essays/ddui/schemas';
 import { DduiModule } from './essays/ddui/ddui.module';
 
 const Models: ModelDefinition[] = [
-  
   { name: Material.name, schema: MaterialSchema },
   { name: Rtfo.name, schema: RtfoSchema },
   { name: AsphaltGranulometry.name, schema: AsphaltGranulometrySchema },
@@ -75,8 +74,8 @@ const Modules = [
 
 @Global()
 @Module({
-  imports: [MongooseModule.forFeature(Models, DATABASE_CONNECTION.ASPHALT), ...Modules],
-  exports: [MongooseModule, ...Modules],
+  imports: [MongooseModule.forFeature(Models, DATABASE_CONNECTION.ASPHALT), MaterialsModule],
+  exports: [MongooseModule, MaterialsModule],
 })
 
 export class AsphaltModule {}

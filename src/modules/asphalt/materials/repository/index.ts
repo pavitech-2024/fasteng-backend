@@ -16,9 +16,6 @@ export class MaterialsRepository {
   async find(): Promise<Material[]> {
     return this.materialModel.find();
   }
-  async findAllBinders(materialsFilterQuery: any): Promise<any> {
-    return this.materialModel.find(materialsFilterQuery)
-  }
 
   async findOne(materialsFilterQuery: any): Promise<Material> {
     return this.materialModel.findOne(materialsFilterQuery);
@@ -32,9 +29,5 @@ export class MaterialsRepository {
 
   async findOneAndDelete(materialsFilterQuery: any): Promise<Material> {
     return this.materialModel.findByIdAndDelete(materialsFilterQuery);
-  }
-
-  async findById(id: string): Promise<Material> {
-    return this.materialModel.findById(id).exec();
   }
 }
