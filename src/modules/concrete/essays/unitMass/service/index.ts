@@ -5,7 +5,7 @@ import { UnitMass_Step2_Dto } from '../dto/unitMass-step2.dto';
 import { step2Data_Service } from './step2Data.unitMass.service';
 import { Result_UnitMass_Service } from './result.unitMass.service';
 import { Result_UnitMass_Dto, UnitMass_Result } from '../dto/unitMass-result.dto';
-import { AlreadyExists } from 'utils/exceptions';
+import { AlreadyExists } from '../../../../../utils/exceptions';
 
 @Injectable()
 export class UnitMassService {

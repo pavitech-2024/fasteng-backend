@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { MaterialsRepository } from '../../../../../modules/concrete/materials/repository';
-import { NotFound, AlreadyExists } from 'utils/exceptions';
+import { NotFound, AlreadyExists } from '../../../../../utils/exceptions';
 import { UnitMassRepository } from '../repository';
 import { UnitMass_Init_Dto } from '../dto/unitMass-init.dto';
 

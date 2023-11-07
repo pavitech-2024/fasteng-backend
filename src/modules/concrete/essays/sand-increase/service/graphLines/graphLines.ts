@@ -1,4 +1,4 @@
-import { regression } from "utils/leastSquaresRegression";
+import { regression } from "../../../../../../utils/leastSquaresRegression";
 
 export function graphLines(listaDeX: number[], listaDeY: number[]): any {
   console.log('Lista X>', listaDeX, 'Lista Y>', listaDeY);
