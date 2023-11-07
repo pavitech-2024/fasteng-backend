@@ -1,5 +1,5 @@
 import { InjectModel } from "@nestjs/mongoose";
-import { DATABASE_CONNECTION } from "infra/mongoose/database.config";
+import { DATABASE_CONNECTION } from "../../../../../infra/mongoose/database.config";
 import { Model } from "mongoose";
 import { Adhesiveness, AdhesivenessDocument } from "../schemas";
 
