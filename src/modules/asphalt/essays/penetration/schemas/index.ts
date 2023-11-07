@@ -2,7 +2,7 @@ import { Prop, SchemaFactory, Schema } from "@nestjs/mongoose";
 import { IsNotEmpty } from "class-validator";
 import { Date, HydratedDocument } from "mongoose";
 import { Calc_Penetration_Out } from "../dto/calc.penetration.dto";
-import { Material } from "modules/asphalt/materials/schemas";
+import { Material } from "../../../../../modules/asphalt/materials/schemas";
 
 
 export type PenetrationDocument = HydratedDocument<Penetration>;

@@ -1,6 +1,6 @@
 import { Prop, SchemaFactory, Schema } from "@nestjs/mongoose";
 import { IsNotEmpty } from "class-validator";
-import { Material } from "modules/asphalt/materials/schemas";
+import { Material } from "../../../../../modules/asphalt/materials/schemas";
 import { HydratedDocument } from "mongoose";
 import { Calc_AsphaltGranulometry_Out } from "../dto/asphalt.calc.granulometry.dto";
 
