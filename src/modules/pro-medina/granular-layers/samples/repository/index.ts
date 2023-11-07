@@ -17,7 +17,8 @@ export class GranularLayers_SamplesRepository {
     return this.granularLayers_sampleModel.find();
   }
 
-  async findOne(granularLayers_samplesFilterQuery: any): Promise<GranularLayers_Sample> {
+  async findOne(granularLayers_samplesFilterQuery: any): 
+  Promise<GranularLayers_Sample> {
     return this.granularLayers_sampleModel.findOne(granularLayers_samplesFilterQuery);
   }
 

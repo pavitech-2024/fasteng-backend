@@ -26,6 +26,10 @@ import {
       useClass: ConcreteDatabaseConfig,
       connectionName: DATABASE_CONNECTION.CONCRETE,
     }),
+    MongooseModule.forRootAsync({
+      useClass: ConcreteDatabaseConfig,
+      connectionName: DATABASE_CONNECTION.PROMEDINA,
+    }),
   ],
   exports: [MongooseModule],
 })

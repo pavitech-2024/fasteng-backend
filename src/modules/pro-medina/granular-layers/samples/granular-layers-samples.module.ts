@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { GranularLayersSamplesService } from './service/granular-layers-samples.service';
-import { GranularLayersSamplesController } from './controller/granular-layers-samples.controller';
 import { GranularLayers_SamplesRepository } from './repository';
+import { GranularLayersSamplesController } from './controller';
 
 @Module({
   imports: [],
