@@ -13,7 +13,7 @@ export class GeneralData_SHAPEINDEX_Service {
 
   async verifyInitShapeIndex({ name, material }: ShapeIndexInitDto) {
     try {
-      this.logger.log('verify init shapeindex on general-data.shapeindex.service.ts > [body]');
+      this.logger.log('verify init shapeindex on general-data.shapeIndex.service.ts > [body]');
       // verificar se existe uma amostra com mesmo nome e userId no banco de dados
       const materialExists = await this.materialRepository.findOne({
         "_id": material._id

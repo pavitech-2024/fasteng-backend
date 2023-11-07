@@ -48,12 +48,12 @@ export class ElongatedParticlesController {
     async calculateElongatedParticles(@Body() body: Calc_ELONGATEDPARTICLES_Dto) {
         this.logger.log('calculate elongatedparticles > [body]');
 
-        const elongatedparticles = await this.elongatedParticlesService.calculateElongatedParticles(body);
+        const elongatedParticles = await this.elongatedParticlesService.calculateElongatedParticles(body);
 
-        if (elongatedparticles.success) this.logger.log('calculate elongatedparticles > [success]');
+        if (elongatedParticles.success) this.logger.log('calculate elongatedparticles > [success]');
         else this.logger.error('calculate elongatedparticles > [error]');
 
-        return elongatedparticles;
+        return elongatedParticles;
     }
 
     @Post('save-essay')
@@ -81,11 +81,11 @@ export class ElongatedParticlesController {
     async saveEssay(@Res() response: Response, @Body() body: Calc_ELONGATEDPARTICLES_Dto & Calc_ELONGATEDPARTICLES_Out) {
         this.logger.log('save essay > [body]');
 
-        const elongatedparticles = await this.elongatedParticlesService.saveEssay(body);
+        const elongatedParticles = await this.elongatedParticlesService.saveEssay(body);
 
-        if (elongatedparticles.success) this.logger.log('save elongatedparticles essay > [success]');
+        if (elongatedParticles.success) this.logger.log('save elongatedparticles essay > [success]');
         else this.logger.error('save elongatedparticles essay > [error]');
 
-        return response.status(200).json(elongatedparticles);
+        return response.status(200).json(elongatedParticles);
     }
 }

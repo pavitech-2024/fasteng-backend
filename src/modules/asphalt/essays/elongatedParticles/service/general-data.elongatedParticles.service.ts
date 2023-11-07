@@ -13,7 +13,7 @@ export class GeneralData_ELONGATEDPARTICLES_Service {
 
   async verifyInitElongatedParticles({ name, material }: ElongatedParticlesInitDto) {
     try {
-      this.logger.log('verify init elongatedparticles on general-data.elongatedparticles.service.ts > [body]');
+      this.logger.log('verify init elongatedparticles on general-data.elongatedParticles.service.ts > [body]');
       // verificar se existe uma amostra com mesmo nome e userId no banco de dados
       const materialExists = await this.materialRepository.findOne({
         "_id": material._id

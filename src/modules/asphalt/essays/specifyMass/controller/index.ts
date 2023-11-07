@@ -48,12 +48,12 @@ export class SpecifyMassController {
     async calculateSpecifyMass(@Body() body: Calc_SPECIFYMASS_Dto) {
         this.logger.log('calculate specifymass > [body]');
 
-        const specifymass = await this.specifyMassService.calculateSpecifyMass(body);
+        const specifyMass = await this.specifyMassService.calculateSpecifyMass(body);
 
-        if (specifymass.success) this.logger.log('calculate specifymass > [success]');
+        if (specifyMass.success) this.logger.log('calculate specifymass > [success]');
         else this.logger.error('calculate specifymass > [error]');
 
-        return specifymass;
+        return specifyMass;
     }
 
     @Post('save-essay')
@@ -81,11 +81,11 @@ export class SpecifyMassController {
     async saveEssay(@Res() response: Response, @Body() body: Calc_SPECIFYMASS_Dto & Calc_SPECIFYMASS_Out) {
         this.logger.log('save essay > [body]');
 
-        const specifymass = await this.specifyMassService.saveEssay(body);
+        const specifyMass = await this.specifyMassService.saveEssay(body);
 
-        if (specifymass.success) this.logger.log('save specifymass essay > [success]');
+        if (specifyMass.success) this.logger.log('save specifymass essay > [success]');
         else this.logger.error('save specifymass essay > [error]');
 
-        return response.status(200).json(specifymass);
+        return response.status(200).json(specifyMass);
     }
 }

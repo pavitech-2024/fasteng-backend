@@ -48,12 +48,12 @@ export class ShapeIndexController {
     async calculateShapeIndex(@Body() body: Calc_SHAPEINDEX_Dto) {
         this.logger.log('calculate shapeindex > [body]');
 
-        const shapeindex = await this.shapeIndexService.calculateShapeIndex(body);
+        const shapeIndex = await this.shapeIndexService.calculateShapeIndex(body);
 
-        if (shapeindex.success) this.logger.log('calculate shapeindex > [success]');
+        if (shapeIndex.success) this.logger.log('calculate shapeindex > [success]');
         else this.logger.error('calculate shapeindex > [error]');
 
-        return shapeindex;
+        return shapeIndex;
     }
 
     @Post('save-essay')
@@ -81,11 +81,11 @@ export class ShapeIndexController {
     async saveEssay(@Res() response: Response, @Body() body: Calc_SHAPEINDEX_Dto & Calc_SHAPEINDEX_Out) {
         this.logger.log('save essay > [body]');
 
-        const shapeindex = await this.shapeIndexService.saveEssay(body);
+        const shapeIndex = await this.shapeIndexService.saveEssay(body);
 
-        if (shapeindex.success) this.logger.log('save shapeindex essay > [success]');
+        if (shapeIndex.success) this.logger.log('save shapeindex essay > [success]');
         else this.logger.error('save shapeindex essay > [error]');
 
-        return response.status(200).json(shapeindex);
+        return response.status(200).json(shapeIndex);
     }
 }
