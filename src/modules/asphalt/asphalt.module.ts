@@ -13,6 +13,10 @@ import { Ductility, DuctilitySchema } from './essays/ductility/schemas';
 import { DuctilityModule } from './essays/ductility/ductility.module';
 import { Angularity, AngularitySchema } from './essays/angularity/schemas';
 import { AngularityModule } from './essays/angularity/angularity.module';
+import { ShapeIndex, ShapeIndexSchema } from './essays/shapeIndex/schemas';
+import { ShapeIndexModule } from './essays/shapeIndex/shapeIndex.module';
+import { ElongatedParticles, ElongatedParticlesSchema } from './essays/elongatedParticles/schemas';
+import { ElongatedParticlesModule } from './essays/elongatedParticles/elongatedParticles.module';
 import { Rtfo, RtfoSchema } from './essays/rtfo/schemas';
 import { RtfoModule } from './essays/rtfo/rtfo.module';
 import { AsphaltGranulometry, AsphaltGranulometrySchema } from './essays/granulometry/schemas';
@@ -46,6 +50,8 @@ const Models: ModelDefinition[] = [
   { name: SayboltFurol.name, schema: SayboltFurolSchema },
   { name: SofteningPoint.name, schema: SofteningPointSchema },
   { name: Ddui.name, schema: DduiSchema },
+  { name: ShapeIndex.name, schema: ShapeIndexSchema },
+  { name: ElongatedParticles.name, schema: ElongatedParticlesSchema },
 ];
 
 const Modules = [
@@ -63,6 +69,8 @@ const Modules = [
   SayboltFurolModule,
   SofteningPointModule,
   DduiModule,
+  ShapeIndexModule, 
+  ElongatedParticlesModule,
 ]
 
 @Global()
