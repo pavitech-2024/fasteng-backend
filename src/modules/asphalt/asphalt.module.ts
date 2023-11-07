@@ -23,6 +23,8 @@ import { Adhesiveness, AdhesivenessSchema } from './essays/adhesiveness/schemas'
 import { AdhesivenessModule } from './essays/adhesiveness/adhesiveness.module';
 import { AbrasionModule } from './essays/abrasion/abrasion.module';
 import { Abrasion, AbrasionSchema } from './essays/abrasion/schemas';
+import { SayboltFurolModule } from './essays/sayboltFurol/sayboltFurol.module';
+import { SayboltFurol, SayboltFurolSchema } from './essays/sayboltFurol/schemas';
 
 const Models: ModelDefinition[] = [
   
@@ -37,6 +39,7 @@ const Models: ModelDefinition[] = [
   { name: Angularity.name, schema: AngularitySchema },
   { name: Adhesiveness.name, schema: AdhesivenessSchema },
   { name: SandEquivalent.name, schema: SandEquivalentSchema },
+  { name: SayboltFurol.name, schema: SayboltFurolSchema },
 ];
 
 const Modules = [
@@ -51,6 +54,7 @@ const Modules = [
   AdhesivenessModule,
   AngularityModule,
   SandEquivalentModule,
+  SayboltFurolModule,
 ]
 
 @Global()
