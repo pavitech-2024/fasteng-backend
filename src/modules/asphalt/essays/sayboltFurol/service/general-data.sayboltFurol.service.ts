@@ -1,5 +1,5 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { MaterialsRepository } from "modules/asphalt/materials/repository";
+import { MaterialsRepository } from '../../../materials/repository';
 import { NotFound, AlreadyExists } from "../../../../../utils/exceptions";
 import { SayboltFurolInitDto } from "../dto/init-sayboltFurol.dto";
 import { SayboltFurolRepository } from "../repository";

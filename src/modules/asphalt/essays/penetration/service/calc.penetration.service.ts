@@ -1,7 +1,7 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { MaterialsRepository } from "modules/asphalt/materials/repository";
+import { MaterialsRepository } from '../../../materials/repository';
 import { Calc_Penetration_Dto, Calc_Penetration_Out } from "../dto/calc.penetration.dto";
-import { PenetrationRepository } from "../repository/indext";
+import { PenetrationRepository } from "../repository";
 
 @Injectable()
 export class Calc_Penetration_Service {

@@ -1,7 +1,7 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { MaterialsRepository } from "modules/asphalt/materials/repository";
+import { MaterialsRepository } from '../../../materials/repository';
 import { NotFound, AlreadyExists } from "../../../../../utils/exceptions";
-import { PenetrationRepository } from "../repository/indext";
+import { PenetrationRepository } from "../repository";
 import { PenetrationInitDto } from "../dto/penetration-init.dto";
 
 @Injectable()

@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { AlreadyExists } from "../../../../../utils/exceptions";
 import { Calc_Penetration_Dto, Calc_Penetration_Out } from "../dto/calc.penetration.dto";
 import { PenetrationInitDto } from "../dto/penetration-init.dto";
-import { PenetrationRepository } from "../repository/indext";
+import { PenetrationRepository } from "../repository";
 import { GeneralData_Penetration_Service } from "./general-data.penetration.service";
 import { Calc_Penetration_Service } from "./calc.penetration.service";
 

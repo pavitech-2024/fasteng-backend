@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
 import { PenetrationController } from "./controller";
-import { PenetrationRepository } from "./repository/indext";
+import { PenetrationRepository } from "./repository";
 import { PenetrationService } from "./service";
 import { Calc_Penetration_Service } from "./service/calc.penetration.service";
 import { GeneralData_Penetration_Service } from "./service/general-data.penetration.service";

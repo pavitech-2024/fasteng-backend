@@ -1,5 +1,5 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { MaterialsRepository } from "modules/asphalt/materials/repository";
+import { MaterialsRepository } from '../../../materials/repository';
 import { NotFound, AlreadyExists } from "../../../../../utils/exceptions";
 import { AsphaltGranulometryRepository } from "../repository";
 import { AsphaltGranulometryInitDto } from "../dto/asphalt.granulometry-init.dto";

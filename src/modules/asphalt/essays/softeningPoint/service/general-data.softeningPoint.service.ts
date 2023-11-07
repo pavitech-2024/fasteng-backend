@@ -1,9 +1,9 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { MaterialsRepository } from "modules/asphalt/materials/repository";
+import { MaterialsRepository } from '../../../materials/repository';
 import { NotFound, AlreadyExists } from "../../../../../utils/exceptions";
 import { SofteningPointInitDto } from "../dto/init-softeningPoint.dto";
 import { SofteningPointRepository } from "../repository";
-import { PenetrationRepository } from "../../penetration/repository";
+import { PenetrationRepository } from "../../penetration/repository"
 
 @Injectable()
 export class GeneralData_SofteningPoint_Service {
