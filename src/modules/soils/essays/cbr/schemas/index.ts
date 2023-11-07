@@ -18,7 +18,7 @@ export type CbrGeneralData = {
 
 type cbr_step2Data = {
   ring_constant: number;
-  cilinder_height: number;
+  cylinder_height: number;
   extended_reads: [
     { minimum_read: '0.5'; pol: '0.025'; mm: '0.63'; extended_read: number },
     { minimum_read: '1'; pol: '0.05'; mm: '1.27'; extended_read: number },

@@ -766,8 +766,10 @@
 "@tsconfig/node16@^1.0.2":
   "version" "1.0.3"
 
-"@types/babel__core@^7.1.14":
-  "version" "7.20.0"
+"@types/babel__core@^7.1.14", "@types/babel__core@^7.20.3":
+  "integrity" "sha512-54fjTSeSHwfan8AyHWrKbfBWiEUrNTZsUwPTDSNaaP1QDQIZbeNUg3a59E9D+375MzUw/x1vx2/0F5LBz+AeYA=="
+  "resolved" "https://registry.npmjs.org/@types/babel__core/-/babel__core-7.20.3.tgz"
+  "version" "7.20.3"
   dependencies:
     "@babel/parser" "^7.20.7"
     "@babel/types" "^7.20.7"
@@ -3452,7 +3454,7 @@
   optionalDependencies:
     "saslprep" "^1.0.3"
 
-"mongoose@^6.0.2", "mongoose@^7.0.1":
+"mongoose@^7.0.1":
   "version" "7.0.1"
   dependencies:
     "bson" "^5.0.1"
