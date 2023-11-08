@@ -10,17 +10,16 @@ export class GranularLayersSamplesService {
 
   constructor(private readonly granularLayers_SamplesRepository: GranularLayers_SamplesRepository) {}
 
-  async createSample(sample: CreateGranularLayersSampleDto, userId: string): Promise<GranularLayers_Sample> {
+  async createSample(sample: any): Promise<GranularLayers_Sample> {
     try {
       // verifica se existe uma sample com mesmo nome e userId no banco de dados
-      if (await this.granularLayers_SamplesRepository.findOne({ name: sample.name, userId }))
-        throw new AlreadyExists(`Granular layer sample with name "${sample.name}"`);
+      if (await this.granularLayers_SamplesRepository.findOne({ name: sample.generalData.name }))
+        throw new AlreadyExists(`Granular layer sample with name "${sample.generalData.name}"`);
       
       // cria uma amostra no banco de dados
       return this.granularLayers_SamplesRepository.create({
         ...sample,
         createdAt: new Date(),
-        userId,
       });
     } catch (error) {
       this.logger.error(`error on create sample > [error]: ${error}`);
@@ -28,19 +27,19 @@ export class GranularLayersSamplesService {
     }
   }
 
-  async getAllSamples(userId: string): Promise<GranularLayers_Sample[]> {
-    try {
-      // busca todas as amostras no banco de dados
-      const samples = await this.granularLayers_SamplesRepository.find();
+  // async getAllSamples(userId: string): Promise<GranularLayers_Sample[]> {
+  //   try {
+  //     // busca todas as amostras no banco de dados
+  //     const samples = await this.granularLayers_SamplesRepository.find();
 
-      // retorna as amostras encontradas que pertencem ao usuário
-      return samples.filter((sample) => sample.userId === userId);
-    } catch (error) {
-      this.logger.error(`error on get all granular layers samples > [error]: ${error}`);
+  //     // retorna as amostras encontradas que pertencem ao usuário
+  //     return samples.filter((sample) => sample.generalData.userId === userId);
+  //   } catch (error) {
+  //     this.logger.error(`error on get all granular layers samples > [error]: ${error}`);
 
-      throw error;
-    }
-  }
+  //     throw error;
+  //   }
+  // }
 
   async getSample(sampleId: string): Promise<GranularLayers_Sample> {
     try {

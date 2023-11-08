@@ -16,24 +16,24 @@ export class GranularLayersSamplesController {
   @ApiOperation({ summary: 'Cria uma amostra de camadas granulares no banco de dados.' })
   @ApiResponse({ status: 201, description: 'Amostra de camadas granulares criada com sucesso!' })
   @ApiResponse({ status: 400, description: 'Erro ao criar amostra de camadas granulares!' })
-  async createSample(@Body() sample: CreateGranularLayersSampleDto, @User('userId') userId: string) {
+  async createSample(@Body() sample: any) {
     this.logger.log('create granular layers sample > [body]');
-    const createdSample = await this.granularLayersSamplesService.createSample(sample, userId);
+    const createdSample = await this.granularLayersSamplesService.createSample(sample);
 
     if (createdSample) this.logger.log(`grabular layer sample created > [id]: ${createdSample._id}`);
 
     return createdSample;
   }
 
-  @Get('all/:id')
-  @ApiOperation({ summary: 'Retorna todas as amostras de camadas granulares do banco de dados de um usuário.' })
-  @ApiResponse({ status: 200, description: 'Amostras de camadas granulares encontradas com sucesso!' })
-  @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
-  async getAllByUserId(@Param('id') userId: string) {
-    this.logger.log(`get all samples by user id > [id]: ${userId}`);
+  // @Get('all/:id')
+  // @ApiOperation({ summary: 'Retorna todas as amostras de camadas granulares do banco de dados de um usuário.' })
+  // @ApiResponse({ status: 200, description: 'Amostras de camadas granulares encontradas com sucesso!' })
+  // @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
+  // async getAllByUserId(@Param('id') userId: string) {
+  //   this.logger.log(`get all samples by user id > [id]: ${userId}`);
 
-    return this.granularLayersSamplesService.getAllSamples(userId);
-  }
+  //   return this.granularLayersSamplesService.getAllSamples(userId);
+  // }
 
   @Get(':id')
   @ApiOperation({ summary: 'Retorna uma amostra de camadas granulares do banco de dados.' })
