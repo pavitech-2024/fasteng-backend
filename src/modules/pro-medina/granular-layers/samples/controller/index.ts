@@ -12,7 +12,7 @@ export class GranularLayersSamplesController {
 
   constructor(private readonly granularLayersSamplesService: GranularLayersSamplesService) {}
 
-  @Post()
+  @Post('save')
   @ApiOperation({ summary: 'Cria uma amostra de camadas granulares no banco de dados.' })
   @ApiResponse({ status: 201, description: 'Amostra de camadas granulares criada com sucesso!' })
   @ApiResponse({ status: 400, description: 'Erro ao criar amostra de camadas granulares!' })
