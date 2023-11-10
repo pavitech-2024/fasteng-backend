@@ -2,6 +2,7 @@ import { Controller, Logger, Post, Body, Get, Param, Put, Delete } from "@nestjs
 import { ApiTags, ApiOperation, ApiResponse } from "@nestjs/swagger";
 import { StabilizedLayers_Sample } from "../schemas";
 import { StabilizedLayersSamplesService } from "../service/stabilized-layers-samples.service";
+import { CreateStabilizedLayersSampleDto } from "../dto/create-stabilized-layers-sample.dto";
 
 @ApiTags('samples')
 @Controller('promedina/stabilized-layers/stabilized-layers-samples')
@@ -14,7 +15,7 @@ export class StabilizedLayersSamplesController {
   @ApiOperation({ summary: 'Cria uma amostra de camadas stabilizedes no banco de dados.' })
   @ApiResponse({ status: 201, description: 'Amostra de camadas stabilizedes criada com sucesso!' })
   @ApiResponse({ status: 400, description: 'Erro ao criar amostra de camadas stabilizedes!' })
-  async createSample(@Body() sample: any) {
+  async createSample(@Body() sample: CreateStabilizedLayersSampleDto) {
     this.logger.log('create stabilized layers sample > [body]');
     const createdSample = await this.stabilizedLayersSamplesService.createSample(sample);
 

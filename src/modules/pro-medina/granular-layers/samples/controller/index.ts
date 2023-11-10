@@ -2,7 +2,6 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Logger, Put } from '
 import { GranularLayersSamplesService } from '../service/granular-layers-samples.service';
 import { CreateGranularLayersSampleDto } from '../dto/create-granular-layers-sample.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { User } from 'config/decorators/user.decorator';
 import { GranularLayers_Sample } from '../schemas';
 
 @ApiTags('samples')
@@ -16,11 +15,11 @@ export class GranularLayersSamplesController {
   @ApiOperation({ summary: 'Cria uma amostra de camadas granulares no banco de dados.' })
   @ApiResponse({ status: 201, description: 'Amostra de camadas granulares criada com sucesso!' })
   @ApiResponse({ status: 400, description: 'Erro ao criar amostra de camadas granulares!' })
-  async createSample(@Body() sample: any) {
+  async createSample(@Body() sample: CreateGranularLayersSampleDto) {
     this.logger.log('create granular layers sample > [body]');
     const createdSample = await this.granularLayersSamplesService.createSample(sample);
 
-    if (createdSample) this.logger.log(`grabular layer sample created > [id]: ${createdSample._id}`);
+    if (createdSample) this.logger.log(`granular layer sample created > [id]: ${createdSample._id}`);
 
     return createdSample;
   }

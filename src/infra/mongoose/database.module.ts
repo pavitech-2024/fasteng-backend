@@ -5,6 +5,7 @@ import {
   AsphaltDatabaseConfig,
   CommonDatabaseConfig,
   ConcreteDatabaseConfig,
+  PromedinaDatabaseConfig,
   SoilsDatabaseConfig,
 } from './mongoose-config.service';
 
@@ -27,7 +28,7 @@ import {
       connectionName: DATABASE_CONNECTION.CONCRETE,
     }),
     MongooseModule.forRootAsync({
-      useClass: ConcreteDatabaseConfig,
+      useClass: PromedinaDatabaseConfig,
       connectionName: DATABASE_CONNECTION.PROMEDINA,
     }),
   ],

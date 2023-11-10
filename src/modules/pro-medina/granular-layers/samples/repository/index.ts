@@ -19,7 +19,9 @@ export class GranularLayers_SamplesRepository {
 
   async findOne(granularLayers_samplesFilterQuery: any): 
   Promise<GranularLayers_Sample> {
-    return this.granularLayers_sampleModel.findOne(granularLayers_samplesFilterQuery);
+    const { name } = granularLayers_samplesFilterQuery;
+    const sample = await this.granularLayers_sampleModel.findOne({ 'generalData.name': name });
+    return sample;
   }
 
   async findOneAndUpdate(granularLayers_samplesFilterQuery: any, granularLayers_sample: Partial<GranularLayers_Sample>): Promise<GranularLayers_Sample> {

@@ -10,11 +10,11 @@ export class GranularLayersSamplesService {
 
   constructor(private readonly granularLayers_SamplesRepository: GranularLayers_SamplesRepository) {}
 
-  async createSample(sample: any): Promise<GranularLayers_Sample> {
+  async createSample(sample: CreateGranularLayersSampleDto): Promise<GranularLayers_Sample> {
     try {
+      const sampleFound = await this.granularLayers_SamplesRepository.findOne({ name: sample.generalData.name });
       // verifica se existe uma sample com mesmo nome e userId no banco de dados
-      if (await this.granularLayers_SamplesRepository.findOne({ name: sample.generalData.name }))
-        throw new AlreadyExists(`Granular layer sample with name "${sample.generalData.name}"`);
+      if (sampleFound) throw new AlreadyExists(`Granular layer sample with name "${sample.generalData.name}"`);
       
       // cria uma amostra no banco de dados
       return this.granularLayers_SamplesRepository.create({

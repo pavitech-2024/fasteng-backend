@@ -42,24 +42,23 @@ export type StabilizedLayersStep2Data = {
 
 export type StabilizedLayersStep3Data = {
   // Paviment Data
-  mctGroup: string;
-  mctCoefficientC: string;
-  mctIndexE: string;
+  stabilizer: string;
+  tenor: string;
   especificMass: string;
   compressionEnergy: string;
+  rtcd: string;
+  rtf: string;
+  rcs: string;
   granulometricRange: string;
   optimalHumidity: string;
-  abrasionLA: string;
   // Resilience module
-  k1: string;
-  k2: string;
-  k3: string;
-  k4: string;
-  // Permanent deformation
+  rsInitial: string;
+  rsFinal: string;
+  constantA: string;
+  constantB: string;
+  // Material fatigue
   k1psi1: string;
   k2psi2: string;
-  k3psi3: string;
-  k4psi4: string;
   observations: string;
 }
 

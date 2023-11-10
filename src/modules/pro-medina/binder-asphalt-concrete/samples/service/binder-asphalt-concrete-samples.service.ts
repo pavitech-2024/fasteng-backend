@@ -1,23 +1,23 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { AlreadyExists, NotFound } from "utils/exceptions";
-import { StabilizedLayers_SamplesRepository } from "../repository";
-import { StabilizedLayers_Sample } from "../schemas";
-import { CreateStabilizedLayersSampleDto } from "../dto/create-stabilized-layers-sample.dto";
+import { BinderAsphaltConcrete_SamplesRepository } from "../repository";
+import { BinderAsphaltConcrete_Sample } from "../schemas";
+import { CreateBinderAsphaltConcreteSampleDto } from "../dto/create-binder-asphalt-concrete-samples.dto";
 
 @Injectable()
-export class StabilizedLayersSamplesService {
-  private logger = new Logger(StabilizedLayersSamplesService.name);
+export class BinderAsphaltConcreteSamplesService {
+  private logger = new Logger(BinderAsphaltConcreteSamplesService.name);
 
-  constructor(private readonly stabilizedLayers_SamplesRepository: StabilizedLayers_SamplesRepository) {}
+  constructor(private readonly binderAsphaltConcrete_SamplesRepository: BinderAsphaltConcrete_SamplesRepository) {}
 
-  async createSample(sample: CreateStabilizedLayersSampleDto): Promise<StabilizedLayers_Sample> {
+  async createSample(sample: CreateBinderAsphaltConcreteSampleDto): Promise<BinderAsphaltConcrete_Sample> {
     try {
-      const sampleFound = await this.stabilizedLayers_SamplesRepository.findOne({ name: sample.generalData.name })
+      const sampleFound = await this.binderAsphaltConcrete_SamplesRepository.findOne({ name: sample.generalData.name })
       // verifica se existe uma sample com mesmo nome e userId no banco de dados
-      if (sampleFound) throw new AlreadyExists(`Stabilized layer sample with name "${sample.generalData.name}"`);
+      if (sampleFound) throw new AlreadyExists(`Binder/concrete sample with name "${sample.generalData.name}"`);
       
       // cria uma amostra no banco de dados
-      return this.stabilizedLayers_SamplesRepository.create({
+      return this.binderAsphaltConcrete_SamplesRepository.create({
         ...sample,
         createdAt: new Date(),
       });
@@ -27,10 +27,10 @@ export class StabilizedLayersSamplesService {
     }
   }
 
-  // async getAllSamples(userId: string): Promise<StabilizedLayers_Sample[]> {
+  // async getAllSamples(userId: string): Promise<BinderAsphaltConcrete_Sample[]> {
   //   try {
   //     // busca todas as amostras no banco de dados
-  //     const samples = await this.stabilizedLayers_SamplesRepository.find();
+  //     const samples = await this.binderAsphaltConcrete_SamplesRepository.find();
 
   //     // retorna as amostras encontradas que pertencem ao usuário
   //     return samples.filter((sample) => sample.generalData.userId === userId);
@@ -41,10 +41,10 @@ export class StabilizedLayersSamplesService {
   //   }
   // }
 
-  async getSample(sampleId: string): Promise<StabilizedLayers_Sample> {
+  async getSample(sampleId: string): Promise<BinderAsphaltConcrete_Sample> {
     try {
       // busca uma amostra com o id passado no banco de dados
-      const sample = await this.stabilizedLayers_SamplesRepository.findOne({ _id: sampleId });
+      const sample = await this.binderAsphaltConcrete_SamplesRepository.findOne({ _id: sampleId });
 
       // se não encontrar a amostra, retorna um erro
       if (!sample) throw new NotFound('Sample');
@@ -58,16 +58,16 @@ export class StabilizedLayersSamplesService {
     }
   }
 
-  async updateSample(sample: StabilizedLayers_Sample): Promise<StabilizedLayers_Sample> {
+  async updateSample(sample: BinderAsphaltConcrete_Sample): Promise<BinderAsphaltConcrete_Sample> {
     try {
       // busca uma amostra com o id passado no banco de dados
-      const sampleFound = await this.stabilizedLayers_SamplesRepository.findOne({ _id: sample._id });
+      const sampleFound = await this.binderAsphaltConcrete_SamplesRepository.findOne({ _id: sample._id });
 
       // se não encontrar a amostra, retorna um erro
       if (!sampleFound) throw new NotFound('Sample');
 
       // atualiza a amostra no banco de dados
-      return this.stabilizedLayers_SamplesRepository.findOneAndUpdate({ _id: sample._id }, sample);
+      return this.binderAsphaltConcrete_SamplesRepository.findOneAndUpdate({ _id: sample._id }, sample);
     } catch (error) {
       this.logger.error(`error on update sample > [error]: ${error}`);
 
@@ -75,16 +75,16 @@ export class StabilizedLayersSamplesService {
     }
   }
 
-  async deleteSample(sampleId: string): Promise<StabilizedLayers_Sample> {
+  async deleteSample(sampleId: string): Promise<BinderAsphaltConcrete_Sample> {
     try {
       // busca uma amostra com o id passado no banco de dados
-      const sample = await this.stabilizedLayers_SamplesRepository.findOne({ _id: sampleId });
+      const sample = await this.binderAsphaltConcrete_SamplesRepository.findOne({ _id: sampleId });
 
       // se não encontrar a amostra, retorna um erro
       if (!sample) throw new NotFound('Sample');
 
       // deleta a amostra no banco de dados
-      return this.stabilizedLayers_SamplesRepository.findOneAndDelete({ _id: sampleId });
+      return this.binderAsphaltConcrete_SamplesRepository.findOneAndDelete({ _id: sampleId });
     } catch (error) {
       this.logger.error(`error on delete sample > [error]: ${error}`);
 
