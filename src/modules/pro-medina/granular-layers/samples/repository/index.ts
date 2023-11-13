@@ -2,6 +2,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { DATABASE_CONNECTION } from "infra/mongoose/database.config";
 import { Model } from "mongoose";
 import { GranularLayers_Sample, GranularLayers_SamplesDocument } from "../schemas";
+import { CommonQueryFilter } from "utils/queryFilter";
 
 export class GranularLayers_SamplesRepository {
   constructor(
@@ -15,6 +16,35 @@ export class GranularLayers_SamplesRepository {
 
   async find(): Promise<GranularLayers_Sample[]> {
     return this.granularLayers_sampleModel.find();
+  }
+
+  async findAllByFilter(queryFilter: CommonQueryFilter): Promise<any> {    
+    const { filter, limit, page, sort, need_count } = queryFilter;
+    const fomattedPage = Number(page)
+    const formattedLimit = Number(limit);
+    const skip = (fomattedPage - 1) * formattedLimit;
+    const parsedFilter = JSON.parse(filter);
+    const searchFilter = { $and: [...parsedFilter] };
+    const sortParam = sort ? sort[0] : "";
+    const docs = await this.granularLayers_sampleModel
+      .find(searchFilter)
+      .skip(skip)
+      .sort(sortParam)
+      .limit(limit)
+      .lean();
+    
+    const count = await this.granularLayers_sampleModel.countDocuments(searchFilter);
+    let totalPages
+
+    if (need_count) {
+      totalPages = Math.ceil(count / limit);
+    }
+
+    return {
+      docs,
+      count,
+      totalPages,
+    }
   }
 
   async findOne(granularLayers_samplesFilterQuery: any): 

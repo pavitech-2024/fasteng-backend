@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Logger, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Logger, Put, Query } from '@nestjs/common';
 import { GranularLayersSamplesService } from '../service/granular-layers-samples.service';
 import { CreateGranularLayersSampleDto } from '../dto/create-granular-layers-sample.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GranularLayers_Sample } from '../schemas';
+import { CommonQueryFilter } from 'utils/queryFilter';
 
 @ApiTags('samples')
 @Controller('promedina/granular-layers/granular-layers-samples')
@@ -33,6 +34,13 @@ export class GranularLayersSamplesController {
 
   //   return this.granularLayersSamplesService.getAllSamples(userId);
   // }
+
+  @Get('/filter')
+  async getSamplesByFilter(@Query() queryFilter: CommonQueryFilter) {
+    this.logger.log(`get samples by filter > [filter]: ${queryFilter}`)
+
+    return this.granularLayersSamplesService.getSamplesByFilter(queryFilter);
+  }
 
   @Get(':id')
   @ApiOperation({ summary: 'Retorna uma amostra de camadas granulares do banco de dados.' })
