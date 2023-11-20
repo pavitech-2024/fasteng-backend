@@ -1,8 +1,9 @@
-import { Controller, Logger, Post, Body, Get, Param, Put, Delete } from "@nestjs/common";
+import { Controller, Logger, Post, Body, Get, Param, Put, Delete, Query } from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiResponse } from "@nestjs/swagger";
 import { StabilizedLayers_Sample } from "../schemas";
 import { StabilizedLayersSamplesService } from "../service/stabilized-layers-samples.service";
 import { CreateStabilizedLayersSampleDto } from "../dto/create-stabilized-layers-sample.dto";
+import { CommonQueryFilter } from "utils/queryFilter";
 
 @ApiTags('samples')
 @Controller('promedina/stabilized-layers/stabilized-layers-samples')
@@ -33,6 +34,16 @@ export class StabilizedLayersSamplesController {
 
   //   return this.stabilizedLayersSamplesService.getAllSamples(userId);
   // }
+
+  @Get('/filter')
+  @ApiOperation({ summary: 'Retorna as amostras filtradas de camadas estabilizadas do banco de dados de um usuário.' })
+  @ApiResponse({ status: 200, description: 'Amostras filtradas de camadas estabilizadas encontradas com sucesso!' })
+  @ApiResponse({ status: 400, description: 'Amostras filtradas não encontradas!' })
+  async getSamplesByFilter(@Query() queryFilter: CommonQueryFilter) {
+    this.logger.log(`get samples by filter > [filter]: ${queryFilter}`)
+
+    return this.stabilizedLayersSamplesService.getSamplesByFilter(queryFilter);
+  }
 
   @Get(':id')
   @ApiOperation({ summary: 'Retorna uma amostra de camadas stabilizedes do banco de dados.' })

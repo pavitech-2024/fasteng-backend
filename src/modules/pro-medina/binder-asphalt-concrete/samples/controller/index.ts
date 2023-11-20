@@ -1,8 +1,9 @@
-import { Controller, Logger, Post, Body, Get, Param, Put, Delete } from "@nestjs/common";
+import { Controller, Logger, Post, Body, Get, Param, Put, Delete, Query } from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiResponse } from "@nestjs/swagger";
 import { BinderAsphaltConcrete_Sample } from "../schemas";
 import { BinderAsphaltConcreteSamplesService } from "../service/binder-asphalt-concrete-samples.service";
 import { CreateBinderAsphaltConcreteSampleDto } from "../dto/create-binder-asphalt-concrete-samples.dto";
+import { CommonQueryFilter } from "utils/queryFilter";
 
 @ApiTags('samples')
 @Controller('promedina/binder-asphalt-concrete/binder-asphalt-concrete-samples')
@@ -22,6 +23,16 @@ export class BinderAsphaltConcreteSamplesController {
     if (createdSample) this.logger.log(`binder/concrete sample created > [id]: ${createdSample._id}`);
 
     return createdSample;
+  }
+
+  @Get('/filter')
+  @ApiOperation({ summary: 'Retorna amostras filtradas de ligantes asfálticos/concreto do banco de dados.' })
+  @ApiResponse({ status: 201, description: 'Amostras filtradas de ligantes asfálticos/concreto criadas com sucesso!' })
+  @ApiResponse({ status: 400, description: 'Erro ao criar amostra de ligantes asfálticos/concreto!' })
+  async getSamplesByFilter(@Query() queryFilter: CommonQueryFilter) {
+    this.logger.log(`get samples by filter > [filter]: ${queryFilter}`)
+
+    return this.binderAsphaltConcreteSamplesService.getSamplesByFilter(queryFilter);
   }
 
   // @Get('all/:id')

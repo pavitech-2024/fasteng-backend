@@ -31,6 +31,7 @@ export type StabilizedLayersStep2Data = {
   sami: string;
   bondingPaint: string;
   priming: string;
+  images: string[];
   // Structural Composition
   structuralComposition: {
     id: number;

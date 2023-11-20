@@ -2,6 +2,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { DATABASE_CONNECTION } from "infra/mongoose/database.config";
 import { Model } from "mongoose";
 import { StabilizedLayers_Sample, StabilizedLayers_SamplesDocument } from "../schemas";
+import { CommonQueryFilter } from "utils/queryFilter";
 
 export class StabilizedLayers_SamplesRepository {
   constructor(
@@ -15,6 +16,35 @@ export class StabilizedLayers_SamplesRepository {
 
   async find(): Promise<StabilizedLayers_Sample[]> {
     return this.stabilizedLayers_sampleModel.find();
+  }
+
+  async findAllByFilter(queryFilter: CommonQueryFilter): Promise<any> {    
+    const { filter, limit, page, sort, need_count } = queryFilter;
+    const fomattedPage = Number(page)
+    const formattedLimit = Number(limit);
+    const skip = (fomattedPage - 1) * formattedLimit;
+    const parsedFilter = JSON.parse(filter);
+    const searchFilter = { $and: [...parsedFilter] };
+    const sortParam = sort ? sort[0] : "";
+    const docs = await this.stabilizedLayers_sampleModel
+      .find(searchFilter)
+      .skip(skip)
+      .sort(sortParam)
+      .limit(limit)
+      .lean();
+    
+    const count = await this.stabilizedLayers_sampleModel.countDocuments(searchFilter);
+    let totalPages
+
+    if (need_count) {
+      totalPages = Math.ceil(count / limit);
+    }
+
+    return {
+      docs,
+      count,
+      totalPages,
+    }
   }
 
   async findOne(stabilizedLayers_samplesFilterQuery: any): 

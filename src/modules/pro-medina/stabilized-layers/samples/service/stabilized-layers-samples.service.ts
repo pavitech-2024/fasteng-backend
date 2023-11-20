@@ -3,6 +3,7 @@ import { AlreadyExists, NotFound } from "utils/exceptions";
 import { StabilizedLayers_SamplesRepository } from "../repository";
 import { StabilizedLayers_Sample } from "../schemas";
 import { CreateStabilizedLayersSampleDto } from "../dto/create-stabilized-layers-sample.dto";
+import { CommonQueryFilter } from "utils/queryFilter";
 
 @Injectable()
 export class StabilizedLayersSamplesService {
@@ -51,6 +52,28 @@ export class StabilizedLayersSamplesService {
 
       // retorna a amostra encontrada
       return sample;
+    } catch (error) {
+      this.logger.error(`error on get sample > [error]: ${error}`);
+
+      throw error;
+    }
+  }
+
+  async getSamplesByFilter(queryFilter: CommonQueryFilter): Promise<any> {
+    try {
+
+      // busca todas as amostras que correspondam ao filtro de busca selecionado
+      const samples = await this.stabilizedLayers_SamplesRepository.findAllByFilter(queryFilter);
+
+      // se não encontrar a amostra, retorna um erro
+      if (samples.docs.length <= 0) throw new NotFound('Sample');
+
+      // retorna a amostra encontrada
+      return {
+        docs: samples.docs,
+        totalPages: samples.totalPages,
+        count: samples.count
+      };
     } catch (error) {
       this.logger.error(`error on get sample > [error]: ${error}`);
 

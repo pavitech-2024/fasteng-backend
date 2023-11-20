@@ -1,4 +1,5 @@
 import { Prop, SchemaFactory, Schema } from "@nestjs/mongoose";
+import { Type } from "class-transformer";
 import { IsNotEmpty } from "class-validator";
 import { HydratedDocument } from "mongoose";
 
@@ -31,6 +32,7 @@ export type BinderAsphaltConcreteStep2Data = {
   sami: string;
   bondingPaint: string;
   priming: string;
+  images: string[];
   // Structural Composition
   structuralComposition: {
     id: number;

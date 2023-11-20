@@ -36,6 +36,9 @@ export class GranularLayersSamplesController {
   // }
 
   @Get('/filter')
+  @ApiOperation({ summary: 'Retorna as amostras filtradas de camadas granulares do banco de dados de um usuário.' })
+  @ApiResponse({ status: 200, description: 'Amostras filtradas de camadas granulares encontradas com sucesso!' })
+  @ApiResponse({ status: 400, description: 'Amostras filtradas não encontradas!' })
   async getSamplesByFilter(@Query() queryFilter: CommonQueryFilter) {
     this.logger.log(`get samples by filter > [filter]: ${queryFilter}`)
 
