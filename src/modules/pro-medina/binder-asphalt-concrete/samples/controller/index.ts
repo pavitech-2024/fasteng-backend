@@ -1,4 +1,4 @@
-import { Controller, Logger, Post, Body, Get, Param, Put, Delete, Query } from "@nestjs/common";
+import { Controller, Logger, Post, Body, Get, Param, Put, Delete, Query, HttpException } from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiResponse } from "@nestjs/swagger";
 import { BinderAsphaltConcrete_Sample } from "../schemas";
 import { BinderAsphaltConcreteSamplesService } from "../service/binder-asphalt-concrete-samples.service";
@@ -18,11 +18,23 @@ export class BinderAsphaltConcreteSamplesController {
   @ApiResponse({ status: 400, description: 'Erro ao criar amostra de ligante asfáltico/concreto!' })
   async createSample(@Body() sample: CreateBinderAsphaltConcreteSampleDto) {
     this.logger.log('create binder/concrete sample > [body]');
-    const createdSample = await this.binderAsphaltConcreteSamplesService.createSample(sample);
+    try {
+      const createdSample = await this.binderAsphaltConcreteSamplesService.createSample(sample);
 
-    if (createdSample) this.logger.log(`binder/concrete sample created > [id]: ${createdSample._id}`);
+      if (createdSample) {
+        this.logger.log(`Binder/concrete sample created > [id]: ${createdSample._id}`);
+        
+        return createdSample;
+      }
+    } catch (error) {
+      if (error instanceof HttpException) {
+        const response = error.getResponse();
+        return { success: false, error: { name: 'SampleCreationError', message: response['error'] } };
+      }
 
-    return createdSample;
+      this.logger.error(`Error on create sample > [error]: ${error}`);
+      throw error;
+    }
   }
 
   @Get('/filter')
@@ -35,15 +47,14 @@ export class BinderAsphaltConcreteSamplesController {
     return this.binderAsphaltConcreteSamplesService.getSamplesByFilter(queryFilter);
   }
 
-  // @Get('all/:id')
-  // @ApiOperation({ summary: 'Retorna todas as amostras de ligante asfáltico/concreto do banco de dados de um usuário.' })
-  // @ApiResponse({ status: 200, description: 'Amostras de ligante asfáltico/concreto encontradas com sucesso!' })
-  // @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
-  // async getAllByUserId(@Param('id') userId: string) {
-  //   this.logger.log(`get all samples by user id > [id]: ${userId}`);
+  @Get('all')
+  @ApiOperation({ summary: 'Retorna todas as amostras de ligante asfáltico/concreto do banco de dados.' })
+  @ApiResponse({ status: 200, description: 'Amostras de ligante asfáltico/concreto encontradas com sucesso!' })
+  async getAll() {
+    this.logger.log(`get all samples`);
 
-  //   return this.binderAsphaltConcreteSamplesService.getAllSamples(userId);
-  // }
+    return this.binderAsphaltConcreteSamplesService.getAllSamples();
+  }
 
   @Get(':id')
   @ApiOperation({ summary: 'Retorna uma amostra de ligante asfáltico/concreto do banco de dados.' })

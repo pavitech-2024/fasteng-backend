@@ -1,4 +1,4 @@
-import { Injectable, Logger } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable, Logger } from "@nestjs/common";
 import { AlreadyExists, NotFound } from "utils/exceptions";
 import { BinderAsphaltConcrete_SamplesRepository } from "../repository";
 import { BinderAsphaltConcrete_Sample } from "../schemas";
@@ -14,8 +14,16 @@ export class BinderAsphaltConcreteSamplesService {
   async createSample(sample: CreateBinderAsphaltConcreteSampleDto): Promise<BinderAsphaltConcrete_Sample> {
     try {
       const sampleFound = await this.binderAsphaltConcrete_SamplesRepository.findOne({ name: sample.generalData.name })
-      // verifica se existe uma sample com mesmo nome e userId no banco de dados
-      if (sampleFound) throw new AlreadyExists(`Binder/concrete sample with name "${sample.generalData.name}"`);
+
+      if (sampleFound) {
+        throw new HttpException(
+          {
+            status: HttpStatus.CONFLICT,
+            error: `Binder/concrete sample with name "${sample.generalData.name}" already exists.`,
+          },
+          HttpStatus.CONFLICT,
+        );
+      }
       
       // cria uma amostra no banco de dados
       return this.binderAsphaltConcrete_SamplesRepository.create({
@@ -28,19 +36,19 @@ export class BinderAsphaltConcreteSamplesService {
     }
   }
 
-  // async getAllSamples(userId: string): Promise<BinderAsphaltConcrete_Sample[]> {
-  //   try {
-  //     // busca todas as amostras no banco de dados
-  //     const samples = await this.binderAsphaltConcrete_SamplesRepository.find();
+  async getAllSamples(): Promise<BinderAsphaltConcrete_Sample[]> {
+    try {
+      // busca todas as amostras no banco de dados
+      const samples = await this.binderAsphaltConcrete_SamplesRepository.find();
 
-  //     // retorna as amostras encontradas que pertencem ao usuário
-  //     return samples.filter((sample) => sample.generalData.userId === userId);
-  //   } catch (error) {
-  //     this.logger.error(`error on get all stabilized layers samples > [error]: ${error}`);
+      // retorna as amostras encontradas que pertencem ao usuário
+      return samples;
+    } catch (error) {
+      this.logger.error(`error on get all stabilized layers samples > [error]: ${error}`);
 
-  //     throw error;
-  //   }
-  // }
+      throw error;
+    }
+  }
 
   async getSample(sampleId: string): Promise<BinderAsphaltConcrete_Sample> {
     try {

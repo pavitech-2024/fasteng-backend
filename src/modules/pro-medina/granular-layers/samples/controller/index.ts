@@ -24,6 +24,7 @@ export class GranularLayersSamplesController {
 
       if (createdSample) {
         this.logger.log(`Granular layer sample created > [id]: ${createdSample._id}`);
+        
         return createdSample;
       }
     } catch (error) {
@@ -38,11 +39,10 @@ export class GranularLayersSamplesController {
   }
 
   @Get('all')
-  @ApiOperation({ summary: 'Retorna todas as amostras de camadas granulares do banco de dados de um usuário.' })
+  @ApiOperation({ summary: 'Retorna todas as amostras de camadas granulares do banco de dados.' })
   @ApiResponse({ status: 200, description: 'Amostras de camadas granulares encontradas com sucesso!' })
-  @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
-  async getAllByUserId() {
-    this.logger.log(`get all samples by user id > `);
+  async getAll() {
+    this.logger.log(`get all samples`);
 
     return this.granularLayersSamplesService.getAllSamples();
   }

@@ -49,7 +49,9 @@ export class StabilizedLayers_SamplesRepository {
 
   async findOne(stabilizedLayers_samplesFilterQuery: any): 
   Promise<StabilizedLayers_Sample> {
-    return this.stabilizedLayers_sampleModel.findOne(stabilizedLayers_samplesFilterQuery);
+    const { name } = stabilizedLayers_samplesFilterQuery;
+    const sample = await this.stabilizedLayers_sampleModel.findOne({ 'generalData.name': name});
+    return sample;
   }
 
   async findOneAndUpdate(stabilizedLayers_samplesFilterQuery: any, stabilizedLayers_sample: Partial<StabilizedLayers_Sample>): Promise<StabilizedLayers_Sample> {

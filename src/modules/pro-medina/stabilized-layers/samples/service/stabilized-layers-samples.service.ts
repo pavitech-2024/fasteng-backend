@@ -1,4 +1,4 @@
-import { Injectable, Logger } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable, Logger } from "@nestjs/common";
 import { AlreadyExists, NotFound } from "utils/exceptions";
 import { StabilizedLayers_SamplesRepository } from "../repository";
 import { StabilizedLayers_Sample } from "../schemas";
@@ -15,7 +15,17 @@ export class StabilizedLayersSamplesService {
     try {
       const sampleFound = await this.stabilizedLayers_SamplesRepository.findOne({ name: sample.generalData.name })
       // verifica se existe uma sample com mesmo nome e userId no banco de dados
-      if (sampleFound) throw new AlreadyExists(`Stabilized layer sample with name "${sample.generalData.name}"`);
+      // if (sampleFound) throw new AlreadyExists(`Stabilized layer sample with name "${sample.generalData.name}"`);
+
+      if (sampleFound) {
+        throw new HttpException(
+          {
+            status: HttpStatus.CONFLICT,
+            error: `Granular layer sample with name "${sample.generalData.name}" already exists.`,
+          },
+          HttpStatus.CONFLICT,
+        );
+      }
       
       // cria uma amostra no banco de dados
       return this.stabilizedLayers_SamplesRepository.create({
@@ -28,19 +38,19 @@ export class StabilizedLayersSamplesService {
     }
   }
 
-  // async getAllSamples(userId: string): Promise<StabilizedLayers_Sample[]> {
-  //   try {
-  //     // busca todas as amostras no banco de dados
-  //     const samples = await this.stabilizedLayers_SamplesRepository.find();
+  async getAllSamples(): Promise<StabilizedLayers_Sample[]> {
+    try {
+      // busca todas as amostras no banco de dados
+      const samples = await this.stabilizedLayers_SamplesRepository.find();
 
-  //     // retorna as amostras encontradas que pertencem ao usuário
-  //     return samples.filter((sample) => sample.generalData.userId === userId);
-  //   } catch (error) {
-  //     this.logger.error(`error on get all stabilized layers samples > [error]: ${error}`);
+      // retorna as amostras encontradas que pertencem ao usuário
+      return samples;
+    } catch (error) {
+      this.logger.error(`error on get all stabilized layers samples > [error]: ${error}`);
 
-  //     throw error;
-  //   }
-  // }
+      throw error;
+    }
+  }
 
   async getSample(sampleId: string): Promise<StabilizedLayers_Sample> {
     try {

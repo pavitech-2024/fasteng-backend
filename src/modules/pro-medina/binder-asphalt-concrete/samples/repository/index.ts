@@ -49,7 +49,9 @@ export class BinderAsphaltConcrete_SamplesRepository {
 
   async findOne(binderAsphaltConcrete_samplesFilterQuery: any): 
   Promise<BinderAsphaltConcrete_Sample> {
-    return this.binderAsphaltConcrete_sampleModel.findOne(binderAsphaltConcrete_samplesFilterQuery);
+    const { name } = binderAsphaltConcrete_samplesFilterQuery;
+    const sample = await this.binderAsphaltConcrete_sampleModel.findOne({'generalData.name': name});
+    return sample;
   }
 
   async findOneAndUpdate(binderAsphaltConcrete_samplesFilterQuery: any, binderAsphaltConcrete_sample: Partial<BinderAsphaltConcrete_Sample>): Promise<BinderAsphaltConcrete_Sample> {
