@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Logger, Put, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Logger, Put, Query, HttpException } from '@nestjs/common';
 import { GranularLayersSamplesService } from '../service/granular-layers-samples.service';
 import { CreateGranularLayersSampleDto } from '../dto/create-granular-layers-sample.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -17,23 +17,35 @@ export class GranularLayersSamplesController {
   @ApiResponse({ status: 201, description: 'Amostra de camadas granulares criada com sucesso!' })
   @ApiResponse({ status: 400, description: 'Erro ao criar amostra de camadas granulares!' })
   async createSample(@Body() sample: CreateGranularLayersSampleDto) {
-    this.logger.log('create granular layers sample > [body]');
-    const createdSample = await this.granularLayersSamplesService.createSample(sample);
+    this.logger.log('Create granular layers sample > [body]');
 
-    if (createdSample) this.logger.log(`granular layer sample created > [id]: ${createdSample._id}`);
+    try {
+      const createdSample = await this.granularLayersSamplesService.createSample(sample);
 
-    return createdSample;
+      if (createdSample) {
+        this.logger.log(`Granular layer sample created > [id]: ${createdSample._id}`);
+        return createdSample;
+      }
+    } catch (error) {
+      if (error instanceof HttpException) {
+        const response = error.getResponse();
+        return { success: false, error: { name: 'SampleCreationError', message: response['error'] } };
+      }
+
+      this.logger.error(`Error on create sample > [error]: ${error}`);
+      throw error;
+    }
   }
 
-  // @Get('all/:id')
-  // @ApiOperation({ summary: 'Retorna todas as amostras de camadas granulares do banco de dados de um usuário.' })
-  // @ApiResponse({ status: 200, description: 'Amostras de camadas granulares encontradas com sucesso!' })
-  // @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
-  // async getAllByUserId(@Param('id') userId: string) {
-  //   this.logger.log(`get all samples by user id > [id]: ${userId}`);
+  @Get('all')
+  @ApiOperation({ summary: 'Retorna todas as amostras de camadas granulares do banco de dados de um usuário.' })
+  @ApiResponse({ status: 200, description: 'Amostras de camadas granulares encontradas com sucesso!' })
+  @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
+  async getAllByUserId() {
+    this.logger.log(`get all samples by user id > `);
 
-  //   return this.granularLayersSamplesService.getAllSamples(userId);
-  // }
+    return this.granularLayersSamplesService.getAllSamples();
+  }
 
   @Get('/filter')
   @ApiOperation({ summary: 'Retorna as amostras filtradas de camadas granulares do banco de dados de um usuário.' })

@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { CreateGranularLayersSampleDto } from '../dto/create-granular-layers-sample.dto';
 import { GranularLayers_SamplesRepository } from '../repository';
 import { GranularLayers_Sample } from '../schemas';
@@ -14,8 +14,16 @@ export class GranularLayersSamplesService {
   async createSample(sample: CreateGranularLayersSampleDto): Promise<GranularLayers_Sample> {
     try {
       const sampleFound = await this.granularLayers_SamplesRepository.findOne({ name: sample.generalData.name });
-      // verifica se existe uma sample com mesmo nome e userId no banco de dados
-      if (sampleFound) throw new AlreadyExists(`Granular layer sample with name "${sample.generalData.name}"`);
+      
+      if (sampleFound) {
+        throw new HttpException(
+          {
+            status: HttpStatus.CONFLICT,
+            error: `Granular layer sample with name "${sample.generalData.name}" already exists.`,
+          },
+          HttpStatus.CONFLICT,
+        );
+      }
       
       // cria uma amostra no banco de dados
       return this.granularLayers_SamplesRepository.create({
@@ -28,19 +36,19 @@ export class GranularLayersSamplesService {
     }
   }
 
-  // async getAllSamples(userId: string): Promise<GranularLayers_Sample[]> {
-  //   try {
-  //     // busca todas as amostras no banco de dados
-  //     const samples = await this.granularLayers_SamplesRepository.find();
+  async getAllSamples(): Promise<GranularLayers_Sample[]> {
+    try {
+      // busca todas as amostras no banco de dados
+      const samples = await this.granularLayers_SamplesRepository.find();
 
-  //     // retorna as amostras encontradas que pertencem ao usuário
-  //     return samples.filter((sample) => sample.generalData.userId === userId);
-  //   } catch (error) {
-  //     this.logger.error(`error on get all granular layers samples > [error]: ${error}`);
+      // retorna as amostras encontradas que pertencem ao usuário
+      return samples;
+    } catch (error) {
+      this.logger.error(`error on get all granular layers samples > [error]: ${error}`);
 
-  //     throw error;
-  //   }
-  // }
+      throw error;
+    }
+  }
 
   async getSample(sampleId: string): Promise<GranularLayers_Sample> {
     try {
