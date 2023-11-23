@@ -1,6 +1,6 @@
-import { Prop, SchemaFactory, Schema } from "@nestjs/mongoose";
-import { IsNotEmpty } from "class-validator";
-import { HydratedDocument } from "mongoose";
+import { Prop, SchemaFactory, Schema } from '@nestjs/mongoose';
+import { IsNotEmpty } from 'class-validator';
+import { HydratedDocument } from 'mongoose';
 
 export type GranularLayers_SamplesDocument = HydratedDocument<GranularLayers_Sample>;
 
@@ -9,6 +9,7 @@ export type GranularLayersGeneralData = {
   zone: string;
   layer: string;
   cityState: string;
+  highway: string;
   observations?: string;
 };
 
@@ -39,7 +40,7 @@ export type GranularLayersStep2Data = {
     material: unknown;
     thickness: unknown;
   }[];
-}
+};
 
 export type GranularLayersStep3Data = {
   // Paviment Data
@@ -62,7 +63,7 @@ export type GranularLayersStep3Data = {
   k3psi3: string;
   k4psi4: string;
   observations: string;
-}
+};
 
 @Schema({ collection: 'granularLayersSamples' })
 export class GranularLayers_Sample {

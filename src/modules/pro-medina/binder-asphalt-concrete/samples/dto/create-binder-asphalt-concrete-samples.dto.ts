@@ -1,5 +1,5 @@
-import { IsNotEmpty } from "class-validator";
-import { BinderAsphaltConcrete_Sample } from "../schemas";
+import { IsNotEmpty } from 'class-validator';
+import { BinderAsphaltConcrete_Sample } from '../schemas';
 
 export class CreateBinderAsphaltConcreteSampleDto {
   @IsNotEmpty()

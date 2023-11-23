@@ -1,9 +1,9 @@
-import { HttpException, HttpStatus, Injectable, Logger } from "@nestjs/common";
-import { AlreadyExists, NotFound } from "utils/exceptions";
-import { StabilizedLayers_SamplesRepository } from "../repository";
-import { StabilizedLayers_Sample } from "../schemas";
-import { CreateStabilizedLayersSampleDto } from "../dto/create-stabilized-layers-sample.dto";
-import { CommonQueryFilter } from "utils/queryFilter";
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { AlreadyExists, NotFound } from 'utils/exceptions';
+import { StabilizedLayers_SamplesRepository } from '../repository';
+import { StabilizedLayers_Sample } from '../schemas';
+import { CreateStabilizedLayersSampleDto } from '../dto/create-stabilized-layers-sample.dto';
+import { CommonQueryFilter } from 'utils/queryFilter';
 
 @Injectable()
 export class StabilizedLayersSamplesService {
@@ -13,7 +13,7 @@ export class StabilizedLayersSamplesService {
 
   async createSample(sample: CreateStabilizedLayersSampleDto): Promise<StabilizedLayers_Sample> {
     try {
-      const sampleFound = await this.stabilizedLayers_SamplesRepository.findOne({ name: sample.generalData.name })
+      const sampleFound = await this.stabilizedLayers_SamplesRepository.findOne({ name: sample.generalData.name });
       // verifica se existe uma sample com mesmo nome e userId no banco de dados
       // if (sampleFound) throw new AlreadyExists(`Stabilized layer sample with name "${sample.generalData.name}"`);
 
@@ -26,7 +26,7 @@ export class StabilizedLayersSamplesService {
           HttpStatus.CONFLICT,
         );
       }
-      
+
       // cria uma amostra no banco de dados
       return this.stabilizedLayers_SamplesRepository.create({
         ...sample,
@@ -71,7 +71,6 @@ export class StabilizedLayersSamplesService {
 
   async getSamplesByFilter(queryFilter: CommonQueryFilter): Promise<any> {
     try {
-
       // busca todas as amostras que correspondam ao filtro de busca selecionado
       const samples = await this.stabilizedLayers_SamplesRepository.findAllByFilter(queryFilter);
 
@@ -82,7 +81,7 @@ export class StabilizedLayersSamplesService {
       return {
         docs: samples.docs,
         totalPages: samples.totalPages,
-        count: samples.count
+        count: samples.count,
       };
     } catch (error) {
       this.logger.error(`error on get sample > [error]: ${error}`);

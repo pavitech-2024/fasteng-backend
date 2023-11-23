@@ -1,6 +1,6 @@
-import { Prop, SchemaFactory, Schema } from "@nestjs/mongoose";
-import { IsNotEmpty } from "class-validator";
-import { HydratedDocument } from "mongoose";
+import { Prop, SchemaFactory, Schema } from '@nestjs/mongoose';
+import { IsNotEmpty } from 'class-validator';
+import { HydratedDocument } from 'mongoose';
 
 export type StabilizedLayers_SamplesDocument = HydratedDocument<StabilizedLayers_Sample>;
 
@@ -8,6 +8,7 @@ export type StabilizedLayersGeneralData = {
   name: string;
   zone: string;
   layer: string;
+  highway: string;
   cityState: string;
   observations?: string;
 };
@@ -39,7 +40,7 @@ export type StabilizedLayersStep2Data = {
     material: unknown;
     thickness: unknown;
   }[];
-}
+};
 
 export type StabilizedLayersStep3Data = {
   // Paviment Data
@@ -61,7 +62,7 @@ export type StabilizedLayersStep3Data = {
   k1psi1: string;
   k2psi2: string;
   observations: string;
-}
+};
 
 @Schema({ collection: 'stabilizedLayersSamples' })
 export class StabilizedLayers_Sample {

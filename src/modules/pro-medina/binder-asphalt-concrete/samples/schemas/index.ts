@@ -1,7 +1,7 @@
-import { Prop, SchemaFactory, Schema } from "@nestjs/mongoose";
-import { Type } from "class-transformer";
-import { IsNotEmpty } from "class-validator";
-import { HydratedDocument } from "mongoose";
+import { Prop, SchemaFactory, Schema } from '@nestjs/mongoose';
+import { Type } from 'class-transformer';
+import { IsNotEmpty } from 'class-validator';
+import { HydratedDocument } from 'mongoose';
 
 export type BinderAsphaltConcrete_SamplesDocument = HydratedDocument<BinderAsphaltConcrete_Sample>;
 
@@ -9,6 +9,7 @@ export type BinderAsphaltConcreteGeneralData = {
   name: string;
   zone: string;
   layer: string;
+  highway: string;
   cityState: string;
   observations?: string;
 };
@@ -40,7 +41,7 @@ export type BinderAsphaltConcreteStep2Data = {
     material: unknown;
     thickness: unknown;
   }[];
-}
+};
 
 export type BinderAsphaltConcreteStep3Data = {
   // PavimentData
@@ -60,7 +61,7 @@ export type BinderAsphaltConcreteStep3Data = {
   vb_sp21_50: string; // 150°C (SP21, 50rpm)
   vb_sp21_100: string; // 177°C (SP21, 100rpm)
   observations: string; // Observações
-}
+};
 
 export type BinderAsphaltConcreteStep4Data = {
   granulometricRange: string;
@@ -78,7 +79,7 @@ export type BinderAsphaltConcreteStep4Data = {
   fatigueCurve_k2: string;
   fatigueCurve_r2: string;
   observations: string;
-}
+};
 
 @Schema({ collection: 'binderAsphaltConcreteSamples' })
 export class BinderAsphaltConcrete_Sample {

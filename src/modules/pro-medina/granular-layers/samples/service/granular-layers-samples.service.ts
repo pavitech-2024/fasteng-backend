@@ -14,7 +14,7 @@ export class GranularLayersSamplesService {
   async createSample(sample: CreateGranularLayersSampleDto): Promise<GranularLayers_Sample> {
     try {
       const sampleFound = await this.granularLayers_SamplesRepository.findOne({ name: sample.generalData.name });
-      
+
       if (sampleFound) {
         throw new HttpException(
           {
@@ -24,7 +24,7 @@ export class GranularLayersSamplesService {
           HttpStatus.CONFLICT,
         );
       }
-      
+
       // cria uma amostra no banco de dados
       return this.granularLayers_SamplesRepository.create({
         ...sample,
@@ -69,7 +69,6 @@ export class GranularLayersSamplesService {
 
   async getSamplesByFilter(queryFilter: CommonQueryFilter): Promise<any> {
     try {
-
       const { filter } = queryFilter;
 
       // busca todas as amostras que correspondam ao filtro de busca selecionado
@@ -82,7 +81,7 @@ export class GranularLayersSamplesService {
       return {
         docs: samples.docs,
         totalPages: samples.totalPages,
-        count: samples.count
+        count: samples.count,
       };
     } catch (error) {
       this.logger.error(`error on get sample > [error]: ${error}`);

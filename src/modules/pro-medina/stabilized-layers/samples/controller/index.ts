@@ -1,9 +1,9 @@
-import { Controller, Logger, Post, Body, Get, Param, Put, Delete, Query, HttpException } from "@nestjs/common";
-import { ApiTags, ApiOperation, ApiResponse } from "@nestjs/swagger";
-import { StabilizedLayers_Sample } from "../schemas";
-import { StabilizedLayersSamplesService } from "../service/stabilized-layers-samples.service";
-import { CreateStabilizedLayersSampleDto } from "../dto/create-stabilized-layers-sample.dto";
-import { CommonQueryFilter } from "utils/queryFilter";
+import { Controller, Logger, Post, Body, Get, Param, Put, Delete, Query, HttpException } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { StabilizedLayers_Sample } from '../schemas';
+import { StabilizedLayersSamplesService } from '../service/stabilized-layers-samples.service';
+import { CreateStabilizedLayersSampleDto } from '../dto/create-stabilized-layers-sample.dto';
+import { CommonQueryFilter } from 'utils/queryFilter';
 
 @ApiTags('samples')
 @Controller('promedina/stabilized-layers/stabilized-layers-samples')
@@ -23,7 +23,7 @@ export class StabilizedLayersSamplesController {
 
       if (createdSample) {
         this.logger.log(`granular layer sample created > [id]: ${createdSample._id}`);
-        
+
         return createdSample;
       }
     } catch (error) {
@@ -51,7 +51,7 @@ export class StabilizedLayersSamplesController {
   @ApiResponse({ status: 200, description: 'Amostras filtradas de camadas estabilizadas encontradas com sucesso!' })
   @ApiResponse({ status: 400, description: 'Amostras filtradas não encontradas!' })
   async getSamplesByFilter(@Query() queryFilter: CommonQueryFilter) {
-    this.logger.log(`get samples by filter > [filter]: ${queryFilter}`)
+    this.logger.log(`get samples by filter > [filter]: ${queryFilter}`);
 
     return this.stabilizedLayersSamplesService.getSamplesByFilter(queryFilter);
   }

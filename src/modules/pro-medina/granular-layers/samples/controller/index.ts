@@ -24,7 +24,7 @@ export class GranularLayersSamplesController {
 
       if (createdSample) {
         this.logger.log(`Granular layer sample created > [id]: ${createdSample._id}`);
-        
+
         return createdSample;
       }
     } catch (error) {
@@ -52,7 +52,7 @@ export class GranularLayersSamplesController {
   @ApiResponse({ status: 200, description: 'Amostras filtradas de camadas granulares encontradas com sucesso!' })
   @ApiResponse({ status: 400, description: 'Amostras filtradas não encontradas!' })
   async getSamplesByFilter(@Query() queryFilter: CommonQueryFilter) {
-    this.logger.log(`get samples by filter > [filter]: ${queryFilter}`)
+    this.logger.log(`get samples by filter > [filter]: ${queryFilter}`);
 
     return this.granularLayersSamplesService.getSamplesByFilter(queryFilter);
   }
@@ -83,7 +83,7 @@ export class GranularLayersSamplesController {
   @ApiResponse({ status: 400, description: 'Amostra de camadas granulares não encontrada!' })
   async deleteSampleById(@Param('id') sampleId: string) {
     this.logger.log(`delete sample by id > [id]: ${sampleId}`);
-    
+
     return this.granularLayersSamplesService.deleteSample(sampleId);
   }
 }

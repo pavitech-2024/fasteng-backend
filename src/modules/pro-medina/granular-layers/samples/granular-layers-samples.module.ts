@@ -6,13 +6,7 @@ import { GranularLayersSamplesController } from './controller';
 @Module({
   imports: [],
   controllers: [GranularLayersSamplesController],
-  providers: [
-    GranularLayersSamplesService, 
-    GranularLayers_SamplesRepository
-  ],
-  exports: [
-    GranularLayersSamplesService, 
-    GranularLayers_SamplesRepository
-  ]
+  providers: [GranularLayersSamplesService, GranularLayers_SamplesRepository],
+  exports: [GranularLayersSamplesService, GranularLayers_SamplesRepository],
 })
 export class GranularLayersSamplesModule {}
