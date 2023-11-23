@@ -83,7 +83,7 @@ export class GranularLayersSamplesController {
   @ApiResponse({ status: 400, description: 'Amostra de camadas granulares não encontrada!' })
   async deleteSampleById(@Param('id') sampleId: string) {
     this.logger.log(`delete sample by id > [id]: ${sampleId}`);
-
+    
     return this.granularLayersSamplesService.deleteSample(sampleId);
   }
 }

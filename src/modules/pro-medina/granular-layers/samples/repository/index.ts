@@ -65,6 +65,14 @@ export class GranularLayers_SamplesRepository {
   Promise<GranularLayers_Sample> {
     const { name } = granularLayers_samplesFilterQuery;
     const sample = await this.granularLayers_sampleModel.findOne({ 'generalData.name': name });
+
+    return sample;
+  }
+
+  async findOneById(sampleId: string): 
+  Promise<GranularLayers_Sample> {
+    const sample = await this.granularLayers_sampleModel.findOne({ _id: sampleId });
+    
     return sample;
   }
 
