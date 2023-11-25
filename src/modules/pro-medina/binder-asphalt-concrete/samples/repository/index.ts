@@ -19,12 +19,11 @@ export class BinderAsphaltConcrete_SamplesRepository {
   }
 
   async findAllByFilter(queryFilter: CommonQueryFilter): Promise<any> {    
-    const { filter, limit, page, sort, need_count } = queryFilter;
+    const { filter, limit, page, need_count } = queryFilter;
     const fomattedPage = Number(page)
     const formattedLimit = Number(limit);
     const skip = (fomattedPage - 1) * formattedLimit;
     const parsedFilter = JSON.parse(filter);
-    const sortParam = sort ? sort[0] : "";
 
     let formattedFilter = [];
 

@@ -49,7 +49,7 @@ export class StabilizedLayers_SamplesRepository {
   }
 
   async findAllByFilter(queryFilter: CommonQueryFilter): Promise<any> {    
-    const { filter, limit, page, need_count } = queryFilter;
+    const { filter, limit, page, sort, need_count } = queryFilter;
     const fomattedPage = Number(page)
     const formattedLimit = Number(limit);
     const skip = (fomattedPage - 1) * formattedLimit;
@@ -57,11 +57,13 @@ export class StabilizedLayers_SamplesRepository {
 
     let formattedFilter = [];
 
-    for (const key in parsedFilter) {
-      if (parsedFilter[key]) {
-        formattedFilter.push({ [`generalData.${key}`]: parsedFilter[key] });
-      }
-    }
+    parsedFilter.forEach(obj => {
+      if (obj.name) formattedFilter.push({ 'generalData.name': obj.name });
+      if (obj.cityState) formattedFilter.push({ 'generalData.cityState': obj.cityState });
+      if (obj.zone) formattedFilter.push({ 'generalData.zone': obj.zone });
+      if (obj.layer) formattedFilter.push({ 'generalData.layer': obj.layer });
+      if (obj.highway) formattedFilter.push({ 'generalData.highway': obj.highway });
+    });
 
     let query = {};
 

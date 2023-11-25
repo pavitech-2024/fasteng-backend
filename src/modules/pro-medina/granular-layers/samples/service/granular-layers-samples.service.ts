@@ -73,7 +73,7 @@ export class GranularLayersSamplesService {
       const samples = await this.granularLayers_SamplesRepository.findAllByFilter(queryFilter);
 
       // se não encontrar a amostra, retorna um erro
-      if (samples.docs.length <= 0) throw new NotFound('Sample');
+      // if (samples.docs.length <= 0) throw new NotFound('Sample');
 
       // retorna a amostra encontrada
       return {
