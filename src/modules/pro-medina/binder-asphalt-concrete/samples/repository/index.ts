@@ -24,17 +24,34 @@ export class BinderAsphaltConcrete_SamplesRepository {
     const formattedLimit = Number(limit);
     const skip = (fomattedPage - 1) * formattedLimit;
     const parsedFilter = JSON.parse(filter);
-    const searchFilter = { $and: [...parsedFilter] };
     const sortParam = sort ? sort[0] : "";
+
+    let formattedFilter = [];
+
+    parsedFilter.forEach(obj => {
+      if (obj.name) formattedFilter.push({ 'generalData.name': obj.name });
+      if (obj.cityState) formattedFilter.push({ 'generalData.cityState': obj.cityState });
+      if (obj.zone) formattedFilter.push({ 'generalData.zone': obj.zone });
+      if (obj.layer) formattedFilter.push({ 'generalData.layer': obj.layer });
+      if (obj.highway) formattedFilter.push({ 'generalData.highway': obj.highway });
+    });
+
+    let query = {};
+
+    if (formattedFilter.length > 0) {
+      query = { $and: formattedFilter };
+    }
+
     const docs = await this.binderAsphaltConcrete_sampleModel
-      .find(searchFilter)
+      .find(query)
       .skip(skip)
-      .sort(sortParam)
-      .limit(limit)
+      .limit(formattedLimit)
       .lean();
     
-    const count = await this.binderAsphaltConcrete_sampleModel.countDocuments(searchFilter);
-    let totalPages
+    const countQuery = formattedFilter.length > 0 ? { $and: formattedFilter } : {};
+    const count = await this.binderAsphaltConcrete_sampleModel.countDocuments(countQuery);
+
+    let totalPages;
 
     if (need_count) {
       totalPages = Math.ceil(count / limit);

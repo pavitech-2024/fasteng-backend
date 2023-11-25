@@ -33,20 +33,24 @@ export class GranularLayers_SamplesRepository {
       if (obj.cityState) formattedFilter.push({ 'generalData.cityState': obj.cityState });
       if (obj.zone) formattedFilter.push({ 'generalData.zone': obj.zone });
       if (obj.layer) formattedFilter.push({ 'generalData.layer': obj.layer });
+      if (obj.highway) formattedFilter.push({ 'generalData.highway': obj.highway });
     });
 
+    let query = {};
+
+    if (formattedFilter.length > 0) {
+      query = { $and: formattedFilter };
+    }
+
     const docs = await this.granularLayers_sampleModel
-      .find({
-        $and: formattedFilter
-      })
+      .find(query)
       .skip(skip)
-      .limit(limit)
+      .limit(formattedLimit)
       .lean();
 
     
-    const count = await this.granularLayers_sampleModel.countDocuments({
-      $and: formattedFilter
-    });
+    const countQuery = formattedFilter.length > 0 ? { $and: formattedFilter } : {};
+    const count = await this.granularLayers_sampleModel.countDocuments(countQuery);
 
     let totalPages;
 

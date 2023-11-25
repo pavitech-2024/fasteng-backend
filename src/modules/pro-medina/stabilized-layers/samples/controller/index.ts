@@ -37,13 +37,25 @@ export class StabilizedLayersSamplesController {
     }
   }
 
+  // @Get('all')
+  // @ApiOperation({ summary: 'Retorna todas as amostras de camadas stabilizedas do banco de dados.' })
+  // @ApiResponse({ status: 200, description: 'Amostras de camadas stabilizedas encontradas com sucesso!' })
+  // async getAllByUserId() {
+  //   this.logger.log(`get all samples`);
+
+  //   return this.stabilizedLayersSamplesService.getAllSamples();
+  // }
+
   @Get('all')
-  @ApiOperation({ summary: 'Retorna todas as amostras de camadas stabilizedas do banco de dados.' })
-  @ApiResponse({ status: 200, description: 'Amostras de camadas stabilizedas encontradas com sucesso!' })
-  async getAllByUserId() {
+  @ApiOperation({ summary: 'Retorna todas as amostras de camadas stabilizadas do banco de dados.' })
+  @ApiResponse({ status: 200, description: 'Amostras de camadas stabilizadas encontradas com sucesso!' })
+  async getAllSamples(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10
+  ) {
     this.logger.log(`get all samples`);
 
-    return this.stabilizedLayersSamplesService.getAllSamples();
+    return this.stabilizedLayersSamplesService.getAllSamples({page,limit});
   }
 
   @Get('/filter')

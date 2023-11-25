@@ -69,9 +69,6 @@ export class GranularLayersSamplesService {
 
   async getSamplesByFilter(queryFilter: CommonQueryFilter): Promise<any> {
     try {
-
-      const { filter } = queryFilter;
-
       // busca todas as amostras que correspondam ao filtro de busca selecionado
       const samples = await this.granularLayers_SamplesRepository.findAllByFilter(queryFilter);
 

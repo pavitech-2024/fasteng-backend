@@ -14,30 +14,74 @@ export class StabilizedLayers_SamplesRepository {
     return createdStabilizedLayers_Samples.save();
   }
 
-  async find(): Promise<StabilizedLayers_Sample[]> {
+  async find(): Promise<any> {
+    return this.stabilizedLayers_sampleModel.find();
+  }
+
+  async findAll(options: { page: number, limit: number }): Promise<any> {
+    try {
+      const { limit, page } = options;
+      const fomattedPage = Number(page)
+      const formattedLimit = Number(limit);
+      const skip = (fomattedPage - 1) * formattedLimit;
+
+      const docs = await this.stabilizedLayers_sampleModel
+      .find()
+      .skip(skip)
+      .limit(formattedLimit)
+      .lean();
+
+      const count = await this.stabilizedLayers_sampleModel.countDocuments();
+
+      const totalPages = Math.ceil(count / formattedLimit);
+
+      return {
+        docs,
+        count,
+        totalPages
+      }
+    } catch (error) {
+      
+    }
+
+
     return this.stabilizedLayers_sampleModel.find();
   }
 
   async findAllByFilter(queryFilter: CommonQueryFilter): Promise<any> {    
-    const { filter, limit, page, sort, need_count } = queryFilter;
+    const { filter, limit, page, need_count } = queryFilter;
     const fomattedPage = Number(page)
     const formattedLimit = Number(limit);
     const skip = (fomattedPage - 1) * formattedLimit;
     const parsedFilter = JSON.parse(filter);
-    const searchFilter = { $and: [...parsedFilter] };
-    const sortParam = sort ? sort[0] : "";
+
+    let formattedFilter = [];
+
+    for (const key in parsedFilter) {
+      if (parsedFilter[key]) {
+        formattedFilter.push({ [`generalData.${key}`]: parsedFilter[key] });
+      }
+    }
+
+    let query = {};
+
+    if (formattedFilter.length > 0) {
+      query = { $and: formattedFilter };
+    }
+
     const docs = await this.stabilizedLayers_sampleModel
-      .find(searchFilter)
+      .find(query)
       .skip(skip)
-      .sort(sortParam)
-      .limit(limit)
+      .limit(formattedLimit)
       .lean();
     
-    const count = await this.stabilizedLayers_sampleModel.countDocuments(searchFilter);
+    const countQuery = formattedFilter.length > 0 ? { $and: formattedFilter } : {};
+    const count = await this.stabilizedLayers_sampleModel.countDocuments(countQuery);
+
     let totalPages
 
     if (need_count) {
-      totalPages = Math.ceil(count / limit);
+      totalPages = Math.ceil(count / formattedLimit);
     }
 
     return {
