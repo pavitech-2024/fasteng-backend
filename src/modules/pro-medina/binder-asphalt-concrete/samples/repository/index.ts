@@ -1,16 +1,19 @@
-import { InjectModel } from "@nestjs/mongoose";
-import { DATABASE_CONNECTION } from "infra/mongoose/database.config";
-import { Model } from "mongoose";
-import { BinderAsphaltConcrete_Sample, BinderAsphaltConcrete_SamplesDocument } from "../schemas";
-import { CommonQueryFilter } from "utils/queryFilter";
+import { InjectModel } from '@nestjs/mongoose';
+import { DATABASE_CONNECTION } from 'infra/mongoose/database.config';
+import { Model } from 'mongoose';
+import { BinderAsphaltConcrete_Sample, BinderAsphaltConcrete_SamplesDocument } from '../schemas';
+import { CommonQueryFilter } from 'utils/queryFilter';
 
 export class BinderAsphaltConcrete_SamplesRepository {
   constructor(
-    @InjectModel(BinderAsphaltConcrete_Sample.name, DATABASE_CONNECTION.PROMEDINA) private binderAsphaltConcrete_sampleModel: Model<BinderAsphaltConcrete_SamplesDocument>,
+    @InjectModel(BinderAsphaltConcrete_Sample.name, DATABASE_CONNECTION.PROMEDINA)
+    private binderAsphaltConcrete_sampleModel: Model<BinderAsphaltConcrete_SamplesDocument>,
   ) {}
 
   async create(binderAsphaltConcrete_sample: any): Promise<BinderAsphaltConcrete_Sample> {
-    const createdBinderAsphaltConcrete_Samples = new this.binderAsphaltConcrete_sampleModel(binderAsphaltConcrete_sample);
+    const createdBinderAsphaltConcrete_Samples = new this.binderAsphaltConcrete_sampleModel(
+      binderAsphaltConcrete_sample,
+    );
     return createdBinderAsphaltConcrete_Samples.save();
   }
 
@@ -18,14 +21,14 @@ export class BinderAsphaltConcrete_SamplesRepository {
     return this.binderAsphaltConcrete_sampleModel.find();
   }
 
-  async findAllByFilter(queryFilter: CommonQueryFilter): Promise<any> {    
+  async findAllByFilter(queryFilter: CommonQueryFilter): Promise<any> {
     const { filter, limit, page, need_count } = queryFilter;
-    const fomattedPage = Number(page)
+    const fomattedPage = Number(page);
     const formattedLimit = Number(limit);
     const skip = (fomattedPage - 1) * formattedLimit;
     const parsedFilter = JSON.parse(filter);
 
-    let formattedFilter = [];
+    const formattedFilter = [];
 
     parsedFilter.forEach(obj => {
       if (obj.name) formattedFilter.push({ 'generalData.name': { $regex: `.*${obj.name}.*`, $options: 'i' } });
@@ -61,13 +64,12 @@ export class BinderAsphaltConcrete_SamplesRepository {
       docs,
       count,
       totalPages,
-    }
+    };
   }
 
-  async findOne(binderAsphaltConcrete_samplesFilterQuery: any): 
-  Promise<BinderAsphaltConcrete_Sample> {
+  async findOne(binderAsphaltConcrete_samplesFilterQuery: any): Promise<BinderAsphaltConcrete_Sample> {
     const { name } = binderAsphaltConcrete_samplesFilterQuery;
-    const sample = await this.binderAsphaltConcrete_sampleModel.findOne({'generalData.name': name});
+    const sample = await this.binderAsphaltConcrete_sampleModel.findOne({ 'generalData.name': name });
     return sample;
   }
 

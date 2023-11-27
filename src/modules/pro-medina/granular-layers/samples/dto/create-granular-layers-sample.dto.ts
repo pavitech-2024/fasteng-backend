@@ -1,5 +1,5 @@
-import { IsNotEmpty } from "class-validator";
-import { GranularLayers_Sample } from "../schemas";
+import { IsNotEmpty } from 'class-validator';
+import { GranularLayers_Sample } from '../schemas';
 
 export class CreateGranularLayersSampleDto {
   @IsNotEmpty()

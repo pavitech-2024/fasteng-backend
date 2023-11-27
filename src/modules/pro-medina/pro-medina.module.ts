@@ -8,7 +8,10 @@ import { StabilizedLayers_Sample, StabilizedLayers_SampleSchema } from './stabil
 import { StabilizedLayersSamplesModule } from './stabilized-layers/samples/stabilized-layers-samples.module';
 import { StabilizedLayersModule } from './stabilized-layers/stabilized-layers.module';
 import { BinderAsphaltConcreteModule } from './binder-asphalt-concrete/binder-asphalt-concrete.module';
-import { BinderAsphaltConcrete_Sample, BinderAsphaltConcrete_SampleSchema } from './binder-asphalt-concrete/samples/schemas';
+import {
+  BinderAsphaltConcrete_Sample,
+  BinderAsphaltConcrete_SampleSchema,
+} from './binder-asphalt-concrete/samples/schemas';
 import { BinderAsphaltConcreteSamplesModule } from './binder-asphalt-concrete/samples/binder-asphalt-concrete-samples.module';
 
 const Models: ModelDefinition[] = [
@@ -17,22 +20,17 @@ const Models: ModelDefinition[] = [
   { name: BinderAsphaltConcrete_Sample.name, schema: BinderAsphaltConcrete_SampleSchema },
 ];
 
-const Modules = [
-  GranularLayersSamplesModule, 
-  StabilizedLayersSamplesModule, 
-  BinderAsphaltConcreteSamplesModule
-]
+const Modules = [GranularLayersSamplesModule, StabilizedLayersSamplesModule, BinderAsphaltConcreteSamplesModule];
 
 @Global()
 @Module({
   imports: [
-    MongooseModule.forFeature(Models, DATABASE_CONNECTION.PROMEDINA), 
-    ...Modules, 
-    GranularLayersModule, 
-    StabilizedLayersModule, 
-    BinderAsphaltConcreteModule
-  ], 
-  exports: [MongooseModule, ...Modules]
+    MongooseModule.forFeature(Models, DATABASE_CONNECTION.PROMEDINA),
+    ...Modules,
+    GranularLayersModule,
+    StabilizedLayersModule,
+    BinderAsphaltConcreteModule,
+  ],
+  exports: [MongooseModule, ...Modules],
 })
-
 export class ProMedinaModule {}

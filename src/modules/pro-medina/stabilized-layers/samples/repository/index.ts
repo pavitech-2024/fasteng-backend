@@ -1,12 +1,13 @@
-import { InjectModel } from "@nestjs/mongoose";
-import { DATABASE_CONNECTION } from "infra/mongoose/database.config";
-import { Model } from "mongoose";
-import { StabilizedLayers_Sample, StabilizedLayers_SamplesDocument } from "../schemas";
-import { CommonQueryFilter } from "utils/queryFilter";
+import { InjectModel } from '@nestjs/mongoose';
+import { DATABASE_CONNECTION } from 'infra/mongoose/database.config';
+import { Model } from 'mongoose';
+import { StabilizedLayers_Sample, StabilizedLayers_SamplesDocument } from '../schemas';
+import { CommonQueryFilter } from 'utils/queryFilter';
 
 export class StabilizedLayers_SamplesRepository {
   constructor(
-    @InjectModel(StabilizedLayers_Sample.name, DATABASE_CONNECTION.PROMEDINA) private stabilizedLayers_sampleModel: Model<StabilizedLayers_SamplesDocument>,
+    @InjectModel(StabilizedLayers_Sample.name, DATABASE_CONNECTION.PROMEDINA)
+    private stabilizedLayers_sampleModel: Model<StabilizedLayers_SamplesDocument>,
   ) {}
 
   async create(stabilizedLayers_sample: any): Promise<StabilizedLayers_Sample> {
@@ -18,18 +19,14 @@ export class StabilizedLayers_SamplesRepository {
     return this.stabilizedLayers_sampleModel.find();
   }
 
-  async findAll(options: { page: number, limit: number }): Promise<any> {
+  async findAll(options: { page: number; limit: number }): Promise<any> {
     try {
       const { limit, page } = options;
-      const fomattedPage = Number(page)
+      const fomattedPage = Number(page);
       const formattedLimit = Number(limit);
       const skip = (fomattedPage - 1) * formattedLimit;
 
-      const docs = await this.stabilizedLayers_sampleModel
-      .find()
-      .skip(skip)
-      .limit(formattedLimit)
-      .lean();
+      const docs = await this.stabilizedLayers_sampleModel.find().skip(skip).limit(formattedLimit).lean();
 
       const count = await this.stabilizedLayers_sampleModel.countDocuments();
 
@@ -38,24 +35,21 @@ export class StabilizedLayers_SamplesRepository {
       return {
         docs,
         count,
-        totalPages
-      }
-    } catch (error) {
-      
-    }
-
+        totalPages,
+      };
+    } catch (error) {}
 
     return this.stabilizedLayers_sampleModel.find();
   }
 
-  async findAllByFilter(queryFilter: CommonQueryFilter): Promise<any> {    
+  async findAllByFilter(queryFilter: CommonQueryFilter): Promise<any> {
     const { filter, limit, page, sort, need_count } = queryFilter;
-    const fomattedPage = Number(page)
+    const fomattedPage = Number(page);
     const formattedLimit = Number(limit);
     const skip = (fomattedPage - 1) * formattedLimit;
     const parsedFilter = JSON.parse(filter);
 
-    let formattedFilter = [];
+    const formattedFilter = [];
 
     parsedFilter.forEach(obj => {
       if (obj.name) formattedFilter.push({ 'generalData.name': { $regex: `.*${obj.name}.*`, $options: 'i' } });
@@ -81,7 +75,7 @@ export class StabilizedLayers_SamplesRepository {
     const countQuery = formattedFilter.length > 0 ? { $and: formattedFilter } : {};
     const count = await this.stabilizedLayers_sampleModel.countDocuments(countQuery);
 
-    let totalPages
+    let totalPages;
 
     if (need_count) {
       totalPages = Math.ceil(count / formattedLimit);
@@ -91,13 +85,12 @@ export class StabilizedLayers_SamplesRepository {
       docs,
       count,
       totalPages,
-    }
+    };
   }
 
-  async findOne(stabilizedLayers_samplesFilterQuery: any): 
-  Promise<StabilizedLayers_Sample> {
+  async findOne(stabilizedLayers_samplesFilterQuery: any): Promise<StabilizedLayers_Sample> {
     const { name } = stabilizedLayers_samplesFilterQuery;
-    const sample = await this.stabilizedLayers_sampleModel.findOne({ 'generalData.name': name});
+    const sample = await this.stabilizedLayers_sampleModel.findOne({ 'generalData.name': name });
     return sample;
   }
 
