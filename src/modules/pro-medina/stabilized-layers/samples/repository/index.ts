@@ -58,11 +58,11 @@ export class StabilizedLayers_SamplesRepository {
     let formattedFilter = [];
 
     parsedFilter.forEach(obj => {
-      if (obj.name) formattedFilter.push({ 'generalData.name': obj.name });
-      if (obj.cityState) formattedFilter.push({ 'generalData.cityState': obj.cityState });
-      if (obj.zone) formattedFilter.push({ 'generalData.zone': obj.zone });
-      if (obj.layer) formattedFilter.push({ 'generalData.layer': obj.layer });
-      if (obj.highway) formattedFilter.push({ 'generalData.highway': obj.highway });
+      if (obj.name) formattedFilter.push({ 'generalData.name': { $regex: `.*${obj.name}.*`, $options: 'i' } });
+      if (obj.cityState) formattedFilter.push({ 'generalData.cityState': { $regex: `.*${obj.cityState}.*`, $options: 'i' } });
+      if (obj.zone) formattedFilter.push({ 'generalData.zone': { $regex: `.*${obj.zone}.*`, $options: 'i' } });
+      if (obj.layer) formattedFilter.push({ 'generalData.layer': { $regex: `.*${obj.layer}.*`, $options: 'i' } });
+      if (obj.highway) formattedFilter.push({ 'generalData.highway': { $regex: `.*${obj.highway}.*`, $options: 'i' } });
     });
 
     let query = {};
@@ -73,6 +73,7 @@ export class StabilizedLayers_SamplesRepository {
 
     const docs = await this.stabilizedLayers_sampleModel
       .find(query)
+      .collation({ locale: 'en', strength: 2 })
       .skip(skip)
       .limit(formattedLimit)
       .lean();
