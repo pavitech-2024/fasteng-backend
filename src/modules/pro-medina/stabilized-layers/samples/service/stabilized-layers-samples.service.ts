@@ -38,10 +38,10 @@ export class StabilizedLayersSamplesService {
     }
   }
 
-  async getAllSamples(): Promise<StabilizedLayers_Sample[]> {
+  async getAllSamples(options: { page: number; limit: number }): Promise<any> {
     try {
       // busca todas as amostras no banco de dados
-      const samples = await this.stabilizedLayers_SamplesRepository.find();
+      const samples = await this.stabilizedLayers_SamplesRepository.findAll(options);
 
       // retorna as amostras encontradas que pertencem ao usuário
       return samples;
@@ -75,7 +75,7 @@ export class StabilizedLayersSamplesService {
       const samples = await this.stabilizedLayers_SamplesRepository.findAllByFilter(queryFilter);
 
       // se não encontrar a amostra, retorna um erro
-      if (samples.docs.length <= 0) throw new NotFound('Sample');
+      // if (samples.docs.length <= 0) throw new NotFound('Sample');
 
       // retorna a amostra encontrada
       return {

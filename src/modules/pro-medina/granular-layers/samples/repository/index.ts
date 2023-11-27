@@ -20,12 +20,11 @@ export class GranularLayers_SamplesRepository {
   }
 
   async findAllByFilter(queryFilter: CommonQueryFilter): Promise<any> {
-    const { filter, limit, page, sort, need_count } = queryFilter;
+    const { filter, limit, page, need_count } = queryFilter;
     const fomattedPage = Number(page);
     const formattedLimit = Number(limit);
     const skip = (fomattedPage - 1) * formattedLimit;
     const parsedFilter = JSON.parse(filter);
-    const sortParam = sort ? sort[0] : '';
 
     const formattedFilter = [];
 
@@ -34,19 +33,19 @@ export class GranularLayers_SamplesRepository {
       if (obj.cityState) formattedFilter.push({ 'generalData.cityState': obj.cityState });
       if (obj.zone) formattedFilter.push({ 'generalData.zone': obj.zone });
       if (obj.layer) formattedFilter.push({ 'generalData.layer': obj.layer });
+      if (obj.highway) formattedFilter.push({ 'generalData.highway': obj.highway });
     });
 
-    const docs = await this.granularLayers_sampleModel
-      .find({
-        $and: formattedFilter,
-      })
-      .skip(skip)
-      .limit(limit)
-      .lean();
+    let query = {};
 
-    const count = await this.granularLayers_sampleModel.countDocuments({
-      $and: formattedFilter,
-    });
+    if (formattedFilter.length > 0) {
+      query = { $and: formattedFilter };
+    }
+
+    const docs = await this.granularLayers_sampleModel.find(query).skip(skip).limit(formattedLimit).lean();
+
+    const countQuery = formattedFilter.length > 0 ? { $and: formattedFilter } : {};
+    const count = await this.granularLayers_sampleModel.countDocuments(countQuery);
 
     let totalPages;
 

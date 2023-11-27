@@ -15,7 +15,30 @@ export class StabilizedLayers_SamplesRepository {
     return createdStabilizedLayers_Samples.save();
   }
 
-  async find(): Promise<StabilizedLayers_Sample[]> {
+  async find(): Promise<any> {
+    return this.stabilizedLayers_sampleModel.find();
+  }
+
+  async findAll(options: { page: number; limit: number }): Promise<any> {
+    try {
+      const { limit, page } = options;
+      const fomattedPage = Number(page);
+      const formattedLimit = Number(limit);
+      const skip = (fomattedPage - 1) * formattedLimit;
+
+      const docs = await this.stabilizedLayers_sampleModel.find().skip(skip).limit(formattedLimit).lean();
+
+      const count = await this.stabilizedLayers_sampleModel.countDocuments();
+
+      const totalPages = Math.ceil(count / formattedLimit);
+
+      return {
+        docs,
+        count,
+        totalPages,
+      };
+    } catch (error) {}
+
     return this.stabilizedLayers_sampleModel.find();
   }
 
@@ -25,20 +48,32 @@ export class StabilizedLayers_SamplesRepository {
     const formattedLimit = Number(limit);
     const skip = (fomattedPage - 1) * formattedLimit;
     const parsedFilter = JSON.parse(filter);
-    const searchFilter = { $and: [...parsedFilter] };
-    const sortParam = sort ? sort[0] : '';
-    const docs = await this.stabilizedLayers_sampleModel
-      .find(searchFilter)
-      .skip(skip)
-      .sort(sortParam)
-      .limit(limit)
-      .lean();
 
-    const count = await this.stabilizedLayers_sampleModel.countDocuments(searchFilter);
+    const formattedFilter = [];
+
+    parsedFilter.forEach((obj) => {
+      if (obj.name) formattedFilter.push({ 'generalData.name': obj.name });
+      if (obj.cityState) formattedFilter.push({ 'generalData.cityState': obj.cityState });
+      if (obj.zone) formattedFilter.push({ 'generalData.zone': obj.zone });
+      if (obj.layer) formattedFilter.push({ 'generalData.layer': obj.layer });
+      if (obj.highway) formattedFilter.push({ 'generalData.highway': obj.highway });
+    });
+
+    let query = {};
+
+    if (formattedFilter.length > 0) {
+      query = { $and: formattedFilter };
+    }
+
+    const docs = await this.stabilizedLayers_sampleModel.find(query).skip(skip).limit(formattedLimit).lean();
+
+    const countQuery = formattedFilter.length > 0 ? { $and: formattedFilter } : {};
+    const count = await this.stabilizedLayers_sampleModel.countDocuments(countQuery);
+
     let totalPages;
 
     if (need_count) {
-      totalPages = Math.ceil(count / limit);
+      totalPages = Math.ceil(count / formattedLimit);
     }
 
     return {
