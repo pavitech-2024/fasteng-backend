@@ -101,6 +101,13 @@ export class StabilizedLayers_SamplesRepository {
     return sample;
   }
 
+  async findOneById(sampleId: string): 
+  Promise<StabilizedLayers_Sample> {
+    const sample = await this.stabilizedLayers_sampleModel.findOne({ _id: sampleId });
+    
+    return sample;
+  }
+
   async findOneAndUpdate(stabilizedLayers_samplesFilterQuery: any, stabilizedLayers_sample: Partial<StabilizedLayers_Sample>): Promise<StabilizedLayers_Sample> {
     return this.stabilizedLayers_sampleModel.findOneAndUpdate(stabilizedLayers_samplesFilterQuery, stabilizedLayers_sample, {
       new: true,

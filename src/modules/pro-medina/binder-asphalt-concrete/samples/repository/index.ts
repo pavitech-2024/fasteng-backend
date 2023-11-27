@@ -71,6 +71,13 @@ export class BinderAsphaltConcrete_SamplesRepository {
     return sample;
   }
 
+  async findOneById(sampleId: string): 
+  Promise<BinderAsphaltConcrete_Sample> {
+    const sample = await this.binderAsphaltConcrete_sampleModel.findOne({ _id: sampleId });
+    
+    return sample;
+  }
+
   async findOneAndUpdate(binderAsphaltConcrete_samplesFilterQuery: any, binderAsphaltConcrete_sample: Partial<BinderAsphaltConcrete_Sample>): Promise<BinderAsphaltConcrete_Sample> {
     return this.binderAsphaltConcrete_sampleModel.findOneAndUpdate(binderAsphaltConcrete_samplesFilterQuery, binderAsphaltConcrete_sample, {
       new: true,

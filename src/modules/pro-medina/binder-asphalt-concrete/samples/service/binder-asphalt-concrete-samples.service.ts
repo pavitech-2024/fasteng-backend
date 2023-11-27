@@ -53,7 +53,7 @@ export class BinderAsphaltConcreteSamplesService {
   async getSample(sampleId: string): Promise<BinderAsphaltConcrete_Sample> {
     try {
       // busca uma amostra com o id passado no banco de dados
-      const sample = await this.binderAsphaltConcrete_SamplesRepository.findOne({ _id: sampleId });
+      const sample = await this.binderAsphaltConcrete_SamplesRepository.findOneById(sampleId);
 
       // se não encontrar a amostra, retorna um erro
       if (!sample) throw new NotFound('Sample');
@@ -74,7 +74,7 @@ export class BinderAsphaltConcreteSamplesService {
       const samples = await this.binderAsphaltConcrete_SamplesRepository.findAllByFilter(queryFilter);
 
       // se não encontrar a amostra, retorna um erro
-      if (samples.docs.length <= 0) throw new NotFound('Sample');
+      // if (samples.docs.length <= 0) throw new NotFound('Sample');
 
       // retorna a amostra encontrada
       return {
