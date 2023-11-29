@@ -16,11 +16,13 @@ export class GranularLayersSamplesController {
   @ApiOperation({ summary: 'Cria uma amostra de camadas granulares no banco de dados.' })
   @ApiResponse({ status: 201, description: 'Amostra de camadas granulares criada com sucesso!' })
   @ApiResponse({ status: 400, description: 'Erro ao criar amostra de camadas granulares!' })
+  @ApiResponse({ status: 413, description: 'Imagens grandes demais!' })
   async createSample(@Body() sample: CreateGranularLayersSampleDto) {
     this.logger.log('Create granular layers sample > [body]');
 
     try {
       const createdSample = await this.granularLayersSamplesService.createSample(sample);
+      
 
       if (createdSample) {
         this.logger.log(`Granular layer sample created > [id]: ${createdSample._id}`);
@@ -29,8 +31,10 @@ export class GranularLayersSamplesController {
       }
     } catch (error) {
       if (error instanceof HttpException) {
-        const response = error.getResponse();
-        return { success: false, error: { name: 'SampleCreationError', message: response['error'] } };
+        const response: any = error.getResponse();
+        if (response.status === 409) {
+          return { success: false, error: { name: 'SampleCreationError', message: response['error'] } };
+        }
       }
 
       this.logger.error(`Error on create sample > [error]: ${error}`);

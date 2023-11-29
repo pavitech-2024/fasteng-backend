@@ -44,7 +44,7 @@ export class GranularLayers_SamplesRepository {
 
     const docs = await this.granularLayers_sampleModel
       .find(query)
-      .collation({ locale: 'en', strength: 2 })
+      .collation({ locale: 'en_US', caseFirst: 'off', strength: 2 })
       .skip(skip)
       .limit(formattedLimit)
       .lean();
