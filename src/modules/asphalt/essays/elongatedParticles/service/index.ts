@@ -45,7 +45,7 @@ export class ElongatedParticlesService {
         userId,
       } = body.generalData;
 
-      // verifica se existe uma elongatedparticles com mesmo nome , materialId e userId no banco de dados
+      // verifica se existe uma elongatedParticles com mesmo nome , materialId e userId no banco de dados
       const alreadyExists = await this.ElongatedParticles_Repository.findOne({
         'generalData.name': name,
         'generalData.material._id': materialId,
@@ -56,9 +56,9 @@ export class ElongatedParticlesService {
       if (alreadyExists) throw new AlreadyExists(`ELONGATEDPARTICLES with name "${name}" from user "${userId}"`);
 
       // se não existir, salva no banco de dados
-      const elongatedparticles = await this.ElongatedParticles_Repository.create(body);
+      const elongatedParticles = await this.ElongatedParticles_Repository.create(body);
 
-      return { success: true, data: elongatedparticles };
+      return { success: true, data: elongatedParticles };
     } catch (error) {
       const { status, name, message } = error;
 

@@ -45,7 +45,7 @@ export class FlashPointService {
         userId,
       } = body.generalData;
 
-      // verifica se existe uma flashpoint com mesmo nome , materialId e userId no banco de dados
+      // verifica se existe uma flashPoint com mesmo nome , materialId e userId no banco de dados
       const alreadyExists = await this.FlashPoint_Repository.findOne({
         'generalData.name': name,
         'generalData.material._id': materialId,
@@ -56,9 +56,9 @@ export class FlashPointService {
       if (alreadyExists) throw new AlreadyExists(`FLASHPOINT with name "${name}" from user "${userId}"`);
 
       // se não existir, salva no banco de dados
-      const flashpoint = await this.FlashPoint_Repository.create(body);
+      const flashPoint = await this.FlashPoint_Repository.create(body);
 
-      return { success: true, data: flashpoint };
+      return { success: true, data: flashPoint };
     } catch (error) {
       const { status, name, message } = error;
 

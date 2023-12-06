@@ -8,7 +8,7 @@ import { ElongatedParticlesResultsDimensionsRow } from '../schemas';
 export class Calc_ELONGATEDPARTICLES_Service {
   private logger = new Logger(Calc_ELONGATEDPARTICLES_Service.name);
 
-  constructor(private readonly elongatedparticlesRepository: ElongatedParticlesRepository, private readonly materialRepository: MaterialsRepository) { }
+  constructor(private readonly elongatedParticlesRepository: ElongatedParticlesRepository, private readonly materialRepository: MaterialsRepository) { }
 
   async calculateElongatedParticles({ step2Data }: Calc_ELONGATEDPARTICLES_Dto): Promise<{ success: boolean; result: Calc_ELONGATEDPARTICLES_Out }> {
     try {

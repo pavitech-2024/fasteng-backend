@@ -30,7 +30,7 @@ export class ElongatedParticlesController {
     })
     @ApiResponse({ status: 400, description: 'Erro ao verificar se é possível criar uma ELONGATEDPARTICLES com os dados enviados.' })
     async verifyInitElongatedParticles(@Res() response: Response, @Body() body: ElongatedParticlesInitDto) {
-        this.logger.log('verify init elongatedparticles > [body]');
+        this.logger.log('verify init elongatedParticles > [body]');
 
         const status = await this.elongatedParticlesService.verifyInitElongatedParticles(body);
 
@@ -46,12 +46,12 @@ export class ElongatedParticlesController {
     })
     @ApiResponse({ status: 400, description: 'Erro ao calcular os resultados da ELONGATEDPARTICLES com os dados enviados.' })
     async calculateElongatedParticles(@Body() body: Calc_ELONGATEDPARTICLES_Dto) {
-        this.logger.log('calculate elongatedparticles > [body]');
+        this.logger.log('calculate elongatedParticles > [body]');
 
         const elongatedParticles = await this.elongatedParticlesService.calculateElongatedParticles(body);
 
-        if (elongatedParticles.success) this.logger.log('calculate elongatedparticles > [success]');
-        else this.logger.error('calculate elongatedparticles > [error]');
+        if (elongatedParticles.success) this.logger.log('calculate elongatedParticles > [success]');
+        else this.logger.error('calculate elongatedParticles > [error]');
 
         return elongatedParticles;
     }
@@ -83,8 +83,8 @@ export class ElongatedParticlesController {
 
         const elongatedParticles = await this.elongatedParticlesService.saveEssay(body);
 
-        if (elongatedParticles.success) this.logger.log('save elongatedparticles essay > [success]');
-        else this.logger.error('save elongatedparticles essay > [error]');
+        if (elongatedParticles.success) this.logger.log('save elongatedParticles essay > [success]');
+        else this.logger.error('save elongatedParticles essay > [error]');
 
         return response.status(200).json(elongatedParticles);
     }

@@ -7,18 +7,18 @@ import { Logger } from '@nestjs/common';
 export class FlashPointRepository {
   private logger = new Logger(FlashPointRepository.name);
 
-  constructor(@InjectModel(FlashPoint.name, DATABASE_CONNECTION.ASPHALT) private flashpointModel: Model<FlashPointDocument>) {}
+  constructor(@InjectModel(FlashPoint.name, DATABASE_CONNECTION.ASPHALT) private flashPointModel: Model<FlashPointDocument>) {}
 
-  async findOne(flashpointFilterQuery: any): Promise<FlashPoint> {
-    return this.flashpointModel.findOne(flashpointFilterQuery);
+  async findOne(flashPointFilterQuery: any): Promise<FlashPoint> {
+    return this.flashPointModel.findOne(flashPointFilterQuery);
   }
 
   async findAll(): Promise<FlashPoint[]> {
-    return this.flashpointModel.find();
+    return this.flashPointModel.find();
   }
 
-  async create(flashpoint: any): Promise<FlashPoint> {
-    const createdFlashPoint = new this.flashpointModel(flashpoint);
+  async create(flashPoint: any): Promise<FlashPoint> {
+    const createdFlashPoint = new this.flashPointModel(flashPoint);
 
     return createdFlashPoint.save();
   }
