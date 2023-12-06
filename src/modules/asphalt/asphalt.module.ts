@@ -35,6 +35,8 @@ import { Ddui, DduiSchema } from './essays/ddui/schemas';
 import { DduiModule } from './essays/ddui/ddui.module';
 import { ElasticRecovery, ElasticRecoverySchema } from './essays/elasticRecovery/schema';
 import { ElasticRecoveryModule } from './essays/elasticRecovery/elasticRecovery.module';
+import { ViscosityRotationalModule } from './essays/viscosityRotational/viscosityRotational.module';
+import { ViscosityRotational, ViscosityRotationalSchema } from './essays/viscosityRotational/schemas';
 
 const Models: ModelDefinition[] = [
   { name: Material.name, schema: MaterialSchema },
@@ -54,6 +56,7 @@ const Models: ModelDefinition[] = [
   { name: ShapeIndex.name, schema: ShapeIndexSchema },
   { name: ElongatedParticles.name, schema: ElongatedParticlesSchema },
   { name: ElasticRecovery.name, schema: ElasticRecoverySchema },
+  { name: ViscosityRotational.name, schema: ViscosityRotationalSchema },
 ];
 
 const Modules = [
@@ -74,6 +77,7 @@ const Modules = [
   ShapeIndexModule, 
   ElongatedParticlesModule,
   ElasticRecoveryModule,
+  ViscosityRotationalModule,
 ]
 
 @Global()
