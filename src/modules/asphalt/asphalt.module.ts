@@ -3,6 +3,8 @@ import { ModelDefinition, MongooseModule } from '@nestjs/mongoose';
 import { DATABASE_CONNECTION } from '../../infra/mongoose/database.config';
 import { MaterialsModule } from './materials/materials.module';
 import { Material, MaterialSchema } from './materials/schemas';
+import { Rtcd, RtcdSchema } from './essays/rtcd/schemas';
+import { RtcdModule } from './essays/rtcd/rtcd.module';
 import { SandEquivalentModule } from './essays/sandEquivalent/sandEquivalent.module';
 import { SandEquivalent, SandEquivalentSchema } from './essays/sandEquivalent/schemas';
 import { SpecifyMass, SpecifyMassSchema } from './essays/specifyMass/schemas';
@@ -35,10 +37,14 @@ import { Ddui, DduiSchema } from './essays/ddui/schemas';
 import { DduiModule } from './essays/ddui/ddui.module';
 import { ElasticRecovery, ElasticRecoverySchema } from './essays/elasticRecovery/schema';
 import { ElasticRecoveryModule } from './essays/elasticRecovery/elasticRecovery.module';
+import { ViscosityRotationalModule } from './essays/viscosityRotational/viscosityRotational.module';
+import { ViscosityRotational, ViscosityRotationalSchema } from './essays/viscosityRotational/schemas';
 
 const Models: ModelDefinition[] = [
+  
   { name: Material.name, schema: MaterialSchema },
   { name: Rtfo.name, schema: RtfoSchema },
+  { name: Rtcd.name, schema: RtcdSchema },
   { name: AsphaltGranulometry.name, schema: AsphaltGranulometrySchema },
   { name: Penetration.name, schema: PenetrationSchema },
   { name: Abrasion.name, schema: AbrasionSchema },
@@ -54,11 +60,13 @@ const Models: ModelDefinition[] = [
   { name: ShapeIndex.name, schema: ShapeIndexSchema },
   { name: ElongatedParticles.name, schema: ElongatedParticlesSchema },
   { name: ElasticRecovery.name, schema: ElasticRecoverySchema },
+  { name: ViscosityRotational.name, schema: ViscosityRotationalSchema },
 ];
 
 const Modules = [
   MaterialsModule, 
   RtfoModule,
+  RtcdModule,
   AsphaltGranulometryModule,
   PenetrationModule,
   AbrasionModule,
@@ -74,6 +82,7 @@ const Modules = [
   ShapeIndexModule, 
   ElongatedParticlesModule,
   ElasticRecoveryModule,
+  ViscosityRotationalModule,
 ]
 
 @Global()
