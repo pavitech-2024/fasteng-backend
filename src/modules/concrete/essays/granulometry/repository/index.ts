@@ -14,6 +14,10 @@ export class ConcreteGranulometryRepository {
     return this.granulometryModel.find();
   }
 
+  async findAllByMaterialId(granulometryFilterQuery: FilterQuery<Granulometry>): Promise<Granulometry[]> {
+    return this.granulometryModel.find(granulometryFilterQuery);
+  }
+
   async create(granulometry: any): Promise<Granulometry> {
     const createdGranulometry = new this.granulometryModel(granulometry);
 

@@ -16,7 +16,11 @@ import { AsphaltModule } from './modules/asphalt/asphalt.module';
 import { SoilsModule } from './modules/soils/soils.module';
 import { ConcreteModule } from './modules/concrete/concrete.module';
 import { ReportErrorModule } from './modules/report-error/report-error.module';
+<<<<<<< HEAD
 import { ReportErrorController } from './modules/report-error/report-error.controller';
+=======
+import { ReportErrorController } from 'modules/report-error/report-error.controller';
+>>>>>>> 70548140e675219f3d42284300c7b7e2f82f3b02
 
 @Module({
   imports: [
