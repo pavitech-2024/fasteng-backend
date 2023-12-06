@@ -33,6 +33,8 @@ import { SofteningPoint, SofteningPointSchema } from './essays/softeningPoint/sc
 import { SofteningPointModule } from './essays/softeningPoint/softeningPoint.module';
 import { Ddui, DduiSchema } from './essays/ddui/schemas';
 import { DduiModule } from './essays/ddui/ddui.module';
+import { ElasticRecovery, ElasticRecoverySchema } from './essays/elasticRecovery/schema';
+import { ElasticRecoveryModule } from './essays/elasticRecovery/elasticRecovery.module';
 
 const Models: ModelDefinition[] = [
   { name: Material.name, schema: MaterialSchema },
@@ -51,6 +53,7 @@ const Models: ModelDefinition[] = [
   { name: Ddui.name, schema: DduiSchema },
   { name: ShapeIndex.name, schema: ShapeIndexSchema },
   { name: ElongatedParticles.name, schema: ElongatedParticlesSchema },
+  { name: ElasticRecovery.name, schema: ElasticRecoverySchema },
 ];
 
 const Modules = [
@@ -70,11 +73,12 @@ const Modules = [
   DduiModule,
   ShapeIndexModule, 
   ElongatedParticlesModule,
+  ElasticRecoveryModule,
 ]
 
 @Global()
 @Module({
-  imports: [MongooseModule.forFeature(Models, DATABASE_CONNECTION.ASPHALT), MaterialsModule],
+  imports: [MongooseModule.forFeature(Models, DATABASE_CONNECTION.ASPHALT), ...Modules],
   exports: [MongooseModule, MaterialsModule],
 })
 
