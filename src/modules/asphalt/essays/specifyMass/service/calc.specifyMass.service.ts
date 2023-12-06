@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Calc_SPECIFYMASS_Dto, Calc_SPECIFYMASS_Out } from '../dto/calc.specifymass.dto';
+import { Calc_SPECIFYMASS_Dto, Calc_SPECIFYMASS_Out } from '../dto/calc.specifyMass.dto';
 import { SpecifyMassRepository } from '../repository';
 import { MaterialsRepository } from '../../../../../modules/asphalt/materials/repository';
 

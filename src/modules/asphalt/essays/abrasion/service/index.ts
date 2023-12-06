@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { AlreadyExists } from "utils/exceptions";
+import { AlreadyExists } from "../../../../../utils/exceptions";
 import { AbrasionRepository } from "../repository";
 import { AbrasionInitDto } from "../dto/abrasion-init.dto";
 import { Calc_Abrasion_Dto, Calc_Abrasion_Out } from "../dto/calc-abrasion.dto";

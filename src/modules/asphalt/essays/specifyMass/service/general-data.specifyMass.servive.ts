@@ -13,7 +13,7 @@ export class GeneralData_SPECIFYMASS_Service {
 
   async verifyInitSpecifyMass({ name, material }: SpecifyMassInitDto) {
     try {
-      this.logger.log('verify init specifymass on general-data.specifymass.service.ts > [body]');
+      this.logger.log('verify init specifymass on general-data.specifyMass.service.ts > [body]');
       // verificar se existe uma amostra com mesmo nome e userId no banco de dados
       const materialExists = await this.materialRepository.findOne({
         "_id": material._id

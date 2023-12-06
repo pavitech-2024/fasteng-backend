@@ -1,8 +1,7 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { Calc_SofteningPoint_Dto, Calc_SofteningPoint_Out } from "../dto/calc-softeningPoint.dto";
-import { Material } from "modules/asphalt/materials/schemas";
-import { SofteningPoint } from "../schemas";
-import { MaterialsService } from "modules/asphalt/materials/service";
+import { Material } from "../../../../../modules/asphalt/materials/schemas";
+import { MaterialsService } from "../../../../../modules/asphalt/materials/service";
 
 @Injectable()
 export class Calc_SofteningPoint_Service {

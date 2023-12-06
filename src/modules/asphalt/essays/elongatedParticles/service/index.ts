@@ -3,7 +3,7 @@ import { ElongatedParticlesInitDto } from '../dto/elongatedParticles-init.dto';
 import { Calc_ELONGATEDPARTICLES_Dto, Calc_ELONGATEDPARTICLES_Out } from '../dto/calc.elongatedParticles.dto';
 import { AlreadyExists } from '../../../../../utils/exceptions';
 import { ElongatedParticlesRepository } from '../repository';
-import { Calc_ELONGATEDPARTICLES_Service } from './calc.elongatedparticles.service';
+import { Calc_ELONGATEDPARTICLES_Service } from './calc.elongatedParticles.service';
 import { GeneralData_ELONGATEDPARTICLES_Service } from './general-data.elongatedParticles.service';
 
 @Injectable()
@@ -65,5 +65,4 @@ export class ElongatedParticlesService {
       return { success: false, error: { status, message, name } };
     }
   }
-
 }

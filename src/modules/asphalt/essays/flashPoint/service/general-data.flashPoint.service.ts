@@ -13,7 +13,7 @@ export class GeneralData_FLASHPOINT_Service {
 
   async verifyInitFlashPoint({ name, material }: FlashPointInitDto) {
     try {
-      this.logger.log('verify init flashpoint on general-data.flashpoint.service.ts > [body]');
+      this.logger.log('verify init flashpoint on general-data.flashPoint.service.ts > [body]');
       // verificar se existe uma amostra com mesmo nome e userId no banco de dados
       const materialExists = await this.materialRepository.findOne({
         "_id": material._id

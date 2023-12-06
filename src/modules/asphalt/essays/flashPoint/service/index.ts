@@ -3,7 +3,7 @@ import { FlashPointInitDto } from '../dto/flashPoint-init.dto';
 import { Calc_FLASHPOINT_Dto, Calc_FLASHPOINT_Out } from '../dto/calc.flashPoint.dto';
 import { AlreadyExists } from '../../../../../utils/exceptions';
 import { FlashPointRepository } from '../repository';
-import { Calc_FLASHPOINT_Service } from './calc.flashpoint.service';
+import { Calc_FLASHPOINT_Service } from './calc.flashPoint.service';
 import { GeneralData_FLASHPOINT_Service } from './general-data.flashPoint.service';
 
 @Injectable()

@@ -3,7 +3,7 @@ import { ApiTags, ApiOperation, ApiResponse } from "@nestjs/swagger";
 import { Calc_SofteningPoint_Dto, Calc_SofteningPoint_Out } from "../dto/calc-softeningPoint.dto";
 import { SofteningPointInitDto } from "../dto/init-softeningPoint.dto";
 import { Response } from 'express';
-import { SofteningPointService } from "../service/softeningPoint.service";
+import { SofteningPointService } from "../service";
 
 @ApiTags('softeningPoint')
 @Controller('asphalt/essays/softeningPoint')

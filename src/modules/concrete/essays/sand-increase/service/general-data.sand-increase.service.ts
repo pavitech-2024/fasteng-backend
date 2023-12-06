@@ -1,7 +1,7 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { SandIncreaseRepository } from "../repository";
-import { MaterialsRepository } from "modules/concrete/materials/repository";
-import { AlreadyExists, NotFound } from "utils/exceptions";
+import { MaterialsRepository } from "../../../../../modules/concrete/materials/repository";
+import { AlreadyExists, NotFound } from "../../../../../utils/exceptions";
 import { SandIncreaseInitDto } from "../dto/sand-increase-init.dto";
 
 @Injectable()

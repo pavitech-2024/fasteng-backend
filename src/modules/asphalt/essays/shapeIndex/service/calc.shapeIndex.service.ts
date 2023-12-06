@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Calc_SHAPEINDEX_Dto, Calc_SHAPEINDEX_Out } from '../dto/calc.shapeindex.dto';
+import { Calc_SHAPEINDEX_Dto, Calc_SHAPEINDEX_Out } from '../dto/calc.shapeIndex.dto';
 import { ShapeIndexRepository } from '../repository';
 import { MaterialsRepository } from '../../../../../modules/asphalt/materials/repository';
 import { ShapeIndexCircularSieveRow, ShapeIndexReadRow, ShapeIndexSieveRow } from '../schemas';

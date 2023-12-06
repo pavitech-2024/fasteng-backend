@@ -3,7 +3,7 @@ import { ApiTags, ApiOperation, ApiResponse } from "@nestjs/swagger";
 import { Calc_Ddui_Dto, Calc_Ddui_Out } from "../dto/calc-ddui.dto";
 import { DduiInitDto } from "../dto/init-ddui.dto";
 import { Response } from 'express';
-import { DduiService } from "../service/ddui.service";
+import { DduiService } from "../service";
 
 
 @ApiTags('ddui')

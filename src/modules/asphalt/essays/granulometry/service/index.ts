@@ -1,5 +1,5 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { AlreadyExists } from "utils/exceptions";
+import { AlreadyExists } from "../../../../../utils/exceptions";
 import { Calc_AsphaltGranulometry_Dto, Calc_AsphaltGranulometry_Out } from "../dto/asphalt.calc.granulometry.dto";
 import { AsphaltGranulometryInitDto } from "../dto/asphalt.granulometry-init.dto";
 import { AsphaltGranulometryRepository } from "../repository";

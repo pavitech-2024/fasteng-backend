@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ElongatedParticlesController } from './controller';
 import { ElongatedParticlesService } from './service/index';
 import { ElongatedParticlesRepository } from './repository';
-import { Calc_ELONGATEDPARTICLES_Service } from './service/calc.elongatedparticles.service';
+import { Calc_ELONGATEDPARTICLES_Service } from './service/calc.elongatedParticles.service';
 import { GeneralData_ELONGATEDPARTICLES_Service } from './service/general-data.elongatedParticles.service';
 
 const services = [ElongatedParticlesService, GeneralData_ELONGATEDPARTICLES_Service, Calc_ELONGATEDPARTICLES_Service];

@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { AlreadyExists } from "utils/exceptions";
+import { AlreadyExists } from "../../../../../utils/exceptions";
 import { Calc_SayboltFurol_Dto, Calc_SayboltFurol_Out } from "../dto/calc-sayboltFurol.dto";
 import { SayboltFurolInitDto } from "../dto/init-sayboltFurol.dto";
 import { SayboltFurolRepository } from "../repository";

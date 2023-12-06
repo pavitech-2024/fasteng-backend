@@ -1,6 +1,6 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { MaterialsRepository } from "modules/asphalt/materials/repository";
-import { NotFound, AlreadyExists } from "utils/exceptions";
+import { MaterialsRepository } from '../../../materials/repository';
+import { NotFound, AlreadyExists } from "../../../../../utils/exceptions";
 import { SandEquivalentInitDto } from "../dto/init-sandEquivalent.dto";
 import { SandEquivalentRepository } from "../repository";
 

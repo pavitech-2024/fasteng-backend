@@ -3,7 +3,7 @@ import { ApiTags, ApiOperation, ApiResponse } from "@nestjs/swagger";
 import { Calc_SandEquivalent_Dto, Calc_SandEquivalent_Out } from "../dto/calc-sandEquivalent.dto";
 import { SandEquivalentInitDto } from "../dto/init-sandEquivalent.dto";
 import { Response } from 'express';
-import { SandEquivalentService } from "../service/sandEquivalent.service";
+import { SandEquivalentService } from "../service";
 
 @ApiTags('sandEquivalent')
 @Controller('asphalt/essays/sandEquivalent')

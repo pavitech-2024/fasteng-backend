@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Calc_ELONGATEDPARTICLES_Dto, Calc_ELONGATEDPARTICLES_Out } from '../dto/calc.elongatedparticles.dto';
+import { Calc_ELONGATEDPARTICLES_Dto, Calc_ELONGATEDPARTICLES_Out } from '../dto/calc.elongatedParticles.dto';
 import { ElongatedParticlesRepository } from '../repository';
 import { MaterialsRepository } from '../../../../../modules/asphalt/materials/repository';
 import { ElongatedParticlesResultsDimensionsRow } from '../schemas';

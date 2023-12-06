@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { AlreadyExists } from "utils/exceptions";
+import { AlreadyExists } from "../../../../../utils/exceptions";
 import { Calc_SandEquivalent_Dto, Calc_SandEquivalent_Out } from "../dto/calc-sandEquivalent.dto";
 import { SandEquivalentInitDto } from "../dto/init-sandEquivalent.dto";
 import { SandEquivalentRepository } from "../repository";

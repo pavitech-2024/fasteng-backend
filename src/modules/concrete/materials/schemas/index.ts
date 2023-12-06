@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { IsNotEmpty } from 'class-validator';
 import { HydratedDocument } from 'mongoose';
-import { Sieve } from 'utils/interfaces';
+import { Sieve } from '../../../../utils/interfaces';
 
 export type MaterialDocument = HydratedDocument<Material>;
 

@@ -3,7 +3,7 @@ import { ShapeIndexInitDto } from '../dto/shapeIndex-init.dto';
 import { Calc_SHAPEINDEX_Dto, Calc_SHAPEINDEX_Out } from '../dto/calc.shapeIndex.dto';
 import { AlreadyExists } from '../../../../../utils/exceptions';
 import { ShapeIndexRepository } from '../repository';
-import { Calc_SHAPEINDEX_Service } from './calc.shapeindex.service';
+import { Calc_SHAPEINDEX_Service } from './calc.shapeIndex.service';
 import { GeneralData_SHAPEINDEX_Service } from './general-data.shapeIndex.service';
 
 @Injectable()

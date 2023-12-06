@@ -1,6 +1,6 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { Calc_SandIncrease_Dto, Calc_SandIncrease_Out } from "../dto/calc.sand-increase.dto";
-import { regression } from "utils/leastSquaresRegression";
+import { regression } from "../../../../../utils/leastSquaresRegression";
 
 @Injectable()
 export class Calc_SandIncrease_Service {

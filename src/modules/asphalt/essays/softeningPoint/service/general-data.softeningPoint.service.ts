@@ -1,9 +1,9 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { MaterialsRepository } from "modules/asphalt/materials/repository";
-import { NotFound, AlreadyExists } from "utils/exceptions";
+import { MaterialsRepository } from '../../../materials/repository';
+import { NotFound, AlreadyExists } from "../../../../../utils/exceptions";
 import { SofteningPointInitDto } from "../dto/init-softeningPoint.dto";
 import { SofteningPointRepository } from "../repository";
-import { PenetrationRepository } from "../../penetration/repository";
+import { PenetrationRepository } from "../../penetration/repository/index"
 
 @Injectable()
 export class GeneralData_SofteningPoint_Service {
@@ -13,7 +13,7 @@ export class GeneralData_SofteningPoint_Service {
     private readonly softeningPointRepository: SofteningPointRepository,
     private readonly materialsRepository: MaterialsRepository,
     private readonly penetrationRepository: PenetrationRepository
-  ) {}
+  ) { }
 
   async verifyInitSofteningPoint({ name, material }: SofteningPointInitDto) {
     try {

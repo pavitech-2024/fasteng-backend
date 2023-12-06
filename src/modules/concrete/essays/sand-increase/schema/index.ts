@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { IsArray, IsNotEmpty } from "class-validator";
-import { Material } from "modules/concrete/materials/schemas";
+import { Material } from "../../../../../modules/concrete/materials/schemas";
 import { HydratedDocument } from "mongoose";
 import { Calc_SandIncrease_Out } from "../dto/calc.sand-increase.dto";
 

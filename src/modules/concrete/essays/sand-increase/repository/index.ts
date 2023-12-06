@@ -1,5 +1,5 @@
 import { InjectModel } from "@nestjs/mongoose";
-import { DATABASE_CONNECTION } from "infra/mongoose/database.config";
+import { DATABASE_CONNECTION } from "../../../../../infra/mongoose/database.config";
 import { FilterQuery, Model } from "mongoose";
 import { SandIncrease, SandIncreaseDocument } from "../schema";
 

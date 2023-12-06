@@ -1,5 +1,5 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { MaterialsRepository } from "modules/asphalt/materials/repository";
+import { MaterialsRepository } from '../../../materials/repository';
 import { AbrasionRepository } from "../repository";
 import { Calc_Abrasion_Dto, Calc_Abrasion_Out } from "../dto/calc-abrasion.dto";
 

@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { IsNotEmpty } from 'class-validator';
-import { Material } from 'modules/asphalt/materials/schemas';
+import { Material } from '../../../../../modules/asphalt/materials/schemas';
 import { HydratedDocument } from 'mongoose';
 
 export type UnitMassDocument = HydratedDocument<UnitMass>;
