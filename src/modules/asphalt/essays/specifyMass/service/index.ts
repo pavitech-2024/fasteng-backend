@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { GeneralData_SPECIFYMASS_Service } from './general-data.specifyMass.servive';
+import { GeneralData_SPECIFYMASS_Service } from './general-data.specifyMass.service';
 import { SpecifyMassInitDto } from '../dto/specifyMass-init.dto';
 import { Calc_SPECIFYMASS_Dto, Calc_SPECIFYMASS_Out } from '../dto/calc.specifyMass.dto';
 import { AlreadyExists } from '../../../../../utils/exceptions';
