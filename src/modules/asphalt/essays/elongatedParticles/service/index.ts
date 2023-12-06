@@ -65,5 +65,4 @@ export class ElongatedParticlesService {
       return { success: false, error: { status, message, name } };
     }
   }
-
 }

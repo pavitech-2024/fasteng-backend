@@ -2,8 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ElongatedParticlesRepository } from '../repository';
 import { ElongatedParticlesInitDto } from '../dto/elongatedparticles-init.dto';
 import { MaterialsRepository } from '../../../materials/repository';
-import { AlreadyExists } from '../../../../../utils/exceptions';
-import { NotFound } from '../../../../../utils/exceptions';
+import { AlreadyExists, NotFound } from '../../../../../utils/exceptions';
 
 @Injectable()
 export class GeneralData_ELONGATEDPARTICLES_Service {
