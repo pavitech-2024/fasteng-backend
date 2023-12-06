@@ -1,0 +1,24 @@
+import { InjectModel } from '@nestjs/mongoose';
+import { DATABASE_CONNECTION } from '../../../../../infra/mongoose/database.config';
+import { Model } from 'mongoose';
+import { UnitMass, UnitMassDocument } from '../schemas';
+
+export class UnitMassRepository {
+  constructor(
+    @InjectModel(UnitMass.name, DATABASE_CONNECTION.CONCRETE) private unitMassModel: Model<UnitMassDocument>,
+  ) {}
+
+  async findOne(unitMassFilterQuery: any): Promise<UnitMass> {
+    return this.unitMassModel.findOne(unitMassFilterQuery);
+  }
+
+  async findAll(): Promise<UnitMass[]> {
+    return this.unitMassModel.find();
+  }
+
+  async create(unitMass: any): Promise<UnitMass> {
+    const createdUnitMass = new this.unitMassModel(unitMass);
+
+    return createdUnitMass.save();
+  }
+}
