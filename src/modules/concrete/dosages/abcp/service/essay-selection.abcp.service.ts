@@ -1,16 +1,9 @@
 import { Injectable, Logger } from "@nestjs/common";
-<<<<<<< HEAD
-import { MaterialsRepository } from "../../../../../modules/concrete/materials/repository";
-import { ConcreteGranulometryRepository } from "../../../../../modules/concrete/essays/granulometry/repository";
-import { UnitMassRepository } from "../../../../../modules/concrete/essays/unitMass/repository";
-import { ABCPEssaySelectionDto } from "../dto/abcp-essay-selection.dto";
-=======
 import { MaterialsRepository } from "modules/concrete/materials/repository";
 import { ConcreteGranulometryRepository } from "modules/concrete/essays/granulometry/repository";
 import { UnitMassRepository } from "modules/concrete/essays/unitMass/repository";
 import { ABCPEssaySelectionDto } from "../dto/abcp-essay-selection.dto";
 import { Granulometry } from '../../../../soils/essays/granulometry/schemas/index';
->>>>>>> 70548140e675219f3d42284300c7b7e2f82f3b02
 
 @Injectable()
 export class EssaySelection_ABCP_Service {
