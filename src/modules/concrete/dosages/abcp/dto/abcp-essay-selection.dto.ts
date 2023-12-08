@@ -2,11 +2,11 @@ import { IsNotEmpty } from "class-validator";
 
 export class ABCPEssaySelectionDto {
     @IsNotEmpty()
-    coarseAggregate_id: string;
+    coarseAggregate_id: any;
     
     @IsNotEmpty()
-    fineAggregate_id: string;
+    fineAggregate_id: any;
     
     @IsNotEmpty()
-    cement_id: string;
+    cement_id: any;
 }

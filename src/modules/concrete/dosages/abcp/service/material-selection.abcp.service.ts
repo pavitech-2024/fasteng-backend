@@ -37,7 +37,7 @@ export class MaterialSelection_ABCP_Service {
                     const { material } = generalData
                     return _id.toString() === material._id.toString()
                 });
-                // if (granulometry && unit_mass)
+                if (granulometry && unit_mass)
                 return granulometry //&& unit_mass;
 
             });

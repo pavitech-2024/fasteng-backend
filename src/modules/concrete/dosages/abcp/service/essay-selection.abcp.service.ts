@@ -30,7 +30,7 @@ export class EssaySelection_ABCP_Service {
                 }
             });
 
-            const granulometrys = await this.granulometry_repository.findAll();
+            const granulometrys = await this.granulometry_repository.findAllByMaterialId( coarseAggregate_id );
             const unit_masses = await this.unit_mass_repository.findAll();
 
             const coarseAggregate = materials.find((material) => {

@@ -45,7 +45,7 @@ export class ABCPService {
     try {
       const essays = await this.essaySelection_Service.getEssays(data);
 
-      this.logger.log(`essays returned > [essays]: ${essays}`)
+      this.logger.log(`essays returned > [essays]: ${essays}`);
 
       return { essays, success: true };
     } catch (error) {
