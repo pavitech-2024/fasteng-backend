@@ -17,7 +17,7 @@ export type GranulometryGeneralData = {
 };
 
 type granulometry_step2Data = {
-  sample_mass: number;
+  material_mass: number;
   table_data: { sieve: string; passant: number, retained: number }[];
   bottom: number;
 };

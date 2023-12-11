@@ -16,8 +16,15 @@ export class UnitMassRepository {
     return this.unitMassModel.find();
   }
 
-  async findAllByMaterialId(unitMassFilterQuery: FilterQuery<UnitMass>): Promise<UnitMass[]> {
-    return this.unitMassModel.find(unitMassFilterQuery);
+  // async findAllByMaterialId(unitMassFilterQuery: FilterQuery<UnitMass>): Promise<UnitMass[]> {
+  //   return this.unitMassModel.find(unitMassFilterQuery);
+  // }
+
+  async findAllUnitMassesByMaterialId(materialId: string): Promise<UnitMass[]> {
+
+    const unitMassEssays = await this.unitMassModel.find({ "generalData.material._id": materialId });
+
+    return unitMassEssays
   }
 
   async create(unitMass: any): Promise<UnitMass> {

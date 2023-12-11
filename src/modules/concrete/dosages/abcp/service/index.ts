@@ -44,6 +44,7 @@ export class ABCPService {
   async getEssaysByMaterials(data: ABCPEssaySelectionDto) {
     try {
       const essays = await this.essaySelection_Service.getEssays(data);
+      
 
       this.logger.log(`essays returned > [essays]: ${essays}`);
 

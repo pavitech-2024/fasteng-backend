@@ -30,14 +30,15 @@ export class EssaySelection_ABCP_Service {
                 }
             });
 
-            const granulometrys = await this.granulometry_repository.findAllByMaterialId( coarseAggregate_id );
-            const unit_masses = await this.unit_mass_repository.findAll();
+            const coarseGranulometrys = await this.granulometry_repository.findAllGranulometrysByMaterialId( coarseAggregate_id, 'coarse' );
+            const fineGranulometrys = await this.granulometry_repository.findAllGranulometrysByMaterialId( fineAggregate_id, 'fine' );
+            const unit_masses = await this.unit_mass_repository.findAllUnitMassesByMaterialId( coarseAggregate_id );
 
             const coarseAggregate = materials.find((material) => {
                 const { _id, name } = material;
 
                 if (coarseAggregate_id.toString() === _id.toString()) {
-                    const granulometry_esssays = granulometrys.filter((essay) => (
+                    const granulometry_esssays = coarseGranulometrys.filter((essay) => (
                         essay.generalData.material._id.toString() === _id.toString()
                     ));
                     const unit_mass_essays = unit_masses.filter((essay) => (
@@ -56,7 +57,7 @@ export class EssaySelection_ABCP_Service {
                 const { _id, name } = material;
 
                 if (fineAggregate_id.toString() === _id.toString()) {
-                    const granulometry_esssays = granulometrys.filter((essay) => (
+                    const granulometry_esssays = fineGranulometrys.filter((essay) => (
                         essay.generalData.material._id.toString() === _id.toString()
                     ));
                     const unit_mass_essays = unit_masses.filter((essay) => (
