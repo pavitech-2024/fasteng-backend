@@ -23,7 +23,7 @@ export class ConcreteGranulometryRepository {
     if (type === 'coarse') {
       granulometryEssays = await this.granulometryModel.find({
         "generalData.material._id": materialId,
-        "generalData.results.nominal_diameter": {
+        "results.nominal_diameter": {
           $gte: 9.5, // Maior ou igual a 9.5mm
           $lte: 37.5 // Menor ou igual a 37.5mm
         }
@@ -31,7 +31,7 @@ export class ConcreteGranulometryRepository {
     } else if (type === 'fine') {
       granulometryEssays = await this.granulometryModel.find({
         "generalData.material._id": materialId,
-        "generalData.results.fineness_module": {
+        "results.fineness_module": {
           $gte: 1.8, // Maior ou igual a 9.5mm
           $lte: 3.6 // Menor ou igual a 37.5mm
         }
