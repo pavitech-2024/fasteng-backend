@@ -9,4 +9,10 @@ export class ABCPRepository {
     async findOne(abcpFilterQuery: any): Promise<ABCP> {
         return this.abcpModel.findOne(abcpFilterQuery);
     }
+
+    async create(abcp: any): Promise<ABCP> {
+        const createdGranulometry = new this.abcpModel(abcp);
+
+        return createdGranulometry.save();
+    }
 }

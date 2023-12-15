@@ -10,6 +10,10 @@ export class ConcreteGranulometryRepository {
     return this.granulometryModel.findOne(granulometryFilterQuery);
   }
 
+  async findById(id: string): Promise<Granulometry> {
+    return this.granulometryModel.findById(id);
+  }
+
   async findAll(): Promise<Granulometry[]> {
     return this.granulometryModel.find();
   }

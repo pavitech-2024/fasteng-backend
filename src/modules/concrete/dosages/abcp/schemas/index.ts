@@ -25,7 +25,7 @@ export type ABCPEssaySelectionData = {
         _id: string;
         granulometry_id: string;
         specificMass: number;
-        unitMass_id: number
+        unitMass_id: string
     };
     cement: {
         _id: string;

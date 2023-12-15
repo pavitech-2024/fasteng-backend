@@ -12,6 +12,10 @@ export class UnitMassRepository {
     return this.unitMassModel.findOne(unitMassFilterQuery);
   }
 
+  async findById(id: string) {
+    return this.unitMassModel.findById(id);
+  } 
+
   async findAll(): Promise<UnitMass[]> {
     return this.unitMassModel.find();
   }

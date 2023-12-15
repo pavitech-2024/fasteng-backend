@@ -4,7 +4,7 @@ import { Response } from 'express';
 import { ABCPService } from '../service';
 import { ABCPInitDto } from '../dto/abcp-init.dto';
 import { ABCPEssaySelectionDto } from '../dto/abcp-essay-selection.dto';
-import { Calc_ABCP_Dto } from '../dto/abcp-calculate-results.dto';
+import { Calc_ABCP_Dto, Calc_ABCP_Out } from '../dto/abcp-calculate-results.dto';
 
 @ApiTags('abcp')
 @Controller('concrete/dosages/abcp')
@@ -72,5 +72,38 @@ export class ABCPController {
         const status = await this.abcpService.calculateAbcpDosage(data);
 
         return response.status(200).json(status);
+    }
+
+    @Post('save-dosage')
+    @ApiOperation({ summary: 'Se possível, salva os dados da dosagem abcp de concreto no banco de dados.' })
+    @ApiResponse({
+        status: 200,
+        description: 'Dados da dosagem abcp de concreto salvos com sucesso.',
+        content: { 'application/json': { schema: { example: { success: true, data: 'dosage data' } } } },
+    })
+    @ApiResponse({
+        status: 200,
+        description: 'Não foi possível salvar os dados da dosagem abcp de concreto no banco de dados.',
+        content: {
+            'application/json': {
+                schema: {
+                    example: {
+                        success: false,
+                        error: { message: 'ABCP dosage with name "ABCP 1" from user "User 1"', status: 400, name: 'AlreadyExists' },
+                    },
+                },
+            },
+        },
+    })
+    @ApiResponse({ status: 400, description: 'Erro ao salvar os dados da dosagem abcp de concreto no banco de dados.' })
+    async saveConcreteEssay(@Res() response: Response, @Body() body: Calc_ABCP_Dto & Calc_ABCP_Out) {
+        this.logger.log('save concrete essay > [body]');
+
+        const abcp = await this.abcpService.saveDosage(body);
+
+        if (abcp.success) this.logger.log('save concrete abcp dosage > [success]');
+        else this.logger.error('save concrete abcp dosage > [error]');
+
+        return response.status(200).json(abcp);
     }
 }
