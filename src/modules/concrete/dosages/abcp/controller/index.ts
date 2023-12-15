@@ -4,6 +4,7 @@ import { Response } from 'express';
 import { ABCPService } from '../service';
 import { ABCPInitDto } from '../dto/abcp-init.dto';
 import { ABCPEssaySelectionDto } from '../dto/abcp-essay-selection.dto';
+import { Calc_ABCP_Dto } from '../dto/abcp-calculate-results.dto';
 
 @ApiTags('abcp')
 @Controller('concrete/dosages/abcp')
@@ -57,6 +58,18 @@ export class ABCPController {
         this.logger.log(`get all essays by user id with the abcp essays`);
 
         const status = await this.abcpService.getEssaysByMaterials(data);
+
+        return response.status(200).json(status);
+    }
+
+    @Post('calculate-results')
+    @ApiOperation({ summary: 'Retorna os resultados dos calculos para a dosagem.' })
+    @ApiResponse({ status: 200, description: 'Resultados entregues com sucesso!' })
+    // @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
+    async calculateAbcpDosage(@Res() response: Response, @Body() data: Calc_ABCP_Dto) {
+        this.logger.log(`get the results of abcp dosage`);
+
+        const status = await this.abcpService.calculateAbcpDosage(data);
 
         return response.status(200).json(status);
     }

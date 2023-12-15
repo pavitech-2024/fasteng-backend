@@ -3,7 +3,6 @@ import { MaterialsRepository } from "modules/concrete/materials/repository";
 import { ConcreteGranulometryRepository } from "modules/concrete/essays/granulometry/repository";
 import { UnitMassRepository } from "modules/concrete/essays/unitMass/repository";
 import { ABCPEssaySelectionDto } from "../dto/abcp-essay-selection.dto";
-import { Granulometry } from '../../../../soils/essays/granulometry/schemas/index';
 
 @Injectable()
 export class EssaySelection_ABCP_Service {
@@ -34,24 +33,6 @@ export class EssaySelection_ABCP_Service {
             const fineGranulometrys = await this.granulometry_repository.findAllGranulometrysByMaterialId( fineAggregate_id, 'fine' );
             const unit_masses = await this.unit_mass_repository.findAllUnitMassesByMaterialId( coarseAggregate_id );
 
-            // const coarseAggregate = materials.find((material) => {
-            //     const { _id, name } = material;
-
-            //     if (coarseAggregate_id.toString() === _id.toString()) {
-            //         const granulometry_esssays = coarseGranulometrys.filter((essay) => (
-            //             essay.generalData.material._id.toString() === _id.toString()
-            //         ));
-            //         const unit_mass_essays = unit_masses.filter((essay) => (
-            //             essay.generalData.material._id.toString() === _id.toString()
-            //         ));
-            //         return {
-            //             _id,
-            //             name,
-            //             granulometrys: granulometry_esssays,
-            //             unit_masses: unit_mass_essays,
-            //         }
-            //     }
-            // })
             const coarseAggregates = materials
             .filter((material) => coarseAggregate_id.toString() === material._id.toString())
             .map((material) => {

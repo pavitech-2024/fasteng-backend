@@ -4,6 +4,9 @@ import { GeneralData_ABCP_Service } from "./general-data.abcp.service";
 import { MaterialSelection_ABCP_Service } from "./material-selection.abcp.service";
 import { EssaySelection_ABCP_Service } from './essay-selection.abcp.service';
 import { ABCPEssaySelectionDto } from "../dto/abcp-essay-selection.dto";
+import { ABCPResults } from "../schemas";
+import { Calc_ABCP_Dto } from "../dto/abcp-calculate-results.dto";
+import { Calculate_ABCP_Results_Service } from "./calc-abcp.service";
 
 @Injectable()
 export class ABCPService {
@@ -13,6 +16,7 @@ export class ABCPService {
     private readonly generalData_Service: GeneralData_ABCP_Service,
     private readonly materialSelection_Service: MaterialSelection_ABCP_Service,
     private readonly essaySelection_Service: EssaySelection_ABCP_Service,
+    private readonly calculateResults_Service: Calculate_ABCP_Results_Service,
   ) { }
 
   async verifyInitABCP(body: ABCPInitDto) {
@@ -44,6 +48,20 @@ export class ABCPService {
   async getEssaysByMaterials(data: ABCPEssaySelectionDto) {
     try {
       const essays = await this.essaySelection_Service.getEssays(data);
+      
+      this.logger.log(`essays returned > [essays]: ${essays}`);
+
+      return { essays, success: true };
+    } catch (error) {
+      this.logger.error(`error on get all essays by the materials ids > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { essays: [], success: false, error: { status, message, name } };
+    }
+  }
+
+  async calculateAbcpDosage(data: Calc_ABCP_Dto) {
+    try {
+      const essays = await this.calculateResults_Service.calculateAbcpDosage(data);
       
       this.logger.log(`essays returned > [essays]: ${essays}`);
 
