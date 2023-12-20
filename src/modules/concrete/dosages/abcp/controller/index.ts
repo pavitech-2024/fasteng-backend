@@ -67,9 +67,18 @@ export class ABCPController {
     @ApiResponse({ status: 200, description: 'Dosagens encontrados com sucesso!' })
     @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
     async getAllByUserId(@Param('id') userId: string) {
-        this.logger.log(`get all materials by user id > [id]: ${userId}`);
+        this.logger.log(`get all dosages by user id > [id]: ${userId}`);
 
         return this.abcpService.getAllDosages(userId);
+    }
+
+    @Get('/:id')
+    @ApiOperation({ summary: 'Retorna a dosagem com o id especificado.' })
+    @ApiResponse({ status: 200, description: 'Dosagem encontrada com sucesso!' })
+    async getDosageById(@Param('id') dosageId: string) {
+        this.logger.log(`get a dosage by dosage id > [id]: ${dosageId}`);
+
+        return this.abcpService.getDosageById(dosageId);
     }
 
     @Post('calculate-results')

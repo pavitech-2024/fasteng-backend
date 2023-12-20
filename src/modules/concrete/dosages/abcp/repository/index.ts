@@ -10,6 +10,10 @@ export class ABCPRepository {
         return this.abcpModel.find();
     }
 
+    async findById(dosageId: string): Promise<ABCP> {
+        return this.abcpModel.findById(dosageId)
+    }
+
     async findOne(abcpFilterQuery: any): Promise<ABCP> {
         return this.abcpModel.findOne(abcpFilterQuery);
     }

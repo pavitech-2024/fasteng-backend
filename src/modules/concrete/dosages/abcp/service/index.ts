@@ -76,6 +76,20 @@ export class ABCPService {
     }
   }
 
+  async getDosageById(dosageId: string): Promise<ABCP> {
+    try {
+      // busca todos os materiais no banco de dados
+      const dosage = await this.ABCPRepository.findById(dosageId);
+
+      // retorna os materiais encontrados que pertencem ao usuário
+      return dosage;
+    } catch (error) {
+      this.logger.error(`error on get dosage with this id > [error]: ${error}`);
+
+      throw error;
+    }
+  }
+
   async calculateAbcpDosage(data: Calc_ABCP_Dto) {
     try {
       return await this.calculateResults_Service.calculateAbcpDosage(data);
