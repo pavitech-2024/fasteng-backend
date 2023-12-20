@@ -8,6 +8,7 @@ import { Calc_ABCP_Dto, Calc_ABCP_Out } from "../dto/abcp-calculate-results.dto"
 import { Calculate_ABCP_Results_Service } from "./calc-abcp.service";
 import { ABCPRepository } from "../repository";
 import { AlreadyExists } from "utils/exceptions";
+import { ABCP } from "../schemas";
 
 @Injectable()
 export class ABCPService {
@@ -58,6 +59,20 @@ export class ABCPService {
       this.logger.error(`error on get all essays by the materials ids > [error]: ${error}`);
       const { status, name, message } = error;
       return { essays: [], success: false, error: { status, message, name } };
+    }
+  }
+
+  async getAllDosages(userId: string): Promise<ABCP[]> {
+    try {
+      // busca todos os materiais no banco de dados
+      const dosages = await this.ABCPRepository.find();
+
+      // retorna os materiais encontrados que pertencem ao usuário
+      return dosages.filter((dosage) => dosage.generalData.userId === userId);
+    } catch (error) {
+      this.logger.error(`error on get all dosages > [error]: ${error}`);
+
+      throw error;
     }
   }
 

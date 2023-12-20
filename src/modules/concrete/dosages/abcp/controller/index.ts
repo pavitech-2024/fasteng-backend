@@ -39,7 +39,7 @@ export class ABCPController {
     }
 
     @Get('material-selection/:id')
-    @ApiOperation({ summary: 'Retorna todos os materiais do banco de dados de um usuário, que possuam os ensaios para a dosagem.' })
+    @ApiOperation({ summary: 'Retorna todas as dosagens do banco de dados de um usuário, que possuam os ensaios para a dosagem.' })
     @ApiResponse({ status: 200, description: 'Materiais encontrados com sucesso!' })
     @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
     async getMaterialsByUserId(@Res() response: Response, @Param('id') userId: string) {
@@ -51,15 +51,25 @@ export class ABCPController {
     }
 
     @Post('essay-selection')
-    @ApiOperation({ summary: 'Retorna todos os materiais do banco de dados de um usuário, que possuam os ensaios para a dosagem.' })
-    @ApiResponse({ status: 200, description: 'Materiais encontrados com sucesso!' })
+    @ApiOperation({ summary: 'Retorna todas as dosagens do banco de dados de um usuário, que possuam os ensaios para a dosagem.' })
+    @ApiResponse({ status: 200, description: 'Dosagens encontrados com sucesso!' })
     @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
     async getEssaysByUserId(@Res() response: Response, @Body() data: ABCPEssaySelectionDto) {
-        this.logger.log(`get all essays by user id with the abcp essays`);
+        this.logger.log(`get all abcp dosages by user id`);
 
         const status = await this.abcpService.getEssaysByMaterials(data);
 
         return response.status(200).json(status);
+    }
+
+    @Get('all/:id')
+    @ApiOperation({ summary: 'Retorna todas as dosagens do banco de dados de um usuário.' })
+    @ApiResponse({ status: 200, description: 'Dosagens encontrados com sucesso!' })
+    @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
+    async getAllByUserId(@Param('id') userId: string) {
+        this.logger.log(`get all materials by user id > [id]: ${userId}`);
+
+        return this.abcpService.getAllDosages(userId);
     }
 
     @Post('calculate-results')

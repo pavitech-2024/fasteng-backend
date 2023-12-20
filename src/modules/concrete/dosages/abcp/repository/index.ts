@@ -6,6 +6,10 @@ import { ABCP, ABCPDocument } from "../schemas";
 export class ABCPRepository {
     constructor(@InjectModel(ABCP.name, DATABASE_CONNECTION.CONCRETE) private abcpModel: Model<ABCPDocument>) {}
 
+    async find(): Promise<ABCP[]> {
+        return this.abcpModel.find();
+    }
+
     async findOne(abcpFilterQuery: any): Promise<ABCP> {
         return this.abcpModel.findOne(abcpFilterQuery);
     }
