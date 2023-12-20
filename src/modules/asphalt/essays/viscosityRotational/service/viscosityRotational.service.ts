@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { AlreadyExists } from 'utils/exceptions';
+import { AlreadyExists } from '../../../../../utils/exceptions';
 import { Calc_ViscosityRotational_Dto, Calc_ViscosityRotational_Out } from '../dto/calc-viscosityRotational.dto';
 import { ViscosityRotationalInitDto } from '../dto/init-viscosityRotational.dto';
 import { ViscosityRotationalRepository } from '../repository';

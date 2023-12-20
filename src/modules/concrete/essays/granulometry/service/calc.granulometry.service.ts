@@ -21,7 +21,7 @@ export class Calc_CONCRETEGRANULOMETRY_Service {
         try {
             this.logger.log('calculate granulometry on calc.granulometry.service.ts > [body]');
 
-            const { table_data, sample_mass, bottom } = step2Data;
+            const { table_data, material_mass, bottom } = step2Data;
 
             const length = table_data.length;
 
@@ -50,7 +50,7 @@ export class Calc_CONCRETEGRANULOMETRY_Service {
 
                 total_retained += retained;
 
-                passant.push(Math.round( 100 * (sample_mass - total_retained)) / 100);
+                passant.push(Math.round( 100 * (material_mass - total_retained)) / 100);
                 
                 accumulated_retained.push(Math.round( 100 * (100 - passant_porcentage)) / 100);
                 
@@ -74,7 +74,7 @@ export class Calc_CONCRETEGRANULOMETRY_Service {
                 if (total_retained > 10 && nominal_diameter_flag) {
                     nominal_diameter_flag = false;
                     if (i === 1) nominal_diameter = getSieveValue(label);
-                    else nominal_diameter = getSieveValue(table_data[i - 1].sieve);
+                    else nominal_diameter = getSieveValue(table_data[i].sieve);
                 }
 
                 graph_data.push(([getSieveValue(label), passant_porcentage]));
@@ -85,7 +85,7 @@ export class Calc_CONCRETEGRANULOMETRY_Service {
 
             total_retained = Math.round(100 * total_retained) / 100;
 
-            const error = Math.round(100 * (sample_mass - total_retained - bottom) * 100 / sample_mass) / 100;
+            const error = Math.round(100 * (material_mass - total_retained - bottom) * 100 / material_mass) / 100;
 
             const limit_10 = this.getPercentage(10, table_data);
             const limit_30 = this.getPercentage(30, table_data);

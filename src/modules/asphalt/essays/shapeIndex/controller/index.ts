@@ -30,7 +30,7 @@ export class ShapeIndexController {
     })
     @ApiResponse({ status: 400, description: 'Erro ao verificar se é possível criar uma SHAPEINDEX com os dados enviados.' })
     async verifyInitShapeIndex(@Res() response: Response, @Body() body: ShapeIndexInitDto) {
-        this.logger.log('verify init shapeindex > [body]');
+        this.logger.log('verify init shapeIndex > [body]');
 
         const status = await this.shapeIndexService.verifyInitShapeIndex(body);
 
@@ -46,12 +46,12 @@ export class ShapeIndexController {
     })
     @ApiResponse({ status: 400, description: 'Erro ao calcular os resultados da SHAPEINDEX com os dados enviados.' })
     async calculateShapeIndex(@Body() body: Calc_SHAPEINDEX_Dto) {
-        this.logger.log('calculate shapeindex > [body]');
+        this.logger.log('calculate shapeIndex > [body]');
 
         const shapeIndex = await this.shapeIndexService.calculateShapeIndex(body);
 
-        if (shapeIndex.success) this.logger.log('calculate shapeindex > [success]');
-        else this.logger.error('calculate shapeindex > [error]');
+        if (shapeIndex.success) this.logger.log('calculate shapeIndex > [success]');
+        else this.logger.error('calculate shapeIndex > [error]');
 
         return shapeIndex;
     }
@@ -83,8 +83,8 @@ export class ShapeIndexController {
 
         const shapeIndex = await this.shapeIndexService.saveEssay(body);
 
-        if (shapeIndex.success) this.logger.log('save shapeindex essay > [success]');
-        else this.logger.error('save shapeindex essay > [error]');
+        if (shapeIndex.success) this.logger.log('save shapeIndex essay > [success]');
+        else this.logger.error('save shapeIndex essay > [error]');
 
         return response.status(200).json(shapeIndex);
     }

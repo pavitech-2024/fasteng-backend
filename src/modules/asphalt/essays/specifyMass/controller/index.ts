@@ -30,7 +30,7 @@ export class SpecifyMassController {
     })
     @ApiResponse({ status: 400, description: 'Erro ao verificar se é possível criar uma SPECIFYMASS com os dados enviados.' })
     async verifyInitSpecifyMass(@Res() response: Response, @Body() body: SpecifyMassInitDto) {
-        this.logger.log('verify init specifymass > [body]');
+        this.logger.log('verify init specifyMass > [body]');
 
         const status = await this.specifyMassService.verifyInitSpecifyMass(body);
 
@@ -46,12 +46,12 @@ export class SpecifyMassController {
     })
     @ApiResponse({ status: 400, description: 'Erro ao calcular os resultados da SPECIFYMASS com os dados enviados.' })
     async calculateSpecifyMass(@Body() body: Calc_SPECIFYMASS_Dto) {
-        this.logger.log('calculate specifymass > [body]');
+        this.logger.log('calculate specifyMass > [body]');
 
         const specifyMass = await this.specifyMassService.calculateSpecifyMass(body);
 
-        if (specifyMass.success) this.logger.log('calculate specifymass > [success]');
-        else this.logger.error('calculate specifymass > [error]');
+        if (specifyMass.success) this.logger.log('calculate specifyMass > [success]');
+        else this.logger.error('calculate specifyMass > [error]');
 
         return specifyMass;
     }
@@ -83,8 +83,8 @@ export class SpecifyMassController {
 
         const specifyMass = await this.specifyMassService.saveEssay(body);
 
-        if (specifyMass.success) this.logger.log('save specifymass essay > [success]');
-        else this.logger.error('save specifymass essay > [error]');
+        if (specifyMass.success) this.logger.log('save specifyMass essay > [success]');
+        else this.logger.error('save specifyMass essay > [error]');
 
         return response.status(200).json(specifyMass);
     }

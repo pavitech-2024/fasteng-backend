@@ -6,7 +6,21 @@ import { ABCP, ABCPDocument } from "../schemas";
 export class ABCPRepository {
     constructor(@InjectModel(ABCP.name, DATABASE_CONNECTION.CONCRETE) private abcpModel: Model<ABCPDocument>) {}
 
+    async find(): Promise<ABCP[]> {
+        return this.abcpModel.find();
+    }
+
+    async findById(dosageId: string): Promise<ABCP> {
+        return this.abcpModel.findById(dosageId)
+    }
+
     async findOne(abcpFilterQuery: any): Promise<ABCP> {
         return this.abcpModel.findOne(abcpFilterQuery);
+    }
+
+    async create(abcp: any): Promise<ABCP> {
+        const createdGranulometry = new this.abcpModel(abcp);
+
+        return createdGranulometry.save();
     }
 }

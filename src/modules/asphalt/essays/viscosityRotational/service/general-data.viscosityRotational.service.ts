@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { MaterialsRepository } from 'modules/asphalt/materials/repository';
-import { NotFound, AlreadyExists } from 'utils/exceptions';
+import { MaterialsRepository } from '../../../../../modules/asphalt/materials/repository';
+import { NotFound, AlreadyExists } from '../../../../../utils/exceptions';
 import { ViscosityRotationalRepository } from '../repository';
 import { ViscosityRotationalInitDto } from '../dto/init-viscosityRotational.dto';
 

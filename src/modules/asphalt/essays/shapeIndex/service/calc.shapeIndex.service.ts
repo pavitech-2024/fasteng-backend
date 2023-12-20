@@ -8,7 +8,7 @@ import { ShapeIndexCircularSieveRow, ShapeIndexReadRow, ShapeIndexSieveRow } fro
 export class Calc_SHAPEINDEX_Service {
   private logger = new Logger(Calc_SHAPEINDEX_Service.name);
 
-  constructor(private readonly shapeindexRepository: ShapeIndexRepository, private readonly materialRepository: MaterialsRepository) { }
+  constructor(private readonly shapeIndexRepository: ShapeIndexRepository, private readonly materialRepository: MaterialsRepository) { }
 
   async calculateShapeIndex({ step2Data }: Calc_SHAPEINDEX_Dto): Promise<{ success: boolean; result: Calc_SHAPEINDEX_Out }> {
     try {

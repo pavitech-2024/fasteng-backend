@@ -7,18 +7,18 @@ import { Logger } from '@nestjs/common';
 export class ElongatedParticlesRepository {
   private logger = new Logger(ElongatedParticlesRepository.name);
 
-  constructor(@InjectModel(ElongatedParticles.name, DATABASE_CONNECTION.ASPHALT) private elongatedparticlesModel: Model<ElongatedParticlesDocument>) {}
+  constructor(@InjectModel(ElongatedParticles.name, DATABASE_CONNECTION.ASPHALT) private elongatedParticlesModel: Model<ElongatedParticlesDocument>) {}
 
-  async findOne(elongatedparticlesFilterQuery: any): Promise<ElongatedParticles> {
-    return this.elongatedparticlesModel.findOne(elongatedparticlesFilterQuery);
+  async findOne(elongatedParticlesFilterQuery: any): Promise<ElongatedParticles> {
+    return this.elongatedParticlesModel.findOne(elongatedParticlesFilterQuery);
   }
 
   async findAll(): Promise<ElongatedParticles[]> {
-    return this.elongatedparticlesModel.find();
+    return this.elongatedParticlesModel.find();
   }
 
-  async create(elongatedparticles: any): Promise<ElongatedParticles> {
-    const createdElongatedParticles = new this.elongatedparticlesModel(elongatedparticles);
+  async create(elongatedParticles: any): Promise<ElongatedParticles> {
+    const createdElongatedParticles = new this.elongatedParticlesModel(elongatedParticles);
 
     return createdElongatedParticles.save();
   }

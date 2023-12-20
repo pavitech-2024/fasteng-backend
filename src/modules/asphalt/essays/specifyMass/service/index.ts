@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { GeneralData_SPECIFYMASS_Service } from './general-data.specifyMass.servive';
+import { GeneralData_SPECIFYMASS_Service } from './general-data.specifyMass.service';
 import { SpecifyMassInitDto } from '../dto/specifyMass-init.dto';
 import { Calc_SPECIFYMASS_Dto, Calc_SPECIFYMASS_Out } from '../dto/calc.specifyMass.dto';
 import { AlreadyExists } from '../../../../../utils/exceptions';
@@ -45,7 +45,7 @@ export class SpecifyMassService {
         userId,
       } = body.generalData;
 
-      // verifica se existe uma specifymass com mesmo nome , materialId e userId no banco de dados
+      // verifica se existe uma specifyMass com mesmo nome , materialId e userId no banco de dados
       const alreadyExists = await this.SpecifyMass_Repository.findOne({
         'generalData.name': name,
         'generalData.material._id': materialId,
@@ -56,9 +56,9 @@ export class SpecifyMassService {
       if (alreadyExists) throw new AlreadyExists(`SPECIFYMASS with name "${name}" from user "${userId}"`);
 
       // se não existir, salva no banco de dados
-      const specifymass = await this.SpecifyMass_Repository.create(body);
+      const specifyMass = await this.SpecifyMass_Repository.create(body);
 
-      return { success: true, data: specifymass };
+      return { success: true, data: specifyMass };
     } catch (error) {
       const { status, name, message } = error;
 
