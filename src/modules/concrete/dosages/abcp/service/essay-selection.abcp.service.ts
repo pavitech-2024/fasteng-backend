@@ -1,7 +1,7 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { MaterialsRepository } from "../../../../../modules/concrete/materials/repository";
-import { ConcreteGranulometryRepository } from "../../../../../modules/concrete/essays/granulometry/repository";
-import { UnitMassRepository } from "../../../../../modules/concrete/essays/unitMass/repository";
+import { MaterialsRepository } from "modules/concrete/materials/repository";
+import { ConcreteGranulometryRepository } from "modules/concrete/essays/granulometry/repository";
+import { UnitMassRepository } from "modules/concrete/essays/unitMass/repository";
 import { ABCPEssaySelectionDto } from "../dto/abcp-essay-selection.dto";
 
 @Injectable()
@@ -29,46 +29,46 @@ export class EssaySelection_ABCP_Service {
                 }
             });
 
-            const granulometrys = await this.granulometry_repository.findAll();
-            const unit_masses = await this.unit_mass_repository.findAll();
+            const coarseGranulometrys = await this.granulometry_repository.findAllGranulometrysByMaterialId( coarseAggregate_id, 'coarse' );
+            const fineGranulometrys = await this.granulometry_repository.findAllGranulometrysByMaterialId( fineAggregate_id, 'fine' );
+            const unit_masses = await this.unit_mass_repository.findAllUnitMassesByMaterialId( coarseAggregate_id );
 
-            const coarseAggregate = materials.find((material) => {
-                const { _id, name } = material;
+            const coarseAggregates = materials
+            .filter((material) => coarseAggregate_id.toString() === material._id.toString())
+            .map((material) => {
+                const granulometry_esssays = coarseGranulometrys.filter((essay) => (
+                essay.generalData.material._id.toString() === material._id.toString()
+                ));
+                const unit_mass_essays = unit_masses.filter((essay) => (
+                essay.generalData.material._id.toString() === material._id.toString()
+                ));
 
-                if (coarseAggregate_id.toString() === _id.toString()) {
-                    const granulometry_esssays = granulometrys.filter((essay) => (
-                        essay.generalData.material._id.toString() === _id.toString()
+                return {
+                _id: material._id,
+                name: material.name,
+                granulometrys: granulometry_esssays,
+                unit_masses: unit_mass_essays,
+                };
+            });
+
+            const coarseAggregate = coarseAggregates.length > 0 ? coarseAggregates[0] : null;
+
+
+            const fineAggregates = materials
+                .filter((material) => fineAggregate_id.toString() === material._id.toString())
+                .map((material) => {
+                    const granulometry_esssays = fineGranulometrys.filter((essay) => (
+                        essay.generalData.material._id.toString() === material._id.toString()
                     ));
-                    const unit_mass_essays = unit_masses.filter((essay) => (
-                        essay.generalData.material._id.toString() === _id.toString()
-                    ));
-                    return {
-                        _id,
-                        name,
-                        granulometrys: granulometry_esssays,
-                        unit_masses: unit_mass_essays,
-                    }
+                    
+                return {
+                    _id: material._id,
+                    name: material.name,
+                    granulometrys: granulometry_esssays,
                 }
-            })
+            });
 
-            const fineAggregate = materials.find((material) => {
-                const { _id, name } = material;
-
-                if (fineAggregate_id.toString() === _id.toString()) {
-                    const granulometry_esssays = granulometrys.filter((essay) => (
-                        essay.generalData.material._id.toString() === _id.toString()
-                    ));
-                    const unit_mass_essays = unit_masses.filter((essay) => (
-                        essay.generalData.material._id.toString() === _id.toString()
-                    ));
-                    return {
-                        _id,
-                        name,
-                        granulometrys: granulometry_esssays,
-                        unit_masses: unit_mass_essays,
-                    }
-                }
-            })
+            const fineAggregate = fineAggregates.length > 0 ? fineAggregates[0] : null;
 
             return {
                 cement,

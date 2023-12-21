@@ -6,14 +6,15 @@ import { step2Data_Service } from './step2Data.unitMass.service';
 import { Result_UnitMass_Service } from './result.unitMass.service';
 import { Result_UnitMass_Dto, UnitMass_Result } from '../dto/unitMass-result.dto';
 import { AlreadyExists } from '../../../../../utils/exceptions';
+import { UnitMassRepository } from '../repository';
 
 @Injectable()
 export class UnitMassService {
-  UnitMassRepository: any;
   constructor(
     private readonly generalData_Service: GeneralData_UnitMass_Service,
     private readonly step2_UnitMass_Service: step2Data_Service,
     private readonly result_UnitMass_Service: Result_UnitMass_Service,
+    private readonly unitMassRepository: UnitMassRepository
   ) {}
 
   async verifyInitUnitMass(body: UnitMass_Init_Dto) {
@@ -57,7 +58,7 @@ export class UnitMassService {
       } = body.generalData;
 
       // verifica se existe uma chapman com mesmo nome , materialId e userId no banco de dados
-      const alreadyExists = await this.UnitMassRepository.findOne({
+      const alreadyExists = await this.unitMassRepository.findOne({
         'generalData.experimentName': experimentName,
         'generalData.material._id': materialId,
         'generalData.userId': userId,
@@ -68,7 +69,7 @@ export class UnitMassService {
       if (alreadyExists) throw new AlreadyExists(`UnitMass with name "${experimentName}" from user "${userId}"`);
 
       // se não existir, salva no banco de dados
-      const unitMass = await this.UnitMassRepository.create(body);
+      const unitMass = await this.unitMassRepository.create(body);
 
       return { success: true, data: unitMass };
     } catch (error) {
