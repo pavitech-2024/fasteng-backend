@@ -7,7 +7,7 @@ import { ABCPEssaySelectionDto } from "../dto/abcp-essay-selection.dto";
 import { Calc_ABCP_Dto, Calc_ABCP_Out } from "../dto/abcp-calculate-results.dto";
 import { Calculate_ABCP_Results_Service } from "./calc-abcp.service";
 import { ABCPRepository } from "../repository";
-import { AlreadyExists } from "utils/exceptions";
+import { AlreadyExists } from "../../../../../utils/exceptions";
 import { ABCP } from "../schemas";
 
 @Injectable()
