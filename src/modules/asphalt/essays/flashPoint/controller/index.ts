@@ -30,7 +30,7 @@ export class FlashPointController {
     })
     @ApiResponse({ status: 400, description: 'Erro ao verificar se é possível criar uma FLASHPOINT com os dados enviados.' })
     async verifyInitFlashPoint(@Res() response: Response, @Body() body: FlashPointInitDto) {
-        this.logger.log('verify init flashpoint > [body]');
+        this.logger.log('verify init flashPoint > [body]');
 
         const status = await this.flashPointService.verifyInitFlashPoint(body);
 
@@ -46,12 +46,12 @@ export class FlashPointController {
     })
     @ApiResponse({ status: 400, description: 'Erro ao calcular os resultados da FLASHPOINT com os dados enviados.' })
     async calculateFlashPoint(@Body() body: Calc_FLASHPOINT_Dto) {
-        this.logger.log('calculate flashpoint > [body]');
+        this.logger.log('calculate flashPoint > [body]');
 
         const flashPoint = await this.flashPointService.calculateFlashPoint(body);
 
-        if (flashPoint.success) this.logger.log('calculate flashpoint > [success]');
-        else this.logger.error('calculate flashpoint > [error]');
+        if (flashPoint.success) this.logger.log('calculate flashPoint > [success]');
+        else this.logger.error('calculate flashPoint > [error]');
 
         return flashPoint;
     }
@@ -83,8 +83,8 @@ export class FlashPointController {
 
         const flashPoint = await this.flashPointService.saveEssay(body);
 
-        if (flashPoint.success) this.logger.log('save flashpoint essay > [success]');
-        else this.logger.error('save flashpoint essay > [error]');
+        if (flashPoint.success) this.logger.log('save flashPoint essay > [success]');
+        else this.logger.error('save flashPoint essay > [error]');
 
         return response.status(200).json(flashPoint);
     }

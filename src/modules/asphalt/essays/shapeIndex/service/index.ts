@@ -45,7 +45,7 @@ export class ShapeIndexService {
         userId,
       } = body.generalData;
 
-      // verifica se existe uma shapeindex com mesmo nome , materialId e userId no banco de dados
+      // verifica se existe uma shapeIndex com mesmo nome , materialId e userId no banco de dados
       const alreadyExists = await this.ShapeIndex_Repository.findOne({
         'generalData.name': name,
         'generalData.material._id': materialId,
@@ -56,9 +56,9 @@ export class ShapeIndexService {
       if (alreadyExists) throw new AlreadyExists(`SHAPEINDEX with name "${name}" from user "${userId}"`);
 
       // se não existir, salva no banco de dados
-      const shapeindex = await this.ShapeIndex_Repository.create(body);
+      const shapeIndex = await this.ShapeIndex_Repository.create(body);
 
-      return { success: true, data: shapeindex };
+      return { success: true, data: shapeIndex };
     } catch (error) {
       const { status, name, message } = error;
 

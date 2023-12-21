@@ -7,11 +7,11 @@ import { MaterialsRepository } from '../../../../../modules/asphalt/materials/re
 export class Calc_SPECIFYMASS_Service {
     private logger = new Logger(Calc_SPECIFYMASS_Service.name);
 
-    constructor(private readonly specifymassRepository: SpecifyMassRepository, private readonly materialRepository: MaterialsRepository) { }
+    constructor(private readonly specifyMassRepository: SpecifyMassRepository, private readonly materialRepository: MaterialsRepository) { }
 
     async calculateSpecifyMass({ step2Data }: Calc_SPECIFYMASS_Dto): Promise<{ success: boolean; result: Calc_SPECIFYMASS_Out }> {
         try {
-            this.logger.log('calculate specifymass on calc.specifyMass.service.ts > [body]');
+            this.logger.log('calculate specifyMass on calc.specifyMass.service.ts > [body]');
 
             const { dry_mass, submerged_mass, surface_saturated_mass } = step2Data;
 
