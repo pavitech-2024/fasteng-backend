@@ -1,27 +1,27 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { MarshallInitDto } from "../dto/marshall-init.dto";
-import { GeneralData_Marshall_Service } from "./general-data.marshall.service";
-import { MaterialSelection_Marshall_Service } from "./material-selection.marshall.service";
-import { Marshall } from "../schemas";
-import { MarshallRepository } from '../repository/index';
+import { SuperpaveInitDto } from "../dto/superpave-init.dto";
+import { GeneralData_Superpave_Service } from "./general-data.superpave.service";
+import { MaterialSelection_Superpave_Service } from "./material-selection.superpave.service";
+import { Superpave } from "../schemas";
+import { SuperpaveRepository } from '../repository/index';
 import { NotFound } from "../../../../../utils/exceptions";
-import { MarshallStep3Dto } from "../dto/step-3-marshall.dto";
-import { GranulometryComposition_Marshall_Service } from "./granulometry-composition.marshall.service";
+import { SuperpaveStep3Dto } from "../dto/step-3-superpave.dto";
+import { GranulometryComposition_Superpave_Service } from "./granulometry-composition.superpave.service";
 
 @Injectable()
-export class MarshallService {
-  private logger = new Logger(MarshallService.name);
+export class SuperpaveService {
+  private logger = new Logger(SuperpaveService.name);
 
   constructor(
-    private readonly marshall_repository: MarshallRepository,
-    private readonly generalData_Service: GeneralData_Marshall_Service,
-    private readonly materialSelection_Service: MaterialSelection_Marshall_Service,
-    private readonly granulometryComposition_Service: GranulometryComposition_Marshall_Service,
+    private readonly superpave_repository: SuperpaveRepository,
+    private readonly generalData_Service: GeneralData_Superpave_Service,
+    private readonly materialSelection_Service: MaterialSelection_Superpave_Service,
+    private readonly granulometryComposition_Service: GranulometryComposition_Superpave_Service,
   ) { }
 
-  async verifyInitMarshall(body: MarshallInitDto) {
+  async verifyInitSuperpave(body: SuperpaveInitDto) {
     try {
-      const success = await this.generalData_Service.verifyInitMarshall(body);
+      const success = await this.generalData_Service.verifyInitSuperpave(body);
 
       return { success };
     } catch (error) {
@@ -45,7 +45,7 @@ export class MarshallService {
     }
   }
 
-  async getStep3Data(body: MarshallStep3Dto) {
+  async getStep3Data(body: SuperpaveStep3Dto) {
     try {
       const { dnitBand, aggregates } = body;
 
@@ -209,18 +209,18 @@ export class MarshallService {
     }
   }
 
-  async updateMarshall(marshall: Marshall): Promise<Marshall> {
+  async updateSuperpave(superpave: Superpave): Promise<Superpave> {
     try {
       // busca um material com o id passado no banco de dados
-      const marshallToUpdate = await this.marshall_repository.findOne({ _id: marshall._id });
+      const superpaveToUpdate = await this.superpave_repository.findOne({ _id: superpave._id });
 
       // se não encontrar o material, retorna um erro
-      if (!marshallToUpdate) throw new NotFound('Marshall');
+      if (!superpaveToUpdate) throw new NotFound('Superpave');
 
       // atualiza o material no banco de dados
-      return this.marshall_repository.findOneAndUpdate({ _id: marshall._id }, marshall);
+      return this.superpave_repository.findOneAndUpdate({ _id: superpave._id }, superpave);
     } catch (error) {
-      this.logger.error(`error on update marshall > [error]: ${error}`);
+      this.logger.error(`error on update superpave > [error]: ${error}`);
 
       throw error;
     }

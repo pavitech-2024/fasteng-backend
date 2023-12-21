@@ -36,6 +36,8 @@ import { DduiModule } from './essays/ddui/ddui.module';
 // dosages
 import { Marshall, MarshallSchema } from './dosages/marshall/schemas'; 
 import { MarshallModule } from './dosages/marshall/marshall.module';
+import { Superpave, SuperpaveSchema } from './dosages/superpave/schemas'; 
+import { SuperpaveModule } from './dosages/superpave/superpave.module';
 
 const Models: ModelDefinition[] = [
   { name: Material.name, schema: MaterialSchema },
@@ -55,6 +57,7 @@ const Models: ModelDefinition[] = [
   { name: ShapeIndex.name, schema: ShapeIndexSchema },
   { name: ElongatedParticles.name, schema: ElongatedParticlesSchema },
   { name: Marshall.name, schema: MarshallSchema },
+  { name: Superpave.name, schema: SuperpaveSchema },
 ];
 
 const Modules = [
@@ -75,6 +78,7 @@ const Modules = [
   ShapeIndexModule, 
   ElongatedParticlesModule,
   MarshallModule,
+  SuperpaveModule,
 ]
 
 @Global()

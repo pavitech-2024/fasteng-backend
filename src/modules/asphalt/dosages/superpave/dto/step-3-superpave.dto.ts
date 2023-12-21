@@ -1,6 +1,6 @@
 import { IsNotEmpty } from "class-validator";
 
-export class MarshallStep3Dto {
+export class SuperpaveStep3Dto {
   @IsNotEmpty()
   dnitBand: string;
 
