@@ -71,6 +71,7 @@ export class ABCPController {
 
         return this.abcpService.getAllDosages(userId);
     }
+    
 
     @Get('/:id')
     @ApiOperation({ summary: 'Retorna a dosagem com o id especificado.' })
