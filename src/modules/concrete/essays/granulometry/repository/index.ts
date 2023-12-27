@@ -10,9 +10,41 @@ export class ConcreteGranulometryRepository {
     return this.granulometryModel.findOne(granulometryFilterQuery);
   }
 
+  async findById(id: string): Promise<Granulometry> {
+    return this.granulometryModel.findById(id);
+  }
+
   async findAll(): Promise<Granulometry[]> {
     return this.granulometryModel.find();
   }
+
+  async findAllByMaterialId(unitMassFilterQuery: FilterQuery<Granulometry>): Promise<Granulometry[]> {
+    return this.granulometryModel.find(unitMassFilterQuery);
+  }
+
+  async findAllGranulometrysByMaterialId(materialId: string, type: string): Promise<Granulometry[]> {
+    let granulometryEssays;
+    if (type === 'coarse') {
+      granulometryEssays = await this.granulometryModel.find({
+        "generalData.material._id": materialId,
+        "results.nominal_diameter": {
+          $gte: 9.5, // Maior ou igual a 9.5mm
+          $lte: 37.5 // Menor ou igual a 37.5mm
+        }
+      });
+    } else if (type === 'fine') {
+      granulometryEssays = await this.granulometryModel.find({
+        "generalData.material._id": materialId,
+        "results.fineness_module": {
+          $gte: 1.8, // Maior ou igual a 9.5mm
+          $lte: 3.6 // Menor ou igual a 37.5mm
+        }
+      });
+    }
+
+    return granulometryEssays;
+  }
+
 
   async create(granulometry: any): Promise<Granulometry> {
     const createdGranulometry = new this.granulometryModel(granulometry);
