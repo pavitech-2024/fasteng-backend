@@ -1,12 +1,17 @@
 import { IsNotEmpty } from "class-validator";
 
+type AggregateData = {
+    id: string,
+    type: string
+}
+
 export class ABCPEssaySelectionDto {
     @IsNotEmpty()
-    coarseAggregate_id: any;
+    coarseAggregate: AggregateData;
     
     @IsNotEmpty()
-    fineAggregate_id: any;
+    fineAggregate: AggregateData;
     
     @IsNotEmpty()
-    cement_id: any;
+    cement: string;
 }

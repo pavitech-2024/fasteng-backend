@@ -54,7 +54,7 @@ export class ABCPController {
     @ApiOperation({ summary: 'Retorna todas as dosagens do banco de dados de um usuário, que possuam os ensaios para a dosagem.' })
     @ApiResponse({ status: 200, description: 'Dosagens encontrados com sucesso!' })
     @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
-    async getEssaysByUserId(@Res() response: Response, @Body() data: ABCPEssaySelectionDto) {
+    async getEssaysByUserId(@Res() response: Response, @Body() data: any) {
         this.logger.log(`get all abcp dosages by user id`);
 
         const status = await this.abcpService.getEssaysByMaterials(data);

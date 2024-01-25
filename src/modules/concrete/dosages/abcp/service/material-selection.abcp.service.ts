@@ -49,4 +49,41 @@ export class MaterialSelection_ABCP_Service {
             throw error;
         }
     }
+
+    // async getMaterials(userId: string) {
+    //     try {
+    //         const materials = await this.material_repository.findByUserId({
+    //             "userId": userId,
+    //         });
+    
+    //         const granulometrys = await this.granulometry_repository.findAll();
+    //         const unit_masses = await this.unit_mass_repository.findAll();
+    
+    //         const cements = materials.filter(({ type }) => {
+    //             return type === 'cement'
+    //         }).map(({ _id, type }) => ({ id: _id, type }));
+    
+    //         const aggregates = materials.filter(({ _id, type }) => {
+    //             if (type === 'cement') return false
+    //             const granulometry = granulometrys.some(({ generalData }) => { 
+    //                 const { material } = generalData
+    //                 return _id.toString() === material._id.toString()
+    //             });
+    //             const unit_mass = unit_masses.some(({ generalData }) => { 
+    //                 const { material } = generalData
+    //                 return _id.toString() === material._id.toString()
+    //             });
+    //             if (granulometry && unit_mass)
+    //                 return { id: _id, type };
+    
+    //         }).map(({ _id, type }) => ({ id: _id, type })).filter(Boolean);
+    
+    //         const filteredMaterials = cements.concat(aggregates);
+    
+    //         return filteredMaterials;
+    //     } catch (error) {
+    //         throw error;
+    //     }
+    // }
+       
 }
