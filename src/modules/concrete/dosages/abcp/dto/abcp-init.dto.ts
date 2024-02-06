@@ -1,6 +1,9 @@
-import { IsNotEmpty } from "class-validator";
+import { IsNotEmpty, IsNumber } from "class-validator";
 
 export class ABCPInitDto {
-    @IsNotEmpty()
-    name: string;
+  @IsNotEmpty()
+  name: string;
+
+  @IsNotEmpty()
+  userId: string
 }
