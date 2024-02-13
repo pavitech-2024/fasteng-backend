@@ -3,4 +3,5 @@ export enum DATABASE_CONNECTION {
   ASPHALT = 'asphalt',
   SOILS = 'soils',
   CONCRETE = 'concrete',
+  PROMEDINA = 'promedina'
 }
