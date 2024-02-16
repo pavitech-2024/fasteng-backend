@@ -10,14 +10,20 @@ export type ABCPGeneralData = {
   step: number
 }
 
+export type ABCPMaterialObject = {
+  id: string,
+  type: string
+}
+
 export type ABCPMaterialSelectionData = {
   name: string,
-  coarseAggregate: string;
-  fineAggregate: string;
-  cement: string;
+  coarseAggregate: ABCPMaterialObject;
+  fineAggregate: ABCPMaterialObject;
+  cement: ABCPMaterialObject;
 }
 
 export type ABCPEssaySelectionData = {
+  name: string,
   fineAggregate: {
     _id: string;
     specificMass: number;
@@ -36,6 +42,7 @@ export type ABCPEssaySelectionData = {
 }
 
 export type ABCPInsertParamsData = {
+  name: string,
   condition: number;
   fck: number;
   reduction: number;

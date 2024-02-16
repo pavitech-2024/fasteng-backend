@@ -4,13 +4,19 @@ import { UnitMassRepository } from "../../../../../modules/concrete/essays/unitM
 import { MaterialsRepository } from "../../../../../modules/concrete/materials/repository";
 import { AlreadyExists } from "utils/exceptions";
 import { ABCPRepository } from "../repository";
-import { MaterialSelectionDataDto } from "../dto/naterialselection-data.dto";
+import { MaterialSelectionDataDto } from "../dto/save-material-selection.dto";
+import { InjectModel } from "@nestjs/mongoose";
+import { DATABASE_CONNECTION } from "infra/mongoose/database.config";
+import { Model } from "mongoose";
+import { ABCP, ABCPDocument } from "../schemas";
 
 @Injectable()
 export class MaterialSelection_ABCP_Service {
   private logger = new Logger(MaterialSelection_ABCP_Service.name)
 
   constructor(
+    @InjectModel(ABCP.name, DATABASE_CONNECTION.CONCRETE) 
+    private abcpModel: Model<ABCPDocument>,
     private readonly material_repository: MaterialsRepository,
     private readonly granulometry_repository: ConcreteGranulometryRepository,
     private readonly unit_mass_repository: UnitMassRepository,
@@ -60,10 +66,20 @@ export class MaterialSelection_ABCP_Service {
 
       const { name } = body.materialSelectionData;
 
-      const abcpExists = await this.abcpRepository.findOne({
+      const abcpExists: any = await this.abcpRepository.findOne({
         "generalData.name": name,
         "generalData.userId": userId,
       });
+
+      const { name: materialName, ...materialDataWithoutName } = body.materialSelectionData;
+      const abcpWithMaterials = { ...abcpExists._doc, materialSelectionData: materialDataWithoutName };
+
+      await this.abcpModel.updateOne(
+        { "_id": abcpExists._id },
+        abcpWithMaterials
+      );
+
+      console.log("🚀 ~ MaterialSelection_ABCP_Service ~ saveMaterials ~ abcpExists:", abcpExists)
 
       await this.abcpRepository.saveStep(abcpExists, 2);
 

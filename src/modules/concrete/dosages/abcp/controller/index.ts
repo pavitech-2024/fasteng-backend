@@ -13,7 +13,7 @@ export class ABCPController {
 
   constructor(private readonly abcpService: ABCPService) { }
 
-  @Post('verify-init')
+  @Post('verify-init/:id')
   @ApiOperation({ summary: 'Verifica se é possível criar uma ABCP com os dados enviados.' })
   @ApiResponse({
     status: 200,
@@ -30,10 +30,10 @@ export class ABCPController {
     },
   })
   @ApiResponse({ status: 400, description: 'Erro ao verificar se é possível criar uma ABCP com os dados enviados.' })
-  async verifyInitABCP(@Res() response: Response, @Body() body: ABCPInitDto) {
+  async verifyInitABCP(@Res() response: Response, @Body() body: any, @Param('id') userId: string) {
     this.logger.log('verify init abcp > [body]');
 
-    const status = await this.abcpService.verifyInitABCP(body);
+    const status = await this.abcpService.verifyInitABCP(body, userId);
 
     return response.status(200).json(status);
   }
@@ -71,6 +71,32 @@ export class ABCPController {
     this.logger.log(`get all abcp dosages by user id`);
 
     const status = await this.abcpService.getEssaysByMaterials(data);
+
+    return response.status(200).json(status);
+  }
+
+  @Post('save-essay-selection-step/:id')
+  async saveEssaySelectionStep(
+    @Res() response: Response, 
+    @Body() body: any, 
+    @Param('id') userId: string
+    ) {
+    this.logger.log(`save essay selection step in user abcp dosage > [body]: ${body}`);
+
+    const status = await this.abcpService.saveEssaySelectionStep(body, userId);
+
+    return response.status(200).json(status);
+  }
+
+  @Post('save-insert-params-step/:id')
+  async saveInsertParamsStep(
+    @Res() response: Response, 
+    @Body() body: any, 
+    @Param('id') userId: string
+    ) {
+    this.logger.log(`save insert params step in user abcp dosage > [body]: ${body}`);
+
+    const status = await this.abcpService.saveInsertParamsStep(body, userId);
 
     return response.status(200).json(status);
   }

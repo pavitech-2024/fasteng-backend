@@ -24,15 +24,13 @@ export class ABCPRepository {
     return createdGranulometry.save();
   }
 
-  async createPartialAbcp(name: string, userId: string): Promise<any> {
+  async createPartialAbcp(abcp: any, userId: string): Promise<any> {
     try {
       const createdPartialAbcp = await this.abcpModel.create({
-        generalData: {
-          name,
-          userId,
-          step: 0
-        },
+        generalData: {...abcp.generalData, userId},
       });
+      console.log("🚀 ~ ABCPRepository ~ createPartialAbcp ~ createdPartialAbcp:", createdPartialAbcp)
+
       return createdPartialAbcp;
     } catch (error) {
       console.error("Erro ao salvar o step:", error);

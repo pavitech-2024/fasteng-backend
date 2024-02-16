@@ -23,7 +23,7 @@ export class Calculate_ABCP_Results_Service {
       const { fineAggregate, coarseAggregate, cement } = essaySelectionData;
 
       const fcj = fck + (1.65 * condition);
-      const cementData: Material = await this.material_repository.findById(materialSelectionData.cement);
+      const cementData: Material = await this.material_repository.findById(materialSelectionData.cement.id);
       const cementResistance = parseInt(cementData.description.resistance.replace(/\D/g, ''), 10);
       const acResults = await this.calculateAc(fcj, cementResistance);
       const ac = Number(acResults.XacPoint);

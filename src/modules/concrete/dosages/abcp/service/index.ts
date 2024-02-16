@@ -9,6 +9,8 @@ import { Calculate_ABCP_Results_Service } from "./calc-abcp.service";
 import { ABCPRepository } from "../repository";
 import { AlreadyExists } from "../../../../../utils/exceptions";
 import { ABCP } from "../schemas";
+import { InsertParams_ABCP_Service } from "./insert-params.abcp.service";
+
 
 @Injectable()
 export class ABCPService {
@@ -18,13 +20,14 @@ export class ABCPService {
     private readonly generalData_Service: GeneralData_ABCP_Service,
     private readonly materialSelection_Service: MaterialSelection_ABCP_Service,
     private readonly essaySelection_Service: EssaySelection_ABCP_Service,
+    private readonly insertParams_Service: InsertParams_ABCP_Service,
     private readonly calculateResults_Service: Calculate_ABCP_Results_Service,
     private readonly ABCPRepository: ABCPRepository
   ) { }
 
-  async verifyInitABCP(body: ABCPInitDto) {
+  async verifyInitABCP(body: any, userId: string) {
     try {
-      const success = await this.generalData_Service.verifyInitABCP(body);
+      const success = await this.generalData_Service.verifyInitABCP(body, userId);
 
       return { success };
     } catch (error) {
@@ -71,6 +74,30 @@ export class ABCPService {
       this.logger.error(`error on get all essays by the materials ids > [error]: ${error}`);
       const { status, name, message } = error;
       return { essays: [], success: false, error: { status, message, name } };
+    }
+  }
+
+  async saveEssaySelectionStep(body: any, userId: string) {
+    try {
+      const success = await this.essaySelection_Service.saveEssays(body, userId);
+
+      return { success }
+    } catch (error) {
+      this.logger.error(`error on save essays data abcp step > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { success: false, error: { status, message, name } };
+    }
+  }
+
+  async saveInsertParamsStep(body: any, userId: string) {
+    try {
+      const success = await this.insertParams_Service.saveInsertParams(body, userId);
+
+      return { success }
+    } catch (error) {
+      this.logger.error(`error on save essays data abcp step > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { success: false, error: { status, message, name } };
     }
   }
 

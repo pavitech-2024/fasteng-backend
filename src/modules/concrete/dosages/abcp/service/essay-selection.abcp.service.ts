@@ -3,6 +3,8 @@ import { MaterialsRepository } from "../../../../../modules/concrete/materials/r
 import { ConcreteGranulometryRepository } from "../../../../../modules/concrete/essays/granulometry/repository";
 import { UnitMassRepository } from "../../../../../modules/concrete/essays/unitMass/repository";
 import { ABCPEssaySelectionDto } from "../dto/abcp-essay-selection.dto";
+import { ABCPRepository } from "../repository";
+import { EssaySelectionDataDto } from "../dto/save-essay-selection.dto";
 
 @Injectable()
 export class EssaySelection_ABCP_Service {
@@ -12,6 +14,7 @@ export class EssaySelection_ABCP_Service {
     private readonly material_repository: MaterialsRepository,
     private readonly granulometry_repository: ConcreteGranulometryRepository,
     private readonly unit_mass_repository: UnitMassRepository,
+    private readonly abcpRepository: ABCPRepository,
   ) { }
 
   async getEssays({ cement, coarseAggregate, fineAggregate }: ABCPEssaySelectionDto) {
@@ -75,6 +78,25 @@ export class EssaySelection_ABCP_Service {
         coarseAggregateData,
         fineAggregateData,
       };
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async saveEssays(body: EssaySelectionDataDto, userId: string) {
+    try {
+      this.logger.log('save abcp essays step on essays-selection.abcp.service.ts > [body]', { body });
+
+      const { name } = body.essaySelectionData;
+
+      const abcpExists = await this.abcpRepository.findOne({
+        "generalData.name": name,
+        "generalData.userId": userId,
+      });
+
+      await this.abcpRepository.saveStep(abcpExists, 3);
+
+      return true;
     } catch (error) {
       throw error
     }
