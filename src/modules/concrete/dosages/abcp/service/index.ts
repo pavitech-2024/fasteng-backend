@@ -4,12 +4,15 @@ import { GeneralData_ABCP_Service } from "./general-data.abcp.service";
 import { MaterialSelection_ABCP_Service } from "./material-selection.abcp.service";
 import { EssaySelection_ABCP_Service } from './essay-selection.abcp.service';
 import { ABCPEssaySelectionDto } from "../dto/abcp-essay-selection.dto";
-import { Calc_ABCP_Dto, Calc_ABCP_Out } from "../dto/abcp-calculate-results.dto";
+import { Calc_ABCP_Dto, Calc_ABCP_Out, SaveAbcpDto } from "../dto/abcp-calculate-results.dto";
 import { Calculate_ABCP_Results_Service } from "./calc-abcp.service";
 import { ABCPRepository } from "../repository";
 import { AlreadyExists } from "../../../../../utils/exceptions";
-import { ABCP } from "../schemas";
+import { ABCP, ABCPDocument } from "../schemas";
 import { InsertParams_ABCP_Service } from "./insert-params.abcp.service";
+import { InjectModel } from "@nestjs/mongoose";
+import { DATABASE_CONNECTION } from "infra/mongoose/database.config";
+import { Model } from "mongoose";
 
 
 @Injectable()
@@ -17,6 +20,8 @@ export class ABCPService {
   private logger = new Logger(ABCPService.name);
 
   constructor(
+    @InjectModel(ABCP.name, DATABASE_CONNECTION.CONCRETE) 
+    private abcpModel: Model<ABCPDocument>,
     private readonly generalData_Service: GeneralData_ABCP_Service,
     private readonly materialSelection_Service: MaterialSelection_ABCP_Service,
     private readonly essaySelection_Service: EssaySelection_ABCP_Service,
@@ -139,26 +144,39 @@ export class ABCPService {
     }
   }
 
-  async saveDosage(body: Calc_ABCP_Dto & Calc_ABCP_Out) {
+  async saveDosage(body: SaveAbcpDto) {
     try {
       const {
         name,
         userId,
       } = body.generalData;
+  
+      const {
+        results
+      } = body;
 
       // verifica se existe uma granulometry com mesmo nome , materialId e userId no banco de dados
-      const alreadyExists = await this.ABCPRepository.findOne({
+      const abcpExists: any = await this.ABCPRepository.findOne({
         'generalData.name': name,
         'generalData.userId': userId,
       });
 
+      const abcpAllData = { ...abcpExists._doc, results }
+      
+      await this.abcpModel.updateOne(
+        { "_id": abcpExists._id },
+        abcpAllData
+      );
+
+      await this.ABCPRepository.saveStep(abcpExists._doc, 5)
+
       // se existir, retorna erro
-      if (alreadyExists) throw new AlreadyExists(`ABCP with name "${name}" from user "${userId}"`);
+      // if (alreadyExists) throw new AlreadyExists(`ABCP with name "${name}" from user "${userId}"`);
 
       // se não existir, salva no banco de dados
-      const abcp = await this.ABCPRepository.create(body);
+      //const abcp = await this.ABCPRepository.create(body);
 
-      return { success: true, data: abcp };
+      return { success: true, data: abcpExists };
     } catch (error) {
       const { status, name, message } = error;
 

@@ -29,3 +29,20 @@ export interface Calc_ABCP_Out {
   resistanceCurve: string;
 }
 
+export class SaveAbcpDto {
+  @IsNotEmpty()
+  generalData: ABCP['generalData']
+
+  @IsNotEmpty()
+  materialSelectionData: ABCP['materialSelectionData']
+
+  @IsNotEmpty()
+  essaySelectionData: ABCP['essaySelectionData']
+
+  @IsNotEmpty()
+  insertParamsData: ABCP['insertParamsData']
+
+  @IsNotEmpty()
+  results: Calc_ABCP_Out
+}
+

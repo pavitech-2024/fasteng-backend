@@ -4,7 +4,7 @@ import { Response } from 'express';
 import { ABCPService } from '../service';
 import { ABCPInitDto } from '../dto/abcp-init.dto';
 import { ABCPEssaySelectionDto } from '../dto/abcp-essay-selection.dto';
-import { Calc_ABCP_Dto, Calc_ABCP_Out } from '../dto/abcp-calculate-results.dto';
+import { Calc_ABCP_Dto, Calc_ABCP_Out, SaveAbcpDto } from '../dto/abcp-calculate-results.dto';
 
 @ApiTags('abcp')
 @Controller('concrete/dosages/abcp')
@@ -154,7 +154,8 @@ export class ABCPController {
     },
   })
   @ApiResponse({ status: 400, description: 'Erro ao salvar os dados da dosagem abcp de concreto no banco de dados.' })
-  async saveConcreteEssay(@Res() response: Response, @Body() body: Calc_ABCP_Dto & Calc_ABCP_Out) {
+  async saveConcreteEssay(@Res() response: Response, @Body() body: 
+  SaveAbcpDto) {
     this.logger.log('save concrete essay > [body]');
 
     const abcp = await this.abcpService.saveDosage(body);

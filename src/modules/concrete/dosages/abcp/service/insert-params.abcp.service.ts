@@ -4,12 +4,18 @@ import { ConcreteGranulometryRepository } from "modules/concrete/essays/granulom
 import { UnitMassRepository } from "modules/concrete/essays/unitMass/repository";
 import { ABCPRepository } from "../repository";
 import { InsertParamsDataDto } from "../dto/save-insert-params.dto";
+import { InjectModel } from "@nestjs/mongoose";
+import { DATABASE_CONNECTION } from "infra/mongoose/database.config";
+import { Model } from "mongoose";
+import { ABCP, ABCPDocument } from "../schemas";
 
 @Injectable()
 export class InsertParams_ABCP_Service {
   private logger = new Logger(InsertParams_ABCP_Service.name)
 
   constructor(
+    @InjectModel(ABCP.name, DATABASE_CONNECTION.CONCRETE) 
+    private abcpModel: Model<ABCPDocument>,
     private readonly abcpRepository: ABCPRepository,
   ) { }
 
@@ -19,12 +25,20 @@ export class InsertParams_ABCP_Service {
 
       const { name } = body.insertParamsData;
 
-      const abcpExists = await this.abcpRepository.findOne({
+      const abcpExists: any = await this.abcpRepository.findOne({
         "generalData.name": name,
         "generalData.userId": userId,
       });
 
-      await this.abcpRepository.saveStep(abcpExists, 4);
+      const { name: paramsName, ...paramsDataWithoutName } = body.insertParamsData;
+      const abcpWithParams = { ...abcpExists._doc, insertParamsData: paramsDataWithoutName };
+
+      await this.abcpModel.updateOne(
+        { "_id": abcpExists._id },
+        abcpWithParams
+      );
+
+      await this.abcpRepository.saveStep(abcpExists._doc, 4);
 
       return true;
     } catch (error) {
