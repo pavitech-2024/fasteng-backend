@@ -48,6 +48,18 @@ export class ABCPService {
     }
   }
 
+  async saveMaterialSelectionStep(body: any, userId: string) {
+    try {
+      const success = await this.materialSelection_Service.saveMaterials(body, userId);
+
+      return { success }
+    } catch (error) {
+      this.logger.error(`error on save materials data abcp step > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { success: false, error: { status, message, name } };
+    }
+  }
+
   async getEssaysByMaterials(data: ABCPEssaySelectionDto) {
     try {
       const essays = await this.essaySelection_Service.getEssays(data);

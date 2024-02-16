@@ -50,6 +50,19 @@ export class ABCPController {
     return response.status(200).json(status);
   }
 
+  @Post('save-material-selection-step/:id')
+  async saveMaterialSelectionStep(
+    @Res() response: Response, 
+    @Body() body: any, 
+    @Param('id') userId: string
+    ) {
+    this.logger.log(`save materials selection step in user abcp dosage > [body]: ${body}`);
+
+    const status = await this.abcpService.saveMaterialSelectionStep(body, userId);
+
+    return response.status(200).json(status);
+  }
+
   @Post('essay-selection')
   @ApiOperation({ summary: 'Retorna todas as dosagens do banco de dados de um usuário, que possuam os ensaios para a dosagem.' })
   @ApiResponse({ status: 200, description: 'Dosagens encontrados com sucesso!' })

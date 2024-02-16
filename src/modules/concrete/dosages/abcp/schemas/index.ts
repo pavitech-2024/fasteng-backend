@@ -11,6 +11,7 @@ export type ABCPGeneralData = {
 }
 
 export type ABCPMaterialSelectionData = {
+  name: string,
   coarseAggregate: string;
   fineAggregate: string;
   cement: string;
