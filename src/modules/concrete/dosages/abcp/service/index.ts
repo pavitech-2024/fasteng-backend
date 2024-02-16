@@ -112,7 +112,7 @@ export class ABCPService {
       const dosages = await this.ABCPRepository.find();
 
       // retorna os materiais encontrados que pertencem ao usuário
-      return dosages.filter((dosage) => dosage.generalData.userId === userId);
+      return dosages.filter((dosage) => dosage.generalData && dosage.generalData.userId === userId);
     } catch (error) {
       this.logger.error(`error on get all dosages > [error]: ${error}`);
 
@@ -155,7 +155,6 @@ export class ABCPService {
         results
       } = body;
 
-      // verifica se existe uma granulometry com mesmo nome , materialId e userId no banco de dados
       const abcpExists: any = await this.ABCPRepository.findOne({
         'generalData.name': name,
         'generalData.userId': userId,
@@ -169,12 +168,6 @@ export class ABCPService {
       );
 
       await this.ABCPRepository.saveStep(abcpExists._doc, 5)
-
-      // se existir, retorna erro
-      // if (alreadyExists) throw new AlreadyExists(`ABCP with name "${name}" from user "${userId}"`);
-
-      // se não existir, salva no banco de dados
-      //const abcp = await this.ABCPRepository.create(body);
 
       return { success: true, data: abcpExists };
     } catch (error) {

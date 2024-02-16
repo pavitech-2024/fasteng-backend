@@ -112,7 +112,7 @@ export class ABCPController {
   }
 
 
-  @Get('/:id')
+  @Get(':id')
   @ApiOperation({ summary: 'Retorna a dosagem com o id especificado.' })
   @ApiResponse({ status: 200, description: 'Dosagem encontrada com sucesso!' })
   async getDosageById(@Param('id') dosageId: string) {

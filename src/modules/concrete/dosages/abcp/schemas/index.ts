@@ -87,4 +87,8 @@ export class ABCP {
   results: ABCPResults
 }
 
-export const ABCPSchema = SchemaFactory.createForClass(ABCP);
+const ABCPSchema = SchemaFactory.createForClass(ABCP);
+ABCPSchema.set('timestamps', true);
+ABCPSchema.set('versionKey', false)
+
+export { ABCPSchema };

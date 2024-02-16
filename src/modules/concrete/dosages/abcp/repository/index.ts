@@ -7,11 +7,15 @@ export class ABCPRepository {
   constructor(@InjectModel(ABCP.name, DATABASE_CONNECTION.CONCRETE) private abcpModel: Model<ABCPDocument>) { }
 
   async find(): Promise<ABCP[]> {
-    return this.abcpModel.find();
+    const dosages =  await this.abcpModel.find().lean();
+
+    return dosages
   }
 
   async findById(dosageId: string): Promise<ABCP> {
-    return this.abcpModel.findById(dosageId)
+    const dosage = this.abcpModel.findById(dosageId).lean();
+
+    return dosage
   }
 
   async findOne(abcpFilterQuery: any): Promise<ABCP> {

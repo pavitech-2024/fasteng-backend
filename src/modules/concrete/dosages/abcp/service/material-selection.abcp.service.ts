@@ -79,8 +79,6 @@ export class MaterialSelection_ABCP_Service {
         abcpWithMaterials
       );
 
-      console.log("🚀 ~ MaterialSelection_ABCP_Service ~ saveMaterials ~ abcpExists:", abcpExists)
-
       await this.abcpRepository.saveStep(abcpExists, 2);
 
       return true;
