@@ -33,7 +33,10 @@ export class ABCPController {
   async verifyInitABCP(@Res() response: Response, @Body() body: any, @Param('id') userId: string) {
     this.logger.log('verify init abcp > [body]');
 
-    const status = await this.abcpService.verifyInitABCP(body, userId);
+    const isConsult = body.isConsult2;
+    console.log("🚀 ~ ABCPController ~ verifyInitABCP ~ isConsult:", isConsult)
+
+    const status = await this.abcpService.verifyInitABCP(body, userId, isConsult);
 
     return response.status(200).json(status);
   }

@@ -12,23 +12,26 @@ export class GeneralData_ABCP_Service {
     private readonly abcpRepository: ABCPRepository,
   ) { }
 
-  async verifyInitABCP(abcp: any, userId: string) {
-    const { name } = abcp.generalData;
+  async verifyInitABCP(abcp: any, userId: string, isConsult?: boolean) {
     try {
       this.logger.log('verify init abcp on general-data.abcp.service.ts > [body]')
+
+      const { name } = abcp;
 
       const abcpExists = await this.abcpRepository.findOne({
         "generalData.name": name,
         "generalData.userId": userId,
       })
 
-      if (abcpExists) throw new AlreadyExists('name');
+      if (abcpExists && !isConsult) throw new AlreadyExists('name');
 
-      const createdPartialAbcp = await this.abcpRepository.createPartialAbcp(abcp, userId);
-      console.log("🚀 ~ GeneralData_ABCP_Service ~ verifyInitABCP ~ createdPartialAbcp:", createdPartialAbcp)
-
-      await this.abcpRepository.saveStep(createdPartialAbcp._doc, 1);
-
+      if (!isConsult) {
+        const createdPartialAbcp = await this.abcpRepository.createPartialAbcp(abcp, userId);
+        console.log("🚀 ~ GeneralData_ABCP_Service ~ verifyInitABCP ~ createdPartialAbcp:", createdPartialAbcp)
+        await this.abcpRepository.saveStep(createdPartialAbcp._doc, 1);
+      } else {
+        await this.abcpRepository.updatePartialAbcp(abcp, userId);
+      }
       return true;
     } catch (error) {
       throw error

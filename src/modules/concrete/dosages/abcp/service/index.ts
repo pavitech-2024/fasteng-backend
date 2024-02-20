@@ -30,9 +30,9 @@ export class ABCPService {
     private readonly ABCPRepository: ABCPRepository
   ) { }
 
-  async verifyInitABCP(body: any, userId: string) {
+  async verifyInitABCP(body: any, userId: string, isConsult?: boolean) {
     try {
-      const success = await this.generalData_Service.verifyInitABCP(body, userId);
+      const success = await this.generalData_Service.verifyInitABCP(body, userId, isConsult);
 
       return { success };
     } catch (error) {

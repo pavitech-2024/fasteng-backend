@@ -42,6 +42,21 @@ export class ABCPRepository {
     }
   }
 
+  async updatePartialAbcp(abcp: any, userId: string): Promise<any> {
+    try {
+      const createdPartialAbcp = await this.abcpModel.updateOne(
+        { "generalData.name": abcp.data.name, "generalData.userId": userId },
+        { $set: { generalData: abcp.data } }
+      );
+      console.log("🚀 ~ ABCPRepository ~ createPartialAbcp ~ createdPartialAbcp:", createdPartialAbcp)
+
+      return createdPartialAbcp;
+    } catch (error) {
+      console.error("Erro ao salvar o step:", error);
+      throw error
+    }
+  }
+
   async saveStep(abcp: any, step: number): Promise<void> {
     try {
       await this.abcpModel.updateOne(
