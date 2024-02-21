@@ -5,12 +5,18 @@ import { UnitMassRepository } from "../../../../../modules/concrete/essays/unitM
 import { ABCPEssaySelectionDto } from "../dto/abcp-essay-selection.dto";
 import { ABCPRepository } from "../repository";
 import { EssaySelectionDataDto } from "../dto/save-essay-selection.dto";
+import { InjectModel } from "@nestjs/mongoose";
+import { DATABASE_CONNECTION } from "infra/mongoose/database.config";
+import { Model } from "mongoose";
+import { ABCP, ABCPDocument } from "../schemas";
 
 @Injectable()
 export class EssaySelection_ABCP_Service {
   private logger = new Logger(EssaySelection_ABCP_Service.name)
 
   constructor(
+    @InjectModel(ABCP.name, DATABASE_CONNECTION.CONCRETE) 
+    private abcpModel: Model<ABCPDocument>,
     private readonly material_repository: MaterialsRepository,
     private readonly granulometry_repository: ConcreteGranulometryRepository,
     private readonly unit_mass_repository: UnitMassRepository,
@@ -89,12 +95,22 @@ export class EssaySelection_ABCP_Service {
 
       const { name } = body.essaySelectionData;
 
-      const abcpExists = await this.abcpRepository.findOne({
+      const abcpExists: any = await this.abcpRepository.findOne({
         "generalData.name": name,
         "generalData.userId": userId,
       });
 
-      await this.abcpRepository.saveStep(abcpExists, 3);
+      const { name: essayName, ...essayDataWithoutName } = body.essaySelectionData;
+      const abcpWithEssays = { ...abcpExists._doc, essaySelectionData: essayDataWithoutName };
+
+      await this.abcpModel.updateOne(
+        { "_id": abcpExists._id },
+        abcpWithEssays
+      );
+
+      await this.abcpRepository.saveStep(abcpExists._doc, 3);
+
+      console.log("🚀 ~ EssaySelection_ABCP_Service ~ saveEssays ~ abcpExists:", abcpExists)
 
       return true;
     } catch (error) {
