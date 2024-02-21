@@ -79,7 +79,9 @@ export class MaterialSelection_ABCP_Service {
         abcpWithMaterials
       );
 
-      await this.abcpRepository.saveStep(abcpExists, 2);
+      if (abcpExists._doc.generalData.step < 2) {
+        await this.abcpRepository.saveStep(abcpExists, 2);
+      }
 
       return true;
     } catch (error) {
