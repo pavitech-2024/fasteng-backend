@@ -87,7 +87,6 @@ export class ABCPController {
     ) {
     this.logger.log(`save essay selection step in user abcp dosage > [body]: ${body}`);
 
-    
     const status = await this.abcpService.saveEssaySelectionStep(body, userId);
 
     return response.status(200).json(status);

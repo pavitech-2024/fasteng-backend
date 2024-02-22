@@ -16,6 +16,10 @@ export class GeneralData_ABCP_Service {
     try {
       this.logger.log('verify init abcp on general-data.abcp.service.ts > [body]')
 
+      if (isConsult) {
+        return true
+      }
+
       const { name } = abcp;
 
       const abcpExists = await this.abcpRepository.findOne({
