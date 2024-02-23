@@ -30,9 +30,9 @@ export class ABCPService {
     private readonly ABCPRepository: ABCPRepository
   ) { }
 
-  async verifyInitABCP(body: any, userId: string, isConsult?: boolean) {
+  async verifyInitABCP(body: any, userId: string) {
     try {
-      const success = await this.generalData_Service.verifyInitABCP(body, userId, isConsult);
+      const success = await this.generalData_Service.verifyInitABCP(body, userId);
 
       return { success };
     } catch (error) {
@@ -155,10 +155,7 @@ export class ABCPService {
         results
       } = body;
 
-      const abcpExists: any = await this.ABCPRepository.findOne({
-        'generalData.name': name,
-        'generalData.userId': userId,
-      });
+      const abcpExists: any = await this.ABCPRepository.findOne(name, userId);
 
       const abcpAllData = { ...abcpExists._doc, results }
       

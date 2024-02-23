@@ -18,8 +18,15 @@ export class ABCPRepository {
     return dosage
   }
 
-  async findOne(abcpFilterQuery: any): Promise<ABCP> {
-    return this.abcpModel.findOne(abcpFilterQuery);
+  async findOne(name: any, userId: string): Promise<ABCP> {
+
+    const dosage = await this.abcpModel.findOne({
+      "generalData.name": name,
+      "generalData.userId": userId
+    });
+    console.log("🚀 ~ ABCPRepository ~ findOne ~ dosage:", dosage)
+    
+    return dosage;
   }
 
   async create(abcp: any): Promise<ABCP> {
@@ -31,7 +38,7 @@ export class ABCPRepository {
   async createPartialAbcp(abcp: any, userId: string): Promise<any> {
     try {
       const createdPartialAbcp = await this.abcpModel.create({
-        generalData: {...abcp.generalData, userId},
+        generalData: {...abcp, userId},
       });
       console.log("🚀 ~ ABCPRepository ~ createPartialAbcp ~ createdPartialAbcp:", createdPartialAbcp)
 

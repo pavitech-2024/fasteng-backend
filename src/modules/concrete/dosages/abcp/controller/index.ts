@@ -34,10 +34,8 @@ export class ABCPController {
   async verifyInitABCP(@Res() response: Response, @Body() body: any, @Param('id') userId: string) {
     this.logger.log('verify init abcp > [body]');
 
-    const isConsult = body.isConsult2;
-    console.log("🚀 ~ ABCPController ~ verifyInitABCP ~ isConsult:", isConsult)
-
-    const status = await this.abcpService.verifyInitABCP(body, userId, isConsult);
+    const status = await this.abcpService.verifyInitABCP(body, userId);
+    
 
     return response.status(200).json(status);
   }
@@ -63,6 +61,7 @@ export class ABCPController {
     this.logger.log(`save materials selection step in user abcp dosage > [body]: ${body}`);
 
     const status = await this.abcpService.saveMaterialSelectionStep(body, userId);
+    
 
     return response.status(200).json(status);
   }
@@ -128,7 +127,7 @@ export class ABCPController {
   @Post('calculate-results')
   @ApiOperation({ summary: 'Retorna os resultados dos calculos para a dosagem.' })
   @ApiResponse({ status: 200, description: 'Resultados entregues com sucesso!' })
-  async calculateAbcpDosage(@Res() response: Response, @Body() data: Calc_ABCP_Dto) {
+  async calculateAbcpDosage(@Res() response: Response, @Body() data: any) {
     this.logger.log(`get the results of abcp dosage`);
 
     const status = await this.abcpService.calculateAbcpDosage(data);
@@ -159,7 +158,7 @@ export class ABCPController {
   })
   @ApiResponse({ status: 400, description: 'Erro ao salvar os dados da dosagem abcp de concreto no banco de dados.' })
   async saveConcreteEssay(@Res() response: Response, @Body() body: 
-  SaveAbcpDto) {
+  any) {
     this.logger.log('save concrete essay > [body]');
 
     const abcp = await this.abcpService.saveDosage(body);

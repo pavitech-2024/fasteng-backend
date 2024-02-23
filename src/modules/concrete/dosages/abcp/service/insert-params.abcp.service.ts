@@ -24,11 +24,10 @@ export class InsertParams_ABCP_Service {
       this.logger.log('save abcp insert Params step on insert-params.abcp.service.ts > [body]', { body });
 
       const { name } = body.insertParamsData;
+      console.log("🚀 ~ InsertParams_ABCP_Service ~ saveInsertParams ~ name:", name)
 
-      const abcpExists: any = await this.abcpRepository.findOne({
-        "generalData.name": name,
-        "generalData.userId": userId,
-      });
+      const abcpExists: any = await this.abcpRepository.findOne(name, userId);
+      console.log("🚀 ~ InsertParams_ABCP_Service ~ saveInsertParams ~ abcpExists:", abcpExists)
 
       const { name: paramsName, ...paramsDataWithoutName } = body.insertParamsData;
       const abcpWithParams = { ...abcpExists._doc, insertParamsData: paramsDataWithoutName };

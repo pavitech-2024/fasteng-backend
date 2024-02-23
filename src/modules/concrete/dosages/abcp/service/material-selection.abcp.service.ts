@@ -66,16 +66,13 @@ export class MaterialSelection_ABCP_Service {
 
       const { name } = body.materialSelectionData;
 
-      const abcpExists: any = await this.abcpRepository.findOne({
-        "generalData.name": name,
-        "generalData.userId": userId,
-      });
+      const abcpExists: any = await this.abcpRepository.findOne(name, userId);
 
       const { name: materialName, ...materialDataWithoutName } = body.materialSelectionData;
       const abcpWithMaterials = { ...abcpExists._doc, materialSelectionData: materialDataWithoutName };
 
       await this.abcpModel.updateOne(
-        { "_id": abcpExists._id },
+        { "_id": abcpExists._doc._id },
         abcpWithMaterials
       );
 
