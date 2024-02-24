@@ -13,7 +13,8 @@ export class ABCPRepository {
   }
 
   async findById(dosageId: string): Promise<ABCP> {
-    const dosage = this.abcpModel.findById(dosageId).lean();
+    const dosage = await this.abcpModel.findById(dosageId).lean();
+    console.log("🚀 ~ ABCPRepository ~ findById ~ dosage:", dosage)
 
     return dosage
   }
