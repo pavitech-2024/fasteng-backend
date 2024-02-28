@@ -17,6 +17,8 @@ import { ConcreteModule } from './modules/concrete/concrete.module';
 import { ReportErrorModule } from './modules/report-error/report-error.module';
 import { ReportErrorController } from './modules/report-error/report-error.controller';
 import { DatabaseModule } from 'infra/mongoose/database.module';
+import { ProMedinaModule } from './modules/pro-medina/pro-medina.module';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
@@ -28,6 +30,8 @@ import { DatabaseModule } from 'infra/mongoose/database.module';
     SoilsModule,
     ConcreteModule,
     ReportErrorModule,
+    ProMedinaModule,
+    MongooseModule,
   ],
   controllers: [ReportErrorController],
   providers: [{ provide: APP_INTERCEPTOR, useClass: ErrorsInterceptor }],
@@ -43,6 +47,7 @@ export class AppModule implements NestModule {
         { path: 'docs/asphalt', method: RequestMethod.GET }, // libera a rota de documentação da API
         { path: 'docs/soils', method: RequestMethod.GET }, // libera a rota de documentação da API
         { path: 'docs/concrete', method: RequestMethod.GET }, // libera a rota de documentação da API
+        { path: 'docs/promedina', method: RequestMethod.GET }, // libera a rota de documentação da API
       )
       .forRoutes('*');
   }
