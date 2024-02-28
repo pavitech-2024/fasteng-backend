@@ -94,12 +94,11 @@ export class EssaySelection_ABCP_Service {
       this.logger.log('save abcp essays step on essays-selection.abcp.service.ts > [body]', { body });
 
       const { name } = body.essaySelectionData;
-      console.log("🚀 ~ EssaySelection_ABCP_Service ~ saveEssays ~ name:", name)
 
       const abcpExists: any = await this.abcpRepository.findOne(name, userId);
-      console.log("🚀 ~ EssaySelection_ABCP_Service ~ saveEssays ~ abcpExists:", abcpExists)
 
       const { name: essayName, ...essayDataWithoutName } = body.essaySelectionData;
+      
       const abcpWithEssays = { ...abcpExists._doc, essaySelectionData: essayDataWithoutName };
 
       await this.abcpModel.updateOne(
@@ -108,8 +107,6 @@ export class EssaySelection_ABCP_Service {
       );
 
       await this.abcpRepository.saveStep(abcpExists._doc, 3);
-
-      console.log("🚀 ~ EssaySelection_ABCP_Service ~ saveEssays ~ abcpExists:", abcpExists)
 
       return true;
     } catch (error) {

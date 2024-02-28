@@ -48,7 +48,7 @@ export class MaterialSelection_ABCP_Service {
           return _id.toString() === material._id.toString()
         });
         if (granulometry && unit_mass)
-          return granulometry //&& unit_mass;
+          return granulometry
 
       });
 
@@ -69,6 +69,7 @@ export class MaterialSelection_ABCP_Service {
       const abcpExists: any = await this.abcpRepository.findOne(name, userId);
 
       const { name: materialName, ...materialDataWithoutName } = body.materialSelectionData;
+
       const abcpWithMaterials = { ...abcpExists._doc, materialSelectionData: materialDataWithoutName };
 
       await this.abcpModel.updateOne(

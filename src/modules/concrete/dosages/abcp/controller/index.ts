@@ -5,6 +5,7 @@ import { ABCPService } from '../service';
 import { ABCPInitDto } from '../dto/abcp-init.dto';
 import { ABCPEssaySelectionDto } from '../dto/abcp-essay-selection.dto';
 import { Calc_ABCP_Dto, Calc_ABCP_Out, SaveAbcpDto } from '../dto/abcp-calculate-results.dto';
+import { MaterialSelectionDataDto } from '../dto/save-material-selection.dto';
 
 @ApiTags('abcp')
 @Controller('concrete/dosages/abcp')
@@ -31,7 +32,7 @@ export class ABCPController {
     },
   })
   @ApiResponse({ status: 400, description: 'Erro ao verificar se é possível criar uma ABCP com os dados enviados.' })
-  async verifyInitABCP(@Res() response: Response, @Body() body: any, @Param('id') userId: string) {
+  async verifyInitABCP(@Res() response: Response, @Body() body: ABCPInitDto, @Param('id') userId: string) {
     this.logger.log('verify init abcp > [body]');
 
     const status = await this.abcpService.verifyInitABCP(body, userId);
@@ -55,7 +56,7 @@ export class ABCPController {
   @Post('save-material-selection-step/:id')
   async saveMaterialSelectionStep(
     @Res() response: Response, 
-    @Body() body: any, 
+    @Body() body: MaterialSelectionDataDto, 
     @Param('id') userId: string
     ) {
     this.logger.log(`save materials selection step in user abcp dosage > [body]: ${body}`);
@@ -85,6 +86,7 @@ export class ABCPController {
     @Param('id') userId: string
     ) {
     this.logger.log(`save essay selection step in user abcp dosage > [body]: ${body}`);
+
 
     const status = await this.abcpService.saveEssaySelectionStep(body, userId);
 

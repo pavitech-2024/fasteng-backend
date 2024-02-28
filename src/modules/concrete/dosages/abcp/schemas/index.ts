@@ -25,12 +25,18 @@ export type ABCPMaterialSelectionData = {
 export type ABCPEssaySelectionData = {
   name: string,
   fineAggregate: {
-    _id: string;
+    _id: {
+      id: string,
+      type: string
+    }
     specificMass: number;
     granulometry_id: string;
   };
   coarseAggregate: {
-    _id: string;
+    _id: {
+      id: string,
+      type: string
+    }
     granulometry_id: string;
     specificMass: number;
     unitMass_id: string

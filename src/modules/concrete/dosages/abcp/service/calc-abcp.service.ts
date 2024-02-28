@@ -255,8 +255,6 @@ export class Calculate_ABCP_Results_Service {
     else if(finenessModule < 3.39)  group = 7;
     else if(finenessModule < 3.61)  group = 8;
 
-    console.log('AQUI',finenessModule, group)
-
     let britaVolume = initalValue - (group * 0.02)
     return Number(((unitMass) * britaVolume).toFixed(3));
   }
