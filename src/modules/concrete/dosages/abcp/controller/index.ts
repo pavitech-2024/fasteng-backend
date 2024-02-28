@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Logger, Param, Post, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, Param, Post, Res } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { ABCPService } from '../service';
@@ -159,13 +159,22 @@ export class ABCPController {
   @ApiResponse({ status: 400, description: 'Erro ao salvar os dados da dosagem abcp de concreto no banco de dados.' })
   async saveConcreteEssay(@Res() response: Response, @Body() body: 
   any) {
-    this.logger.log('save concrete essay > [body]');
+    this.logger.log('save abcp dosage > [body]');
 
     const abcp = await this.abcpService.saveDosage(body);
 
     if (abcp.success) this.logger.log('save concrete abcp dosage > [success]');
     else this.logger.error('save concrete abcp dosage > [error]');
 
+    return response.status(200).json(abcp);
+  }
+
+  @Delete('/:dosage_id')
+  async deleteDosage(@Res() response: Response, @Param('dosage_id') dosage_id: string) {
+    this.logger.log('delete abcp dosage > [body]');
+
+    const abcp = await this.abcpService.deleteDosage(dosage_id);
+    
     return response.status(200).json(abcp);
   }
 }

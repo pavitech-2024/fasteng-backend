@@ -76,4 +76,15 @@ export class ABCPRepository {
       throw error;
     }
   }
+
+  async findOneAndDelete(dosage_id): Promise<any> {
+    try {
+      const deletedDosage = await this.abcpModel.findOneAndDelete({ _id: dosage_id });
+
+      return deletedDosage
+    } catch (error) {
+      console.error("Erro ao deletar a dosagem:", error);
+      throw error;
+    }
+  }
 }

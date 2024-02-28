@@ -173,4 +173,17 @@ export class ABCPService {
       return { success: false, error: { status, message, name } };
     }
   }
+
+  async deleteDosage(dosage_id: string) {
+    try {
+      
+      const deleteAbcp = await this.ABCPRepository.findOneAndDelete(dosage_id);
+
+      return deleteAbcp
+    } catch (error) {
+      const { status, name, message } = error;
+
+      return { success: false, error: { status, message, name } };
+    }
+  }
 }
