@@ -1,9 +1,9 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { MaterialsRepository } from "../../../../../../src/modules/concrete/materials/repository";
 import { ConcreteGranulometryRepository } from "../../../../../modules/concrete/essays/granulometry/repository";
 import { UnitMassRepository } from "../../../../../modules/concrete/essays/unitMass/repository";
 import { Calc_ABCP_Dto, Calc_ABCP_Out } from "../dto/abcp-calculate-results.dto";
 import { Material } from "../../../../../modules/concrete/materials/schemas";
+import { MaterialsRepository } from "modules/concrete/materials/repository";
 
 @Injectable()
 export class Calculate_ABCP_Results_Service {
