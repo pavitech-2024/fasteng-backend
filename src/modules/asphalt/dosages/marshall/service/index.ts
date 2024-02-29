@@ -19,9 +19,26 @@ export class MarshallService {
     private readonly granulometryComposition_Service: GranulometryComposition_Marshall_Service,
   ) { }
 
-  async verifyInitMarshall(body: MarshallInitDto) {
+  async getAllDosages(userId: string): Promise<Marshall[]> {
     try {
-      const success = await this.generalData_Service.verifyInitMarshall(body);
+      // busca todas as dosagens no banco de dados
+      const dosages = await this.marshall_repository.find();
+      console.log("🚀 ~ MarshallService ~ getAllDosages ~ dosages:", dosages);
+
+      const userDosages = dosages.filter((dosage) => dosage.generalData && dosage.generalData.userId === userId);
+
+      // retorna as dosagens encontradas que pertencem ao usuário
+      return userDosages;
+    } catch (error) {
+      this.logger.error(`error on get all dosages > [error]: ${error}`);
+
+      throw error;
+    }
+  }
+
+  async verifyInitMarshall(body: MarshallInitDto, userId: string) {
+    try {
+      const success = await this.generalData_Service.verifyInitMarshall(body, userId);
 
       return { success };
     } catch (error) {
@@ -42,6 +59,18 @@ export class MarshallService {
       this.logger.error(`error on getting all materials by user id > [error]: ${error}`);
       const { status, name, message } = error;
       return { materials: [], success: false, error: { status, message, name } };
+    }
+  }
+
+  async saveMaterialSelectionStep(body: any, userId: string) {
+    try {
+      const success = await this.materialSelection_Service.saveMaterials(body, userId);
+
+      return { success }
+    } catch (error) {
+      this.logger.error(`error on save materials data marshall step > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { success: false, error: { status, message, name } };
     }
   }
 
@@ -209,20 +238,33 @@ export class MarshallService {
     }
   }
 
-  async updateMarshall(marshall: Marshall): Promise<Marshall> {
+  async calculateStep3Data(body: any) {
     try {
-      // busca um material com o id passado no banco de dados
-      const marshallToUpdate = await this.marshall_repository.findOne({ _id: marshall._id });
+      const granulometryComposition = await this.granulometryComposition_Service.calculateGranulometry(body);
 
-      // se não encontrar o material, retorna um erro
-      if (!marshallToUpdate) throw new NotFound('Marshall');
 
-      // atualiza o material no banco de dados
-      return this.marshall_repository.findOneAndUpdate({ _id: marshall._id }, marshall);
+      return { granulometryComposition, success: true };
     } catch (error) {
-      this.logger.error(`error on update marshall > [error]: ${error}`);
-
-      throw error;
+      this.logger.error(`error on getting the step 3 data > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { data: null, success: false, error: { status, message, name } };
     }
   }
+
+  // async updateMarshall(marshall: Marshall): Promise<Marshall> {
+  //   try {
+  //     // busca um material com o id passado no banco de dados
+  //     const marshallToUpdate = await this.marshall_repository.findOne({ _id: marshall._id });
+
+  //     // se não encontrar o material, retorna um erro
+  //     if (!marshallToUpdate) throw new NotFound('Marshall');
+
+  //     // atualiza o material no banco de dados
+  //     return this.marshall_repository.findOneAndUpdate({ _id: marshall._id }, marshall);
+  //   } catch (error) {
+  //     this.logger.error(`error on update marshall > [error]: ${error}`);
+
+  //     throw error;
+  //   }
+  // }
 }

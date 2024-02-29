@@ -12,7 +12,17 @@ export class MarshallController {
 
   constructor(private readonly marshallService: MarshallService) { }
 
-  @Post('verify-init')
+  @Get('all/:id')
+  @ApiOperation({ summary: 'Retorna todas as dosagens do banco de dados de um usuário.' })
+  @ApiResponse({ status: 200, description: 'Dosagens encontrados com sucesso!' })
+  @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
+  async getAllByUserId(@Param('id') userId: string) {
+    this.logger.log(`get all dosages by user id > [id]: ${userId}`);
+
+    return this.marshallService.getAllDosages(userId);
+  }
+
+  @Post('verify-init/:id')
   @ApiOperation({ summary: 'Verifica se é possível criar uma Marshall com os dados enviados.' })
   @ApiResponse({
     status: 200,
@@ -29,10 +39,11 @@ export class MarshallController {
     },
   })
   @ApiResponse({ status: 400, description: 'Erro ao verificar se é possível criar uma Marshall com os dados enviados.' })
-  async verifyInitMarshall(@Res() response: Response, @Body() body: MarshallInitDto) {
+  async verifyInitMarshall(@Res() response: Response, @Body() body: MarshallInitDto, @Param('id') userId: string) {
     this.logger.log('verify init Marshall > [body]');
 
-    const status = await this.marshallService.verifyInitMarshall(body);
+    const status = await this.marshallService.verifyInitMarshall(body, userId);
+
 
     return response.status(200).json(status);
   }
@@ -49,6 +60,20 @@ export class MarshallController {
     return response.status(200).json(status);
   }
 
+  @Post('save-material-selection-step/:id')
+  async saveMaterialSelectionStep(
+    @Res() response: Response, 
+    @Body() body: any, 
+    @Param('id') userId: string
+    ) {
+    this.logger.log(`save materials selection step in user marshall dosage > [body]: ${body}`);
+
+    const status = await this.marshallService.saveMaterialSelectionStep(body, userId);
+
+
+    return response.status(200).json(status);
+  }
+
   @Post('step-3-data')
   @ApiOperation({ summary: 'Retorna os dados iniciais necessários para a terceira tela (composição granulométrica) da dosagem' })
   @ApiResponse({ 
@@ -57,10 +82,19 @@ export class MarshallController {
     content: { 'application/json': { schema: { example: { data: {}, success: true } } } }, 
   })
   @ApiResponse({ status: 400, description: 'Dados não encontrados!' })
-  async getStep3Data(@Res() response: Response, @Body() body: MarshallStep3Dto) {
+  async getStep3Data(@Res() response: Response, @Body() body: any) {
     this.logger.log(`get step 3 data > [body]: ${body}`);
 
     const status = await this.marshallService.getStep3Data(body);
+
+    return response.status(200).json(status);
+  }
+
+  @Post('calculate-step-3-data')
+  async calculateStep3Data(@Res() response: Response, @Body() body: any) {
+    this.logger.log(`calculate step 3 data > [body]: ${body}`);
+
+    const status = await this.marshallService.calculateStep3Data(body);
 
     return response.status(200).json(status);
   }

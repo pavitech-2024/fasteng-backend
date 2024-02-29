@@ -6,8 +6,8 @@ export type MarshallDocument = HydratedDocument<Marshall>;
 
 export type MarshallGeneralData = {
   userId: string;
-  projectName: string;
-  labName?: string;
+  name: string;
+  laboratory?: string;
   operator?: string;
   calculist?: string;
   objective: "bearing" | "bonding";
@@ -25,4 +25,8 @@ export class Marshall {
   generalData: MarshallGeneralData;
 }
 
-export const MarshallSchema = SchemaFactory.createForClass(Marshall);
+const MarshallSchema = SchemaFactory.createForClass(Marshall);
+MarshallSchema.set('timestamps', true);
+MarshallSchema.set('versionKey', false)
+
+export { MarshallSchema };

@@ -6,7 +6,12 @@ import { GeneralData_Marshall_Service } from './service/general-data.marshall.se
 import { MaterialSelection_Marshall_Service } from './service/material-selection.marshall.service';
 import { GranulometryComposition_Marshall_Service } from './service/granulometry-composition.marshall.service';
 
-const services = [ MarshallService, GeneralData_Marshall_Service, MaterialSelection_Marshall_Service, GranulometryComposition_Marshall_Service ];
+const services = [ 
+  MarshallService, 
+  GeneralData_Marshall_Service, 
+  MaterialSelection_Marshall_Service, 
+  GranulometryComposition_Marshall_Service 
+];
 @Module({
     imports: [],
     controllers: [MarshallController],

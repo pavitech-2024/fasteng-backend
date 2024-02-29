@@ -15,13 +15,44 @@ export class MarshallRepository {
     return this.marshallModel.find();
   }
 
-  async findOne(MarshallFilterQuery: FilterQuery<Marshall>): Promise<Marshall> {
-    return this.marshallModel.findOne(MarshallFilterQuery);
+  async findOne(name: any, userId: string): Promise<Marshall> {
+    const dosage = await this.marshallModel.findOne({
+      "generalData.name": name,
+      "generalData.userId": userId
+    });
+    
+    return dosage;
   }
 
   async findOneAndUpdate(marshallFilterQuery: FilterQuery<Marshall>, marshall: Partial<Marshall>): Promise<Marshall> {
     return this.marshallModel.findOneAndUpdate(marshallFilterQuery, marshall, {
       new: true,
     });
+  }
+
+  async createPartialMarshall(marshall: any, userId: string): Promise<any> {
+    try {
+      const createdPartialMarshall = await this.marshallModel.create({
+        generalData: {...marshall, userId},
+      });
+      console.log("🚀 ~ ABCPRepository ~ createPartialMarshall ~ createdPartialMarshall:", createdPartialMarshall)
+
+      return createdPartialMarshall;
+    } catch (error) {
+      console.error("Erro ao salvar o step:", error);
+      throw error
+    }
+  }
+
+  async saveStep(marshall: any, step: number): Promise<void> {
+    try {
+      await this.marshallModel.updateOne(
+        { _id: marshall._id },
+        { $set: { "generalData.step": step } }
+      );
+    } catch (error) {
+      console.error("Erro ao salvar o passo:", error);
+      throw error;
+    }
   }
 }
