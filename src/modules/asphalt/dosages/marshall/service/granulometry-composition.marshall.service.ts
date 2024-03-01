@@ -93,7 +93,6 @@ export class GranulometryComposition_Marshall_Service {
   async calculateGranulometry(body: any) {
     try {
       const {
-        percentsOfDosage,
         dnitBands,
         listPercentsToReturn,
         result,
@@ -114,7 +113,8 @@ export class GranulometryComposition_Marshall_Service {
       else if (dnitBands === "B") band = { higher: higherBandB, lower: lowerBandB };
       else if (dnitBands === "C") band = { higher: higherBandC, lower: lowerBandC };
 
-      const percentsOfMaterials = percentsOfDosage.map((percentage, i) => {
+      const percentsOfMaterials = percentsOfDosage.map((percentage: any[], i: string | number) => {
+        console.log("🚀 ~ GranulometryComposition_Marshall_Service ~ percentsOfMaterials ~ percentage:", percentage)
         return percentage.map((percent, j) => {
           if (result.listPercentsToReturn[i][j] !== null) {
             const updatedPercent = (percent * percentsOfDosage[i]) / 100;
@@ -194,6 +194,7 @@ export class GranulometryComposition_Marshall_Service {
         }
       }
     }
+    
     return curve;
   }
 
