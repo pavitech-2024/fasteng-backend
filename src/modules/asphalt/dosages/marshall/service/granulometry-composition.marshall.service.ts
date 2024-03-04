@@ -95,24 +95,39 @@ export class GranulometryComposition_Marshall_Service {
       const {
         dnitBands,
         listPercentsToReturn,
+        percentageInputs,
         result,
         tableRows,
         step
       } = body;
 
-      let percentsOfDosage = []
+      let percentsOfDosage = [[], []];
+      let materials = [];
 
-      if (tableRows.length > 0) {
-        tableRows.forEach(element => {
-          let match = element.match(/([^_]+)_(.+)/); // Encontrar o segundo "_" e dividir a string
-          if (match) {
-            let prefix = match[1]; // Capturar o prefixo antes do segundo "_"
-            let materialId = match[2]; // Capturar a parte numérica após o segundo "_"
+      Object.keys(percentageInputs[0]).forEach(key => {
+        const id = key.split('_')[1];
+        const value = percentageInputs[0][key];
+        materials.push({ id, value });
+      });
 
-            
+      const ids = new Set();
+
+      tableRows.forEach(element => {
+        Object.keys(element).forEach(key => {
+          const idIndex = key.lastIndexOf('_');
+          if (idIndex !== -1) {
+            const firstString = key.substring(0, idIndex);
+
+            if (firstString === 'total_passant') {
+              const id = key.substring(idIndex + 1);
+              ids.add(id);
+              const value = element[key];
+              const index = Array.from(ids).indexOf(id);
+              percentsOfDosage[index].push(value);
+            }
           }
-        });
-      }
+        })
+      });
 
       const axisX = [76, 64, 50, 38, 32, 25, 19, 12.5, 9.5, 6.3, 4.8, 2.4, 2, 1.2, 0.85, 0.6, 0.43, 0.3, 0.25, 0.18, 0.15, 0.106, 0.075];
       let higherBandA = this.insertBlankPointsOnCurve([null, null, 100, 100, null, 100, 90, null, 65, null, 50, null, 40, null, null, 30, null, 20, null, 8], axisX);
@@ -129,7 +144,6 @@ export class GranulometryComposition_Marshall_Service {
       else if (dnitBands === "C") band = { higher: higherBandC, lower: lowerBandC };
 
       const percentsOfMaterials = percentsOfDosage.map((percentage: any[], i: string | number) => {
-        console.log("🚀 ~ GranulometryComposition_Marshall_Service ~ percentsOfMaterials ~ percentage:", percentage)
         return percentage.map((percent, j) => {
           if (result.listPercentsToReturn[i][j] !== null) {
             const updatedPercent = (percent * percentsOfDosage[i]) / 100;
