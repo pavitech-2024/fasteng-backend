@@ -240,10 +240,9 @@ export class MarshallService {
 
   async calculateStep3Data(body: any) {
     try {
-      const granulometryComposition = await this.granulometryComposition_Service.calculateGranulometry(body);
+      const data = await this.granulometryComposition_Service.calculateGranulometry(body);
 
-
-      return { granulometryComposition, success: true };
+      return { data, success: true };
     } catch (error) {
       this.logger.error(`error on getting the step 3 data > [error]: ${error}`);
       const { status, name, message } = error;

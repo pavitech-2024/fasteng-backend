@@ -94,23 +94,38 @@ export class GranulometryComposition_Marshall_Service {
     try {
       const {
         dnitBands,
-        listPercentsToReturn,
         percentageInputs,
-        result,
         tableRows,
         step
       } = body;
 
-      let percentsOfDosage = [[], []];
+      let result = {
+        tolerance: {
+          higher: [],
+          lower: []
+        },
+        percentsOfMaterials: [],
+        pointsOfCurve: []
+      }
+
+      let percentsOfDosage = [];
+
+      let listPercentsToReturn = [[], []];
       let materials = [];
+      const ids1 = new Set();
 
       Object.keys(percentageInputs[0]).forEach(key => {
         const id = key.split('_')[1];
+        ids1.add(id);
         const value = percentageInputs[0][key];
-        materials.push({ id, value });
+        const index = Array.from(ids1).indexOf(id);
+        materials[index] = value;
+        //materials.push({ id, value });
       });
 
-      const ids = new Set();
+      console.log("🚀 ~ GranulometryComposition_Marshall_Service ~ calculateGranulometry ~ materials:", materials)
+
+      const ids2 = new Set();
 
       tableRows.forEach(element => {
         Object.keys(element).forEach(key => {
@@ -120,10 +135,10 @@ export class GranulometryComposition_Marshall_Service {
 
             if (firstString === 'total_passant') {
               const id = key.substring(idIndex + 1);
-              ids.add(id);
+              ids2.add(id);
               const value = element[key];
-              const index = Array.from(ids).indexOf(id);
-              percentsOfDosage[index].push(value);
+              const index = Array.from(ids2).indexOf(id);
+              listPercentsToReturn[index].push(value);
             }
           }
         })
@@ -142,20 +157,44 @@ export class GranulometryComposition_Marshall_Service {
       if (dnitBands === "A") band = { higher: higherBandA, lower: lowerBandA };
       else if (dnitBands === "B") band = { higher: higherBandB, lower: lowerBandB };
       else if (dnitBands === "C") band = { higher: higherBandC, lower: lowerBandC };
+      let sumOfPercents = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null];
 
-      const percentsOfMaterials = percentsOfDosage.map((percentage: any[], i: string | number) => {
-        return percentage.map((percent, j) => {
-          if (result.listPercentsToReturn[i][j] !== null) {
-            const updatedPercent = (percent * percentsOfDosage[i]) / 100;
-            result.sumOfPercents[j] += updatedPercent;
-            return updatedPercent;
-          }
-          return null;
-        });
-      });
 
-      const sumOfPercentsToReturn = result.sumOfPercents;
-      const sumOfPercents = this.insertBlankPointsOnCurve(result.sumOfPercents, axisX);
+      // const percentsOfMaterials = percentsOfDosage.map((percentage: any[], i: string | number) => {
+      //   return percentage.map((percent, j) => {
+      //     if (result.listPercentsToReturn[i][j] !== null) {
+      //       const updatedPercent = (percent * percentsOfDosage[i]) / 100;
+      //       result.sumOfPercents[j] += updatedPercent;
+      //       return updatedPercent;
+      //     }
+      //     return null;
+      //   });
+      // });
+
+      // const percentsOfMaterials = materials.map((percentage: any[], i: string | number) => {
+      //   return percentage.map((percent, j) => {
+      //     if (result.listPercentsToReturn[i][j] !== null) {
+      //       const updatedPercent = (percent * materials[i]) / 100;
+      //       result.sumOfPercents[j] += updatedPercent;
+      //       return updatedPercent;
+      //     }
+      //     return null;
+      //   });
+      // });
+
+      for (let i = 0; i < listPercentsToReturn.length; i++) {
+        for (let j = 0; j < 20; j++) {
+          if (listPercentsToReturn[i][j] !== null) {
+            if (listPercentsToReturn[i][j] !== null) {
+              listPercentsToReturn[i][j] = (listPercentsToReturn[i][j] * materials[i]) / 100;
+              sumOfPercents[j] += listPercentsToReturn[i][j];
+            }
+          } else listPercentsToReturn[i][j] = null;
+        }
+      }
+
+      // const sumOfPercentsToReturn = result.sumOfPercents;
+      // const sumOfPercents = this.insertBlankPointsOnCurve(result.sumOfPercents, axisX);
 
       const higherTolerance = [];
       const lowerTolerance = [];
@@ -192,14 +231,14 @@ export class GranulometryComposition_Marshall_Service {
         pointsOfCurve.push([axisX[i], band.higher[i], higherTolerance[i], sumOfPercents[i], lowerTolerance[i], band.lower[i]]);
       }
 
-      result.tolerance.higher = higherTolerance;
-      result.tolerance.lower = lowerTolerance;
-      result.percentsOfMaterials = percentsOfMaterials;
-      result.pointsOfCurve = pointsOfCurve;
+      // result.tolerance.higher = higherTolerance;
+      // result.tolerance.lower = lowerTolerance;
+      // result.percentsOfMaterials = listPercentsToReturn;
+      // result.pointsOfCurve = pointsOfCurve;
 
-      if (step < 3) result.step = 3;
+      // if (step < 3) result.step = 3;
 
-      return { percentsOfMaterials, sumOfPercentsToReturn, pointsOfCurve };
+      return { listPercentsToReturn, sumOfPercents, pointsOfCurve };
     } catch (error) {
       throw error;
     }
