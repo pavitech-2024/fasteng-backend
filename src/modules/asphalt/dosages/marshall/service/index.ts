@@ -203,7 +203,7 @@ export class MarshallService {
           ["3/4 pol - 19mm", null],
           ["1/2 pol - 12,5mm", 80],
           ["3/8 pol - 9,5mm", 70],
-          ["1/4 pol - 6,3mm",  null],
+          ["1/4 pol - 6,3mm", null],
           ["Nº4 - 4,8mm", 44],
           ["Nº8 - 2,4mm", null],
           ["Nº10 - 2,0mm", 22],
@@ -240,7 +240,13 @@ export class MarshallService {
 
   async calculateStep3Data(body: any) {
     try {
-      const data = await this.granulometryComposition_Service.calculateGranulometry(body);
+      const granulometry = await this.granulometryComposition_Service.calculateGranulometry(body);
+
+      const data = {
+        percentsOfMaterials: granulometry.percentsOfMaterials,
+        sumOfPercents: granulometry.pointsOfCurve,
+        pointsOfCurve: granulometry.sumOfPercents
+      };
 
       return { data, success: true };
     } catch (error) {
