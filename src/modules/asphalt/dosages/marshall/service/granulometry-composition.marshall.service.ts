@@ -140,6 +140,26 @@ export class GranulometryComposition_Marshall_Service {
         })
       });
 
+      let newArray;
+
+      tableRows.forEach(element => {
+        Object.keys(element).forEach(keys => {
+          const stringIndex = keys.indexOf('_');
+          const label = keys.substring(0, stringIndex);
+          const id = keys.substring(stringIndex + 1);
+          newArray = percentsOfMaterials.map(innerArray =>
+            innerArray.filter(value => value !== null)
+          );
+          const index = tableRows.indexOf(element);
+          if (label === 'passant' && id === Array.from(ids1)[0]) {
+            tableRows[index]. = newArray[0][index]
+          } else if (label === 'passant' && id === Array.from(ids1)[1]) {
+            keys = newArray[1][index]
+          }
+        })
+      });
+
+
       const axisX = [76, 64, 50, 38, 32, 25, 19, 12.5, 9.5, 6.3, 4.8, 2.4, 2, 1.2, 0.85, 0.6, 0.43, 0.3, 0.25, 0.18, 0.15, 0.106, 0.075];
       let higherBandA = this.insertBlankPointsOnCurve([null, null, 100, 100, null, 100, 90, null, 65, null, 50, null, 40, null, null, 30, null, 20, null, 8], axisX);
       let lowerBandA = this.insertBlankPointsOnCurve([null, null, 100, 95, null, 75, 60, null, 35, null, 25, null, 20, null, null, 10, null, 5, null, 1], axisX);

@@ -244,8 +244,9 @@ export class MarshallService {
 
       const data = {
         percentsOfMaterials: granulometry.percentsOfMaterials,
-        sumOfPercents: granulometry.pointsOfCurve,
-        pointsOfCurve: granulometry.sumOfPercents
+        sumOfPercents: granulometry.sumOfPercents,
+        pointsOfCurve: granulometry.pointsOfCurve,
+
       };
 
       return { data, success: true };
