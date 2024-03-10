@@ -1,6 +1,6 @@
 import { Body, Controller, Logger, Post, Res } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { IggService } from '../service';
+import { IggService } from '../services';
 import { IggInitDto } from '../dto/init-igg.dto';
 import { Calc_Igg_Dto, Calc_Igg_Out } from '../dto/calc-igg.dto';
 import { Response } from 'express';

@@ -18,5 +18,4 @@ export interface Calc_Igg_Out {
   arrowsAverage: number[];
   variancesAverage: number[];
   conditions: string[];
-  error: number;
 }

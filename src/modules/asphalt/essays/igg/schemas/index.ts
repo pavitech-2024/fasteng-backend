@@ -24,10 +24,17 @@ export type Igg_Step2 = {
 };
 
 export type Igg_Step3 = {
-  igg_data: {
-    initialStake: number;
-    finalStake: number;
+  sections: {
+    initial: number;
+    final: number;
   }[];
+  stakes: [];
+};
+
+export type Igg_Step4 = {
+  results: {
+    data: Calc_Igg_Out;
+  };
 };
 
 @Schema({ collection: 'igg' })
