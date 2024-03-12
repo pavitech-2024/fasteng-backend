@@ -252,6 +252,17 @@ export class GranulometryComposition_Marshall_Service {
     }
   }
 
+  async saveStep3Data(body: any, userId: string) {
+    try {
+
+      const data = {}
+
+      return data;
+    } catch (error) {
+      throw error
+    }
+  }
+
   insertBlankPointsOnCurve(curve: number[], axisX: number[]): number[] {
     for (let k = 0; k < curve.length; k++) {
       if (curve[k] !== null) {

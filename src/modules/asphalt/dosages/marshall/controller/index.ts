@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Logger, Param, Post, Res } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Response } from 'express';
+import { Response, response } from 'express';
 import { MarshallService } from '../service';
 import { MarshallInitDto } from '../dto/marshall-init.dto';
 import { MarshallStep3Dto } from '../dto/step-3-marshall.dto';
@@ -62,10 +62,10 @@ export class MarshallController {
 
   @Post('save-material-selection-step/:id')
   async saveMaterialSelectionStep(
-    @Res() response: Response, 
-    @Body() body: any, 
+    @Res() response: Response,
+    @Body() body: any,
     @Param('id') userId: string
-    ) {
+  ) {
     this.logger.log(`save materials selection step in user marshall dosage > [body]: ${body}`);
 
     const status = await this.marshallService.saveMaterialSelectionStep(body, userId);
@@ -76,10 +76,10 @@ export class MarshallController {
 
   @Post('step-3-data')
   @ApiOperation({ summary: 'Retorna os dados iniciais necessários para a terceira tela (composição granulométrica) da dosagem' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'Dados carregados com sucesso!',
-    content: { 'application/json': { schema: { example: { data: {}, success: true } } } }, 
+    content: { 'application/json': { schema: { example: { data: {}, success: true } } } },
   })
   @ApiResponse({ status: 400, description: 'Dados não encontrados!' })
   async getStep3Data(@Res() response: Response, @Body() body: any) {
@@ -95,8 +95,21 @@ export class MarshallController {
     this.logger.log(`calculate step 3 data > [body]: ${body}`);
 
     const status = await this.marshallService.calculateStep3Data(body);
-    
+
 
     return response.status(200).json(status);
+  }
+
+  @Post('save-granulometry-composition-step/:userId')
+  async saveGranulometryCompositionStep(
+    @Res() response: Response,
+    @Param('userId') userId: string,
+    @Body() body: any
+  ) {
+    this.logger.log(`save step 3 data > [body]: ${body}`);
+
+    const status = await this.marshallService.saveStep3Data(body, userId);
+
+    return response.status(200).json(status)
   }
 }
