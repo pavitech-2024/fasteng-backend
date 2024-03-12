@@ -115,6 +115,8 @@ export class GranulometryComposition_Marshall_Service {
 
       let percentsOfMaterials = [Array(20).fill(null), Array(20).fill(null)];
 
+      let newTableRows = tableRows;
+
       tableRows.forEach(element => {
         Object.keys(element).forEach(key => {
           if (key === 'sieve_label') {
@@ -141,23 +143,6 @@ export class GranulometryComposition_Marshall_Service {
       });
 
       let newArray;
-
-      tableRows.forEach(element => {
-        Object.keys(element).forEach(keys => {
-          const stringIndex = keys.indexOf('_');
-          const label = keys.substring(0, stringIndex);
-          const id = keys.substring(stringIndex + 1);
-          newArray = percentsOfMaterials.map(innerArray =>
-            innerArray.filter(value => value !== null)
-          );
-          const index = tableRows.indexOf(element);
-          if (label === 'passant' && id === Array.from(ids1)[0]) {
-            tableRows[index]. = newArray[0][index]
-          } else if (label === 'passant' && id === Array.from(ids1)[1]) {
-            keys = newArray[1][index]
-          }
-        })
-      });
 
 
       const axisX = [76, 64, 50, 38, 32, 25, 19, 12.5, 9.5, 6.3, 4.8, 2.4, 2, 1.2, 0.85, 0.6, 0.43, 0.3, 0.25, 0.18, 0.15, 0.106, 0.075];
@@ -186,6 +171,35 @@ export class GranulometryComposition_Marshall_Service {
           } else percentsOfMaterials[i][j] = null;
         }
       }
+
+      tableRows.forEach(element => {
+        Object.keys(element).forEach(keys => {
+          const stringIndex = keys.indexOf('_');
+          const label = keys.substring(0, stringIndex);
+          const id = keys.substring(stringIndex + 1);
+          newArray = percentsOfMaterials.map(innerArray =>
+            innerArray.filter(value => value !== null)
+          );
+          const index = tableRows.indexOf(element);
+          if (label === 'passant' && id === Array.from(ids1)[0]) {
+            const key = Object.keys(tableRows[index]).find(k => k === `passant_${id}`)
+
+            if (key) {
+              newTableRows[index][key] = newArray[0][index];
+            } else {
+              console.log(`A chave "passant_${id}" não foi encontrada no objeto no índice ${index}.`);
+            }
+          } else if (label === 'passant' && id === Array.from(ids1)[1]) {
+            const key = Object.keys(tableRows[index]).find(k => k === `passant_${id}`);
+
+            if (key) {
+              newTableRows[index][key] = newArray[1][index];
+            } else {
+              console.log(`A chave "passant_${id}" não foi encontrada no objeto no índice ${index}.`);
+            }
+          }
+        })
+      });
 
       sumOfPercents = this.insertBlankPointsOnCurve(sumOfPercents, axisX);
 
@@ -223,11 +237,13 @@ export class GranulometryComposition_Marshall_Service {
       for (let i = 0; i < sumOfPercents.length; i++) {
         pointsOfCurve.push([axisX[i], band.higher[i], higherTolerance[i], sumOfPercents[i], lowerTolerance[i], band.lower[i]]);
       }
+
       
       const data = {
         percentsOfMaterials, 
         sumOfPercents, 
-        pointsOfCurve
+        pointsOfCurve,
+        table_data: newTableRows
       };
 
       return data;
