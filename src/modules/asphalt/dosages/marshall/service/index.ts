@@ -7,6 +7,7 @@ import { MarshallRepository } from '../repository/index';
 import { NotFound } from "../../../../../utils/exceptions";
 import { MarshallStep3Dto } from "../dto/step-3-marshall.dto";
 import { GranulometryComposition_Marshall_Service } from "./granulometry-composition.marshall.service";
+import { SetBinderTrial_Marshall_Service } from "./initial-binder-trial.service";
 
 @Injectable()
 export class MarshallService {
@@ -17,6 +18,7 @@ export class MarshallService {
     private readonly generalData_Service: GeneralData_Marshall_Service,
     private readonly materialSelection_Service: MaterialSelection_Marshall_Service,
     private readonly granulometryComposition_Service: GranulometryComposition_Marshall_Service,
+    private readonly setBinderTrial_Service: SetBinderTrial_Marshall_Service
   ) { }
 
   async getAllDosages(userId: string): Promise<Marshall[]> {
@@ -267,6 +269,29 @@ export class MarshallService {
       this.logger.error(`error on save materials data abcp step > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
+    }
+  }
+
+  async calculateStep4Data(body: any) {
+    try {
+      const binderTrial = await this.setBinderTrial_Service.calculateInitlaBinderTrial(body);
+
+      // const data = {
+      //   percentsOfMaterials: granulometry.percentsOfMaterials,
+      //   sumOfPercents: granulometry.sumOfPercents,
+      //   pointsOfCurve: granulometry.pointsOfCurve,
+      //   table_data: granulometry.table_data,
+      //   projections: granulometry.projections
+      // };
+
+      return { 
+        // data, 
+        success: true 
+      };
+    } catch (error) {
+      this.logger.error(`error on getting the step 3 data > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { data: null, success: false, error: { status, message, name } };
     }
   }
 

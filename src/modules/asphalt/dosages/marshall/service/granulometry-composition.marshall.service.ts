@@ -215,7 +215,7 @@ export class GranulometryComposition_Marshall_Service {
         if (e !== null) {
           const index = idx;
           const sieve = AllSieves[index]
-          projections.push({ label: sieve.label, value: e})
+          projections.push({ label: sieve.label, value: e.toFixed(2)})
         }
       })
 
