@@ -110,6 +110,6 @@ export class MarshallController {
 
     const status = await this.marshallService.saveStep3Data(body, userId);
 
-    return response.status(200).json(status)
+    return response.status(200).json(status);
   }
 }

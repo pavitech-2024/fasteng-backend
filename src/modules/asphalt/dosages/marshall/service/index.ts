@@ -246,7 +246,8 @@ export class MarshallService {
         percentsOfMaterials: granulometry.percentsOfMaterials,
         sumOfPercents: granulometry.sumOfPercents,
         pointsOfCurve: granulometry.pointsOfCurve,
-        table_data: granulometry.table_data
+        table_data: granulometry.table_data,
+        projections: granulometry.projections
       };
 
       return { data, success: true };

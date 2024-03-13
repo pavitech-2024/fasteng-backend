@@ -2,10 +2,9 @@ import { Injectable, Logger } from "@nestjs/common";
 import { AsphaltGranulometryRepository } from "../../../../../modules/asphalt/essays/granulometry/repository";
 import { SpecifyMassRepository } from "../../../../../modules/asphalt/essays/specifyMass/repository";
 import { MaterialsRepository } from "../../../../../modules/asphalt/materials/repository";
-import { ABCPDocument } from "modules/concrete/dosages/abcp/schemas";
 import { Model } from "mongoose";
 import { MarshallRepository } from "../repository";
-import { Marshall } from "../schemas";
+import { Marshall, MarshallDocument } from "../schemas";
 import { InjectModel } from "@nestjs/mongoose";
 import { DATABASE_CONNECTION } from "infra/mongoose/database.config";
 
@@ -15,7 +14,7 @@ export class MaterialSelection_Marshall_Service {
 
   constructor(
     @InjectModel(Marshall.name, DATABASE_CONNECTION.ASPHALT) 
-    private marshallModel: Model<ABCPDocument>,
+    private marshallModel: Model<MarshallDocument>,
     private readonly material_repository: MaterialsRepository,
     private readonly granulometry_repository: AsphaltGranulometryRepository,
     private readonly specifyMass_repository: SpecifyMassRepository,
@@ -70,8 +69,8 @@ export class MaterialSelection_Marshall_Service {
 
       const marshallWithMaterials = { ...marshallExists._doc, materialSelectionData: materialDataWithoutName };
 
-      const updatedMarshall = await this.marshallModel.updateOne(
-        { "_id": marshallExists._doc._id },
+      await this.marshallModel.updateOne(
+        { _id: marshallExists._doc._id },
         marshallWithMaterials
       );
 

@@ -2,13 +2,21 @@ import { Injectable, Logger } from "@nestjs/common";
 import { AsphaltGranulometryRepository } from "../../../essays/granulometry/repository";
 import { AsphaltGranulometry } from "../../../essays/granulometry/schemas";
 import { AllSieves } from "utils/interfaces";
+import { InjectModel } from "@nestjs/mongoose";
+import { DATABASE_CONNECTION } from "infra/mongoose/database.config";
+import { Model } from "mongoose";
+import { Marshall, MarshallDocument } from "../schemas";
+import { MarshallRepository } from "../repository";
 
 @Injectable()
 export class GranulometryComposition_Marshall_Service {
   private logger = new Logger(GranulometryComposition_Marshall_Service.name)
 
   constructor(
+    @InjectModel(Marshall.name, DATABASE_CONNECTION.ASPHALT) 
+    private marshallModel: Model<MarshallDocument>,
     private readonly granulometry_repository: AsphaltGranulometryRepository,
+    private readonly marshallRepository: MarshallRepository,
   ) { }
 
   async getGranulometryData(aggregates: { _id: string, name: string }[]) {
@@ -201,6 +209,16 @@ export class GranulometryComposition_Marshall_Service {
         })
       });
 
+      const projections = []
+
+      sumOfPercents.map((e, idx) => {
+        if (e !== null) {
+          const index = idx;
+          const sieve = AllSieves[index]
+          projections.push({ label: sieve.label, value: e})
+        }
+      })
+
       sumOfPercents = this.insertBlankPointsOnCurve(sumOfPercents, axisX);
 
       const higherTolerance = [];
@@ -238,12 +256,12 @@ export class GranulometryComposition_Marshall_Service {
         pointsOfCurve.push([axisX[i], band.higher[i], higherTolerance[i], sumOfPercents[i], lowerTolerance[i], band.lower[i]]);
       }
 
-      
       const data = {
         percentsOfMaterials, 
         sumOfPercents, 
         pointsOfCurve,
-        table_data: newTableRows
+        table_data: newTableRows,
+        projections
       };
 
       return data;
@@ -254,10 +272,26 @@ export class GranulometryComposition_Marshall_Service {
 
   async saveStep3Data(body: any, userId: string) {
     try {
+      this.logger.log('save marshall granulometry composition step on granulometry-composition.marshall.service.ts > [body]', { body });
 
-      const data = {}
+      const { name } = body.granulometryCompositionData;
 
-      return data;
+      const marshallExists: any = await this.marshallRepository.findOne(name, userId);
+
+      const { name: materialName, ...granulometryCompositionWithoutName } = body.granulometryCompositionData;
+
+      const marshallWithGranulometryComposition = { ...marshallExists._doc, granulometryCompositionData: granulometryCompositionWithoutName };
+
+      await this.marshallModel.updateOne(
+        { _id: marshallExists._doc._id },
+        marshallWithGranulometryComposition
+      );
+
+      if (marshallExists._doc.generalData.step < 3) {
+        await this.marshallRepository.saveStep(marshallExists, 3);
+      }
+
+      return true;
     } catch (error) {
       throw error
     }
