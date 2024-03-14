@@ -21,9 +21,9 @@ export class SetBinderTrial_Marshall_Service {
         'calculate marshall set initial binder trial step on initial-binder-trial.marshall.service.ts > [body]',
         { body },
       );
-      
 
-      const { trial, percentsOfDosage } = body;
+
+      const { trial, percentsOfDosages } = body;
 
       const newPercent = 100 - trial;
       const halfPlus = [];
@@ -34,20 +34,31 @@ export class SetBinderTrial_Marshall_Service {
       const percentOfDosageToReturn = [];
       const newPercentOfDosage = [];
 
-      for (let i = 0; i < percentsOfDosage.length; i++) {
-        halfPlus.push(((newPercent - 0.5) * percentsOfDosage[i]) / 100);
-        halfLess.push(((newPercent + 0.5) * percentsOfDosage[i]) / 100);
-        onePlus.push(((newPercent - 1) * percentsOfDosage[i]) / 100);
-        oneLess.push(((newPercent + 1) * percentsOfDosage[i]) / 100);
-        percentOfDosage.push((newPercent * percentsOfDosage[i]) / 100);
+      const modifiedPercentsOfDosages = [];
+
+      const ids1 = new Set();
+
+      Object.keys(percentsOfDosages[0]).forEach(key => {
+        const id = key.split('_')[1];
+        ids1.add(id);
+        const value = percentsOfDosages[0][key];
+        const index = Array.from(ids1).indexOf(id);
+        modifiedPercentsOfDosages[index] = value;
+      });
+
+      for (let i = 0; i < modifiedPercentsOfDosages.length; i++) {
+        halfPlus.push(((newPercent - 0.5) * modifiedPercentsOfDosages[i]) / 100);
+        halfLess.push(((newPercent + 0.5) * modifiedPercentsOfDosages[i]) / 100);
+        onePlus.push(((newPercent - 1) * modifiedPercentsOfDosages[i]) / 100);
+        oneLess.push(((newPercent + 1) * modifiedPercentsOfDosages[i]) / 100);
+        percentOfDosage.push((newPercent * modifiedPercentsOfDosages[i]) / 100);
         newPercentOfDosage.push([onePlus[i], halfPlus[i], percentOfDosage[i], halfLess[i], oneLess[i]]);
         percentOfDosageToReturn.push([oneLess[i], halfLess[i], percentOfDosage[i], halfPlus[i], onePlus[i]]);
       }
       percentOfDosageToReturn.push([trial - 1, trial - 0.5, trial, trial + 0.5, trial + 1]);
 
       const result = {
-        trialAsphaltContent: trial,
-        percentsOfDosage: newPercentOfDosage,
+        percentsOfDosage: percentOfDosageToReturn,
       };
 
       return { result };

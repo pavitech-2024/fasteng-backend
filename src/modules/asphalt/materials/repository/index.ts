@@ -13,7 +13,7 @@ export class MaterialsRepository {
     return createdMaterial.save();
   }
 
-  async find(): Promise<Material[]> {
+  async find(ids?: any): Promise<Material[]> {
     return this.materialModel.find();
   }
 

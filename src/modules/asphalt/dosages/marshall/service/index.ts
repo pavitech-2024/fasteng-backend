@@ -276,16 +276,12 @@ export class MarshallService {
     try {
       const binderTrial = await this.setBinderTrial_Service.calculateInitlaBinderTrial(body);
 
-      // const data = {
-      //   percentsOfMaterials: granulometry.percentsOfMaterials,
-      //   sumOfPercents: granulometry.sumOfPercents,
-      //   pointsOfCurve: granulometry.pointsOfCurve,
-      //   table_data: granulometry.table_data,
-      //   projections: granulometry.projections
-      // };
+      const data = {
+        percentsOfDosage: binderTrial.result.percentsOfDosage,
+      };
 
       return { 
-        // data, 
+        data, 
         success: true 
       };
     } catch (error) {

@@ -113,8 +113,8 @@ export class MarshallController {
     return response.status(200).json(status);
   }
 
-  @Post('calculate-step-4-data/:id')
-  async calculateStep4Data(@Res() response: Response, @Body() body: any, @Param('id') id: string) {
+  @Post('calculate-step-4-data')
+  async calculateStep4Data(@Res() response: Response, @Body() body: any) {
     this.logger.log(`calculate step 4 data > [body]: ${body}`);
 
     const status = await this.marshallService.calculateStep4Data(body);
