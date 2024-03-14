@@ -21,6 +21,10 @@ export class MaterialsRepository {
     return this.materialModel.findOne(materialsFilterQuery);
   }
 
+  async findById(materialId: string): Promise<Material> {
+    return this.materialModel.findById(materialId);
+  }
+
   async findByUserId(materialsFilterQuery: FilterQuery<Material>): Promise<Material[]> {
     return this.materialModel.find(materialsFilterQuery);
   }
