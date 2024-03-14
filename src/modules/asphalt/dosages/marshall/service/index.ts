@@ -291,6 +291,17 @@ export class MarshallService {
       return { data: null, success: false, error: { status, message, name } };
     }
   }
+  async saveStep4Data(body: any, userId: string) {
+    try {
+      const success = await this.setBinderTrial_Service.saveStep4Data(body, userId);
+
+      return { success }
+    } catch (error) {
+      this.logger.error(`error on save step data of marshall dosage > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { success: false, error: { status, message, name } };
+    }
+  }
 
   // async updateMarshall(marshall: Marshall): Promise<Marshall> {
   //   try {

@@ -119,6 +119,18 @@ export class MarshallController {
 
     const status = await this.marshallService.calculateStep4Data(body);
 
+    return response.status(200).json(status);
+  }
+
+  @Post('save-binder-trial-step/:userId')
+  async saveBinderTrialStep(
+    @Res() response: Response,
+    @Param('userId') userId: string,
+    @Body() body: any
+  ) {
+    this.logger.log(`save step 4 data > [body]: ${body}`);
+
+    const status = await this.marshallService.saveStep4Data(body, userId);
 
     return response.status(200).json(status);
   }

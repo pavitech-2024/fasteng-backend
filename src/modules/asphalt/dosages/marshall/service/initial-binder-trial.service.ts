@@ -152,4 +152,31 @@ export class SetBinderTrial_Marshall_Service {
       throw error;
     }
   }
+
+  async saveStep4Data(body: any, userId: string) {
+    try {
+      this.logger.log('save marshall binder trial step on binder-trial.marshall.service.ts > [body]', { body });
+
+      const { name } = body.binderTrialData;
+
+      const marshallExists: any = await this.marshallRepository.findOne(name, userId);
+
+      const { name: materialName, ...binderTrialWithoutName } = body.binderTrialData;
+
+      const marshallWithBinderTrial = { ...marshallExists._doc, binderTrialData: binderTrialWithoutName };
+
+      await this.marshallModel.updateOne(
+        { _id: marshallExists._doc._id },
+        marshallWithBinderTrial
+      );
+
+      if (marshallExists._doc.generalData.step < 4) {
+        await this.marshallRepository.saveStep(marshallExists, 4);
+      }
+
+      return true;
+    } catch (error) {
+      throw error
+    }
+  }
 }

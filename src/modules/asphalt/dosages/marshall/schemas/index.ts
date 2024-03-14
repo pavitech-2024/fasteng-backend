@@ -42,6 +42,28 @@ export type GranulometryCompositionData = {
   name: string
 }
 
+export type BinderTrialData = {
+  trial: number
+  percentsOfDosage: any[];
+  bandsOfTemperatures: {
+    machiningTemperatureRange: {
+      higher: number,
+      average: number,
+      lower: number
+    },
+    compressionTemperatureRange: {
+      higher: number,
+      average: number,
+      lower: number
+    },
+    AggregateTemperatureRange: {
+      higher: number,
+      average: number,
+      lower: number
+    },
+  }
+}
+
 @Schema({ collection: 'marshalls'})
 export class Marshall {
   _id: string;
@@ -58,6 +80,10 @@ export class Marshall {
   @IsNotEmpty()
   @Prop({ type: Object })
   granulometryCompositionData: GranulometryCompositionData
+
+  @IsNotEmpty()
+  @Prop({ type: Object })
+  binderTrialData: BinderTrialData
 }
 
 const MarshallSchema = SchemaFactory.createForClass(Marshall);
