@@ -70,7 +70,8 @@ export class SetBinderTrial_Marshall_Service {
       }
       percentOfDosageToReturn.push([trial - 1, trial - 0.5, trial, trial + 0.5, trial + 1]);
 
-      const bandsOfTemperatures = this.getBandsOfTemperatures(binder);
+      const bandsOfTemperatures = await this.getBandsOfTemperatures(binder);
+      console.log("🚀 ~ SetBinderTrial_Marshall_Service ~ calculateInitlaBinderTrial ~ bandsOfTemperatures:", bandsOfTemperatures)
 
       const result = {
         bandsOfTemperatures,
@@ -87,15 +88,18 @@ export class SetBinderTrial_Marshall_Service {
   async getBandsOfTemperatures(binder: any): Promise<any> {
     try {
       const material: Material = await this.materialsRepository.findById(binder);
-      console.log('🚀 ~ SetBinderTrial_Marshall_Service ~ getBandsOfTemperatures ~ material:', material);
 
       let result;
-      
 
-      const resultRotational: ViscosityRotational = await this.viscosityRepository.findById(binder);
+
+      const resultRotational: ViscosityRotational = await this.viscosityRepository.findOne({
+        "generalData.material._id": binder
+      });
 
       if (!resultRotational) {
-        const resultSayboltFurol: SayboltFurol = await this.viscositySayboltFurol.findById(binder);
+        const resultSayboltFurol: SayboltFurol = await this.viscositySayboltFurol.findOne({
+          "generalData.material._id": binder
+        });
         if (!resultSayboltFurol) {
           throw new NotFoundException(`O ligante selecionado não passou por nenhum ensaio de viscosidade ainda.`)
         } else {
@@ -107,27 +111,27 @@ export class SetBinderTrial_Marshall_Service {
 
 
       const machiningTemperatureRange = {
-        higher: result.results.data.machiningTemperatureRange.higher,
+        higher: result.results.machiningTemperatureRange.higher,
         average:
-          (result.results.data.machiningTemperatureRange.higher + result.results.data.machiningTemperatureRange.lower) /
+          (result.results.machiningTemperatureRange.higher + result.results.machiningTemperatureRange.lower) /
           2,
-        lower: result.results.data.machiningTemperatureRange.lower,
+        lower: result.results.machiningTemperatureRange.lower,
       };
 
       const compressionTemperatureRange = {
-        higher: result.results.data.compressionTemperatureRange.higher,
+        higher: result.results.compressionTemperatureRange.higher,
         average:
-          (result.results.data.compressionTemperatureRange.higher +
-            result.results.data.compressionTemperatureRange.lower) /
+          (result.results.compressionTemperatureRange.higher +
+            result.results.compressionTemperatureRange.lower) /
           2,
-        lower: result.results.data.compressionTemperatureRange.lower,
+        lower: result.results.compressionTemperatureRange.lower,
       };
 
       let higherAggregateTemperature, lowerAggregateTemperature;
-      if (result.results.data.machiningTemperatureRange.higher + 15 > 177) higherAggregateTemperature = 177;
-      else higherAggregateTemperature = result.results.data.machiningTemperatureRange.higher + 15;
-      if (result.results.data.machiningTemperatureRange.lower + 15 > 177) lowerAggregateTemperature = 177;
-      else lowerAggregateTemperature = result.results.data.machiningTemperatureRange.lower + 15;
+      if (result.results.machiningTemperatureRange.higher + 15 > 177) higherAggregateTemperature = 177;
+      else higherAggregateTemperature = result.results.machiningTemperatureRange.higher + 15;
+      if (result.results.machiningTemperatureRange.lower + 15 > 177) lowerAggregateTemperature = 177;
+      else lowerAggregateTemperature = result.results.machiningTemperatureRange.lower + 15;
 
       const aggregateTemperatureRange = {
         higher: higherAggregateTemperature,

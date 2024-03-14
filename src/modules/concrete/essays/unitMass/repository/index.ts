@@ -1,11 +1,7 @@
 import { InjectModel } from '@nestjs/mongoose';
-<<<<<<< HEAD
-=======
 import { DATABASE_CONNECTION } from '../../../../../infra/mongoose/database.config';
->>>>>>> a83b56dda65f210ca5b55f713dd145821409bf70
 import { Model } from 'mongoose';
 import { UnitMass, UnitMassDocument } from '../schemas';
-import { DATABASE_CONNECTION } from 'infra/mongoose/database.config';
 
 export class UnitMassRepository {
   constructor(

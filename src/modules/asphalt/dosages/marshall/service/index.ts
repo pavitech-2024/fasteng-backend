@@ -278,6 +278,7 @@ export class MarshallService {
 
       const data = {
         percentsOfDosage: binderTrial.result.percentsOfDosage,
+        bandsOfTemperatures: binderTrial.result.bandsOfTemperatures
       };
 
       return { 

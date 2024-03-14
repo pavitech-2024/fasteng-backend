@@ -9,10 +9,7 @@ import { ErrorsInterceptor } from './config/interceptors/ErrorsInterceptor';
 import { AuthMiddleware } from './modules/auth/middlewares';
 
 //Modules
-<<<<<<< HEAD
-=======
 import { DatabaseModule } from './infra/mongoose/database.module';
->>>>>>> a83b56dda65f210ca5b55f713dd145821409bf70
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { AsphaltModule } from './modules/asphalt/asphalt.module';
@@ -20,7 +17,6 @@ import { SoilsModule } from './modules/soils/soils.module';
 import { ConcreteModule } from './modules/concrete/concrete.module';
 import { ReportErrorModule } from './modules/report-error/report-error.module';
 import { ReportErrorController } from './modules/report-error/report-error.controller';
-import { DatabaseModule } from 'infra/mongoose/database.module';
 
 @Module({
   imports: [
