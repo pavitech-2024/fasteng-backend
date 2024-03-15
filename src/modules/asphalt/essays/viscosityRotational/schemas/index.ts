@@ -14,13 +14,10 @@ export type ViscosityRotationalGeneralData = {
 
 type ViscosityRotational_calc = {
   viscosityType: string;
-  modified: boolean;
-  dataPoints: [
-    {
-      temperature: number;
-      viscosity: number;
-    },
-  ];
+  dataPoints: {
+    temperature: number;
+    viscosity: number;
+  }[];
 };
 
 @Schema({ collection: 'viscosityRotational' })

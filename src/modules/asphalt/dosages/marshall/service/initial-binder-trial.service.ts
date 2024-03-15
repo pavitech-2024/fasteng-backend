@@ -19,7 +19,7 @@ export class SetBinderTrial_Marshall_Service {
     @InjectModel(Marshall.name, DATABASE_CONNECTION.ASPHALT)
     private marshallModel: Model<MarshallDocument>,
     private readonly viscosityRepository: ViscosityRotationalRepository,
-    private readonly viscositySayboltFurol: SayboltFurolRepository,
+    private readonly viscosityRotational: ViscosityRotationalRepository,
     private readonly marshallRepository: MarshallRepository,
     private readonly materialsRepository: MaterialsRepository,
   ) {}
@@ -71,7 +71,10 @@ export class SetBinderTrial_Marshall_Service {
       percentOfDosageToReturn.push([trial - 1, trial - 0.5, trial, trial + 0.5, trial + 1]);
 
       const bandsOfTemperatures = await this.getBandsOfTemperatures(binder);
-      console.log("🚀 ~ SetBinderTrial_Marshall_Service ~ calculateInitlaBinderTrial ~ bandsOfTemperatures:", bandsOfTemperatures)
+      console.log(
+        '🚀 ~ SetBinderTrial_Marshall_Service ~ calculateInitlaBinderTrial ~ bandsOfTemperatures:',
+        bandsOfTemperatures,
+      );
 
       const result = {
         bandsOfTemperatures,
@@ -84,54 +87,38 @@ export class SetBinderTrial_Marshall_Service {
     }
   }
 
-
   async getBandsOfTemperatures(binder: any): Promise<any> {
     try {
       const material: Material = await this.materialsRepository.findById(binder);
 
-      let result;
 
-
-      const resultRotational: ViscosityRotational = await this.viscosityRepository.findOne({
-        "generalData.material._id": binder
+      const resultRotational: any = await this.viscosityRepository.findOne({
+        'generalData.material._id': binder,
       });
 
       if (!resultRotational) {
-        const resultSayboltFurol: SayboltFurol = await this.viscositySayboltFurol.findOne({
-          "generalData.material._id": binder
-        });
-        if (!resultSayboltFurol) {
-          throw new NotFoundException(`O ligante selecionado não passou por nenhum ensaio de viscosidade ainda.`)
-        } else {
-          result = resultSayboltFurol;
-        }
-      } else {
-        result = resultRotational;
+        throw new NotFoundException(`O ligante selecionado não passou por nenhum ensaio de viscosidade ainda.`);
       }
 
 
       const machiningTemperatureRange = {
-        higher: result.results.machiningTemperatureRange.higher,
-        average:
-          (result.results.machiningTemperatureRange.higher + result.results.machiningTemperatureRange.lower) /
-          2,
-        lower: result.results.machiningTemperatureRange.lower,
+        higher: resultRotational.results.machiningTemperatureRange.higher,
+        average: (resultRotational.results.machiningTemperatureRange.higher + resultRotational.results.machiningTemperatureRange.lower) / 2,
+        lower: resultRotational.results.machiningTemperatureRange.lower,
       };
 
       const compressionTemperatureRange = {
-        higher: result.results.compressionTemperatureRange.higher,
+        higher: resultRotational.results.compressionTemperatureRange.higher,
         average:
-          (result.results.compressionTemperatureRange.higher +
-            result.results.compressionTemperatureRange.lower) /
-          2,
-        lower: result.results.compressionTemperatureRange.lower,
+          (resultRotational.results.compressionTemperatureRange.higher + resultRotational.results.compressionTemperatureRange.lower) / 2,
+        lower: resultRotational.results.compressionTemperatureRange.lower,
       };
 
       let higherAggregateTemperature, lowerAggregateTemperature;
-      if (result.results.machiningTemperatureRange.higher + 15 > 177) higherAggregateTemperature = 177;
-      else higherAggregateTemperature = result.results.machiningTemperatureRange.higher + 15;
-      if (result.results.machiningTemperatureRange.lower + 15 > 177) lowerAggregateTemperature = 177;
-      else lowerAggregateTemperature = result.results.machiningTemperatureRange.lower + 15;
+      if (resultRotational.results.machiningTemperatureRange.higher + 15 > 177) higherAggregateTemperature = 177;
+      else higherAggregateTemperature = resultRotational.results.machiningTemperatureRange.higher + 15;
+      if (resultRotational.results.machiningTemperatureRange.lower + 15 > 177) lowerAggregateTemperature = 177;
+      else lowerAggregateTemperature = resultRotational.results.machiningTemperatureRange.lower + 15;
 
       const aggregateTemperatureRange = {
         higher: higherAggregateTemperature,
@@ -165,10 +152,7 @@ export class SetBinderTrial_Marshall_Service {
 
       const marshallWithBinderTrial = { ...marshallExists._doc, binderTrialData: binderTrialWithoutName };
 
-      await this.marshallModel.updateOne(
-        { _id: marshallExists._doc._id },
-        marshallWithBinderTrial
-      );
+      await this.marshallModel.updateOne({ _id: marshallExists._doc._id }, marshallWithBinderTrial);
 
       if (marshallExists._doc.generalData.step < 4) {
         await this.marshallRepository.saveStep(marshallExists, 4);
@@ -176,7 +160,7 @@ export class SetBinderTrial_Marshall_Service {
 
       return true;
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 }

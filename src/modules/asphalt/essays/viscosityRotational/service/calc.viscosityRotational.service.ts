@@ -5,14 +5,11 @@ import { Calc_ViscosityRotational_Dto, Calc_ViscosityRotational_Out } from '../d
 export class Calc_ViscosityRotational_Service {
   private logger = new Logger(Calc_ViscosityRotational_Service.name);
 
-  async calculateViscosityRotational({
-    viscosityRotational,
-    generalData,
-  }: Calc_ViscosityRotational_Dto): Promise<{ success: boolean; result: Calc_ViscosityRotational_Out }> {
+  async calculateViscosityRotational(body: any): Promise<{ success: boolean; result: Calc_ViscosityRotational_Out }> {
     try {
       this.logger.log('calculateViscosityRotational on calc.viscosityRotational.service.ts > [body]');
 
-      const { dataPoints } = viscosityRotational;
+      const { dataPoints } = body.viscosityRotationalCalc;
 
       const result: Calc_ViscosityRotational_Out = {
         graph: '',
