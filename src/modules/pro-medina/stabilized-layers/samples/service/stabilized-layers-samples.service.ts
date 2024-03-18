@@ -1,9 +1,9 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
-import { AlreadyExists, NotFound } from 'utils/exceptions';
+import { AlreadyExists, NotFound } from '../../../../../utils/exceptions';
 import { StabilizedLayers_SamplesRepository } from '../repository';
 import { StabilizedLayers_Sample } from '../schemas';
 import { CreateStabilizedLayersSampleDto } from '../dto/create-stabilized-layers-sample.dto';
-import { CommonQueryFilter } from 'utils/queryFilter';
+import { CommonQueryFilter } from '../../../../../utils/queryFilter';
 
 @Injectable()
 export class StabilizedLayersSamplesService {

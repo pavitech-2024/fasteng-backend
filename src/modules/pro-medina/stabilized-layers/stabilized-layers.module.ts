@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ModelDefinition, MongooseModule } from '@nestjs/mongoose';
-import { DATABASE_CONNECTION } from 'infra/mongoose/database.config';
+import { DATABASE_CONNECTION } from '../../../infra/mongoose/database.config';
 import { StabilizedLayers_Sample, StabilizedLayers_SampleSchema } from './samples/schemas';
 import { StabilizedLayersSamplesModule } from './samples/stabilized-layers-samples.module';
 

@@ -1,8 +1,8 @@
 import { InjectModel } from '@nestjs/mongoose';
-import { DATABASE_CONNECTION } from 'infra/mongoose/database.config';
+import { DATABASE_CONNECTION } from '../../../../../infra/mongoose/database.config';
 import { Model } from 'mongoose';
 import { GranularLayers_Sample, GranularLayers_SamplesDocument } from '../schemas';
-import { CommonQueryFilter } from 'utils/queryFilter';
+import { CommonQueryFilter } from '../../../../../utils/queryFilter';
 
 export class GranularLayers_SamplesRepository {
   constructor(

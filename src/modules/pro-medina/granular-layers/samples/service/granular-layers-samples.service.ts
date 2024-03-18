@@ -2,8 +2,8 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { CreateGranularLayersSampleDto } from '../dto/create-granular-layers-sample.dto';
 import { GranularLayers_SamplesRepository } from '../repository';
 import { GranularLayers_Sample } from '../schemas';
-import { AlreadyExists, NotFound } from 'utils/exceptions';
-import { CommonQueryFilter } from 'utils/queryFilter';
+import { AlreadyExists, NotFound } from '../../../../../utils/exceptions';
+import { CommonQueryFilter } from '../../../../../utils/queryFilter';
 
 @Injectable()
 export class GranularLayersSamplesService {
