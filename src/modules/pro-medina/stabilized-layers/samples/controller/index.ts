@@ -37,15 +37,6 @@ export class StabilizedLayersSamplesController {
     }
   }
 
-  // @Get('all')
-  // @ApiOperation({ summary: 'Retorna todas as amostras de camadas stabilizedas do banco de dados.' })
-  // @ApiResponse({ status: 200, description: 'Amostras de camadas stabilizedas encontradas com sucesso!' })
-  // async getAllByUserId() {
-  //   this.logger.log(`get all samples`);
-
-  //   return this.stabilizedLayersSamplesService.getAllSamples();
-  // }
-
   @Get('all')
   @ApiOperation({ summary: 'Retorna todas as amostras de camadas stabilizadas do banco de dados.' })
   @ApiResponse({ status: 200, description: 'Amostras de camadas stabilizadas encontradas com sucesso!' })

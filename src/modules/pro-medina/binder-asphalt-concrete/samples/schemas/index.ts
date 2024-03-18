@@ -11,6 +11,7 @@ export type BinderAsphaltConcreteGeneralData = {
   layer: string;
   highway: string;
   cityState: string;
+  guideLineSpeed: string;
   observations?: string;
 };
 
@@ -26,6 +27,11 @@ export type BinderAsphaltConcreteStep2Data = {
   latitudeF: string;
   longitudeF: string;
   monitoringPhase: string;
+  trafficLiberation: string;
+  averageAltitude: string;
+  numberOfTracks: string;
+  monitoredTrack: string;
+  trackWidth: string;
   observation: string;
   // Paviment Preparation
   milling: string;
