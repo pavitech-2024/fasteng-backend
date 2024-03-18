@@ -13,7 +13,7 @@ export class Calc_CBR_Service {
     try {
       this.logger.log('calculate cbr on calc.cbr.service.ts > [body]');
 
-      const { ring_constant, cilinder_height, extended_reads } = step2Data;
+      const { ring_constant, cylinder_height, extended_reads } = step2Data;
 
       const deflectometer_reads = expansionData.map(({ deflectometer_read }) => deflectometer_read);
 
@@ -51,7 +51,7 @@ export class Calc_CBR_Service {
         pressure !== 0 ? cbr_graph.push([Number(penetrations_pol[index]), pressure]) : null;
       });
 
-      const free_expansion = ((deflectometer_reads[1] - deflectometer_reads[0]) / cilinder_height) * 100;
+      const free_expansion = ((deflectometer_reads[1] - deflectometer_reads[0]) / cylinder_height) * 100;
 
       return {
         success: true,

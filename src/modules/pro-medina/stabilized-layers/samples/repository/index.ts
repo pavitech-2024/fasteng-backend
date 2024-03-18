@@ -1,8 +1,8 @@
 import { InjectModel } from '@nestjs/mongoose';
-import { DATABASE_CONNECTION } from 'infra/mongoose/database.config';
+import { DATABASE_CONNECTION } from '../../../../../infra/mongoose/database.config';
 import { Model } from 'mongoose';
 import { StabilizedLayers_Sample, StabilizedLayers_SamplesDocument } from '../schemas';
-import { CommonQueryFilter } from 'utils/queryFilter';
+import { CommonQueryFilter } from '../../../../../utils/queryFilter';
 
 export class StabilizedLayers_SamplesRepository {
   constructor(

@@ -3,7 +3,7 @@ import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { StabilizedLayers_Sample } from '../schemas';
 import { StabilizedLayersSamplesService } from '../service/stabilized-layers-samples.service';
 import { CreateStabilizedLayersSampleDto } from '../dto/create-stabilized-layers-sample.dto';
-import { CommonQueryFilter } from 'utils/queryFilter';
+import { CommonQueryFilter } from '../../../../../utils/queryFilter';
 
 @ApiTags('samples')
 @Controller('promedina/stabilized-layers/stabilized-layers-samples')

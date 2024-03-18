@@ -1,9 +1,9 @@
 import { HttpException, HttpStatus, Injectable, Logger } from "@nestjs/common";
-import { AlreadyExists, NotFound } from "utils/exceptions";
+import { AlreadyExists, NotFound } from "../../../../../utils/exceptions";
 import { BinderAsphaltConcrete_SamplesRepository } from "../repository";
 import { BinderAsphaltConcrete_Sample } from "../schemas";
 import { CreateBinderAsphaltConcreteSampleDto } from "../dto/create-binder-asphalt-concrete-samples.dto";
-import { CommonQueryFilter } from "utils/queryFilter";
+import { CommonQueryFilter } from "../../../../../utils/queryFilter";
 
 @Injectable()
 export class BinderAsphaltConcreteSamplesService {

@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { GranularLayers_Sample, GranularLayers_SampleSchema } from './samples/schemas';
 import { GranularLayersSamplesModule } from './samples/granular-layers-samples.module';
 import { ModelDefinition, MongooseModule } from '@nestjs/mongoose';
-import { DATABASE_CONNECTION } from 'infra/mongoose/database.config';
+import { DATABASE_CONNECTION } from '../../../infra/mongoose/database.config';
 
 const Models: ModelDefinition[] = [{ name: GranularLayers_Sample.name, schema: GranularLayers_SampleSchema }];
 

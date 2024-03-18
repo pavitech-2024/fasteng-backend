@@ -3,7 +3,7 @@ import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { BinderAsphaltConcrete_Sample } from '../schemas';
 import { BinderAsphaltConcreteSamplesService } from '../service/binder-asphalt-concrete-samples.service';
 import { CreateBinderAsphaltConcreteSampleDto } from '../dto/create-binder-asphalt-concrete-samples.dto';
-import { CommonQueryFilter } from 'utils/queryFilter';
+import { CommonQueryFilter } from '../../../../../utils/queryFilter';
 
 @ApiTags('samples')
 @Controller('promedina/binder-asphalt-concrete/binder-asphalt-concrete-samples')

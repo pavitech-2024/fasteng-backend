@@ -3,7 +3,7 @@ import { GranularLayersSamplesService } from '../service/granular-layers-samples
 import { CreateGranularLayersSampleDto } from '../dto/create-granular-layers-sample.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GranularLayers_Sample } from '../schemas';
-import { CommonQueryFilter } from 'utils/queryFilter';
+import { CommonQueryFilter } from '../../../../../utils/queryFilter';
 
 @ApiTags('samples')
 @Controller('promedina/granular-layers/granular-layers-samples')
