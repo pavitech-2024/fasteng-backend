@@ -9,7 +9,7 @@ import { ErrorsInterceptor } from './config/interceptors/ErrorsInterceptor';
 import { AuthMiddleware } from './modules/auth/middlewares';
 
 //Modules
-import { DatabaseModule } from '../src/infra/mongoose/database.module';
+import { DatabaseModule } from './infra/mongoose/database.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { AsphaltModule } from './modules/asphalt/asphalt.module';
