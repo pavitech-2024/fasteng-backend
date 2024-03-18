@@ -110,7 +110,7 @@ export class StabilizedLayersSamplesService {
   async deleteSample(sampleId: string): Promise<StabilizedLayers_Sample> {
     try {
       // busca uma amostra com o id passado no banco de dados
-      const sample = await this.stabilizedLayers_SamplesRepository.findOne({ _id: sampleId });
+      const sample = await this.stabilizedLayers_SamplesRepository.findOneById(sampleId);
 
       // se não encontrar a amostra, retorna um erro
       if (!sample) throw new NotFound('Sample');
