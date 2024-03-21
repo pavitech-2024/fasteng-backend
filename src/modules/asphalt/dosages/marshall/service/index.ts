@@ -8,6 +8,7 @@ import { NotFound } from "../../../../../utils/exceptions";
 import { MarshallStep3Dto } from "../dto/step-3-marshall.dto";
 import { GranulometryComposition_Marshall_Service } from "./granulometry-composition.marshall.service";
 import { SetBinderTrial_Marshall_Service } from "./initial-binder-trial.service";
+import { maximumMixtureDensity_Marshall_Service } from "./maximumMixtureDensity.service";
 
 @Injectable()
 export class MarshallService {
@@ -18,7 +19,8 @@ export class MarshallService {
     private readonly generalData_Service: GeneralData_Marshall_Service,
     private readonly materialSelection_Service: MaterialSelection_Marshall_Service,
     private readonly granulometryComposition_Service: GranulometryComposition_Marshall_Service,
-    private readonly setBinderTrial_Service: SetBinderTrial_Marshall_Service
+    private readonly setBinderTrial_Service: SetBinderTrial_Marshall_Service,
+    private readonly maximumMixtureDensity_Service: maximumMixtureDensity_Marshall_Service
   ) { }
 
   async getAllDosages(userId: string): Promise<Marshall[]> {
@@ -291,6 +293,7 @@ export class MarshallService {
       return { data: null, success: false, error: { status, message, name } };
     }
   }
+
   async saveStep4Data(body: any, userId: string) {
     try {
       const success = await this.setBinderTrial_Service.saveStep4Data(body, userId);
@@ -302,6 +305,39 @@ export class MarshallService {
       return { success: false, error: { status, message, name } };
     }
   }
+
+  async getIndexesOfMissesSpecificGravity(aggregates: any) {
+    try {
+      const data = await this.maximumMixtureDensity_Service.getIndexesOfMissesSpecificGravity(aggregates);
+
+      return { data, success: true }
+    } catch (error) {
+      this.logger.error(`error on save step data of marshall dosage > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { success: false, error: { status, message, name } };
+    }
+  }
+
+  async calculateDmtData(body: any) {
+    try {
+      const dmt = await this.maximumMixtureDensity_Service.calculateDmtData(body);
+
+      const data = {
+        percentsOfDosage: '',
+        bandsOfTemperatures: ''
+      };
+
+      return { 
+        data, 
+        success: true 
+      };
+    } catch (error) {
+      this.logger.error(`error on getting the step 5 dmt data > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { data: null, success: false, error: { status, message, name } };
+    }
+  }
+  
 
   // async updateMarshall(marshall: Marshall): Promise<Marshall> {
   //   try {

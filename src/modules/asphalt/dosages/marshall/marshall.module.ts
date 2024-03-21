@@ -6,13 +6,15 @@ import { GeneralData_Marshall_Service } from './service/general-data.marshall.se
 import { MaterialSelection_Marshall_Service } from './service/material-selection.marshall.service';
 import { GranulometryComposition_Marshall_Service } from './service/granulometry-composition.marshall.service';
 import { SetBinderTrial_Marshall_Service } from './service/initial-binder-trial.service';
+import { maximumMixtureDensity_Marshall_Service } from './service/maximumMixtureDensity.service';
 
 const services = [ 
   MarshallService, 
   GeneralData_Marshall_Service, 
   MaterialSelection_Marshall_Service, 
   GranulometryComposition_Marshall_Service,
-  SetBinderTrial_Marshall_Service 
+  SetBinderTrial_Marshall_Service,
+  maximumMixtureDensity_Marshall_Service
 ];
 @Module({
     imports: [],

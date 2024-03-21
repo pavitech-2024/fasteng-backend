@@ -134,4 +134,25 @@ export class MarshallController {
 
     return response.status(200).json(status);
   }
+
+  @Post('get-specific-mass-indexes')
+  async getIndexesOfMissesSpecificGravity(
+    @Res() response: Response,
+    @Body() aggregates: any
+    ) {
+    this.logger.log(`get specific mass indexes - step 5 > [body]: ${aggregates}`);
+
+    const status = await this.marshallService.getIndexesOfMissesSpecificGravity(aggregates);
+
+    return response.status(200).json(status);
+  }
+
+  @Post('calculate-step-5-dmt-data')
+  async calculateDmtData(@Res() response: Response, @Body() body: any) {
+    this.logger.log(`calculate step 5 dmt data > [body]: ${body}`);
+
+    const status = await this.marshallService.calculateDmtData(body);
+
+    return response.status(200).json(status);
+  }
 }
