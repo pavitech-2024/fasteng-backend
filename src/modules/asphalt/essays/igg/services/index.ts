@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { AlreadyExists } from '../../../../../utils/exceptions';
 import { Calc_Igg_Dto, Calc_Igg_Out } from '../dto/calc-igg.dto';
-import { IggInitDto } from '../dto/init-igg.dto';
-import { IggRepository } from '../repository';
 import { Calc_Igg_Service } from './calc.igg.service';
 import { GeneralData_Igg_Service } from './general-data.igg.service';
+import { IggInitDto } from '../dto/init-igg.dto';
+import { IggRepository } from '../repository';
+import { AlreadyExists } from '../../../../../utils/exceptions/alreadyExists';
 
 @Injectable()
 export class IggService {
@@ -54,6 +54,7 @@ export class IggService {
       return { success: true, data: igg };
     } catch (error) {
       const { status, name, message } = error;
+      console.log(error);
 
       return { success: false, error: { status, message, name } };
     }

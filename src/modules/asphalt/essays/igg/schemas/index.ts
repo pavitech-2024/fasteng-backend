@@ -13,8 +13,7 @@ export type IggGeneralData = {
   description?: string;
 };
 
-// TODO: Check if initial stake and final stake are needed in step2:
-export type Igg_Step2 = {
+export type igg_step2 = {
   work: string;
   section: number;
   initialStake: number;
@@ -23,15 +22,19 @@ export type Igg_Step2 = {
   finalSide: string;
 };
 
-export type Igg_Step3 = {
-  sections: {
-    initial: number;
-    final: number;
-  }[];
+export type igg_step3 = {
   stakes: [];
 };
 
-export type Igg_Step4 = {
+export type igg_step4 = {
+  sections: {
+    id: number;
+    initial: number;
+    final: number;
+  }[];
+};
+
+export type Results = {
   results: {
     data: Calc_Igg_Out;
   };
@@ -47,11 +50,15 @@ export class Igg {
 
   @IsNotEmpty()
   @Prop({ type: Object })
-  iggStep2: Igg_Step2;
+  iggStep2: igg_step2;
 
   @IsNotEmpty()
   @Prop({ type: Object })
-  iggStep3: Igg_Step3;
+  iggStep3: igg_step3;
+
+  @IsNotEmpty()
+  @Prop({ type: Object })
+  iggStep4: igg_step4;
 
   @IsNotEmpty()
   @Prop({ type: Object })

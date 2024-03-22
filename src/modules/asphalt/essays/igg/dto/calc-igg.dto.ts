@@ -10,6 +10,9 @@ export class Calc_Igg_Dto {
 
   @IsNotEmpty()
   iggStep3: Igg['iggStep3'];
+
+  @IsNotEmpty()
+  iggStep4: Igg['iggStep4'];
 }
 
 export interface Calc_Igg_Out {

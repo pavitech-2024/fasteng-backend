@@ -8,10 +8,11 @@ export class Calc_Igg_Service {
 
   constructor(private readonly iggRepository: IggRepository) {}
 
-  async calculateIgg({ iggStep3 }: Calc_Igg_Dto): Promise<{ success: boolean; result: Calc_Igg_Out }> {
+  async calculateIgg({ iggStep3, iggStep4 }: Calc_Igg_Dto): Promise<{ success: boolean; result: Calc_Igg_Out }> {
     try {
       //cálculo do IGG:
-      const { stakes, sections } = iggStep3;
+      const { stakes } = iggStep3;
+      const sections = iggStep4.sections;
       const iggs = [];
       const igis = [];
       const arrowsAverage = [];
@@ -35,6 +36,7 @@ export class Calc_Igg_Service {
         if (firstIndex !== -1 && lastIndex !== -1) {
           partial = stakes.slice(firstIndex, lastIndex);
           dados.push(partial);
+
           firstIndex = -1;
           lastIndex = -1;
           i++;
@@ -117,7 +119,6 @@ export class Calc_Igg_Service {
         const mediaVariancia = (varianciaTre + varianciaTri) / 2;
 
         //cálculo do IGG
-
         let igg = 0;
         const igi = [];
         igg += (fc1 / (segmento.length - 1)) * 100 * 0.2;
@@ -163,7 +164,6 @@ export class Calc_Igg_Service {
         }
 
         //cálculo das porcentagens do IGG
-
         for (let i = 0; i < igi.length; i++) {
           igi[i] = (igi[i] / igg) * 100;
         }
