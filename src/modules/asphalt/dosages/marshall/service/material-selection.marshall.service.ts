@@ -45,7 +45,7 @@ export class MaterialSelection_Marshall_Service {
           const { material } = generalData
           return _id.toString() === material._id.toString()
         });
-        return granulometry //&& specifyMass;
+        return granulometry && specifyMass;
 
       });
 

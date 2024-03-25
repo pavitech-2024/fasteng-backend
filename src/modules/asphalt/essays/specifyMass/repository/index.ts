@@ -10,7 +10,10 @@ export class SpecifyMassRepository {
   constructor(@InjectModel(SpecifyMass.name, DATABASE_CONNECTION.ASPHALT) private specifyMassModel: Model<SpecifyMassDocument>) {}
 
   async findOne(specifyMassFilterQuery: any): Promise<SpecifyMass> {
-    return this.specifyMassModel.findOne(specifyMassFilterQuery);
+    const SpecifyMass = await this.specifyMassModel.findOne(specifyMassFilterQuery);
+    console.log("🚀 ~ SpecifyMassRepository ~ findOne ~ SpecifyMass:", SpecifyMass)
+
+    return SpecifyMass;
   }
 
   async findAll(): Promise<SpecifyMass[]> {

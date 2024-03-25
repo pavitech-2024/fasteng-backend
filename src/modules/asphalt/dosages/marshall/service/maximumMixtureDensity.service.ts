@@ -117,10 +117,10 @@ export class maximumMixtureDensity_Marshall_Service {
               listOfMaterials[i].generalData.material.type === 'coarseAggregate' ||
               listOfMaterials[i].generalData.material.type === 'fineAggregate'
             ) {
-              let experiment = await this.specificMassRepository.findOne({
-                _id: listOfMaterials[i].generalData.material._id,
+              let experiment: any = await this.specificMassRepository.findOne({
+                "generalData.material._id": listOfMaterials[i].generalData.material._id,
               });
-              listOfSpecificGravities[i] = experiment.results.data.bulk_specify_mass;
+              listOfSpecificGravities[i] = experiment.results.bulk_specify_mass;
               denominadorLessOne += percentsOfDosage[i][4] / listOfSpecificGravities[i];
               denominadorLessHalf += percentsOfDosage[i][3] / listOfSpecificGravities[i];
               denominador += percentsOfDosage[i][2] / listOfSpecificGravities[i];
@@ -151,6 +151,77 @@ export class maximumMixtureDensity_Marshall_Service {
       return result;
     } catch (error) {
       throw new Error('Failed to calculate max specific gravity.');
+    }
+  }
+
+  async calculateMaxSpecificGravityGMM(body: any) {
+    try {
+      const { indexesOfMissesSpecificGravity, missingSpecificGravity, valuesOfGmm, temperatureOfWaterGmm, aggregates, percentsOfDosage } = body;
+
+      let denominadorLessOne = 0;
+      let denominadorLessHalf = 0;
+      let denominador = 0;
+      let denominadorPlusHalf = 0;
+      let denominadorPlusOne = 0;
+
+      const materials = aggregates.map((element) => element._id);
+
+      const calculate = async (): Promise<any> => {
+        try {
+          const listOfMaterials = await Promise.all(
+            materials.map((materialId) =>
+              this.specificMassRepository.findOne({
+                'generalData.material._id': materialId,
+              }),
+            ),
+          );
+
+          let listOfSpecificGravities = [];
+
+          for (let i = 0; i < listOfMaterials.length; i++) {
+            listOfSpecificGravities.push(null);
+    
+              if (
+                listOfMaterials[i].generalData.material.type === 'coarseAggregate' ||
+                listOfMaterials[i].generalData.material.type === 'fineAggregate'
+              ) {
+                listOfSpecificGravities[i] = listOfMaterials[i].results.bulk_specify_mass;
+              }
+            }
+        } catch (error) {
+          throw new Error('Failed to calculate max specific gravity.');
+        }
+      };
+
+      let gmm = [];
+
+      for (let i = 0; i < 5; i++) {
+        const gmmAtual = valuesOfGmm.find(gmm => gmm.index === i);
+        if (gmmAtual) gmm.push(gmmAtual)
+        else gmm.push(null)
+      }
+
+      const content = gmm.map(gmm => {
+        if (gmm !== null) {
+          if (gmm.insert) return gmm.value;
+          else return (gmm.massOfDrySample / (gmm.massOfDrySample - (gmm.massOfContainer_Water_Sample - gmm.massOfContainer_Water))) * temperatureOfWaterGmm;
+        } else return null;
+      })
+
+      const maxSpecificGravity = {
+        result: {
+          lessOne: content[0],
+          lessHalf: content[1],
+          normal: content[2],
+          plusHalf: content[3],
+          plusOne: content[4]
+        },
+        method: "GMM"
+      }
+
+      return maxSpecificGravity;
+    } catch (error) {
+      throw new Error('Failed to calculate max specific gravity GMM.');
     }
   }
 }
