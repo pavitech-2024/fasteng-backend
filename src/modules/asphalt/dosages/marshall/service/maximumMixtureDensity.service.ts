@@ -118,7 +118,7 @@ export class maximumMixtureDensity_Marshall_Service {
               listOfMaterials[i].generalData.material.type === 'fineAggregate'
             ) {
               let experiment: any = await this.specificMassRepository.findOne({
-                "generalData.material._id": listOfMaterials[i].generalData.material._id,
+                'generalData.material._id': listOfMaterials[i].generalData.material._id,
               });
               listOfSpecificGravities[i] = experiment.results.bulk_specify_mass;
               denominadorLessOne += percentsOfDosage[i][4] / listOfSpecificGravities[i];
@@ -156,13 +156,7 @@ export class maximumMixtureDensity_Marshall_Service {
 
   async calculateMaxSpecificGravityGMM(body: any) {
     try {
-      const { indexesOfMissesSpecificGravity, missingSpecificGravity, valuesOfGmm, temperatureOfWaterGmm, aggregates, percentsOfDosage } = body;
-
-      let denominadorLessOne = 0;
-      let denominadorLessHalf = 0;
-      let denominador = 0;
-      let denominadorPlusHalf = 0;
-      let denominadorPlusOne = 0;
+      const { valuesOfGmm, temperatureOfWaterGmm, aggregates } = body;
 
       const materials = aggregates.map((element) => element._id);
 
@@ -180,14 +174,16 @@ export class maximumMixtureDensity_Marshall_Service {
 
           for (let i = 0; i < listOfMaterials.length; i++) {
             listOfSpecificGravities.push(null);
-    
-              if (
-                listOfMaterials[i].generalData.material.type === 'coarseAggregate' ||
-                listOfMaterials[i].generalData.material.type === 'fineAggregate'
-              ) {
-                listOfSpecificGravities[i] = listOfMaterials[i].results.bulk_specify_mass;
-              }
+
+            if (
+              listOfMaterials[i].generalData.material.type === 'coarseAggregate' ||
+              listOfMaterials[i].generalData.material.type === 'fineAggregate'
+            ) {
+              listOfSpecificGravities[i] = listOfMaterials[i].results.bulk_specify_mass;
             }
+          }
+
+          return listOfSpecificGravities;
         } catch (error) {
           throw new Error('Failed to calculate max specific gravity.');
         }
@@ -196,17 +192,22 @@ export class maximumMixtureDensity_Marshall_Service {
       let gmm = [];
 
       for (let i = 0; i < 5; i++) {
-        const gmmAtual = valuesOfGmm.find(gmm => gmm.index === i);
-        if (gmmAtual) gmm.push(gmmAtual)
-        else gmm.push(null)
+        const gmmAtual = valuesOfGmm.find((gmm) => gmm.index === i);
+        if (gmmAtual) gmm.push(gmmAtual);
+        else gmm.push(null);
       }
 
-      const content = gmm.map(gmm => {
+      const content = gmm.map((gmm) => {
         if (gmm !== null) {
           if (gmm.insert) return gmm.value;
-          else return (gmm.massOfDrySample / (gmm.massOfDrySample - (gmm.massOfContainer_Water_Sample - gmm.massOfContainer_Water))) * temperatureOfWaterGmm;
+          else
+            return (
+              (gmm.massOfDrySample /
+                (gmm.massOfDrySample - (gmm.massOfContainer_Water_Sample - gmm.massOfContainer_Water))) *
+              temperatureOfWaterGmm
+            );
         } else return null;
-      })
+      });
 
       const maxSpecificGravity = {
         result: {
@@ -214,14 +215,30 @@ export class maximumMixtureDensity_Marshall_Service {
           lessHalf: content[1],
           normal: content[2],
           plusHalf: content[3],
-          plusOne: content[4]
+          plusOne: content[4],
         },
-        method: "GMM"
-      }
+        method: 'GMM',
+      };
+
+      const listOfSpecificGravities = await calculate();
 
       return maxSpecificGravity;
     } catch (error) {
       throw new Error('Failed to calculate max specific gravity GMM.');
     }
   }
+
+  async calculateRiceTest(gmm): Promise<any> {
+    try {
+      console.log(gmm);
+      if (gmm.insert) return gmm.value;
+
+      else
+      return (
+        gmm.massOfDrySample / (gmm.massOfDrySample - (gmm.massOfContainer_Water_Sample - gmm.massOfContainer_Water))
+      );
+    } catch (error) {
+      throw new Error('Failed to calculate rice test.');
+    }
+  };
 }
