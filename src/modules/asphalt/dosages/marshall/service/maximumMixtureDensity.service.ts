@@ -81,20 +81,14 @@ export class maximumMixtureDensity_Marshall_Service {
         return { indexesOfMissesSpecificGravity: withoutExperimentSpecificGravity };
       };
 
-      return await getIndexesOfMissesSpecificGravity(); // Chamada corrigida do método aqui
+      return await getIndexesOfMissesSpecificGravity();
     } catch (error) {
       throw new Error('Failed to calculate max specific gravity.');
     }
   }
 
-  async calculateDmtData(body: any) {
-    const { 
-      indexesOfMissesSpecificGravity, 
-      missingSpecificGravity, 
-      percentsOfDosage, 
-      aggregates,
-      trial 
-    } = body;
+  async calculateDmtData(body: any): Promise<any> {
+    const { indexesOfMissesSpecificGravity, missingSpecificGravity, percentsOfDosage, aggregates, trial } = body;
 
     try {
       let denominadorLessOne = 0;
@@ -105,35 +99,28 @@ export class maximumMixtureDensity_Marshall_Service {
 
       const materials = aggregates.map((element) => element._id);
 
-      const calculate = async () => {
-        await Promise.all(
-          materials.map((materialId) =>
-            this.specificMassRepository.findOne({
-              'generalData.material._id': materialId,
-            }),
-          ),
-        ).then(async (listOfMaterials) => {
+      const calculate = async (): Promise<any> => {
+        try {
+          const listOfMaterials = await Promise.all(
+            materials.map((materialId) =>
+              this.specificMassRepository.findOne({
+                'generalData.material._id': materialId,
+              }),
+            ),
+          );
+
           let listOfSpecificGravities = [];
-          //let count = 0;
+
           for (let i = 0; i < listOfMaterials.length; i++) {
             listOfSpecificGravities.push(null);
-            if (listOfMaterials[i].generalData.material.type === 'coarseAggregate') {
-              await this.specificMassRepository
-                .findOne({ _id: listOfMaterials[i].generalData.material._id })
-                .then((experiment) => {
-                  listOfSpecificGravities[i] = experiment.results.data.bulk_specify_mass;
-                });
-              denominadorLessOne += percentsOfDosage[i][4] / listOfSpecificGravities[i];
-              denominadorLessHalf += percentsOfDosage[i][3] / listOfSpecificGravities[i];
-              denominador += percentsOfDosage[i][2] / listOfSpecificGravities[i];
-              denominadorPlusHalf += percentsOfDosage[i][1] / listOfSpecificGravities[i];
-              denominadorPlusOne += percentsOfDosage[i][0] / listOfSpecificGravities[i];
-            } else if (listOfMaterials[i].generalData.material.type === 'fineAggregate') {
-              await this.specificMassRepository
-                .findOne({ _id: listOfMaterials[i].generalData.material._id })
-                .then((experiment) => {
-                  listOfSpecificGravities[i] = experiment.results.data.bulk_specify_mass;
-                });
+            if (
+              listOfMaterials[i].generalData.material.type === 'coarseAggregate' ||
+              listOfMaterials[i].generalData.material.type === 'fineAggregate'
+            ) {
+              let experiment = await this.specificMassRepository.findOne({
+                _id: listOfMaterials[i].generalData.material._id,
+              });
+              listOfSpecificGravities[i] = experiment.results.data.bulk_specify_mass;
               denominadorLessOne += percentsOfDosage[i][4] / listOfSpecificGravities[i];
               denominadorLessHalf += percentsOfDosage[i][3] / listOfSpecificGravities[i];
               denominador += percentsOfDosage[i][2] / listOfSpecificGravities[i];
@@ -141,38 +128,29 @@ export class maximumMixtureDensity_Marshall_Service {
               denominadorPlusOne += percentsOfDosage[i][0] / listOfSpecificGravities[i];
             }
           }
+
           const maxSpecificGravity = {
             result: {
-              lessOne: 100 / (denominadorLessOne + ((trial - 1) / 1.03)),
-              lessHalf: 100 / (denominadorLessHalf + ((trial - 0.5) / 1.03)),
-              normal: 100 / (denominador + ((trial) / 1.03)),
-              plusHalf: 100 / (denominadorPlusHalf + ((trial + 0.5) / 1.03)),
-              plusOne: 100 / (denominadorPlusOne + ((trial + 1) / 1.03))
+              lessOne: 100 / (denominadorLessOne + (trial - 1) / 1.03),
+              lessHalf: 100 / (denominadorLessHalf + (trial - 0.5) / 1.03),
+              normal: 100 / (denominador + trial / 1.03),
+              plusHalf: 100 / (denominadorPlusHalf + (trial + 0.5) / 1.03),
+              plusOne: 100 / (denominadorPlusOne + (trial + 1) / 1.03),
             },
-            method: 'DMT'
-          }
+            method: 'DMT',
+          };
+
           return maxSpecificGravity;
-        });
+        } catch (error) {
+          throw new Error('Failed to calculate max specific gravity.');
+        }
       };
 
-      return await calculate();
+      const result = await calculate();
+
+      return result;
     } catch (error) {
       throw new Error('Failed to calculate max specific gravity.');
     }
   }
-
-  // async calculateMaximumMixtureDensity(body: any) {
-  //   try {
-  //     this.logger.log(
-  //       'calculate marshall maximum mixture density step on maximumMixtureDensity.marshall.service.ts > [body]',
-  //       { body },
-  //     );
-
-  //     const result = {};
-
-  //     return { result }
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // }
 }

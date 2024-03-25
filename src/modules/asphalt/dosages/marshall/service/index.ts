@@ -321,10 +321,10 @@ export class MarshallService {
   async calculateDmtData(body: any) {
     try {
       const dmt = await this.maximumMixtureDensity_Service.calculateDmtData(body);
+      console.log("🚀 ~ MarshallService ~ calculateDmtData ~ dmt:", dmt)
 
       const data = {
-        percentsOfDosage: '',
-        bandsOfTemperatures: ''
+        maxSpecificGravity: dmt.result
       };
 
       return { 
