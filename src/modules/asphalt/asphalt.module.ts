@@ -41,9 +41,9 @@ import { ViscosityRotationalModule } from './essays/viscosityRotational/viscosit
 import { ViscosityRotational, ViscosityRotationalSchema } from './essays/viscosityRotational/schemas';
 import { IggModule } from './essays/igg/igg.module';
 import { Igg, IggSchema } from './essays/igg/schemas';
+import { Fwd, FwdSchema } from './essays/fwd/schema';
 
 const Models: ModelDefinition[] = [
-  
   { name: Material.name, schema: MaterialSchema },
   { name: Rtfo.name, schema: RtfoSchema },
   { name: Rtcd.name, schema: RtcdSchema },
@@ -64,17 +64,18 @@ const Models: ModelDefinition[] = [
   { name: ElasticRecovery.name, schema: ElasticRecoverySchema },
   { name: ViscosityRotational.name, schema: ViscosityRotationalSchema },
   { name: Igg.name, schema: IggSchema },
+  { name: Fwd.name, schema: FwdSchema },
 ];
 
 const Modules = [
-  MaterialsModule, 
+  MaterialsModule,
   RtfoModule,
   RtcdModule,
   AsphaltGranulometryModule,
   PenetrationModule,
   AbrasionModule,
-  SpecifyMassModule, 
-  FlashPointModule, 
+  SpecifyMassModule,
+  FlashPointModule,
   DuctilityModule,
   AdhesivenessModule,
   AngularityModule,
@@ -82,17 +83,17 @@ const Modules = [
   SayboltFurolModule,
   SofteningPointModule,
   DduiModule,
-  ShapeIndexModule, 
+  ShapeIndexModule,
   ElongatedParticlesModule,
   ElasticRecoveryModule,
   ViscosityRotationalModule,
   IggModule,
-]
+  Fwd
+];
 
 @Global()
 @Module({
   imports: [MongooseModule.forFeature(Models, DATABASE_CONNECTION.ASPHALT), ...Modules],
   exports: [MongooseModule, MaterialsModule],
 })
-
 export class AsphaltModule {}
