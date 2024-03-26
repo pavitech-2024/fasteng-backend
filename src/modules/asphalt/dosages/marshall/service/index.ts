@@ -337,6 +337,45 @@ export class MarshallService {
       return { data: null, success: false, error: { status, message, name } };
     }
   }
+
+  async calculateGmmData(body: any) {
+    try {
+      const gmm = await this.maximumMixtureDensity_Service.calculateGmmData(body);
+
+      const data = {
+        gmm
+      };
+
+      return { 
+        data, 
+        success: true 
+      };
+    } catch (error) {
+      this.logger.error(`error on getting the step 5 dmt data > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { data: null, success: false, error: { status, message, name } };
+    }
+  }
+
+  async calculateRiceTest(body: any) {
+    try {
+      const riceTest = await this.maximumMixtureDensity_Service.calculateRiceTest(body);
+      console.log("🚀 ~ MarshallService ~ calculateRiceTest ~ riceTest:", riceTest)
+
+      const data = {
+        riceTest
+      };
+
+      return { 
+        data, 
+        success: true 
+      };
+    } catch (error) {
+      this.logger.error(`error on getting the step 5 dmt data > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { data: null, success: false, error: { status, message, name } };
+    }
+  }
   
 
   // async updateMarshall(marshall: Marshall): Promise<Marshall> {

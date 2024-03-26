@@ -155,4 +155,22 @@ export class MarshallController {
 
     return response.status(200).json(status);
   }
+
+  @Post('calculate-step-5-gmm-data')
+  async calculateGmmData(@Res() response: Response, @Body() body: any) {
+    this.logger.log(`calculate step 5 gmm data > [body]: ${body}`);
+
+    const status = await this.marshallService.calculateGmmData(body);
+
+    return response.status(200).json(status);
+  }
+
+  @Post('calculate-step-5-rice-test')
+  async calculateRiceTest(@Res() response: Response, @Body() body: any) {
+    this.logger.log(`calculate step 5 rice test > [body]: ${body}`);
+
+    const status = await this.marshallService.calculateRiceTest(body);
+
+    return response.status(200).json(status);
+  }
 }

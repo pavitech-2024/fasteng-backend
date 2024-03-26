@@ -154,9 +154,19 @@ export class maximumMixtureDensity_Marshall_Service {
     }
   }
 
-  async calculateMaxSpecificGravityGMM(body: any) {
+  async calculateGmmData(body: any) {
     try {
-      const { valuesOfGmm, temperatureOfWaterGmm, aggregates } = body;
+      const { gmm: valuesOfGmm, temperatureOfWaterGmm, aggregates } = body;
+
+      let formattedValuesOfGmm = [null, null, null, null, null];
+
+      Object.keys(valuesOfGmm).forEach((item) => {
+        if (item === 'lessOne') formattedValuesOfGmm[0] = valuesOfGmm[item];
+        if (item === 'lessHalf') formattedValuesOfGmm[1] = valuesOfGmm[item];
+        if (item === 'normal') formattedValuesOfGmm[2] = valuesOfGmm[item];
+        if (item === 'plusHalf') formattedValuesOfGmm[3] = valuesOfGmm[item];
+        if (item === 'plusOne') formattedValuesOfGmm[4] = valuesOfGmm[item];
+      });
 
       const materials = aggregates.map((element) => element._id);
 
@@ -192,7 +202,7 @@ export class maximumMixtureDensity_Marshall_Service {
       let gmm = [];
 
       for (let i = 0; i < 5; i++) {
-        const gmmAtual = valuesOfGmm.find((gmm) => gmm.index === i);
+        const gmmAtual = formattedValuesOfGmm[i];
         if (gmmAtual) gmm.push(gmmAtual);
         else gmm.push(null);
       }
