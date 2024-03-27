@@ -35,7 +35,6 @@ export class MarshallRepository {
       const createdPartialMarshall = await this.marshallModel.create({
         generalData: {...marshall, userId},
       });
-      console.log("🚀 ~ ABCPRepository ~ createPartialMarshall ~ createdPartialMarshall:", createdPartialMarshall)
 
       return createdPartialMarshall;
     } catch (error) {

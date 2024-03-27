@@ -27,7 +27,6 @@ export class MarshallService {
     try {
       // busca todas as dosagens no banco de dados
       const dosages = await this.marshall_repository.find();
-      console.log("🚀 ~ MarshallService ~ getAllDosages ~ dosages:", dosages);
 
       const userDosages = dosages.filter((dosage) => dosage.generalData && dosage.generalData.userId === userId);
 
@@ -321,7 +320,6 @@ export class MarshallService {
   async calculateDmtData(body: any) {
     try {
       const dmt = await this.maximumMixtureDensity_Service.calculateDmtData(body);
-      console.log("🚀 ~ MarshallService ~ calculateDmtData ~ dmt:", dmt)
 
       const data = {
         maxSpecificGravity: dmt.result
@@ -343,7 +341,8 @@ export class MarshallService {
       const gmm = await this.maximumMixtureDensity_Service.calculateGmmData(body);
 
       const data = {
-        gmm
+        maxSpecificGravity: gmm.maxSpecificGravity.result,
+        method: gmm.maxSpecificGravity.method
       };
 
       return { 

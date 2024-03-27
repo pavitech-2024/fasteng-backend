@@ -72,7 +72,6 @@ export class SetBinderTrial_Marshall_Service {
 
       const bandsOfTemperatures = await this.getBandsOfTemperatures(binder);
       console.log(
-        '🚀 ~ SetBinderTrial_Marshall_Service ~ calculateInitlaBinderTrial ~ bandsOfTemperatures:',
         bandsOfTemperatures,
       );
 

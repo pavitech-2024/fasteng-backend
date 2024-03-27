@@ -158,15 +158,15 @@ export class maximumMixtureDensity_Marshall_Service {
     try {
       const { gmm: valuesOfGmm, temperatureOfWaterGmm, aggregates } = body;
 
-      let formattedValuesOfGmm = [null, null, null, null, null];
+      // let formattedValuesOfGmm = [null, null, null, null, null];
 
-      Object.keys(valuesOfGmm).forEach((item) => {
-        if (item === 'lessOne') formattedValuesOfGmm[0] = valuesOfGmm[item];
-        if (item === 'lessHalf') formattedValuesOfGmm[1] = valuesOfGmm[item];
-        if (item === 'normal') formattedValuesOfGmm[2] = valuesOfGmm[item];
-        if (item === 'plusHalf') formattedValuesOfGmm[3] = valuesOfGmm[item];
-        if (item === 'plusOne') formattedValuesOfGmm[4] = valuesOfGmm[item];
-      });
+      // Object.keys(valuesOfGmm).forEach((item) => {
+      //   if (item === 'lessOne') formattedValuesOfGmm[0] = valuesOfGmm[item];
+      //   if (item === 'lessHalf') formattedValuesOfGmm[1] = valuesOfGmm[item];
+      //   if (item === 'normal') formattedValuesOfGmm[2] = valuesOfGmm[item];
+      //   if (item === 'plusHalf') formattedValuesOfGmm[3] = valuesOfGmm[item];
+      //   if (item === 'plusOne') formattedValuesOfGmm[4] = valuesOfGmm[item];
+      // });
 
       const materials = aggregates.map((element) => element._id);
 
@@ -202,7 +202,7 @@ export class maximumMixtureDensity_Marshall_Service {
       let gmm = [];
 
       for (let i = 0; i < 5; i++) {
-        const gmmAtual = formattedValuesOfGmm[i];
+        const gmmAtual = valuesOfGmm.find(gmm => gmm.id - 1 === i);
         if (gmmAtual) gmm.push(gmmAtual);
         else gmm.push(null);
       }
@@ -232,7 +232,7 @@ export class maximumMixtureDensity_Marshall_Service {
 
       const listOfSpecificGravities = await calculate();
 
-      return maxSpecificGravity;
+      return {maxSpecificGravity, listOfSpecificGravities};
     } catch (error) {
       throw new Error('Failed to calculate max specific gravity GMM.');
     }
