@@ -173,4 +173,17 @@ export class MarshallController {
 
     return response.status(200).json(status);
   }
+
+  @Post('save-maximum-mixture-density-step/:userId')
+  async saveMaximumMixtureDensityData(
+    @Res() response: Response,
+    @Param('userId') userId: string,
+    @Body() body: any
+  ) {
+    this.logger.log(`save step 5 data > [body]: ${body}`);
+
+    const status = await this.marshallService.saveStep5Data(body, userId);
+
+    return response.status(200).json(status);
+  }
 }

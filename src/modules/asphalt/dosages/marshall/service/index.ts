@@ -322,7 +322,8 @@ export class MarshallService {
       const dmt = await this.maximumMixtureDensity_Service.calculateDmtData(body);
 
       const data = {
-        maxSpecificGravity: dmt.result
+        maxSpecificGravity: dmt.result,
+        method: dmt.method
       };
 
       return { 
@@ -373,6 +374,18 @@ export class MarshallService {
       this.logger.error(`error on getting the step 5 dmt data > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
+    }
+  }
+
+  async saveStep5Data(body: any, userId: string) {
+    try {
+      const success = await this.maximumMixtureDensity_Service.saveStep5Data(body, userId);
+
+      return { success }
+    } catch (error) {
+      this.logger.error(`error on save step data of marshall dosage > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { success: false, error: { status, message, name } };
     }
   }
   

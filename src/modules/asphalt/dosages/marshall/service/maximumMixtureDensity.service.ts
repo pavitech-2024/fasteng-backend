@@ -13,7 +13,7 @@ export class maximumMixtureDensity_Marshall_Service {
 
   constructor(
     @InjectModel(Marshall.name, DATABASE_CONNECTION.ASPHALT)
-    private marshallModule: Model<MarshallDocument>,
+    private marshallModel: Model<MarshallDocument>,
     private readonly marshallRepository: MarshallRepository,
     private readonly materialsRepository: MaterialsRepository,
     private readonly specificMassRepository: SpecifyMassRepository,
@@ -251,4 +251,28 @@ export class maximumMixtureDensity_Marshall_Service {
       throw new Error('Failed to calculate rice test.');
     }
   };
+
+  async saveStep5Data(body: any, userId: string) {
+    try {
+      this.logger.log('save marshall binder trial step on maximum-mixture-density.marshall.service.ts > [body]', { body });
+
+      const { name } = body.maximumMixtureDensityData;
+
+      const marshallExists: any = await this.marshallRepository.findOne(name, userId);
+
+      const { name: materialName, ...maximumMixtureDensityWithoutName } = body.maximumMixtureDensityData;
+
+      const marshallWithMaximumMixtureDensity = { ...marshallExists._doc, maximumMixtureDensityData: maximumMixtureDensityWithoutName };
+
+      await this.marshallModel.updateOne({ _id: marshallExists._doc._id }, marshallWithMaximumMixtureDensity);
+
+      if (marshallExists._doc.generalData.step < 5) {
+        await this.marshallRepository.saveStep(marshallExists, 5);
+      }
+
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  }
 }

@@ -64,6 +64,19 @@ export type BinderTrialData = {
   }
 }
 
+export type MaximumMixtureDensityData = {
+  maxSpecificGravity: {
+    result: {
+      lessOne: number,
+      lessHalf: number,
+      normal: number,
+      plusHalf: number,
+      plusOne: number,
+    },
+    method: string
+  }
+}
+
 @Schema({ collection: 'marshalls'})
 export class Marshall {
   _id: string;
@@ -84,6 +97,10 @@ export class Marshall {
   @IsNotEmpty()
   @Prop({ type: Object })
   binderTrialData: BinderTrialData
+
+  @IsNotEmpty()
+  @Prop({ type: Object })
+  maximumMixtureDensityData: MaximumMixtureDensityData
 }
 
 const MarshallSchema = SchemaFactory.createForClass(Marshall);
