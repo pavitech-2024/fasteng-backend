@@ -202,7 +202,7 @@ export class maximumMixtureDensity_Marshall_Service {
       let gmm = [];
 
       for (let i = 0; i < 5; i++) {
-        const gmmAtual = valuesOfGmm.find(gmm => gmm.id - 1 === i);
+        const gmmAtual = valuesOfGmm.find((gmm) => gmm.id - 1 === i);
         if (gmmAtual) gmm.push(gmmAtual);
         else gmm.push(null);
       }
@@ -232,29 +232,44 @@ export class maximumMixtureDensity_Marshall_Service {
 
       const listOfSpecificGravities = await calculate();
 
-      return {maxSpecificGravity, listOfSpecificGravities};
+      return { maxSpecificGravity, listOfSpecificGravities };
     } catch (error) {
       throw new Error('Failed to calculate max specific gravity GMM.');
     }
   }
 
-  async calculateRiceTest(gmm): Promise<any> {
+  async calculateRiceTest(body): Promise<any> {
     try {
-      console.log(gmm);
-      if (gmm.insert) return gmm.value;
+      // console.log(gmm);
+      // if (gmm.insert) return gmm.value;
 
-      else
-      return (
-        gmm.massOfDrySample / (gmm.massOfDrySample - (gmm.massOfContainer_Water_Sample - gmm.massOfContainer_Water))
+      const maxSpecificGravity = body.map((item) => {
+        return {
+          id: item.id,
+          Teor: item.Teor,
+          GMM:
+            item.massOfDrySample /
+            (item.massOfDrySample - (item.massOfContainerWaterSample - item.massOfContainerWater)),
+        };
+      });
+
+      console.log(
+        '🚀 ~ maximumMixtureDensity_Marshall_Service ~ maxSpecificGravity ~ maxSpecificGravity:',
+        maxSpecificGravity,
       );
+
+
+      return maxSpecificGravity;
     } catch (error) {
       throw new Error('Failed to calculate rice test.');
     }
-  };
+  }
 
   async saveStep5Data(body: any, userId: string) {
     try {
-      this.logger.log('save marshall binder trial step on maximum-mixture-density.marshall.service.ts > [body]', { body });
+      this.logger.log('save marshall binder trial step on maximum-mixture-density.marshall.service.ts > [body]', {
+        body,
+      });
 
       const { name } = body.maximumMixtureDensityData;
 
@@ -262,7 +277,10 @@ export class maximumMixtureDensity_Marshall_Service {
 
       const { name: materialName, ...maximumMixtureDensityWithoutName } = body.maximumMixtureDensityData;
 
-      const marshallWithMaximumMixtureDensity = { ...marshallExists._doc, maximumMixtureDensityData: maximumMixtureDensityWithoutName };
+      const marshallWithMaximumMixtureDensity = {
+        ...marshallExists._doc,
+        maximumMixtureDensityData: maximumMixtureDensityWithoutName,
+      };
 
       await this.marshallModel.updateOne({ _id: marshallExists._doc._id }, marshallWithMaximumMixtureDensity);
 

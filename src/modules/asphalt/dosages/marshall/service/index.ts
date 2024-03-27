@@ -363,7 +363,8 @@ export class MarshallService {
       console.log("🚀 ~ MarshallService ~ calculateRiceTest ~ riceTest:", riceTest)
 
       const data = {
-        riceTest
+        maxSpecificGravity: riceTest,
+        method: 'GMM'
       };
 
       return { 

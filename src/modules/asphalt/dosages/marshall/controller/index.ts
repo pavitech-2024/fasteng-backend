@@ -169,7 +169,8 @@ export class MarshallController {
   async calculateRiceTest(@Res() response: Response, @Body() body: any) {
     this.logger.log(`calculate step 5 rice test > [body]: ${body}`);
 
-    const status = await this.marshallService.calculateRiceTest(body);
+    
+    const status = await this.marshallService.calculateRiceTest(body.riceTest);
 
     return response.status(200).json(status);
   }
