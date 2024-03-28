@@ -8,8 +8,8 @@ import { MaterialsRepository } from 'modules/asphalt/materials/repository';
 import { SpecifyMassRepository } from 'modules/asphalt/essays/specifyMass/repository';
 
 @Injectable()
-export class maximumMixtureDensity_Marshall_Service {
-  private logger = new Logger(maximumMixtureDensity_Marshall_Service.name);
+export class MaximumMixtureDensity_Marshall_Service {
+  private logger = new Logger(MaximumMixtureDensity_Marshall_Service.name);
 
   constructor(
     @InjectModel(Marshall.name, DATABASE_CONNECTION.ASPHALT)
@@ -254,7 +254,7 @@ export class maximumMixtureDensity_Marshall_Service {
       });
 
       console.log(
-        '🚀 ~ maximumMixtureDensity_Marshall_Service ~ maxSpecificGravity ~ maxSpecificGravity:',
+        '🚀 ~ MaximumMixtureDensity_Marshall_Service ~ maxSpecificGravity ~ maxSpecificGravity:',
         maxSpecificGravity,
       );
 

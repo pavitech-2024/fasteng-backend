@@ -8,7 +8,8 @@ import { NotFound } from "../../../../../utils/exceptions";
 import { MarshallStep3Dto } from "../dto/step-3-marshall.dto";
 import { GranulometryComposition_Marshall_Service } from "./granulometry-composition.marshall.service";
 import { SetBinderTrial_Marshall_Service } from "./initial-binder-trial.service";
-import { maximumMixtureDensity_Marshall_Service } from "./maximumMixtureDensity.service";
+import { MaximumMixtureDensity_Marshall_Service } from "./maximumMixtureDensity.service";
+import { VolumetricParameters_Marshall_Service } from "./volumetric-parameters.service";
 
 @Injectable()
 export class MarshallService {
@@ -20,7 +21,8 @@ export class MarshallService {
     private readonly materialSelection_Service: MaterialSelection_Marshall_Service,
     private readonly granulometryComposition_Service: GranulometryComposition_Marshall_Service,
     private readonly setBinderTrial_Service: SetBinderTrial_Marshall_Service,
-    private readonly maximumMixtureDensity_Service: maximumMixtureDensity_Marshall_Service
+    private readonly maximumMixtureDensity_Service: MaximumMixtureDensity_Marshall_Service,
+    private readonly volumetricParameters_Service: VolumetricParameters_Marshall_Service
   ) { }
 
   async getAllDosages(userId: string): Promise<Marshall[]> {
@@ -390,6 +392,25 @@ export class MarshallService {
     }
   }
   
+  async setVolumetricParameters(body: any) {
+    try {
+      const volumetricParameters = await this.volumetricParameters_Service.setVolumetricParameters(body);
+      console.log("🚀 ~ MarshallService ~ setVolumetricParameters ~ volumetricParameters:", volumetricParameters)
+
+      const data = {
+        volumetricParameters
+      };
+
+      return { 
+        data, 
+        success: true 
+      };
+    } catch (error) {
+      this.logger.error(`error on setting step 6 volumetric parameters data > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { data: null, success: false, error: { status, message, name } };
+    }
+  }
 
   // async updateMarshall(marshall: Marshall): Promise<Marshall> {
   //   try {
