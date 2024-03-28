@@ -191,8 +191,23 @@ export class MarshallController {
   @Post('set-step-6-volumetric-parameters')
   async setVolumetricParameters(@Res() response: Response, @Body() body: any) {
     this.logger.log(`set step 6 volumetric parameters > [body]: ${body}`);
+
     
     const status = await this.marshallService.setVolumetricParameters(body);
+
+
+    return response.status(200).json(status);
+  }
+
+  @Post('save-volumetric-parameters-step/:userId')
+  async saveVolumetricParametersData(
+    @Res() response: Response,
+    @Param('userId') userId: string,
+    @Body() body: any
+  ) {
+    this.logger.log(`save step 6 data > [body]: ${body}`);
+
+    const status = await this.marshallService.saveStep6Data(body, userId);
 
     return response.status(200).json(status);
   }

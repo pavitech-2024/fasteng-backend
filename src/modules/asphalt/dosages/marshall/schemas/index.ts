@@ -77,6 +77,31 @@ export type MaximumMixtureDensityData = {
   }
 }
 
+export type VolumetricParametersData = {
+  pointsOfCurveDosageRBV: {
+    x: number,
+    y: number
+  }[],
+  pointsOfCurveDosageVv: {
+    x: number,
+    y: number
+  }[],
+  volumetricParameters: {
+    asphaltContent: number,
+    values: {
+      aggregateVolumeVoids: number,
+      apparentBulkSpecificGravity: number,
+      diametricalCompressionStrength: number,
+      fluency: number,
+      maxSpecificGravity: number,
+      ratioBitumenVoid: number,
+      stability: number,
+      voidsFilledAsphalt: number,
+      volumeVoids: number
+    }
+  }[]
+}
+
 @Schema({ collection: 'marshalls'})
 export class Marshall {
   _id: string;
@@ -101,6 +126,10 @@ export class Marshall {
   @IsNotEmpty()
   @Prop({ type: Object })
   maximumMixtureDensityData: MaximumMixtureDensityData
+
+  @IsNotEmpty()
+  @Prop({ type: Object })
+  volumetricParametersData: VolumetricParametersData
 }
 
 const MarshallSchema = SchemaFactory.createForClass(Marshall);

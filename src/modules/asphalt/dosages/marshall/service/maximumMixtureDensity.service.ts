@@ -270,6 +270,7 @@ export class MaximumMixtureDensity_Marshall_Service {
       this.logger.log('save marshall binder trial step on maximum-mixture-density.marshall.service.ts > [body]', {
         body,
       });
+      
 
       const { name } = body.maximumMixtureDensityData;
 

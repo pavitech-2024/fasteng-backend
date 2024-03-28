@@ -412,6 +412,18 @@ export class MarshallService {
     }
   }
 
+  async saveStep6Data(body: any, userId: string) {
+    try {
+      const success = await this.volumetricParameters_Service.saveStep6Data(body, userId);
+
+      return { success }
+    } catch (error) {
+      this.logger.error(`error on save step 6 data of marshall dosage > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { success: false, error: { status, message, name } };
+    }
+  }
+
   // async updateMarshall(marshall: Marshall): Promise<Marshall> {
   //   try {
   //     // busca um material com o id passado no banco de dados
