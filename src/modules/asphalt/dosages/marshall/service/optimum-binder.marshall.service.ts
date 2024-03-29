@@ -48,15 +48,14 @@ export class OptimumBinderContent_Marshall_Service {
   }
 
   async plotDosageGraph(
-    trialAsphaltContent: number,
+    //trialAsphaltContent: number,
     dnitBands: string,
     volumetricParameters: any,
     binderTrial: any,
-    result
   ) {
 
     const { pointsOfCurveDosageRBV, pointsOfCurveDosageVv } = volumetricParameters;
-    const { tenors } = binderTrial;
+    const { tenors, trial: trialAsphaltContent } = binderTrial;
 
     const pointsOfCurveDosage = [];
     let minBandVv;
