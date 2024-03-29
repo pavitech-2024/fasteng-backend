@@ -8,6 +8,7 @@ import { GranulometryComposition_Marshall_Service } from './service/granulometry
 import { SetBinderTrial_Marshall_Service } from './service/initial-binder-trial.service';
 import { MaximumMixtureDensity_Marshall_Service } from './service/maximumMixtureDensity.service';
 import { VolumetricParameters_Marshall_Service } from './service/volumetric-parameters.service';
+import { OptimumBinderContent_Marshall_Service } from './service/optimum-binder.marshall.service';
 
 const services = [ 
   MarshallService, 
@@ -16,7 +17,8 @@ const services = [
   GranulometryComposition_Marshall_Service,
   SetBinderTrial_Marshall_Service,
   MaximumMixtureDensity_Marshall_Service,
-  VolumetricParameters_Marshall_Service
+  VolumetricParameters_Marshall_Service,
+  OptimumBinderContent_Marshall_Service
 ];
 @Module({
     imports: [],

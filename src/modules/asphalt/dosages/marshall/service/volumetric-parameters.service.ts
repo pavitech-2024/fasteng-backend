@@ -252,7 +252,6 @@ export class VolumetricParameters_Marshall_Service {
       if (marshallExists._doc.generalData.step < 6) {
         await this.marshallRepository.saveStep(marshallExists, 6);
       }
-      
 
       return true;
     } catch (error) {

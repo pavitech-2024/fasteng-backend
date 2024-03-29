@@ -211,4 +211,14 @@ export class MarshallController {
 
     return response.status(200).json(status);
   }
+
+  @Post('set-step-7-optimum-binder')
+  async setOptimumBinderContentData(@Res() response: Response, @Body() body: any) {
+    this.logger.log(`set step 7 optimum binder content > [body]: ${body}`);
+    
+    const status = await this.marshallService.setOptimumBinderContentData(body);
+
+    
+    return response.status(200).json(status);
+  }
 }
