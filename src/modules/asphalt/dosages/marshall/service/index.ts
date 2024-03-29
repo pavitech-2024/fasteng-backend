@@ -445,6 +445,26 @@ export class MarshallService {
     }
   }
 
+  async setOptimumBinderContentDosageGraph(body: any) {
+    try {
+      const { dnitBand, volumetricParameters, trial, percentsOfDosage } = body;
+      const optimumBinder = await this.optimumBinder_Service.plotDosageGraph(dnitBand, volumetricParameters, trial, percentsOfDosage);
+
+      const data = {
+        optimumBinder
+      };
+
+      return { 
+        data, 
+        success: true 
+      };
+    } catch (error) {
+      this.logger.error(`error on setting step 7 optimum binder dosage graph data > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { data: null, success: false, error: { status, message, name } };
+    }
+  }
+
   // async updateMarshall(marshall: Marshall): Promise<Marshall> {
   //   try {
   //     // busca um material com o id passado no banco de dados

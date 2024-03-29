@@ -20,10 +20,14 @@ export class VolumetricParameters_Marshall_Service {
       this.logger.log('set volumetric parameters data on volumetric-parameters.marshall.service.ts > [body]', {
         body,
       });
-      
 
       const { volumetricParametersData } = body;
-      const { percentsOfDosage: trialAsphaltContent, trial: binderTrial, maxSpecificGravity, temperatureOfWater } = body;
+      const {
+        percentsOfDosage: trialAsphaltContent,
+        trial: binderTrial,
+        maxSpecificGravity,
+        temperatureOfWater,
+      } = body;
 
       let pointsOfCurveDosageVv = [];
       let pointsOfCurveDosageRBV = [];
@@ -144,12 +148,12 @@ export class VolumetricParameters_Marshall_Service {
           temperatureOfWater,
         );
 
-        pointsOfCurveDosageVv = returnVv;
-        pointsOfCurveDosageRBV = returnRBV;
+        pointsOfCurveDosageVv.push(returnVv);
+        pointsOfCurveDosageRBV.push(returnRBV);
         volumetricParameters = returnVp;
       }
 
-      return {volumetricParameters, pointsOfCurveDosageRBV, pointsOfCurveDosageVv};
+      return { volumetricParameters, pointsOfCurveDosageRBV, pointsOfCurveDosageVv };
     } catch (error) {
       throw new Error('Failed to set volumetric parameters.');
     }
@@ -171,7 +175,7 @@ export class VolumetricParameters_Marshall_Service {
     if (samplesVolumes !== 0) {
       apparentBulkSpecificGravity = (sumOfDryMass / samplesVolumes) * temperatureOfWater;
     } else {
-      apparentBulkSpecificGravity = 0; // Ou qualquer outro valor que faça sentido para o seu caso
+      apparentBulkSpecificGravity = 0;
     }
     const volumeVoids = (maxSpecificGravity - apparentBulkSpecificGravity) / maxSpecificGravity;
     const voidsFilledAsphalt = (apparentBulkSpecificGravity * asphaltContent) / 102.7;
@@ -232,9 +236,12 @@ export class VolumetricParameters_Marshall_Service {
 
   async saveStep6Data(body: any, userId: string) {
     try {
-      this.logger.log('save marshall volumetric parameters step on volumetric-parameters.marshall.service.ts > [body]', {
-        body,
-      });
+      this.logger.log(
+        'save marshall volumetric parameters step on volumetric-parameters.marshall.service.ts > [body]',
+        {
+          body,
+        },
+      );
 
       const { name } = body.volumetricParametersData;
 

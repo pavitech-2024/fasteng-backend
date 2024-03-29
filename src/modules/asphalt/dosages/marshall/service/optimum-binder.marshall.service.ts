@@ -1,19 +1,18 @@
-import { Injectable, Logger } from "@nestjs/common";
-import { MarshallService } from ".";
-import { InjectModel } from "@nestjs/mongoose";
-import { Marshall, MarshallDocument } from "../schemas";
-import { DATABASE_CONNECTION } from "infra/mongoose/database.config";
-import { Model } from "mongoose";
-
+import { Injectable, Logger } from '@nestjs/common';
+import { MarshallService } from '.';
+import { InjectModel } from '@nestjs/mongoose';
+import { Marshall, MarshallDocument } from '../schemas';
+import { DATABASE_CONNECTION } from 'infra/mongoose/database.config';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class OptimumBinderContent_Marshall_Service {
-  private logger = new Logger(MarshallService.name)
+  private logger = new Logger(MarshallService.name);
 
   constructor(
     @InjectModel(Marshall.name, DATABASE_CONNECTION.ASPHALT)
-    private marshallModel: Model<MarshallDocument>
-  ){}
+    private marshallModel: Model<MarshallDocument>,
+  ) {}
 
   async setOptimumBinderContentData(body) {
     this.logger.log('set graphs on optimum-binder.marshall.service.ts > [body]', {
@@ -31,7 +30,7 @@ export class OptimumBinderContent_Marshall_Service {
         stability: [['Teor', 'Stability']],
         vam: [['Teor', 'Vam']],
       };
-  
+
       volumetricParameters.forEach(({ asphaltContent, values }) => {
         graphics.rbv.push([asphaltContent, values.ratioBitumenVoid * 100]);
         graphics.vv.push([asphaltContent, values.volumeVoids * 100]);
@@ -40,7 +39,7 @@ export class OptimumBinderContent_Marshall_Service {
         graphics.stability.push([asphaltContent, values.stability]);
         graphics.vam.push([asphaltContent, values.aggregateVolumeVoids * 100]);
       });
-  
+
       return graphics;
     } catch (error) {
       throw new Error('Failed to set optimum binder content graphs.');
@@ -52,53 +51,64 @@ export class OptimumBinderContent_Marshall_Service {
     dnitBands: string,
     volumetricParameters: any,
     binderTrial: any,
+    percentsOfDosage: number[],
   ) {
+    try {
+      this.logger.log('set dosage graph on optimum-binder.marshall.service.ts > [body]', {
+        dnitBands,
+        volumetricParameters,
+        binderTrial,
+      });
 
-    const { pointsOfCurveDosageRBV, pointsOfCurveDosageVv } = volumetricParameters;
-    const { tenors, trial: trialAsphaltContent } = binderTrial;
+      const { pointsOfCurveDosageRBV, pointsOfCurveDosageVv } = volumetricParameters;
+      const trialAsphaltContent = binderTrial;
+      const tenors = percentsOfDosage;
 
-    const pointsOfCurveDosage = [];
-    let minBandVv;
-    let maxBandVv;
-    let minBandRBV;
-    let maxBandRBV;
+      const pointsOfCurveDosage = [];
+      let minBandVv;
+      let maxBandVv;
+      let minBandRBV;
+      let maxBandRBV;
 
-    if (dnitBands === 'A') {
-      minBandVv = 0.04;
-      maxBandVv = 0.6;
-      minBandRBV = 0.65;
-      maxBandRBV = 0.72;
-    } else if (dnitBands === 'B' || dnitBands === 'C') {
-      minBandVv = 0.03;
-      maxBandVv = 0.5;
-      minBandRBV = 0.75;
-      maxBandRBV = 0.82;
+      if (dnitBands === 'A') {
+        minBandVv = 0.04;
+        maxBandVv = 0.6;
+        minBandRBV = 0.65;
+        maxBandRBV = 0.72;
+      } else if (dnitBands === 'B' || dnitBands === 'C') {
+        minBandVv = 0.03;
+        maxBandVv = 0.5;
+        minBandRBV = 0.75;
+        maxBandRBV = 0.82;
+      }
+
+      const curveRBV = this.calculateEquationRBV(pointsOfCurveDosageRBV);
+      const curveVv = this.calculateEquationVv(pointsOfCurveDosageVv);
+
+      const pushData = (asphaltContent: number) => {
+        pointsOfCurveDosage.push([
+          asphaltContent,
+          this.calculateVv(asphaltContent, curveVv) * 100,
+          this.calculateRBV(asphaltContent, curveRBV) * 100,
+        ]);
+      };
+
+      [-1, -0.5, 0, 0.5, 1].forEach((increment) => pushData(trialAsphaltContent + increment));
+
+      const optimumContent = this.calculateVv4(
+        trialAsphaltContent - 1,
+        this.calculateVv(trialAsphaltContent - 1, curveVv),
+        trialAsphaltContent - 0.5,
+        this.calculateVv(trialAsphaltContent - 0.5, curveRBV),
+      );
+
+      return {
+        pointsOfCurveDosage,
+        optimumContent,
+      };
+    } catch (error) {
+      throw new Error('Failed to set optimum binder dosage graph.');
     }
-
-    const curveRBV = this.calculateEquationRBV(tenors);
-    const curveVv = this.calculateEquationVv(tenors);
-
-    const pushData = (asphaltContent: number) => {
-      pointsOfCurveDosage.push([
-        asphaltContent,
-        this.calculateVv(asphaltContent, curveVv) * 100,
-        this.calculateRBV(asphaltContent, curveRBV) * 100,
-      ]);
-    };
-
-    [-1, -0.5, 0, 0.5, 1].forEach((increment) => pushData(trialAsphaltContent + increment));
-
-    const optimumContent = this.calculateVv4(
-      trialAsphaltContent - 1,
-      this.calculateVv(trialAsphaltContent - 1, curveVv),
-      trialAsphaltContent - 0.5,
-      this.calculateVv(trialAsphaltContent - 0.5, curveRBV)
-    );
-
-    return {
-      pointsOfCurveDosage,
-      optimumContent,
-    };
   }
 
   calculateContentVv(y: number, curveVv) {
@@ -118,7 +128,6 @@ export class OptimumBinderContent_Marshall_Service {
   }
 
   calculateEquationVv(data: any[]) {
-
     let curveVv = { a: null, b: null };
 
     curveVv.a =
@@ -130,7 +139,12 @@ export class OptimumBinderContent_Marshall_Service {
   }
 
   calculateEquationRBV(data: any[]) {
+    console.log('🚀 ~ OptimumBinderContent_Marshall_Service ~ calculateEquationRBV ~ data:', data);
+
     let curveRBV = { a: null, b: null };
+
+    //0,25 - 0,24 /
+    //4
 
     curveRBV.a =
       (data.length * this.sumXY(data) - this.sumX(data) * this.sumY(data)) /
@@ -150,34 +164,72 @@ export class OptimumBinderContent_Marshall_Service {
 
   calculateVv4(x1: number, y1: number, x2: number, y2: number) {
     const m = (y2 - y1) / (x2 - x1);
-    return ((0.04 - y1) / m) + x1;
+    return (0.04 - y1) / m + x1;
   }
 
-  private sumXY(data: any[]) {
-    return data.reduce((acc, val) => acc + val[0] * val[1], 0);
+  // private sumXY(data: any[]) {
+  //   console.log("🚀 ~ OptimumBinderContent_Marshall_Service ~ sumXY ~ data:", data)
+  //   return data.reduce((acc, val) => acc + val.x * val.y, 0);
+  // }
+
+  private sumXY(data: { x: number; y: number }[][]) {
+    return data.reduce((acc, innerArray) => {
+      // Para cada matriz interna, somar os valores de x * y
+      return (
+        acc +
+        innerArray.reduce((innerAcc, obj) => {
+          // Para cada objeto dentro da matriz interna, multiplicar x por y e adicionar ao acumulador interno
+          return innerAcc + obj.x * obj.y;
+        }, 0)
+      );
+    }, 0);
   }
 
-  private sumX(data: any[]) {
-    return data.reduce((acc, val) => acc + val[0], 0);
+  private sumX(data: { x: number; y: number }[][]) {
+    return data.reduce((acc, innerArray) => {
+      return (
+        acc +
+        innerArray.reduce((innerAcc, obj) => {
+          return innerAcc + obj.x;
+        }, 0)
+      );
+    }, 0);
   }
 
-  private sumY(data: any[]) {
-    return data.reduce((acc, val) => acc + val[1], 0);
+  private sumY(data: { x: number; y: number }[][]) {
+    return data.reduce((acc, innerArray) => {
+      return (
+        acc +
+        innerArray.reduce((innerAcc, obj) => {
+          return innerAcc + obj.y;
+        }, 0)
+      );
+    }, 0);
   }
 
-  private sumPow2X(data: any[]) {
-    return data.reduce((acc, val) => acc + Math.pow(val[0], 2), 0);
+  private sumPow2X(data: { x: number; y: number }[][]) {
+    return data.reduce((acc, innerArray) => {
+      return (
+        acc +
+        innerArray.reduce((innerAcc, obj) => {
+          return innerAcc + Math.pow(obj.x, 2);
+        }, 0)
+      );
+    }, 0);
   }
 
-  private Pow2SumX(data: any[]) {
-    return Math.pow(this.sumX(data), 2);
+  private Pow2SumX(data: { x: number; y: number }[][]) {
+    const sumX = this.sumX(data);
+    return Math.pow(sumX, 2);
   }
 
-  private yBar(data: any[]) {
-    return this.sumY(data) / data.length;
+  private yBar(data: { x: number; y: number }[][]) {
+    const sumY = this.sumY(data);
+    return sumY / (data.length * data[0].length);
   }
 
-  private xBar(data: any[]) {
-    return this.sumX(data) / data.length;
+  private xBar(data: { x: number; y: number }[][]) {
+    const sumX = this.sumX(data);
+    return sumX / (data.length * data[0].length);
   }
 }
