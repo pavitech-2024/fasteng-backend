@@ -231,4 +231,13 @@ export class MarshallController {
     
     return response.status(200).json(status);
   }
+
+  @Post('step-7-get-expected-parameters')
+  async getOptimumBinderExpectedParameters(@Res() response: Response, @Body() body: any) {
+    this.logger.log(`set step 7 optimum binder expected parameters > [body]: ${body}`);
+    
+    const status = await this.marshallService.getOptimumBinderExpectedParameters(body);
+    
+    return response.status(200).json(status);
+  }
 }

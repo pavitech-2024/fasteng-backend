@@ -347,7 +347,8 @@ export class MarshallService {
 
       const data = {
         maxSpecificGravity: gmm.maxSpecificGravity.result,
-        method: gmm.maxSpecificGravity.method
+        method: gmm.maxSpecificGravity.method,
+        listOfSpecificGravities: gmm.listOfSpecificGravities
       };
 
       return { 
@@ -448,10 +449,29 @@ export class MarshallService {
   async setOptimumBinderContentDosageGraph(body: any) {
     try {
       const { dnitBand, volumetricParameters, trial, percentsOfDosage } = body;
-      const optimumBinder = await this.optimumBinder_Service.plotDosageGraph(dnitBand, volumetricParameters, trial, percentsOfDosage);
+      const optimumBinderDosageGraph = await this.optimumBinder_Service.plotDosageGraph(dnitBand, volumetricParameters, trial, percentsOfDosage);
 
       const data = {
-        optimumBinder
+        optimumBinderDosageGraph
+      };
+
+      return { 
+        data, 
+        success: true 
+      };
+    } catch (error) {
+      this.logger.error(`error on setting step 7 optimum binder dosage graph data > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { data: null, success: false, error: { status, message, name } };
+    }
+  }
+
+  async getOptimumBinderExpectedParameters(body: any) {
+    try {
+      const expectedParameters = await this.optimumBinder_Service.getExpectedParameters(body);
+
+      const data = {
+        expectedParameters
       };
 
       return { 

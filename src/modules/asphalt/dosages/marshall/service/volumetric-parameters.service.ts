@@ -59,24 +59,31 @@ export class VolumetricParameters_Marshall_Service {
         let nIndirectTensileStrength = 0;
 
         let usedMaxSpecifyGravity;
+        let asphaltContentResult;
 
         asphaltContent = Object.keys(newArray[i])[0];
 
         switch (asphaltContent) {
           case 'lessOne':
             usedMaxSpecifyGravity = maxSpecificGravity.result.lessOne;
+            asphaltContentResult = binderTrial - 1;
             break;
           case 'lessHalf':
             usedMaxSpecifyGravity = maxSpecificGravity.result.lessHalf;
+            asphaltContentResult = binderTrial - 0.5;
             break;
           case 'normal':
             usedMaxSpecifyGravity = maxSpecificGravity.result.normal;
+            asphaltContentResult = binderTrial;
             break;
           case 'plusHalf':
             usedMaxSpecifyGravity = maxSpecificGravity.result.plusHalf;
+            asphaltContentResult = binderTrial + 0.5;
+
             break;
           case 'plusOne':
             usedMaxSpecifyGravity = maxSpecificGravity.result.plusOne;
+            asphaltContentResult = binderTrial + 1;
             break;
           default:
           // O que fazer se asphaltContent não corresponder a nenhum caso
@@ -137,7 +144,7 @@ export class VolumetricParameters_Marshall_Service {
           pointsOfCurveDosageRBV: returnRBV,
           volumetricParameters: returnVp,
         } = await this.calculateVolumetricParameters(
-          binderTrial,
+          asphaltContentResult,
           sumOfDryMass,
           sumOfSubmergedMass,
           sumOfSaturatedMass,

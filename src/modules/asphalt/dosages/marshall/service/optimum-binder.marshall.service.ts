@@ -46,13 +46,7 @@ export class OptimumBinderContent_Marshall_Service {
     }
   }
 
-  async plotDosageGraph(
-    //trialAsphaltContent: number,
-    dnitBands: string,
-    volumetricParameters: any,
-    binderTrial: any,
-    percentsOfDosage: number[],
-  ) {
+  async plotDosageGraph(dnitBands: string, volumetricParameters: any, binderTrial: any, percentsOfDosage: number[]) {
     try {
       this.logger.log('set dosage graph on optimum-binder.marshall.service.ts > [body]', {
         dnitBands,
@@ -108,6 +102,66 @@ export class OptimumBinderContent_Marshall_Service {
       };
     } catch (error) {
       throw new Error('Failed to set optimum binder dosage graph.');
+    }
+  }
+
+  async getExpectedParameters(body: any) {
+    try {
+      const { 
+        optimumContent,
+        maxSpecificGravity,
+        listOfSpecificGravities,
+        trial: trialAsphaltContent,
+        percentsOfDosage,
+        vv: curveVv,
+        rbv: curveRBV
+      } = body;
+
+      let newMaxSpecificGravity;
+  
+      if (maxSpecificGravity.method === 'GMM') {
+  
+        const GMMs = [
+          maxSpecificGravity.lessOne,
+          maxSpecificGravity.lessHalf,
+          maxSpecificGravity.normal,
+          maxSpecificGravity.plusHalf,
+          maxSpecificGravity.plusOne,
+        ];
+  
+        const Contents = [
+          trialAsphaltContent - 1,
+          trialAsphaltContent - 0.5,
+          trialAsphaltContent,
+          trialAsphaltContent + 0.5,
+          trialAsphaltContent + 1,
+        ];
+  
+        const data = GMMs.map((gmm, i) => {
+          if (gmm) return { x: Contents[i], y: gmm };
+          else return;
+        });
+  
+        const coefficients = this.calculateEquation(data);
+  
+        newMaxSpecificGravity = coefficients.a * optimumContent + coefficients.b;
+      } else {
+        const denominator = percentsOfDosage.reduce(
+          (acc, percent, i) => (acc += percentsOfDosage[i] / listOfSpecificGravities[i]),
+          0,
+        );
+        newMaxSpecificGravity = 100 / (denominator + optimumContent / 1.03);
+      }
+  
+      const Vv = this.calculateVv(optimumContent, curveVv);
+      const Gmb = maxSpecificGravity * (1 - Vv);
+      let Vcb = (Gmb * optimumContent) / 1.027;
+      const RBV = this.calculateRBV(optimumContent, curveRBV);
+      const Vam = (Vv * 100 + Vcb) / 100;
+  
+      return { Vv, RBV, Vam, Gmb, maxSpecificGravity };
+    } catch (error) {
+      throw new Error('Failed to set optimum binder expected parameters.');
     }
   }
 
@@ -167,18 +221,11 @@ export class OptimumBinderContent_Marshall_Service {
     return (0.04 - y1) / m + x1;
   }
 
-  // private sumXY(data: any[]) {
-  //   console.log("🚀 ~ OptimumBinderContent_Marshall_Service ~ sumXY ~ data:", data)
-  //   return data.reduce((acc, val) => acc + val.x * val.y, 0);
-  // }
-
   private sumXY(data: { x: number; y: number }[][]) {
     return data.reduce((acc, innerArray) => {
-      // Para cada matriz interna, somar os valores de x * y
       return (
         acc +
         innerArray.reduce((innerAcc, obj) => {
-          // Para cada objeto dentro da matriz interna, multiplicar x por y e adicionar ao acumulador interno
           return innerAcc + obj.x * obj.y;
         }, 0)
       );

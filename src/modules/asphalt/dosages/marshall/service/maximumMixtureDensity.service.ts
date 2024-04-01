@@ -19,36 +19,6 @@ export class MaximumMixtureDensity_Marshall_Service {
     private readonly specificMassRepository: SpecifyMassRepository,
   ) {}
 
-  // async getIndexesOfMissesSpecificGravity(aggregates: any) {
-  //   try {
-
-  //     let materials = [];
-
-  //     aggregates.forEach(element => {
-  //       materials.push(element._id)
-  //     });
-
-  //     const getIndexesOfMissesSpecificGravity = async () => {
-  //        await Promise.all(materials.map(materialId =>
-  //         this.specificMassRepository.findOne({
-  //           "generalData.material._id": materialId
-  //         })))
-  //       .then(materials => {
-  //         const withoutExperimentSpecificGravity = materials.map((material, i) => {
-  //           if (!(material.generalData.material.type === 'coarseAggregate' || material.generalData.material.type === 'fineAggregate')) return i;
-  //           else return;
-  //         })
-  //         return { withoutExperimentSpecificGravity }
-  //       })
-  //       getIndexesOfMissesSpecificGravity();
-  //     }
-
-  //     return getIndexesOfMissesSpecificGravity
-  //   } catch (error) {
-  //     throw new Error('Failed to calculate max specific gravity.');
-  //   }
-  // }
-
   async getIndexesOfMissesSpecificGravity(aggregates: any) {
     try {
       let materials = aggregates.map((element) => element._id);
@@ -157,16 +127,6 @@ export class MaximumMixtureDensity_Marshall_Service {
   async calculateGmmData(body: any) {
     try {
       const { gmm: valuesOfGmm, temperatureOfWaterGmm, aggregates } = body;
-
-      // let formattedValuesOfGmm = [null, null, null, null, null];
-
-      // Object.keys(valuesOfGmm).forEach((item) => {
-      //   if (item === 'lessOne') formattedValuesOfGmm[0] = valuesOfGmm[item];
-      //   if (item === 'lessHalf') formattedValuesOfGmm[1] = valuesOfGmm[item];
-      //   if (item === 'normal') formattedValuesOfGmm[2] = valuesOfGmm[item];
-      //   if (item === 'plusHalf') formattedValuesOfGmm[3] = valuesOfGmm[item];
-      //   if (item === 'plusOne') formattedValuesOfGmm[4] = valuesOfGmm[item];
-      // });
 
       const materials = aggregates.map((element) => element._id);
 
