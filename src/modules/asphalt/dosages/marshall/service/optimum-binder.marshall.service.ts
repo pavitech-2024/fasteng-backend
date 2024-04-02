@@ -96,13 +96,22 @@ export class OptimumBinderContent_Marshall_Service {
         this.calculateVv(trialAsphaltContent - 0.5, curveRBV),
       );
 
+      const confirmedPercentsOfDosage = await this.confirmPercentsOfDosage(percentsOfDosage, optimumContent)
+
       return {
         pointsOfCurveDosage,
         optimumContent,
+        confirmedPercentsOfDosage
       };
     } catch (error) {
       throw new Error('Failed to set optimum binder dosage graph.');
     }
+  }
+
+  async confirmPercentsOfDosage(percentsOfDosage: any[], optimumContent: number): Promise<any> {
+    const confirmedPercentsOfDosage = percentsOfDosage.map(percent => (100 - optimumContent) * (percent / 100));
+
+    return confirmedPercentsOfDosage
   }
 
   async getExpectedParameters(body: any) {
@@ -112,7 +121,7 @@ export class OptimumBinderContent_Marshall_Service {
         maxSpecificGravity,
         listOfSpecificGravities,
         trial: trialAsphaltContent,
-        percentsOfDosage,
+        confirmedPercentsOfDosage: percentsOfDosage,
         vv: curveVv,
         rbv: curveRBV
       } = body;

@@ -326,8 +326,9 @@ export class MarshallService {
       const dmt = await this.maximumMixtureDensity_Service.calculateDmtData(body);
 
       const data = {
-        maxSpecificGravity: dmt.result,
-        method: dmt.method
+        maxSpecificGravity: dmt.maxSpecificGravity.result,
+        method: dmt.maxSpecificGravity.method,
+        listOfSpecificGravities: dmt.listOfSpecificGravities
       };
 
       return { 

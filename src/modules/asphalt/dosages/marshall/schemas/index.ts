@@ -74,7 +74,8 @@ export type MaximumMixtureDensityData = {
       plusOne: number,
     },
     method: string
-  }
+  },
+  listOfSpecificGravities: number[]
 }
 
 export type VolumetricParametersData = {

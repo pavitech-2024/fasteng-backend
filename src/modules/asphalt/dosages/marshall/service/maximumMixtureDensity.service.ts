@@ -98,6 +98,7 @@ export class MaximumMixtureDensity_Marshall_Service {
               denominadorPlusOne += percentsOfDosage[i][0] / listOfSpecificGravities[i];
             }
           }
+          
 
           const maxSpecificGravity = {
             result: {
@@ -110,7 +111,7 @@ export class MaximumMixtureDensity_Marshall_Service {
             method: 'DMT',
           };
 
-          return maxSpecificGravity;
+          return {maxSpecificGravity, listOfSpecificGravities};
         } catch (error) {
           throw new Error('Failed to calculate max specific gravity.');
         }
