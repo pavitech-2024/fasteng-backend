@@ -283,7 +283,8 @@ export class MarshallService {
 
       const data = {
         percentsOfDosage: binderTrial.result.percentsOfDosage,
-        bandsOfTemperatures: binderTrial.result.bandsOfTemperatures
+        bandsOfTemperatures: binderTrial.result.bandsOfTemperatures,
+        newPercentOfDosage: binderTrial.result.newPercentOfDosage
       };
 
       return { 
@@ -483,6 +484,18 @@ export class MarshallService {
       this.logger.error(`error on setting step 7 optimum binder dosage graph data > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
+    }
+  }
+
+  async saveStep7Data(body: any, userId: string) {
+    try {
+      const success = await this.optimumBinder_Service.saveStep7Data(body, userId);
+
+      return { success }
+    } catch (error) {
+      this.logger.error(`error on save step 7 data of marshall dosage > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { success: false, error: { status, message, name } };
     }
   }
 

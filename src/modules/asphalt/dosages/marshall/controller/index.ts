@@ -240,4 +240,17 @@ export class MarshallController {
     
     return response.status(200).json(status);
   }
+
+  @Post('save-optimum-binder-content-step/:userId')
+  async saveOptimumBinderContentData(
+    @Res() response: Response,
+    @Param('userId') userId: string,
+    @Body() body: any
+  ) {
+    this.logger.log(`save step 7 data > [body]: ${body}`);
+
+    const status = await this.marshallService.saveStep7Data(body, userId);
+
+    return response.status(200).json(status);
+  }
 }

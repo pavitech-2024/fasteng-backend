@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Marshall, MarshallDocument } from '../schemas';
 import { DATABASE_CONNECTION } from 'infra/mongoose/database.config';
 import { Model } from 'mongoose';
+import { MarshallRepository } from '../repository';
 
 @Injectable()
 export class OptimumBinderContent_Marshall_Service {
@@ -12,6 +13,7 @@ export class OptimumBinderContent_Marshall_Service {
   constructor(
     @InjectModel(Marshall.name, DATABASE_CONNECTION.ASPHALT)
     private marshallModel: Model<MarshallDocument>,
+    private readonly marshallRepository: MarshallRepository
   ) {}
 
   async setOptimumBinderContentData(body) {
@@ -56,7 +58,6 @@ export class OptimumBinderContent_Marshall_Service {
 
       const { pointsOfCurveDosageRBV, pointsOfCurveDosageVv } = volumetricParameters;
       const trialAsphaltContent = binderTrial;
-      const tenors = percentsOfDosage;
 
       const pointsOfCurveDosage = [];
       let minBandVv;
@@ -101,7 +102,9 @@ export class OptimumBinderContent_Marshall_Service {
       return {
         pointsOfCurveDosage,
         optimumContent,
-        confirmedPercentsOfDosage
+        confirmedPercentsOfDosage,
+        curveRBV,
+        curveVv
       };
     } catch (error) {
       throw new Error('Failed to set optimum binder dosage graph.');
@@ -121,9 +124,9 @@ export class OptimumBinderContent_Marshall_Service {
         maxSpecificGravity,
         listOfSpecificGravities,
         trial: trialAsphaltContent,
-        confirmedPercentsOfDosage: percentsOfDosage,
-        vv: curveVv,
-        rbv: curveRBV
+        confirmedPercentsOfDosage,
+        curveVv,
+        curveRBV
       } = body;
 
       let newMaxSpecificGravity;
@@ -155,20 +158,20 @@ export class OptimumBinderContent_Marshall_Service {
   
         newMaxSpecificGravity = coefficients.a * optimumContent + coefficients.b;
       } else {
-        const denominator = percentsOfDosage.reduce(
-          (acc, percent, i) => (acc += percentsOfDosage[i] / listOfSpecificGravities[i]),
+        const denominator = confirmedPercentsOfDosage.reduce(
+          (acc, percent, i) => (acc += confirmedPercentsOfDosage[i] / listOfSpecificGravities[i]),
           0,
         );
         newMaxSpecificGravity = 100 / (denominator + optimumContent / 1.03);
       }
   
       const Vv = this.calculateVv(optimumContent, curveVv);
-      const Gmb = maxSpecificGravity * (1 - Vv);
+      const Gmb = newMaxSpecificGravity * (1 - Vv);
       let Vcb = (Gmb * optimumContent) / 1.027;
       const RBV = this.calculateRBV(optimumContent, curveRBV);
       const Vam = (Vv * 100 + Vcb) / 100;
   
-      return { Vv, RBV, Vam, Gmb, maxSpecificGravity };
+      return { Vv, RBV, Vam, Gmb, newMaxSpecificGravity };
     } catch (error) {
       throw new Error('Failed to set optimum binder expected parameters.');
     }
@@ -230,62 +233,78 @@ export class OptimumBinderContent_Marshall_Service {
     return (0.04 - y1) / m + x1;
   }
 
-  private sumXY(data: { x: number; y: number }[][]) {
-    return data.reduce((acc, innerArray) => {
-      return (
-        acc +
-        innerArray.reduce((innerAcc, obj) => {
-          return innerAcc + obj.x * obj.y;
-        }, 0)
-      );
+  // private sumXY(data: { x: number; y: number }[][]) {
+  //   return data.reduce((acc, innerArray) => {
+  //     return (
+  //       acc +
+  //       innerArray.reduce((innerAcc, obj) => {
+  //         return innerAcc + obj.x * obj.y;
+  //       }, 0)
+  //     );
+  //   }, 0);
+  // }
+  private sumXY(data: { x: number; y: number }[]) {
+    return data.reduce((acc, obj) => {
+      return acc + obj.x * obj.y;
     }, 0);
-  }
+  }  
 
-  private sumX(data: { x: number; y: number }[][]) {
-    return data.reduce((acc, innerArray) => {
-      return (
-        acc +
-        innerArray.reduce((innerAcc, obj) => {
-          return innerAcc + obj.x;
-        }, 0)
-      );
-    }, 0);
+  private sumX(data: { x: number; y: number }[]) {
+    return data.reduce((acc, obj) => acc + obj.x, 0);
   }
-
-  private sumY(data: { x: number; y: number }[][]) {
-    return data.reduce((acc, innerArray) => {
-      return (
-        acc +
-        innerArray.reduce((innerAcc, obj) => {
-          return innerAcc + obj.y;
-        }, 0)
-      );
-    }, 0);
+  
+  private sumY(data: { x: number; y: number }[]) {
+    return data.reduce((acc, obj) => acc + obj.y, 0);
   }
-
-  private sumPow2X(data: { x: number; y: number }[][]) {
-    return data.reduce((acc, innerArray) => {
-      return (
-        acc +
-        innerArray.reduce((innerAcc, obj) => {
-          return innerAcc + Math.pow(obj.x, 2);
-        }, 0)
-      );
-    }, 0);
+  
+  private sumPow2X(data: { x: number; y: number }[]) {
+    return data.reduce((acc, obj) => acc + Math.pow(obj.x, 2), 0);
   }
-
-  private Pow2SumX(data: { x: number; y: number }[][]) {
+  
+  private Pow2SumX(data: { x: number; y: number }[]) {
     const sumX = this.sumX(data);
     return Math.pow(sumX, 2);
   }
-
-  private yBar(data: { x: number; y: number }[][]) {
+  
+  private yBar(data: { x: number; y: number }[]) {
     const sumY = this.sumY(data);
-    return sumY / (data.length * data[0].length);
+    return sumY / data.length;
+  }
+  
+  private xBar(data: { x: number; y: number }[]) {
+    const sumX = this.sumX(data);
+    return sumX / data.length;
   }
 
-  private xBar(data: { x: number; y: number }[][]) {
-    const sumX = this.sumX(data);
-    return sumX / (data.length * data[0].length);
+  async saveStep7Data(body: any, userId: string) {
+    try {
+      this.logger.log(
+        'save marshall optimum binder content step on optimum-binder.marshall.service.ts > [body]',
+        {
+          body,
+        },
+      );
+
+      const { name } = body.optimumBinderContentData;
+
+      const marshallExists: any = await this.marshallRepository.findOne(name, userId);
+
+      const { name: materialName, ...optimumBinderContentWithoutName } = body.optimumBinderContentData;
+
+      const marshallWithOptimumBinderContent = {
+        ...marshallExists._doc,
+        optimumBinderContentData: optimumBinderContentWithoutName,
+      };
+
+      await this.marshallModel.updateOne({ _id: marshallExists._doc._id }, marshallWithOptimumBinderContent);
+
+      if (marshallExists._doc.generalData.step < 7) {
+        await this.marshallRepository.saveStep(marshallExists, 7);
+      }
+
+      return true;
+    } catch (error) {
+      throw error;
+    }
   }
 }

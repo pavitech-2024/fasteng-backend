@@ -1,7 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { IsNotEmpty } from "class-validator";
 import { HydratedDocument } from "mongoose";
-import { GranulometryComposition_Marshall_Service } from "../service/granulometry-composition.marshall.service";
 
 export type MarshallDocument = HydratedDocument<Marshall>;
 
@@ -45,6 +44,7 @@ export type GranulometryCompositionData = {
 export type BinderTrialData = {
   trial: number
   percentsOfDosage: any[];
+  newPercentOfDosage: any[];
   bandsOfTemperatures: {
     machiningTemperatureRange: {
       higher: number,
@@ -103,6 +103,39 @@ export type VolumetricParametersData = {
   }[]
 }
 
+export type OptimumBinderContentData = {
+  optimumBinder: {
+    confirmedPercentsOfDosage: number[],
+    curveRBV: {
+      a: number,
+      b: number
+    },
+    curveVv: {
+      a: number,
+      b: number
+    },
+    optimumContent: number,
+    pointsOfCurveDosage: any[]
+  },
+  expectedParameters: {
+    expectedParameters: {
+      Gmb: number,
+      RBV: number,
+      Vam: number,
+      Vv: number,
+      newMaxSpecificGravity: number
+    }
+  },
+  graphics: {
+    rbv: any[],
+    vv: any[],
+    sg: any[],
+    gmb: any[],
+    stability: any[],
+    vam: any[]
+  },
+}
+
 @Schema({ collection: 'marshalls'})
 export class Marshall {
   _id: string;
@@ -131,6 +164,10 @@ export class Marshall {
   @IsNotEmpty()
   @Prop({ type: Object })
   volumetricParametersData: VolumetricParametersData
+
+  @IsNotEmpty()
+  @Prop({ type: Object })
+  optimumBinderContentData: OptimumBinderContentData
 }
 
 const MarshallSchema = SchemaFactory.createForClass(Marshall);

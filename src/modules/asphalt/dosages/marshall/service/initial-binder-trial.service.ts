@@ -19,7 +19,6 @@ export class SetBinderTrial_Marshall_Service {
     @InjectModel(Marshall.name, DATABASE_CONNECTION.ASPHALT)
     private marshallModel: Model<MarshallDocument>,
     private readonly viscosityRepository: ViscosityRotationalRepository,
-    private readonly viscosityRotational: ViscosityRotationalRepository,
     private readonly marshallRepository: MarshallRepository,
     private readonly materialsRepository: MaterialsRepository,
   ) {}
@@ -78,6 +77,7 @@ export class SetBinderTrial_Marshall_Service {
       const result = {
         bandsOfTemperatures,
         percentsOfDosage: percentOfDosageToReturn,
+        newPercentOfDosage
       };
 
       return { result };

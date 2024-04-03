@@ -155,9 +155,9 @@ export class VolumetricParameters_Marshall_Service {
           temperatureOfWater,
         );
 
-        pointsOfCurveDosageVv.push(returnVv);
-        pointsOfCurveDosageRBV.push(returnRBV);
-        volumetricParameters = returnVp;
+        pointsOfCurveDosageVv.push(...returnVv);
+        pointsOfCurveDosageRBV.push(...returnRBV);
+        volumetricParameters.push(...returnVp);
       }
 
       return { volumetricParameters, pointsOfCurveDosageRBV, pointsOfCurveDosageVv };
