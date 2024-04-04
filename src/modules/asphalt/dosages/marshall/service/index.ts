@@ -11,6 +11,7 @@ import { SetBinderTrial_Marshall_Service } from "./initial-binder-trial.service"
 import { MaximumMixtureDensity_Marshall_Service } from "./maximumMixtureDensity.service";
 import { VolumetricParameters_Marshall_Service } from "./volumetric-parameters.service";
 import { OptimumBinderContent_Marshall_Service } from "./optimum-binder.marshall.service";
+import { ConfirmCompression_Marshall_Service } from "./confirm-compression.marshall.service";
 
 @Injectable()
 export class MarshallService {
@@ -24,7 +25,8 @@ export class MarshallService {
     private readonly setBinderTrial_Service: SetBinderTrial_Marshall_Service,
     private readonly maximumMixtureDensity_Service: MaximumMixtureDensity_Marshall_Service,
     private readonly volumetricParameters_Service: VolumetricParameters_Marshall_Service,
-    private readonly optimumBinder_Service: OptimumBinderContent_Marshall_Service
+    private readonly optimumBinder_Service: OptimumBinderContent_Marshall_Service,
+    private readonly confirmCompression_Service: ConfirmCompression_Marshall_Service
   ) { }
 
   async getAllDosages(userId: string): Promise<Marshall[]> {
@@ -496,6 +498,25 @@ export class MarshallService {
       this.logger.error(`error on save step 7 data of marshall dosage > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
+    }
+  }
+
+  async confirmSpecificGravity(body: any) {
+    try {
+      const confirmedSpecificGravity = await this.confirmCompression_Service.confirmSpecificGravity(body);
+
+      const data = {
+        confirmedSpecificGravity
+      };
+
+      return { 
+        data, 
+        success: true 
+      };
+    } catch (error) {
+      this.logger.error(`error on confirming step 8 specific gravity > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { data: null, success: false, error: { status, message, name } };
     }
   }
 

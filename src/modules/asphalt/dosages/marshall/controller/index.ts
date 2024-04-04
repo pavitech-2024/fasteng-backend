@@ -253,4 +253,16 @@ export class MarshallController {
 
     return response.status(200).json(status);
   }
+
+  @Post('confirm-specific-gravity')
+  async confirmSpecificGravity(
+    @Res() response: Response,
+    @Body() body: any
+  ) {
+    this.logger.log(`confirm step 8 specific gravity > [body]: ${body}`);
+
+    const status = await this.marshallService.confirmSpecificGravity(body);
+
+    return response.status(200).json(status);
+  }
 }
