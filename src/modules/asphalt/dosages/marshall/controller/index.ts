@@ -265,4 +265,16 @@ export class MarshallController {
 
     return response.status(200).json(status);
   }
+
+  @Post('confirm-volumetric-parameters')
+  async confirmVolumetricParameters(
+    @Res() response: Response,
+    @Body() body: any
+  ) {
+    this.logger.log(`confirm step 8 specific gravity > [body]: ${body}`);
+
+    const status = await this.marshallService.confirmVolumetricParameters(body);
+
+    return response.status(200).json(status);
+  }
 }

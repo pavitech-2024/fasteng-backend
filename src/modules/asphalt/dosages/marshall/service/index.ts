@@ -520,6 +520,48 @@ export class MarshallService {
     }
   }
 
+  async confirmVolumetricParameters(body: any) {
+    try {
+
+      const {
+        asphaltContent,
+        sumOfDryMass,
+        sumOfSubmergedMass,
+        sumOfSaturatedMass,
+        maxSpecificGravity,
+        stabilityBar,
+        fluencyBar,
+        diametricalCompressionStrengthBar,
+        temperatureOfWater,
+      } = body;
+
+      const confirmedVolumetricParameters = await this.volumetricParameters_Service.calculateVolumetricParameters(
+        asphaltContent,
+        sumOfDryMass,
+        sumOfSubmergedMass,
+        sumOfSaturatedMass,
+        maxSpecificGravity,
+        stabilityBar,
+        fluencyBar,
+        diametricalCompressionStrengthBar,
+        temperatureOfWater,
+      );
+
+      const data = {
+        confirmedVolumetricParameters
+      };
+
+      return { 
+        data, 
+        success: true 
+      };
+    } catch (error) {
+      this.logger.error(`error on confirming step 8 specific gravity > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { data: null, success: false, error: { status, message, name } };
+    }
+  }
+
   // async updateMarshall(marshall: Marshall): Promise<Marshall> {
   //   try {
   //     // busca um material com o id passado no banco de dados

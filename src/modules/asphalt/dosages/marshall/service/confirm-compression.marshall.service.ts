@@ -19,6 +19,7 @@ export class ConfirmCompression_Marshall_Service {
   async confirmSpecificGravity(body: any) {
     try {
       this.logger.log('confirming specific gravity on confirm-compression.marshall.service.ts > [body]', { body });
+      
 
       const { 
         method, 
@@ -33,10 +34,20 @@ export class ConfirmCompression_Marshall_Service {
       let confirmedSpecificGravity;
       let GMM;
 
-      
+      let formattedPercentsOfDosage = [];
+
+      const ids1 = new Set();
+
+      Object.keys(percentsOfDosage[0]).forEach(key => {
+        const id = key.split('_')[1];
+        ids1.add(id);
+        const value = percentsOfDosage[0][key];
+        const index = Array.from(ids1).indexOf(id);
+        formattedPercentsOfDosage[index] = value;
+      });
 
       if (method === 'DMT') {
-        const denominador = percentsOfDosage.reduce(
+        const denominador = formattedPercentsOfDosage.reduce(
           (acc, percent, i) => (acc += confirmedPercentsOfDosage[i] / listOfSpecificGravities[i]),
           0,
         );
