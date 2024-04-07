@@ -7,14 +7,14 @@ import { MarshallRepository } from '../repository';
 
 interface SampleData {
   asphaltContent: number;
-  dryMass: number;
-  submergedMass: number;
-  drySurfaceSaturatedMass: number;
+  sumOfSaturatedMass: number;
+  sumOfDryMass: number;
+  sumOfSubmergedMass: number;
   stability: number;
   fluency: number;
   diametricalCompressionStrength: number;
   temperatureOfWater: number;
-  maxSpecificGravity: number
+  maxSpecificGravity: number;
 }
 
 @Injectable()
@@ -69,6 +69,9 @@ export class VolumetricParameters_Marshall_Service {
         let nStability = 0;
         let nFluency = 0;
         let nIndirectTensileStrength = 0;
+        let nDryMass = 0;
+        let nSubmergedMass = 0;
+        let nSaturatedMass = 0;
 
         let usedMaxSpecifyGravity;
         let asphaltContentResult;
@@ -101,20 +104,7 @@ export class VolumetricParameters_Marshall_Service {
           // O que fazer se asphaltContent não corresponder a nenhum caso
         }
 
-        console.log(
-          '🚀 ~ VolumetricParameters_Marshall_Service ~ setVolumetricParameters ~ newArray[i]:',
-          newArray[i].length,
-        );
-        console.log(
-          '🚀 ~ VolumetricParameters_Marshall_Service ~ setVolumetricParameters ~ newArray[i][asphaltContent]:',
-          newArray[i][asphaltContent].length,
-        );
-
         for (let j = 0; j < newArray[i][asphaltContent].length; j++) {
-          console.log(
-            '🚀 ~ VolumetricParameters_Marshall_Service ~ setVolumetricParameters ~ newArray[i][j]:',
-            newArray[i][j],
-          );
           const {
             dryMass,
             drySurfaceSaturatedMass,
@@ -123,9 +113,13 @@ export class VolumetricParameters_Marshall_Service {
             fluency,
             diametricalCompressionStrength,
           } = newArray[i][asphaltContent][j];
+
           sumOfDryMass += dryMass;
           sumOfSaturatedMass += drySurfaceSaturatedMass;
           sumOfSubmergedMass += submergedMass;
+          nDryMass++;
+          nSubmergedMass++;
+          nSaturatedMass++;
 
           if (stability !== 0) {
             sumStability += stability;
@@ -151,19 +145,22 @@ export class VolumetricParameters_Marshall_Service {
         const fluencyBar = sumFluency / nFluency;
         const diametricalCompressionStrengthBar = sumIndirectTensileStrength / nIndirectTensileStrength;
 
-        const sampleData = [
+        // const samplesVolumes = (saturatedMass - submergedMass);
+        // const apparentBulkSpecificGravity = (dryMass / samplesVolumes) * temperatureOfWater;
+        // const volumeVoids = (usedMaxSpecifyGravity - apparentBulkSpecificGravity) / usedMaxSpecifyGravity;
+
+        const sampleData =
           {
             asphaltContent: asphaltContentResult,
-            dryMass: sumOfDryMass,
-            submergedMass: sumOfSubmergedMass,
-            drySurfaceSaturatedMass: sumOfSaturatedMass,
+            sumOfDryMass,
+            sumOfSubmergedMass,
+            sumOfSaturatedMass,
             stability: stabilityBar,
             fluency: fluencyBar,
             diametricalCompressionStrength: diametricalCompressionStrengthBar,
             temperatureOfWater,
-            maxSpecificGravity: usedMaxSpecifyGravity
-          }
-        ]
+            maxSpecificGravity: usedMaxSpecifyGravity,
+          };
 
         const {
           pointsOfCurveDosageVv: returnVv,
@@ -182,110 +179,62 @@ export class VolumetricParameters_Marshall_Service {
     }
   }
 
-  // async calculateVolumetricParameters(
-  //   asphaltContent: number,
-  //   sumOfDryMass: number,
-  //   sumOfSubmergedMass: number,
-  //   sumOfSaturatedMass: number,
-  //   maxSpecificGravity: number,
-  //   stabilityBar: number,
-  //   fluencyBar: number,
-  //   diametricalCompressionStrengthBar: number,
-  //   temperatureOfWater: number,
-  //   isVP: boolean
-  // ) {
-  //   const samplesVolumes = sumOfSaturatedMass - sumOfSubmergedMass;
-  //   let apparentBulkSpecificGravity;
-  //   if (samplesVolumes !== 0) {
-  //     apparentBulkSpecificGravity = (sumOfDryMass / samplesVolumes) * temperatureOfWater;
-  //   } else {
-  //     apparentBulkSpecificGravity = 0;
-  //   }
-  //   const volumeVoids = (maxSpecificGravity - apparentBulkSpecificGravity) / maxSpecificGravity;
-  //   const voidsFilledAsphalt = (apparentBulkSpecificGravity * asphaltContent) / 102.7;
-  //   const aggregateVolumeVoids = volumeVoids + voidsFilledAsphalt;
-  //   const ratioBitumenVoid = voidsFilledAsphalt / aggregateVolumeVoids;
-
-  //   let pointsOfCurveDosageVv = [];
-  //   let pointsOfCurveDosageRBV = [];
-  //   let volumetricParameters = [];
-
-  //   volumetricParameters.push({
-  //     asphaltContent,
-  //     values: {
-  //       volumeVoids,
-  //       apparentBulkSpecificGravity,
-  //       voidsFilledAsphalt,
-  //       aggregateVolumeVoids,
-  //       ratioBitumenVoid,
-  //       fluency: fluencyBar,
-  //       stability: stabilityBar,
-  //       diametricalCompressionStrength: diametricalCompressionStrengthBar,
-  //       maxSpecificGravity,
-  //     },
-  //   });
-
-  //   pointsOfCurveDosageVv.push({ x: asphaltContent, y: volumeVoids });
-  //   pointsOfCurveDosageRBV.push({ x: asphaltContent, y: ratioBitumenVoid });
-
-  //   return {
-  //     pointsOfCurveDosageVv,
-  //     pointsOfCurveDosageRBV,
-  //     volumetricParameters,
-  //   };
-  // }
-
-  
-  async calculateVolumetricParameters(samplesData: SampleData[]) {
+  async calculateVolumetricParameters(samplesData: SampleData) {
     try {
       let pointsOfCurveDosageVv = [];
       let pointsOfCurveDosageRBV = [];
       let volumetricParameters = [];
-    
-      for (const sampleData of samplesData) {
-        const {
-          asphaltContent,
-          dryMass,
-          submergedMass,
-          drySurfaceSaturatedMass,
-          stability,
+
+      const {
+        asphaltContent,
+        sumOfSaturatedMass,
+        sumOfDryMass,
+        sumOfSubmergedMass,
+        stability,
+        fluency,
+        diametricalCompressionStrength,
+        temperatureOfWater,
+        maxSpecificGravity,
+      } = samplesData;
+
+      // const samplesVolumes = drySurfaceSaturatedMass - submergedMass;
+      // let apparentBulkSpecificGravity;
+      // if (samplesVolumes !== 0) {
+      //   apparentBulkSpecificGravity = (dryMass / samplesVolumes) * temperatureOfWater;
+      // } else {
+      //   apparentBulkSpecificGravity = 0;
+      // }
+      // const volumeVoids = (maxSpecificGravity - apparentBulkSpecificGravity) / maxSpecificGravity;
+      // const voidsFilledAsphalt = (apparentBulkSpecificGravity * asphaltContent) / 102.7;
+      // const aggregateVolumeVoids = volumeVoids + voidsFilledAsphalt;
+      // const ratioBitumenVoid = voidsFilledAsphalt / aggregateVolumeVoids;
+
+      const samplesVolumes = (sumOfSaturatedMass - sumOfSubmergedMass);
+      const apparentBulkSpecificGravity = (sumOfDryMass / samplesVolumes) * temperatureOfWater;
+      const volumeVoids = (maxSpecificGravity - apparentBulkSpecificGravity) / maxSpecificGravity;
+      const voidsFilledAsphalt = apparentBulkSpecificGravity * asphaltContent / 102.7;
+      const aggregateVolumeVoids = volumeVoids + voidsFilledAsphalt;
+      const ratioBitumenVoid = voidsFilledAsphalt / aggregateVolumeVoids;
+
+
+      volumetricParameters.push({
+        asphaltContent,
+        values: {
+          volumeVoids,
+          apparentBulkSpecificGravity,
+          voidsFilledAsphalt,
+          aggregateVolumeVoids,
+          ratioBitumenVoid,
           fluency,
+          stability,
           diametricalCompressionStrength,
-          temperatureOfWater,
-          maxSpecificGravity
-        } = sampleData;
-    
-        const samplesVolumes = drySurfaceSaturatedMass - submergedMass;
-        let apparentBulkSpecificGravity;
-        if (samplesVolumes !== 0) {
-          apparentBulkSpecificGravity = (dryMass / samplesVolumes) * temperatureOfWater;
-        } else {
-          apparentBulkSpecificGravity = 0;
-        }
-        const volumeVoids = (maxSpecificGravity - apparentBulkSpecificGravity) / maxSpecificGravity;
-        const voidsFilledAsphalt = (apparentBulkSpecificGravity * asphaltContent) / 102.7;
-        const aggregateVolumeVoids = volumeVoids + voidsFilledAsphalt;
-        const ratioBitumenVoid = voidsFilledAsphalt / aggregateVolumeVoids;
-    
-        volumetricParameters.push({
-          asphaltContent,
-          values: {
-            volumeVoids,
-            apparentBulkSpecificGravity,
-            voidsFilledAsphalt,
-            aggregateVolumeVoids,
-            ratioBitumenVoid,
-            fluency,
-            stability,
-            diametricalCompressionStrength,
-            maxSpecificGravity,
-          },
-        });
-    
-        pointsOfCurveDosageVv.push({ x: asphaltContent, y: volumeVoids });
-        pointsOfCurveDosageRBV.push({ x: asphaltContent, y: ratioBitumenVoid });
-      }
-    
+          maxSpecificGravity,
+        },
+      });
+
+      pointsOfCurveDosageVv.push({ x: asphaltContent, y: volumeVoids });
+      pointsOfCurveDosageRBV.push({ x: asphaltContent, y: ratioBitumenVoid });
+
       return {
         pointsOfCurveDosageVv,
         pointsOfCurveDosageRBV,
@@ -295,7 +244,94 @@ export class VolumetricParameters_Marshall_Service {
       throw new Error(`Failed to set volumetric parameters: ${error}`);
     }
   }
-  
+
+  async confirmVolumetricParameters(body: any) {
+    try {
+      const {
+        valuesOfVolumetricParameters,
+        confirmedSpecificGravity,
+        optimumContent,
+        confirmedPercentsOfDosage,
+        listOfSpecificGravities,
+        temperatureOfWater,
+      } = body;
+
+      let sumDryMass = 0;
+      let sumSubmergedMass = 0;
+      let sumSaturatedMass = 0;
+      let sumStability = 0;
+      let sumFluency = 0;
+      let sumIndirectTensileStrength = 0;
+      let nStability = 0;
+      let nFluency = 0;
+      let nIndirectTensileStrength = 0;
+      let nDryMass = 0;
+      let nSubmergedMass = 0;
+      let nSaturatedMass = 0;
+
+      for (let i = 0; i < valuesOfVolumetricParameters.length; i++) {
+        sumDryMass += valuesOfVolumetricParameters[i].dryMass;
+        sumSubmergedMass += valuesOfVolumetricParameters[i].submergedMass;
+        sumSaturatedMass += valuesOfVolumetricParameters[i].drySurfaceSaturatedMass;
+        nDryMass++;
+        nSubmergedMass++;
+        nSaturatedMass++;
+        if (valuesOfVolumetricParameters[i].stability !== 0) {
+          sumStability += valuesOfVolumetricParameters[i].stability;
+          nStability++;
+        }
+        if (valuesOfVolumetricParameters[i].fluency !== 0) {
+          sumFluency += valuesOfVolumetricParameters[i].fluency;
+          nFluency++;
+        }
+        if (valuesOfVolumetricParameters[i].indirectTensileStrength !== 0) {
+          sumIndirectTensileStrength += valuesOfVolumetricParameters[i].diametricalCompressionStrength;
+          nIndirectTensileStrength++;
+        }
+      }
+
+      let dryMass = sumDryMass / nDryMass;
+      let saturatedMass = sumSaturatedMass / nSaturatedMass;
+      let submergedMass = sumSubmergedMass / nSubmergedMass;
+      if (nStability === 0) nStability = 1;
+      if (nFluency === 0) nFluency = 1;
+      if (nIndirectTensileStrength === 0) nIndirectTensileStrength = 1;
+
+      const stabilityBar = sumStability / nStability;
+      const fluencyBar = sumFluency / nFluency;
+      const indirectTensileStrengthBar = sumIndirectTensileStrength / nIndirectTensileStrength;
+      const samplesVolumes = saturatedMass - submergedMass;
+      const apparentBulkSpecificGravity = (dryMass / samplesVolumes) * temperatureOfWater;
+      const volumeVoids = (confirmedSpecificGravity - apparentBulkSpecificGravity) / confirmedSpecificGravity;
+      const voidsFilledAsphalt = (apparentBulkSpecificGravity * optimumContent) / 102.7;
+      const aggregateVolumeVoids = volumeVoids + voidsFilledAsphalt;
+      const ratioBitumenVoid = voidsFilledAsphalt / aggregateVolumeVoids;
+      const quantitative = confirmedPercentsOfDosage.map(
+        (percent, i) => (confirmedSpecificGravity * percent * 10) / 1000 / listOfSpecificGravities[i],
+      );
+      quantitative.unshift(optimumContent * 10 * confirmedSpecificGravity);
+
+      const confirmedVolumetricParameters = {
+        valuesOfVolumetricParameters,
+        asphaltContent: optimumContent,
+        quantitative,
+        values: {
+          volumeVoids,
+          apparentBulkSpecificGravity,
+          voidsFilledAsphalt,
+          aggregateVolumeVoids,
+          ratioBitumenVoid,
+          stability: stabilityBar,
+          fluency: fluencyBar,
+          indirectTensileStrength: indirectTensileStrengthBar,
+        },
+      };
+
+      return confirmedVolumetricParameters;
+    } catch (error) {
+      throw new Error(`Failed to confirm volumetric parameters: ${error}`);
+    }
+  }
 
   temperaturesOfWater(name: string): number | undefined {
     const list = {

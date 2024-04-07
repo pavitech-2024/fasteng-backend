@@ -523,7 +523,7 @@ export class MarshallService {
   async confirmVolumetricParameters(body: any) {
     try {
 
-      const confirmedVolumetricParameters = await this.volumetricParameters_Service.calculateVolumetricParameters(body);
+      const confirmedVolumetricParameters = await this.volumetricParameters_Service.confirmVolumetricParameters(body);
 
       const data = {
         confirmedVolumetricParameters
