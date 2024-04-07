@@ -70,4 +70,36 @@ export class ConfirmCompression_Marshall_Service {
       throw error;
     }
   }
+
+  async saveStep8Data(body: any, userId: string) {
+    try {
+      this.logger.log(
+        'save marshall confirmation compression step on confirmation-compression.marshall.service.ts > [body]',
+        {
+          body,
+        },
+      );
+
+      const { name } = body.confirmationCompressionData;
+
+      const marshallExists: any = await this.marshallRepository.findOne(name, userId);
+
+      const { name: materialName, ...confirmationCompressionWithoutName } = body.confirmationCompressionData;
+
+      const marshallWithConfirmationCompression = {
+        ...marshallExists._doc,
+        confirmationCompressionData: confirmationCompressionWithoutName,
+      };
+
+      await this.marshallModel.updateOne({ _id: marshallExists._doc._id }, marshallWithConfirmationCompression);
+
+      if (marshallExists._doc.generalData.step < 8) {
+        await this.marshallRepository.saveStep(marshallExists, 8);
+      }
+
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  }
 }

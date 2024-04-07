@@ -523,29 +523,7 @@ export class MarshallService {
   async confirmVolumetricParameters(body: any) {
     try {
 
-      const {
-        asphaltContent,
-        sumOfDryMass,
-        sumOfSubmergedMass,
-        sumOfSaturatedMass,
-        maxSpecificGravity,
-        stabilityBar,
-        fluencyBar,
-        diametricalCompressionStrengthBar,
-        temperatureOfWater,
-      } = body;
-
-      const confirmedVolumetricParameters = await this.volumetricParameters_Service.calculateVolumetricParameters(
-        asphaltContent,
-        sumOfDryMass,
-        sumOfSubmergedMass,
-        sumOfSaturatedMass,
-        maxSpecificGravity,
-        stabilityBar,
-        fluencyBar,
-        diametricalCompressionStrengthBar,
-        temperatureOfWater,
-      );
+      const confirmedVolumetricParameters = await this.volumetricParameters_Service.calculateVolumetricParameters(body);
 
       const data = {
         confirmedVolumetricParameters
@@ -559,6 +537,18 @@ export class MarshallService {
       this.logger.error(`error on confirming step 8 specific gravity > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
+    }
+  }
+
+  async saveStep8Data(body: any, userId: string) {
+    try {
+      const success = await this.confirmCompression_Service.saveStep8Data(body, userId);
+
+      return { success }
+    } catch (error) {
+      this.logger.error(`error on save step 8 data of marshall dosage > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { success: false, error: { status, message, name } };
     }
   }
 

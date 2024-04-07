@@ -271,9 +271,22 @@ export class MarshallController {
     @Res() response: Response,
     @Body() body: any
   ) {
-    this.logger.log(`confirm step 8 specific gravity > [body]: ${body}`);
+    this.logger.log(`confirm step 8volumetric parameters > [body]: ${body}`);
 
     const status = await this.marshallService.confirmVolumetricParameters(body);
+
+    return response.status(200).json(status);
+  }
+
+  @Post('save-confirmation-compression-data-step/:userId')
+  async saveConfirmationCompressionData(
+    @Res() response: Response,
+    @Param('userId') userId: string,
+    @Body() body: any
+  ) {
+    this.logger.log(`save step 7 data > [body]: ${body}`);
+
+    const status = await this.marshallService.saveStep8Data(body, userId);
 
     return response.status(200).json(status);
   }
