@@ -145,10 +145,6 @@ export class VolumetricParameters_Marshall_Service {
         const fluencyBar = sumFluency / nFluency;
         const diametricalCompressionStrengthBar = sumIndirectTensileStrength / nIndirectTensileStrength;
 
-        // const samplesVolumes = (saturatedMass - submergedMass);
-        // const apparentBulkSpecificGravity = (dryMass / samplesVolumes) * temperatureOfWater;
-        // const volumeVoids = (usedMaxSpecifyGravity - apparentBulkSpecificGravity) / usedMaxSpecifyGravity;
-
         const sampleData =
           {
             asphaltContent: asphaltContentResult,
@@ -196,18 +192,6 @@ export class VolumetricParameters_Marshall_Service {
         temperatureOfWater,
         maxSpecificGravity,
       } = samplesData;
-
-      // const samplesVolumes = drySurfaceSaturatedMass - submergedMass;
-      // let apparentBulkSpecificGravity;
-      // if (samplesVolumes !== 0) {
-      //   apparentBulkSpecificGravity = (dryMass / samplesVolumes) * temperatureOfWater;
-      // } else {
-      //   apparentBulkSpecificGravity = 0;
-      // }
-      // const volumeVoids = (maxSpecificGravity - apparentBulkSpecificGravity) / maxSpecificGravity;
-      // const voidsFilledAsphalt = (apparentBulkSpecificGravity * asphaltContent) / 102.7;
-      // const aggregateVolumeVoids = volumeVoids + voidsFilledAsphalt;
-      // const ratioBitumenVoid = voidsFilledAsphalt / aggregateVolumeVoids;
 
       const samplesVolumes = (sumOfSaturatedMass - sumOfSubmergedMass);
       const apparentBulkSpecificGravity = (sumOfDryMass / samplesVolumes) * temperatureOfWater;

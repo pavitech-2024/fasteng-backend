@@ -552,6 +552,30 @@ export class MarshallService {
     }
   }
 
+  async saveMarshallDosage(body: any, userId: string) {
+    try {
+      const success = await this.generalData_Service.saveMarshallDosage(body, userId);
+
+      return { success }
+    } catch (error) {
+      this.logger.error(`error on save step 8 data of marshall dosage > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { success: false, error: { status, message, name } };
+    }
+  }
+
+  async deleteMarshallDosage(id: string) {
+    try {
+      const success = await this.generalData_Service.deleteMarshallDosage(id);
+
+      return { success }
+    } catch (error) {
+      this.logger.error(`error on delete marshall dosage > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { success: false, error: { status, message, name } };
+    }
+  }
+
   // async updateMarshall(marshall: Marshall): Promise<Marshall> {
   //   try {
   //     // busca um material com o id passado no banco de dados

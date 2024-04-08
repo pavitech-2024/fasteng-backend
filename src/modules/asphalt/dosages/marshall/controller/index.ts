@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Logger, Param, Post, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, Param, Post, Res } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response, response } from 'express';
 import { MarshallService } from '../service';
@@ -287,6 +287,31 @@ export class MarshallController {
     this.logger.log(`save step 7 data > [body]: ${body}`);
 
     const status = await this.marshallService.saveStep8Data(body, userId);
+
+    return response.status(200).json(status);
+  }
+
+  @Post('save-marshall-dosage/:userId')
+  async saveMarshallDosage(
+    @Res() response: Response,
+    @Param('userId') userId: string,
+    @Body() body: any
+  ) {
+    this.logger.log(`save marshall dosage > [body]: ${body}`);
+
+    const status = await this.marshallService.saveMarshallDosage(body, userId);
+
+    return response.status(200).json(status);
+  }
+
+  @Delete(':id')
+  async deleteMarshallDosage(
+    @Res() response: Response,
+    @Param('id') id: string
+  ) {
+    this.logger.log(`delete marshall dosage > [body]: ${id}`);
+
+    const status = await this.marshallService.deleteMarshallDosage(id);
 
     return response.status(200).json(status);
   }
