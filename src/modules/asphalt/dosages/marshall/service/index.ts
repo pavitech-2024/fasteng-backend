@@ -369,7 +369,6 @@ export class MarshallService {
   async calculateRiceTest(body: any) {
     try {
       const riceTest = await this.maximumMixtureDensity_Service.calculateRiceTest(body);
-      console.log("🚀 ~ MarshallService ~ calculateRiceTest ~ riceTest:", riceTest)
 
       const data = {
         maxSpecificGravity: riceTest,
@@ -402,7 +401,6 @@ export class MarshallService {
   async setVolumetricParameters(body: any) {
     try {
       const volumetricParameters = await this.volumetricParameters_Service.setVolumetricParameters(body);
-      console.log("🚀 ~ MarshallService ~ setVolumetricParameters ~ volumetricParameters:", volumetricParameters)
 
       const data = {
         volumetricParameters

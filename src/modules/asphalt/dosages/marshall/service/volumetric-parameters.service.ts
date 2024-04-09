@@ -57,8 +57,6 @@ export class VolumetricParameters_Marshall_Service {
         }
       });
 
-      console.log('🚀 ~ VolumetricParameters_Marshall_Service ~ setVolumetricParameters ~ newArray:', newArray);
-
       for (let i = 0; i < newArray.length; i++) {
         let sumOfDryMass = 0;
         let sumOfSaturatedMass = 0;

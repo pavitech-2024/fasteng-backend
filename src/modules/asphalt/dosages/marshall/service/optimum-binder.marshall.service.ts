@@ -205,7 +205,6 @@ export class OptimumBinderContent_Marshall_Service {
   }
 
   calculateEquationRBV(data: any[]) {
-    console.log('🚀 ~ OptimumBinderContent_Marshall_Service ~ calculateEquationRBV ~ data:', data);
 
     let curveRBV = { a: null, b: null };
 

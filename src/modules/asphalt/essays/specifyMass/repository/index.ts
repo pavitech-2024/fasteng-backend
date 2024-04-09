@@ -11,7 +11,6 @@ export class SpecifyMassRepository {
 
   async findOne(specifyMassFilterQuery: any): Promise<SpecifyMass> {
     const SpecifyMass = await this.specifyMassModel.findOne(specifyMassFilterQuery);
-    console.log("🚀 ~ SpecifyMassRepository ~ findOne ~ SpecifyMass:", SpecifyMass)
 
     return SpecifyMass;
   }

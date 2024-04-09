@@ -214,12 +214,6 @@ export class MaximumMixtureDensity_Marshall_Service {
         };
       });
 
-      console.log(
-        '🚀 ~ MaximumMixtureDensity_Marshall_Service ~ maxSpecificGravity ~ maxSpecificGravity:',
-        maxSpecificGravity,
-      );
-
-
       return maxSpecificGravity;
     } catch (error) {
       throw new Error('Failed to calculate rice test.');
