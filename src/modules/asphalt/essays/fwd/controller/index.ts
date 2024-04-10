@@ -46,7 +46,6 @@ export class FwdController {
 
     if (fwd.success) this.logger.log('calculate fwd > [success]');
     else this.logger.error('calculate fwd > [error]');
-
     return fwd;
   }
 

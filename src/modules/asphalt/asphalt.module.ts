@@ -42,6 +42,7 @@ import { ViscosityRotational, ViscosityRotationalSchema } from './essays/viscosi
 import { IggModule } from './essays/igg/igg.module';
 import { Igg, IggSchema } from './essays/igg/schemas';
 import { Fwd, FwdSchema } from './essays/fwd/schema';
+import { FwdModule } from './essays/fwd/fwd.module';
 
 const Models: ModelDefinition[] = [
   { name: Material.name, schema: MaterialSchema },
@@ -88,7 +89,7 @@ const Modules = [
   ElasticRecoveryModule,
   ViscosityRotationalModule,
   IggModule,
-  Fwd
+  FwdModule,
 ];
 
 @Global()

@@ -23,7 +23,7 @@ export type Fwd_step2 = {
 };
 
 export type Fwd_step3 = {
-  processedData: {
+  spreadsheetData: {
     hodometro: number;
     force: number;
     d1: number;
@@ -39,14 +39,9 @@ export type Fwd_step3 = {
     d11: number;
     d12: number;
     d13: number;
-    meanDeflection: number;
-    areaBetweenStationCurves: number;
-    cumulativeArea: number;
-    cumulativeDifference: number;
   }[];
-  deletedPositions: number[];
-  graphData: number[][];
 };
+
 export type Results = {
   results: {
     data: Calc_Fwd_Out;

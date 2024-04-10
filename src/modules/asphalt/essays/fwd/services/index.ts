@@ -17,7 +17,6 @@ export class FwdService {
   async verifyInitFwd(body: FwdInitDto) {
     try {
       const success = await this.generalData_Service.verifyInitFwd(body);
-
       return { success };
     } catch (error) {
       const { status, name, message } = error;

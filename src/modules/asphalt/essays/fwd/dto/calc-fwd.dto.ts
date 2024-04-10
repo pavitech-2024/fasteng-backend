@@ -13,7 +13,7 @@ export class Calc_Fwd_Dto {
 }
 
 export interface Calc_Fwd_Out {
-  processedData: number[];
+  processedData: any[];
   graphData: number[][];
   deletedPositions: number[];
 }
