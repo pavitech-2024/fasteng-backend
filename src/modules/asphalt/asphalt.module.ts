@@ -39,6 +39,8 @@ import { ElasticRecovery, ElasticRecoverySchema } from './essays/elasticRecovery
 import { ElasticRecoveryModule } from './essays/elasticRecovery/elasticRecovery.module';
 import { ViscosityRotationalModule } from './essays/viscosityRotational/viscosityRotational.module';
 import { ViscosityRotational, ViscosityRotationalSchema } from './essays/viscosityRotational/schemas';
+import { IggModule } from './essays/igg/igg.module';
+import { Igg, IggSchema } from './essays/igg/schemas';
 
 const Models: ModelDefinition[] = [
   
@@ -61,6 +63,7 @@ const Models: ModelDefinition[] = [
   { name: ElongatedParticles.name, schema: ElongatedParticlesSchema },
   { name: ElasticRecovery.name, schema: ElasticRecoverySchema },
   { name: ViscosityRotational.name, schema: ViscosityRotationalSchema },
+  { name: Igg.name, schema: IggSchema },
 ];
 
 const Modules = [
@@ -83,6 +86,7 @@ const Modules = [
   ElongatedParticlesModule,
   ElasticRecoveryModule,
   ViscosityRotationalModule,
+  IggModule,
 ]
 
 @Global()
