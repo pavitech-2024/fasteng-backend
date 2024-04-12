@@ -7,6 +7,7 @@ import { MarshallRepository } from '../repository';
 import { Marshall, MarshallDocument } from '../schemas';
 import { InjectModel } from '@nestjs/mongoose';
 import { DATABASE_CONNECTION } from 'infra/mongoose/database.config';
+import { ViscosityRotationalRepository } from 'modules/asphalt/essays/viscosityRotational/repository';
 
 @Injectable()
 export class MaterialSelection_Marshall_Service {
@@ -19,6 +20,7 @@ export class MaterialSelection_Marshall_Service {
     private readonly granulometry_repository: AsphaltGranulometryRepository,
     private readonly specifyMass_repository: SpecifyMassRepository,
     private readonly marshallRepository: MarshallRepository,
+    private readonly rotationalViscosity_repository: ViscosityRotationalRepository
   ) {}
 
   async getMaterials(userId: string) {
@@ -30,31 +32,26 @@ export class MaterialSelection_Marshall_Service {
       });
 
       const granulometrys = await this.granulometry_repository.findAll();
-      const specifyMasses = await this.specifyMass_repository.findAll();
+      // const specifyMasses = await this.specifyMass_repository.findAll();
 
-      const binders = materials.filter(({ type }) => {
-        return type === 'CAP' || type === 'asphaltBinder';
+      const rotationalViscosities = await this.rotationalViscosity_repository.findAll();
+
+      const filteredMaterials = materials.filter((material) => {
+        const { _id, type } = material;
+
+        if (type === 'CAP' || type === 'asphaltBinder') {
+          return rotationalViscosities.some(({ generalData }) => {
+            const { material: viscosityMaterial } = generalData;
+            return _id.toString() === viscosityMaterial._id.toString();
+          });
+        } else {
+          return granulometrys.some(({ generalData }) => {
+            const { material: granulometryMaterial } = generalData;
+            return _id.toString() === granulometryMaterial._id.toString();
+          });
+        };
       });
-
-      const aggregates = materials.filter(({ _id, type }) => {
-        if (type === 'CAP' || type === 'asphaltBinder') return false;
-
-        // Find the materials that already has the granulometry essay completed;
-        const granulometry = granulometrys.some(({ generalData }) => {
-          const { material } = generalData;
-          return _id.toString() === material._id.toString();
-        });
-
-        // Find the materials that already has the specific mass essay completed;
-        const specifyMass = specifyMasses.some(({ generalData }) => {
-          const { material } = generalData;
-          return _id.toString() === material._id.toString();
-        });
-
-        return granulometry && specifyMass;
-      });
-
-      const filteredMaterials = binders.concat(aggregates);
+      console.log("🚀 ~ MaterialSelection_Marshall_Service ~ filteredMaterials ~ filteredMaterials:", filteredMaterials)
 
       return filteredMaterials;
     } catch (error) {
