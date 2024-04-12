@@ -15,6 +15,7 @@ export type ViscosityRotationalGeneralData = {
 type ViscosityRotational_calc = {
   viscosityType: string;
   dataPoints: {
+    id: number,
     temperature: number;
     viscosity: number;
   }[];

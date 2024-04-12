@@ -81,21 +81,33 @@ export class MaximumMixtureDensity_Marshall_Service {
 
           let listOfSpecificGravities = [];
 
+          let cont = 0;
+
           for (let i = 0; i < listOfMaterials.length; i++) {
             listOfSpecificGravities.push(null);
-            if (
-              listOfMaterials[i].generalData.material.type === 'coarseAggregate' ||
-              listOfMaterials[i].generalData.material.type === 'fineAggregate'
-            ) {
-              let experiment: any = await this.specificMassRepository.findOne({
-                'generalData.material._id': listOfMaterials[i].generalData.material._id,
-              });
-              listOfSpecificGravities[i] = experiment.results.bulk_specify_mass;
+            if (listOfMaterials[0] !== null && listOfMaterials[1] !== null) {
+              if (
+                listOfMaterials[i].generalData.material.type === 'coarseAggregate' ||
+                listOfMaterials[i].generalData.material.type === 'fineAggregate'
+              ) {
+                let experiment: any = await this.specificMassRepository.findOne({
+                  'generalData.material._id': listOfMaterials[i].generalData.material._id,
+                });
+                listOfSpecificGravities[i] = experiment.results.bulk_specify_mass;
+                denominadorLessOne += percentsOfDosage[i][4] / listOfSpecificGravities[i];
+                denominadorLessHalf += percentsOfDosage[i][3] / listOfSpecificGravities[i];
+                denominador += percentsOfDosage[i][2] / listOfSpecificGravities[i];
+                denominadorPlusHalf += percentsOfDosage[i][1] / listOfSpecificGravities[i];
+                denominadorPlusOne += percentsOfDosage[i][0] / listOfSpecificGravities[i];
+              }
+            } else {
+              listOfSpecificGravities[i] = indexesOfMissesSpecificGravity[cont];
               denominadorLessOne += percentsOfDosage[i][4] / listOfSpecificGravities[i];
               denominadorLessHalf += percentsOfDosage[i][3] / listOfSpecificGravities[i];
               denominador += percentsOfDosage[i][2] / listOfSpecificGravities[i];
               denominadorPlusHalf += percentsOfDosage[i][1] / listOfSpecificGravities[i];
               denominadorPlusOne += percentsOfDosage[i][0] / listOfSpecificGravities[i];
+              cont++;
             }
           }
           
@@ -133,6 +145,7 @@ export class MaximumMixtureDensity_Marshall_Service {
 
       const calculate = async (): Promise<any> => {
         try {
+          let materialsOrNot;
           const listOfMaterials = await Promise.all(
             materials.map((materialId) =>
               this.specificMassRepository.findOne({
@@ -141,16 +154,22 @@ export class MaximumMixtureDensity_Marshall_Service {
             ),
           );
 
+          if (listOfMaterials[0] !== null) {
+            materialsOrNot = listOfMaterials
+          } else {
+            materialsOrNot = materials
+          }
+
           let listOfSpecificGravities = [];
 
-          for (let i = 0; i < listOfMaterials.length; i++) {
+          for (let i = 0; i < materialsOrNot.length; i++) {
             listOfSpecificGravities.push(null);
 
             if (
-              listOfMaterials[i].generalData.material.type === 'coarseAggregate' ||
-              listOfMaterials[i].generalData.material.type === 'fineAggregate'
+              materialsOrNot[i].generalData.material.type === 'coarseAggregate' ||
+              materialsOrNot[i].generalData.material.type === 'fineAggregate'
             ) {
-              listOfSpecificGravities[i] = listOfMaterials[i].results.bulk_specify_mass;
+              listOfSpecificGravities[i] = materialsOrNot[i].results.bulk_specify_mass;
             }
           }
 

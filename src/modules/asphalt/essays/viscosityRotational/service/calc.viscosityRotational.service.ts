@@ -9,7 +9,7 @@ export class Calc_ViscosityRotational_Service {
     try {
       this.logger.log('calculateViscosityRotational on calc.viscosityRotational.service.ts > [body]');
 
-      const { dataPoints } = body.viscosityRotationalCalc;
+      const { dataPoints } = body.viscosityRotational;
 
       const result: Calc_ViscosityRotational_Out = {
         graph: '',

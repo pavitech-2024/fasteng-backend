@@ -30,18 +30,23 @@ export class GranulometryComposition_Marshall_Service {
       const granulometrys = await this.granulometry_repository.findAll();
 
       aggregates.forEach(aggregate => {
-        const granulometry: AsphaltGranulometry = granulometrys.find(({ generalData }) => {
+        const granulometry: any = granulometrys.find(({ generalData }) => {
           const { material } = generalData
           return aggregate._id.toString() === material._id.toString()
         });
 
-        const { passant } = granulometry.results;
+        const { passant } = granulometry.step2Data;
 
         let passants = {}
 
         passant.forEach(p => {
-          passants[p[0]] = p[1]
-        })
+          passants[p.sieve_label] = p.passant
+        });
+
+
+        // passant.forEach(p => {
+        //   passants[p[0]] = p[1]
+        // })
 
         console.log(passants)
 
