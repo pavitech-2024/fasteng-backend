@@ -27,6 +27,152 @@ export class VolumetricParameters_Marshall_Service {
     private readonly marshallRepository: MarshallRepository,
   ) {}
 
+  // async setVolumetricParameters(body: any) {
+  //   try {
+  //     this.logger.log('set volumetric parameters data on volumetric-parameters.marshall.service.ts > [body]', {
+  //       body,
+  //     });
+
+  //     const { volumetricParametersData } = body;
+  //     const {
+  //       percentsOfDosage: trialAsphaltContent,
+  //       trial: binderTrial,
+  //       maxSpecificGravity,
+  //       temperatureOfWater,
+  //     } = body;
+
+  //     let pointsOfCurveDosageVv = [];
+  //     let pointsOfCurveDosageRBV = [];
+  //     let volumetricParameters = [];
+  //     let asphaltContent;
+
+  //     let newArray: any[] = [];
+
+  //     Object.entries(volumetricParametersData).forEach(([key, value]: [string, any[]]) => {
+  //       const allNonNull = value.every((obj: any) => Object.values(obj).every((val: any) => val !== null));
+  //       if (allNonNull) {
+  //         const newObj: any = {};
+  //         newObj[key] = value;
+  //         newArray.push(newObj);
+  //       }
+  //     });
+
+  //     for (let i = 0; i < newArray.length; i++) {
+  //       let sumOfDryMass = 0;
+  //       let sumOfSaturatedMass = 0;
+  //       let sumOfSubmergedMass = 0;
+  //       let sumStability = 0;
+  //       let sumFluency = 0;
+  //       let sumIndirectTensileStrength = 0;
+  //       let nStability = 0;
+  //       let nFluency = 0;
+  //       let nIndirectTensileStrength = 0;
+  //       let nDryMass = 0;
+  //       let nSubmergedMass = 0;
+  //       let nSaturatedMass = 0;
+
+  //       let usedMaxSpecifyGravity;
+  //       let asphaltContentResult;
+
+  //       asphaltContent = Object.keys(newArray[i])[0];
+
+  //       switch (asphaltContent) {
+  //         case 'lessOne':
+  //           usedMaxSpecifyGravity = maxSpecificGravity.result.lessOne;
+  //           asphaltContentResult = binderTrial - 1;
+  //           break;
+  //         case 'lessHalf':
+  //           usedMaxSpecifyGravity = maxSpecificGravity.result.lessHalf;
+  //           asphaltContentResult = binderTrial - 0.5;
+  //           break;
+  //         case 'normal':
+  //           usedMaxSpecifyGravity = maxSpecificGravity.result.normal;
+  //           asphaltContentResult = binderTrial;
+  //           break;
+  //         case 'plusHalf':
+  //           usedMaxSpecifyGravity = maxSpecificGravity.result.plusHalf;
+  //           asphaltContentResult = binderTrial + 0.5;
+
+  //           break;
+  //         case 'plusOne':
+  //           usedMaxSpecifyGravity = maxSpecificGravity.result.plusOne;
+  //           asphaltContentResult = binderTrial + 1;
+  //           break;
+  //         default:
+  //         // O que fazer se asphaltContent não corresponder a nenhum caso
+  //       }
+
+  //       for (let j = 0; j < newArray[i][asphaltContent].length; j++) {
+  //         const {
+  //           dryMass,
+  //           drySurfaceSaturatedMass,
+  //           submergedMass,
+  //           stability,
+  //           fluency,
+  //           diametricalCompressionStrength,
+  //         } = newArray[i][asphaltContent][j];
+
+  //         sumOfDryMass += dryMass;
+  //         sumOfSaturatedMass += drySurfaceSaturatedMass;
+  //         sumOfSubmergedMass += submergedMass;
+  //         nDryMass++;
+  //         nSubmergedMass++;
+  //         nSaturatedMass++;
+
+  //         if (stability !== 0) {
+  //           sumStability += stability;
+  //           nStability++;
+  //         }
+
+  //         if (fluency !== 0) {
+  //           sumFluency += fluency;
+  //           nFluency++;
+  //         }
+
+  //         if (diametricalCompressionStrength !== 0) {
+  //           sumIndirectTensileStrength += diametricalCompressionStrength;
+  //           nIndirectTensileStrength++;
+  //         }
+  //       }
+
+  //       if (nStability === 0) nStability = 1;
+  //       if (nFluency === 0) nFluency = 1;
+  //       if (nIndirectTensileStrength === 0) nIndirectTensileStrength = 1;
+
+  //       const stabilityBar = sumStability / nStability;
+  //       const fluencyBar = sumFluency / nFluency;
+  //       const diametricalCompressionStrengthBar = sumIndirectTensileStrength / nIndirectTensileStrength;
+
+  //       const sampleData =
+  //         {
+  //           asphaltContent: asphaltContentResult,
+  //           sumOfDryMass,
+  //           sumOfSubmergedMass,
+  //           sumOfSaturatedMass,
+  //           stability: stabilityBar,
+  //           fluency: fluencyBar,
+  //           diametricalCompressionStrength: diametricalCompressionStrengthBar,
+  //           temperatureOfWater,
+  //           maxSpecificGravity: usedMaxSpecifyGravity,
+  //         };
+
+  //       const {
+  //         pointsOfCurveDosageVv: returnVv,
+  //         pointsOfCurveDosageRBV: returnRBV,
+  //         volumetricParameters: returnVp,
+  //       } = await this.calculateVolumetricParameters(sampleData);
+
+  //       pointsOfCurveDosageVv.push(...returnVv);
+  //       pointsOfCurveDosageRBV.push(...returnRBV);
+  //       volumetricParameters.push(...returnVp);
+  //     }
+
+  //     return { volumetricParameters, pointsOfCurveDosageRBV, pointsOfCurveDosageVv };
+  //   } catch (error) {
+  //     throw new Error('Failed to set volumetric parameters.');
+  //   }
+  // }
+
   async setVolumetricParameters(body: any) {
     try {
       this.logger.log('set volumetric parameters data on volumetric-parameters.marshall.service.ts > [body]', {
@@ -48,6 +194,7 @@ export class VolumetricParameters_Marshall_Service {
 
       let newArray: any[] = [];
 
+      // Verifricar se esse array está correto
       Object.entries(volumetricParametersData).forEach(([key, value]: [string, any[]]) => {
         const allNonNull = value.every((obj: any) => Object.values(obj).every((val: any) => val !== null));
         if (allNonNull) {
@@ -74,6 +221,7 @@ export class VolumetricParameters_Marshall_Service {
         let usedMaxSpecifyGravity;
         let asphaltContentResult;
 
+        // Verificar se esse array está correto;
         asphaltContent = Object.keys(newArray[i])[0];
 
         switch (asphaltContent) {

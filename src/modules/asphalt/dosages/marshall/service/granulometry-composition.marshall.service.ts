@@ -21,7 +21,6 @@ export class GranulometryComposition_Marshall_Service {
 
   async getGranulometryData(aggregates: { _id: string, name: string }[]) {
     try {
-
       const granulometry_data: {
         _id: string;
         passants: {}
