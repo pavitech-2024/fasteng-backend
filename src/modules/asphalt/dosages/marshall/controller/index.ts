@@ -1,9 +1,8 @@
 import { Body, Controller, Delete, Get, Logger, Param, Post, Res } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Response, response } from 'express';
+import { Response } from 'express';
 import { MarshallService } from '../service';
 import { MarshallInitDto } from '../dto/marshall-init.dto';
-import { MarshallStep3Dto } from '../dto/step-3-marshall.dto';
 
 @ApiTags('marshall')
 @Controller('asphalt/dosages/marshall')
@@ -43,7 +42,6 @@ export class MarshallController {
     this.logger.log('verify init Marshall > [body]');
 
     const status = await this.marshallService.verifyInitMarshall(body, userId);
-
 
     return response.status(200).json(status);
   }

@@ -18,7 +18,6 @@ export class MaterialSelection_Marshall_Service {
     private marshallModel: Model<MarshallDocument>,
     private readonly material_repository: MaterialsRepository,
     private readonly granulometry_repository: AsphaltGranulometryRepository,
-    private readonly specifyMass_repository: SpecifyMassRepository,
     private readonly marshallRepository: MarshallRepository,
     private readonly rotationalViscosity_repository: ViscosityRotationalRepository
   ) {}
@@ -32,7 +31,6 @@ export class MaterialSelection_Marshall_Service {
       });
 
       const granulometrys = await this.granulometry_repository.findAll();
-      // const specifyMasses = await this.specifyMass_repository.findAll();
 
       const rotationalViscosities = await this.rotationalViscosity_repository.findAll();
 
@@ -51,7 +49,6 @@ export class MaterialSelection_Marshall_Service {
           });
         };
       });
-      console.log("🚀 ~ MaterialSelection_Marshall_Service ~ filteredMaterials ~ filteredMaterials:", filteredMaterials)
 
       return filteredMaterials;
     } catch (error) {

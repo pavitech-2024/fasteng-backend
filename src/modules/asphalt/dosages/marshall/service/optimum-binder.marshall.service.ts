@@ -99,7 +99,6 @@ export class OptimumBinderContent_Marshall_Service {
 
       const confirmedPercentsOfDosage = await this.confirmPercentsOfDosage(percentsOfDosage, optimumContent)
 
-
       return {
         pointsOfCurveDosage,
         optimumContent: this.calculateVv4(
@@ -238,9 +237,6 @@ export class OptimumBinderContent_Marshall_Service {
 
     let curveRBV = { a: null, b: null };
 
-    //0,25 - 0,24 /
-    //4
-
     curveRBV.a =
       (data.length * this.sumXY(data) - this.sumX(data) * this.sumY(data)) /
       (data.length * this.sumPow2X(data) - this.Pow2SumX(data));
@@ -262,16 +258,6 @@ export class OptimumBinderContent_Marshall_Service {
     return ((0.04 - y1) / m) + x1;
   }
 
-  // private sumXY(data: { x: number; y: number }[][]) {
-  //   return data.reduce((acc, innerArray) => {
-  //     return (
-  //       acc +
-  //       innerArray.reduce((innerAcc, obj) => {
-  //         return innerAcc + obj.x * obj.y;
-  //       }, 0)
-  //     );
-  //   }, 0);
-  // }
   private sumXY(data: { x: number; y: number }[]) {
     return data.reduce((acc, obj) => {
       return acc + obj.x * obj.y;

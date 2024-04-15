@@ -573,21 +573,4 @@ export class MarshallService {
       return { success: false, error: { status, message, name } };
     }
   }
-
-  // async updateMarshall(marshall: Marshall): Promise<Marshall> {
-  //   try {
-  //     // busca um material com o id passado no banco de dados
-  //     const marshallToUpdate = await this.marshall_repository.findOne({ _id: marshall._id });
-
-  //     // se não encontrar o material, retorna um erro
-  //     if (!marshallToUpdate) throw new NotFound('Marshall');
-
-  //     // atualiza o material no banco de dados
-  //     return this.marshall_repository.findOneAndUpdate({ _id: marshall._id }, marshall);
-  //   } catch (error) {
-  //     this.logger.error(`error on update marshall > [error]: ${error}`);
-
-  //     throw error;
-  //   }
-  // }
 }

@@ -35,7 +35,6 @@ export class VolumetricParameters_Marshall_Service {
 
       const { volumetricParametersData } = body;
       const {
-        percentsOfDosage: trialAsphaltContent,
         trial: binderTrial,
         maxSpecificGravity,
         temperatureOfWater,
