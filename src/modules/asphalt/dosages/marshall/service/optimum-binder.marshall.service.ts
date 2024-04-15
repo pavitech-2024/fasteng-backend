@@ -94,14 +94,20 @@ export class OptimumBinderContent_Marshall_Service {
         trialAsphaltContent - 1,
         this.calculateVv(trialAsphaltContent - 1, curveVv),
         trialAsphaltContent - 0.5,
-        this.calculateVv(trialAsphaltContent - 0.5, curveRBV),
+        this.calculateVv(trialAsphaltContent - 0.5, curveVv),
       );
 
       const confirmedPercentsOfDosage = await this.confirmPercentsOfDosage(percentsOfDosage, optimumContent)
 
+
       return {
         pointsOfCurveDosage,
-        optimumContent,
+        optimumContent: this.calculateVv4(
+          trialAsphaltContent - 1,
+          this.calculateVv(trialAsphaltContent - 1, curveVv),
+          trialAsphaltContent - 0.5,
+          this.calculateVv(trialAsphaltContent - 0.5, curveVv),
+        ),
         confirmedPercentsOfDosage,
         curveRBV,
         curveVv
@@ -111,7 +117,18 @@ export class OptimumBinderContent_Marshall_Service {
     }
   }
 
-  async confirmPercentsOfDosage(percentsOfDosage: any[], optimumContent: number): Promise<any> {
+  async confirmPercentsOfDosage(percentageInputs: any[], optimumContent: number): Promise<any> {
+    const ids1 = new Set();
+    const percentsOfDosage = []
+
+    Object.keys(percentageInputs[0]).forEach(key => {
+      const id = key.split('_')[1];
+      ids1.add(id);
+      const value = percentageInputs[0][key];
+      const index = Array.from(ids1).indexOf(id);
+      percentsOfDosage[index] = value;
+    });
+    
     const confirmedPercentsOfDosage = percentsOfDosage.map(percent => (100 - optimumContent) * (percent / 100));
 
     return confirmedPercentsOfDosage
@@ -120,6 +137,7 @@ export class OptimumBinderContent_Marshall_Service {
   async getExpectedParameters(body: any) {
     try {
       const { 
+        percentsOfDosage,
         optimumContent,
         maxSpecificGravity,
         listOfSpecificGravities,
@@ -130,6 +148,18 @@ export class OptimumBinderContent_Marshall_Service {
       } = body;
 
       let newMaxSpecificGravity;
+
+      let formattedPercentsOfDosage = [];
+
+      const ids1 = new Set();
+
+      Object.keys(percentsOfDosage[0]).forEach(key => {
+        const id = key.split('_')[1];
+        ids1.add(id);
+        const value = percentsOfDosage[0][key];
+        const index = Array.from(ids1).indexOf(id);
+        formattedPercentsOfDosage[index] = value;
+      });
   
       if (maxSpecificGravity.method === 'GMM') {
   
@@ -158,11 +188,11 @@ export class OptimumBinderContent_Marshall_Service {
   
         newMaxSpecificGravity = coefficients.a * optimumContent + coefficients.b;
       } else {
-        const denominator = confirmedPercentsOfDosage.reduce(
+        const denominator = formattedPercentsOfDosage.reduce(
           (acc, percent, i) => (acc += confirmedPercentsOfDosage[i] / listOfSpecificGravities[i]),
           0,
         );
-        newMaxSpecificGravity = 100 / (denominator + optimumContent / 1.03);
+        newMaxSpecificGravity = 100 / (denominator + (optimumContent / 1.03));
       }
   
       const Vv = this.calculateVv(optimumContent, curveVv);
@@ -229,7 +259,7 @@ export class OptimumBinderContent_Marshall_Service {
 
   calculateVv4(x1: number, y1: number, x2: number, y2: number) {
     const m = (y2 - y1) / (x2 - x1);
-    return (0.04 - y1) / m + x1;
+    return ((0.04 - y1) / m) + x1;
   }
 
   // private sumXY(data: { x: number; y: number }[][]) {
