@@ -21,10 +21,10 @@ export class Calc_AsphaltGranulometry_Service {
 
       const length = table_data.length;
 
-      const accumulated_retained: number[] = []
+      const accumulated_retained: [string, number][] = []
 
-      const passant: number[] = []
-      const retained_porcentage: number[] = []
+      const passant: [string, number][] = []
+      const retained_porcentage: [string, number][] = []
 
       const graph_data: [number, number][] = []
 
@@ -40,41 +40,42 @@ export class Calc_AsphaltGranulometry_Service {
 
       for (let i = 0; i < length; i++) {
 
-        const label = table_data[i].sieve;
+        const label = table_data[i].sieve_label;
+        const value = table_data[i].sieve_value;
         const passant_porcentage = table_data[i].passant;
         const retained = table_data[i].retained;
 
         total_retained += retained;
 
-        passant.push(Math.round(100 * (material_mass - total_retained)) / 100);
+        passant.push(([label, Math.round(100 * (material_mass - total_retained)) / 100]));
 
-        accumulated_retained.push(Math.round(100 * (100 - passant_porcentage)) / 100);
+        accumulated_retained.push(([label, Math.round(100 * (100 - passant_porcentage)) / 100]));
 
         if (i === 0) {
           retained_porcentage.push(accumulated_retained[i]);
         } else {
-          retained_porcentage.push(Math.round(100 * (accumulated_retained[i] - accumulated_retained[i - 1])) / 100);
+          retained_porcentage.push(([label, Math.round(100 * (accumulated_retained[i][1] - accumulated_retained[i - 1][1])) / 100]));
         }
 
-        fineness_module += accumulated_retained[i]
+        fineness_module += accumulated_retained[i][1]
 
         if (total_retained >= 5 && nominal_size_flag) {
           nominal_size_flag = false;
           if (total_retained === 5) nominal_size = getSieveValue(label);
           else {
             if (i === 0) nominal_size = getSieveValue(label);
-            else nominal_size = getSieveValue(table_data[i - 1].sieve);
+            else nominal_size = getSieveValue(table_data[i - 1].sieve_label);
           }
         }
 
         if (total_retained > 10 && nominal_diameter_flag) {
           nominal_diameter_flag = false;
           if (i === 1) nominal_diameter = getSieveValue(label);
-          else if (i === 0) nominal_diameter = getSieveValue(table_data[i].sieve);
-          else nominal_diameter = getSieveValue(table_data[i - 1].sieve);
+          else if (i === 0) nominal_diameter = value;
+          else nominal_diameter = getSieveValue(table_data[i - 1].sieve_label);
         }
 
-        graph_data.push(([getSieveValue(label), passant_porcentage]));
+        graph_data.push(([value, passant_porcentage]));
 
       }
 
@@ -121,7 +122,7 @@ export class Calc_AsphaltGranulometry_Service {
     }
   }
 
-  getDiameter = (table_data: { sieve: string, passant: number, retained: number }[], percentage: number, limits: { upperLimit: limit, inferiorLimit: limit }) => {
+  getDiameter = (table_data: { sieve_label: string, passant: number, retained: number }[], percentage: number, limits: { upperLimit: limit, inferiorLimit: limit }) => {
     if (limits.upperLimit.value === percentage) return table_data[limits.upperLimit.index].passant;
     if (limits.inferiorLimit.value === percentage) return table_data[limits.inferiorLimit.index].passant;
 
@@ -133,7 +134,7 @@ export class Calc_AsphaltGranulometry_Service {
     return (percentage - coefficientB) / coefficientA;
   }
 
-  getPercentage = (percentage: number, table_data: { sieve: string, passant: number, retained: number }[]) => {
+  getPercentage = (percentage: number, table_data: { sieve_label: string, passant: number, retained: number }[]) => {
     return table_data.reduce(
       (accumulate, sieve, index) => {
         const { upperLimit, inferiorLimit } = accumulate;
