@@ -13,6 +13,10 @@ export class ViscosityRotationalRepository {
     return this.viscosityRotationalModel.findOne(sayboltFurolFilterQuery);
   }
 
+  async findById(materialId: any): Promise<ViscosityRotational> {
+    return this.viscosityRotationalModel.findById(materialId);
+  }
+
   async findAll(): Promise<ViscosityRotational[]> {
     return this.viscosityRotationalModel.find();
   }

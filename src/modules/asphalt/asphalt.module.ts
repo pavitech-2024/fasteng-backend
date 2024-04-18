@@ -39,6 +39,11 @@ import { ElasticRecovery, ElasticRecoverySchema } from './essays/elasticRecovery
 import { ElasticRecoveryModule } from './essays/elasticRecovery/elasticRecovery.module';
 import { ViscosityRotationalModule } from './essays/viscosityRotational/viscosityRotational.module';
 import { ViscosityRotational, ViscosityRotationalSchema } from './essays/viscosityRotational/schemas';
+// dosages
+import { Marshall, MarshallSchema } from './dosages/marshall/schemas'; 
+import { MarshallModule } from './dosages/marshall/marshall.module';
+import { Superpave, SuperpaveSchema } from './dosages/superpave/schemas'; 
+import { SuperpaveModule } from './dosages/superpave/superpave.module';
 import { IggModule } from './essays/igg/igg.module';
 import { Igg, IggSchema } from './essays/igg/schemas';
 import { Fwd, FwdSchema } from './essays/fwd/schema';
@@ -64,6 +69,8 @@ const Models: ModelDefinition[] = [
   { name: ElongatedParticles.name, schema: ElongatedParticlesSchema },
   { name: ElasticRecovery.name, schema: ElasticRecoverySchema },
   { name: ViscosityRotational.name, schema: ViscosityRotationalSchema },
+  { name: Marshall.name, schema: MarshallSchema },
+  { name: Superpave.name, schema: SuperpaveSchema },
   { name: Igg.name, schema: IggSchema },
   { name: Fwd.name, schema: FwdSchema },
 ];
@@ -88,6 +95,8 @@ const Modules = [
   ElongatedParticlesModule,
   ElasticRecoveryModule,
   ViscosityRotationalModule,
+  MarshallModule,
+  SuperpaveModule,
   IggModule,
   FwdModule,
 ];
@@ -95,6 +104,6 @@ const Modules = [
 @Global()
 @Module({
   imports: [MongooseModule.forFeature(Models, DATABASE_CONNECTION.ASPHALT), ...Modules],
-  exports: [MongooseModule, MaterialsModule],
+  exports: [MongooseModule, ...Modules],
 })
 export class AsphaltModule {}

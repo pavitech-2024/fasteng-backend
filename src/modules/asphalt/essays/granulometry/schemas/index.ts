@@ -19,7 +19,7 @@ export type AsphaltGranulometryGeneralData = {
 
 type AsphaltGranulometry_step2Data = {
   material_mass: number;
-  table_data: { sieve: string; passant: number, retained: number }[];
+  table_data: { sieve_label: string; sieve_value: number, passant: number, retained: number }[];
   bottom: number;
 };
 
@@ -37,9 +37,8 @@ export class AsphaltGranulometry {
 
   @IsNotEmpty()
   @Prop({ type: Object })
-  results: {
-    data: Calc_AsphaltGranulometry_Out;
-  };
+  results: Calc_AsphaltGranulometry_Out;
+  ;
 }
 
 export const AsphaltGranulometrySchema = SchemaFactory.createForClass(AsphaltGranulometry);

@@ -10,6 +10,10 @@ export class SayboltFurolRepository {
     return this.sayboltFurolModel.findOne(sayboltFurolFilterQuery);
   }
 
+  async findById(materialId: any): Promise<SayboltFurol> {
+    return this.sayboltFurolModel.findById(materialId)
+  }
+
   async findAll(): Promise<SayboltFurol[]> {
     return this.sayboltFurolModel.find();
   }
