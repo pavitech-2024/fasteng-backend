@@ -204,7 +204,7 @@ export class MarshallController {
     @Body() body: any
   ) {
     this.logger.log(`save step 6 data > [body]: ${body}`);
-
+    
     const status = await this.marshallService.saveStep6Data(body, userId);
 
     return response.status(200).json(status);
