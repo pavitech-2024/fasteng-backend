@@ -3,12 +3,16 @@ import { MaterialsRepository } from '../repository';
 import { CreateAsphaltMaterialDto } from '../dto/create-asphalt-material.dto';
 import { AlreadyExists, NotFound } from '../../../../utils/exceptions';
 import { Material } from '../schemas';
+import { GetEssaysByMaterial_Service } from './get-essays-by-material.service';
 
 @Injectable()
 export class MaterialsService {
   private logger = new Logger(MaterialsService.name);
 
-  constructor(private readonly materialsRepository: MaterialsRepository) {}
+  constructor(
+    private readonly materialsRepository: MaterialsRepository,
+    private readonly getEssaysByMaterial_Service: GetEssaysByMaterial_Service
+  ) {}
 
   async createMaterial(material: CreateAsphaltMaterialDto, userId: string) {
     try {
@@ -37,6 +41,9 @@ export class MaterialsService {
 
       // se não encontrar o material, retorna um erro
       if (!material) throw new NotFound('Material');
+
+      // Buscar os ensaios com esse material;
+      const essays = await this.getEssaysByMaterial_Service.getEssaysByMaterial(material)
 
       // retorna o material encontrado
       return material;
