@@ -42,7 +42,7 @@ export class GetEssaysByMaterial_Service {
         let essay = null;
         let response;
 
-        // Aqui você pode acessar diretamente os repositórios necessários com segurança
+        // Acessando condicionamente o repositório correto para cada ensaio
         switch (essayName) {
           case 'adhesiveness':
             response = await this.adhesivenessRepository.findOne({ 'generalData.material._id': _id.toString() });
