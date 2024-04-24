@@ -34,7 +34,7 @@ export class MaterialsService {
     }
   }
 
-  async getMaterial(materialId: string): Promise<Material> {
+  async getMaterial(materialId: string): Promise<any> {
     try {
       // busca um material com o id passado no banco de dados
       const material = await this.materialsRepository.findOne({ _id: materialId });
@@ -46,7 +46,7 @@ export class MaterialsService {
       const essays = await this.getEssaysByMaterial_Service.getEssaysByMaterial(material)
 
       // retorna o material encontrado
-      return material;
+      return { material, essays };
     } catch (error) {
       this.logger.error(`error on get material > [error]: ${error}`);
 

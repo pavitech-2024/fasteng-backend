@@ -40,26 +40,45 @@ export class GetEssaysByMaterial_Service {
 
       for (const essayName of possiblesExperimentTypes) {
         let essay = null;
+        let response;
 
         // Aqui você pode acessar diretamente os repositórios necessários com segurança
         switch (essayName) {
           case 'adhesiveness':
-            essay = await this.adhesivenessRepository.findOne({ _id });
+            response = await this.adhesivenessRepository.findOne({ 'generalData.material._id': _id.toString() });
+            if (response) {
+              essay = { essayName, data: response };
+            }
             break;
           case 'elongatedParticles':
-            essay = await this.elongatedParticlesRepository.findOne({ _id });
+            response = await this.elongatedParticlesRepository.findOne({ 'generalData.material._id': _id.toString() });
+            if (response) {
+              essay = { essayName, data: response };
+            }
             break;
           case 'granulometry':
-            essay = await this.granulometryRepository.findOne({ "generalData.material._id": _id.toString() });
+            response = await this.granulometryRepository.findOne({ 'generalData.material._id': _id.toString() });
+            if (response) {
+              essay = { essayName, data: response };
+            }
             break;
           case 'specificMass':
-            essay = await this.specificMassRepository.findOne({ _id });
+            response = await this.specificMassRepository.findOne({ 'generalData.material._id': _id.toString() });
+            if (response) {
+              essay = { essayName, data: response };
+            }
             break;
           case 'losAngelesAbrasion':
-            essay = await this.losAngelesAbrasionRepository.findOne({ _id });
+            response = await this.losAngelesAbrasionRepository.findOne({ 'generalData.material._id': _id.toString() });
+            if (response) {
+              essay = { essayName, data: response };
+            }
             break;
           case 'shapeIndex':
-            essay = await this.shapeIndexRepository.findOne({ _id });
+            response = await this.shapeIndexRepository.findOne({ 'generalData.material._id': _id.toString() });
+            if (response) {
+              essay = { essayName, data: response }
+            }
             break;
           default:
             break;
