@@ -1,48 +1,26 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { MaterialsRepository } from '../repository';
-import { AdhesivenessRepository } from 'modules/asphalt/essays/adhesiveness/repository';
-import { ElongatedParticlesRepository } from 'modules/asphalt/essays/elongatedParticles/repository';
-import { AsphaltGranulometryRepository } from 'modules/asphalt/essays/granulometry/repository';
-import { SpecifyMassRepository } from 'modules/asphalt/essays/specifyMass/repository';
-import { ShapeIndexRepository } from 'modules/asphalt/essays/shapeIndex/repository';
-import { AbrasionRepository } from 'modules/asphalt/essays/abrasion/repository';
-import { InjectModel } from '@nestjs/mongoose';
-import { Material, MaterialDocument } from '../schemas';
-import { DATABASE_CONNECTION } from 'infra/mongoose/database.config';
-import { Model } from 'mongoose';
-import { SandEquivalentRepository } from 'modules/asphalt/essays/sandEquivalent/repository';
-import { AngularityRepository } from 'modules/asphalt/essays/angularity/repository';
-import { ViscosityRotationalRepository } from 'modules/asphalt/essays/viscosityRotational/repository';
-import { PenetrationRepository } from 'modules/asphalt/essays/penetration/repository';
-import { SofteningPointRepository } from 'modules/asphalt/essays/softeningPoint/repository';
-import { FlashPointRepository } from 'modules/asphalt/essays/flashPoint/repository';
-import { DuctilityRepository } from 'modules/asphalt/essays/ductility/repository';
-import { RtfoRepository } from 'modules/asphalt/essays/rtfo/repository';
-import { ElasticRecoveryRepository } from 'modules/asphalt/essays/elasticRecovery/repository';
+import { Injectable, Logger } from "@nestjs/common";
+import { InjectModel } from "@nestjs/mongoose";
+import { Material, MaterialDocument } from "../schemas";
+import { DATABASE_CONNECTION } from "infra/mongoose/database.config";
+import { Model } from "mongoose";
+import { AdhesivenessRepository } from "modules/asphalt/essays/adhesiveness/repository";
+import { ConcreteGranulometryRepository } from "modules/concrete/essays/granulometry/repository";
+import { ChapmanRepository } from "modules/concrete/essays/chapman/repository";
+import { UnitMassRepository } from "modules/concrete/essays/unitMass/repository";
+import { SandIncreaseRepository } from "modules/concrete/essays/sand-increase/repository";
+
 
 @Injectable()
 export class GetEssaysByMaterial_Service {
   private logger = new Logger(GetEssaysByMaterial_Service.name);
 
   constructor(
-    @InjectModel(Material.name, DATABASE_CONNECTION.ASPHALT)
+    @InjectModel(Material.name, DATABASE_CONNECTION.CONCRETE)
     private materialModel: Model<MaterialDocument>,
-    private readonly materialsRepository: MaterialsRepository,
-    private readonly adhesivenessRepository: AdhesivenessRepository,
-    private readonly elongatedParticlesRepository: ElongatedParticlesRepository,
-    private readonly granulometryRepository: AsphaltGranulometryRepository,
-    private readonly specificMassRepository: SpecifyMassRepository,
-    private readonly shapeIndexRepository: ShapeIndexRepository,
-    private readonly losAngelesAbrasionRepository: AbrasionRepository,
-    private readonly sandEquivalentRepository: SandEquivalentRepository,
-    private readonly angularityRepository: AngularityRepository,
-    private readonly viscosityRotationalRepository: ViscosityRotationalRepository,
-    private readonly penetrationRepository: PenetrationRepository,
-    private readonly softeningPointRepository: SofteningPointRepository,
-    private readonly flashPointRepository: FlashPointRepository,
-    private readonly ductilityRepository: DuctilityRepository,
-    private readonly rtfoRepository: RtfoRepository,
-    private readonly elasticRecoveryRepository: ElasticRecoveryRepository
+    private readonly granulometryRepository: ConcreteGranulometryRepository,
+    private readonly chapmanRepository: ChapmanRepository,
+    private readonly unitMassRepository: UnitMassRepository,
+    private readonly sandIncreaseRepository: SandIncreaseRepository
   ) {}
 
   async getEssaysByMaterial(material: any) {
@@ -62,38 +40,26 @@ export class GetEssaysByMaterial_Service {
 
         // Acessando condicionamente o repositório correto para cada ensaio
         switch (essayName) {
-          case 'adhesiveness':
-            response = await this.adhesivenessRepository.findOne({ 'generalData.material._id': _id.toString() });
-            if (response) {
-              essay = { essayName, data: response };
-            }
-            break;
-          case 'elongatedParticles':
-            response = await this.elongatedParticlesRepository.findOne({ 'generalData.material._id': _id.toString() });
-            if (response) {
-              essay = { essayName, data: response };
-            }
-            break;
           case 'granulometry':
             response = await this.granulometryRepository.findOne({ 'generalData.material._id': _id.toString() });
             if (response) {
               essay = { essayName, data: response };
             }
             break;
-          case 'specificMass':
-            response = await this.specificMassRepository.findOne({ 'generalData.material._id': _id.toString() });
+          case 'chapman':
+            response = await this.chapmanRepository.findOne({ 'generalData.material._id': _id.toString() });
             if (response) {
               essay = { essayName, data: response };
             }
             break;
-          case 'losAngelesAbrasion':
-            response = await this.losAngelesAbrasionRepository.findOne({ 'generalData.material._id': _id.toString() });
+          case 'unitMass':
+            response = await this.unitMassRepository.findOne({ 'generalData.material._id': _id.toString() });
             if (response) {
               essay = { essayName, data: response };
             }
             break;
-          case 'shapeIndex':
-            response = await this.shapeIndexRepository.findOne({ 'generalData.material._id': _id.toString() });
+          case 'sandIncrease':
+            response = await this.sandIncreaseRepository.findOne({ 'generalData.material._id': _id.toString() });
             if (response) {
               essay = { essayName, data: response };
             }
