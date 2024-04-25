@@ -52,6 +52,7 @@ export class MarshallController {
   @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
   async getMaterialsByUserId(@Res() response: Response, @Param('id') userId: string) {
     this.logger.log(`get all materials, by user id, with the necessary dosage essays > [id]: ${userId}`);
+    
 
     const status = await this.marshallService.getUserMaterials(userId);
 

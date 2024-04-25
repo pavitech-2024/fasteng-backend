@@ -1,6 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { AsphaltGranulometryRepository } from '../../../../../modules/asphalt/essays/granulometry/repository';
-import { SpecifyMassRepository } from '../../../../../modules/asphalt/essays/specifyMass/repository';
 import { MaterialsRepository } from '../../../../../modules/asphalt/materials/repository';
 import { Model } from 'mongoose';
 import { MarshallRepository } from '../repository';

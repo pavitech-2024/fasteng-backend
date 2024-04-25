@@ -6,7 +6,7 @@ import { PenetrationInitDto } from "../dto/penetration-init.dto";
 import { PenetrationService } from "../service";
 
 @ApiTags('penetration')
-@Controller('soils/essays/penetration')
+@Controller('asphalt/essays/penetration')
 export class PenetrationController {
   private logger = new Logger(PenetrationController.name);
 
