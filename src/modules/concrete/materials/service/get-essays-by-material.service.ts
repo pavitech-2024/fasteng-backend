@@ -1,14 +1,13 @@
-import { Injectable, Logger } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
-import { Material, MaterialDocument } from "../schemas";
-import { DATABASE_CONNECTION } from "infra/mongoose/database.config";
-import { Model } from "mongoose";
-import { AdhesivenessRepository } from "modules/asphalt/essays/adhesiveness/repository";
-import { ConcreteGranulometryRepository } from "modules/concrete/essays/granulometry/repository";
-import { ChapmanRepository } from "modules/concrete/essays/chapman/repository";
-import { UnitMassRepository } from "modules/concrete/essays/unitMass/repository";
-import { SandIncreaseRepository } from "modules/concrete/essays/sand-increase/repository";
-
+import { Injectable, Logger } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Material, MaterialDocument } from '../schemas';
+import { DATABASE_CONNECTION } from 'infra/mongoose/database.config';
+import { Model } from 'mongoose';
+import { ConcreteGranulometryRepository } from 'modules/concrete/essays/granulometry/repository';
+import { ChapmanRepository } from 'modules/concrete/essays/chapman/repository';
+import { UnitMassRepository } from 'modules/concrete/essays/unitMass/repository';
+import { SandIncreaseRepository } from 'modules/concrete/essays/sand-increase/repository';
+import { CoarseAggregateSpecificMassRepository } from 'modules/concrete/essays/coarseAggregate/repository';
 
 @Injectable()
 export class GetEssaysByMaterial_Service {
@@ -20,7 +19,8 @@ export class GetEssaysByMaterial_Service {
     private readonly granulometryRepository: ConcreteGranulometryRepository,
     private readonly chapmanRepository: ChapmanRepository,
     private readonly unitMassRepository: UnitMassRepository,
-    private readonly sandIncreaseRepository: SandIncreaseRepository
+    private readonly sandIncreaseRepository: SandIncreaseRepository,
+    private readonly coarseAggregateSpecificMassRepository: CoarseAggregateSpecificMassRepository,
   ) {}
 
   async getEssaysByMaterial(material: any) {
@@ -63,57 +63,8 @@ export class GetEssaysByMaterial_Service {
             if (response) {
               essay = { essayName, data: response };
             }
-            break;
-          case 'sandEquivalent':
-            response = await this.sandEquivalentRepository.findOne({ 'generalData.material._id': _id.toString() });
-            if (response) {
-              essay = { essayName, data: response };
-            }
-            break;
-          case 'angularity':
-            response = await this.angularityRepository.findOne({ 'generalData.material._id': _id.toString() });
-            if (response) {
-              essay = { essayName, data: response };
-            }
-            break;
-          case 'viscosityRotational':
-            response = await this.viscosityRotationalRepository.findOne({ 'generalData.material._id': _id.toString() });
-            if (response) {
-              essay = { essayName, data: response };
-            }
-            break;
-          case 'penetration':
-            response = await this.penetrationRepository.findOne({ 'generalData.material._id': _id.toString() });
-            if (response) {
-              essay = { essayName, data: response };
-            }
-            break;
-          case 'softeningPoint':
-            response = await this.softeningPointRepository.findOne({ 'generalData.material._id': _id.toString() });
-            if (response) {
-              essay = { essayName, data: response };
-            }
-            break;
-          case 'flashPoint':
-            response = await this.flashPointRepository.findOne({ 'generalData.material._id': _id.toString() });
-            if (response) {
-              essay = { essayName, data: response };
-            }
-            break;
-          case 'ductility':
-            response = await this.ductilityRepository.findOne({ 'generalData.material._id': _id.toString() });
-            if (response) {
-              essay = { essayName, data: response };
-            }
-            break;
-          case 'rtfo':
-            response = await this.rtfoRepository.findOne({ 'generalData.material._id': _id.toString() });
-            if (response) {
-              essay = { essayName, data: response };
-            }
-            break;
-          case 'elasticRecovery':
-            response = await this.elasticRecoveryRepository.findOne({ 'generalData.material._id': _id.toString() });
+          case 'coarseAggregateSpecificMass':
+            response = await this.coarseAggregateSpecificMassRepository.findOne({ 'generalData.material._id': _id.toString() });
             if (response) {
               essay = { essayName, data: response };
             }
@@ -140,67 +91,13 @@ export class GetEssaysByMaterial_Service {
 
     switch (typeMaterial) {
       case 'coarseAggregate':
-        possiblesExperimentTypes = [
-          'adhesiveness',
-          'elongatedParticles',
-          'granulometry',
-          'specificMass',
-          'shapeIndex',
-          'losAngelesAbrasion',
-          'dosage',
-          // To-do: qual ensaio é esse?
-          'realDensity',
-        ];
+        possiblesExperimentTypes = ['granulometry', 'unitMass', 'sandIncrease', 'chapman', 'specificMass'];
         break;
       case 'fineAggregate':
-        possiblesExperimentTypes = ['granulometry', 'specificMass', 'sandEquivalent', 'realDensity', 'angularity'];
+        possiblesExperimentTypes = ['granulometry', 'unitMass', 'sandIncrease', 'chapman', 'specificMass'];
         break;
-      case 'filler':
-        possiblesExperimentTypes = ['granulometry', 'specificMass', 'sandEquivalent'];
-        break;
-      case 'asphaltBinder':
-        possiblesExperimentTypes = [
-          'viscosityRotational',
-          'penetration',
-          'softeningPoint',
-          'flashPoint',
-          'ductility',
-          // To-do: fazer a dosagem;
-          'dosage',
-          'rtfo',
-        ];
-        break;
-      case 'CAP':
-        possiblesExperimentTypes = [
-          'viscosityRotational',
-          'penetration',
-          'softeningPoint',
-          'flashPoint',
-          'ductility',
-          'dosage',
-          'elasticRecovery',
-          'rtfo',
-        ];
-        break;
-      case 'other':
-        possiblesExperimentTypes = [
-          'adhesiveness',
-          'angularity',
-          'elongatedParticles',
-          'sandEquivalent',
-          'granulometry',
-          'specificMass',
-          'shapeIndex',
-          'losAngelesAbrasion',
-          'viscosityRotational',
-          'penetration',
-          'softeningPoint',
-          'flashPoint',
-          'ductility',
-          'dosage',
-          'elasticRecovery',
-          'realDensity',
-        ];
+      case 'cement':
+        possiblesExperimentTypes = ['granulometry', 'unitMass', 'sandIncrease', 'chapman', 'specificMass'];
         break;
       default:
         possiblesExperimentTypes = [];
