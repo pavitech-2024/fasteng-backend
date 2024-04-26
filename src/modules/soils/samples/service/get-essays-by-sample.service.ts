@@ -1,13 +1,13 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { DATABASE_CONNECTION } from "infra/mongoose/database.config";
-import { CbrRepository } from "modules/soils/essays/cbr/repository";
-import { CompressionRepository } from "modules/soils/essays/compression/repository";
-import { HrbRepository } from "modules/soils/essays/hrb/repository";
-import { SucsRepository } from "modules/soils/essays/sucs/repository";
+import { CbrRepository } from "../../essays/cbr/repository";
+import { CompressionRepository } from "../../essays/compression/repository";
+import { HrbRepository } from "../../essays/hrb/repository";
+import { SucsRepository } from "../../essays/sucs/repository";
 import { Model } from "mongoose";
 import { Sample, SampleDocument } from "../schemas";
-import { GranulometryRepository } from "modules/soils/essays/granulometry/repository";
+import { GranulometryRepository } from "../../essays/granulometry/repository";
 
 @Injectable()
 export class GetEssaysBySample_Service {
