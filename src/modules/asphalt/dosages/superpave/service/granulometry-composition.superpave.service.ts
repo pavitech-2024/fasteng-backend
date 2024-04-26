@@ -1,7 +1,7 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { AsphaltGranulometryRepository } from "../../../essays/granulometry/repository";
 import { AsphaltGranulometry } from "../../../essays/granulometry/schemas";
-import { AllSieves } from "utils/interfaces";
+import { AllSieves } from "../../../../../utils/interfaces";
 
 @Injectable()
 export class GranulometryComposition_Superpave_Service {
