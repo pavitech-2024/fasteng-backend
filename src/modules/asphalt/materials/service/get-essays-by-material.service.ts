@@ -8,7 +8,7 @@ import { ShapeIndexRepository } from '../../essays/shapeIndex/repository';
 import { AbrasionRepository } from '../../essays/abrasion/repository';
 import { InjectModel } from '@nestjs/mongoose';
 import { Material, MaterialDocument } from '../schemas';
-import { DATABASE_CONNECTION } from 'infra/mongoose/database.config';
+import { DATABASE_CONNECTION } from '../../../../infra/mongoose/database.config';
 import { Model } from 'mongoose';
 import { SandEquivalentRepository } from '../../essays/sandEquivalent/repository';
 import { AngularityRepository } from '../../essays/angularity/repository';
