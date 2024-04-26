@@ -6,7 +6,7 @@ import { MarshallRepository } from '../repository';
 import { Marshall, MarshallDocument } from '../schemas';
 import { InjectModel } from '@nestjs/mongoose';
 import { DATABASE_CONNECTION } from 'infra/mongoose/database.config';
-import { ViscosityRotationalRepository } from 'modules/asphalt/essays/viscosityRotational/repository';
+import { ViscosityRotationalRepository } from '../../../essays/viscosityRotational/repository';
 
 @Injectable()
 export class MaterialSelection_Marshall_Service {
