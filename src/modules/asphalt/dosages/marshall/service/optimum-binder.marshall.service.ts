@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { MarshallService } from '.';
 import { InjectModel } from '@nestjs/mongoose';
 import { Marshall, MarshallDocument } from '../schemas';
-import { DATABASE_CONNECTION } from 'infra/mongoose/database.config';
+import { DATABASE_CONNECTION } from '../../../../../infra/mongoose/database.config';
 import { Model } from 'mongoose';
 import { MarshallRepository } from '../repository';
 
