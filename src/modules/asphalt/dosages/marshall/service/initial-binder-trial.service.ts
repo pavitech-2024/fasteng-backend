@@ -5,8 +5,8 @@ import { Model } from 'mongoose';
 import { MarshallRepository } from '../repository';
 import { Marshall, MarshallDocument } from '../schemas';
 import { MaterialsRepository } from '../../../materials/repository/index';
-import { Material } from 'modules/asphalt/materials/schemas';
-import { ViscosityRotationalRepository } from 'modules/asphalt/essays/viscosityRotational/repository';
+import { Material } from '../../../materials/schemas';
+import { ViscosityRotationalRepository } from '../../../essays/viscosityRotational/repository';
 
 @Injectable()
 export class SetBinderTrial_Marshall_Service {

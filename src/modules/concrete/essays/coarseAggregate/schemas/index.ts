@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { IsNotEmpty } from "class-validator";
-import { Material } from "modules/concrete/materials/schemas";
+import { Material } from "../../../materials/schemas";
 import { HydratedDocument } from "mongoose";
 import { Calc_CoarseAggregateSpecificMass_Out } from "../dto/calc.coarseAggregateSpecificMass.dto";
 
