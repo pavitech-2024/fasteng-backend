@@ -1,6 +1,6 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { DATABASE_CONNECTION } from "infra/mongoose/database.config";
+import { DATABASE_CONNECTION } from "../../../../infra/mongoose/database.config";
 import { CbrRepository } from "../../essays/cbr/repository";
 import { CompressionRepository } from "../../essays/compression/repository";
 import { HrbRepository } from "../../essays/hrb/repository";
