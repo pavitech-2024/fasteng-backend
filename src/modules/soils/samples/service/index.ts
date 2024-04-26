@@ -3,12 +3,16 @@ import { SamplesRepository } from '../repository';
 import { Sample } from '../schemas';
 import { AlreadyExists, NotFound } from '../../../../utils/exceptions';
 import { CreateSampleDto } from '../dto/create-sample.dto';
+import { GetEssaysBySample_Service } from './get-essays-by-sample.service';
 
 @Injectable()
 export class SamplesService {
   private logger = new Logger(SamplesService.name);
 
-  constructor(private readonly samplesRepository: SamplesRepository) {}
+  constructor(
+    private readonly samplesRepository: SamplesRepository,
+    private readonly getEssaysBySample_Service: GetEssaysBySample_Service
+  ) {}
 
   async createSample(sample: CreateSampleDto, userId: string): Promise<Sample> {
     try {
@@ -29,7 +33,7 @@ export class SamplesService {
     }
   }
 
-  async getSample(sampleId: string): Promise<Sample> {
+  async getSample(sampleId: string): Promise<any> {
     try {
       // busca uma amostra com o id passado no banco de dados
       const sample = await this.samplesRepository.findOne({ _id: sampleId });
@@ -37,8 +41,10 @@ export class SamplesService {
       // se não encontrar a amostra, retorna um erro
       if (!sample) throw new NotFound('Sample');
 
-      // retorna a amostra encontrada
-      return sample;
+      // Buscar os ensaios com esse material;
+      const essays = await this.getEssaysBySample_Service.getEssaysBySample(sample)
+
+      return { sample, essays}
     } catch (error) {
       this.logger.error(`error on get sample > [error]: ${error}`);
 

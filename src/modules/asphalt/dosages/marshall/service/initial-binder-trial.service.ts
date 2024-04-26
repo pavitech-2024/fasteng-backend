@@ -1,15 +1,12 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { DATABASE_CONNECTION } from 'infra/mongoose/database.config';
+import { DATABASE_CONNECTION } from '../../../../../infra/mongoose/database.config';
 import { Model } from 'mongoose';
 import { MarshallRepository } from '../repository';
 import { Marshall, MarshallDocument } from '../schemas';
 import { MaterialsRepository } from 'modules/asphalt/materials/repository';
-import { ViscosityRotational, ViscosityRotationalDocument } from 'modules/asphalt/essays/viscosityRotational/schemas';
 import { Material } from 'modules/asphalt/materials/schemas';
 import { ViscosityRotationalRepository } from 'modules/asphalt/essays/viscosityRotational/repository';
-import { SayboltFurolRepository } from 'modules/asphalt/essays/sayboltFurol/repository';
-import { SayboltFurol } from 'modules/asphalt/essays/sayboltFurol/schemas';
 
 @Injectable()
 export class SetBinderTrial_Marshall_Service {
@@ -124,14 +121,6 @@ export class SetBinderTrial_Marshall_Service {
         average: (higherAggregateTemperature + lowerAggregateTemperature) / 2,
         lower: lowerAggregateTemperature,
       };
-
-      // if (!material.experimentsUseds.some(exp => exp.type === "Viscosity" && exp._id.toString() === result._id.toString())) {
-      //   dosage.dataEntry.experimentsUseds.push({ type: "Viscosity", _id: result._id });
-      //   await dosage.save();
-      // }
-
-      // dosage.result.temperatures = { machiningTemperatureRange, compressionTemperatureRange, aggregateTemperatureRange };
-      // await dosage.save();
 
       return { machiningTemperatureRange, compressionTemperatureRange, aggregateTemperatureRange };
     } catch (error) {
