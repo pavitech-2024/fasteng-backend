@@ -4,7 +4,7 @@ import { DATABASE_CONNECTION } from '../../../../../infra/mongoose/database.conf
 import { Model } from 'mongoose';
 import { MarshallRepository } from '../repository';
 import { Marshall, MarshallDocument } from '../schemas';
-import { MaterialsRepository } from 'modules/asphalt/materials/repository';
+import { MaterialsRepository } from '../../../materials/repository/index';
 import { Material } from 'modules/asphalt/materials/schemas';
 import { ViscosityRotationalRepository } from 'modules/asphalt/essays/viscosityRotational/repository';
 
