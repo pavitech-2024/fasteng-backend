@@ -1,6 +1,6 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { MaterialsRepository } from "../../../materials/repository";
-import { NotFound, AlreadyExists } from "utils/exceptions";
+import { NotFound, AlreadyExists } from "../../../../../utils/exceptions";
 import { CoarseAggregateSpecificMassRepository } from "../repository";
 
 @Injectable()

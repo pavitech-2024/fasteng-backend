@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { CoarseAggregateSpecificMassRepository } from "../repository";
-import { AlreadyExists } from "utils/exceptions";
+import { AlreadyExists } from "../../../../../utils/exceptions";
 import { GeneralData_CoarseAggregate_Service } from "./general-data.coarseAggregate.service";
 
 @Injectable()
