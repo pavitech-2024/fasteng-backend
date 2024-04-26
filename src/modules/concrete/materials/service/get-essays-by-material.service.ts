@@ -7,6 +7,7 @@ import { ConcreteGranulometryRepository } from "modules/concrete/essays/granulom
 import { ChapmanRepository } from "modules/concrete/essays/chapman/repository";
 import { UnitMassRepository } from "modules/concrete/essays/unitMass/repository";
 import { SandIncreaseRepository } from "modules/concrete/essays/sand-increase/repository";
+import { CoarseAggregateSpecificMassRepository } from "modules/concrete/essays/coarseAggregate/repository";
 
 
 @Injectable()
@@ -19,7 +20,8 @@ export class GetEssaysByMaterial_Service {
     private readonly granulometryRepository: ConcreteGranulometryRepository,
     private readonly chapmanRepository: ChapmanRepository,
     private readonly unitMassRepository: UnitMassRepository,
-    private readonly sandIncreaseRepository: SandIncreaseRepository
+    private readonly sandIncreaseRepository: SandIncreaseRepository,
+    private readonly coarseAggregateSpecificMassRepository: CoarseAggregateSpecificMassRepository,
   ) {}
 
   async getEssaysByMaterial(material: any) {
@@ -62,6 +64,11 @@ export class GetEssaysByMaterial_Service {
             if (response) {
               essay = { essayName, data: response };
             }
+          case 'coarseAggregateSpecificMass':
+            response = await this.coarseAggregateSpecificMassRepository.findOne({ 'generalData.material._id': _id.toString() });
+            if (response) {
+              essay = { essayName, data: response };
+            }
             break;
           default:
             break;
@@ -85,65 +92,13 @@ export class GetEssaysByMaterial_Service {
 
     switch (typeMaterial) {
       case 'coarseAggregate':
-        possiblesExperimentTypes = [
-          'granulometry',
-          'chapman',
-          'unitMass',
-          'sandIncrease',
-          'dosage',
-          // To-do: qual ensaio é esse?
-          'realDensity',
-        ];
+        possiblesExperimentTypes = ['granulometry', 'unitMass', 'sandIncrease', 'chapman', 'specificMass'];
         break;
       case 'fineAggregate':
-        possiblesExperimentTypes = ['granulometry', 'specificMass', 'sandEquivalent', 'realDensity', 'angularity'];
+        possiblesExperimentTypes = ['granulometry', 'unitMass', 'sandIncrease', 'chapman', 'specificMass'];
         break;
       case 'cement':
-        possiblesExperimentTypes = ['granulometry', 'specificMass', 'sandEquivalent'];
-        break;
-      case 'asphaltBinder':
-        possiblesExperimentTypes = [
-          'viscosityRotational',
-          'penetration',
-          'softeningPoint',
-          'flashPoint',
-          'ductility',
-          // To-do: fazer a dosagem;
-          'dosage',
-          'rtfo',
-        ];
-        break;
-      case 'CAP':
-        possiblesExperimentTypes = [
-          'viscosityRotational',
-          'penetration',
-          'softeningPoint',
-          'flashPoint',
-          'ductility',
-          'dosage',
-          'elasticRecovery',
-          'rtfo',
-        ];
-        break;
-      case 'other':
-        possiblesExperimentTypes = [
-          'adhesiveness',
-          'angularity',
-          'elongatedParticles',
-          'sandEquivalent',
-          'granulometry',
-          'specificMass',
-          'shapeIndex',
-          'losAngelesAbrasion',
-          'viscosityRotational',
-          'penetration',
-          'softeningPoint',
-          'flashPoint',
-          'ductility',
-          'dosage',
-          'elasticRecovery',
-          'realDensity',
-        ];
+        possiblesExperimentTypes = ['granulometry', 'unitMass', 'sandIncrease', 'chapman', 'specificMass'];
         break;
       default:
         possiblesExperimentTypes = [];
