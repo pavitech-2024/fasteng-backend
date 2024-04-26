@@ -3,11 +3,11 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Material, MaterialDocument } from "../schemas";
 import { DATABASE_CONNECTION } from "../../../../infra/mongoose/database.config";
 import { Model } from "mongoose";
-import { ConcreteGranulometryRepository } from "modules/concrete/essays/granulometry/repository";
-import { ChapmanRepository } from "modules/concrete/essays/chapman/repository";
-import { UnitMassRepository } from "modules/concrete/essays/unitMass/repository";
-import { SandIncreaseRepository } from "modules/concrete/essays/sand-increase/repository";
-import { CoarseAggregateSpecificMassRepository } from "modules/concrete/essays/coarseAggregate/repository";
+import { ConcreteGranulometryRepository } from "../../essays/granulometry/repository";
+import { ChapmanRepository } from "../../essays/chapman/repository";
+import { UnitMassRepository } from "../../essays/unitMass/repository";
+import { SandIncreaseRepository } from "../../essays/sand-increase/repository";
+import { CoarseAggregateSpecificMassRepository } from "../../essays/coarseAggregate/repository";
 
 
 @Injectable()
