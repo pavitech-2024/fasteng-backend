@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Marshall, MarshallDocument } from '../schemas';
-import { DATABASE_CONNECTION } from 'infra/mongoose/database.config';
+import { DATABASE_CONNECTION } from '../../../../../infra/mongoose/database.config';
 import { MarshallRepository } from '../repository';
 import { Model } from 'mongoose';
 import { MaterialsRepository } from '../../../materials/repository';
