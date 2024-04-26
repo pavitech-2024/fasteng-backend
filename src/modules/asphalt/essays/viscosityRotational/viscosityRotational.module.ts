@@ -5,7 +5,7 @@ import { Calc_ViscosityRotational_Service } from './service/calc.viscosityRotati
 import { GeneralData_ViscosityRotational_Service } from './service/general-data.viscosityRotational.service';
 import { ViscosityRotationalService } from './service/viscosityRotational.service';
 import { SetBinderTrial_Marshall_Service } from '../../dosages/marshall/service/initial-binder-trial.service';
-import { MarshallModule } from 'modules/asphalt/dosages/marshall/marshall.module';
+import { MarshallModule } from '../../dosages/marshall/marshall.module';
 
 const services = [
   ViscosityRotationalService,
