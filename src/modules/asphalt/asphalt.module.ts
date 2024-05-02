@@ -43,6 +43,8 @@ import { IggModule } from './essays/igg/igg.module';
 import { Igg, IggSchema } from './essays/igg/schemas';
 import { Fwd, FwdSchema } from './essays/fwd/schema';
 import { FwdModule } from './essays/fwd/fwd.module';
+import { Superpave, SuperpaveSchema } from './dosages/superpave/schemas';
+import { SuperpaveModule } from './dosages/superpave/superpave.module';
 
 const Models: ModelDefinition[] = [
   { name: Material.name, schema: MaterialSchema },
@@ -66,6 +68,7 @@ const Models: ModelDefinition[] = [
   { name: ViscosityRotational.name, schema: ViscosityRotationalSchema },
   { name: Igg.name, schema: IggSchema },
   { name: Fwd.name, schema: FwdSchema },
+  { name: Superpave.name, schema: SuperpaveSchema },
 ];
 
 const Modules = [
@@ -90,11 +93,12 @@ const Modules = [
   ViscosityRotationalModule,
   IggModule,
   FwdModule,
+  SuperpaveModule,
 ];
 
 @Global()
 @Module({
   imports: [MongooseModule.forFeature(Models, DATABASE_CONNECTION.ASPHALT), ...Modules],
-  exports: [MongooseModule, MaterialsModule],
+  exports: [MongooseModule, ...Modules],
 })
 export class AsphaltModule {}
