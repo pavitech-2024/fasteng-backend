@@ -1,8 +1,7 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Material, MaterialDocument } from "../schemas";
+import { Material } from "../schemas";
 import { DATABASE_CONNECTION } from "../../../../infra/mongoose/database.config";
-import { Model } from "mongoose";
 import { ConcreteGranulometryRepository } from "../../essays/granulometry/repository";
 import { ChapmanRepository } from "../../essays/chapman/repository";
 import { UnitMassRepository } from "../../essays/unitMass/repository";
@@ -16,7 +15,6 @@ export class GetEssaysByMaterial_Service {
 
   constructor(
     @InjectModel(Material.name, DATABASE_CONNECTION.CONCRETE)
-    private materialModel: Model<MaterialDocument>,
     private readonly granulometryRepository: ConcreteGranulometryRepository,
     private readonly chapmanRepository: ChapmanRepository,
     private readonly unitMassRepository: UnitMassRepository,
