@@ -1,24 +1,24 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { MaterialsRepository } from '../repository';
-import { AdhesivenessRepository } from 'modules/asphalt/essays/adhesiveness/repository';
-import { ElongatedParticlesRepository } from 'modules/asphalt/essays/elongatedParticles/repository';
-import { AsphaltGranulometryRepository } from 'modules/asphalt/essays/granulometry/repository';
-import { SpecifyMassRepository } from 'modules/asphalt/essays/specifyMass/repository';
-import { ShapeIndexRepository } from 'modules/asphalt/essays/shapeIndex/repository';
-import { AbrasionRepository } from 'modules/asphalt/essays/abrasion/repository';
+import { AdhesivenessRepository } from '../../essays/adhesiveness/repository';
+import { ElongatedParticlesRepository } from '../../essays/elongatedParticles/repository';
+import { AsphaltGranulometryRepository } from '../../essays/granulometry/repository';
+import { SpecifyMassRepository } from '../../essays/specifyMass/repository';
+import { ShapeIndexRepository } from '../../essays/shapeIndex/repository';
+import { AbrasionRepository } from '../../essays/abrasion/repository';
 import { InjectModel } from '@nestjs/mongoose';
 import { Material, MaterialDocument } from '../schemas';
-import { DATABASE_CONNECTION } from 'infra/mongoose/database.config';
+import { DATABASE_CONNECTION } from '../../../../infra/mongoose/database.config';
 import { Model } from 'mongoose';
-import { SandEquivalentRepository } from 'modules/asphalt/essays/sandEquivalent/repository';
-import { AngularityRepository } from 'modules/asphalt/essays/angularity/repository';
-import { ViscosityRotationalRepository } from 'modules/asphalt/essays/viscosityRotational/repository';
-import { PenetrationRepository } from 'modules/asphalt/essays/penetration/repository';
-import { SofteningPointRepository } from 'modules/asphalt/essays/softeningPoint/repository';
-import { FlashPointRepository } from 'modules/asphalt/essays/flashPoint/repository';
-import { DuctilityRepository } from 'modules/asphalt/essays/ductility/repository';
-import { RtfoRepository } from 'modules/asphalt/essays/rtfo/repository';
-import { ElasticRecoveryRepository } from 'modules/asphalt/essays/elasticRecovery/repository';
+import { SandEquivalentRepository } from '../../essays/sandEquivalent/repository';
+import { AngularityRepository } from '../../essays/angularity/repository';
+import { ViscosityRotationalRepository } from '../../essays/viscosityRotational/repository';
+import { PenetrationRepository } from '../../essays/penetration/repository';
+import { SofteningPointRepository } from '../../essays/softeningPoint/repository';
+import { FlashPointRepository } from '../../essays/flashPoint/repository';
+import { DuctilityRepository } from '../../essays/ductility/repository';
+import { RtfoRepository } from '../../essays/rtfo/repository';
+import { ElasticRecoveryRepository } from '../../essays/elasticRecovery/repository';
 
 @Injectable()
 export class GetEssaysByMaterial_Service {
