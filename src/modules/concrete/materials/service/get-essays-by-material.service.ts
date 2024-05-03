@@ -1,9 +1,7 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Material, MaterialDocument } from "../schemas";
+import { Material } from "../schemas";
 import { DATABASE_CONNECTION } from "infra/mongoose/database.config";
-import { Model } from "mongoose";
-import { AdhesivenessRepository } from "modules/asphalt/essays/adhesiveness/repository";
 import { ConcreteGranulometryRepository } from "modules/concrete/essays/granulometry/repository";
 import { ChapmanRepository } from "modules/concrete/essays/chapman/repository";
 import { UnitMassRepository } from "modules/concrete/essays/unitMass/repository";
@@ -16,7 +14,6 @@ export class GetEssaysByMaterial_Service {
 
   constructor(
     @InjectModel(Material.name, DATABASE_CONNECTION.CONCRETE)
-    private materialModel: Model<MaterialDocument>,
     private readonly granulometryRepository: ConcreteGranulometryRepository,
     private readonly chapmanRepository: ChapmanRepository,
     private readonly unitMassRepository: UnitMassRepository,
@@ -60,60 +57,6 @@ export class GetEssaysByMaterial_Service {
             break;
           case 'sandIncrease':
             response = await this.sandIncreaseRepository.findOne({ 'generalData.material._id': _id.toString() });
-            if (response) {
-              essay = { essayName, data: response };
-            }
-            break;
-          case 'sandEquivalent':
-            response = await this.sandEquivalentRepository.findOne({ 'generalData.material._id': _id.toString() });
-            if (response) {
-              essay = { essayName, data: response };
-            }
-            break;
-          case 'angularity':
-            response = await this.angularityRepository.findOne({ 'generalData.material._id': _id.toString() });
-            if (response) {
-              essay = { essayName, data: response };
-            }
-            break;
-          case 'viscosityRotational':
-            response = await this.viscosityRotationalRepository.findOne({ 'generalData.material._id': _id.toString() });
-            if (response) {
-              essay = { essayName, data: response };
-            }
-            break;
-          case 'penetration':
-            response = await this.penetrationRepository.findOne({ 'generalData.material._id': _id.toString() });
-            if (response) {
-              essay = { essayName, data: response };
-            }
-            break;
-          case 'softeningPoint':
-            response = await this.softeningPointRepository.findOne({ 'generalData.material._id': _id.toString() });
-            if (response) {
-              essay = { essayName, data: response };
-            }
-            break;
-          case 'flashPoint':
-            response = await this.flashPointRepository.findOne({ 'generalData.material._id': _id.toString() });
-            if (response) {
-              essay = { essayName, data: response };
-            }
-            break;
-          case 'ductility':
-            response = await this.ductilityRepository.findOne({ 'generalData.material._id': _id.toString() });
-            if (response) {
-              essay = { essayName, data: response };
-            }
-            break;
-          case 'rtfo':
-            response = await this.rtfoRepository.findOne({ 'generalData.material._id': _id.toString() });
-            if (response) {
-              essay = { essayName, data: response };
-            }
-            break;
-          case 'elasticRecovery':
-            response = await this.elasticRecoveryRepository.findOne({ 'generalData.material._id': _id.toString() });
             if (response) {
               essay = { essayName, data: response };
             }
