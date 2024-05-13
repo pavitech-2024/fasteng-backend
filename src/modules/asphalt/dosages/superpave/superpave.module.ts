@@ -12,10 +12,11 @@ const services = [
   MaterialSelection_Superpave_Service,
   GranulometryComposition_Superpave_Service,
 ];
+
 @Module({
-  imports: [],
-  controllers: [SuperpaveController],
-  providers: [...services, SuperpaveRepository],
-  exports: [SuperpaveService, SuperpaveRepository],
-})
-export class SuperpaveModule {}
+    imports: [],
+    controllers: [SuperpaveController],
+    providers: [...services, SuperpaveRepository],
+    exports: [SuperpaveService, SuperpaveRepository],
+  })
+  export class SuperpaveModule {}

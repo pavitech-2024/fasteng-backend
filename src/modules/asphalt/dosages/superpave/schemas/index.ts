@@ -1,22 +1,22 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { IsNotEmpty } from 'class-validator';
-import { HydratedDocument } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { IsNotEmpty } from "class-validator";
+import { HydratedDocument } from "mongoose";
 
 export type SuperpaveDocument = HydratedDocument<Superpave>;
 
 export type SuperpaveGeneralData = {
   userId: string;
-  name: string;
-  laboratory?: string;
+  projectName: string;
+  labName?: string;
   operator?: string;
   calculist?: string;
-  trafficVolume: 'low' | 'medium' | 'medium-high' | 'high';
-  objective: 'bearing' | 'bonding';
-  dnitBand: 'A' | 'B' | 'C';
+  trafficVolume: "low" | "medium" | "medium-high" | "high";
+  objective: "bearing" | "bonding";
+  dnitBand: "A" | "B" | "C";
   description?: string;
-};
+}
 
-@Schema({ collection: 'superpaves' })
+@Schema({ collection: 'superpaves'})
 export class Superpave {
   _id: string;
   step: number;
@@ -26,9 +26,4 @@ export class Superpave {
   generalData: SuperpaveGeneralData;
 }
 
-const SuperpaveSchema = SchemaFactory.createForClass(Superpave);
-
-SuperpaveSchema.set('timestamps', true);
-SuperpaveSchema.set('versionKey', false);
-
-export { SuperpaveSchema };
+export const SuperpaveSchema = SchemaFactory.createForClass(Superpave);
