@@ -19,15 +19,31 @@ export class SuperpaveService {
     private readonly granulometryComposition_Service: GranulometryComposition_Superpave_Service,
   ) { }
 
-  async verifyInitSuperpave(body: SuperpaveInitDto) {
+  async verifyInitSuperpave(body: SuperpaveInitDto, userId: string) {
     try {
-      const success = await this.generalData_Service.verifyInitSuperpave(body);
+      const success = await this.generalData_Service.verifyInitSuperpave(body, userId);
 
       return { success };
     } catch (error) {
       this.logger.error(`error on verify init > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
+    }
+  }
+
+  async getAllDosages(userId: string): Promise<Superpave[]> {
+    try {
+      // busca todas as dosagens no banco de dados
+      const dosages = await this.superpave_repository.find();
+
+      const userDosages = dosages.filter((dosage) => dosage.generalData && dosage.generalData.userId === userId);
+
+      // retorna as dosagens encontradas que pertencem ao usuário
+      return userDosages;
+    } catch (error) {
+      this.logger.error(`error on get all dosages > [error]: ${error}`);
+
+      throw error;
     }
   }
 
@@ -209,20 +225,20 @@ export class SuperpaveService {
     }
   }
 
-  async updateSuperpave(superpave: Superpave): Promise<Superpave> {
-    try {
-      // busca um material com o id passado no banco de dados
-      const superpaveToUpdate = await this.superpave_repository.findOne({ _id: superpave._id });
+  // async updateSuperpave(superpave: Superpave): Promise<Superpave> {
+  //   try {
+  //     // busca um material com o id passado no banco de dados
+  //     const superpaveToUpdate = await this.superpave_repository.findOne({ _id: superpave._id });
 
-      // se não encontrar o material, retorna um erro
-      if (!superpaveToUpdate) throw new NotFound('Superpave');
+  //     // se não encontrar o material, retorna um erro
+  //     if (!superpaveToUpdate) throw new NotFound('Superpave');
 
-      // atualiza o material no banco de dados
-      return this.superpave_repository.findOneAndUpdate({ _id: superpave._id }, superpave);
-    } catch (error) {
-      this.logger.error(`error on update superpave > [error]: ${error}`);
+  //     // atualiza o material no banco de dados
+  //     return this.superpave_repository.findOneAndUpdate({ _id: superpave._id }, superpave);
+  //   } catch (error) {
+  //     this.logger.error(`error on update superpave > [error]: ${error}`);
 
-      throw error;
-    }
-  }
+  //     throw error;
+  //   }
+  // }
 }

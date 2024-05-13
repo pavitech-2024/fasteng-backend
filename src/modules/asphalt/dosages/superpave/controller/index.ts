@@ -12,7 +12,17 @@ export class SuperpaveController {
 
   constructor(private readonly superpaveService: SuperpaveService) { }
 
-  @Post('verify-init')
+  @Get('all/:id')
+  @ApiOperation({ summary: 'Retorna todas as dosagens do banco de dados de um usuário.' })
+  @ApiResponse({ status: 200, description: 'Dosagens encontrados com sucesso!' })
+  @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
+  async getAllByUserId(@Param('id') userId: string) {
+    this.logger.log(`get all dosages by user id > [id]: ${userId}`);
+
+    return this.superpaveService.getAllDosages(userId);
+  }
+
+  @Post('verify-init/:id')
   @ApiOperation({ summary: 'Verifica se é possível criar uma Superpave com os dados enviados.' })
   @ApiResponse({
     status: 200,
@@ -29,10 +39,10 @@ export class SuperpaveController {
     },
   })
   @ApiResponse({ status: 400, description: 'Erro ao verificar se é possível criar uma Superpave com os dados enviados.' })
-  async verifyInitSuperpave(@Res() response: Response, @Body() body: SuperpaveInitDto) {
+  async verifyInitSuperpave(@Res() response: Response, @Body() body: SuperpaveInitDto, @Param('id') userId: string) {
     this.logger.log('verify init Superpave > [body]');
 
-    const status = await this.superpaveService.verifyInitSuperpave(body);
+    const status = await this.superpaveService.verifyInitSuperpave(body, userId);
 
     return response.status(200).json(status);
   }
