@@ -61,6 +61,18 @@ export class SuperpaveService {
     }
   }
 
+  async saveMaterialSelectionStep(body: any, userId: string) {
+    try {
+      const success = await this.materialSelection_Service.saveMaterials(body, userId);
+
+      return { success }
+    } catch (error) {
+      this.logger.error(`error on save materials data superpave step > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { success: false, error: { status, message, name } };
+    }
+  }
+
   async getStep3Data(body: SuperpaveStep3Dto) {
     try {
       const { dnitBand, aggregates } = body;

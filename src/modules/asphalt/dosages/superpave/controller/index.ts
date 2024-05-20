@@ -59,6 +59,19 @@ export class SuperpaveController {
     return response.status(200).json(status);
   }
 
+  @Post('save-material-selection-step/:id')
+  async saveMaterialSelectionStep(
+    @Res() response: Response,
+    @Body() body: any,
+    @Param('id') userId: string,
+  ) {
+    this.logger.log(`save materials selection step in user superpave dosage > [body]: ${body}`);
+
+    const status = await this.superpaveService.saveMaterialSelectionStep(body, userId);
+
+    return response.status(200).json(status);
+  }
+
   @Post('step-3-data')
   @ApiOperation({ summary: 'Retorna os dados iniciais necessários para a terceira tela (composição granulométrica) da dosagem' })
   @ApiResponse({ 

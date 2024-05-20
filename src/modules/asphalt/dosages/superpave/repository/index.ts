@@ -13,7 +13,7 @@ export class SuperpaveRepository {
 
   async find(): Promise<Superpave[]> {
     return this.superpaveModel.find();
-  }
+  };
 
   async findOne(name: any, userId: string): Promise<Superpave> {
     const dosage = await this.superpaveModel.findOne({
