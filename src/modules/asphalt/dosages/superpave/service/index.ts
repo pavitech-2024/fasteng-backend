@@ -806,154 +806,6 @@ export class SuperpaveService {
       result.percentsOfMaterialsToShow = listOfPercentsToReturn;
       result.percentsOfMaterials = percentsOfMaterials;
 
-      // if (dnitBand === "A") {
-      //   higherBand = [
-      //     ["3 pol - 75 mm", null],
-      //     ["2 1/2 pol - 64mm", null],
-      //     ["2 pol - 50mm", 100],
-      //     ["1 1/2 pol - 37,5mm", 100],
-      //     ["1 1/4 pol - 32mm", null],
-      //     ["1 pol - 25mm", 100,],
-      //     ["3/4 pol - 19mm", 90],
-      //     ["1/2 pol - 12,5mm", null],
-      //     ["3/8 pol - 9,5mm", 65],
-      //     ["1/4 pol - 6,3mm", null],
-      //     ["Nº4 - 4,8mm", 50],
-      //     ["Nº8 - 2,4mm", null],
-      //     ["Nº10 - 2,0mm", 40],
-      //     ["Nº16 - 1,2mm", null],
-      //     ["Nº30 - 0,6mm", null],
-      //     ["Nº40 - 0,43mm", 30],
-      //     ["Nº50 - 0,3mm", null],
-      //     ["Nº80 - 0,18m", 0],
-      //     ["Nº100 - 0,15mm", null],
-      //     ["Nº200 - 0,075mm", 8],
-      //   ];
-      //   lowerBand = [
-      //     ["3 pol - 75 mm", null],
-      //     ["2 1/2 pol - 64mm", null],
-      //     ["2 pol - 50mm", 100],
-      //     ["1 1/2 pol - 37,5mm", 95],
-      //     ["1 1/4 pol - 32mm", null],
-      //     ["1 pol - 25mm", 75],
-      //     ["3/4 pol - 19mm", 60],
-      //     ["1/2 pol - 12,5mm", null],
-      //     ["3/8 pol - 9,5mm", 35],
-      //     ["1/4 pol - 6,3mm", null],
-      //     ["Nº4 - 4,8mm", 25],
-      //     ["Nº8 - 2,4mm", null],
-      //     ["Nº10 - 2,0mm", 20],
-      //     ["Nº16 - 1,2mm", null],
-      //     ["Nº30 - 0,6mm", null],
-      //     ["Nº40 - 0,43mm", 10],
-      //     ["Nº50 - 0,3mm", null],
-      //     ["Nº80 - 0,18m", 5],
-      //     ["Nº100 - 0,15mm", null],
-      //     ["Nº200 - 0,075mm", 1],
-      //   ];
-      // } else if (dnitBand === "B") {
-      //   higherBand = [
-      //     ["3 pol - 75 mm", null],
-      //     ["2 1/2 pol - 64mm", null],
-      //     ["2 pol - 50mm", null],
-      //     ["1 1/2 pol - 37,5mm", 100],
-      //     ["1 1/4 pol - 32mm", null],
-      //     ["1 pol - 25mm", 100],
-      //     ["3/4 pol - 19mm", 100],
-      //     ["1/2 pol - 12,5mm", null],
-      //     ["3/8 pol - 9,5mm", 80],
-      //     ["1/4 pol - 6,3mm", null],
-      //     ["Nº4 - 4,8mm", 60],
-      //     ["Nº8 - 2,4mm", null],
-      //     ["Nº10 - 2,0mm", 45],
-      //     ["Nº16 - 1,2mm", null],
-      //     ["Nº30 - 0,6mm", null],
-      //     ["Nº40 - 0,43mm", 32],
-      //     ["Nº50 - 0,3mm", null],
-      //     ["Nº80 - 0,18m", 20],
-      //     ["Nº100 - 0,15mm", null],
-      //     ["Nº200 - 0,075mm", 8],
-      //   ];
-      //   lowerBand = [
-      //     ["3 pol - 75 mm", null],
-      //     ["2 1/2 pol - 64mm", null],
-      //     ["2 pol - 50mm", null],
-      //     ["1 1/2 pol - 37,5mm", 100],
-      //     ["1 1/4 pol - 32mm", null],
-      //     ["1 pol - 25mm", 95],
-      //     ["3/4 pol - 19mm", 80],
-      //     ["1/2 pol - 12,5mm", null],
-      //     ["3/8 pol - 9,5mm", 45],
-      //     ["1/4 pol - 6,3mm", null],
-      //     ["Nº4 - 4,8mm", 28],
-      //     ["Nº8 - 2,4mm", null],
-      //     ["Nº10 - 2,0mm", 20],
-      //     ["Nº16 - 1,2mm", null],
-      //     ["Nº30 - 0,6mm", null],
-      //     ["Nº40 - 0,43mm", 10],
-      //     ["Nº50 - 0,3mm", null],
-      //     ["Nº80 - 0,18m", 8],
-      //     ["Nº100 - 0,15mm", null],
-      //     ["Nº200 - 0,075mm", 3],
-      //   ];
-      // } else if (dnitBand === "C") {
-      //   higherBand = [
-      //     ["3 pol - 75 mm", null],
-      //     ["2 1/2 pol - 64mm", null],
-      //     ["2 pol - 50mm", null],
-      //     ["1 1/2 pol - 37,5mm", null],
-      //     ["1 1/4 pol - 32mm", null],
-      //     ["1 pol - 25mm", null],
-      //     ["3/4 pol - 19mm", null],
-      //     ["1/2 pol - 12,5mm", 100],
-      //     ["3/8 pol - 9,5mm", 90],
-      //     ["1/4 pol - 6,3mm", null],
-      //     ["Nº4 - 4,8mm", 72],
-      //     ["Nº8 - 2,4mm", null],
-      //     ["Nº10 - 2,0mm", 50],
-      //     ["Nº16 - 1,2mm", null],
-      //     ["Nº30 - 0,6mm", null],
-      //     ["Nº40 - 0,43mm", 26],
-      //     ["Nº50 - 0,3mm", null],
-      //     ["Nº80 - 0,18m", 16],
-      //     ["Nº100 - 0,15mm", null],
-      //     ["Nº200 - 0,075mm", 10],
-      //   ];
-      //   lowerBand = [
-      //     ["3 pol - 75 mm", null],
-      //     ["2 1/2 pol - 64mm", null],
-      //     ["2 pol - 50mm", null],
-      //     ["1 1/2 pol - 37,5mm", null],
-      //     ["1 1/4 pol - 32mm", null],
-      //     ["1 pol - 25mm", null],
-      //     ["3/4 pol - 19mm", null],
-      //     ["1/2 pol - 12,5mm", 80],
-      //     ["3/8 pol - 9,5mm", 70],
-      //     ["1/4 pol - 6,3mm",  null],
-      //     ["Nº4 - 4,8mm", 44],
-      //     ["Nº8 - 2,4mm", null],
-      //     ["Nº10 - 2,0mm", 22],
-      //     ["Nº16 - 1,2mm", null],
-      //     ["Nº30 - 0,6mm", null],
-      //     ["Nº40 - 0,43mm", 8],
-      //     ["Nº50 - 0,3mm", null],
-      //     ["Nº80 - 0,18m", 4],
-      //     ["Nº100 - 0,15mm", null],
-      //     ["Nº200 - 0,075mm", 2],
-      //   ];
-      // }
-
-      // const dnitBands = { higher: higherBand, lower: lowerBand };
-
-      // const table_data = await this.granulometryComposition_Service.getGranulometryData(aggregates);
-
-      // const data = {
-      //   dnitBands,
-      //   table_data,
-      //   project: [],
-      //   graphData: [],
-      // };
-
       if (dnitBand === "A") {
         higherBand = [
           null,
@@ -1134,5 +986,17 @@ export class SuperpaveService {
     if (y1 !== y2) curve[i] = ((y2 - y1) / (x2 - x1)) * axisX[i] + (y1 * x2 - y2 * x1) / (x2 - x1);
     else curve[i] = y1;
     return curve;
+  }
+
+  async calculateStep3Data(body: any) {
+    try {
+      const granulometry = await this.granulometryComposition_Service.calculateGranulometry(body);
+
+      return { data: granulometry, success: true }
+    } catch (error) {
+      this.logger.error(`error on getting the step 3 data > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { data: null, success: false, error: { status, message, name } };
+    }
   }
 }

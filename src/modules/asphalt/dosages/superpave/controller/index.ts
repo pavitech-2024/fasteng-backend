@@ -80,10 +80,19 @@ export class SuperpaveController {
     content: { 'application/json': { schema: { example: { data: {}, success: true } } } }, 
   })
   @ApiResponse({ status: 400, description: 'Dados não encontrados!' })
-  async getStep3Data(@Res() response: Response, @Body() body: SuperpaveStep3Dto) {
+  async getStep3Data(@Res() response: Response, @Body() body: any) {
     this.logger.log(`get step 3 data > [body]: ${body}`);
 
     const status = await this.superpaveService.getStep3Data(body);
+
+    return response.status(200).json(status);
+  }
+
+  @Post('calculate-step-3-data')
+  async calculateStep3Data(@Res() response: Response, @Body() body: any) {
+    this.logger.log(`calculate step 3 data > [body]: ${body}`);
+
+    const status = await this.superpaveService.calculateStep3Data(body);
 
     return response.status(200).json(status);
   }

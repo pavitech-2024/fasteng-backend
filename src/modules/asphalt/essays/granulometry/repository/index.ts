@@ -20,15 +20,15 @@ export class AsphaltGranulometryRepository {
   async findById(ids: string[]): Promise<AsphaltGranulometry[]> {
     let granulometrys = [];
 
-    ids.forEach(async (id) => {
-      const granulometry = await this.granulometryModel.findById(id);
-      
-      if (granulometry) {
-        granulometrys.push(granulometry)
-      }
-    })
+    for (const id of ids) {
+      const granulometry = await this.granulometryModel.find({ "generalData.material._id": id }).lean();
 
-    return granulometrys
+      if (Array.isArray(granulometry) && granulometry.length > 0) {
+        granulometrys.push(granulometry[0]);
+      }
+    }
+
+    return granulometrys;
   }
 
   async create(granulometry: any): Promise<AsphaltGranulometry> {
