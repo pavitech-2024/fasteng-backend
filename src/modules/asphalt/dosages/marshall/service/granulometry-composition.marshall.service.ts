@@ -41,18 +41,10 @@ export class GranulometryComposition_Marshall_Service {
           passants[p.sieve_label] = p.passant
         });
 
-
-        // passant.forEach(p => {
-        //   passants[p[0]] = p[1]
-        // })
-
-        console.log(passants)
-
         granulometry_data.push({
           _id: aggregate._id,
           passants: passants,
         });
-
       });
 
       //

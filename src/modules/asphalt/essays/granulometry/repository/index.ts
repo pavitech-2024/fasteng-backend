@@ -17,6 +17,20 @@ export class AsphaltGranulometryRepository {
     return this.granulometryModel.find();
   }
 
+  async findById(ids: string[]): Promise<AsphaltGranulometry[]> {
+    let granulometrys = [];
+
+    ids.forEach(async (id) => {
+      const granulometry = await this.granulometryModel.findById(id);
+      
+      if (granulometry) {
+        granulometrys.push(granulometry)
+      }
+    })
+
+    return granulometrys
+  }
+
   async create(granulometry: any): Promise<AsphaltGranulometry> {
     const createdGranulometry = new this.granulometryModel(granulometry);
 
