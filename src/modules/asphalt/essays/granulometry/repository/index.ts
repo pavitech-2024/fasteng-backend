@@ -7,9 +7,7 @@ export class AsphaltGranulometryRepository {
   constructor(@InjectModel(AsphaltGranulometry.name, DATABASE_CONNECTION.ASPHALT) private granulometryModel: Model<AsphaltGranulometryDocument>) {}
 
   async findOne(granulometryFilterQuery: FilterQuery<AsphaltGranulometry>): Promise<AsphaltGranulometry> {
-    console.log("🚀 ~ AsphaltGranulometryRepository ~ findOne ~ granulometryFilterQuery:", granulometryFilterQuery)
     const granulometry = await this.granulometryModel.findOne(granulometryFilterQuery);
-    console.log("🚀 ~ AsphaltGranulometryRepository ~ findOne ~ granulometry:", granulometry)
     return granulometry
   }
 

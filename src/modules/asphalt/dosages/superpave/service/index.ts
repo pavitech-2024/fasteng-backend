@@ -136,8 +136,6 @@ export class SuperpaveService {
         });
       });
 
-      console.log('🚀 ~ SuperpaveService ~ getStep3Data ~ granulometryData:', granulometryData);
-
       percentsOfMaterials = selectedGranulometrys.map((granulometry) => {
         if (granulometry.results.nominal_size > nominalSize) nominalSize = granulometry.results.nominal_size;
         return granulometry.results.passant;
