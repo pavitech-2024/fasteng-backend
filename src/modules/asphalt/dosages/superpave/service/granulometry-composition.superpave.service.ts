@@ -86,11 +86,23 @@ export class GranulometryComposition_Superpave_Service {
 
   async calculateGranulometry(body: any) {
     try {
-      const { chosenCurves, percentageInputs: percentsOfDosage, dnitBand, materials, nominalSize } = body;
+      const { chosenCurves, percentageInputs: percentsOfDosage, percentsToList, dnitBand, materials, nominalSize } = body;
 
-      let pointsOfCurve;
+      let pointsOfCurve = [];
       let band = { higher: [Number], lower: [Number] };
       let sumOfPercents = [];
+      let newNominalSize = {
+        value: 0,
+        controlPoints: {
+          lower: [],
+          higher: []
+        },
+        restrictedZone: {
+          lower: [],
+          higher: []
+        },
+        curve: [],
+      }
 
       let lowerComposition = {
         sumOfPercents: [],
@@ -125,6 +137,7 @@ export class GranulometryComposition_Superpave_Service {
           },
         },
       };
+      
 
       if (chosenCurves.lower && percentsOfDosage[0].length !== 0) {
         granulometryComposition.lower.percentsOfDosage.value = percentsOfDosage[0];
@@ -185,17 +198,17 @@ export class GranulometryComposition_Superpave_Service {
       }
 
       if (!granulometryComposition.lower.percentsOfDosage.isEmpty) {
-        lowerComposition = this.calculatePercentOfMaterials(0, materials, percentsOfDosage);
+        lowerComposition = this.calculatePercentOfMaterials(0, materials, percentsOfDosage, percentsToList);
         sumOfPercents[0] = lowerComposition.sumOfPercents.map((e) => e);
       }
 
       if (!granulometryComposition.average.percentsOfDosage.isEmpty) {
-        averageComposition = this.calculatePercentOfMaterials(1, materials, percentsOfDosage);
+        averageComposition = this.calculatePercentOfMaterials(1, materials, percentsOfDosage, percentsToList);
         sumOfPercents[1] = averageComposition.sumOfPercents.map((e) => e);
       }
 
       if (!granulometryComposition.higher.percentsOfDosage.isEmpty) {
-        higherComposition = this.calculatePercentOfMaterials(2, materials, percentsOfDosage);
+        higherComposition = this.calculatePercentOfMaterials(2, materials, percentsOfDosage, percentsToList);
         sumOfPercents[2] = higherComposition.sumOfPercents.map((e) => e);
       }
 
@@ -316,6 +329,7 @@ export class GranulometryComposition_Superpave_Service {
       }
 
       pointsOfCurve = pointsOfCurve;
+      
       const data = {
         lowerComposition,
         averageComposition,
@@ -355,8 +369,32 @@ export class GranulometryComposition_Superpave_Service {
     return curve;
   }
 
-  calculatePercentOfMaterials(band, materials, percentsOfDosage) {
+  calculatePercentOfMaterials(band, materials, percentsOfDosage, percentsToList) {
     let percentsOfMaterialsToShow = [];
+    let newPercentsOfDosage = [];
+
+    for (let i = 0; i < percentsToList.length; i++) {
+      percentsOfMaterialsToShow.push([]);
+    }
+
+    percentsToList.forEach((arr, idx) => {
+      arr.forEach((subArr, i) => {
+        if (!percentsOfMaterialsToShow[idx]) {
+          percentsOfMaterialsToShow[idx] = [];
+        }
+    
+        if (subArr.length > 1) {
+          percentsOfMaterialsToShow[idx][i] = subArr[1];
+        } else {
+          percentsOfMaterialsToShow[idx][i] = subArr;
+        }
+      });
+    });
+
+    Object.values(percentsOfDosage[0]).forEach((value) => {
+      console.log("🚀 ~ GranulometryComposition_Superpave_Service ~ Object.values ~ value:", value)
+      newPercentsOfDosage.push(value)
+    })
 
     let sumOfPercents = [
       null,
@@ -387,7 +425,7 @@ export class GranulometryComposition_Superpave_Service {
       percentsOfMaterials.push([]);
       for (let j = 0; j < percentsOfMaterialsToShow[i].length; j++) {
         if (percentsOfMaterialsToShow[i][j] !== null) {
-          percentsOfMaterials[i][j] = (percentsOfMaterialsToShow[i][j] * percentsOfDosage[band][i]) / 100;
+          percentsOfMaterials[i][j] = (percentsOfMaterialsToShow[i][j] * newPercentsOfDosage[i]) / 100;
           sumOfPercents[j] += percentsOfMaterials[i][j];
         } else {
           percentsOfMaterials[i][j] = null;

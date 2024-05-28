@@ -98,10 +98,12 @@ export class SuperpaveService {
             higher: [],
           },
           curve: [],
+          value: 0
         },
         percentsOfMaterialsToShow: [],
         percentsOfMaterials: []
       };
+      
 
       const allGranulometrys = await this.granulometryRepository.findAll();
 
@@ -137,7 +139,7 @@ export class SuperpaveService {
       });
 
       percentsOfMaterials = selectedGranulometrys.map((granulometry) => {
-        if (granulometry.results.nominal_size > nominalSize) nominalSize = granulometry.results.nominal_size;
+        if (granulometry.results.nominal_size > nominalSize) result.nominalSize.value = granulometry.results.nominal_size;
         return granulometry.results.passant;
       });
 
@@ -750,6 +752,102 @@ export class SuperpaveService {
           axisX,
         );
         result.nominalSize.curve = curve9;
+      } else {
+        result.nominalSize.controlPoints.lower = [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          100,
+          90,
+          null,
+          null,
+          32,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          2,
+        ];
+        result.nominalSize.controlPoints.higher = [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          100,
+          null,
+          90,
+          67,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          10,
+        ];
+        result.nominalSize.restrictedZone.lower = await this.insertBlankPointsOnCurve(
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            47.2,
+            null,
+            31.6,
+            23.5,
+            null,
+            18.7,
+            null,
+            null,
+            null,
+          ],
+          axisX,
+        );
+        result.nominalSize.restrictedZone.higher = await this.insertBlankPointsOnCurve(
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            47.2,
+            null,
+            37.6,
+            27.5,
+            null,
+            18.7,
+            null,
+            null,
+            null,
+          ],
+          axisX,
+        );
+        result.nominalSize.curve = curve9;
       }
 
       for (let i = 0; i < percentsOfMaterials.length; i++) {
@@ -942,7 +1040,7 @@ export class SuperpaveService {
       }
 
       const data = {
-        nominalSize,
+        nominalSize: result.nominalSize,
         percentsToList: listOfPercentsToReturn,
         bands: {
           letter: dnitBand,
@@ -990,7 +1088,7 @@ export class SuperpaveService {
     try {
       const granulometry = await this.granulometryComposition_Service.calculateGranulometry(body);
 
-      return { data: granulometry, success: true }
+      return { data: granulometry.data, success: true }
     } catch (error) {
       this.logger.error(`error on getting the step 3 data > [error]: ${error}`);
       const { status, name, message } = error;
