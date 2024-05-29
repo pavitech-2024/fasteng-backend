@@ -24,6 +24,41 @@ export type SuperpaveMaterialData = {
   binder: string
 }
 
+export type GranulometryCompositionData = {
+  percentageInputs: {
+    material_1: string,
+    material_2: string
+  }[];
+  graphData: any[];
+  percentsToList: any[];
+  lowerComposition: {
+    percentsOfMaterials: [[],[]],
+    sumOfPercents: []
+  },
+  averageComposition: {
+    percentsOfMaterials: [[],[]],
+    sumOfPercents: []
+  },
+  higherComposition: {
+    percentsOfMaterials: [[],[]],
+    sumOfPercents: []
+  },
+  nominalSize: {
+    value: number
+  };
+  pointsOfCurve: number[],
+  chosenCurves: {
+    lower: boolean,
+    average: boolean,
+    higher: boolean
+  },
+  bands: {
+    higher: any[],
+    lower: any[],
+    letter: string
+  }
+}
+
 @Schema({ collection: 'superpaves'})
 export class Superpave {
   _id: string;
@@ -36,6 +71,10 @@ export class Superpave {
   @IsNotEmpty()
   @Prop({ type: Object })
   materialSelectionData: SuperpaveMaterialData
+
+  @IsNotEmpty()
+  @Prop({ type: Object })
+  granulometryCompositionData: GranulometryCompositionData
 }
 
 const SuperpaveSchema = SchemaFactory.createForClass(Superpave);

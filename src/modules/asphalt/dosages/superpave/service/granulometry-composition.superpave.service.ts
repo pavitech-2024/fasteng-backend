@@ -2,12 +2,22 @@ import { Injectable, Logger } from '@nestjs/common';
 import { AsphaltGranulometryRepository } from '../../../essays/granulometry/repository';
 import { AsphaltGranulometry } from '../../../essays/granulometry/schemas';
 import { AllSieves } from '../../../../../utils/interfaces';
+import { Superpave, SuperpaveDocument } from '../schemas';
+import { InjectModel } from '@nestjs/mongoose';
+import { DATABASE_CONNECTION } from 'infra/mongoose/database.config';
+import { SuperpaveRepository } from '../repository';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class GranulometryComposition_Superpave_Service {
   private logger = new Logger(GranulometryComposition_Superpave_Service.name);
 
-  constructor(private readonly granulometry_repository: AsphaltGranulometryRepository) {}
+  constructor(
+    @InjectModel(Superpave.name, DATABASE_CONNECTION.ASPHALT) 
+    private superpaveModel: Model<SuperpaveDocument>,
+    private readonly superpaveRepository: SuperpaveRepository,
+    private readonly granulometry_repository: AsphaltGranulometryRepository
+  ) {}
 
   async getGranulometryData(aggregates: { _id: string; name: string }[]) {
     try {
@@ -323,7 +333,7 @@ export class GranulometryComposition_Superpave_Service {
         averageComposition,
         higherComposition,
         pointsOfCurve,
-        nominalSize: nominalSize.value,
+        nominalSize,
         chosenCurves,
       };
 
@@ -421,5 +431,32 @@ export class GranulometryComposition_Superpave_Service {
     }
 
     return { sumOfPercents, percentsOfMaterials };
+  }
+
+  async saveStep3Data(body: any, userId: string) {
+    try {
+      this.logger.log('save superpave granulometry composition step on granulometry-composition.superpave.service.ts > [body]', { body });
+
+      const { name } = body.granulometryCompositionData;
+
+      const superpaveExists: any = await this.superpaveRepository.findOne(name, userId);
+
+      const { name: materialName, ...granulometryCompositionWithoutName } = body.granulometryCompositionData;
+
+      const superpaveWithGranulometryComposition = { ...superpaveExists._doc, granulometryCompositionData: granulometryCompositionWithoutName };
+
+      await this.superpaveModel.updateOne(
+        { _id: superpaveExists._doc._id },
+        superpaveWithGranulometryComposition
+      );
+
+      if (superpaveExists._doc.generalData.step < 3) {
+        await this.superpaveRepository.saveStep(superpaveExists, 3);
+      }
+
+      return true;
+    } catch (error) {
+      throw error
+    }
   }
 }
