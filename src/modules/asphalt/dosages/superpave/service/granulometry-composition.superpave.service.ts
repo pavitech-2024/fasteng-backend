@@ -91,18 +91,6 @@ export class GranulometryComposition_Superpave_Service {
       let pointsOfCurve = [];
       let band = { higher: [Number], lower: [Number] };
       let sumOfPercents = [];
-      let newNominalSize = {
-        value: 0,
-        controlPoints: {
-          lower: [],
-          higher: []
-        },
-        restrictedZone: {
-          lower: [],
-          higher: []
-        },
-        curve: [],
-      }
 
       let lowerComposition = {
         sumOfPercents: [],
@@ -146,15 +134,15 @@ export class GranulometryComposition_Superpave_Service {
         granulometryComposition.lower.percentsOfDosage.isEmpty = true;
       }
 
-      if (chosenCurves.average && percentsOfDosage[1].length !== 0) {
-        granulometryComposition.average.percentsOfDosage.value = percentsOfDosage[1];
+      if (chosenCurves.average && percentsOfDosage[0].length !== 0) {
+        granulometryComposition.average.percentsOfDosage.value = percentsOfDosage[0];
         granulometryComposition.average.percentsOfDosage.isEmpty = false;
       } else {
         granulometryComposition.average.percentsOfDosage.isEmpty = true;
       }
 
-      if (chosenCurves.higher && percentsOfDosage[2].length !== 0) {
-        granulometryComposition.higher.percentsOfDosage.value = percentsOfDosage[2];
+      if (chosenCurves.higher && percentsOfDosage[0].length !== 0) {
+        granulometryComposition.higher.percentsOfDosage.value = percentsOfDosage[0];
         granulometryComposition.higher.percentsOfDosage.isEmpty = false;
       } else {
         granulometryComposition.higher.percentsOfDosage.isEmpty = true;
@@ -392,7 +380,6 @@ export class GranulometryComposition_Superpave_Service {
     });
 
     Object.values(percentsOfDosage[0]).forEach((value) => {
-      console.log("🚀 ~ GranulometryComposition_Superpave_Service ~ Object.values ~ value:", value)
       newPercentsOfDosage.push(value)
     })
 
