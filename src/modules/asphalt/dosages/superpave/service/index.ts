@@ -8,6 +8,7 @@ import { NotFound } from '../../../../../utils/exceptions';
 import { SuperpaveStep3Dto } from '../dto/step-3-superpave.dto';
 import { GranulometryComposition_Superpave_Service } from './granulometry-composition.superpave.service';
 import { AsphaltGranulometryRepository } from 'modules/asphalt/essays/granulometry/repository';
+import { InitialBinder_Superpave_Service } from './initial-binder.superpave.service';
 
 @Injectable()
 export class SuperpaveService {
@@ -19,6 +20,7 @@ export class SuperpaveService {
     private readonly materialSelection_Service: MaterialSelection_Superpave_Service,
     private readonly granulometryComposition_Service: GranulometryComposition_Superpave_Service,
     private readonly granulometryRepository: AsphaltGranulometryRepository,
+    private readonly initialBinder_Service: InitialBinder_Superpave_Service
   ) {}
 
   async verifyInitSuperpave(body: SuperpaveInitDto, userId: string) {
@@ -1101,6 +1103,18 @@ export class SuperpaveService {
       const success = await this.granulometryComposition_Service.saveStep3Data(body, userId);
 
       return { success }
+    } catch (error) {
+      this.logger.error(`error on save step 3 data superpave > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { success: false, error: { status, message, name } };
+    }
+  }
+
+  async getStep4Data(body: any) {
+    try {
+      const data = await this.initialBinder_Service.getSpecificMass(body);
+
+      return { data, success: true }
     } catch (error) {
       this.logger.error(`error on save step 3 data superpave > [error]: ${error}`);
       const { status, name, message } = error;

@@ -109,4 +109,20 @@ export class SuperpaveController {
 
     return response.status(200).json(status);
   }
+
+  @Post('step-4-data')
+  @ApiOperation({ summary: 'Retorna os dados iniciais necessários para a quarta tela (teor de ligante inicial) da dosagem' })
+  @ApiResponse({ 
+    status: 200, 
+    description: 'Dados carregados com sucesso!',
+    content: { 'application/json': { schema: { example: { data: {}, success: true } } } }, 
+  })
+  @ApiResponse({ status: 400, description: 'Dados não encontrados!' })
+  async getStep4Data(@Res() response: Response, @Body() body: any) {
+    this.logger.log(`get step 3 data > [body]: ${body}`);
+
+    const status = await this.superpaveService.getStep4Data(body);
+
+    return response.status(200).json(status);
+  }
 }
