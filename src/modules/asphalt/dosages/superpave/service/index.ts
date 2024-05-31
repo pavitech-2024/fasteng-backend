@@ -1110,9 +1110,21 @@ export class SuperpaveService {
     }
   }
 
+  async getStep4SpecificMasses(body: any) {
+    try {
+      const data = await this.initialBinder_Service.getStep4SpecificMasses(body);
+
+      return { data, success: true }
+    } catch (error) {
+      this.logger.error(`error on get step 4 data superpave > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { success: false, error: { status, message, name } };
+    }
+  }
+
   async getStep4Data(body: any) {
     try {
-      const data = await this.initialBinder_Service.getSpecificMass(body);
+      const data = await this.initialBinder_Service.getStep4Data(body);
 
       return { data, success: true }
     } catch (error) {

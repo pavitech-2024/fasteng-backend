@@ -110,8 +110,23 @@ export class SuperpaveController {
     return response.status(200).json(status);
   }
 
-  @Post('step-4-data')
+  @Post('step-4-specific-masses')
   @ApiOperation({ summary: 'Retorna os dados iniciais necessários para a quarta tela (teor de ligante inicial) da dosagem' })
+  @ApiResponse({ 
+    status: 200, 
+    description: 'Dados carregados com sucesso!',
+    content: { 'application/json': { schema: { example: { data: {}, success: true } } } }, 
+  })
+  async getStep4SpecificMasses(@Res() response: Response, @Body() body: any) {
+    this.logger.log(`get step 4 data > [body]: ${body}`);
+
+    const status = await this.superpaveService.getStep4SpecificMasses(body);
+
+    return response.status(200).json(status);
+  }
+
+  @Post('step-4-data')
+  @ApiOperation({ summary: 'Calcula os dados inseridos para a quarta tela (teor de ligante inicial) da dosagem' })
   @ApiResponse({ 
     status: 200, 
     description: 'Dados carregados com sucesso!',
