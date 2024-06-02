@@ -125,7 +125,7 @@ export class InitialBinder_Superpave_Service {
         let percentsOfDosageArray = [percentsOfDosage[0].material_1, percentsOfDosage[0].material_2];
 
         for (let i = 0; i < percentsOfDosageArray.length; i++) {
-          lowerAbsorve += ((percentsOfDosage[i] / 100) * listOfSpecificMasses[i].absorve) / 100;
+          lowerAbsorve += ((percentsOfDosageArray[i] / 100) * listOfSpecificMasses[i].absorption) / 100;
           gse = combinedGsb + lowerAbsorve * (combinedGsa - combinedGsb);
           vla = ((0.95 + 0.96) / (0.05 / binderSpecificMass + 0.95 / gse)) * (1 / combinedGsb - 1 / gse);
           tmn = nominalSize.value / 24.384;
