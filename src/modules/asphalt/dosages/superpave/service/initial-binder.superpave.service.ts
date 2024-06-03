@@ -181,10 +181,6 @@ export class InitialBinder_Superpave_Service {
   }
 
   calculateDenominatorGsa_Gsb(listOfSpecificMasses, percentsOfDosage) {
-    console.log(
-      '🚀 ~ InitialBinder_Superpave_Service ~ calculateDenominatorGsa_Gsb ~ percentsOfDosage:',
-      percentsOfDosage,
-    );
     let denominatorGsb = 0;
     let denominatorGsa = 0;
 

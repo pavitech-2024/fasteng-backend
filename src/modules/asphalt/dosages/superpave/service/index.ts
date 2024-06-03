@@ -141,9 +141,12 @@ export class SuperpaveService {
       });
 
       percentsOfMaterials = selectedGranulometrys.map((granulometry) => {
-        if (granulometry.results.nominal_size > nominalSize) result.nominalSize.value = granulometry.results.nominal_size;
+        if (granulometry.results.nominal_size > nominalSize) nominalSize = granulometry.results.nominal_size;
         return granulometry.results.passant;
       });
+
+      result.nominalSize.value = nominalSize;
+  
 
       for (let i = 0; i < selectedGranulometrys.length; i++) {
         porcentagesPassantsN200[i] = null;

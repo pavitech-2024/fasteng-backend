@@ -157,6 +157,7 @@ export class GranulometryComposition_Superpave_Service {
       } else {
         granulometryComposition.higher.percentsOfDosage.isEmpty = true;
       }
+      
 
       const axisX = [
         75, 64, 50, 37.5, 32, 25, 19, 12.5, 9.5, 6.3, 4.8, 2.4, 2, 1.2, 0.6, 0.43, 0.3, 0.18, 0.15, 0.075, 0,
@@ -196,17 +197,17 @@ export class GranulometryComposition_Superpave_Service {
       }
 
       if (!granulometryComposition.lower.percentsOfDosage.isEmpty) {
-        lowerComposition = this.calculatePercentOfMaterials(0, materials, percentsOfDosage, percentsToList);
+        lowerComposition = this.calculatePercentOfMaterials(0, materials, percentsOfDosage[0], percentsToList);
         sumOfPercents[0] = lowerComposition.sumOfPercents.map((e) => e);
       }
 
       if (!granulometryComposition.average.percentsOfDosage.isEmpty) {
-        averageComposition = this.calculatePercentOfMaterials(1, materials, percentsOfDosage, percentsToList);
+        averageComposition = this.calculatePercentOfMaterials(1, materials, percentsOfDosage[1], percentsToList);
         sumOfPercents[1] = averageComposition.sumOfPercents.map((e) => e);
       }
 
       if (!granulometryComposition.higher.percentsOfDosage.isEmpty) {
-        higherComposition = this.calculatePercentOfMaterials(2, materials, percentsOfDosage, percentsToList);
+        higherComposition = this.calculatePercentOfMaterials(2, materials, percentsOfDosage[2], percentsToList);
         sumOfPercents[2] = higherComposition.sumOfPercents.map((e) => e);
       }
 
@@ -377,11 +378,11 @@ export class GranulometryComposition_Superpave_Service {
 
     percentsToList.forEach((arr, idx) => {
       arr.forEach((subArr, i) => {
-        if (!percentsOfMaterialsToShow[idx]) {
-          percentsOfMaterialsToShow[idx] = [];
+        if (!percentsOfMaterialsToShow[idx][i]) {
+          percentsOfMaterialsToShow[idx][i] = [];
         }
     
-        if (subArr.length > 1) {
+        if (Array.isArray(subArr) && subArr.length > 1) {
           percentsOfMaterialsToShow[idx][i] = subArr[1];
         } else {
           percentsOfMaterialsToShow[idx][i] = subArr;
@@ -389,7 +390,7 @@ export class GranulometryComposition_Superpave_Service {
       });
     });
 
-    Object.values(percentsOfDosage[0]).forEach((value) => {
+    Object.values(percentsOfDosage).forEach((value) => {
       newPercentsOfDosage.push(value)
     })
 
