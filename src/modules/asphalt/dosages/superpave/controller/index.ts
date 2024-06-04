@@ -140,4 +140,17 @@ export class SuperpaveController {
 
     return response.status(200).json(status);
   }
+
+  @Post('save-initial-binder-step/:userId')
+  async saveInitialBinderStep(
+    @Res() response: Response,
+    @Param('userId') userId: string,
+    @Body() body: any
+  ) {
+    this.logger.log(`save step 4 data > [body]: ${body}`);
+
+    const status = await this.superpaveService.saveStep4Data(body, userId);
+
+    return response.status(200).json(status);
+  }
 }

@@ -460,4 +460,31 @@ export class GranulometryComposition_Superpave_Service {
       throw error
     }
   }
+
+  async saveStep4Data(body: any, userId: string) {
+    try {
+      this.logger.log('save superpave initial binder step on granulometry-composition.superpave.service.ts > [body]', { body });
+
+      const { name } = body.initialBinderData;
+
+      const superpaveExists: any = await this.superpaveRepository.findOne(name, userId);
+
+      const { name: materialName, ...initialBinderWithoutName } = body.initialBinderData;
+
+      const superpaveWithInitialBinder = { ...superpaveExists._doc, initialBinderData: initialBinderWithoutName };
+
+      await this.superpaveModel.updateOne(
+        { _id: superpaveExists._doc._id },
+        superpaveWithInitialBinder
+      );
+
+      if (superpaveExists._doc.generalData.step < 4) {
+        await this.superpaveRepository.saveStep(superpaveExists, 4);
+      }
+
+      return true;
+    } catch (error) {
+      throw error
+    }
+  }
 }

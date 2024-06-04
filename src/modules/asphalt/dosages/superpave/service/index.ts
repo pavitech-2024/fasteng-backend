@@ -1136,4 +1136,16 @@ export class SuperpaveService {
       return { success: false, error: { status, message, name } };
     }
   }
+
+  async saveStep4Data(body: any, userId: string) {
+    try {
+      const success = await this.granulometryComposition_Service.saveStep4Data(body, userId);
+
+      return { success }
+    } catch (error) {
+      this.logger.error(`error on save step 4 data superpave > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { success: false, error: { status, message, name } };
+    }
+  }
 }

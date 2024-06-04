@@ -59,6 +59,36 @@ export type GranulometryCompositionData = {
   }
 }
 
+export type InitialBinderData = {
+  binderSpoecificMass: number,
+  granulometryComposition: {
+    combinedGsa: number,
+    combinedGsb: number,
+    gse: number,
+    mag: number,
+    tmn: number,
+    pli: number,
+    va: number,
+    vle: number,
+    percentsOfDosageWithBinder: number[]
+  },
+  material_1: {
+    absorption: number,
+    apparentSpecificMass: number,
+    realSpecificMass: number
+  },
+  material_2: {
+    absorption: number,
+    apparentSpecificMass: number,
+    realSpecificMass: number
+  },
+  turnNumber: {
+    initialN: number,
+    maxN: number,
+    projectN: number,
+    tex: string
+  }
+}
 @Schema({ collection: 'superpaves'})
 export class Superpave {
   _id: string;
@@ -75,6 +105,10 @@ export class Superpave {
   @IsNotEmpty()
   @Prop({ type: Object })
   granulometryCompositionData: GranulometryCompositionData
+
+  @IsNotEmpty()
+  @Prop({ type: Object })
+  initialBinderData: InitialBinderData
 }
 
 const SuperpaveSchema = SchemaFactory.createForClass(Superpave);
