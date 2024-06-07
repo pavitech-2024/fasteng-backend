@@ -6,13 +6,15 @@ import { GeneralData_Superpave_Service } from './service/general-data.superpave.
 import { MaterialSelection_Superpave_Service } from './service/material-selection.superpave.service';
 import { GranulometryComposition_Superpave_Service } from './service/granulometry-composition.superpave.service';
 import { InitialBinder_Superpave_Service } from './service/initial-binder.superpave.service';
+import { FirstCompression_Superpave_Service } from './service/first-compression.service';
 
 const services = [
   SuperpaveService,
   GeneralData_Superpave_Service,
   MaterialSelection_Superpave_Service,
   GranulometryComposition_Superpave_Service,
-  InitialBinder_Superpave_Service
+  InitialBinder_Superpave_Service,
+  FirstCompression_Superpave_Service
 ];
 
 @Module({

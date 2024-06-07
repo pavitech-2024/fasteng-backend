@@ -9,6 +9,7 @@ import { SuperpaveStep3Dto } from '../dto/step-3-superpave.dto';
 import { GranulometryComposition_Superpave_Service } from './granulometry-composition.superpave.service';
 import { AsphaltGranulometryRepository } from 'modules/asphalt/essays/granulometry/repository';
 import { InitialBinder_Superpave_Service } from './initial-binder.superpave.service';
+import { FirstCompression_Superpave_Service } from './first-compression.service';
 
 @Injectable()
 export class SuperpaveService {
@@ -20,7 +21,8 @@ export class SuperpaveService {
     private readonly materialSelection_Service: MaterialSelection_Superpave_Service,
     private readonly granulometryComposition_Service: GranulometryComposition_Superpave_Service,
     private readonly granulometryRepository: AsphaltGranulometryRepository,
-    private readonly initialBinder_Service: InitialBinder_Superpave_Service
+    private readonly initialBinder_Service: InitialBinder_Superpave_Service,
+    private readonly firstCompression_Service: FirstCompression_Superpave_Service
   ) {}
 
   async verifyInitSuperpave(body: SuperpaveInitDto, userId: string) {
@@ -1146,6 +1148,18 @@ export class SuperpaveService {
       this.logger.error(`error on save step 4 data superpave > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
+    }
+  }
+
+  async calculateGmm(body: any) {
+    try {
+      const gmm = await this.firstCompression_Service.calculateGmm(body);
+
+      return { data: gmm, success: true }
+    } catch (error) {
+      this.logger.error(`error on getting the step 5 rice test data > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { data: null, success: false, error: { status, message, name } };
     }
   }
 }

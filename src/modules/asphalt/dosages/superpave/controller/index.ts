@@ -153,4 +153,13 @@ export class SuperpaveController {
 
     return response.status(200).json(status);
   }
+
+  @Post('calculate-gmm')
+  async calculateRiceTest(@Res() response: Response, @Body() body: any) {
+    this.logger.log(`calculate step 5 rice test data > [body]: ${body}`);
+  
+    const status = await this.superpaveService.calculateGmm(body);
+
+    return response.status(200).json(status);
+  }
 }
