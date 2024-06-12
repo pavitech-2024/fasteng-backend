@@ -75,16 +75,17 @@ export class InitialBinder_Superpave_Service {
       } = body;
 
       let granulometryComposition: {
-          combinedGsb: number,
-          combinedGsa: number,
-          gse: number,
-          vla: number,
-          tmn: number,
-          vle: number,
-          mag: number,
-          pli: number,
-          percentsOfDosageWithBinder: number[],
-        }[] = [{
+        combinedGsb: number;
+        combinedGsa: number;
+        gse: number;
+        vla: number;
+        tmn: number;
+        vle: number;
+        mag: number;
+        pli: number;
+        percentsOfDosageWithBinder: number[];
+      }[] = [
+        {
           combinedGsb: 0,
           combinedGsa: 0,
           gse: 0,
@@ -94,89 +95,10 @@ export class InitialBinder_Superpave_Service {
           mag: 0,
           pli: 0,
           percentsOfDosageWithBinder: [],
-        }]
-    
-
-      // let granulometryComposition: {
-      //   lower: {
-      //     combinedGsb: number,
-      //     combinedGsa: number,
-      //     gse: number,
-      //     vla: number,
-      //     tmn: number,
-      //     vle: number,
-      //     mag: number,
-      //     pli: number,
-      //     percentsOfDosageWithBinder: number[],
-      //   },
-      //   average: {
-      //     combinedGsb: number,
-      //     combinedGsa: number,
-      //     gse: number,
-      //     vla: number,
-      //     tmn: number,
-      //     vle: number,
-      //     mag: number,
-      //     pli: number,
-      //     percentsOfDosageWithBinder: number[],
-      //   },
-      //   higher: {
-      //     combinedGsb: number,
-      //     combinedGsa: number,
-      //     gse: number,
-      //     vla: number,
-      //     tmn: number,
-      //     vle: number,
-      //     mag: number,
-      //     pli: number,
-      //     percentsOfDosageWithBinder: number[],
-      //   }
-      // } = {
-      //   lower: {
-      //     combinedGsb: 0,
-      //     combinedGsa: 0,
-      //     gse: 0,
-      //     vla: 0,
-      //     tmn: 0,
-      //     vle: 0,
-      //     mag: 0,
-      //     pli: 0,
-      //     percentsOfDosageWithBinder: [],
-      //   },
-      //   average: {
-      //     combinedGsb: 0,
-      //     combinedGsa: 0,
-      //     gse: 0,
-      //     vla: 0,
-      //     tmn: 0,
-      //     vle: 0,
-      //     mag: 0,
-      //     pli: 0,
-      //     percentsOfDosageWithBinder: [],
-      //   },
-      //   higher: {
-      //     combinedGsb: 0,
-      //     combinedGsa: 0,
-      //     gse: 0,
-      //     vla: 0,
-      //     tmn: 0,
-      //     vle: 0,
-      //     mag: 0,
-      //     pli: 0,
-      //     percentsOfDosageWithBinder: [],
-      //   }
-      // }
+        },
+      ];
 
       let listOfSpecificMasses = [];
-      // let combinedGsb;
-      // let combinedGsa;
-      // let gse;
-      // let vla;
-      // let tmn;
-      // let vle;
-      // let mag;
-      // let pli;
-      // let percentsOfDosageWithBinder = [];
 
       let turnNumber = {
         initialN: 0,
@@ -196,16 +118,14 @@ export class InitialBinder_Superpave_Service {
           }
         });
       } else {
-        listOfSpecificMasses[0] = {
-          bulk: materialsData[0].realSpecificMass,
-          apparent: materialsData[0].apparentSpecificMass,
-          absorption: materialsData[0].absorption,
-        };
-        listOfSpecificMasses[1] = {
-          bulk: materialsData[1].realSpecificMass,
-          apparent: materialsData[1].apparentSpecificMass,
-          absorption: materialsData[1].absorption,
-        };
+        materialsData.forEach((element) => {
+          const obj = {
+            bulk: element.realSpecificMass,
+            apparent: element.apparentSpecificMass,
+            absorption: element.absorption,
+          };
+          listOfSpecificMasses.push(obj)
+        });
       }
 
       if (chosenCurves.lower) {
@@ -215,26 +135,40 @@ export class InitialBinder_Superpave_Service {
         granulometryComposition[0].combinedGsa = 100 / denominatorsLower.denominatorGsa;
 
         let lowerAbsorve = 0;
-        let percentsOfDosageArray = [percentsOfDosage[0].material_1, percentsOfDosage[0].material_2];
+
+        let percentsOfDosageArray = [];
+
+        Object.values(percentsOfDosage[0]).forEach((e) => {
+          percentsOfDosageArray.push(e);
+        })
 
         for (let i = 0; i < percentsOfDosageArray.length; i++) {
           lowerAbsorve += ((percentsOfDosageArray[i] / 100) * listOfSpecificMasses[i].absorption) / 100;
-          granulometryComposition[0].gse = granulometryComposition[0].combinedGsb + lowerAbsorve * (granulometryComposition[0].combinedGsa - granulometryComposition[0].combinedGsb);
-          granulometryComposition[0].vla = ((0.95 + 0.96) / (0.05 / binderSpecificMass + 0.95 / granulometryComposition[0].gse)) * (1 / granulometryComposition[0].combinedGsb - 1 / granulometryComposition[0].gse);
+          granulometryComposition[0].gse =
+            granulometryComposition[0].combinedGsb +
+            lowerAbsorve * (granulometryComposition[0].combinedGsa - granulometryComposition[0].combinedGsb);
+          granulometryComposition[0].vla =
+            ((0.95 + 0.96) / (0.05 / binderSpecificMass + 0.95 / granulometryComposition[0].gse)) *
+            (1 / granulometryComposition[0].combinedGsb - 1 / granulometryComposition[0].gse);
           granulometryComposition[0].tmn = nominalSize.value / 24.384;
           granulometryComposition[0].vle = 0.081 - 0.02931 * Math.log(granulometryComposition[0].tmn);
-          granulometryComposition[0].mag = (0.95 * 0.96) / (0.05 / binderSpecificMass + 0.95 / granulometryComposition[0].gse);
-          granulometryComposition[0].pli = ((binderSpecificMass * (granulometryComposition[0].vle + granulometryComposition[0].vla)) / (binderSpecificMass * (granulometryComposition[0].vle + granulometryComposition[0].vla) + granulometryComposition[0].mag)) * 100;
+          granulometryComposition[0].mag =
+            (0.95 * 0.96) / (0.05 / binderSpecificMass + 0.95 / granulometryComposition[0].gse);
+          granulometryComposition[0].pli =
+            ((binderSpecificMass * (granulometryComposition[0].vle + granulometryComposition[0].vla)) /
+              (binderSpecificMass * (granulometryComposition[0].vle + granulometryComposition[0].vla) +
+                granulometryComposition[0].mag)) *
+            100;
 
           for (let j = 0; j < listOfSpecificMasses.length; j++) {
-            granulometryComposition[0].percentsOfDosageWithBinder[j] = ((100 - granulometryComposition[0].pli) * percentsOfDosageArray[j]) / 100;
+            granulometryComposition[0].percentsOfDosageWithBinder[j] =
+              ((100 - granulometryComposition[0].pli) * percentsOfDosageArray[j]) / 100;
           }
         }
       }
 
       //Cálculos para a curva intermediária caso tenha sido selecionada
       if (chosenCurves.average) {
-
         granulometryComposition[1] = {
           combinedGsb: 0,
           combinedGsa: 0,
@@ -253,28 +187,41 @@ export class InitialBinder_Superpave_Service {
         granulometryComposition[1].combinedGsa = 100 / denominatorsAverage.denominatorGsa;
 
         let averageAbsorve = 0;
-        let percentsOfDosageArray = [percentsOfDosage[1].material_1, percentsOfDosage[1].material_2];
+        let percentsOfDosageArray = [];
+
+        Object.values(percentsOfDosage[1]).forEach((e) => {
+          percentsOfDosageArray.push(e);
+        })
 
         for (let i = 0; i < percentsOfDosageArray.length; i++) {
           averageAbsorve += ((percentsOfDosageArray[i] / 100) * listOfSpecificMasses[i].absorption) / 100;
         }
 
-        granulometryComposition[1].gse = granulometryComposition[1].combinedGsb + averageAbsorve * (granulometryComposition[1].combinedGsa - granulometryComposition[1].combinedGsb);
-        granulometryComposition[1].vla = ((0.95 + 0.965) / (0.05 / binderSpecificMass + 0.95 / granulometryComposition[1].gse)) * (1 / granulometryComposition[1].combinedGsb - 1 / granulometryComposition[1].gse);
+        granulometryComposition[1].gse =
+          granulometryComposition[1].combinedGsb +
+          averageAbsorve * (granulometryComposition[1].combinedGsa - granulometryComposition[1].combinedGsb);
+        granulometryComposition[1].vla =
+          ((0.95 + 0.965) / (0.05 / binderSpecificMass + 0.95 / granulometryComposition[1].gse)) *
+          (1 / granulometryComposition[1].combinedGsb - 1 / granulometryComposition[1].gse);
 
         granulometryComposition[1].tmn = nominalSize.value / 24.384;
         granulometryComposition[1].vle = 0.081 - 0.02931 * Math.log(granulometryComposition[1].tmn);
-        granulometryComposition[1].mag = (0.95 * 0.96) / (0.05 / binderSpecificMass + 0.95 / granulometryComposition[1].gse);
-        granulometryComposition[1].pli = ((binderSpecificMass * (granulometryComposition[1].vle + granulometryComposition[1].vla)) / (binderSpecificMass * (granulometryComposition[1].vle + granulometryComposition[1].vla) + granulometryComposition[1].mag)) * 100;
+        granulometryComposition[1].mag =
+          (0.95 * 0.96) / (0.05 / binderSpecificMass + 0.95 / granulometryComposition[1].gse);
+        granulometryComposition[1].pli =
+          ((binderSpecificMass * (granulometryComposition[1].vle + granulometryComposition[1].vla)) /
+            (binderSpecificMass * (granulometryComposition[1].vle + granulometryComposition[1].vla) +
+              granulometryComposition[1].mag)) *
+          100;
 
         for (let j = 0; j < listOfSpecificMasses.length; j++) {
-          granulometryComposition[1].percentsOfDosageWithBinder[j] = ((100 - granulometryComposition[1].pli) * percentsOfDosageArray[j]) / 100;
+          granulometryComposition[1].percentsOfDosageWithBinder[j] =
+            ((100 - granulometryComposition[1].pli) * percentsOfDosageArray[j]) / 100;
         }
       }
 
       //Cálculos para a curva intermediária caso tenha sido selecionada
       if (chosenCurves.higher) {
-
         granulometryComposition[2] = {
           combinedGsb: 0,
           combinedGsa: 0,
@@ -293,22 +240,36 @@ export class InitialBinder_Superpave_Service {
         granulometryComposition[2].combinedGsa = 100 / denominatorsAverage.denominatorGsa;
 
         let higherAbsorve = 0;
-        let percentsOfDosageArray = [percentsOfDosage[2].material_1, percentsOfDosage[2].material_2];
+        let percentsOfDosageArray = [];
+
+        Object.values(percentsOfDosage[2]).forEach((e) => {
+          percentsOfDosageArray.push(e);
+        })
 
         for (let i = 0; i < percentsOfDosageArray.length; i++) {
           higherAbsorve += ((percentsOfDosageArray[i] / 100) * listOfSpecificMasses[i].absorption) / 100;
         }
 
-        granulometryComposition[2].gse = granulometryComposition[2].combinedGsb + higherAbsorve * (granulometryComposition[2].combinedGsa - granulometryComposition[2].combinedGsb);
-        granulometryComposition[2].vla = ((0.95 + 0.965) / (0.05 / binderSpecificMass + 0.95 / granulometryComposition[2].gse)) * (1 / granulometryComposition[2].combinedGsb - 1 / granulometryComposition[2].gse);
+        granulometryComposition[2].gse =
+          granulometryComposition[2].combinedGsb +
+          higherAbsorve * (granulometryComposition[2].combinedGsa - granulometryComposition[2].combinedGsb);
+        granulometryComposition[2].vla =
+          ((0.95 + 0.965) / (0.05 / binderSpecificMass + 0.95 / granulometryComposition[2].gse)) *
+          (1 / granulometryComposition[2].combinedGsb - 1 / granulometryComposition[2].gse);
 
         granulometryComposition[2].tmn = nominalSize.value / 24.384;
         granulometryComposition[2].vle = 0.081 - 0.02931 * Math.log(granulometryComposition[2].tmn);
-        granulometryComposition[2].mag = (0.95 * 0.96) / (0.05 / binderSpecificMass + 0.95 / granulometryComposition[2].gse);
-        granulometryComposition[2].pli = ((binderSpecificMass * (granulometryComposition[2].vle + granulometryComposition[2].vla)) / (binderSpecificMass * (granulometryComposition[2].vle + granulometryComposition[2].vla) + granulometryComposition[2].mag)) * 100;
+        granulometryComposition[2].mag =
+          (0.95 * 0.96) / (0.05 / binderSpecificMass + 0.95 / granulometryComposition[2].gse);
+        granulometryComposition[2].pli =
+          ((binderSpecificMass * (granulometryComposition[2].vle + granulometryComposition[2].vla)) /
+            (binderSpecificMass * (granulometryComposition[2].vle + granulometryComposition[2].vla) +
+              granulometryComposition[2].mag)) *
+          100;
 
         for (let j = 0; j < listOfSpecificMasses.length; j++) {
-          granulometryComposition[2].percentsOfDosageWithBinder[j] = ((100 - granulometryComposition[2].pli) * percentsOfDosageArray[j]) / 100;
+          granulometryComposition[2].percentsOfDosageWithBinder[j] =
+            ((100 - granulometryComposition[2].pli) * percentsOfDosageArray[j]) / 100;
         }
       }
 
