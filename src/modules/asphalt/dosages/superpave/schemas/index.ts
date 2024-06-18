@@ -89,6 +89,60 @@ export type InitialBinderData = {
     tex: string
   }
 }
+
+export type FirstCompressionData = {
+  inferiorRows: {
+    id: number,
+    diammeter: number,
+    dryMass: number,
+    submergedMass: number,
+    drySurfaceSaturatedMass: number,
+    waterTemperatureCorrection: number,
+    document: string
+  }[],
+  intermediariaRows: {
+    id: number,
+    diammeter: number,
+    dryMass: number,
+    submergedMass: number,
+    drySurfaceSaturatedMass: number,
+    waterTemperatureCorrection: number,
+    document: string
+  }[],
+  superiorRows: {
+    id: number,
+    diammeter: number,
+    dryMass: number,
+    submergedMass: number,
+    drySurfaceSaturatedMass: number,
+    waterTemperatureCorrection: number,
+    document: string
+  }[],
+  spreadSheetTemplate: string,
+  maximumDensity: {
+    lower: {
+      gmm: number,
+      gmb: number
+    },
+    average: {
+      gmm: number,
+      gmb: number
+    },
+    higher: {
+      gmm: number,
+      gmb: number
+    }
+  },
+  riceTest: {
+    curve: string,
+    drySampleMass: number,
+    waterSampleMass: number,
+    waterSampleContainerMass: number,
+    gmm: number,
+    temperatureOfWater: number
+  }[]
+}
+
 @Schema({ collection: 'superpaves'})
 export class Superpave {
   _id: string;
@@ -109,6 +163,10 @@ export class Superpave {
   @IsNotEmpty()
   @Prop({ type: Object })
   initialBinderData: InitialBinderData
+
+  @IsNotEmpty()
+  @Prop({ type: Object })
+  firstCompressionData: FirstCompressionData
 }
 
 const SuperpaveSchema = SchemaFactory.createForClass(Superpave);

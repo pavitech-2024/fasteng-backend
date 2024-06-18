@@ -4,12 +4,12 @@ import { GeneralData_Superpave_Service } from './general-data.superpave.service'
 import { MaterialSelection_Superpave_Service } from './material-selection.superpave.service';
 import { Superpave } from '../schemas';
 import { SuperpaveRepository } from '../repository/index';
-import { NotFound } from '../../../../../utils/exceptions';
 import { SuperpaveStep3Dto } from '../dto/step-3-superpave.dto';
 import { GranulometryComposition_Superpave_Service } from './granulometry-composition.superpave.service';
 import { AsphaltGranulometryRepository } from 'modules/asphalt/essays/granulometry/repository';
 import { InitialBinder_Superpave_Service } from './initial-binder.superpave.service';
 import { FirstCompression_Superpave_Service } from './first-compression.service';
+import { FirstCurvePercentages_Service } from './first-curve-percentages.service';
 
 @Injectable()
 export class SuperpaveService {
@@ -22,7 +22,8 @@ export class SuperpaveService {
     private readonly granulometryComposition_Service: GranulometryComposition_Superpave_Service,
     private readonly granulometryRepository: AsphaltGranulometryRepository,
     private readonly initialBinder_Service: InitialBinder_Superpave_Service,
-    private readonly firstCompression_Service: FirstCompression_Superpave_Service
+    private readonly firstCompression_Service: FirstCompression_Superpave_Service,
+    private readonly firstCurvePercentages: FirstCurvePercentages_Service
   ) {}
 
   async verifyInitSuperpave(body: SuperpaveInitDto, userId: string) {
@@ -1049,6 +1050,7 @@ export class SuperpaveService {
       const data = {
         nominalSize: result.nominalSize,
         percentsToList: listOfPercentsToReturn,
+        porcentagesPassantsN200,
         bands: {
           letter: dnitBand,
           higher: higherBand,
@@ -1160,6 +1162,30 @@ export class SuperpaveService {
       this.logger.error(`error on getting the step 5 rice test data > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
+    }
+  }
+
+  async saveStep5Data(body: any, userId: string) {
+    try {
+      const success = await this.firstCompression_Service.saveStep5Data(body, userId);
+
+      return { success }
+    } catch (error) {
+      this.logger.error(`error on save step 5 data superpave > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { success: false, error: { status, message, name } };
+    }
+  }
+
+  async getStep5Parameters(body: any) {
+    try {
+      const data = await this.firstCurvePercentages.getStep5Parameters(body);
+
+      return { data, success: true }
+    } catch (error) {
+      this.logger.error(`error on get step 5 data superpave > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { success: false, error: { status, message, name } };
     }
   }
 }

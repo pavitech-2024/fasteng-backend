@@ -162,4 +162,32 @@ export class SuperpaveController {
 
     return response.status(200).json(status);
   }
+
+  @Post('save-first-compression-step/:userId')
+  async saveFirstCompressionStep(
+    @Res() response: Response,
+    @Param('userId') userId: string,
+    @Body() body: any
+  ) {
+    this.logger.log(`save step 5 data > [body]: ${body}`);
+
+    const status = await this.superpaveService.saveStep5Data(body, userId);
+
+    return response.status(200).json(status);
+  }
+
+  @Post('step-5-parameters')
+  @ApiOperation({ summary: 'Retorna os dados iniciais necessários para a quinta tela (porcentagens da curva escolhida) da dosagem' })
+  @ApiResponse({ 
+    status: 200, 
+    description: 'Dados carregados com sucesso!',
+    content: { 'application/json': { schema: { example: { data: {}, success: true } } } }, 
+  })
+  async getStep5Parameters(@Res() response: Response, @Body() body: any) {
+    this.logger.log(`get step 5 data > [body]: ${body}`);
+
+    const status = await this.superpaveService.getStep5Parameters(body);
+
+    return response.status(200).json(status);
+  }
 }
