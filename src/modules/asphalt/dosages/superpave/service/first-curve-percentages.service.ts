@@ -85,7 +85,6 @@ export class FirstCurvePercentages_Service {
             pli: granulometryComposition[0].pli
           }
         }
-        // granulometryComposition.lower.Pli = granulometryComposition.lower.Pli;
 
         granulometryComposition.lower.data = this.calculateExpectedGmb(granulometryComposition.lower.data);
         granulometryComposition.lower.data = this.calculateGmbCP(granulometryComposition.lower.data);
