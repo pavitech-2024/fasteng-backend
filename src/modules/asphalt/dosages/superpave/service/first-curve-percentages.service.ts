@@ -27,7 +27,8 @@ export class FirstCurvePercentages_Service {
         chosenCurves,
         porcentagesPassantsN200,
         binderSpecificGravity,
-        riceTest
+        riceTest,
+        maximumDensity
       } = body;
 
 
@@ -38,7 +39,11 @@ export class FirstCurvePercentages_Service {
       let expectedRBV_Higher;
       let expectedRBV_Lower;
 
-      let updatedGranulometryComposition = {}
+      let updatedGranulometryComposition = {
+        lower: {
+
+        }
+      }
 
       if (trafficVolume === 'high' || trafficVolume === 'medium-high') {
         expectedPorcentageGmmInitialN = 89;
@@ -86,35 +91,36 @@ export class FirstCurvePercentages_Service {
           }
         }
 
-        granulometryComposition.lower.data = this.calculateExpectedGmb(granulometryComposition.lower.data);
-        granulometryComposition.lower.data = this.calculateGmbCP(granulometryComposition.lower.data);
 
-        granulometryComposition.lower.Gmb = this.calculateGmb2(granulometryComposition.lower.data);
+        updatedGranulometryComposition.lower = this.calculateExpectedGmb(granulometryComposition);
+        granulometryComposition.lower = this.calculateGmbCP(updatedGranulometryComposition.lower);
 
-        granulometryComposition.lower.data = this.calculateC(granulometryComposition.lower.data, maxNIndex);
-        granulometryComposition.lower.data = this.calculateExpectedGmb_C(granulometryComposition.lower.data);
-        granulometryComposition.lower.data = this.calculatePercentageGmm(granulometryComposition.lower);
-        granulometryComposition.lower.data = this.calculatePlanilhaVv(granulometryComposition.lower.data);
-        granulometryComposition.lower.data = this.calculateVcb(granulometryComposition.lower);
-        granulometryComposition.lower.data = this.calculateVam(granulometryComposition.lower.data);
-        granulometryComposition.lower.data = this.calculateRbv(granulometryComposition.lower.data);
+        granulometryComposition.lower.Gmb = this.calculateGmb2(granulometryComposition);
+
+        granulometryComposition.lower = this.calculateC(granulometryComposition, maxNIndex);
+        granulometryComposition.lower = this.calculateExpectedGmb_C(granulometryComposition.lower);
+        granulometryComposition.lower = this.calculatePercentageGmm(granulometryComposition.lower);
+        granulometryComposition.lower = this.calculatePlanilhaVv(granulometryComposition.lower);
+        granulometryComposition.lower = this.calculateVcb(granulometryComposition.lower);
+        granulometryComposition.lower = this.calculateVam(granulometryComposition.lower);
+        granulometryComposition.lower = this.calculateRbv(granulometryComposition.lower);
 
         granulometryComposition.lower.percentWaterAbs = this.percentageWaterAbsorbed(
-          granulometryComposition.lower.data,
+          granulometryComposition.lower,
         );
 
-        granulometryComposition.lower.samplesData = granulometryComposition.lower.data;
+        granulometryComposition.lower.samplesData = granulometryComposition.lower;
 
         granulometryComposition.lower.initialN.samplesData = this.separateNValues(
-          granulometryComposition.lower.data,
+          granulometryComposition.lower,
           initialNIndex,
         );
         granulometryComposition.lower.projectN.samplesData = this.separateNValues(
-          granulometryComposition.lower.data,
+          granulometryComposition.lower,
           projectNIndex,
         );
         granulometryComposition.lower.maxN.samplesData = this.separateNValues(
-          granulometryComposition.lower.data,
+          granulometryComposition.lower,
           maxNIndex,
         );
 
@@ -557,12 +563,18 @@ export class FirstCurvePercentages_Service {
 
   calculateExpectedGmb(data) {
     for (let i = 0; i < data.length; i++) {
-      for (let j = 0; j < data[i].planilha.length; j++) {
-        data[i].planilha[j].GMBe = ((data[i].dryMass / (Math.PI * (Math.pow((data[i].averageDiameter / 2), 2)) * data[i].planilha[j].Altura_mm)) * 1000);
+      for (let j = 0; j < data[i].length; j++) {
+        for (let l = 0; l < data[i][j].planilha.length; l++) {
+          data[i][j].planilha[l].GMBe = (
+            (data[i][j].dryMass / 
+            (Math.PI * Math.pow(data[i][j].diammeter / 2, 2) * data[i][j].planilha[l].Altura_mm)) * 1000
+          );
+        }
       }
     }
     return data;
   }
+  
 
   calculateGmbCP = function calculateGmbCP(data) {
     for (let i = 0; i < data.length; i++) {
