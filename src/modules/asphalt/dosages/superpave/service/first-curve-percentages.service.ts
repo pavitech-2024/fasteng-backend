@@ -29,7 +29,7 @@ export class FirstCurvePercentages_Service {
         riceTest,
         maximumDensity,
         binderCompositions,
-        percentageInputs
+        percentageInputs,
       } = body;
 
       let expectedPorcentageGmmInitialN;
@@ -51,16 +51,72 @@ export class FirstCurvePercentages_Service {
           ratioDustAsphalt: null,
           projectN: {
             samplesData: [],
-            percentageGmm: null
+            percentageGmm: null,
           },
           maxN: {
             samplesData: [],
-            percentageGmm: null
+            percentageGmm: null,
           },
           initialN: {
             samplesData: [],
-            percentageGmm: null
-          }
+            percentageGmm: null,
+          },
+          expectedPli: null,
+          gse: null,
+          combinedGsb: null,
+          Gmb: null
+        },
+        average: {
+          pli: null,
+          gmm: null,
+          data: [],
+          percentWaterAbs: null,
+          Vv: null,
+          Vam: null,
+          percentsOfDosage: percentageInputs,
+          ratioDustAsphalt: null,
+          projectN: {
+            samplesData: [],
+            percentageGmm: null,
+          },
+          maxN: {
+            samplesData: [],
+            percentageGmm: null,
+          },
+          initialN: {
+            samplesData: [],
+            percentageGmm: null,
+          },
+          expectedPli: null,
+          gse: null,
+          combinedGsb: null,
+          Gmb: null
+        },
+        higher: {
+          pli: null,
+          gmm: null,
+          data: [],
+          percentWaterAbs: null,
+          Vv: null,
+          Vam: null,
+          percentsOfDosage: percentageInputs,
+          ratioDustAsphalt: null,
+          projectN: {
+            samplesData: [],
+            percentageGmm: null,
+          },
+          maxN: {
+            samplesData: [],
+            percentageGmm: null,
+          },
+          initialN: {
+            samplesData: [],
+            percentageGmm: null,
+          },
+          expectedPli: null,
+          gse: null,
+          combinedGsb: null,
+          Gmb: null
         },
       };
 
@@ -85,6 +141,7 @@ export class FirstCurvePercentages_Service {
         else if (nominalSize.value === 19) expectedVam = 13;
         else if (nominalSize.value === 12.5) expectedVam = 14;
         else if (nominalSize.value === 9.5) expectedVam = 15;
+        else expectedVam = 16;
         expectedRBV_Higher = 78;
         expectedRBV_Lower = 65;
       } else if (trafficVolume === 'VeryLight') {
@@ -104,6 +161,7 @@ export class FirstCurvePercentages_Service {
 
       if (chosenCurves.lower) {
         updatedGranulometryComposition = {
+          ...updatedGranulometryComposition,
           lower: {
             gmm: riceTest.find((e) => e.curve === 'lower').gmm,
             pli: binderCompositions[0].pli,
@@ -115,16 +173,20 @@ export class FirstCurvePercentages_Service {
             percentsOfDosage: percentageInputs,
             projectN: {
               samplesData: [],
-              percentageGmm: null
+              percentageGmm: null,
             },
             maxN: {
               samplesData: [],
-              percentageGmm: null
+              percentageGmm: null,
             },
             initialN: {
               samplesData: [],
-              percentageGmm: null
-            }
+              percentageGmm: null,
+            },
+            expectedPli: null,
+            gse: null,
+            combinedGsb: null,
+            Gmb: null
           },
         };
 
@@ -134,16 +196,18 @@ export class FirstCurvePercentages_Service {
         updatedGranulometryComposition.lower.data = this.calculateGmb2(updatedGranulometryComposition.lower.data);
 
         updatedGranulometryComposition.lower.data = this.calculateC(granulometryComposition[0], maxNIndex);
-        updatedGranulometryComposition.lower.data = this.calculateExpectedGmb_C(updatedGranulometryComposition.lower.data);
+        updatedGranulometryComposition.lower.data = this.calculateExpectedGmb_C(
+          updatedGranulometryComposition.lower.data,
+        );
         updatedGranulometryComposition.lower.data = this.calculatePercentageGmm(updatedGranulometryComposition.lower);
         updatedGranulometryComposition.lower.data = this.calculatePlanilhaVv(updatedGranulometryComposition.lower.data);
         updatedGranulometryComposition.lower.data = this.calculateVcb(updatedGranulometryComposition.lower);
         updatedGranulometryComposition.lower.data = this.calculateVam(updatedGranulometryComposition.lower.data);
         updatedGranulometryComposition.lower.data = this.calculateRbv(updatedGranulometryComposition.lower.data);
 
-        updatedGranulometryComposition.lower.percentWaterAbs = this.percentageWaterAbsorbed(updatedGranulometryComposition.lower.data);
-
-        // updatedGranulometryComposition.lower.samplesData = updatedGranulometryComposition.lower;
+        updatedGranulometryComposition.lower.percentWaterAbs = this.percentageWaterAbsorbed(
+          updatedGranulometryComposition.lower.data,
+        );
 
         updatedGranulometryComposition.lower.initialN.samplesData = this.separateNValues(
           updatedGranulometryComposition.lower.data,
@@ -155,7 +219,10 @@ export class FirstCurvePercentages_Service {
           projectNIndex,
         );
 
-        updatedGranulometryComposition.lower.maxN.samplesData = this.separateNValues(updatedGranulometryComposition.lower.data, maxNIndex);
+        updatedGranulometryComposition.lower.maxN.samplesData = this.separateNValues(
+          updatedGranulometryComposition.lower.data,
+          maxNIndex,
+        );
 
         updatedGranulometryComposition.lower.initialN.percentageGmm = this.calculateAveragePercentageGmm(
           updatedGranulometryComposition.lower.initialN.samplesData,
@@ -176,8 +243,8 @@ export class FirstCurvePercentages_Service {
         // Formatar percentageinputs;
         let inputsValues = [];
         Object.values(percentageInputs[0]).forEach((e) => {
-          inputsValues.push(Number(e))
-        })
+          inputsValues.push(Number(e));
+        });
 
         updatedGranulometryComposition.lower.percentsOfDosage = inputsValues;
 
@@ -185,7 +252,7 @@ export class FirstCurvePercentages_Service {
           if (porcentagesPassantsN200[i] === null) {
             porcentagesPassantsN200[i] = 0;
             passantN200lower +=
-            (porcentagesPassantsN200[i] * updatedGranulometryComposition.lower.percentsOfDosage[i]) / 100;
+              (porcentagesPassantsN200[i] * updatedGranulometryComposition.lower.percentsOfDosage[i]) / 100;
           }
         }
 
@@ -201,137 +268,223 @@ export class FirstCurvePercentages_Service {
       let passantN200average = 0;
 
       if (chosenCurves.average) {
-        granulometryComposition.average.Gmm = granulometryComposition.average.Gmm;
-        granulometryComposition.average.Pli = granulometryComposition.average.Pli;
+        updatedGranulometryComposition = {
+          ...updatedGranulometryComposition,
+          average: {
+            gmm: riceTest.find((e) => e.curve === 'lower').gmm,
+            pli: binderCompositions[0].pli,
+            data: [],
+            percentWaterAbs: null,
+            Vv: null,
+            Vam: null,
+            ratioDustAsphalt: null,
+            percentsOfDosage: percentageInputs,
+            projectN: {
+              samplesData: [],
+              percentageGmm: null,
+            },
+            maxN: {
+              samplesData: [],
+              percentageGmm: null,
+            },
+            initialN: {
+              samplesData: [],
+              percentageGmm: null,
+            },
+            expectedPli: null,
+            gse: null,
+            combinedGsb: null,
+            Gmb: null
+          },
+        };
 
-        granulometryComposition.average.data = this.calculateExpectedGmb(granulometryComposition.average.data);
-        granulometryComposition.average.data = this.calculateGmbCP(granulometryComposition.average.data);
+        updatedGranulometryComposition.average.data = this.calculateExpectedGmb(granulometryComposition[1]);
+        updatedGranulometryComposition.average.data = this.calculateGmbCP(updatedGranulometryComposition.average.data);
 
-        granulometryComposition.average.Gmb = this.calculateGmb2(granulometryComposition.average.data);
+        updatedGranulometryComposition.average.data = this.calculateGmb2(updatedGranulometryComposition.average.data);
 
-        granulometryComposition.average.data = this.calculateC(granulometryComposition.average.data, maxNIndex);
-        granulometryComposition.average.data = this.calculateExpectedGmb_C(granulometryComposition.average.data);
-        granulometryComposition.average.data = this.calculatePercentageGmm(granulometryComposition.average);
-        granulometryComposition.average.data = this.calculatePlanilhaVv(granulometryComposition.average.data);
-        granulometryComposition.average.data = this.calculateVcb(granulometryComposition.average);
-        granulometryComposition.average.data = this.calculateVam(granulometryComposition.average.data);
-        granulometryComposition.average.data = this.calculateRbv(granulometryComposition.average.data);
+        updatedGranulometryComposition.average.data = this.calculateC(granulometryComposition[0], maxNIndex);
+        updatedGranulometryComposition.average.data = this.calculateExpectedGmb_C(
+          updatedGranulometryComposition.average.data,
+        );
+        updatedGranulometryComposition.average.data = this.calculatePercentageGmm(
+          updatedGranulometryComposition.average,
+        );
+        updatedGranulometryComposition.average.data = this.calculatePlanilhaVv(
+          updatedGranulometryComposition.average.data,
+        );
+        updatedGranulometryComposition.average.data = this.calculateVcb(updatedGranulometryComposition.average);
+        updatedGranulometryComposition.average.data = this.calculateVam(updatedGranulometryComposition.average.data);
+        updatedGranulometryComposition.average.data = this.calculateRbv(updatedGranulometryComposition.average.data);
 
-        granulometryComposition.average.percentWaterAbs = this.percentageWaterAbsorbed(
-          granulometryComposition.average.data,
+        updatedGranulometryComposition.average.percentWaterAbs = this.percentageWaterAbsorbed(
+          updatedGranulometryComposition.average.data,
         );
 
-        granulometryComposition.average.samplesData = granulometryComposition.average.data;
-
-        granulometryComposition.average.initialN.samplesData = this.separateNValues(
-          granulometryComposition.average.data,
+        updatedGranulometryComposition.average.initialN.samplesData = this.separateNValues(
+          updatedGranulometryComposition.average.data,
           initialNIndex,
         );
-        granulometryComposition.average.projectN.samplesData = this.separateNValues(
-          granulometryComposition.average.data,
+
+        updatedGranulometryComposition.average.projectN.samplesData = this.separateNValues(
+          updatedGranulometryComposition.average.data,
           projectNIndex,
         );
-        granulometryComposition.average.maxN.samplesData = this.separateNValues(
-          granulometryComposition.average.data,
+        updatedGranulometryComposition.average.maxN.samplesData = this.separateNValues(
+          updatedGranulometryComposition.average.data,
           maxNIndex,
         );
 
-        granulometryComposition.average.initialN.percentageGmm = this.calculateAveragePercentageGmm(
-          granulometryComposition.average.initialN.samplesData,
+        updatedGranulometryComposition.average.initialN.percentageGmm = this.calculateAveragePercentageGmm(
+          updatedGranulometryComposition.average.initialN.samplesData,
         );
-        granulometryComposition.average.projectN.percentageGmm = this.calculateAveragePercentageGmm(
-          granulometryComposition.average.projectN.samplesData,
+        updatedGranulometryComposition.average.projectN.percentageGmm = this.calculateAveragePercentageGmm(
+          updatedGranulometryComposition.average.projectN.samplesData,
         );
-        granulometryComposition.average.maxN.percentageGmm = this.calculateAveragePercentageGmm(
-          granulometryComposition.average.maxN.samplesData,
+        updatedGranulometryComposition.average.maxN.percentageGmm = this.calculateAveragePercentageGmm(
+          updatedGranulometryComposition.average.maxN.samplesData,
         );
 
-        granulometryComposition.average.Vv = this.calculateVv2(granulometryComposition.average);
+        updatedGranulometryComposition.average.Vv = this.calculateVv2(updatedGranulometryComposition.average);
 
-        granulometryComposition.average.Vam = this.calculateAverageVAM(
-          granulometryComposition.average.projectN.samplesData,
+        updatedGranulometryComposition.average.Vam = this.calculateAverageVAM(
+          updatedGranulometryComposition.average.projectN.samplesData,
         );
+
+        // Formatar percentageinputs;
+        let inputsValues = [];
+        Object.values(percentageInputs[1]).forEach((e) => {
+          inputsValues.push(Number(e));
+        });
+
+        updatedGranulometryComposition.average.percentsOfDosage = inputsValues;
 
         for (let i = 0; i < porcentagesPassantsN200.length; i++) {
-          passantN200average +=
-            (porcentagesPassantsN200[i] * granulometryComposition.average.percentsOfDosage.value[i]) / 100;
+          if (porcentagesPassantsN200[i] === null) {
+            porcentagesPassantsN200[i] = 0;
+            passantN200average +=
+              (porcentagesPassantsN200[i] * updatedGranulometryComposition.average.percentsOfDosage[i]) / 100;
+          }
         }
 
-        granulometryComposition.average.ratioDustAsphalt =
+        updatedGranulometryComposition.average.ratioDustAsphalt =
           passantN200average /
-          ((-(100 - granulometryComposition.average.Pli) *
+          ((-(100 - updatedGranulometryComposition.average.pli) *
             binderSpecificGravity *
-            (granulometryComposition.average.Gse - granulometryComposition.average.combinedGsb)) /
-            (granulometryComposition.average.Gse * granulometryComposition.average.combinedGsb) +
-            granulometryComposition.average.Pli);
+            (binderCompositions[0].gse - binderCompositions[0].combinedGsb)) /
+            (binderCompositions[0].gse * binderCompositions[0].combinedGsb) +
+            updatedGranulometryComposition.average.pli);
       }
 
       let passantN200higher = 0;
 
       if (chosenCurves.higher) {
-        granulometryComposition.higher.Gmm = granulometryComposition.higher.Gmm;
-        granulometryComposition.higher.Pli = granulometryComposition.higher.Pli;
+        updatedGranulometryComposition = {
+          ...updatedGranulometryComposition,
+          higher: {
+            gmm: riceTest.find((e) => e.curve === 'lower').gmm,
+            pli: binderCompositions[0].pli,
+            data: [],
+            percentWaterAbs: null,
+            Vv: null,
+            Vam: null,
+            ratioDustAsphalt: null,
+            percentsOfDosage: percentageInputs,
+            projectN: {
+              samplesData: [],
+              percentageGmm: null,
+            },
+            maxN: {
+              samplesData: [],
+              percentageGmm: null,
+            },
+            initialN: {
+              samplesData: [],
+              percentageGmm: null,
+            },
+            expectedPli: null,
+            gse: null,
+            combinedGsb: null,
+            Gmb: null
+          },
+        };
 
-        granulometryComposition.higher.data = this.calculateExpectedGmb(granulometryComposition.higher.data);
-        granulometryComposition.higher.data = this.calculateGmbCP(granulometryComposition.higher.data);
+        updatedGranulometryComposition.higher.data = this.calculateExpectedGmb(granulometryComposition[1]);
+        updatedGranulometryComposition.higher.data = this.calculateGmbCP(updatedGranulometryComposition.higher.data);
 
-        granulometryComposition.higher.Gmb = this.calculateGmb2(granulometryComposition.higher.data);
+        updatedGranulometryComposition.higher.data = this.calculateGmb2(updatedGranulometryComposition.higher.data);
 
-        granulometryComposition.higher.data = this.calculateC(granulometryComposition.higher.data, maxNIndex);
-        granulometryComposition.higher.data = this.calculateExpectedGmb_C(granulometryComposition.higher.data);
-        granulometryComposition.higher.data = this.calculatePercentageGmm(granulometryComposition.higher);
-        granulometryComposition.higher.data = this.calculatePlanilhaVv(granulometryComposition.higher.data);
-        granulometryComposition.higher.data = this.calculateVcb(granulometryComposition.higher);
-        granulometryComposition.higher.data = this.calculateVam(granulometryComposition.higher.data);
-        granulometryComposition.higher.data = this.calculateRbv(granulometryComposition.higher.data);
+        updatedGranulometryComposition.higher.data = this.calculateC(granulometryComposition[1], maxNIndex);
+        updatedGranulometryComposition.higher.data = this.calculateExpectedGmb_C(
+          updatedGranulometryComposition.higher.data,
+        );
+        updatedGranulometryComposition.higher.data = this.calculatePercentageGmm(
+          updatedGranulometryComposition.higher,
+        );
+        updatedGranulometryComposition.higher.data = this.calculatePlanilhaVv(
+          updatedGranulometryComposition.higher.data,
+        );
+        updatedGranulometryComposition.higher.data = this.calculateVcb(updatedGranulometryComposition.higher);
+        updatedGranulometryComposition.higher.data = this.calculateVam(updatedGranulometryComposition.higher.data);
+        updatedGranulometryComposition.higher.data = this.calculateRbv(updatedGranulometryComposition.higher.data);
 
-        granulometryComposition.higher.percentWaterAbs = this.percentageWaterAbsorbed(
-          granulometryComposition.higher.data,
+        updatedGranulometryComposition.higher.percentWaterAbs = this.percentageWaterAbsorbed(
+          updatedGranulometryComposition.higher.data,
         );
 
-        granulometryComposition.higher.samplesData = granulometryComposition.higher.data;
-
-        granulometryComposition.higher.initialN.samplesData = this.separateNValues(
-          granulometryComposition.higher.data,
+        updatedGranulometryComposition.higher.initialN.samplesData = this.separateNValues(
+          updatedGranulometryComposition.higher.data,
           initialNIndex,
         );
-        granulometryComposition.higher.projectN.samplesData = this.separateNValues(
-          granulometryComposition.higher.data,
+
+        updatedGranulometryComposition.higher.projectN.samplesData = this.separateNValues(
+          updatedGranulometryComposition.higher.data,
           projectNIndex,
         );
-        granulometryComposition.higher.maxN.samplesData = this.separateNValues(
-          granulometryComposition.higher.data,
+        updatedGranulometryComposition.higher.maxN.samplesData = this.separateNValues(
+          updatedGranulometryComposition.higher.data,
           maxNIndex,
         );
 
-        granulometryComposition.higher.initialN.percentageGmm = this.calculateAveragePercentageGmm(
-          granulometryComposition.higher.initialN.samplesData,
+        updatedGranulometryComposition.higher.initialN.percentageGmm = this.calculateAveragePercentageGmm(
+          updatedGranulometryComposition.higher.initialN.samplesData,
         );
-        granulometryComposition.higher.projectN.percentageGmm = this.calculateAveragePercentageGmm(
-          granulometryComposition.higher.projectN.samplesData,
+        updatedGranulometryComposition.higher.projectN.percentageGmm = this.calculateAveragePercentageGmm(
+          updatedGranulometryComposition.higher.projectN.samplesData,
         );
-        granulometryComposition.higher.maxN.percentageGmm = this.calculateAveragePercentageGmm(
-          granulometryComposition.higher.maxN.samplesData,
+        updatedGranulometryComposition.higher.maxN.percentageGmm = this.calculateAveragePercentageGmm(
+          updatedGranulometryComposition.higher.maxN.samplesData,
         );
 
-        granulometryComposition.higher.Vv = this.calculateVv2(granulometryComposition.higher);
+        updatedGranulometryComposition.higher.Vv = this.calculateVv2(updatedGranulometryComposition.higher);
 
-        granulometryComposition.higher.Vam = this.calculateAverageVAM(
-          granulometryComposition.higher.projectN.samplesData,
+        updatedGranulometryComposition.higher.Vam = this.calculateAverageVAM(
+          updatedGranulometryComposition.higher.projectN.samplesData,
         );
+
+        // Formatar percentageinputs;
+        let inputsValues = [];
+        Object.values(percentageInputs[2]).forEach((e) => {
+          inputsValues.push(Number(e));
+        });
+
+        updatedGranulometryComposition.higher.percentsOfDosage = inputsValues;
 
         for (let i = 0; i < porcentagesPassantsN200.length; i++) {
-          passantN200higher +=
-            (porcentagesPassantsN200[i] * granulometryComposition.higher.percentsOfDosage.value[i]) / 100;
+          if (porcentagesPassantsN200[i] === null) {
+            porcentagesPassantsN200[i] = 0;
+            passantN200higher +=
+              (porcentagesPassantsN200[i] * updatedGranulometryComposition.higher.percentsOfDosage[i]) / 100;
+          }
         }
 
-        granulometryComposition.higher.ratioDustAsphalt =
+        updatedGranulometryComposition.higher.ratioDustAsphalt =
           passantN200higher /
-          ((-(100 - granulometryComposition.higher.Pli) *
+          ((-(100 - updatedGranulometryComposition.higher.pli) *
             binderSpecificGravity *
-            (granulometryComposition.higher.Gse - granulometryComposition.higher.combinedGsb)) /
-            (granulometryComposition.higher.Gse * granulometryComposition.higher.combinedGsb) +
-            granulometryComposition.higher.Pli);
+            (binderCompositions[0].gse - binderCompositions[0].combinedGsb)) /
+            (binderCompositions[0].gse * binderCompositions[0].combinedGsb) +
+            updatedGranulometryComposition.higher.pli);
       }
 
       let table2Lower = {
@@ -344,47 +497,48 @@ export class FirstCurvePercentages_Service {
         percentWaterAbs: {},
         ratioDustAsphalt: {},
       };
+
       let table3Lower = {};
 
       let table4Lower = {};
 
       if (chosenCurves.lower) {
-        const expectedPliLower = granulometryComposition.lower.Pli - 0.4 * (4 - granulometryComposition.lower.Vv);
+        const expectedPliLower = updatedGranulometryComposition.lower.pli - 0.4 * (4 - updatedGranulometryComposition.lower.Vv);
 
-        granulometryComposition.lower.expectedPli = expectedPliLower;
+        updatedGranulometryComposition.lower.expectedPli = expectedPliLower;
 
         let Clower;
 
-        if (granulometryComposition.lower.Vv < 4) Clower = 0.1;
+        if (updatedGranulometryComposition.lower.Vv < 4) Clower = 0.1;
         else Clower = 0.2;
 
-        const expectedVamLower = granulometryComposition.lower.Vam + Clower * (4 - granulometryComposition.lower.Vv);
+        const expectedVamLower = updatedGranulometryComposition.lower.Vam + Clower * (4 - updatedGranulometryComposition.lower.Vv);
 
         const expectedRBVLower = (expectedVamLower - 4) / expectedVamLower;
 
         const expectedPercentageGmmInitialNLower =
-          granulometryComposition.lower.initialN.percentageGmm - 4 + granulometryComposition.lower.Vv;
+          updatedGranulometryComposition.lower.initialN.percentageGmm - 4 + updatedGranulometryComposition.lower.Vv;
 
         const expectedPercentageGmmMaxNLower =
-          granulometryComposition.lower.maxN.percentageGmm - 4 + granulometryComposition.lower.Vv;
+          updatedGranulometryComposition.lower.maxN.percentageGmm - 4 + updatedGranulometryComposition.lower.Vv;
 
         const expectedRatioDustAsphaltLower =
           passantN200lower /
           ((-(100 - expectedPliLower) *
             binderSpecificGravity *
-            (granulometryComposition.lower.Gse - granulometryComposition.lower.combinedGsb)) /
-            (granulometryComposition.lower.Gse * granulometryComposition.lower.combinedGsb) +
+            (updatedGranulometryComposition.lower.gse - updatedGranulometryComposition.lower.combinedGsb)) /
+            (updatedGranulometryComposition.lower.gse * updatedGranulometryComposition.lower.combinedGsb) +
             expectedPliLower);
 
         table2Lower = {
-          percentageGmmInitialN: granulometryComposition.lower.initialN.percentageGmm,
-          percentageGmmProjectN: granulometryComposition.lower.projectN.percentageGmm,
-          percentageGmmMaxN: granulometryComposition.lower.maxN.percentageGmm,
-          porcentageVv: granulometryComposition.lower.Vv,
-          porcentageVam: granulometryComposition.lower.Vam,
-          specificMass: granulometryComposition.lower.Gmb,
-          percentWaterAbs: granulometryComposition.lower.percentWaterAbs,
-          ratioDustAsphalt: granulometryComposition.lower.ratioDustAsphalt,
+          percentageGmmInitialN: updatedGranulometryComposition.lower.initialN.percentageGmm,
+          percentageGmmProjectN: updatedGranulometryComposition.lower.projectN.percentageGmm,
+          percentageGmmMaxN: updatedGranulometryComposition.lower.maxN.percentageGmm,
+          porcentageVv: updatedGranulometryComposition.lower.Vv,
+          porcentageVam: updatedGranulometryComposition.lower.Vam,
+          specificMass: updatedGranulometryComposition.lower.data[0].Gmb,
+          percentWaterAbs: updatedGranulometryComposition.lower.percentWaterAbs,
+          ratioDustAsphalt: updatedGranulometryComposition.lower.ratioDustAsphalt,
         };
 
         table3Lower = {
@@ -396,7 +550,7 @@ export class FirstCurvePercentages_Service {
           expectedPercentageGmmMaxNLower,
         };
 
-        let graphData = this.calculateGraphData(granulometryComposition.lower.samplesData);
+        let graphData = this.calculateGraphData(granulometryComposition[0]);
 
         table4Lower = {
           data: graphData,
@@ -418,43 +572,42 @@ export class FirstCurvePercentages_Service {
       let table4Average = {};
 
       if (chosenCurves.average) {
-        const expectedPliAverage = granulometryComposition.average.Pli - 0.4 * (4 - granulometryComposition.average.Vv);
+        const expectedPliAverage = updatedGranulometryComposition.average.pli - 0.4 * (4 - updatedGranulometryComposition.average.Vv);
 
-        granulometryComposition.average.expectedPli = expectedPliAverage;
+        updatedGranulometryComposition.average.expectedPli = expectedPliAverage;
 
         let Caverage;
 
-        if (granulometryComposition.average.Vv < 4) Caverage = 0.1;
+        if (updatedGranulometryComposition.average.Vv < 4) Caverage = 0.1;
         else Caverage = 0.2;
 
-        const expectedVamAverage =
-          granulometryComposition.average.Vam + Caverage * (4 - granulometryComposition.average.Vv);
+        const expectedVamAverage = updatedGranulometryComposition.average.Vam + Caverage * (4 - updatedGranulometryComposition.average.Vv);
 
         const expectedRBVAverage = (expectedVamAverage - 4) / expectedVamAverage;
 
         const expectedPercentageGmmInitialNAverage =
-          granulometryComposition.average.initialN.percentageGmm - 4 + granulometryComposition.average.Vv;
+          updatedGranulometryComposition.average.initialN.percentageGmm - 4 + updatedGranulometryComposition.average.Vv;
 
         const expectedPercentageGmmMaxNAverage =
-          granulometryComposition.average.maxN.percentageGmm - 4 + granulometryComposition.average.Vv;
+          updatedGranulometryComposition.average.maxN.percentageGmm - 4 + updatedGranulometryComposition.average.Vv;
 
         const expectedRatioDustAsphaltAverage =
           passantN200average /
           ((-(100 - expectedPliAverage) *
             binderSpecificGravity *
-            (granulometryComposition.average.Gse - granulometryComposition.average.combinedGsb)) /
-            (granulometryComposition.average.Gse * granulometryComposition.average.combinedGsb) +
+            (updatedGranulometryComposition.average.gse - updatedGranulometryComposition.average.combinedGsb)) /
+            (updatedGranulometryComposition.average.gse * updatedGranulometryComposition.average.combinedGsb) +
             expectedPliAverage);
 
         table2Average = {
-          percentageGmmInitialN: granulometryComposition.average.initialN.percentageGmm,
-          percentageGmmProjectN: granulometryComposition.average.projectN.percentageGmm,
-          percentageGmmMaxN: granulometryComposition.average.maxN.percentageGmm,
-          porcentageVv: granulometryComposition.average.Vv,
-          porcentageVam: granulometryComposition.average.Vam,
-          specificMass: granulometryComposition.average.Gmb,
-          percentWaterAbs: granulometryComposition.average.percentWaterAbs,
-          ratioDustAsphalt: granulometryComposition.average.ratioDustAsphalt,
+          percentageGmmInitialN: updatedGranulometryComposition.average.initialN.percentageGmm,
+          percentageGmmProjectN: updatedGranulometryComposition.average.projectN.percentageGmm,
+          percentageGmmMaxN: updatedGranulometryComposition.average.maxN.percentageGmm,
+          porcentageVv: updatedGranulometryComposition.average.Vv,
+          porcentageVam: updatedGranulometryComposition.average.Vam,
+          specificMass: updatedGranulometryComposition.average.data[0].Gmb,
+          percentWaterAbs: updatedGranulometryComposition.average.percentWaterAbs,
+          ratioDustAsphalt: updatedGranulometryComposition.average.ratioDustAsphalt,
         };
 
         table3Average = {
@@ -466,7 +619,7 @@ export class FirstCurvePercentages_Service {
           expectedPercentageGmmMaxNAverage,
         };
 
-        let graphData = this.calculateGraphData(granulometryComposition.average.samplesData);
+        let graphData = this.calculateGraphData(granulometryComposition[1]);
 
         table4Average = {
           data: graphData,
@@ -488,43 +641,42 @@ export class FirstCurvePercentages_Service {
       let table4Higher = {};
 
       if (chosenCurves.higher) {
-        const expectedPliHigher = granulometryComposition.higher.Pli - 0.4 * (4 - granulometryComposition.higher.Vv);
+        const expectedPliHigher = updatedGranulometryComposition.higher.pli - 0.4 * (4 - updatedGranulometryComposition.higher.Vv);
 
-        granulometryComposition.higher.expectedPli = expectedPliHigher;
+        updatedGranulometryComposition.higher.expectedPli = expectedPliHigher;
 
         let Chigher;
 
-        if (granulometryComposition.higher.Vv < 4) Chigher = 0.1;
+        if (updatedGranulometryComposition.higher.Vv < 4) Chigher = 0.1;
         else Chigher = 0.2;
 
-        const expectedVamHigher =
-          granulometryComposition.higher.Vam + Chigher * (4 - granulometryComposition.higher.Vv);
+        const expectedVamHigher = updatedGranulometryComposition.higher.Vam + Chigher * (4 - updatedGranulometryComposition.higher.Vv);
 
         const expectedRBVHigher = (expectedVamHigher - 4) / expectedVamHigher;
 
         const expectedPercentageGmmInitialNHigher =
-          granulometryComposition.higher.initialN.percentageGmm - 4 + granulometryComposition.higher.Vv;
+          updatedGranulometryComposition.higher.initialN.percentageGmm - 4 + updatedGranulometryComposition.higher.Vv;
 
         const expectedPercentageGmmMaxNHigher =
-          granulometryComposition.higher.maxN.percentageGmm - 4 + granulometryComposition.higher.Vv;
+          updatedGranulometryComposition.higher.maxN.percentageGmm - 4 + updatedGranulometryComposition.higher.Vv;
 
         const expectedRatioDustAsphaltHigher =
           passantN200higher /
           ((-(100 - expectedPliHigher) *
             binderSpecificGravity *
-            (granulometryComposition.higher.Gse - granulometryComposition.higher.combinedGsb)) /
-            (granulometryComposition.higher.Gse * granulometryComposition.higher.combinedGsb) +
+            (updatedGranulometryComposition.higher.gse - updatedGranulometryComposition.higher.combinedGsb)) /
+            (updatedGranulometryComposition.higher.gse * updatedGranulometryComposition.higher.combinedGsb) +
             expectedPliHigher);
 
         table2Higher = {
-          percentageGmmInitialN: granulometryComposition.higher.initialN.percentageGmm,
-          percentageGmmProjectN: granulometryComposition.higher.projectN.percentageGmm,
-          percentageGmmMaxN: granulometryComposition.higher.maxN.percentageGmm,
-          porcentageVv: granulometryComposition.higher.Vv,
-          porcentageVam: granulometryComposition.higher.Vam,
-          specificMass: granulometryComposition.higher.Gmb,
-          percentWaterAbs: granulometryComposition.higher.percentWaterAbs,
-          ratioDustAsphalt: granulometryComposition.higher.ratioDustAsphalt,
+          percentageGmmInitialN: updatedGranulometryComposition.higher.initialN.percentageGmm,
+          percentageGmmProjectN: updatedGranulometryComposition.higher.projectN.percentageGmm,
+          percentageGmmMaxN: updatedGranulometryComposition.higher.maxN.percentageGmm,
+          porcentageVv: updatedGranulometryComposition.higher.Vv,
+          porcentageVam: updatedGranulometryComposition.higher.Vam,
+          specificMass: updatedGranulometryComposition.higher.data[0].Gmb,
+          percentWaterAbs: updatedGranulometryComposition.higher.percentWaterAbs,
+          ratioDustAsphalt: updatedGranulometryComposition.higher.ratioDustAsphalt,
         };
 
         table3Higher = {
@@ -536,7 +688,7 @@ export class FirstCurvePercentages_Service {
           expectedPercentageGmmMaxNHigher,
         };
 
-        let graphData = this.calculateGraphData(granulometryComposition.higher.samplesData);
+        let graphData = this.calculateGraphData(granulometryComposition[2]);
 
         table4Higher = {
           data: graphData,
@@ -627,7 +779,7 @@ export class FirstCurvePercentages_Service {
           data[i].planilha[j].percentageGmm = 0;
         } else {
           data[i].planilha[j].percentageGmm = 100 * (data[i].planilha[j].GMBe_C / curve.gmm);
-        }        
+        }
       }
     }
     return data;
@@ -690,7 +842,7 @@ export class FirstCurvePercentages_Service {
 
   calculateGmb2(data) {
     let sumGmb = 0;
-    let updatedData = [...data]; 
+    let updatedData = [...data];
 
     for (let i = 0; i < data.length; i++) {
       sumGmb += updatedData[i].Gmb;
@@ -737,6 +889,7 @@ export class FirstCurvePercentages_Service {
     const averageDryMass = sumDryMass / data.length;
     const averageSubmergedMass = sumSubmergedMass / data.length;
     const averageSaturedMass = saturatedMass / data.length;
+
 
     return [averageDryMass, averageSubmergedMass, averageSaturedMass];
   }
