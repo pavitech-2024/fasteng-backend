@@ -23,7 +23,7 @@ export class SuperpaveService {
     private readonly granulometryRepository: AsphaltGranulometryRepository,
     private readonly initialBinder_Service: InitialBinder_Superpave_Service,
     private readonly firstCompression_Service: FirstCompression_Superpave_Service,
-    private readonly firstCurvePercentages: FirstCurvePercentages_Service
+    private readonly firstCurvePercentages_Service: FirstCurvePercentages_Service
   ) {}
 
   async verifyInitSuperpave(body: SuperpaveInitDto, userId: string) {
@@ -1177,13 +1177,25 @@ export class SuperpaveService {
     }
   }
 
-  async getStep5Parameters(body: any) {
+  async getStep6Parameters(body: any) {
     try {
-      const data = await this.firstCurvePercentages.getStep5Parameters(body);
+      const data = await this.firstCurvePercentages_Service.getStep6Parameters(body);
 
       return { data, success: true }
     } catch (error) {
-      this.logger.error(`error on get step 5 data superpave > [error]: ${error}`);
+      this.logger.error(`error on get step 6 data superpave > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { success: false, error: { status, message, name } };
+    }
+  }
+
+  async saveStep6Data(body: any, userId: string) {
+    try {
+      const success = await this.firstCurvePercentages_Service.saveStep6Data(body, userId);
+
+      return { success }
+    } catch (error) {
+      this.logger.error(`error on save step 6 data superpave > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
     }

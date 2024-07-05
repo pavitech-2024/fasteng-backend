@@ -15,7 +15,7 @@ export class FirstCurvePercentages_Service {
     private readonly superpave_repository: SuperpaveRepository,
   ) {}
 
-  async getStep5Parameters(body: any) {
+  async getStep6Parameters(body: any) {
     try {
       this.logger.log({ body }, 'start calculate step 5 data > [service]');
       const {
@@ -271,7 +271,7 @@ export class FirstCurvePercentages_Service {
         updatedGranulometryComposition = {
           ...updatedGranulometryComposition,
           average: {
-            gmm: riceTest.find((e) => e.curve === 'lower').gmm,
+            gmm: riceTest.find((e) => e.curve === 'average').gmm,
             pli: binderCompositions[0].pli,
             data: [],
             percentWaterAbs: null,
@@ -303,7 +303,8 @@ export class FirstCurvePercentages_Service {
 
         updatedGranulometryComposition.average.data = this.calculateGmb2(updatedGranulometryComposition.average.data);
 
-        updatedGranulometryComposition.average.data = this.calculateC(granulometryComposition[0], maxNIndex);
+        updatedGranulometryComposition.average.data = this.calculateC(granulometryComposition[1], maxNIndex);
+
         updatedGranulometryComposition.average.data = this.calculateExpectedGmb_C(
           updatedGranulometryComposition.average.data,
         );
@@ -382,7 +383,7 @@ export class FirstCurvePercentages_Service {
         updatedGranulometryComposition = {
           ...updatedGranulometryComposition,
           higher: {
-            gmm: riceTest.find((e) => e.curve === 'lower').gmm,
+            gmm: riceTest.find((e) => e.curve === 'higher').gmm,
             pli: binderCompositions[0].pli,
             data: [],
             percentWaterAbs: null,
@@ -409,12 +410,13 @@ export class FirstCurvePercentages_Service {
           },
         };
 
-        updatedGranulometryComposition.higher.data = this.calculateExpectedGmb(granulometryComposition[1]);
+        updatedGranulometryComposition.higher.data = this.calculateExpectedGmb(granulometryComposition[2]);
         updatedGranulometryComposition.higher.data = this.calculateGmbCP(updatedGranulometryComposition.higher.data);
 
         updatedGranulometryComposition.higher.data = this.calculateGmb2(updatedGranulometryComposition.higher.data);
 
-        updatedGranulometryComposition.higher.data = this.calculateC(granulometryComposition[1], maxNIndex);
+        updatedGranulometryComposition.higher.data = this.calculateC(granulometryComposition[2], maxNIndex);
+
         updatedGranulometryComposition.higher.data = this.calculateExpectedGmb_C(
           updatedGranulometryComposition.higher.data,
         );
@@ -902,6 +904,7 @@ export class FirstCurvePercentages_Service {
     }
     return sumVv / data.length;
   }
+  
 
   calculateGraphData(data) {
     let graphData: any[] = [['Nº de Giros', 'Altura (mm)', '%Gmm (%)', 'Vv (%)']];
@@ -928,5 +931,32 @@ export class FirstCurvePercentages_Service {
       });
     }
     return graphData;
+  }
+
+  async saveStep6Data(body: any, userId: string) {
+    try {
+      this.logger.log('save superpave first curve percentages step on first-curve-percentages.superpave.service.ts > [body]', { body });
+
+      const { name } = body.firstCurvePercentagesData;
+
+      const superpaveExists: any = await this.superpave_repository.findOne(name, userId);
+
+      const { name: materialName, ...firstCurvePercentagesWithoutName } = body.firstCurvePercentagesData;
+
+      const superpaveWithFirstCurvePercentages = { ...superpaveExists._doc, firstCurvePercentagesData: firstCurvePercentagesWithoutName };
+
+      await this.superpaveModel.updateOne(
+        { _id: superpaveExists._doc._id },
+        superpaveWithFirstCurvePercentages
+      );
+
+      if (superpaveExists._doc.generalData.step < 6) {
+        await this.superpave_repository.saveStep(superpaveExists, 6);
+      }
+
+      return true;
+    } catch (error) {
+      throw error
+    }
   }
 }

@@ -143,6 +143,88 @@ export type FirstCompressionData = {
   }[]
 }
 
+export type FirstCurvePercentagesData = {
+  table1: {
+    expectedPorcentageGmmInitialN: number;
+    expectedPorcentageGmmMaxN: number;
+    expectedPorcentageGmmProjectN: number;
+    expectedVam: number;
+    expectedRBV_Higher: number;
+    expectedRBV_Lower: number;
+    nominalSize: number;
+    trafficVolume: string;
+  },
+  table2: {
+    table2Lower: {
+      percentWaterAbs: null,
+      percentageGmmInitialN: null,
+      percentageGmmMaxN: null,
+      percentageGmmProjectN: null,
+      porcentageVam: null,
+      porcentageVv: null,
+      ratioDustAsphalt: null,
+      specificMass: null,
+    },
+    table2Average: {
+      percentWaterAbs: null,
+      percentageGmmInitialN: null,
+      percentageGmmMaxN: null,
+      percentageGmmProjectN: null,
+      porcentageVam: null,
+      porcentageVv: null,
+      ratioDustAsphalt: null,
+      specificMass: null,
+    },
+    table2Higher: {
+      percentWaterAbs: null,
+      percentageGmmInitialN: null,
+      percentageGmmMaxN: null,
+      percentageGmmProjectN: null,
+      porcentageVam: null,
+      porcentageVv: null,
+      ratioDustAsphalt: null,
+      specificMass: null,
+    },
+  },
+  table3: {
+    table3Lower: {
+      expectedPercentageGmmInitialNLower: number,
+      expectedPercentageGmmMaxNLower: number,
+      expectedPliLower: number,
+      expectedVamLower: number,
+      expectedRBVLower: number,
+      expectedRatioDustAsphaltLower: number,
+    },
+    table3Average: {
+      expectedPercentageGmmInitialNAverage: number,
+      expectedPercentageGmmMaxNAverage: number,
+      expectedPliAverage: number,
+      expectedVamAverage: number,
+      expectedRBVAverage: number,
+      expectedRatioDustAsphaltAverage: number,
+    },
+    table3Higher: {
+      expectedPercentageGmmInitialNHigher: number,
+      expectedPercentageGmmMaxNHigher: number,
+      expectedPliHigher: number,
+      expectedVamHigher: number,
+      expectedRBVHigher: number,
+      expectedRatioDustAsphaltHigher: number,
+    }
+  },
+  table4: {
+    table4Lower: {
+      data: any[]
+    },
+    table4Average: {
+      data: any[]
+    },
+    table4Higher: {
+      data: any[]
+    }
+  }
+}
+
 @Schema({ collection: 'superpaves'})
 export class Superpave {
   _id: string;
@@ -167,6 +249,10 @@ export class Superpave {
   @IsNotEmpty()
   @Prop({ type: Object })
   firstCompressionData: FirstCompressionData
+
+  @IsNotEmpty()
+  @Prop({ type: Object })
+  firstCurvePercentagesData: FirstCurvePercentagesData
 }
 
 const SuperpaveSchema = SchemaFactory.createForClass(Superpave);
