@@ -176,7 +176,7 @@ export class SuperpaveController {
     return response.status(200).json(status);
   }
 
-  @Post('step-6-parameters')
+  @Post('step-5-parameters')
   @ApiOperation({ summary: 'Retorna os dados iniciais necessários para a quinta tela (porcentagens da curva escolhida) da dosagem' })
   @ApiResponse({ 
     status: 200, 
@@ -190,6 +190,7 @@ export class SuperpaveController {
 
     return response.status(200).json(status);
   }
+  
 
   @Post('save-first-curve-percentage-step/:userId')
   async saveStep6Data(
@@ -200,6 +201,21 @@ export class SuperpaveController {
     this.logger.log(`save step 6 data > [body]: ${body}`);
 
     const status = await this.superpaveService.saveStep6Data(body, userId);
+
+    return response.status(200).json(status);
+  }
+
+  @Post('step-7-parameters')
+  @ApiOperation({ summary: 'Retorna os dados iniciais necessários para a sétima tela (porcentagens da curva escolhida) da dosagem' })
+  @ApiResponse({ 
+    status: 200, 
+    description: 'Dados carregados com sucesso!',
+    content: { 'application/json': { schema: { example: { data: {}, success: true } } } }, 
+  })
+  async getStep7Parameters(@Res() response: Response, @Body() body: any) {
+    this.logger.log(`get step 7 data > [body]: ${body}`);
+
+    const status = await this.superpaveService.getStep7Parameters(body);
 
     return response.status(200).json(status);
   }

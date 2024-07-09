@@ -10,6 +10,7 @@ import { AsphaltGranulometryRepository } from 'modules/asphalt/essays/granulomet
 import { InitialBinder_Superpave_Service } from './initial-binder.superpave.service';
 import { FirstCompression_Superpave_Service } from './first-compression.service';
 import { FirstCurvePercentages_Service } from './first-curve-percentages.service';
+import { ChosenCurvePercentages_Superpave_Service } from './chosen-curves-percentages.service';
 
 @Injectable()
 export class SuperpaveService {
@@ -23,7 +24,8 @@ export class SuperpaveService {
     private readonly granulometryRepository: AsphaltGranulometryRepository,
     private readonly initialBinder_Service: InitialBinder_Superpave_Service,
     private readonly firstCompression_Service: FirstCompression_Superpave_Service,
-    private readonly firstCurvePercentages_Service: FirstCurvePercentages_Service
+    private readonly firstCurvePercentages_Service: FirstCurvePercentages_Service,
+    private readonly chosenCurvePercentages_Service: ChosenCurvePercentages_Superpave_Service
   ) {}
 
   async verifyInitSuperpave(body: SuperpaveInitDto, userId: string) {
@@ -1196,6 +1198,18 @@ export class SuperpaveService {
       return { success }
     } catch (error) {
       this.logger.error(`error on save step 6 data superpave > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { success: false, error: { status, message, name } };
+    }
+  }
+
+  async getStep7Parameters(body: any) {
+    try {
+      const data = await this.chosenCurvePercentages_Service.getStep7Parameters(body);
+
+      return { data, success: true }
+    } catch (error) {
+      this.logger.error(`error on get step 7 data superpave > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
     }
