@@ -24,7 +24,7 @@ export class GeneralData_SayboltFurol_Service {
 
       // verificar se existe uma sayboltFurol com mesmo nome e materialId no banco de dados
       const sayboltFurolExists = await this.sayboltFurolRepository.findOne({
-        generalData: { name, material: { _id: material._id } },
+        generalData: { name, material: { _id: material._id }},
       });
 
       // se existir, retorna erro
