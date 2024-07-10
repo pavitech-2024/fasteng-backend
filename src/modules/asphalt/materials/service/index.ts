@@ -57,10 +57,13 @@ export class MaterialsService {
   async getAllMaterials(userId: string): Promise<Material[]> {
     try {
       // busca todos os materiais no banco de dados
-      const materials = await this.materialsRepository.find();
+      const materials = await this.materialsRepository.findByType({
+        type: { $in: ['filler', 'CAP', 'asphaltBinder'] },
+      });
+      console.log("🚀 ~ MaterialsService ~ getAllMaterials ~ materials:", materials)
 
       // retorna os materiais encontrados que pertencem ao usuário
-      return materials.filter((material) => material.userId === userId);
+      return materials;
     } catch (error) {
       this.logger.error(`error on get all materials > [error]: ${error}`);
 

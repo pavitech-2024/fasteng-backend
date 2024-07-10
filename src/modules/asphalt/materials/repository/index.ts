@@ -20,6 +20,10 @@ export class MaterialsRepository {
   async findOne(materialsFilterQuery: FilterQuery<Material>): Promise<Material> {
     return this.materialModel.findOne(materialsFilterQuery);
   }
+  async findByType(types: any) {
+    const materials = await this.materialModel.find(types);
+    return materials;
+  }
 
   async findById(materialId: string): Promise<Material> {
     return this.materialModel.findById(materialId);
