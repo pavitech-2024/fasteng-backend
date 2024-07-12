@@ -1214,4 +1214,16 @@ export class SuperpaveService {
       return { success: false, error: { status, message, name } };
     }
   }
+
+  async saveStep7Data(body: any, userId: string) {
+    try {
+      const success = await this.chosenCurvePercentages_Service.saveStep7Data(body, userId);
+
+      return { success }
+    } catch (error) {
+      this.logger.error(`error on save step 7 data superpave > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { success: false, error: { status, message, name } };
+    }
+  }
 }
