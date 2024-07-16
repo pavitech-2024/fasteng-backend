@@ -232,4 +232,13 @@ export class SuperpaveController {
 
     return response.status(200).json(status);
   }
+
+  @Post('calculate-step-7-rice-test')
+  async calculateStep7RiceTest(@Res() response: Response, @Body() body: any) {
+    this.logger.log(`calculate step 5 rice test data > [body]: ${body}`);
+  
+    const status = await this.superpaveService.calculateStep7RiceTest(body);
+
+    return response.status(200).json(status);
+  }
 }

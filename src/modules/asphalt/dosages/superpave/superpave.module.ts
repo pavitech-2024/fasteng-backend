@@ -9,6 +9,7 @@ import { InitialBinder_Superpave_Service } from './service/initial-binder.superp
 import { FirstCompression_Superpave_Service } from './service/first-compression.service';
 import { FirstCurvePercentages_Service } from './service/first-curve-percentages.service';
 import { ChosenCurvePercentages_Superpave_Service } from './service/chosen-curves-percentages.service';
+import { SecondCompression_Superpave_Service } from './service/second-compression.superpave.service';
 
 const services = [
   SuperpaveService,
@@ -18,7 +19,8 @@ const services = [
   InitialBinder_Superpave_Service,
   FirstCompression_Superpave_Service,
   FirstCurvePercentages_Service,
-  ChosenCurvePercentages_Superpave_Service
+  ChosenCurvePercentages_Superpave_Service,
+  SecondCompression_Superpave_Service
 ];
 
 @Module({
