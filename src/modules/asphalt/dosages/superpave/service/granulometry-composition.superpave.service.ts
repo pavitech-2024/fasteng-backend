@@ -104,15 +104,18 @@ export class GranulometryComposition_Superpave_Service {
 
       let lowerComposition = {
         sumOfPercents: [],
+        percentsOfMaterials: null
       };
       
 
       let averageComposition = {
         sumOfPercents: [],
+        percentsOfMaterials: null
       };
 
       let higherComposition = {
         sumOfPercents: [],
+        percentsOfMaterials: null
       };
 
       let granulometryComposition = {
