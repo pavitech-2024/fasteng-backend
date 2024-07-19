@@ -3,12 +3,16 @@ import { MaterialsRepository } from '../repository';
 import { CreateAsphaltMaterialDto } from '../dto/create-asphalt-material.dto';
 import { AlreadyExists, NotFound } from '../../../../utils/exceptions';
 import { Material } from '../schemas';
+import { GetEssaysByMaterial_Service } from './get-essays-by-material.service';
 
 @Injectable()
 export class MaterialsService {
   private logger = new Logger(MaterialsService.name);
 
-  constructor(private readonly materialsRepository: MaterialsRepository) {}
+  constructor(
+    private readonly materialsRepository: MaterialsRepository,
+    private readonly getEssaysByMaterial_Service: GetEssaysByMaterial_Service
+  ) {}
 
   async createMaterial(material: CreateAsphaltMaterialDto, userId: string) {
     try {
@@ -30,7 +34,7 @@ export class MaterialsService {
     }
   }
 
-  async getMaterial(materialId: string): Promise<Material> {
+  async getMaterial(materialId: string): Promise<any> {
     try {
       // busca um material com o id passado no banco de dados
       const material = await this.materialsRepository.findOne({ _id: materialId });
@@ -38,8 +42,11 @@ export class MaterialsService {
       // se não encontrar o material, retorna um erro
       if (!material) throw new NotFound('Material');
 
+      // Buscar os ensaios com esse material;
+      const essays = await this.getEssaysByMaterial_Service.getEssaysByMaterial(material)
+
       // retorna o material encontrado
-      return material;
+      return { material, essays };
     } catch (error) {
       this.logger.error(`error on get material > [error]: ${error}`);
 
@@ -50,10 +57,13 @@ export class MaterialsService {
   async getAllMaterials(userId: string): Promise<Material[]> {
     try {
       // busca todos os materiais no banco de dados
-      const materials = await this.materialsRepository.find();
+      const materials = await this.materialsRepository.findByType({
+        type: { $in: ['filler', 'CAP', 'asphaltBinder'] },
+      });
+      console.log("🚀 ~ MaterialsService ~ getAllMaterials ~ materials:", materials)
 
       // retorna os materiais encontrados que pertencem ao usuário
-      return materials.filter((material) => material.userId === userId);
+      return materials;
     } catch (error) {
       this.logger.error(`error on get all materials > [error]: ${error}`);
 

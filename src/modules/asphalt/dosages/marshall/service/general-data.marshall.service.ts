@@ -1,9 +1,8 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { MarshallRepository } from '../repository/index';
-import { MarshallInitDto } from "../dto/marshall-init.dto";
 import { AlreadyExists } from "../../../../../utils/exceptions";
 import { InjectModel } from "@nestjs/mongoose";
-import { DATABASE_CONNECTION } from "infra/mongoose/database.config";
+import { DATABASE_CONNECTION } from "../../../../../infra/mongoose/database.config";
 import { Model } from "mongoose";
 import { Marshall, MarshallDocument } from "../schemas";
 

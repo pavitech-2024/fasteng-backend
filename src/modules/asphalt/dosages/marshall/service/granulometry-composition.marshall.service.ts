@@ -1,9 +1,8 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { AsphaltGranulometryRepository } from "../../../essays/granulometry/repository";
-import { AsphaltGranulometry } from "../../../essays/granulometry/schemas";
-import { AllSieves } from "utils/interfaces";
+import { AllSieves } from "../../../../../utils/interfaces";
 import { InjectModel } from "@nestjs/mongoose";
-import { DATABASE_CONNECTION } from "infra/mongoose/database.config";
+import { DATABASE_CONNECTION } from "../../../../../infra/mongoose/database.config";
 import { Model } from "mongoose";
 import { Marshall, MarshallDocument } from "../schemas";
 import { MarshallRepository } from "../repository";

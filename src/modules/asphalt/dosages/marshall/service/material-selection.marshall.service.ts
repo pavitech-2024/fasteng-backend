@@ -1,13 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { AsphaltGranulometryRepository } from '../../../../../modules/asphalt/essays/granulometry/repository';
-import { SpecifyMassRepository } from '../../../../../modules/asphalt/essays/specifyMass/repository';
 import { MaterialsRepository } from '../../../../../modules/asphalt/materials/repository';
 import { Model } from 'mongoose';
 import { MarshallRepository } from '../repository';
 import { Marshall, MarshallDocument } from '../schemas';
 import { InjectModel } from '@nestjs/mongoose';
-import { DATABASE_CONNECTION } from 'infra/mongoose/database.config';
-import { ViscosityRotationalRepository } from 'modules/asphalt/essays/viscosityRotational/repository';
+import { DATABASE_CONNECTION } from '../../../../../infra/mongoose/database.config';
+import { ViscosityRotationalRepository } from '../../../essays/viscosityRotational/repository';
 
 @Injectable()
 export class MaterialSelection_Marshall_Service {

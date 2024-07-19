@@ -1,7 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { DATABASE_CONNECTION } from 'infra/mongoose/database.config';
-import { AsphaltGranulometryRepository } from 'modules/asphalt/essays/granulometry/repository';
+import { DATABASE_CONNECTION } from '../../../../../infra/mongoose/database.config';
 import { Model } from 'mongoose';
 import { MarshallRepository } from '../repository';
 import { Marshall, MarshallDocument } from '../schemas';
