@@ -12,7 +12,7 @@ export class SuperpaveRepository {
   }
 
   async find(): Promise<Superpave[]> {
-    return this.superpaveModel.find();
+    return this.superpaveModel.find().sort({ createdAt: -1 });
   };
 
   async findOne(name: any, userId: string): Promise<Superpave> {
