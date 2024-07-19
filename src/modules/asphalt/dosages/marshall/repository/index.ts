@@ -12,7 +12,7 @@ export class MarshallRepository {
   }
 
   async find(): Promise<Marshall[]> {
-    return this.marshallModel.find();
+    return this.marshallModel.find().sort({ createdAt: -1 });
   }
 
   async findOne(name: any, userId: string): Promise<Marshall> {
