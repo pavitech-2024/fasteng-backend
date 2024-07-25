@@ -12,6 +12,7 @@ export class MaterialsRepository {
     const createdMaterial = new this.materialModel(material);
     return createdMaterial.save();
   }
+  
 
   async findOne(materialsFilterQuery: any): Promise<Material> {
     return this.materialModel.findOne(materialsFilterQuery);
