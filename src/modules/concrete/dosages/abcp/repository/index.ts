@@ -14,7 +14,6 @@ export class ABCPRepository {
 
   async findById(dosageId: string): Promise<ABCP> {
     const dosage = await this.abcpModel.findById(dosageId).lean();
-    console.log("🚀 ~ ABCPRepository ~ findById ~ dosage:", dosage)
 
     return dosage
   }
@@ -25,7 +24,6 @@ export class ABCPRepository {
       "generalData.name": name,
       "generalData.userId": userId
     });
-    console.log("🚀 ~ ABCPRepository ~ findOne ~ dosage:", dosage)
     
     return dosage;
   }
@@ -41,7 +39,6 @@ export class ABCPRepository {
       const createdPartialAbcp = await this.abcpModel.create({
         generalData: {...abcp, userId},
       });
-      console.log("🚀 ~ ABCPRepository ~ createPartialAbcp ~ createdPartialAbcp:", createdPartialAbcp)
 
       return createdPartialAbcp;
     } catch (error) {
@@ -56,7 +53,6 @@ export class ABCPRepository {
         { "generalData.name": abcp.data.name, "generalData.userId": userId },
         { $set: { generalData: abcp.data } }
       );
-      console.log("🚀 ~ ABCPRepository ~ createPartialAbcp ~ createdPartialAbcp:", createdPartialAbcp)
 
       return createdPartialAbcp;
     } catch (error) {
