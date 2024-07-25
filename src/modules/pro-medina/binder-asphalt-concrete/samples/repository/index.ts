@@ -1,8 +1,8 @@
 import { InjectModel } from '@nestjs/mongoose';
-import { DATABASE_CONNECTION } from 'infra/mongoose/database.config';
+import { DATABASE_CONNECTION } from '../../../../../infra/mongoose/database.config';
 import { Model } from 'mongoose';
 import { BinderAsphaltConcrete_Sample, BinderAsphaltConcrete_SamplesDocument } from '../schemas';
-import { CommonQueryFilter } from 'utils/queryFilter';
+import { CommonQueryFilter } from '../../../../../utils/queryFilter';
 
 export class BinderAsphaltConcrete_SamplesRepository {
   constructor(

@@ -1,9 +1,9 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
-import { AlreadyExists, NotFound } from 'utils/exceptions';
+import { AlreadyExists, NotFound } from '../../../../../utils/exceptions';
 import { StabilizedLayers_SamplesRepository } from '../repository';
 import { StabilizedLayers_Sample } from '../schemas';
 import { CreateStabilizedLayersSampleDto } from '../dto/create-stabilized-layers-sample.dto';
-import { CommonQueryFilter } from 'utils/queryFilter';
+import { CommonQueryFilter } from '../../../../../utils/queryFilter';
 
 @Injectable()
 export class StabilizedLayersSamplesService {
@@ -110,7 +110,7 @@ export class StabilizedLayersSamplesService {
   async deleteSample(sampleId: string): Promise<StabilizedLayers_Sample> {
     try {
       // busca uma amostra com o id passado no banco de dados
-      const sample = await this.stabilizedLayers_SamplesRepository.findOne({ _id: sampleId });
+      const sample = await this.stabilizedLayers_SamplesRepository.findOneById(sampleId);
 
       // se não encontrar a amostra, retorna um erro
       if (!sample) throw new NotFound('Sample');

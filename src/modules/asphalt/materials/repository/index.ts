@@ -1,6 +1,6 @@
 import { InjectModel } from '@nestjs/mongoose';
 import { DATABASE_CONNECTION } from '../../../../infra/mongoose/database.config';
-import { Model } from 'mongoose';
+import { FilterQuery, Model } from 'mongoose';
 import { Material, MaterialDocument } from '../schemas';
 
 export class MaterialsRepository {
@@ -13,21 +13,33 @@ export class MaterialsRepository {
     return createdMaterial.save();
   }
 
-  async find(): Promise<Material[]> {
+  async find(ids?: any): Promise<Material[]> {
     return this.materialModel.find();
   }
 
-  async findOne(materialsFilterQuery: any): Promise<Material> {
+  async findOne(materialsFilterQuery: FilterQuery<Material>): Promise<Material> {
     return this.materialModel.findOne(materialsFilterQuery);
   }
+  async findByType(types: any) {
+    const materials = await this.materialModel.find(types);
+    return materials;
+  }
 
-  async findOneAndUpdate(materialsFilterQuery: any, material: Partial<Material>): Promise<Material> {
+  async findById(materialId: string): Promise<Material> {
+    return this.materialModel.findById(materialId);
+  }
+
+  async findByUserId(materialsFilterQuery: FilterQuery<Material>): Promise<Material[]> {
+    return this.materialModel.find(materialsFilterQuery);
+  }
+
+  async findOneAndUpdate(materialsFilterQuery: FilterQuery<Material>, material: Partial<Material>): Promise<Material> {
     return this.materialModel.findOneAndUpdate(materialsFilterQuery, material, {
       new: true,
     });
   }
 
-  async findOneAndDelete(materialsFilterQuery: any): Promise<Material> {
+  async findOneAndDelete(materialsFilterQuery: FilterQuery<Material>): Promise<Material> {
     return this.materialModel.findByIdAndDelete(materialsFilterQuery);
   }
 }

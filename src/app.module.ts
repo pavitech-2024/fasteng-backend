@@ -9,6 +9,7 @@ import { ErrorsInterceptor } from './config/interceptors/ErrorsInterceptor';
 import { AuthMiddleware } from './modules/auth/middlewares';
 
 //Modules
+import { DatabaseModule } from './infra/mongoose/database.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { AsphaltModule } from './modules/asphalt/asphalt.module';
@@ -16,7 +17,6 @@ import { SoilsModule } from './modules/soils/soils.module';
 import { ConcreteModule } from './modules/concrete/concrete.module';
 import { ReportErrorModule } from './modules/report-error/report-error.module';
 import { ReportErrorController } from './modules/report-error/report-error.controller';
-import { DatabaseModule } from 'infra/mongoose/database.module';
 import { ProMedinaModule } from './modules/pro-medina/pro-medina.module';
 import { MongooseModule } from '@nestjs/mongoose';
 

@@ -10,10 +10,10 @@ export class Calc_AsphaltGranulometry_Dto {
 }
 
 export interface Calc_AsphaltGranulometry_Out {
-  accumulated_retained: number[];
+  accumulated_retained: [string, number][];
   graph_data: [number, number][];
-  passant: number[];
-  retained_porcentage: number[];
+  passant: [string, number][];
+  retained_porcentage: [string, number][];
   total_retained: number;
   nominal_diameter: number;
   nominal_size: number;

@@ -1,9 +1,9 @@
 import { HttpException, HttpStatus, Injectable, Logger } from "@nestjs/common";
-import { AlreadyExists, NotFound } from "utils/exceptions";
+import { AlreadyExists, NotFound } from "../../../../../utils/exceptions";
 import { BinderAsphaltConcrete_SamplesRepository } from "../repository";
 import { BinderAsphaltConcrete_Sample } from "../schemas";
 import { CreateBinderAsphaltConcreteSampleDto } from "../dto/create-binder-asphalt-concrete-samples.dto";
-import { CommonQueryFilter } from "utils/queryFilter";
+import { CommonQueryFilter } from "../../../../../utils/queryFilter";
 
 @Injectable()
 export class BinderAsphaltConcreteSamplesService {
@@ -109,7 +109,7 @@ export class BinderAsphaltConcreteSamplesService {
   async deleteSample(sampleId: string): Promise<BinderAsphaltConcrete_Sample> {
     try {
       // busca uma amostra com o id passado no banco de dados
-      const sample = await this.binderAsphaltConcrete_SamplesRepository.findOne({ _id: sampleId });
+      const sample = await this.binderAsphaltConcrete_SamplesRepository.findOneById(sampleId);
 
       // se não encontrar a amostra, retorna um erro
       if (!sample) throw new NotFound('Sample');

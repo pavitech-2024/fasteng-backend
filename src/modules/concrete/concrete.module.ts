@@ -15,6 +15,8 @@ import { UnitMass, UnitMassSchema } from './essays/unitMass/schemas';
 // import { CoarseAggregateModule } from './essays/coarseAggregate/coarseAggregate.module';
 import { ABCP, ABCPSchema } from './dosages/abcp/schemas';
 import { ABCPModule } from './dosages/abcp/abcp.module';
+import { CoarseAggregateSpecificMass, CoarseAggregateSpecificMassSchema } from './essays/coarseAggregate/schemas';
+import { CoarseAggregateModule } from './essays/coarseAggregate/coarseAggregate.module';
 
 const Models: ModelDefinition[] = [
   { name: Material.name, schema: MaterialSchema },
@@ -23,7 +25,7 @@ const Models: ModelDefinition[] = [
   { name: Chapman.name, schema: ChapmanSchema },
   { name: Granulometry.name, schema: GranulometrySchema },
   { name: UnitMass.name, schema: UnitMassSchema },
-  // { name: CoarseAggregate.name, schema: CoarseAggregateSchema },
+  { name: CoarseAggregateSpecificMass.name, schema: CoarseAggregateSpecificMassSchema },
   { name: ABCP.name, schema: ABCPSchema },
 ];
 
@@ -33,7 +35,7 @@ const Modules = [
   ChapmanModule, 
   ConcreteGranulometryModule, 
   UnitMassModule,
-  // CoarseAggregateModule,
+  CoarseAggregateModule,
   ABCPModule, 
 ];
 

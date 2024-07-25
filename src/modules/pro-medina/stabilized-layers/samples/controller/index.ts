@@ -3,7 +3,7 @@ import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { StabilizedLayers_Sample } from '../schemas';
 import { StabilizedLayersSamplesService } from '../service/stabilized-layers-samples.service';
 import { CreateStabilizedLayersSampleDto } from '../dto/create-stabilized-layers-sample.dto';
-import { CommonQueryFilter } from 'utils/queryFilter';
+import { CommonQueryFilter } from '../../../../../utils/queryFilter';
 
 @ApiTags('samples')
 @Controller('promedina/stabilized-layers/stabilized-layers-samples')
@@ -36,15 +36,6 @@ export class StabilizedLayersSamplesController {
       throw error;
     }
   }
-
-  // @Get('all')
-  // @ApiOperation({ summary: 'Retorna todas as amostras de camadas stabilizedas do banco de dados.' })
-  // @ApiResponse({ status: 200, description: 'Amostras de camadas stabilizedas encontradas com sucesso!' })
-  // async getAllByUserId() {
-  //   this.logger.log(`get all samples`);
-
-  //   return this.stabilizedLayersSamplesService.getAllSamples();
-  // }
 
   @Get('all')
   @ApiOperation({ summary: 'Retorna todas as amostras de camadas stabilizadas do banco de dados.' })

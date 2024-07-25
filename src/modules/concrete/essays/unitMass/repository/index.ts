@@ -1,7 +1,7 @@
 import { InjectModel } from '@nestjs/mongoose';
+import { DATABASE_CONNECTION } from '../../../../../infra/mongoose/database.config';
 import { Model } from 'mongoose';
 import { UnitMass, UnitMassDocument } from '../schemas';
-import { DATABASE_CONNECTION } from 'infra/mongoose/database.config';
 
 export class UnitMassRepository {
   constructor(
@@ -19,10 +19,6 @@ export class UnitMassRepository {
   async findAll(): Promise<UnitMass[]> {
     return this.unitMassModel.find();
   }
-
-  // async findAllByMaterialId(unitMassFilterQuery: FilterQuery<UnitMass>): Promise<UnitMass[]> {
-  //   return this.unitMassModel.find(unitMassFilterQuery);
-  // }
 
   async findAllUnitMassesByMaterialId(materialId: string): Promise<UnitMass[]> {
 

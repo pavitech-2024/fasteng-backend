@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ModelDefinition, MongooseModule } from '@nestjs/mongoose';
-import { DATABASE_CONNECTION } from 'infra/mongoose/database.config';
+import { DATABASE_CONNECTION } from '../../../infra/mongoose/database.config';
 import { BinderAsphaltConcreteSamplesModule } from './samples/binder-asphalt-concrete-samples.module';
 import { BinderAsphaltConcrete_Sample, BinderAsphaltConcrete_SampleSchema } from './samples/schemas';
 
