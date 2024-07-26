@@ -251,7 +251,7 @@ export class SuperpaveController {
     return response.status(200).json(status);
   }
 
-  @Post('calculate-step-7-volumetric-parameters')
+  @Post('confirm-second-compression-percentages')
   async calculateVolumetricParametersOfChoosenGranulometryComposition(@Res() response: Response, @Body() body: any) {
     this.logger.log(`calculate step 7 volumetric parameters of choosen granulometry composition data > [body]: ${body}`);
   

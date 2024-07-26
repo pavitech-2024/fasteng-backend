@@ -27,7 +27,7 @@ export class SuperpaveService {
     private readonly firstCompression_Service: FirstCompression_Superpave_Service,
     private readonly firstCurvePercentages_Service: FirstCurvePercentages_Service,
     private readonly chosenCurvePercentages_Service: ChosenCurvePercentages_Superpave_Service,
-    private readonly secondCompression_Service: SecondCompression_Superpave_Service
+    private readonly secondCompression_Service: SecondCompression_Superpave_Service,
   ) {}
 
   async verifyInitSuperpave(body: SuperpaveInitDto, userId: string) {
@@ -107,12 +107,11 @@ export class SuperpaveService {
             higher: [],
           },
           curve: [],
-          value: 0
+          value: 0,
         },
         percentsOfMaterialsToShow: [],
-        percentsOfMaterials: []
+        percentsOfMaterials: [],
       };
-      
 
       const allGranulometrys = await this.granulometryRepository.findAll();
 
@@ -153,11 +152,10 @@ export class SuperpaveService {
       });
 
       result.nominalSize.value = nominalSize;
-  
 
       for (let i = 0; i < selectedGranulometrys.length; i++) {
         porcentagesPassantsN200[i] = null;
-        if (percentsOfMaterials[i][19] !== null) porcentagesPassantsN200[i] = percentsOfMaterials[i][19];
+        if (percentsOfMaterials[i][10] !== null) porcentagesPassantsN200[i] = percentsOfMaterials[i][10][1];
       }
 
       const axisX = [
@@ -887,10 +885,7 @@ export class SuperpaveService {
 
       for (let i = 0; i < percentsOfMaterials.length; i++) {
         for (let j = 0; j < 20; j++) {
-          if (
-            percentsOfMaterials[i][j] !== 100 &&
-            percentsOfMaterials[i][j] !== null
-          ) {
+          if (percentsOfMaterials[i][j] !== 100 && percentsOfMaterials[i][j] !== null) {
             for (let k = j - 1; k >= 0; k--) {
               if (percentsOfMaterials[i][k] === 100) {
                 indexes.push(k);
@@ -914,7 +909,7 @@ export class SuperpaveService {
       result.percentsOfMaterialsToShow = listOfPercentsToReturn;
       result.percentsOfMaterials = percentsOfMaterials;
 
-      if (dnitBand === "A") {
+      if (dnitBand === 'A') {
         higherBand = [
           null,
           null,
@@ -937,29 +932,8 @@ export class SuperpaveService {
           null,
           8,
         ];
-        lowerBand = [
-          null,
-          null,
-          100,
-          95,
-          null,
-          75,
-          60,
-          null,
-          35,
-          null,
-          25,
-          null,
-          20,
-          null,
-          null,
-          10,
-          null,
-          5,
-          null,
-          1,
-        ];
-      } else if (dnitBand === "B") {
+        lowerBand = [null, null, 100, 95, null, 75, 60, null, 35, null, 25, null, 20, null, null, 10, null, 5, null, 1];
+      } else if (dnitBand === 'B') {
         higherBand = [
           null,
           null,
@@ -1004,7 +978,7 @@ export class SuperpaveService {
           null,
           3,
         ];
-      } else if (dnitBand === "C") {
+      } else if (dnitBand === 'C') {
         higherBand = [
           null,
           null,
@@ -1060,7 +1034,7 @@ export class SuperpaveService {
           higher: higherBand,
           lower: lowerBand,
         },
-      }
+      };
 
       return {
         data,
@@ -1101,7 +1075,7 @@ export class SuperpaveService {
     try {
       const granulometry = await this.granulometryComposition_Service.calculateGranulometry(body);
 
-      return { data: granulometry.data, success: true }
+      return { data: granulometry.data, success: true };
     } catch (error) {
       this.logger.error(`error on getting the step 3 data > [error]: ${error}`);
       const { status, name, message } = error;
@@ -1113,7 +1087,7 @@ export class SuperpaveService {
     try {
       const success = await this.granulometryComposition_Service.saveStep3Data(body, userId);
 
-      return { success }
+      return { success };
     } catch (error) {
       this.logger.error(`error on save step 3 data superpave > [error]: ${error}`);
       const { status, name, message } = error;
@@ -1125,7 +1099,7 @@ export class SuperpaveService {
     try {
       const data = await this.initialBinder_Service.getStep4SpecificMasses(body);
 
-      return { data, success: true }
+      return { data, success: true };
     } catch (error) {
       this.logger.error(`error on get step 4 data superpave > [error]: ${error}`);
       const { status, name, message } = error;
@@ -1137,7 +1111,7 @@ export class SuperpaveService {
     try {
       const data = await this.initialBinder_Service.getStep4Data(body);
 
-      return { data, success: true }
+      return { data, success: true };
     } catch (error) {
       this.logger.error(`error on save step 3 data superpave > [error]: ${error}`);
       const { status, name, message } = error;
@@ -1149,7 +1123,7 @@ export class SuperpaveService {
     try {
       const success = await this.granulometryComposition_Service.saveStep4Data(body, userId);
 
-      return { success }
+      return { success };
     } catch (error) {
       this.logger.error(`error on save step 4 data superpave > [error]: ${error}`);
       const { status, name, message } = error;
@@ -1161,7 +1135,7 @@ export class SuperpaveService {
     try {
       const gmm = await this.firstCompression_Service.calculateGmm(body);
 
-      return { data: gmm, success: true }
+      return { data: gmm, success: true };
     } catch (error) {
       this.logger.error(`error on getting the step 5 rice test data > [error]: ${error}`);
       const { status, name, message } = error;
@@ -1173,7 +1147,7 @@ export class SuperpaveService {
     try {
       const success = await this.firstCompression_Service.saveStep5Data(body, userId);
 
-      return { success }
+      return { success };
     } catch (error) {
       this.logger.error(`error on save step 5 data superpave > [error]: ${error}`);
       const { status, name, message } = error;
@@ -1185,7 +1159,7 @@ export class SuperpaveService {
     try {
       const data = await this.firstCurvePercentages_Service.getStep6Parameters(body);
 
-      return { data, success: true }
+      return { data, success: true };
     } catch (error) {
       this.logger.error(`error on get step 6 data superpave > [error]: ${error}`);
       const { status, name, message } = error;
@@ -1197,7 +1171,7 @@ export class SuperpaveService {
     try {
       const success = await this.firstCurvePercentages_Service.saveStep6Data(body, userId);
 
-      return { success }
+      return { success };
     } catch (error) {
       this.logger.error(`error on save step 6 data superpave > [error]: ${error}`);
       const { status, name, message } = error;
@@ -1209,7 +1183,7 @@ export class SuperpaveService {
     try {
       const data = await this.chosenCurvePercentages_Service.getStep7Parameters(body);
 
-      return { data, success: true }
+      return { data, success: true };
     } catch (error) {
       this.logger.error(`error on get step 7 data superpave > [error]: ${error}`);
       const { status, name, message } = error;
@@ -1221,7 +1195,7 @@ export class SuperpaveService {
     try {
       const success = await this.chosenCurvePercentages_Service.saveStep7Data(body, userId);
 
-      return { success }
+      return { success };
     } catch (error) {
       this.logger.error(`error on save step 7 data superpave > [error]: ${error}`);
       const { status, name, message } = error;
@@ -1230,10 +1204,16 @@ export class SuperpaveService {
   }
 
   async calculateStep7RiceTest(body: any) {
+    const { sampleAirDryMass, containerMassWaterSample, containerWaterMass, waterTemperatureCorrection } = body;
     try {
-      const gmm = await this.secondCompression_Service.calculateStep7RiceTest(body);
+      const gmm = await this.secondCompression_Service.calculateStep7RiceTest(
+        sampleAirDryMass,
+        containerMassWaterSample,
+        containerWaterMass,
+        waterTemperatureCorrection,
+      );
 
-      return { data: gmm, success: true }
+      return { data: gmm, success: true };
     } catch (error) {
       this.logger.error(`error on getting the step 5 rice test data > [error]: ${error}`);
       const { status, name, message } = error;
@@ -1241,11 +1221,11 @@ export class SuperpaveService {
     }
   }
 
-  async calculateStep7Gmm(body: any) {
+  async calculateStep7Gmm(gmmData: any) {
     try {
-      const gmm = await this.secondCompression_Service.calculateStep7Gmm(body);
+      const gmm = await this.secondCompression_Service.calculateStep7Gmm(gmmData);
 
-      return { data: gmm, success: true }
+      return { data: gmm, success: true };
     } catch (error) {
       this.logger.error(`error on getting the step 5 gmm data > [error]: ${error}`);
       const { status, name, message } = error;
@@ -1255,11 +1235,15 @@ export class SuperpaveService {
 
   async calculateVolumetricParametersOfChoosenGranulometryComposition(body: any) {
     try {
-      const gmm = await this.secondCompression_Service.calculateVolumetricParametersOfChoosenGranulometryComposition(body);
+      const gmm = await this.secondCompression_Service.calculateVolumetricParametersOfChoosenGranulometryComposition(
+        body,
+      );
 
-      return { data: gmm, success: true }
+      return { data: gmm, success: true };
     } catch (error) {
-      this.logger.error(`error on getting the step 7 volumetric parameters of choosen granulometry composition > [error]: ${error}`);
+      this.logger.error(
+        `error on getting the step 7 volumetric parameters of choosen granulometry composition > [error]: ${error}`,
+      );
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
     }
