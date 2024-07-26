@@ -1240,4 +1240,28 @@ export class SuperpaveService {
       return { data: null, success: false, error: { status, message, name } };
     }
   }
+
+  async calculateStep7Gmm(body: any) {
+    try {
+      const gmm = await this.secondCompression_Service.calculateStep7Gmm(body);
+
+      return { data: gmm, success: true }
+    } catch (error) {
+      this.logger.error(`error on getting the step 5 gmm data > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { data: null, success: false, error: { status, message, name } };
+    }
+  }
+
+  async calculateVolumetricParametersOfChoosenGranulometryComposition(body: any) {
+    try {
+      const gmm = await this.secondCompression_Service.calculateVolumetricParametersOfChoosenGranulometryComposition(body);
+
+      return { data: gmm, success: true }
+    } catch (error) {
+      this.logger.error(`error on getting the step 7 volumetric parameters of choosen granulometry composition > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { data: null, success: false, error: { status, message, name } };
+    }
+  }
 }

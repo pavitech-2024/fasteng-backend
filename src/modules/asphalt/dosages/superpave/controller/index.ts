@@ -241,4 +241,22 @@ export class SuperpaveController {
 
     return response.status(200).json(status);
   }
+
+  @Post('calculate-step-7-gmm')
+  async calculateStep7Gmm(@Res() response: Response, @Body() body: any) {
+    this.logger.log(`calculate step 5 gmm data > [body]: ${body}`);
+  
+    const status = await this.superpaveService.calculateStep7Gmm(body);
+
+    return response.status(200).json(status);
+  }
+
+  @Post('calculate-step-7-volumetric-parameters')
+  async calculateVolumetricParametersOfChoosenGranulometryComposition(@Res() response: Response, @Body() body: any) {
+    this.logger.log(`calculate step 7 volumetric parameters of choosen granulometry composition data > [body]: ${body}`);
+  
+    const status = await this.superpaveService.calculateVolumetricParametersOfChoosenGranulometryComposition(body);
+
+    return response.status(200).json(status);
+  }
 }
