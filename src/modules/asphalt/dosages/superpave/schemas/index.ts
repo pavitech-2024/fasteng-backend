@@ -231,6 +231,126 @@ export type ChosenCurvePercentagesData = {
   trafficVolume: string;
 };
 
+export type SecondCompressionPercentagesData = {
+  halfLess: {
+    id: number;
+    averageDiammeter: number;
+    averageHeight: number;
+    dryMass: number;
+    submergedMass: number;
+    drySurfaceSaturatedMass: number;
+    waterTemperatureCorrection: number;
+    diametralTractionResistance: number;
+  }[];
+  halfPlus: {
+    id: number;
+    averageDiammeter: number;
+    averageHeight: number;
+    dryMass: number;
+    submergedMass: number;
+    drySurfaceSaturatedMass: number;
+    waterTemperatureCorrection: number;
+    diametralTractionResistance: number;
+  }[];
+  normal: {
+    id: number;
+    averageDiammeter: number;
+    averageHeight: number;
+    dryMass: number;
+    submergedMass: number;
+    drySurfaceSaturatedMass: number;
+    waterTemperatureCorrection: number;
+    diametralTractionResistance: number;
+  }[];
+  onePlus: {
+    id: number;
+    averageDiammeter: number;
+    averageHeight: number;
+    dryMass: number;
+    submergedMass: number;
+    drySurfaceSaturatedMass: number;
+    waterTemperatureCorrection: number;
+    diametralTractionResistance: number;
+  }[];
+  maximumDensities: {
+    insertedGmm: number;
+    riceTest: {
+      sampleAirDryMass: number;
+      containerMassWaterSample: number;
+      containerWaterMass: number;
+      waterTemperatureCorrection: number | string;
+    };
+  }[];
+  composition: {
+    halfLess: {
+      projectN: {
+        samplesData: any[];
+        gmb: number;
+        percentWaterAbs: number;
+        percentageGmm: number;
+      };
+      specifiesMass: number;
+      gmm: number;
+      Vv: number;
+      Vam: number;
+      expectedPli: number;
+      RBV: number;
+      ratioDustAsphalt: number;
+      indirectTensileStrength: number;
+    };
+    normal: {
+      projectN: {
+        samplesData: any[];
+        gmb: number;
+        percentWaterAbs: number;
+        percentageGmm: number;
+      };
+      specifiesMass: number;
+      gmm: number;
+      Vv: number;
+      Vam: number;
+      RBV: number;
+      ratioDustAsphalt: number;
+      indirectTensileStrength: number;
+    };
+    halfPlus: {
+      projectN: {
+        samplesData: any[];
+        gmb: number;
+        percentWaterAbs: number;
+        percentageGmm: number;
+      };
+      specifiesMass: number;
+      gmm: number;
+      Vv: number;
+      Vam: number;
+      RBV: number;
+      ratioDustAsphalt: number;
+      indirectTensileStrength: number;
+    };
+    onePlus: {
+      projectN: {
+        samplesData: any[];
+        gmb: number;
+        percentWaterAbs: number;
+        percentageGmm: number;
+      };
+      specifiesMass: number;
+      gmm: number;
+      Vv: number;
+      Vam: number;
+      RBV: number;
+      ratioDustAsphalt: number;
+      indirectTensileStrength: number;
+    };
+  };
+  expectedPli: number;
+  combinedGsb: number;
+  percentsOfDosage: number[];
+  Gse: number;
+  ponderatedPercentsOfDosage: number[];
+}
+
 @Schema({ collection: 'superpaves' })
 export class Superpave {
   _id: string;
@@ -263,6 +383,10 @@ export class Superpave {
   @IsNotEmpty()
   @Prop({ type: Object })
   chosenCurvePercentagesData: ChosenCurvePercentagesData;
+
+  @IsNotEmpty()
+  @Prop({ type: Object })
+  secondCompressionPercentagesData: SecondCompressionPercentagesData;
 }
 
 const SuperpaveSchema = SchemaFactory.createForClass(Superpave);

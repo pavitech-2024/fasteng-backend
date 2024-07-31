@@ -1248,4 +1248,16 @@ export class SuperpaveService {
       return { data: null, success: false, error: { status, message, name } };
     }
   }
+
+  async saveStep8Data(body: any, userId: string) {
+    try {
+      const success = await this.secondCompression_Service.saveStep8Data(body, userId);
+
+      return { success };
+    } catch (error) {
+      this.logger.error(`error on save step 8 data superpave > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { success: false, error: { status, message, name } };
+    }
+  }
 }

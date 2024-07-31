@@ -15,9 +15,14 @@ export class SecondCompression_Superpave_Service {
     private readonly superpaveRepository: SuperpaveRepository,
   ) {}
 
-  calculateStep7RiceTest(sampleAirDryMass: number, containerMassWaterSample: number, containerWaterMass: number, waterTemperatureCorrection: number) {
+  calculateStep7RiceTest(
+    sampleAirDryMass: number,
+    containerMassWaterSample: number,
+    containerWaterMass: number,
+    waterTemperatureCorrection: number,
+  ) {
     try {
-      this.logger.log({ }, 'start calculateStep7RiceTest > SecondCompression_Superpave_Service');
+      this.logger.log({}, 'start calculateStep7RiceTest > SecondCompression_Superpave_Service');
 
       const gmm =
         (sampleAirDryMass / (sampleAirDryMass + containerWaterMass - containerMassWaterSample)) *
@@ -29,10 +34,9 @@ export class SecondCompression_Superpave_Service {
     }
   }
 
-
   calculateStep7Gmm(gmm: any) {
     try {
-      this.logger.log({ }, 'start calculateStep7Gmm > SecondCompression_Superpave_Service');
+      this.logger.log({}, 'start calculateStep7Gmm > SecondCompression_Superpave_Service');
 
       let gmmValue = [];
 
@@ -44,10 +48,10 @@ export class SecondCompression_Superpave_Service {
             gmm.massOfDrySample,
             gmm.massOfContainer_Water_Sample,
             gmm.massOfContainer_Water,
-            gmm.waterTemperatureCorrection
+            gmm.waterTemperatureCorrection,
           );
 
-          gmmValue.push(value)
+          gmmValue.push(value);
         }
       }
 
@@ -64,8 +68,16 @@ export class SecondCompression_Superpave_Service {
         'start step 7 volumetric parameters of choosen granulometry composition > SecondCompression_Superpave_Service',
       );
 
-
-      const { composition, binderSpecificGravity, porcentagesPassantsN200, maximumDensities: gmm, expectedPli, combinedGsb } = body;
+      const {
+        composition,
+        binderSpecificGravity,
+        porcentagesPassantsN200,
+        maximumDensities: gmm,
+        expectedPli,
+        combinedGsb,
+        percentsOfDosage,
+        Gse,
+      } = body;
 
       const choosenGranulometryComposition = {
         composition: {
@@ -133,8 +145,8 @@ export class SecondCompression_Superpave_Service {
         },
         expectedPli,
         combinedGsb,
-        percentsOfDosage: [],
-        Gse: null,
+        percentsOfDosage,
+        Gse,
         ponderatedPercentsOfDosage: null,
       };
 
@@ -197,7 +209,6 @@ export class SecondCompression_Superpave_Service {
       choosenGranulometryComposition.composition.halfLess.projectN.percentageGmm =
         (choosenGranulometryComposition.composition.halfLess.projectN.gmb * 100) /
         choosenGranulometryComposition.composition.halfLess.gmm;
-
 
       choosenGranulometryComposition.composition.normal.projectN.percentageGmm =
         (choosenGranulometryComposition.composition.normal.projectN.gmb * 100) /
@@ -318,11 +329,11 @@ export class SecondCompression_Superpave_Service {
 
       for (let i = 0; i < choosenGranulometryComposition.composition.halfLess.projectN.samplesData.length; i++) {
         if (
-          choosenGranulometryComposition.composition.halfLess.projectN.samplesData[i].indirectTensileStrength !==
+          choosenGranulometryComposition.composition.halfLess.projectN.samplesData[i].diametralTractionResistance  !==
           undefined
         ) {
           sumIndirectTensileStrength +=
-            choosenGranulometryComposition.composition.halfLess.projectN.samplesData[i].indirectTensileStrength;
+            choosenGranulometryComposition.composition.halfLess.projectN.samplesData[i].diametralTractionResistance ;
           nIndirectTensileStrength++;
         }
       }
@@ -410,7 +421,7 @@ export class SecondCompression_Superpave_Service {
       );
 
       choosenGranulometryComposition.ponderatedPercentsOfDosage = ponderatedPercentsOfDosage;
-      
+
       return choosenGranulometryComposition;
     } catch (error) {
       throw error;
@@ -475,5 +486,32 @@ export class SecondCompression_Superpave_Service {
 
   calculateVv(curve) {
     return (1 - curve.projectN.gmb / curve.gmm) * 100;
+  }
+
+  async saveStep8Data(body: any, userId: string) {
+    try {
+      this.logger.log('save superpave second compression percentages step on second-compression-percentages.superpave.service.ts > [body]', { body });
+
+      const { name } = body.secondCompressionPercentagesData;
+
+      const superpaveExists: any = await this.superpaveRepository.findOne(name, userId);
+
+      const { name: materialName, ...secondCompressionPercentagesWithoutName } = body.secondCompressionPercentagesData;
+
+      const superpaveWithSecondCompressionPercentages = { ...superpaveExists._doc, secondCompressionPercentagesData: secondCompressionPercentagesWithoutName };
+
+      await this.superpaveModel.updateOne(
+        { _id: superpaveExists._doc._id },
+        superpaveWithSecondCompressionPercentages
+      );
+
+      if (superpaveExists._doc.generalData.step < 8) {
+        await this.superpaveRepository.saveStep(superpaveExists, 8);
+      }
+
+      return true;
+    } catch (error) {
+      throw error
+    }
   }
 }

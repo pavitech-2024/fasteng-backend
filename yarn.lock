@@ -4212,6 +4212,11 @@ qs@^6.11.0:
   dependencies:
     side-channel "^1.0.6"
 
+quadratic-solver@^0.2.4:
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/quadratic-solver/-/quadratic-solver-0.2.4.tgz#69120543cb86ae0a0faf9d4df9877e3604c73da1"
+  integrity sha512-zA6XFkTXOE1HJPv7NQF37kD4IwldPMQBn+H8sC5pi5TkBfKUe60lCv8NR74YSX7vY1fmcHegwSt1dO+r4LXy1g==
+
 queue-microtask@^1.2.2:
   version "1.2.3"
   resolved "https://registry.npmjs.org/queue-microtask/-/queue-microtask-1.2.3.tgz"
