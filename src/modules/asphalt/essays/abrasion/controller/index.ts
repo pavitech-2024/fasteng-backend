@@ -35,7 +35,6 @@ export class AbrasionController {
     const status = await this.abrasionService.verifyInitAbrasion(body);
 
     return response.status(200).json(status);
-    
   }
 
   @Post('calculate-results')
