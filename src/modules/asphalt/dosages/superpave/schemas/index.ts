@@ -231,7 +231,7 @@ export type ChosenCurvePercentagesData = {
   trafficVolume: string;
 };
 
-export type SecondCompressionPercentagesData = {
+export type SecondCompressionData = {
   halfLess: {
     id: number;
     averageDiammeter: number;
@@ -351,6 +351,19 @@ export type SecondCompressionPercentagesData = {
   ponderatedPercentsOfDosage: number[];
 }
 
+interface SecondCompressionParams {
+  optimumContent: number;
+  graphs: {
+    graphVv: any[];
+    graphVam: any[];
+    graphGmb: any[];
+    graphGmm: any[];
+    graphRBV: any[];
+    graphPA: any[];
+    graphRT: any[];
+  };
+}
+
 @Schema({ collection: 'superpaves' })
 export class Superpave {
   _id: string;
@@ -386,7 +399,11 @@ export class Superpave {
 
   @IsNotEmpty()
   @Prop({ type: Object })
-  secondCompressionPercentagesData: SecondCompressionPercentagesData;
+  secondCompressionData: SecondCompressionData;
+
+  @IsNotEmpty()
+  @Prop({ type: Object })
+  secondCompressionParams: SecondCompressionParams;
 }
 
 const SuperpaveSchema = SchemaFactory.createForClass(Superpave);

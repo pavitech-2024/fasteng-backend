@@ -12,6 +12,7 @@ import { FirstCompression_Superpave_Service } from './first-compression.service'
 import { FirstCurvePercentages_Service } from './first-curve-percentages.service';
 import { ChosenCurvePercentages_Superpave_Service } from './chosen-curves-percentages.service';
 import { SecondCompression_Superpave_Service } from './second-compression.superpave.service';
+import { SecondCompressionParameters_Superpave_Service } from './second-compression-parameters.service';
 
 @Injectable()
 export class SuperpaveService {
@@ -28,6 +29,7 @@ export class SuperpaveService {
     private readonly firstCurvePercentages_Service: FirstCurvePercentages_Service,
     private readonly chosenCurvePercentages_Service: ChosenCurvePercentages_Superpave_Service,
     private readonly secondCompression_Service: SecondCompression_Superpave_Service,
+    private readonly secondCompressionParameters_Service: SecondCompressionParameters_Superpave_Service
   ) {}
 
   async verifyInitSuperpave(body: SuperpaveInitDto, userId: string) {
@@ -1256,6 +1258,30 @@ export class SuperpaveService {
       return { success };
     } catch (error) {
       this.logger.error(`error on save step 8 data superpave > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { success: false, error: { status, message, name } };
+    }
+  }
+
+  async getStep9Data(body: any) {
+    try {
+      const data = await this.secondCompressionParameters_Service.getStep9Data(body);
+
+      return { data, success: true };
+    } catch (error) {
+      this.logger.error(`error on get step 9 data superpave > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { success: false, error: { status, message, name } };
+    }
+  }
+
+  async saveStep9Data(body: any, userId: string) {
+    try {
+      const success = await this.secondCompressionParameters_Service.saveStep9Data(body, userId);
+
+      return { success };
+    } catch (error) {
+      this.logger.error(`error on save step 9 data superpave > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
     }

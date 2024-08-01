@@ -251,7 +251,7 @@ export class SuperpaveController {
     return response.status(200).json(status);
   }
 
-  @Post('confirm-second-compression-percentages')
+  @Post('confirm-second-compression-data')
   async calculateVolumetricParametersOfChoosenGranulometryComposition(@Res() response: Response, @Body() body: any) {
     this.logger.log(`calculate step 7 volumetric parameters of choosen granulometry composition data > [body]: ${body}`);
   
@@ -260,15 +260,43 @@ export class SuperpaveController {
     return response.status(200).json(status);
   }
 
-  @Post('save-second-compression-percentages-step/:userId')
+  @Post('save-second-compression-data-step/:userId')
   async saveStep8Data(
     @Res() response: Response,
     @Param('userId') userId: string,
     @Body() body: any
   ) {
-    this.logger.log(`save step 7 data > [body]: ${body}`);
+    this.logger.log(`save step 8 data > [body]: ${body}`);
 
     const status = await this.superpaveService.saveStep8Data(body, userId);
+
+    return response.status(200).json(status);
+  }
+
+  @Post('get-step-9-data')
+  @ApiOperation({ summary: 'Retorna os dados iniciais necessários para a nona tela (parâmetros da segunda compactação) da dosagem' })
+  @ApiResponse({ 
+    status: 200, 
+    description: 'Dados carregados com sucesso!',
+    content: { 'application/json': { schema: { example: { data: {}, success: true } } } }, 
+  })
+  async getStep9Data(@Res() response: Response, @Body() body: any) {
+    this.logger.log(`get step 9 data > [body]: ${body}`);
+
+    const status = await this.superpaveService.getStep9Data(body);
+
+    return response.status(200).json(status);
+  }
+
+  @Post('save-second-compression-params-step/:userId')
+  async saveStep9Data(
+    @Res() response: Response,
+    @Param('userId') userId: string,
+    @Body() body: any
+  ) {
+    this.logger.log(`save step 9 data > [body]: ${body}`);
+
+    const status = await this.superpaveService.saveStep9Data(body, userId);
 
     return response.status(200).json(status);
   }

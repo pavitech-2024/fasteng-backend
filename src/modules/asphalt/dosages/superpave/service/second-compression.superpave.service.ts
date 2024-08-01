@@ -490,19 +490,19 @@ export class SecondCompression_Superpave_Service {
 
   async saveStep8Data(body: any, userId: string) {
     try {
-      this.logger.log('save superpave second compression percentages step on second-compression-percentages.superpave.service.ts > [body]', { body });
+      this.logger.log('save superpave second compression data step on second-compression-data.superpave.service.ts > [body]', { body });
 
-      const { name } = body.secondCompressionPercentagesData;
+      const { name } = body.secondCompressionData;
 
       const superpaveExists: any = await this.superpaveRepository.findOne(name, userId);
 
-      const { name: materialName, ...secondCompressionPercentagesWithoutName } = body.secondCompressionPercentagesData;
+      const { name: materialName, ...secondCompressionWithoutName } = body.secondCompressionData;
 
-      const superpaveWithSecondCompressionPercentages = { ...superpaveExists._doc, secondCompressionPercentagesData: secondCompressionPercentagesWithoutName };
+      const superpaveWithSecondCompression = { ...superpaveExists._doc, secondCompressionData: secondCompressionWithoutName };
 
       await this.superpaveModel.updateOne(
         { _id: superpaveExists._doc._id },
-        superpaveWithSecondCompressionPercentages
+        superpaveWithSecondCompression
       );
 
       if (superpaveExists._doc.generalData.step < 8) {
