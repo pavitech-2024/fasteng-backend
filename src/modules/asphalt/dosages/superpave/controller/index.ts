@@ -300,4 +300,18 @@ export class SuperpaveController {
 
     return response.status(200).json(status);
   }
+
+  @Post('calculate-dosage-equation')
+  async calculateVolumetricParametersOfConfirmGranulometryComposition(
+    @Res() response: Response,
+    @Body() body: any
+  ) {
+    this.logger.log(`calculate dosage equation > [body]: ${body}`);
+
+    const status = await this.superpaveService.calculateVolumetricParametersOfConfirmGranulometryComposition(body);
+
+    return response.status(200).json(status);
+  }
+
+  
 }

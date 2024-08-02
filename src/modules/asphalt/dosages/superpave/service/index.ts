@@ -13,6 +13,7 @@ import { FirstCurvePercentages_Service } from './first-curve-percentages.service
 import { ChosenCurvePercentages_Superpave_Service } from './chosen-curves-percentages.service';
 import { SecondCompression_Superpave_Service } from './second-compression.superpave.service';
 import { SecondCompressionParameters_Superpave_Service } from './second-compression-parameters.service';
+import { ResumeDosage_Superpave_Service } from './resume-dosage.service';
 
 @Injectable()
 export class SuperpaveService {
@@ -29,7 +30,8 @@ export class SuperpaveService {
     private readonly firstCurvePercentages_Service: FirstCurvePercentages_Service,
     private readonly chosenCurvePercentages_Service: ChosenCurvePercentages_Superpave_Service,
     private readonly secondCompression_Service: SecondCompression_Superpave_Service,
-    private readonly secondCompressionParameters_Service: SecondCompressionParameters_Superpave_Service
+    private readonly secondCompressionParameters_Service: SecondCompressionParameters_Superpave_Service,
+    private readonly resumeDosageEquation_Service: ResumeDosage_Superpave_Service
   ) {}
 
   async verifyInitSuperpave(body: SuperpaveInitDto, userId: string) {
@@ -1282,6 +1284,18 @@ export class SuperpaveService {
       return { success };
     } catch (error) {
       this.logger.error(`error on save step 9 data superpave > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { success: false, error: { status, message, name } };
+    }
+  }
+
+  async calculateVolumetricParametersOfConfirmGranulometryComposition(body: any) {
+    try {
+      const data = await this.resumeDosageEquation_Service.calculateVolumetricParametersOfConfirmGranulometryComposition(body);
+
+      return { data, success: true };
+    } catch (error) {
+      this.logger.error(`error on calculating dosage equation superpave > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
     }
