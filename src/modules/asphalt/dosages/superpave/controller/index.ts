@@ -301,6 +301,19 @@ export class SuperpaveController {
     return response.status(200).json(status);
   }
 
+  @Post('calculate-step-9-rice-test')
+  async calculateStep9RiceTest(
+    @Res() response: Response,
+    @Body() body: any
+  ) {
+    this.logger.log(`calculate dosage equation > [body]: ${body}`);
+
+    const status = await this.superpaveService.calculateStep9RiceTest(body);
+
+    return response.status(200).json(status);
+  }
+
+
   @Post('calculate-dosage-equation')
   async calculateVolumetricParametersOfConfirmGranulometryComposition(
     @Res() response: Response,
@@ -313,5 +326,16 @@ export class SuperpaveController {
     return response.status(200).json(status);
   }
 
-  
+  @Post('save-confirmattion-compression-step/:userId')
+  async saveStep10Data(
+    @Res() response: Response,
+    @Param('userId') userId: string,
+    @Body() body: any
+  ) {
+    this.logger.log(`save step 10 data > [body]: ${body}`);
+
+    const status = await this.superpaveService.saveStep10Data(body, userId);
+
+    return response.status(200).json(status);
+  }
 }

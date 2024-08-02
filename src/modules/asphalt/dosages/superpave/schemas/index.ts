@@ -349,7 +349,7 @@ export type SecondCompressionData = {
   percentsOfDosage: number[];
   Gse: number;
   ponderatedPercentsOfDosage: number[];
-}
+};
 
 interface SecondCompressionParams {
   optimumContent: number;
@@ -361,6 +361,25 @@ interface SecondCompressionParams {
     graphRBV: any[];
     graphPA: any[];
     graphRT: any[];
+  };
+}
+
+interface ConfirmationCompressionData {
+  gmm: number;
+  table: {
+    averageDiammeter: number;
+    averageHeight: number;
+    dryMass: number;
+    submergedMass: number;
+    drySurfaceSaturatedMass: number;
+    waterTemperatureCorrection: number;
+    diametralTractionResistance: number;
+  }[];
+  riceTest: {
+    sampleAirDryMass: number;
+    containerSampleWaterMass: number;
+    containerWaterMass: number;
+    temperatureOfWater: number;
   };
 }
 
@@ -404,6 +423,10 @@ export class Superpave {
   @IsNotEmpty()
   @Prop({ type: Object })
   secondCompressionParams: SecondCompressionParams;
+
+  @IsNotEmpty()
+  @Prop({ type: Object })
+  confirmationCompressionData: ConfirmationCompressionData;
 }
 
 const SuperpaveSchema = SchemaFactory.createForClass(Superpave);

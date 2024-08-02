@@ -1289,6 +1289,18 @@ export class SuperpaveService {
     }
   }
 
+  async calculateStep9RiceTest(body: any) {
+    try {
+      const data = await this.resumeDosageEquation_Service.calculateStep9RiceTest(body);
+
+      return { data, success: true };
+    } catch (error) {
+      this.logger.error(`error on get step 9 data superpave > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { success: false, error: { status, message, name } };
+    }
+  }
+
   async calculateVolumetricParametersOfConfirmGranulometryComposition(body: any) {
     try {
       const data = await this.resumeDosageEquation_Service.calculateVolumetricParametersOfConfirmGranulometryComposition(body);
@@ -1296,6 +1308,18 @@ export class SuperpaveService {
       return { data, success: true };
     } catch (error) {
       this.logger.error(`error on calculating dosage equation superpave > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { success: false, error: { status, message, name } };
+    }
+  }
+
+  async saveStep10Data(body: any, userId: string) {
+    try {
+      const success = await this.resumeDosageEquation_Service.saveStep10Data(body, userId);
+
+      return { success };
+    } catch (error) {
+      this.logger.error(`error on save step 10 data superpave > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
     }
