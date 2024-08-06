@@ -15,58 +15,6 @@ export class ResumeDosage_Superpave_Service {
     private readonly superpave_repository: SuperpaveRepository,
   ) {}
 
-  // async calculateDosageEquation(data: any) {
-  //   try {
-  //     this.logger.log({}, 'start resume doage > [service]');
-
-  //     const a =
-  //       (data.length * this.sumXY(data) - this.sumX(data) * this.sumY(data)) /
-  //       (data.length * this.sumPow2X(data) - this.Pow2SumX(data));
-  //     const b = this.yBar(data) - a * this.xBar(data);
-  //     const determinationCoeficient =
-  //       this.pow2XLessXBarDotY(data) / (this.xLessXBarPow2(data) * this.yLessYBarPow2(data));
-  //     return { a, b };
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // }
-
-  // sumXY = (data) => data.reduce((acc, point) => (acc += point.x * point.y), 0);
-
-  // sumX = (data) => data.reduce((acc, point) => (acc += point.x), 0);
-
-  // sumY = (data) => data.reduce((acc, point) => (acc += point.y), 0);
-
-  // sumPow2X = (data) => data.reduce((acc, point) => (acc += Math.pow(point.x, 2)), 0);
-
-  // Pow2SumX = (data) =>
-  //   Math.pow(
-  //     data.reduce((acc, point) => (acc += point.x), 0),
-  //     2,
-  //   );
-
-  // yBar = (data) => data.reduce((acc, point) => (acc += point.y), 0) / data.length;
-
-  // xBar = (data) => data.reduce((acc, point) => (acc += point.x), 0) / data.length;
-
-  // pow2XLessXBarDotY = (data) => {
-  //   const xbar = this.xBar(data);
-  //   return Math.pow(
-  //     data.reduce((acc, point) => (acc += (point.x - xbar) * point.y), 0),
-  //     2,
-  //   );
-  // };
-
-  // xLessXBarPow2 = (data) => {
-  //   const xbar = this.xBar(data);
-  //   return data.reduce((acc, point) => (acc += Math.pow(point.x - xbar, 2)), 0);
-  // };
-
-  // yLessYBarPow2 = (data) => {
-  //   const ybar = this.yBar(data);
-  //   return data.reduce((acc, point) => acc += Math.pow((point.y - ybar), 2), 0);
-  // };
-
   riceTest(
     massOfDrySample,
     containerSampleWaterMass,
@@ -97,28 +45,29 @@ export class ResumeDosage_Superpave_Service {
       binderSpecificGravity,
       listOfSpecificGravities,
       porcentagesPassantsN200,
+      gmm: gmmValue
     } = body;
-    
+  
 
     const confirmGranulometryComposition = {
       ponderatedPercentsOfDosage: null,
       samplesData,
       Gmb: null,
       Vv: null,
-      Gmm: null,
+      Gmm: Number(gmmValue),
       percentWaterAbs: null,
       specifiesMass: null,
       Vam: null,
       RBV: null,
       quantitative: null,
-      indirectTensileStrength: null,
+      diametralTractionResistance: null,
       ratioDustAsphalt: null,
     };
 
     const ponderatedPercentsOfDosage = choosenGranulometryComposition.percentsOfDosage.map(
       (percent) => ((100 - optimumContent) * percent) / 100,
     );
-
+    
     confirmGranulometryComposition.ponderatedPercentsOfDosage = ponderatedPercentsOfDosage;
 
     confirmGranulometryComposition.samplesData = samplesData;
@@ -142,24 +91,25 @@ export class ResumeDosage_Superpave_Service {
     const gmm = confirmGranulometryComposition.Gmm;
 
     confirmGranulometryComposition.quantitative = ponderatedPercentsOfDosage.map(
-      (percent, i) => (gmm * percent * 10) / 1000 / listOfSpecificGravities[i].bulk,
+      (percent, i) => (gmm * percent * 10) / 1000 / listOfSpecificGravities[i].realSpecificMass,
     );
+    
 
     confirmGranulometryComposition.quantitative.unshift(gmm * optimumContent * 10);
 
-    let sumIndirectTensileStrength = 0;
+    let sumdiametralTractionResistance = 0;
 
-    let nIndirectTensileStrength = 0;
+    let ndiametralTractionResistance = 0;
 
     for (let i = 0; i < samplesData.length; i++) {
-      if (samplesData[i].indirectTensileStrength !== undefined) {
-        sumIndirectTensileStrength += samplesData[i].indirectTensileStrength;
-        nIndirectTensileStrength++;
+      if (samplesData[i].diametralTractionResistance !== undefined) {
+        sumdiametralTractionResistance += samplesData[i].diametralTractionResistance;
+        ndiametralTractionResistance++;
       }
     }
 
-    if (nIndirectTensileStrength !== 0) {
-      confirmGranulometryComposition.indirectTensileStrength = sumIndirectTensileStrength / nIndirectTensileStrength;
+    if (ndiametralTractionResistance !== 0) {
+      confirmGranulometryComposition.diametralTractionResistance = sumdiametralTractionResistance / ndiametralTractionResistance;
     }
 
     let passantN200 = 0;
@@ -167,6 +117,7 @@ export class ResumeDosage_Superpave_Service {
     for (let i = 0; i < porcentagesPassantsN200.length; i++) {
       passantN200 += (porcentagesPassantsN200[i] * choosenGranulometryComposition.percentsOfDosage[i]) / 100;
     }
+
 
     confirmGranulometryComposition.ratioDustAsphalt =
       passantN200 /
@@ -188,8 +139,8 @@ export class ResumeDosage_Superpave_Service {
   calculateGmbCP(data) {
     for (let i = 0; i < data.length; i++) {
       data[i].Gmb =
-        (Math.round((data[i].dryMass / (data[i].saturatedMass - data[i].submergedMass)) * 1e3) / 1e3) *
-        data[i].correctionFactor;
+        (Math.round((data[i].dryMass / (data[i].drySurfaceSaturatedMass - data[i].submergedMass)) * 1e3) / 1e3) *
+        data[i].waterTemperatureCorrection;
     }
     return data;
   }
@@ -221,7 +172,7 @@ export class ResumeDosage_Superpave_Service {
     for (let i = 0; i < data.length; i++) {
       sumDryMass += data[i].dryMass;
       sumSubmergedMass += data[i].submergedMass;
-      saturatedMass += data[i].saturatedMass;
+      saturatedMass += data[i].drySurfaceSaturatedMass;
     }
 
     const averageDryMass = sumDryMass / data.length;
@@ -233,7 +184,6 @@ export class ResumeDosage_Superpave_Service {
 
   async saveStep10Data(body: any, userId: string) {
     try {
-
       this.logger.log('save superpave vonfirm compression step on resume-dosage.superpave.service.ts > [body]', { body });
 
       const { name } = body.confirmationCompressionData;

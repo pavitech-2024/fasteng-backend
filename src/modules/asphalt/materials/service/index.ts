@@ -21,15 +21,17 @@ export class MaterialsService {
         throw new AlreadyExists(`Material with name "${material.name}"`);
 
       this.logger.log(userId);
-      // cria um material no banco de dados
-      return this.materialsRepository.create({
+
+      const createdMaterial = await this.materialsRepository.create({
         ...material,
         createdAt: new Date(),
         userId,
       });
+
+      // cria um material no banco de dados
+      return createdMaterial
     } catch (error) {
       this.logger.error(`error on create material > [error]: ${error}`);
-
       throw error;
     }
   }
@@ -58,15 +60,13 @@ export class MaterialsService {
     try {
       // busca todos os materiais no banco de dados
       const materials = await this.materialsRepository.findByType({
-        type: { $in: ['filler', 'CAP', 'asphaltBinder'] },
+        type: { $in: ['filler', 'CAP', 'asphaltBinder', 'coarseAggregate', 'fineAggregate'] },
       });
-      console.log("🚀 ~ MaterialsService ~ getAllMaterials ~ materials:", materials)
 
       // retorna os materiais encontrados que pertencem ao usuário
       return materials;
     } catch (error) {
       this.logger.error(`error on get all materials > [error]: ${error}`);
-
       throw error;
     }
   }
