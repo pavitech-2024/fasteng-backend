@@ -56,6 +56,29 @@ export class MaterialsService {
     }
   }
 
+  async getSelectedMaterialsById(ids: string): Promise<any> {
+    const idArray = ids.split(',').map(id => id.trim());
+    try {
+      let essays = []
+
+      // busca um material com o id passado no banco de dados
+      const materials = await this.materialsRepository.findSelectedById(idArray);
+
+      // Buscar os ensaios com esse material;
+      for (let i = 0; i < materials.length; i++) {
+        let essay = await this.getEssaysByMaterial_Service.getEssaysByMaterial(materials[i])
+        essays.push(essay)
+      }
+
+      // retorna o material encontrado
+      return { materials, essays };
+    } catch (error) {
+      this.logger.error(`error on get material > [error]: ${error}`);
+
+      throw error;
+    }
+  }
+
   async getAllMaterials(userId: string): Promise<Material[]> {
     try {
       // busca todos os materiais no banco de dados

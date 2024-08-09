@@ -7,6 +7,7 @@ import { DATABASE_CONNECTION } from 'infra/mongoose/database.config';
 import { Model } from 'mongoose';
 import { Superpave, SuperpaveDocument } from '../schemas';
 import { SuperpaveRepository } from '../repository';
+import { ViscosityRotationalRepository } from 'modules/asphalt/essays/viscosityRotational/repository';
 
 @Injectable()
 export class MaterialSelection_Superpave_Service {
@@ -18,7 +19,8 @@ export class MaterialSelection_Superpave_Service {
     private readonly material_repository: MaterialsRepository,
     private readonly granulometry_repository: AsphaltGranulometryRepository,
     private readonly specifyMass_repository: SpecifyMassRepository,
-    private readonly superpaveRepository: SuperpaveRepository
+    private readonly superpaveRepository: SuperpaveRepository,
+    private readonly rotationalViscosity_repository: ViscosityRotationalRepository
   ) {}
 
   async getMaterials(userId: string) {
@@ -29,9 +31,14 @@ export class MaterialSelection_Superpave_Service {
 
       const granulometrys = await this.granulometry_repository.findAll();
       const specifyMasses = await this.specifyMass_repository.findAll();
+      const viscosities = await this.rotationalViscosity_repository.findAll();
 
-      const binders = materials.filter(({ type }) => {
-        return type === 'CAP' || type === 'asphaltBinder';
+      const binders = materials.filter(({ _id }) => {
+        const viscosity = viscosities.some(({ generalData }) => {
+          const { material } = generalData;
+          return _id.toString() === material._id.toString();
+        })
+        return viscosity
       });
 
       const aggregates = materials.filter(({ _id, type }) => {

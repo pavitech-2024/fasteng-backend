@@ -30,6 +30,10 @@ export class MaterialsRepository {
     return this.materialModel.findById(materialId);
   }
 
+  async findSelectedById(ids: string[]): Promise<Material[]> {
+    return this.materialModel.find({ _id: { $in: ids } }).exec();
+  }
+
   async findByUserId(materialsFilterQuery: FilterQuery<Material>): Promise<Material[]> {
     const materials = await this.materialModel.find(materialsFilterQuery).sort({ createdAt: -1 });
     return materials;
