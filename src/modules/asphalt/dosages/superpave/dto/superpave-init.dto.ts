@@ -1,6 +1,6 @@
-import { IsNotEmpty } from "class-validator";
+import { IsNotEmpty } from 'class-validator';
 
 export class SuperpaveInitDto {
-    @IsNotEmpty()
-    projectName: string;
+  @IsNotEmpty()
+  name: string;
 }

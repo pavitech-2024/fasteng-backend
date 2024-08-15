@@ -42,12 +42,12 @@ import { ViscosityRotational, ViscosityRotationalSchema } from './essays/viscosi
 // dosages
 import { Marshall, MarshallSchema } from './dosages/marshall/schemas'; 
 import { MarshallModule } from './dosages/marshall/marshall.module';
-import { Superpave, SuperpaveSchema } from './dosages/superpave/schemas'; 
 import { SuperpaveModule } from './dosages/superpave/superpave.module';
 import { IggModule } from './essays/igg/igg.module';
 import { Igg, IggSchema } from './essays/igg/schemas';
 import { Fwd, FwdSchema } from './essays/fwd/schema';
 import { FwdModule } from './essays/fwd/fwd.module';
+import { Superpave, SuperpaveSchema } from './dosages/superpave/schemas';
 
 const Models: ModelDefinition[] = [
   { name: Material.name, schema: MaterialSchema },
@@ -73,6 +73,7 @@ const Models: ModelDefinition[] = [
   { name: Superpave.name, schema: SuperpaveSchema },
   { name: Igg.name, schema: IggSchema },
   { name: Fwd.name, schema: FwdSchema },
+  { name: Superpave.name, schema: SuperpaveSchema },
 ];
 
 const Modules = [
@@ -99,6 +100,7 @@ const Modules = [
   SuperpaveModule,
   IggModule,
   FwdModule,
+  SuperpaveModule,
 ];
 
 @Global()

@@ -46,6 +46,16 @@ export class MaterialsController {
     return this.materialsService.getMaterial(materialId);
   }
 
+  @Get('selected/:id')
+  @ApiOperation({ summary: 'Retorna um material do banco de dados.' })
+  @ApiResponse({ status: 200, description: 'Material encontrado com sucesso!' })
+  @ApiResponse({ status: 400, description: 'Material não encontrado!' })
+  async getSelectedMaterialsById(@Param('id') ids: string) {
+    this.logger.log(`get material by id > [id]: ${typeof ids}`);
+
+    return this.materialsService.getSelectedMaterialsById(ids);
+  }
+
   @Put(':id')
   @ApiOperation({ summary: 'Atualiza um material do banco de dados.' })
   @ApiResponse({ status: 200, description: 'Material atualizado com sucesso!' })
