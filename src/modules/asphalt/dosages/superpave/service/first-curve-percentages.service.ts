@@ -144,7 +144,7 @@ export class FirstCurvePercentages_Service {
         else expectedVam = 16;
         expectedRBV_Higher = 78;
         expectedRBV_Lower = 65;
-      } else if (trafficVolume === 'VeryLight') {
+      } else if (trafficVolume === 'low') {
         expectedPorcentageGmmInitialN = 90.5;
         expectedPorcentageGmmProjectN = null;
         expectedPorcentageGmmMaxN = null;

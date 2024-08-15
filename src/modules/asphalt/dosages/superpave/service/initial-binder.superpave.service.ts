@@ -65,11 +65,10 @@ export class InitialBinder_Superpave_Service {
     try {
       const {
         specificMassesData,
-        materialsData,
+        materials: materialsData,
         percentsOfDosage,
         chosenCurves,
         composition,
-        binderSpecificMass,
         nominalSize,
         trafficVolume,
       } = body;
@@ -106,6 +105,8 @@ export class InitialBinder_Superpave_Service {
         maxN: 0,
         tex: '',
       };
+
+      const binderSpecificMass = Number(materialsData.find(e => e.type === 'binder').realSpecificMass);
 
       if (specificMassesData?.length > 0) {
         specificMassesData.forEach((element) => {
@@ -274,7 +275,7 @@ export class InitialBinder_Superpave_Service {
       }
 
       if (trafficVolume === 'low') {
-        turnNumber.initialN = null;
+        turnNumber.initialN = 6;
         turnNumber.projectN = 50;
         turnNumber.maxN = 75;
         turnNumber.tex = 'Muito leve (local)';

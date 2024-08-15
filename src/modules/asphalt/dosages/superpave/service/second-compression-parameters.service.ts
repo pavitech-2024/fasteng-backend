@@ -72,17 +72,17 @@ export class SecondCompressionParameters_Superpave_Service {
       ];
       const graphGmb = [
         ['Teor', 'Gmb'],
-        [Pli - 0.5, composition.halfLess.projectN.Gmb],
-        [Pli, composition.normal.projectN.Gmb],
-        [Pli + 0.5, composition.halfPlus.projectN.Gmb],
-        [Pli + 1, composition.onePlus.projectN.Gmb],
+        [Pli - 0.5, composition.halfLess.projectN.gmb],
+        [Pli, composition.normal.projectN.gmb],
+        [Pli + 0.5, composition.halfPlus.projectN.gmb],
+        [Pli + 1, composition.onePlus.projectN.gmb],
       ];
       const graphGmm = [
         ['Teor', 'Gmm'],
-        [Pli - 0.5, composition.halfLess.Gmm],
-        [Pli, composition.normal.Gmm],
-        [Pli + 0.5, composition.halfPlus.Gmm],
-        [Pli + 1, composition.onePlus.Gmm],
+        [Pli - 0.5, composition.halfLess.gmm],
+        [Pli, composition.normal.gmm],
+        [Pli + 0.5, composition.halfPlus.gmm],
+        [Pli + 1, composition.onePlus.gmm],
       ];
       const graphRBV = [
         ['Teor', 'RBV'],
