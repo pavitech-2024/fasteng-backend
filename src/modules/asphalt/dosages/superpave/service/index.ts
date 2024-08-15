@@ -1324,4 +1324,28 @@ export class SuperpaveService {
       return { success: false, error: { status, message, name } };
     }
   }
+
+  async saveSuperpaveDosage(body: any, userId: string) {
+    try {
+      const success = await this.resumeDosageEquation_Service.saveSuperpaveDosage(body, userId);
+
+      return { success };
+    } catch (error) {
+      this.logger.error(`error on save superpave dosage > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { success: false, error: { status, message, name } };
+    }
+  }
+
+  async deleteSuperpaveDosage(id: string) {
+    try {
+      const success = await this.generalData_Service.deleteSuperpaveDosage(id);
+
+      return { success }
+    } catch (error) {
+      this.logger.error(`error on delete superpave dosage > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { success: false, error: { status, message, name } };
+    }
+  }
 }

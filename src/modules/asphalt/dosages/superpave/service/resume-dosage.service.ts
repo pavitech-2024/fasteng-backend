@@ -208,4 +208,31 @@ export class ResumeDosage_Superpave_Service {
       throw error
     }
   }
+
+  async saveSuperpaveDosage(body: any, userId: string) {
+    try {
+      this.logger.log('save superpave dosage on resume-dosage.superpave.service.ts > [body]', { body });
+
+      const { name } = body.dosageResume;
+
+      const superpaveExists: any = await this.superpave_repository.findOne(name, userId);
+
+      const { name: materialName, ...superpaveDosageWithoutName } = body.dosageResume;
+
+      const superpaveWithResumeDosage = { ...superpaveExists._doc, dosageResume: superpaveDosageWithoutName };
+
+      await this.superpaveModel.updateOne(
+        { _id: superpaveExists._doc._id },
+        superpaveWithResumeDosage
+      );
+
+      if (superpaveExists._doc.generalData.step < 10) {
+        await this.superpave_repository.saveStep(superpaveExists, 10);
+      }
+
+      return true;
+    } catch (error) {
+      throw error
+    }
+  }
 }

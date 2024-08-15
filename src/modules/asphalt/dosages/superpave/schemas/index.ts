@@ -383,6 +383,21 @@ interface ConfirmationCompressionData {
   };
 }
 
+interface DosageResume {
+  Gmb: number,
+  Gmm: number,
+  RBV: number,
+  Vam: number,
+  Vv: number,
+  diametralTractionResistance: number,
+  gmm: number,
+  percentWaterAbs: number,
+  ponderatedPercentsOfDosage: number[],
+  quantitative: number[],
+  ratioDustAsphalt: number,
+  specifiesMass: number
+}
+
 @Schema({ collection: 'superpaves' })
 export class Superpave {
   _id: string;
@@ -427,6 +442,10 @@ export class Superpave {
   @IsNotEmpty()
   @Prop({ type: Object })
   confirmationCompressionData: ConfirmationCompressionData;
+
+  @IsNotEmpty()
+  @Prop({ type: Object })
+  dosageResume: DosageResume;
 }
 
 const SuperpaveSchema = SchemaFactory.createForClass(Superpave);

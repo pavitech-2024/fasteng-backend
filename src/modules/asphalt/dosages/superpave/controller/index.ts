@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Logger, Param, Post, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, Param, Post, Res } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { SuperpaveService } from '../service';
@@ -336,6 +336,31 @@ export class SuperpaveController {
     this.logger.log(`save step 10 data > [body]: ${body}`);
 
     const status = await this.superpaveService.saveStep10Data(body, userId);
+
+    return response.status(200).json(status);
+  }
+
+  @Post('save-superpave-dosage/:userId')
+  async saveSuperpaveDosage(
+    @Res() response: Response,
+    @Param('userId') userId: string,
+    @Body() body: any
+  ) {
+    this.logger.log(`save superpave dosage > [body]: ${body}`);
+
+    const status = await this.superpaveService.saveSuperpaveDosage(body, userId);
+
+    return response.status(200).json(status);
+  }
+
+  @Delete(':id')
+  async deleteMarshallDosage(
+    @Res() response: Response,
+    @Param('id') id: string
+  ) {
+    this.logger.log(`delete superpave dosage > [body]: ${id}`);
+
+    const status = await this.superpaveService.deleteSuperpaveDosage(id);
 
     return response.status(200).json(status);
   }
