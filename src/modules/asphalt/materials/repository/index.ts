@@ -20,8 +20,9 @@ export class MaterialsRepository {
   async findOne(materialsFilterQuery: FilterQuery<Material>): Promise<Material> {
     return this.materialModel.findOne(materialsFilterQuery);
   }
+
   async findByType(types: any) {
-    const materials = await this.materialModel.find(types);
+    const materials = await this.materialModel.find(types).sort({ createdAt: -1 });;
     return materials;
   }
 
@@ -29,8 +30,13 @@ export class MaterialsRepository {
     return this.materialModel.findById(materialId);
   }
 
+  async findSelectedById(ids: string[]): Promise<Material[]> {
+    return this.materialModel.find({ _id: { $in: ids } }).exec();
+  }
+
   async findByUserId(materialsFilterQuery: FilterQuery<Material>): Promise<Material[]> {
-    return this.materialModel.find(materialsFilterQuery);
+    const materials = await this.materialModel.find(materialsFilterQuery).sort({ createdAt: -1 });
+    return materials;
   }
 
   async findOneAndUpdate(materialsFilterQuery: FilterQuery<Material>, material: Partial<Material>): Promise<Material> {

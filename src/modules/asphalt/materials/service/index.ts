@@ -21,15 +21,17 @@ export class MaterialsService {
         throw new AlreadyExists(`Material with name "${material.name}"`);
 
       this.logger.log(userId);
-      // cria um material no banco de dados
-      return this.materialsRepository.create({
+
+      const createdMaterial = await this.materialsRepository.create({
         ...material,
         createdAt: new Date(),
         userId,
       });
+
+      // cria um material no banco de dados
+      return createdMaterial
     } catch (error) {
       this.logger.error(`error on create material > [error]: ${error}`);
-
       throw error;
     }
   }
@@ -54,19 +56,40 @@ export class MaterialsService {
     }
   }
 
+  async getSelectedMaterialsById(ids: string): Promise<any> {
+    const idArray = ids.split(',').map(id => id.trim());
+    try {
+      let essays = []
+
+      // busca um material com o id passado no banco de dados
+      const materials = await this.materialsRepository.findSelectedById(idArray);
+
+      // Buscar os ensaios com esse material;
+      for (let i = 0; i < materials.length; i++) {
+        let essay = await this.getEssaysByMaterial_Service.getEssaysByMaterial(materials[i])
+        essays.push(essay)
+      }
+
+      // retorna o material encontrado
+      return { materials, essays };
+    } catch (error) {
+      this.logger.error(`error on get material > [error]: ${error}`);
+
+      throw error;
+    }
+  }
+
   async getAllMaterials(userId: string): Promise<Material[]> {
     try {
       // busca todos os materiais no banco de dados
       const materials = await this.materialsRepository.findByType({
-        type: { $in: ['filler', 'CAP', 'asphaltBinder'] },
+        type: { $in: ['filler', 'CAP', 'asphaltBinder', 'coarseAggregate', 'fineAggregate'] },
       });
-      console.log("🚀 ~ MaterialsService ~ getAllMaterials ~ materials:", materials)
 
       // retorna os materiais encontrados que pertencem ao usuário
       return materials;
     } catch (error) {
       this.logger.error(`error on get all materials > [error]: ${error}`);
-
       throw error;
     }
   }
