@@ -5,7 +5,7 @@ import { ConcreteRcInitDto } from "../dto/concretert-init.dto";
 import { Response } from 'express';
 import { ConcreteRcService } from "../service";
 @ApiTags('concrete-rc')
-@Controller('concrete/essays/rc')
+@Controller('concrete/essays/concreteRc')
 export class ConcreteRcController {
     private logger = new Logger(ConcreteRcController.name);
 
