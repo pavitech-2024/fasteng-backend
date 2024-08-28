@@ -116,7 +116,13 @@ export class GranulometryComposition_Marshall_Service {
 
       const ids2 = new Set();
 
-      let percentsOfMaterials = [Array(20).fill(null), Array(20).fill(null)];
+      let percentsOfMaterials = [];
+
+      for (let i = 0; i < percentsOfDosage.length; i++) {
+        percentsOfMaterials.push(Array(20).fill(null))
+      }
+
+      // let percentsOfMaterials = [Array(20).fill(null), Array(20).fill(null)];
 
       let newTableRows = tableRows;
 
