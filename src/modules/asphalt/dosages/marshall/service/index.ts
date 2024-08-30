@@ -273,7 +273,7 @@ export class MarshallService {
         pointsOfCurve: granulometry.pointsOfCurve,
         table_data: granulometry.table_data,
         projections: granulometry.projections,
-        dnitBands: {
+        bands: {
           higherBand,
           lowerBand
         }

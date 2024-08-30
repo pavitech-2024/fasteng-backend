@@ -7,6 +7,7 @@ import { Marshall, MarshallDocument } from '../schemas';
 import { InjectModel } from '@nestjs/mongoose';
 import { DATABASE_CONNECTION } from '../../../../../infra/mongoose/database.config';
 import { ViscosityRotationalRepository } from '../../../essays/viscosityRotational/repository';
+import { SpecifyMassRepository } from 'modules/asphalt/essays/specifyMass/repository';
 
 @Injectable()
 export class MaterialSelection_Marshall_Service {
@@ -18,7 +19,8 @@ export class MaterialSelection_Marshall_Service {
     private readonly material_repository: MaterialsRepository,
     private readonly granulometry_repository: AsphaltGranulometryRepository,
     private readonly marshallRepository: MarshallRepository,
-    private readonly rotationalViscosity_repository: ViscosityRotationalRepository
+    private readonly rotationalViscosity_repository: ViscosityRotationalRepository,
+    private readonly specificMass_repository: SpecifyMassRepository
   ) {}
 
   async getMaterials(userId: string) {
@@ -33,6 +35,8 @@ export class MaterialSelection_Marshall_Service {
 
       const rotationalViscosities = await this.rotationalViscosity_repository.findAll();
 
+      const specificMasses = await this.specificMass_repository.findAll();
+
       const filteredMaterials = materials.filter((material) => {
         const { _id, type } = material;
 
@@ -42,10 +46,16 @@ export class MaterialSelection_Marshall_Service {
             return _id.toString() === viscosityMaterial._id.toString();
           });
         } else {
-          return granulometrys.some(({ generalData }) => {
+          const granulometriesEssays = granulometrys.some(({ generalData }) => {
             const { material: granulometryMaterial } = generalData;
             return _id.toString() === granulometryMaterial._id.toString();
           });
+
+          const specificMassesEssays = specificMasses.some(({ generalData }) => {
+            const { material: specificMassMaterial } = generalData;
+            return _id.toString() === specificMassMaterial._id.toString();
+          })
+          return { granulometriesEssays, specificMassesEssays }
         };
       });
 
