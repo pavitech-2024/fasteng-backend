@@ -55,7 +55,7 @@ export class MaterialSelection_Marshall_Service {
             const { material: specificMassMaterial } = generalData;
             return _id.toString() === specificMassMaterial._id.toString();
           })
-          return { granulometriesEssays, specificMassesEssays }
+          return granulometriesEssays && specificMassesEssays;
         };
       });
 
