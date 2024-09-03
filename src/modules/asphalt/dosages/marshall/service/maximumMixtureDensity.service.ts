@@ -84,7 +84,7 @@ export class MaximumMixtureDensity_Marshall_Service {
 
           for (let i = 0; i < listOfMaterials.length; i++) {
             listOfSpecificGravities.push(null);
-            if (listOfMaterials[0] !== null && listOfMaterials[1] !== null) {
+            if (listOfMaterials[0] !== null) {
               if (
                 listOfMaterials[i].generalData.material.type === 'coarseAggregate' ||
                 listOfMaterials[i].generalData.material.type === 'fineAggregate'
