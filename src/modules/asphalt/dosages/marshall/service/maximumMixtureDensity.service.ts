@@ -230,7 +230,7 @@ export class MaximumMixtureDensity_Marshall_Service {
       const maxSpecificGravity = body.map((item) => {
         return {
           id: item.id,
-          Teor: item.Teor,
+          Teor: item.teor,
           GMM:
             item.massOfDrySample /
             (item.massOfDrySample - (item.massOfContainerWaterSample - item.massOfContainerWater)),
