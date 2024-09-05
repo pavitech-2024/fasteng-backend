@@ -171,7 +171,8 @@ export class MaximumMixtureDensity_Marshall_Service {
 
             if (
               materialsOrNot[i].generalData.material.type === 'coarseAggregate' ||
-              materialsOrNot[i].generalData.material.type === 'fineAggregate'
+              materialsOrNot[i].generalData.material.type === 'fineAggregate' ||
+              materialsOrNot[i].generalData.material.type === 'filler'
             ) {
               listOfSpecificGravities[i] = materialsOrNot[i].results.bulk_specify_mass;
             }
