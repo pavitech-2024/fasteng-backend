@@ -1,28 +1,28 @@
 import { InjectModel } from "@nestjs/mongoose/dist";
 import { DATABASE_CONNECTION } from "infra/mongoose/database.config";
 import { Model, FilterQuery } from "mongoose";
-import { Rt, RtDocument } from "../schemas";
+import { RT, RtDocument } from "../schemas";
 
 export class ConcreteRtRepository {
-    constructor(@InjectModel(Rt.name, DATABASE_CONNECTION.CONCRETE) private rtModel: Model<RtDocument>) {}
+    constructor(@InjectModel(RT.name, DATABASE_CONNECTION.CONCRETE) private rtModel: Model<RtDocument>) {}
   
-    async findOne(rtFilterQuery: FilterQuery<Rt>): Promise<Rt> {
+    async findOne(rtFilterQuery: FilterQuery<RT>): Promise<RT> {
       return this.rtModel.findOne(rtFilterQuery);
     }
   
-    async findById(id: string): Promise<Rt> {
+    async findById(id: string): Promise<RT> {
       return this.rtModel.findById(id);
     }
   
-    async findAll(): Promise<Rt[]> {
+    async findAll(): Promise<RT[]> {
       return this.rtModel.find();
     }
   
-    async findAllByMaterialId(unitMassFilterQuery: FilterQuery<Rt>): Promise<Rt[]> {
+    async findAllByMaterialId(unitMassFilterQuery: FilterQuery<RT>): Promise<RT[]> {
       return this.rtModel.find(unitMassFilterQuery);
     }
   
-    async findAllRtsByMaterialId(materialId: string, type: string): Promise<Rt[]> {
+    async findAllRtsByMaterialId(materialId: string, type: string): Promise<RT[]> {
       let rtEssays;
       if (type === 'coarse') {
         rtEssays = await this.rtModel.find({
@@ -46,7 +46,7 @@ export class ConcreteRtRepository {
     }
   
   
-    async create(rt: any): Promise<Rt> {
+    async create(rt: any): Promise<RT> {
       const createdRt = new this.rtModel(rt);
   
       return createdRt.save();

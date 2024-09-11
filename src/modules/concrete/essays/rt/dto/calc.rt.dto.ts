@@ -1,12 +1,12 @@
 import { IsNotEmpty } from "class-validator/types/decorator/decorators";
-import { Rt } from "../schemas";
+import { RT } from "../schemas";
 
 export class Calc_CONCRETERT_Dto {
     @IsNotEmpty()
-    generalData: Rt['generalData'];
+    generalData: RT['generalData'];
   
     @IsNotEmpty()
-    step2Data: Rt['step2Data'];
+    step2Data: RT['step2Data'];
   }
   
   export interface Calc_CONCRETERT_Out {
