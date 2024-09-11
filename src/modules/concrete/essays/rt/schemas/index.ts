@@ -4,7 +4,7 @@ import { Material } from "modules/concrete/materials/schemas";
 import { HydratedDocument } from "mongoose";
 import { Calc_CONCRETERT_Out } from "../dto/calc.rt.dto";
 
-export type RtDocument = HydratedDocument<Rt>;
+export type RtDocument = HydratedDocument<RT>;
 
 export type RtGeneralData = {
   userId: string;
@@ -23,7 +23,7 @@ type Rt_step2Data = {
 };
 
 @Schema({ collection: 'Rt' })
-export class Rt {
+export class RT {
   _id: string;
 
   @IsNotEmpty()
@@ -41,4 +41,4 @@ export class Rt {
   };
 }
 
-export const RtSchema = SchemaFactory.createForClass(Rt);
+export const RTSchema = SchemaFactory.createForClass(RT);

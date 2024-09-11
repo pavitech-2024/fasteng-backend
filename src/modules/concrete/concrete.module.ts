@@ -19,6 +19,8 @@ import { CoarseAggregateSpecificMass, CoarseAggregateSpecificMassSchema } from '
 import { CoarseAggregateModule } from './essays/coarseAggregate/coarseAggregate.module';
 import { ConcreteRcModule } from './essays/rc/rc.module';
 import { RC, RCSchema } from './essays/rc/schemas';
+import { RT, RTSchema } from './essays/rt/schemas';
+import { ConcreteRtModule } from './essays/rt/rt.module';
 
 const Models: ModelDefinition[] = [
   { name: Material.name, schema: MaterialSchema },
@@ -30,6 +32,7 @@ const Models: ModelDefinition[] = [
   { name: CoarseAggregateSpecificMass.name, schema: CoarseAggregateSpecificMassSchema },
   { name: ABCP.name, schema: ABCPSchema },
   { name: RC.name, schema: RCSchema },
+  { name: RT.name, schema: RTSchema },
 ];
 
 const Modules = [
@@ -41,6 +44,7 @@ const Modules = [
   CoarseAggregateModule,
   ABCPModule, 
   ConcreteRcModule,
+  ConcreteRtModule,
 ];
 
 @Global()

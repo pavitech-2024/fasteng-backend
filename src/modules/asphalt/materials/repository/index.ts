@@ -24,6 +24,7 @@ export class MaterialsRepository {
 
   async findById(materialId: string): Promise<Material> {
     return this.materialModel.findById(materialId);
+    
   }
 
   async findByUserId(materialsFilterQuery: FilterQuery<Material>): Promise<Material[]> {
