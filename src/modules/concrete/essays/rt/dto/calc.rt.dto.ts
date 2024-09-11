@@ -1,4 +1,4 @@
-import { IsNotEmpty } from "class-validator/types/decorator/decorators";
+import { IsNotEmpty } from "class-validator";
 import { RT } from "../schemas";
 
 export class Calc_CONCRETERT_Dto {
