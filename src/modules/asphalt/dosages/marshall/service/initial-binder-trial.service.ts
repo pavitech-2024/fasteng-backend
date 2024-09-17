@@ -5,7 +5,6 @@ import { Model } from 'mongoose';
 import { MarshallRepository } from '../repository';
 import { Marshall, MarshallDocument } from '../schemas';
 import { MaterialsRepository } from '../../../materials/repository/index';
-import { Material } from '../../../materials/schemas';
 import { ViscosityRotationalRepository } from '../../../essays/viscosityRotational/repository';
 
 @Injectable()
@@ -17,7 +16,6 @@ export class SetBinderTrial_Marshall_Service {
     private marshallModel: Model<MarshallDocument>,
     private readonly viscosityRepository: ViscosityRotationalRepository,
     private readonly marshallRepository: MarshallRepository,
-    private readonly materialsRepository: MaterialsRepository,
   ) {}
 
   async calculateInitlaBinderTrial(body: any) {
@@ -47,34 +45,53 @@ export class SetBinderTrial_Marshall_Service {
         ids1.add(id);
         const value = percentsOfDosages[0][key];
         const index = Array.from(ids1).indexOf(id);
-        modifiedPercentsOfDosages[index] = value;
+        modifiedPercentsOfDosages[index] = { _id: id, value };
       });
 
-      const material_1 = Array.from(ids1)[0];
-      const material_2 = Array.from(ids1)[1];
-
-      const materials = await this.materialsRepository.find({ _id: { $in: [material_1, material_2] } });
-
       for (let i = 0; i < modifiedPercentsOfDosages.length; i++) {
-        halfPlus.push(((newPercent - 0.5) * modifiedPercentsOfDosages[i]) / 100);
-        halfLess.push(((newPercent + 0.5) * modifiedPercentsOfDosages[i]) / 100);
-        onePlus.push(((newPercent - 1) * modifiedPercentsOfDosages[i]) / 100);
-        oneLess.push(((newPercent + 1) * modifiedPercentsOfDosages[i]) / 100);
-        percentOfDosage.push((newPercent * modifiedPercentsOfDosages[i]) / 100);
-        newPercentOfDosage.push([onePlus[i], halfPlus[i], percentOfDosage[i], halfLess[i], oneLess[i]]);
+        halfPlus.push({
+          material: modifiedPercentsOfDosages[i]._id,
+          value: ((newPercent - 0.5) * modifiedPercentsOfDosages[i].value) / 100,
+          trial: 'halPlus',
+        });
+        halfLess.push({
+          material: modifiedPercentsOfDosages[i]._id,
+          value: ((newPercent + 0.5) * modifiedPercentsOfDosages[i].value) / 100,
+          trial: 'halfLess',
+        });
+        onePlus.push({
+          material: modifiedPercentsOfDosages[i]._id,
+          value: ((newPercent - 1) * modifiedPercentsOfDosages[i].value) / 100,
+          trial: 'onePlus',
+        });
+        oneLess.push({
+          material: modifiedPercentsOfDosages[i]._id,
+          value: ((newPercent + 1) * modifiedPercentsOfDosages[i].value) / 100,
+          trial: 'oneLess',
+        });
+        percentOfDosage.push({
+          material: modifiedPercentsOfDosages[i]._id,
+          value: (newPercent * modifiedPercentsOfDosages[i].value) / 100,
+          trial: 'normal'
+        })
+        newPercentOfDosage.push([onePlus[i].value, halfPlus[i].value, percentOfDosage[i].value, halfLess[i].value, oneLess[i].value]);
         percentOfDosageToReturn.push([oneLess[i], halfLess[i], percentOfDosage[i], halfPlus[i], onePlus[i]]);
       }
-      percentOfDosageToReturn.push([trial - 1, trial - 0.5, trial, trial + 0.5, trial + 1]);
+      percentOfDosageToReturn.push([
+        { trial: 'oneLess', value: trial - 1 },
+        { value: trial - 0.5, trial: 'halfLess' },
+        { value: trial, trial: 'normal' },
+        { value: trial + 0.5, trial: 'halfPlus' },
+        { value: trial + 1, trial: 'onePlus' },
+      ]);
 
       const bandsOfTemperatures = await this.getBandsOfTemperatures(binder);
-      console.log(
-        bandsOfTemperatures,
-      );
+      console.log(bandsOfTemperatures);
 
       const result = {
         bandsOfTemperatures,
         percentsOfDosage: percentOfDosageToReturn,
-        newPercentOfDosage
+        newPercentOfDosage,
       };
 
       return { result };
@@ -85,8 +102,6 @@ export class SetBinderTrial_Marshall_Service {
 
   async getBandsOfTemperatures(binder: any): Promise<any> {
     try {
-      const material: Material = await this.materialsRepository.findById(binder);
-
 
       const resultRotational: any = await this.viscosityRepository.findOne({
         'generalData.material._id': binder,
@@ -96,17 +111,21 @@ export class SetBinderTrial_Marshall_Service {
         throw new NotFoundException(`O ligante selecionado não passou por nenhum ensaio de viscosidade ainda.`);
       }
 
-
       const machiningTemperatureRange = {
         higher: resultRotational.results.machiningTemperatureRange.higher,
-        average: (resultRotational.results.machiningTemperatureRange.higher + resultRotational.results.machiningTemperatureRange.lower) / 2,
+        average:
+          (resultRotational.results.machiningTemperatureRange.higher +
+            resultRotational.results.machiningTemperatureRange.lower) /
+          2,
         lower: resultRotational.results.machiningTemperatureRange.lower,
       };
 
       const compressionTemperatureRange = {
         higher: resultRotational.results.compressionTemperatureRange.higher,
         average:
-          (resultRotational.results.compressionTemperatureRange.higher + resultRotational.results.compressionTemperatureRange.lower) / 2,
+          (resultRotational.results.compressionTemperatureRange.higher +
+            resultRotational.results.compressionTemperatureRange.lower) /
+          2,
         lower: resultRotational.results.compressionTemperatureRange.lower,
       };
 
@@ -145,6 +164,7 @@ export class SetBinderTrial_Marshall_Service {
       if (marshallExists._doc.generalData.step < 4) {
         await this.marshallRepository.saveStep(marshallExists, 4);
       }
+      
 
       return true;
     } catch (error) {
