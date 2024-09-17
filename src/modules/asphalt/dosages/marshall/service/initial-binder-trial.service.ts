@@ -164,6 +164,7 @@ export class SetBinderTrial_Marshall_Service {
       if (marshallExists._doc.generalData.step < 4) {
         await this.marshallRepository.saveStep(marshallExists, 4);
       }
+      
 
       return true;
     } catch (error) {
