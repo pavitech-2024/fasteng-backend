@@ -33,20 +33,16 @@ export class MaximumMixtureDensity_Marshall_Service {
         );
 
         const withoutExperimentSpecificGravity = materialsData
-          .map((material, i) => {
-            if (
-              !(material && (material.generalData.material.type === 'coarseAggregate' ||
-                  material.generalData.material.type === 'fineAggregate')
-              )
-            ) {
-              return i;
-            } else {
-              return null;
-            }
+          .map((material) => {
+            return { 
+              value: material.results.bulk_specify_mass,
+              _id: material._id.toString(),
+              name: material.generalData.material.name
+            };
           })
           .filter((index) => index !== null);
 
-        return { indexesOfMissesSpecificGravity: withoutExperimentSpecificGravity };
+        return { missesSpecificGravity: withoutExperimentSpecificGravity };
       };
 
       return await getIndexesOfMissesSpecificGravity();
@@ -66,7 +62,6 @@ export class MaximumMixtureDensity_Marshall_Service {
       let denominadorPlusOne = 0;
 
       const materials = aggregates.map((element) => element._id);
-    
 
       const calculate = async (): Promise<any> => {
         try {
@@ -84,7 +79,7 @@ export class MaximumMixtureDensity_Marshall_Service {
 
           for (let i = 0; i < listOfMaterials.length; i++) {
             listOfSpecificGravities.push(null);
-            if (listOfMaterials[0] !== null && listOfMaterials[1] !== null) {
+            if (listOfMaterials[0] !== null) {
               if (
                 listOfMaterials[i].generalData.material.type === 'coarseAggregate' ||
                 listOfMaterials[i].generalData.material.type === 'fineAggregate'
@@ -103,8 +98,8 @@ export class MaximumMixtureDensity_Marshall_Service {
               // to-do: Fazer vir do front como array de números;
               const MissingGravitiesArray = [
                 Number(missingSpecificGravity.material_1),
-                Number(missingSpecificGravity.material_2)
-              ]
+                Number(missingSpecificGravity.material_2),
+              ];
               listOfSpecificGravities[i] = MissingGravitiesArray[cont];
               denominadorLessOne += percentsOfDosage[i][4] / listOfSpecificGravities[i];
               denominadorLessHalf += percentsOfDosage[i][3] / listOfSpecificGravities[i];
@@ -114,7 +109,6 @@ export class MaximumMixtureDensity_Marshall_Service {
               cont++;
             }
           }
-          
 
           const maxSpecificGravity = {
             result: {
@@ -127,7 +121,7 @@ export class MaximumMixtureDensity_Marshall_Service {
             method: 'DMT',
           };
 
-          return {maxSpecificGravity, listOfSpecificGravities};
+          return { maxSpecificGravity, listOfSpecificGravities };
         } catch (error) {
           throw new Error('Failed to calculate max specific gravity.');
         }
@@ -159,9 +153,9 @@ export class MaximumMixtureDensity_Marshall_Service {
           );
 
           if (listOfMaterials[0] !== null) {
-            materialsOrNot = listOfMaterials
+            materialsOrNot = listOfMaterials;
           } else {
-            materialsOrNot = materials
+            materialsOrNot = materials;
           }
 
           let listOfSpecificGravities = [];
@@ -171,7 +165,8 @@ export class MaximumMixtureDensity_Marshall_Service {
 
             if (
               materialsOrNot[i].generalData.material.type === 'coarseAggregate' ||
-              materialsOrNot[i].generalData.material.type === 'fineAggregate'
+              materialsOrNot[i].generalData.material.type === 'fineAggregate' ||
+              materialsOrNot[i].generalData.material.type === 'filler'
             ) {
               listOfSpecificGravities[i] = materialsOrNot[i].results.bulk_specify_mass;
             }
@@ -230,7 +225,7 @@ export class MaximumMixtureDensity_Marshall_Service {
       const maxSpecificGravity = body.map((item) => {
         return {
           id: item.id,
-          Teor: item.Teor,
+          Teor: item.teor,
           GMM:
             item.massOfDrySample /
             (item.massOfDrySample - (item.massOfContainerWaterSample - item.massOfContainerWater)),
@@ -248,7 +243,6 @@ export class MaximumMixtureDensity_Marshall_Service {
       this.logger.log('save marshall binder trial step on maximum-mixture-density.marshall.service.ts > [body]', {
         body,
       });
-      
 
       const { name } = body.maximumMixtureDensityData;
 

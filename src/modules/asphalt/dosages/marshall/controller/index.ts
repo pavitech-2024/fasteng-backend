@@ -95,7 +95,6 @@ export class MarshallController {
 
     const status = await this.marshallService.calculateStep3Data(body);
 
-
     return response.status(200).json(status);
   }
 
