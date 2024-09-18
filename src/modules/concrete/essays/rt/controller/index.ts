@@ -6,7 +6,7 @@ import { ConcreteRtService } from "../service";
 import { Response } from 'express';
 
 @ApiTags('concrete-rt')
-@Controller('concrete/essays/rt')
+@Controller('concrete/essays/concreteRt')
 export class ConcreteRtController {
     private logger = new Logger(ConcreteRtController.name);
 
