@@ -6,7 +6,8 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "npx @nestjs/cli build",
+    "build": "nest build",
+    "build:digitalocean": "yarn install --production=false && yarn run build && rm -rf node_modules && yarn install --production --frozen-lockfile",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "dev": "nest start --watch",
