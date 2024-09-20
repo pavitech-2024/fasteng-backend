@@ -45,7 +45,7 @@ export class ConcreteRtController {
         content: { 'application/json': { schema: { example: { success: true, data: 'essay data' } } } },
     })
     @ApiResponse({ status: 400, description: 'Erro ao calcular os resultados da granulometria de ensaio de concreto com os dados enviados.' })
-    async calculateConcreteRt(@Body() body:  Calc_CONCRETERT_Dto) {
+    async calculateConcreteRt(@Body() body:  any) {
         this.logger.log('calculate concrete rt > [body]');
 
         const rt = await this.concretertService.calculateRt(body);
