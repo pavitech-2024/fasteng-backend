@@ -17,6 +17,10 @@ import { ABCP, ABCPSchema } from './dosages/abcp/schemas';
 import { ABCPModule } from './dosages/abcp/abcp.module';
 import { CoarseAggregateSpecificMass, CoarseAggregateSpecificMassSchema } from './essays/coarseAggregate/schemas';
 import { CoarseAggregateModule } from './essays/coarseAggregate/coarseAggregate.module';
+import { ConcreteRcModule } from './essays/rc/rc.module';
+import { RC, RCSchema } from './essays/rc/schemas';
+import { RT, RTSchema } from './essays/rt/schemas';
+import { ConcreteRtModule } from './essays/rt/rt.module';
 
 const Models: ModelDefinition[] = [
   { name: Material.name, schema: MaterialSchema },
@@ -27,6 +31,8 @@ const Models: ModelDefinition[] = [
   { name: UnitMass.name, schema: UnitMassSchema },
   { name: CoarseAggregateSpecificMass.name, schema: CoarseAggregateSpecificMassSchema },
   { name: ABCP.name, schema: ABCPSchema },
+  { name: RC.name, schema: RCSchema },
+  { name: RT.name, schema: RTSchema },
 ];
 
 const Modules = [
@@ -37,6 +43,8 @@ const Modules = [
   UnitMassModule,
   CoarseAggregateModule,
   ABCPModule, 
+  ConcreteRcModule,
+  ConcreteRtModule,
 ];
 
 @Global()
