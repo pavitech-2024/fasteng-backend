@@ -13,22 +13,22 @@ export class ConcreteRtController {
     constructor(private readonly concretertService: ConcreteRtService) { }
 
     @Post('verify-init')
-    @ApiOperation({ summary: 'Verifica se é possível criar uma granulometria de ensaio de concreto com os dados enviados.' })
+    @ApiOperation({ summary: 'Verifica se é possível criar uma resistência à tração de concreto com os dados enviados.' })
     @ApiResponse({
         status: 200,
-        description: 'É possível criar uma granulometria de ensaio de concreto com os dados enviados.',
+        description: 'É possível criar uma resistência à tração de concreto com os dados enviados.',
         content: { 'application/json': { schema: { example: { success: true } } } },
     })
     @ApiResponse({
         status: 200,
-        description: 'Não é possível criar uma granulometria de ensaio de concreto com os dados enviados.',
+        description: 'Não é possível criar uma resistência à tração de concreto com os dados enviados.',
         content: {
             'application/json': {
                 schema: { example: { success: false, error: { message: 'Sample Not Found.', status: 400, name: 'NotFound' } } },
             },
         },
     })
-    @ApiResponse({ status: 400, description: 'Erro ao verificar se é possível criar uma granulometria de ensaio de concreto com os dados enviados.' })
+    @ApiResponse({ status: 400, description: 'Erro ao verificar se é possível criar uma resistência à tração de concreto com os dados enviados.' })
     async verifyInitConcreteRt(@Res() response: Response, @Body() body: ConcreteRtInitDto) {
         this.logger.log('verify init concrete rt > [body]');
 
@@ -38,15 +38,16 @@ export class ConcreteRtController {
     }
 
     @Post('calculate-results')
-    @ApiOperation({ summary: 'Calcula os resultados da granulometria de ensaio de concreto com os dados enviados.' })
+    @ApiOperation({ summary: 'Calcula os resultados da resistência à tração de concreto com os dados enviados.' })
     @ApiResponse({
         status: 200,
-        description: 'Resultados da granulometria de ensaio de concreto calculados com sucesso.',
+        description: 'Resultados da resistência à tração de concreto calculados com sucesso.',
         content: { 'application/json': { schema: { example: { success: true, data: 'essay data' } } } },
     })
-    @ApiResponse({ status: 400, description: 'Erro ao calcular os resultados da granulometria de ensaio de concreto com os dados enviados.' })
+    @ApiResponse({ status: 400, description: 'Erro ao calcular os resultados da resistência à tração de concreto com os dados enviados.' })
     async calculateConcreteRt(@Body() body:  any) {
         this.logger.log('calculate concrete rt > [body]');
+        
 
         const rt = await this.concretertService.calculateRt(body);
 
@@ -57,15 +58,15 @@ export class ConcreteRtController {
     }
 
     @Post('save-essay')
-    @ApiOperation({ summary: 'Se possível, salva os dados da granulometria de ensaio de concreto no banco de dados.' })
+    @ApiOperation({ summary: 'Se possível, salva os dados da resistência à tração de concreto no banco de dados.' })
     @ApiResponse({
         status: 200,
-        description: 'Dados da granulometria de ensaio de concreto salvos com sucesso.',
+        description: 'Dados da resistência à tração de concreto salvos com sucesso.',
         content: { 'application/json': { schema: { example: { success: true, data: 'essay data' } } } },
     })
     @ApiResponse({
         status: 200,
-        description: 'Não foi possível salvar os dados da granulometria de ensaio de concreto no banco de dados.',
+        description: 'Não foi possível salvar os dados da resistência à tração de concreto no banco de dados.',
         content: {
             'application/json': {
                 schema: {
@@ -77,7 +78,7 @@ export class ConcreteRtController {
             },
         },
     })
-    @ApiResponse({ status: 400, description: 'Erro ao salvar os dados da granulometria de ensaio de concreto no banco de dados.' })
+    @ApiResponse({ status: 400, description: 'Erro ao salvar os dados da resistência à tração de concreto no banco de dados.' })
     async saveConcreteEssay(@Res() response: Response, @Body() body: Calc_CONCRETERT_Dto & Calc_CONCRETERT_Out) {
         this.logger.log('save concrete essay > [body]');
 
