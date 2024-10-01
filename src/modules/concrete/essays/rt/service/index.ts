@@ -3,9 +3,9 @@ import { Injectable } from "@nestjs/common/decorators";
 import { AlreadyExists } from "utils/exceptions";
 import { ConcreteRtInitDto } from "../dto/concretert-init.dto";
 import { ConcreteRtRepository } from "../repository";
-import { Calc_CONCRETERT_Service } from "./calc.rt.service";
 import { GeneralData_CONCRETERT_Service } from "./general-data.rt.service";
-import { Calc_CONCRETERT_Dto, Calc_CONCRETERT_Out } from "../dto/calc.rt.dto";
+import { Calc_ConcreteRt_Service } from "./calc.rt.service";
+import { Calc_Concrete_RT_Dto, Calc_Concrete_RT_Out } from "../dto/calc.rt.dto";
 
 @Injectable()
 export class ConcreteRtService {
@@ -13,7 +13,7 @@ export class ConcreteRtService {
 
   constructor(
     private readonly generalData_Service: GeneralData_CONCRETERT_Service,
-    private readonly calc_Service: Calc_CONCRETERT_Service,
+    private readonly calc_Service: Calc_ConcreteRt_Service,
     private readonly Rt_Repository: ConcreteRtRepository,
   ) {}
 
@@ -28,16 +28,16 @@ export class ConcreteRtService {
     }
   }
 
-  async calculateRt(body: Calc_CONCRETERT_Dto) {
+  async calculateRt(body: Calc_Concrete_RT_Dto) {
     try {
-      return await this.calc_Service.calculateRt(body);
+      return await this.calc_Service.calculateConcreteRt(body);
     } catch (error) {
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
     }
   }
 
-  async saveEssay(body: Calc_CONCRETERT_Dto & Calc_CONCRETERT_Out) {
+  async saveEssay(body: Calc_Concrete_RT_Dto & Calc_Concrete_RT_Out) {
     try {
       const {
         name,

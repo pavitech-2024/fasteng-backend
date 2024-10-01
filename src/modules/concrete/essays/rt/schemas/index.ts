@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { IsNotEmpty } from "class-validator";
 import { Material } from "modules/concrete/materials/schemas";
 import { HydratedDocument } from "mongoose";
-import { Calc_CONCRETERT_Out } from "../dto/calc.rt.dto";
+import { Calc_Concrete_RT_Out } from "../dto/calc.rt.dto";
 
 export type RtDocument = HydratedDocument<RT>;
 
@@ -16,10 +16,22 @@ export type RtGeneralData = {
   description?: string;
 };
 
-type Rt_step2Data = {
-  material_mass: number;
-  table_data: { sieve: string; passant: number, retained: number }[];
-  bottom: number;
+type ConcreteRtSteptep2 = {
+  dnitRange: string;
+  sampleVoidVolume: number;
+  pressConstant: number;
+  pressSpecification: string;
+  sampleOrigin: string;
+};
+
+type ConcreteRtStep3 = {
+  data: {
+    sampleName: string;
+    d1: number;
+    d2: number;
+    height: number;
+    pressReading: number;
+  }[];
 };
 
 @Schema({ collection: 'Rt' })
@@ -32,12 +44,16 @@ export class RT {
 
   @IsNotEmpty()
   @Prop({ type: Object })
-  step2Data: Rt_step2Data;
+  concreteRtStep2: ConcreteRtSteptep2;
+
+  @IsNotEmpty()
+  @Prop({ type: Object })
+  concreteRtStep3: ConcreteRtStep3;
 
   @IsNotEmpty()
   @Prop({ type: Object })
   results: {
-    data: Calc_CONCRETERT_Out;
+    data: Calc_Concrete_RT_Out;
   };
 }
 
