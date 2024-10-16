@@ -39,14 +39,12 @@ export class RtcdService {
     try {
       const {
         name,
-        material: { _id: materialId },
         userId,
       } = body.generalData;
 
       // verifica se existe uma rtcd com mesmo nome , materialId e userId no banco de dados
       const alreadyExists = await this.rtcd_Repository.findOne({
         'generalData.name': name,
-        'generalData.material._id': materialId,
         'generalData.userId': userId,
       });
 
