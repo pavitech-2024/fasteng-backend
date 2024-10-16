@@ -13,22 +13,14 @@ export class GeneralData_Rtcd_Service {
     private readonly materialsRepository: MaterialsRepository,
   ) {}
 
-  async verifyInitRtcd({ name, material }: RtcdInitDto) {
+  async verifyInitRtcd({ name }: RtcdInitDto) {
     try {
       this.logger.log('verify init rtcd on general-data.rtcd.service.ts > [body]');
       // verificar se existe um material com mesmo nome e userId no banco de dados
-      const materialExists = await this.materialsRepository.findOne({ _id: material._id });
-
-      // se não existir, retorna erro
-      if (!materialExists) throw new NotFound('Chosen material of rtcd');
-
-      // verificar se existe uma rtcd com mesmo nome e materialId no banco de dados
-      const rtcdExists = await this.rtcdRepository.findOne({
-        generalData: { name, material: { _id: material._id } },
-      });
+      const rtcdExists = await this.rtcdRepository.findOne({ "generalData.name": name });
 
       // se existir, retorna erro
-      if (rtcdExists) throw new AlreadyExists(`Rtcd with name "${name} from user "${material.userId}"`);
+      if (rtcdExists) throw new AlreadyExists(`Rtcd with name "${name}`);
 
       return true;
     } catch (error) {

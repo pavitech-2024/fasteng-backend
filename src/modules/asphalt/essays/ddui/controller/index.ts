@@ -30,7 +30,7 @@ export class DduiController {
     },
   })
   @ApiResponse({ status: 400, description: 'Erro ao verificar se é possível criar um ensaio ddui com os dados enviados.' })
-  async verifyInitDdui(@Res() response: Response, @Body() body: any) {
+  async verifyInitDdui(@Res() response: Response, @Body() body: DduiInitDto) {
     this.logger.log('verify init ddui > [body]');
 
     const status = await this.dduiService.verifyInitDdui(body);

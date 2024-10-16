@@ -9,7 +9,6 @@ export type RtcdDocument = HydratedDocument<Rtcd>;
 export type RtcdGeneralData = {
   userId: string;
   name: string;
-  material: Material;
 };
 
 export type Rtcd_Step2 = {
