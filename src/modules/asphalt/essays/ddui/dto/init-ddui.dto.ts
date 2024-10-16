@@ -1,10 +1,7 @@
-import { IsNotEmpty } from "class-validator";
-import { Material } from "../../../../../modules/asphalt/materials/schemas";
+import { IsNotEmpty, IsString } from "class-validator";
 
 export class DduiInitDto {
   @IsNotEmpty()
+  @IsString()
   name: string;
-
-  @IsNotEmpty()
-  material: Material;
 }

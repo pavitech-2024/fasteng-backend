@@ -4,7 +4,4 @@ import { Material } from '../../../../../modules/asphalt/materials/schemas';
 export class RtcdInitDto {
   @IsNotEmpty()
   name: string;
-
-  @IsNotEmpty()
-  material: Material;
 }
