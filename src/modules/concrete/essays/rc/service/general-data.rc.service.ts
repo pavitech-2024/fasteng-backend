@@ -1,8 +1,8 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { MaterialsRepository } from "modules/asphalt/materials/repository";
 import { NotFound, AlreadyExists } from "utils/exceptions";
 import { ConcreteRcInitDto } from "../dto/concretert-init.dto";
 import { ConcreteRCRepository } from "../respository";
+import { MaterialsRepository } from "modules/concrete/materials/repository";
 
 @Injectable()
 export class GeneralData_CONCRETERC_Service {
