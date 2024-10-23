@@ -4,7 +4,9 @@ import { Calc_CONCRETERC_Dto, Calc_CONCRETERC_Out } from '../dto/calc.rc.dto';
 import { ConcreteRcInitDto } from '../dto/concretert-init.dto';
 import { Response } from 'express';
 import { ConcreteRcService } from '../service';
-@ApiTags('concrete-rc')
+import { ConcreteRcInterpolationDto } from '../dto/calc.interpolation.dto';
+
+@ApiTags('concreteRc')
 @Controller('concrete/essays/concreteRc')
 export class ConcreteRcController {
   private logger = new Logger(ConcreteRcController.name);
@@ -37,6 +39,17 @@ export class ConcreteRcController {
     this.logger.log('verify init concrete rc > [body]');
 
     const status = await this.concretercService.verifyInitRc(body);
+
+    return response.status(200).json(status);
+  }
+
+  //Todo: insert api operation decorators;
+  @Post('interpolation')
+  async calculateConcreteRcInterpolation(@Res() response: Response, @Body() body: ConcreteRcInterpolationDto) {
+    this.logger.log('verify init concrete rc > [body]');
+
+    
+    const status = await this.concretercService.calculateConcreteRcInterpolation(body);
 
     return response.status(200).json(status);
   }

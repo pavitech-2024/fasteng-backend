@@ -5,6 +5,8 @@ import { ConcreteRcInitDto } from "../dto/concretert-init.dto";
 import { ConcreteRCRepository } from "../respository";
 import { Calc_CONCRETERC_Service } from "./calc.rc.service";
 import { GeneralData_CONCRETERC_Service } from "./general-data.rc.service";
+import { Calc_Interpolation_CONCRETERC_Service } from "./calc.rc.interpolation.service";
+import { ConcreteRcInterpolationDto } from "../dto/calc.interpolation.dto";
 
 @Injectable()
 export class ConcreteRcService {
@@ -12,6 +14,7 @@ export class ConcreteRcService {
 
   constructor(
     private readonly generalData_Service: GeneralData_CONCRETERC_Service,
+    private readonly calculateRcInterpolationService: Calc_Interpolation_CONCRETERC_Service,
     private readonly calc_Service: Calc_CONCRETERC_Service,
     private readonly Rc_Repository: ConcreteRCRepository,
   ) {}
@@ -19,6 +22,17 @@ export class ConcreteRcService {
   async verifyInitRc(body: ConcreteRcInitDto) {
     try {
       const success = await this.generalData_Service.verifyInitRc(body);
+
+      return { success };
+    } catch (error) {
+      const { status, name, message } = error;
+      return { success: false, error: { status, message, name } };
+    }
+  }
+
+  async calculateConcreteRcInterpolation(body: ConcreteRcInterpolationDto) {
+    try {
+      const success = await this.calculateRcInterpolationService.calculateConcreteRcInterpolation(body);
 
       return { success };
     } catch (error) {
