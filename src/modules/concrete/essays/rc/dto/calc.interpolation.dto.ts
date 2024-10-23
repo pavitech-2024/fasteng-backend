@@ -23,5 +23,10 @@ export class ConcreteRcInterpolationDto {
   @IsNotEmpty()
   @ValidateNested()
   @Type(() => Reference)
-  reference: Reference;
+  higherReference: Reference;
+
+  @IsNotEmpty()
+  @ValidateNested()
+  @Type(() => Reference)
+  lowerReference: Reference;
 }
