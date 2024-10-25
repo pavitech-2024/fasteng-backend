@@ -18,19 +18,20 @@ export class Calc_Interpolation_CONCRETERC_Service {
         isPermited: false
       };
 
-      const ageDifference  = (higherReference.age * 60) - (lowerReference.age * 60);
-      const ageInput = (higherReference.age * 60) - age;
+      const ageDifference  = higherReference.age - lowerReference.age;
+      const ageInHours = age / 60;
+      const ageInput = higherReference.age - ageInHours;
       const ageRatio = ageDifference  / ageInput;
 
-      const toleranceDifference  = (higherReference.tolerance * 60) - (lowerReference.tolerance * 60);
+      const toleranceDifference  = higherReference.tolerance - lowerReference.tolerance;
 
-      const toleranceValue  = (ageRatio * (higherReference.tolerance * 60)) / toleranceDifference ;
+      const toleranceValue  = (ageRatio * higherReference.tolerance) / toleranceDifference;
 
-      const toleranceRatio = toleranceValue / (higherReference.tolerance * 60);
+      const toleranceRatio = toleranceValue / higherReference.tolerance;
 
       let isPermited;
 
-      if (toleranceRatio >= tolerance - 10 || toleranceRatio <= tolerance + 10 ) {
+      if (toleranceRatio >= (tolerance / 60) - 10 || toleranceRatio <= tolerance + 10 ) {
         isPermited = true;
       } else {
         isPermited = false;

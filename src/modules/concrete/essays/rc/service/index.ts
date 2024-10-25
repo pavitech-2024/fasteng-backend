@@ -32,9 +32,9 @@ export class ConcreteRcService {
 
   async calculateConcreteRcInterpolation(body: ConcreteRcInterpolationDto) {
     try {
-      const success = await this.calculateRcInterpolationService.calculateConcreteRcInterpolation(body);
+      const result = await this.calculateRcInterpolationService.calculateConcreteRcInterpolation(body);
 
-      return { success };
+      return { success: true, result };
     } catch (error) {
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
