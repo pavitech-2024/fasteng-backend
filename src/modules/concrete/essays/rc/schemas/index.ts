@@ -32,12 +32,12 @@ type RC_step2Data = {
     data: number,
     isPermited: boolean
   };
+  correctionFactor: number
 };
 
 type RC_step3Data = {
   type: string,
   src: string
-  correctionFactor: number
 }
 
 @Schema({ collection: 'rcs' })

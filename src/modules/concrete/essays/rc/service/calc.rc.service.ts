@@ -77,15 +77,16 @@ export class Calc_CONCRETERC_Service {
     }
   }
 
-  async calculateRc({ step2Data, step3Data }: Calc_CONCRETERC_Dto): Promise<{ success: boolean; result: Calc_CONCRETERC_Out }> {
+  async calculateRc({ step2Data }: Calc_CONCRETERC_Dto): Promise<{ success: boolean; result: Calc_CONCRETERC_Out }> {
     try {
       this.logger.log('calculate rc on calc.rc.service.ts > [body]');
 
-      const { diammeter1, diammeter2 } = step2Data;
-      const { correctionFactor } = step3Data;
+      const { diammeter1, diammeter2, correctionFactor } = step2Data;
 
       let result: {
         finalCorrectionFactor: number;
+      } = {
+        finalCorrectionFactor: 0
       }
 
       const maxStrenght = 4 * correctionFactor;
