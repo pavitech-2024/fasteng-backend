@@ -5,7 +5,6 @@ import { ConcreteRcInitDto } from "../dto/concretert-init.dto";
 import { ConcreteRCRepository } from "../respository";
 import { Calc_CONCRETERC_Service } from "./calc.rc.service";
 import { GeneralData_CONCRETERC_Service } from "./general-data.rc.service";
-import { Calc_Interpolation_CONCRETERC_Service } from "./calc.rc.interpolation.service";
 import { ConcreteRcInterpolationDto } from "../dto/calc.interpolation.dto";
 
 @Injectable()
@@ -14,7 +13,7 @@ export class ConcreteRcService {
 
   constructor(
     private readonly generalData_Service: GeneralData_CONCRETERC_Service,
-    private readonly calculateRcInterpolationService: Calc_Interpolation_CONCRETERC_Service,
+    private readonly calculateRcInterpolationService: Calc_CONCRETERC_Service,
     private readonly calc_Service: Calc_CONCRETERC_Service,
     private readonly Rc_Repository: ConcreteRCRepository,
   ) {}

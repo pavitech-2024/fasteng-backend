@@ -1,171 +1,109 @@
-import { Injectable, Logger } from "@nestjs/common";
-import { MaterialsRepository } from "modules/asphalt/materials/repository";
-import { getSieveValue } from "modules/soils/util/sieves";
-import { Calc_CONCRETERC_Dto, Calc_CONCRETERC_Out } from "../dto/calc.rc.dto";
-import { ConcreteRCRepository } from "../respository";
+import { Injectable, Logger } from '@nestjs/common';
+import { MaterialsRepository } from 'modules/asphalt/materials/repository';
+import { getSieveValue } from 'modules/soils/util/sieves';
+import { Calc_CONCRETERC_Dto, Calc_CONCRETERC_Out } from '../dto/calc.rc.dto';
+import { ConcreteRCRepository } from '../respository';
+import { ConcreteRcInterpolationDto } from '../dto/calc.interpolation.dto';
 
-type limit = { value: number, index: number };
+type limit = { value: number; index: number };
 
 interface curve_point {
-    0: number,
-    1: number
+  0: number;
+  1: number;
 }
 
 @Injectable()
 export class Calc_CONCRETERC_Service {
-    private logger = new Logger(Calc_CONCRETERC_Service.name);
+  private logger = new Logger(Calc_CONCRETERC_Service.name);
 
-    constructor(private readonly rcRepository: ConcreteRCRepository, private readonly materialsRepository: MaterialsRepository) { }
+  constructor(
+    private readonly rcRepository: ConcreteRCRepository,
+    private readonly materialsRepository: MaterialsRepository,
+  ) {}
 
-    async calculateRc({ step2Data }: Calc_CONCRETERC_Dto): Promise<{ success: boolean; result: Calc_CONCRETERC_Out }> {
-        try {
-            this.logger.log('calculate rc on calc.rc.service.ts > [body]');
+  async calculateConcreteRcInterpolation({
+    age_diammHeightRatio,
+    tolerance_strenght,
+    lowerReference,
+    higherReference,
+    type,
+  }: ConcreteRcInterpolationDto) {
+    try {
+      this.logger.log('calculate rc interpolation on calc.rc.interpolation.service.ts > [body]');
 
-            const { table_data, material_mass, bottom } = step2Data;
+      let isPermited;
 
-            const length = table_data.length;
+      let result = {
+        data: 0,
+        isPermited: null,
+      };
 
-            const accumulated_retained: number[] = []
+      const higherReferenceArr = Object.values(higherReference).map((e) => e);
+      const lowerReferenceArr = Object.values(lowerReference).map((e) => e);
 
-            const passant: number[] = []
-            const retained_porcentage: number[] = []
+      const age_diammHeight_Difference = higherReferenceArr[0] - lowerReferenceArr[0];
+      const tolerance_correctionFactor_Diff = higherReferenceArr[1] - lowerReferenceArr[1];
 
-            const graph_data: [number, number][] = []
+      if (type === 'tolerance') {
+        const ageInHours = age_diammHeightRatio / 60;
+        const ageInput = higherReferenceArr[0] - ageInHours;
+        const ageRatio = age_diammHeight_Difference / ageInput;
 
-            let total_retained = 0;
+        const toleranceValue = (ageRatio * higherReferenceArr[1]) / tolerance_correctionFactor_Diff;
 
-            let nominal_diameter = 0;
-            let nominal_size = 0;
+        const toleranceRatio = toleranceValue / higherReferenceArr[1];
 
-            let fineness_module = 0;
-
-            let nominal_size_flag = true;
-            let nominal_diameter_flag = true;
-
-            for (let i = 0; i < length; i++) {
-
-                const label = table_data[i].sieve;
-                const passant_porcentage = table_data[i].passant;
-                const retained = table_data[i].retained;
-
-                total_retained += retained;
-
-                passant.push(Math.round( 100 * (material_mass - total_retained)) / 100);
-                
-                accumulated_retained.push(Math.round( 100 * (100 - passant_porcentage)) / 100);
-                
-                if (i === 0) {
-                    retained_porcentage.push(accumulated_retained[i]);
-                } else {
-                    retained_porcentage.push(Math.round( 100 * (accumulated_retained[i] - accumulated_retained[i-1])) / 100);
-                }
-
-                fineness_module += accumulated_retained[i]
-
-                if (total_retained >= 5 && nominal_size_flag) {
-                    nominal_size_flag = false;
-                    if (total_retained === 5) nominal_size = getSieveValue(label);
-                    else {
-                        if (i === 0) nominal_size = getSieveValue(label);
-                        else nominal_size = getSieveValue(table_data[i - 1].sieve);
-                    }
-                }
-
-                if (total_retained > 10 && nominal_diameter_flag) {
-                    nominal_diameter_flag = false;
-                    if (i === 1) nominal_diameter = getSieveValue(label);
-                    else nominal_diameter = getSieveValue(table_data[i].sieve);
-                }
-
-                graph_data.push(([getSieveValue(label), passant_porcentage]));
-
-            }
-
-            fineness_module = Math.round(100 * fineness_module / 100) / 100;
-
-            total_retained = Math.round(100 * total_retained) / 100;
-
-            const error = Math.round(100 * (material_mass - total_retained - bottom) * 100 / material_mass) / 100;
-
-            const limit_10 = this.getPercentage(10, table_data);
-            const limit_30 = this.getPercentage(30, table_data);
-            const limit_60 = this.getPercentage(60, table_data);
-
-            const diameter10 = this.getDiameter(table_data, 10, limit_10);
-            const diameter30 = this.getDiameter(table_data, 30, limit_30);
-            const diameter60 = this.getDiameter(table_data, 60, limit_60);
-
-            const cnu = Math.round(100 * diameter60 / diameter10) / 100;
-
-            const cc = Math.round(100 * Math.pow(diameter30, 2) / (diameter60 * diameter10)) / 100;
-
-            return {
-                success: true,
-                result: {
-                    accumulated_retained,
-                    graph_data,
-                    passant,
-                    retained_porcentage,
-                    total_retained,
-                    nominal_diameter,
-                    nominal_size,
-                    fineness_module,
-                    cc,
-                    cnu,
-                    error,
-                }
-            };
-
-        } catch (error) {
-            return {
-                success: false,
-                result: null
-            };
+        // Verificação da margem de erro (10+-);
+        if (toleranceRatio >= tolerance_strenght / 60 - 10 || toleranceRatio <= tolerance_strenght + 10) {
+          isPermited = true;
+        } else {
+          isPermited = false;
         }
+
+        result.data = toleranceRatio;
+        result.isPermited = isPermited;
+      } else if (type === 'correctionFactor') {
+        const strenghtDiference = higherReferenceArr[0] - age_diammHeightRatio;
+        const strenghtRatio = age_diammHeight_Difference / strenghtDiference;
+
+        const correctionFactorValue = (strenghtRatio * higherReferenceArr[1]) / tolerance_correctionFactor_Diff;
+        const correctionFactorRatio = correctionFactorValue / higherReferenceArr[1];
+
+        result.data = correctionFactorRatio;
+      }
+      return result;
+    } catch (error) {
+      throw error;
     }
+  }
 
-    getDiameter = (table_data: { sieve: string, passant: number, retained: number }[], percentage: number, limits: { upperLimit: limit, inferiorLimit: limit }) => {
-        if (limits.upperLimit.value === percentage) return table_data[limits.upperLimit.index].passant;
-        if (limits.inferiorLimit.value === percentage) return table_data[limits.inferiorLimit.index].passant;
+  async calculateRc({ step2Data, step3Data }: Calc_CONCRETERC_Dto): Promise<{ success: boolean; result: Calc_CONCRETERC_Out }> {
+    try {
+      this.logger.log('calculate rc on calc.rc.service.ts > [body]');
 
-        const coefficientA =
-            (limits.upperLimit.value - limits.inferiorLimit.value) /
-            (table_data[limits.upperLimit.index].passant - table_data[limits.inferiorLimit.index].passant);
-        const coefficientB = limits.upperLimit.value / (coefficientA * table_data[limits.upperLimit.index].passant);
+      const { diammeter1, diammeter2 } = step2Data;
+      const { correctionFactor } = step3Data;
 
-        return (percentage - coefficientB) / coefficientA;
+      let result: {
+        finalCorrectionFactor: number;
+      }
+
+      const maxStrenght = 4 * correctionFactor;
+      const averageDiammeter = diammeter1 + diammeter2 / 2;
+      const value = Math.PI * averageDiammeter;
+      const final = maxStrenght / value;
+
+      result.finalCorrectionFactor = final;
+
+      return {
+        success: true,
+        result,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        result: null,
+      };
     }
-
-    getPercentage = (percentage: number, table_data: { sieve: string, passant: number, retained: number }[]) => {
-        return table_data.reduce(
-            (accumulate, sieve, index) => {
-                const { upperLimit, inferiorLimit } = accumulate;
-
-                if (sieve.passant >= percentage) {
-                    if (upperLimit.value === 0 || sieve.passant < upperLimit.value)
-                        accumulate.upperLimit = {
-                            value: sieve.passant,
-                            index: index
-                        };
-                } else {
-                    if (inferiorLimit.value === 0 || sieve.passant > inferiorLimit.value)
-                        accumulate.inferiorLimit = {
-                            value: sieve.passant,
-                            index: index
-                        };
-                }
-                return accumulate;
-            },
-            {
-                upperLimit: {
-                    value: 0,
-                    index: 0
-                },
-                inferiorLimit: {
-                    value: 0,
-                    index: 0
-                }
-            }
-        );
-    }
+  }
 }

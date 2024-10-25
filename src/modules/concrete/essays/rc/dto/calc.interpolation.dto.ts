@@ -1,7 +1,7 @@
 import { Type } from "class-transformer";
-import { IsNotEmpty, IsNumber, IsObject, ValidateNested } from "class-validator"
+import { IsNotEmpty, IsNumber, IsObject, IsString, ValidateNested } from "class-validator"
 
-export class Reference {
+export class toleranceReference {
   @IsNotEmpty()
   @IsNumber()
   age: number;
@@ -11,22 +11,36 @@ export class Reference {
   tolerance: number;
 }
 
+export class correctionFactorReference {
+  @IsNotEmpty()
+  @IsNumber()
+  diammHeighRatio: number
+
+  @IsNotEmpty()
+  @IsNumber()
+  correctionFactor: number
+}
+
 export class ConcreteRcInterpolationDto {
   @IsNotEmpty()
   @IsNumber()
-  age: number;
+  age_diammHeightRatio: number;
 
   @IsNotEmpty()
   @IsNumber()
-  tolerance: number;
+  tolerance_strenght: number;
 
   @IsNotEmpty()
   @ValidateNested()
-  @Type(() => Reference)
-  higherReference: Reference;
+  @Type(() => toleranceReference || correctionFactorReference)
+  higherReference: toleranceReference | correctionFactorReference;
 
   @IsNotEmpty()
   @ValidateNested()
-  @Type(() => Reference)
-  lowerReference: Reference;
+  @Type(() => toleranceReference || correctionFactorReference)
+  lowerReference: toleranceReference | correctionFactorReference;
+
+  @IsNotEmpty()
+  @IsString()
+  type: string
 }
