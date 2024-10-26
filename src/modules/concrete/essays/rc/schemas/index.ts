@@ -36,8 +36,15 @@ type RC_step2Data = {
 };
 
 type RC_step3Data = {
-  type: string,
-  src: string
+  rupture: {
+    type: string,
+    src: string
+  },
+  graphImg: {
+    name: string,
+    src: string
+  }
+
 }
 
 @Schema({ collection: 'rcs' })
