@@ -18,7 +18,8 @@ export class MaterialsRepository {
   }
 
   async findOne(materialsFilterQuery: FilterQuery<Material>): Promise<Material> {
-    return this.materialModel.findOne(materialsFilterQuery);
+    const material = this.materialModel.findOne(materialsFilterQuery);
+    return material;
   }
 
   async findByType(types: any) {
@@ -28,6 +29,7 @@ export class MaterialsRepository {
 
   async findById(materialId: string): Promise<Material> {
     return this.materialModel.findById(materialId);
+    
   }
 
   async findSelectedById(ids: string[]): Promise<Material[]> {
