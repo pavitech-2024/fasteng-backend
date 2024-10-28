@@ -45,10 +45,30 @@ export class ConcreteRcController {
 
   //Todo: insert api operation decorators;
   @Post('interpolation')
+  @ApiOperation({
+    summary: 'Verifica se é possível criar um ensaio de resistência à compressão de concreto com os dados enviados.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'É possível criar um ensaio de resistência à compressão de concreto com os dados enviados.',
+    content: { 'application/json': { schema: { example: { success: true } } } },
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Não é possível criar um ensaio de resistência à compressão de concreto com os dados enviados.',
+    content: {
+      'application/json': {
+        schema: { example: { success: false, error: { message: 'Sample Not Found.', status: 400, name: 'NotFound' } } },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Erro ao verificar se é possível criar um ensaio de resistência à compressão de concreto com os dados enviados.',
+  })
   async calculateConcreteRcInterpolation(@Res() response: Response, @Body() body: ConcreteRcInterpolationDto) {
     this.logger.log('verify init concrete rc > [body]');
 
-    
     const status = await this.concretercService.calculateConcreteRcInterpolation(body);
 
     return response.status(200).json(status);

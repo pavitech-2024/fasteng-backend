@@ -53,11 +53,20 @@ export class Calc_CONCRETERC_Service {
 
         const toleranceRatio = toleranceValue / higherReferenceArr[1];
 
+        // Condicional: apenas se o usuário inserir valor de tolerância no input do step2;
+
         // Verificação da margem de erro (10+-);
-        if (toleranceRatio >= tolerance_strenght / 60 - 10 || toleranceRatio <= tolerance_strenght + 10) {
-          isPermited = true;
-        } else {
-          isPermited = false;
+        if (tolerance_strenght) {
+          const tolerance_strenghtHours = tolerance_strenght / 60;
+          const errorMarginHours = 10 / 60;
+          if (
+            toleranceRatio >= tolerance_strenghtHours - errorMarginHours ||
+            toleranceRatio <= tolerance_strenghtHours + errorMarginHours
+          ) {
+            isPermited = true;
+          } else {
+            isPermited = false;
+          }
         }
 
         result.data = toleranceRatio;
@@ -86,8 +95,8 @@ export class Calc_CONCRETERC_Service {
       let result: {
         finalCorrectionFactor: number;
       } = {
-        finalCorrectionFactor: 0
-      }
+        finalCorrectionFactor: 0,
+      };
 
       const maxStrenght = 4 * correctionFactor;
       const averageDiammeter = diammeter1 + diammeter2 / 2;

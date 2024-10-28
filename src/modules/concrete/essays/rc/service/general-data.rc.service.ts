@@ -20,8 +20,10 @@ export class GeneralData_CONCRETERC_Service {
       if (!materialExists) throw new NotFound('Chosen material of RC');
 
       // verificar se existe uma rc com mesmo nome e materialId no banco de dados
-      const rcExists = await this.rcRepository.findOne({ generalData: { name, material: { _id: material._id } } });
-
+      const rcExists = await this.rcRepository.findOne({
+        "generalData.name": name,
+        "generalData.material._id": material._id,
+      });
       // se existir, retorna erro
       if (rcExists) throw new AlreadyExists(`RC with name "${name} from user "${material.userId}"`);
 

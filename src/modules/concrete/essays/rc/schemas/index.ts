@@ -24,14 +24,7 @@ type RC_step2Data = {
     age: number,
     tolerance: number
   };
-  tolerance: {
-    age: number,
-    tolerance: number
-  };
-  newTolerance: {
-    data: number,
-    isPermited: boolean
-  };
+  tolerance: number
   correctionFactor: number
 };
 
@@ -44,7 +37,6 @@ type RC_step3Data = {
     name: string,
     src: string
   }
-
 }
 
 @Schema({ collection: 'rcs' })
