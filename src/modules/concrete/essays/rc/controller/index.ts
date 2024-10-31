@@ -66,7 +66,7 @@ export class ConcreteRcController {
     status: 400,
     description: 'Erro ao verificar se é possível criar um ensaio de resistência à compressão de concreto com os dados enviados.',
   })
-  async calculateConcreteRcInterpolation(@Res() response: Response, @Body() body: ConcreteRcInterpolationDto) {
+  async calculateConcreteRcInterpolation(@Res() response: Response, @Body() body: any) {
     this.logger.log('verify init concrete rc > [body]');
 
     const status = await this.concretercService.calculateConcreteRcInterpolation(body);
