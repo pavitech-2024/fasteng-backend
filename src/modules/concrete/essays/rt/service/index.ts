@@ -6,6 +6,7 @@ import { ConcreteRtRepository } from "../repository";
 import { GeneralData_CONCRETERT_Service } from "./general-data.rt.service";
 import { Calc_ConcreteRt_Service } from "./calc.rt.service";
 import { Calc_Concrete_RT_Dto, Calc_Concrete_RT_Out } from "../dto/calc.rt.dto";
+import { ConcreteRtInterpolationDto } from "../dto/concrete-rt-interpolation.dto";
 
 @Injectable()
 export class ConcreteRtService {
@@ -13,7 +14,7 @@ export class ConcreteRtService {
 
   constructor(
     private readonly generalData_Service: GeneralData_CONCRETERT_Service,
-    private readonly calc_Service: Calc_ConcreteRt_Service,
+    private readonly calc_ConcreteRt_Service: Calc_ConcreteRt_Service,
     private readonly Rt_Repository: ConcreteRtRepository,
   ) {}
 
@@ -28,9 +29,20 @@ export class ConcreteRtService {
     }
   }
 
+  async calculateConcreteRtInterpolation(body: ConcreteRtInterpolationDto) {
+    try {
+      const result = await this.calc_ConcreteRt_Service.calculateConcreteRtInterpolation(body);
+
+      return { success: true, result };
+    } catch (error) {
+      const { status, name, message } = error;
+      return { success: false, error: { status, message, name } };
+    }
+  }
+
   async calculateRt(body: Calc_Concrete_RT_Dto) {
     try {
-      return await this.calc_Service.calculateConcreteRt(body);
+      return await this.calc_ConcreteRt_Service.calculateConcreteRt(body);
     } catch (error) {
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };

@@ -17,21 +17,24 @@ export type RtGeneralData = {
 };
 
 type ConcreteRtSteptep2 = {
-  dnitRange: string;
-  sampleVoidVolume: number;
-  pressConstant: number;
-  pressSpecification: string;
-  sampleOrigin: string;
+  age: {
+    hours: number;
+    minutes: number;
+  };
+  tolerance: {
+    hours: number;
+    minutes: number;
+  };
+  finalTolerance: number
 };
 
 type ConcreteRtStep3 = {
-  data: {
-    sampleName: string;
-    d1: number;
-    d2: number;
-    height: number;
-    pressReading: number;
-  }[];
+  appliedCharge: number;
+  supportsDistance: number;
+  graphImg: {
+    name: string;
+    src: string;
+  }
 };
 
 @Schema({ collection: 'Rt' })

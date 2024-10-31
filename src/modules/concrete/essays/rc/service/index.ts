@@ -13,8 +13,7 @@ export class ConcreteRcService {
 
   constructor(
     private readonly generalData_Service: GeneralData_CONCRETERC_Service,
-    private readonly calculateRcInterpolationService: Calc_CONCRETERC_Service,
-    private readonly calc_Service: Calc_CONCRETERC_Service,
+    private readonly calc_concreteRc_Service: Calc_CONCRETERC_Service,
     private readonly Rc_Repository: ConcreteRCRepository,
   ) {}
 
@@ -31,7 +30,7 @@ export class ConcreteRcService {
 
   async calculateConcreteRcInterpolation(body: ConcreteRcInterpolationDto) {
     try {
-      const result = await this.calculateRcInterpolationService.calculateConcreteRcInterpolation(body);
+      const result = await this.calc_concreteRc_Service.calculateConcreteRcInterpolation(body);
 
       return { success: true, result };
     } catch (error) {
@@ -42,7 +41,7 @@ export class ConcreteRcService {
 
   async calculateRc(body: Calc_CONCRETERC_Dto) {
     try {
-      return await this.calc_Service.calculateRc(body);
+      return await this.calc_concreteRc_Service.calculateRc(body);
     } catch (error) {
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };

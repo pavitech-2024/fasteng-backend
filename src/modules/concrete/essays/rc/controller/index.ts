@@ -4,7 +4,6 @@ import { Calc_CONCRETERC_Dto, Calc_CONCRETERC_Out } from '../dto/calc.rc.dto';
 import { ConcreteRcInitDto } from '../dto/concretert-init.dto';
 import { Response } from 'express';
 import { ConcreteRcService } from '../service';
-import { ConcreteRcInterpolationDto } from '../dto/calc.interpolation.dto';
 
 @ApiTags('concreteRc')
 @Controller('concrete/essays/concreteRc')
@@ -43,7 +42,6 @@ export class ConcreteRcController {
     return response.status(200).json(status);
   }
 
-  //Todo: insert api operation decorators;
   @Post('interpolation')
   @ApiOperation({
     summary: 'Verifica se é possível criar um ensaio de resistência à compressão de concreto com os dados enviados.',
@@ -53,20 +51,7 @@ export class ConcreteRcController {
     description: 'É possível criar um ensaio de resistência à compressão de concreto com os dados enviados.',
     content: { 'application/json': { schema: { example: { success: true } } } },
   })
-  @ApiResponse({
-    status: 200,
-    description: 'Não é possível criar um ensaio de resistência à compressão de concreto com os dados enviados.',
-    content: {
-      'application/json': {
-        schema: { example: { success: false, error: { message: 'Sample Not Found.', status: 400, name: 'NotFound' } } },
-      },
-    },
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Erro ao verificar se é possível criar um ensaio de resistência à compressão de concreto com os dados enviados.',
-  })
-  async calculateConcreteRcInterpolation(@Res() response: Response, @Body() body: ConcreteRcInterpolationDto) {
+  async calculateConcreteRcInterpolation(@Res() response: Response, @Body() body: any) {
     this.logger.log('verify init concrete rc > [body]');
 
     const status = await this.concretercService.calculateConcreteRcInterpolation(body);
