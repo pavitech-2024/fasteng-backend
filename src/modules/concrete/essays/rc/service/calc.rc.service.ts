@@ -31,11 +31,9 @@ export class Calc_CONCRETERC_Service {
     try {
       this.logger.log('calculate rc interpolation on calc.rc.interpolation.service.ts > [body]');
 
-      let isPermited;
-
       let result = {
         data: 0,
-        isPermited: null,
+        isPermited: true,
       };
 
       const higherReferenceArr = Object.values(higherReference).map((e) => e);
@@ -63,14 +61,13 @@ export class Calc_CONCRETERC_Service {
             toleranceRatio >= tolerance_strenghtHours - errorMarginHours ||
             toleranceRatio <= tolerance_strenghtHours + errorMarginHours
           ) {
-            isPermited = true;
+            result.isPermited = true;
           } else {
-            isPermited = false;
+            result.isPermited = false;
           }
         }
 
-        result.data = toleranceRatio;
-        result.isPermited = isPermited;
+        result.data = toleranceValue;
       } else if (type === 'correctionFactor') {
         const strenghtDiference = higherReferenceArr[0] - age_diammHeightRatio;
         const strenghtRatio = age_diammHeight_Difference / strenghtDiference;

@@ -17,24 +17,35 @@ export type RtGeneralData = {
 };
 
 type ConcreteRtSteptep2 = {
-  dnitRange: string;
-  sampleVoidVolume: number;
-  pressConstant: number;
-  pressSpecification: string;
-  sampleOrigin: string;
+  age: {
+    hours: number;
+    minutes: number;
+  };
+  tolerance: {
+    hours: number;
+    minutes: number;
+  };
+  finalTolerance: number
 };
 
 type ConcreteRtStep3 = {
-  data: {
-    sampleName: string;
-    d1: number;
-    d2: number;
-    height: number;
-    pressReading: number;
-  }[];
+  appliedCharge: number;
+  supportsDistance: number;
+  graphImg: {
+    name: string;
+    src: string;
+  }
 };
 
-@Schema({ collection: 'Rt' })
+type ConcreteRtStep4 = {
+  compressionCharge: number;
+  graphImg: {
+    name: string;
+    src: string;
+  }
+};
+
+@Schema({ collection: 'rt' })
 export class RT {
   _id: string;
 
@@ -44,11 +55,15 @@ export class RT {
 
   @IsNotEmpty()
   @Prop({ type: Object })
-  concreteRtStep2: ConcreteRtSteptep2;
+  step2Data: ConcreteRtSteptep2;
 
   @IsNotEmpty()
   @Prop({ type: Object })
-  concreteRtStep3: ConcreteRtStep3;
+  step3Data: ConcreteRtStep3;
+
+  @IsNotEmpty()
+  @Prop({ type: Object })
+  step4Data: ConcreteRtStep4;
 
   @IsNotEmpty()
   @Prop({ type: Object })
