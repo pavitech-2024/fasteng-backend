@@ -6,14 +6,16 @@ export class Calc_Concrete_RT_Dto {
   generalData: RT['generalData'];
 
   @IsNotEmpty()
-  step2Data: RT['concreteRtStep2'];
+  step2Data: RT['step2Data'];
 
   @IsNotEmpty()
-  step3Data: RT['concreteRtStep3'];
+  step3Data: RT['step3Data'];
+
+  @IsNotEmpty()
+  step4Data: RT['step4Data'];
 }
 
 export interface Calc_Concrete_RT_Out {
-  everyRtsMpa: number[];
-  everyRtsKgf: number[];
-  average: number;
+  flexualTensileStrength: number,
+  compressionResistance: number,
 }
