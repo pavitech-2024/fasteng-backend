@@ -37,7 +37,15 @@ type ConcreteRtStep3 = {
   }
 };
 
-@Schema({ collection: 'Rt' })
+type ConcreteRtStep4 = {
+  compressionCharge: number;
+  graphImg: {
+    name: string;
+    src: string;
+  }
+};
+
+@Schema({ collection: 'rt' })
 export class RT {
   _id: string;
 
@@ -47,11 +55,15 @@ export class RT {
 
   @IsNotEmpty()
   @Prop({ type: Object })
-  concreteRtStep2: ConcreteRtSteptep2;
+  step2Data: ConcreteRtSteptep2;
 
   @IsNotEmpty()
   @Prop({ type: Object })
-  concreteRtStep3: ConcreteRtStep3;
+  step3Data: ConcreteRtStep3;
+
+  @IsNotEmpty()
+  @Prop({ type: Object })
+  step4Data: ConcreteRtStep4;
 
   @IsNotEmpty()
   @Prop({ type: Object })

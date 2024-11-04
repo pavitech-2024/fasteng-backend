@@ -15,7 +15,7 @@ export class ConcreteRtService {
   constructor(
     private readonly generalData_Service: GeneralData_CONCRETERT_Service,
     private readonly calc_ConcreteRt_Service: Calc_ConcreteRt_Service,
-    private readonly Rt_Repository: ConcreteRtRepository,
+    private readonly rt_Repository: ConcreteRtRepository,
   ) {}
 
   async verifyInitRt(body: ConcreteRtInitDto) {
@@ -56,21 +56,23 @@ export class ConcreteRtService {
         material: { _id: materialId },
         userId,
       } = body.generalData;
+      
 
       // verifica se existe uma Rt com mesmo nome , materialId e userId no banco de dados
-      const alreadyExists = await this.Rt_Repository.findOne({
+      const alreadyExists = await this.rt_Repository.findOne({
         'generalData.name': name,
         'generalData.material._id': materialId,
         'generalData.userId': userId,
       });
+      
 
       // se existir, retorna erro
-      if (alreadyExists) throw new AlreadyExists(`Rt with name "${name}" from user "${userId}"`);
+      if (alreadyExists) throw new AlreadyExists(`rt with name "${name}" from user "${userId}"`);
 
       // se não existir, salva no banco de dados
-      const Rt = await this.Rt_Repository.create(body);
+      const rt = await this.rt_Repository.create(body);
 
-      return { success: true, data: Rt };
+      return { success: true, data: rt };
     } catch (error) {
       const { status, name, message } = error;
 
