@@ -1,24 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { MaterialsRepository } from 'modules/asphalt/materials/repository';
-import { getSieveValue } from 'modules/soils/util/sieves';
 import { Calc_CONCRETERC_Dto, Calc_CONCRETERC_Out } from '../dto/calc.rc.dto';
-import { ConcreteRCRepository } from '../respository';
 import { ConcreteRcInterpolationDto } from '../dto/calc.interpolation.dto';
-
-type limit = { value: number; index: number };
-
-interface curve_point {
-  0: number;
-  1: number;
-}
 
 @Injectable()
 export class Calc_CONCRETERC_Service {
   private logger = new Logger(Calc_CONCRETERC_Service.name);
 
   constructor(
-    private readonly rcRepository: ConcreteRCRepository,
-    private readonly materialsRepository: MaterialsRepository,
   ) {}
 
   async calculateConcreteRcInterpolation({
@@ -29,7 +17,7 @@ export class Calc_CONCRETERC_Service {
     type,
   }: ConcreteRcInterpolationDto) {
     try {
-      this.logger.log('calculate rc interpolation on calc.rc.interpolation.service.ts > [body]');
+      this.logger.log('calculate rc interpolation on calc.rc.interpolation.service.ts > [body]')
 
       let result = {
         data: 0,
@@ -39,6 +27,8 @@ export class Calc_CONCRETERC_Service {
       const higherReferenceArr = Object.values(higherReference).map((e) => e);
       const lowerReferenceArr = Object.values(lowerReference).map((e) => e);
 
+
+      // hours
       const age_diammHeight_Difference = higherReferenceArr[0] - lowerReferenceArr[0];
       const tolerance_correctionFactor_Diff = higherReferenceArr[1] - lowerReferenceArr[1];
 
@@ -55,11 +45,11 @@ export class Calc_CONCRETERC_Service {
 
         // Verificação da margem de erro (10+-);
         if (tolerance_strenght) {
-          const tolerance_strenghtHours = tolerance_strenght / 60;
-          const errorMarginHours = 10 / 60;
+          const toleranceRatioMinutes = toleranceRatio * 60;
+          // Todo: Revisar a margem de erro para saber se ele está considerando como minutos ou horas;
           if (
-            toleranceRatio >= tolerance_strenghtHours - errorMarginHours ||
-            toleranceRatio <= tolerance_strenghtHours + errorMarginHours
+            toleranceRatioMinutes >= tolerance_strenght - 10 &&
+            toleranceRatioMinutes <= tolerance_strenght + 10
           ) {
             result.isPermited = true;
           } else {
@@ -67,7 +57,7 @@ export class Calc_CONCRETERC_Service {
           }
         }
 
-        result.data = toleranceValue;
+        result.data = toleranceRatio;
       } else if (type === 'correctionFactor') {
         const strenghtDiference = higherReferenceArr[0] - age_diammHeightRatio;
         const strenghtRatio = age_diammHeight_Difference / strenghtDiference;
@@ -85,22 +75,17 @@ export class Calc_CONCRETERC_Service {
 
   async calculateRc({ step2Data }: Calc_CONCRETERC_Dto): Promise<{ success: boolean; result: Calc_CONCRETERC_Out }> {
     try {
-      this.logger.log('calculate rc on calc.rc.service.ts > [body]');
+      this.logger.log('calculate rc on calc.rc.service.ts > [body]')
 
       const { diammeter1, diammeter2, correctionFactor } = step2Data;
 
-      let result: {
-        finalCorrectionFactor: number;
-      } = {
-        finalCorrectionFactor: 0,
+      const averageDiammeter = (diammeter1 + diammeter2) / 2;
+      const maxStrenght = 4 * correctionFactor.data;
+      const finalCorrectionFactor = maxStrenght / (Math.PI * averageDiammeter);
+
+      const result = {
+        finalCorrectionFactor
       };
-
-      const maxStrenght = 4 * correctionFactor;
-      const averageDiammeter = diammeter1 + diammeter2 / 2;
-      const value = Math.PI * averageDiammeter;
-      const final = maxStrenght / value;
-
-      result.finalCorrectionFactor = final;
 
       return {
         success: true,
