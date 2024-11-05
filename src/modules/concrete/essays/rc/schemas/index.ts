@@ -25,7 +25,10 @@ type RC_step2Data = {
     tolerance: number
   };
   tolerance: number
-  correctionFactor: number
+  correctionFactor: {
+    data: number;
+    isPermited: boolean
+  }
 };
 
 type RC_step3Data = {
