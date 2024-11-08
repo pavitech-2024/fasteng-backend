@@ -14,16 +14,16 @@ export class ConcreteRcController {
 
   @Post('verify-init')
   @ApiOperation({
-    summary: 'Verifica se é possível criar uma granulometria de ensaio de concreto com os dados enviados.',
+    summary: 'Verifica se é possível criar umensaio de resistência à compressão em concreto com os dados enviados.',
   })
   @ApiResponse({
     status: 200,
-    description: 'É possível criar uma granulometria de ensaio de concreto com os dados enviados.',
+    description: 'É possível criar umensaio de resistência à compressão em concreto com os dados enviados.',
     content: { 'application/json': { schema: { example: { success: true } } } },
   })
   @ApiResponse({
     status: 200,
-    description: 'Não é possível criar uma granulometria de ensaio de concreto com os dados enviados.',
+    description: 'Não é possível criar umensaio de resistência à compressão em concreto com os dados enviados.',
     content: {
       'application/json': {
         schema: { example: { success: false, error: { message: 'Sample Not Found.', status: 400, name: 'NotFound' } } },
@@ -32,7 +32,7 @@ export class ConcreteRcController {
   })
   @ApiResponse({
     status: 400,
-    description: 'Erro ao verificar se é possível criar uma granulometria de ensaio de concreto com os dados enviados.',
+    description: 'Erro ao verificar se é possível criar umensaio de resistência à compressão em concreto com os dados enviados.',
   })
   async verifyInitConcreteRc(@Res() response: Response, @Body() body: ConcreteRcInitDto) {
     this.logger.log('verify init concrete rc > [body]');

@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsNotEmpty, IsNumber, IsObject, IsString, ValidateNested } from "class-validator"
+import { IsArray, IsNotEmpty, IsNumber, IsObject, IsString, ValidateNested } from "class-validator"
 
 export class toleranceReference {
   @IsNotEmpty()
@@ -23,22 +23,21 @@ export class correctionFactorReference {
 
 export class ConcreteRcInterpolationDto {
   @IsNotEmpty()
-  @IsNumber()
-  age_diammHeightRatio: number;
+  @IsArray()
+  @ValidateNested({ each: true })
+  samples: toleranceReference[]
 
   @IsNotEmpty()
-  @IsNumber()
-  tolerance_strenght: number;
-
-  @IsNotEmpty()
+  @IsArray()
   @ValidateNested()
   @Type(() => toleranceReference || correctionFactorReference)
-  higherReference: toleranceReference | correctionFactorReference;
+  higherReference: toleranceReference[] | correctionFactorReference[];
 
   @IsNotEmpty()
+  @IsArray()
   @ValidateNested()
   @Type(() => toleranceReference || correctionFactorReference)
-  lowerReference: toleranceReference | correctionFactorReference;
+  lowerReference: toleranceReference[] | correctionFactorReference[];
 
   @IsNotEmpty()
   @IsString()

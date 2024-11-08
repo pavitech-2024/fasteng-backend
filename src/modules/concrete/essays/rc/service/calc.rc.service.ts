@@ -10,8 +10,7 @@ export class Calc_CONCRETERC_Service {
   ) {}
 
   async calculateConcreteRcInterpolation({
-    age_diammHeightRatio,
-    tolerance_strenght,
+    samples,
     lowerReference,
     higherReference,
     type,
@@ -33,39 +32,39 @@ export class Calc_CONCRETERC_Service {
       const tolerance_correctionFactor_Diff = higherReferenceArr[1] - lowerReferenceArr[1];
 
       if (type === 'tolerance') {
-        const ageInHours = age_diammHeightRatio / 60;
-        const ageInput = higherReferenceArr[0] - ageInHours;
-        const ageRatio = age_diammHeight_Difference / ageInput;
+        // const ageInHours = age_diammHeightRatio / 60;
+        // const ageInput = higherReferenceArr[0] - ageInHours;
+        // const ageRatio = age_diammHeight_Difference / ageInput;
 
-        const toleranceValue = (ageRatio * higherReferenceArr[1]) / tolerance_correctionFactor_Diff;
+        // const toleranceValue = (ageRatio * higherReferenceArr[1]) / tolerance_correctionFactor_Diff;
 
-        const toleranceRatio = toleranceValue / higherReferenceArr[1];
+        // const toleranceRatio = toleranceValue / higherReferenceArr[1];
 
-        // Condicional: apenas se o usuário inserir valor de tolerância no input do step2;
+        // // Condicional: apenas se o usuário inserir valor de tolerância no input do step2;
 
-        // Verificação da margem de erro (10+-);
-        if (tolerance_strenght) {
-          const toleranceRatioMinutes = toleranceRatio * 60;
-          // Todo: Revisar a margem de erro para saber se ele está considerando como minutos ou horas;
-          if (
-            toleranceRatioMinutes >= tolerance_strenght - 10 &&
-            toleranceRatioMinutes <= tolerance_strenght + 10
-          ) {
-            result.isPermited = true;
-          } else {
-            result.isPermited = false;
-          }
-        }
+        // // Verificação da margem de erro (10+-);
+        // if (tolerance_strenght) {
+        //   const toleranceRatioMinutes = toleranceRatio * 60;
+        //   // Todo: Revisar a margem de erro para saber se ele está considerando como minutos ou horas;
+        //   if (
+        //     toleranceRatioMinutes >= tolerance_strenght - 10 &&
+        //     toleranceRatioMinutes <= tolerance_strenght + 10
+        //   ) {
+        //     result.isPermited = true;
+        //   } else {
+        //     result.isPermited = false;
+        //   }
+        // }
 
-        result.data = toleranceRatio;
+        // result.data = toleranceRatio;
       } else if (type === 'correctionFactor') {
-        const strenghtDiference = higherReferenceArr[0] - age_diammHeightRatio;
-        const strenghtRatio = age_diammHeight_Difference / strenghtDiference;
+        // const strenghtDiference = higherReferenceArr[0] - age_diammHeightRatio;
+        // const strenghtRatio = age_diammHeight_Difference / strenghtDiference;
 
-        const correctionFactorValue = (strenghtRatio * higherReferenceArr[1]) / tolerance_correctionFactor_Diff;
-        const correctionFactorRatio = correctionFactorValue / higherReferenceArr[1];
+        // const correctionFactorValue = (strenghtRatio * higherReferenceArr[1]) / tolerance_correctionFactor_Diff;
+        // const correctionFactorRatio = correctionFactorValue / higherReferenceArr[1];
 
-        result.data = correctionFactorRatio;
+        // result.data = correctionFactorRatio;
       }
       return result;
     } catch (error) {
