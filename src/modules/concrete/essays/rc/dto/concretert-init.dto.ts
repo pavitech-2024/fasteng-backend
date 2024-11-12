@@ -4,7 +4,4 @@ import { Material } from "modules/asphalt/materials/schemas";
 export class ConcreteRcInitDto {
     @IsNotEmpty()
     name: string;
-  
-    @IsNotEmpty()
-    material: Material;
   }
