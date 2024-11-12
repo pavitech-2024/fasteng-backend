@@ -17,18 +17,11 @@ export type RCGeneralData = {
 };
 
 type RC_step2Data = {
-  diammeter1: number;
-  diammeter2: number;
-  height: number;
-  age: {
-    age: number,
+    diammeter1: number;
+    diammeter2: number;
+    height: number;
+    age: number;
     tolerance: number
-  };
-  tolerance: number
-  correctionFactor: {
-    data: number;
-    isPermited: boolean
-  }
 };
 
 type RC_step3Data = {
@@ -40,6 +33,7 @@ type RC_step3Data = {
     name: string,
     src: string
   }
+  maximumStrength: number
 }
 
 @Schema({ collection: 'rcs' })
@@ -52,7 +46,7 @@ export class RC {
 
   @IsNotEmpty()
   @Prop({ type: Object })
-  step2Data: RC_step2Data;
+  step2Data: RC_step2Data[];
 
   @IsNotEmpty()
   @Prop({ type: Object })

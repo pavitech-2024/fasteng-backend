@@ -20,26 +20,3 @@ export class correctionFactorReference {
   @IsNumber()
   correctionFactor: number
 }
-
-export class ConcreteRcInterpolationDto {
-  @IsNotEmpty()
-  @IsArray()
-  @ValidateNested({ each: true })
-  samples: toleranceReference[]
-
-  @IsNotEmpty()
-  @IsArray()
-  @ValidateNested()
-  @Type(() => toleranceReference || correctionFactorReference)
-  higherReference: toleranceReference[] | correctionFactorReference[];
-
-  @IsNotEmpty()
-  @IsArray()
-  @ValidateNested()
-  @Type(() => toleranceReference || correctionFactorReference)
-  lowerReference: toleranceReference[] | correctionFactorReference[];
-
-  @IsNotEmpty()
-  @IsString()
-  type: string
-}

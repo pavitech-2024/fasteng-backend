@@ -42,23 +42,6 @@ export class ConcreteRcController {
     return response.status(200).json(status);
   }
 
-  @Post('interpolation')
-  @ApiOperation({
-    summary: 'Verifica se é possível criar um ensaio de resistência à compressão de concreto com os dados enviados.',
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'É possível criar um ensaio de resistência à compressão de concreto com os dados enviados.',
-    content: { 'application/json': { schema: { example: { success: true } } } },
-  })
-  async calculateConcreteRcInterpolation(@Res() response: Response, @Body() body: any) {
-    this.logger.log('verify init concrete rc > [body]');
-
-    const status = await this.concretercService.calculateConcreteRcInterpolation(body);
-
-    return response.status(200).json(status);
-  }
-
   @Post('calculate-results')
   @ApiOperation({ summary: 'Calcula os resultados da granulometria de ensaio de concreto com os dados enviados.' })
   @ApiResponse({
