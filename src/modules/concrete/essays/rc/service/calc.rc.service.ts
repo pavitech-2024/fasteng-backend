@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { Calc_CONCRETERC_Dto, Calc_CONCRETERC_Out } from '../dto/calc.rc.dto';
 import { concreteRcToleranceAge, correctionFactorArr } from './referenceTables';
+import { RC_step2Data } from '../schemas';
 
 @Injectable()
 export class Calc_CONCRETERC_Service {
@@ -8,38 +9,66 @@ export class Calc_CONCRETERC_Service {
 
   constructor() {}
 
-  async calculateRc({ step2Data, step3Data }: Calc_CONCRETERC_Dto): Promise<{ success: boolean, result: Calc_CONCRETERC_Out }> {
+  async calculateRc({
+    step2Data,
+    step3Data,
+  }: Calc_CONCRETERC_Dto): Promise<{ success: boolean; result: Calc_CONCRETERC_Out }> {
     try {
       this.logger.log('calculate rc on calc.rc.service.ts > [body]');
 
       const samples = step2Data;
-      const { maximumStrength } = step3Data;
+      let correctionRefs = new Array(samples.length).fill(null);
 
       const result = {
         tolerances: new Array(samples.length).fill(null),
-        correctionFactors: new Array(samples.length).fill(null)
-      }
+        correctionFactors: new Array(samples.length).fill(null),
+        finalResult: new Array(samples.length).fill(null)
+      };
 
       const toleranceRefs = this.findToleranceRefs(samples);
 
+      result.tolerances = this.calculateTolerance(samples, toleranceRefs);
+
+      // Verificação da condicional de relação altura/diametro
       for (let i = 0; i < samples.length; i++) {
-        if (toleranceRefs.higherReference[i].age !== toleranceRefs.lowerReference[i].age) {
-          result.tolerances = this.calculateTolerance(samples, toleranceRefs);
-        } else {
-          result.tolerances[i] = concreteRcToleranceAge[i];
+        const diammeterRatio = (samples[i].diammeter1 + samples[i].diammeter2) / 2;
+        const heightDiammeterRatio = samples[i].height / diammeterRatio;
+
+        if (heightDiammeterRatio >= 2.06) {
+          throw new BadRequestException('Diameter ratio needs to be smaller than 2.06');
+        } else if (heightDiammeterRatio <= 1.94) {
+          const correctionRefsValue = this.findCorrectionFactorRefs(heightDiammeterRatio);
+          correctionRefs[i] = correctionRefsValue;
+        } else if (heightDiammeterRatio >= 1.94 && heightDiammeterRatio <= 2.06) {
+          correctionRefs[i] = heightDiammeterRatio;
+          result.correctionFactors[i] = heightDiammeterRatio;
         }
       }
 
-      const correctionRefs = this.findCorrectionFactorRefs(samples);
+      result.correctionFactors = this.calculateCorrectionFactor(samples, correctionRefs);
 
-      for (let i = 0; i < samples.length; i++) {
-        result.correctionFactors = this.calculateCorrectionFactor(maximumStrength, samples, correctionRefs);
-      }
+      result.finalResult = this.calculateFinalResult(samples, result.correctionFactors);
 
       return {
         success: true,
         result,
       };
+    } catch (error) {
+      throw error;
+    }
+  }
+  calculateFinalResult(samples: RC_step2Data[], correctionFactors: number[]) {
+    try {
+      this.logger.log('calculate final result on calc.rc.service.ts > [body]');
+
+      const finalResult = new Array(samples.length).fill(null);
+
+      for (let i = 0; i < samples.length; i++) {
+        const averageDiammeter = (samples[i].diammeter1 + samples[i].diammeter2) / 2;
+        finalResult[i] = (4 * correctionFactors[i]) / Math.PI * averageDiammeter;
+      }
+      
+      return finalResult;
     } catch (error) {
       throw error;
     }
@@ -85,40 +114,37 @@ export class Calc_CONCRETERC_Service {
     }
   }
 
-  findCorrectionFactorRefs(samples: Calc_CONCRETERC_Dto['step2Data']) {
+  findCorrectionFactorRefs(heightDiammeterRatio: number) {
     try {
       this.logger.log('find refs on calc.rc.service.ts > [body]');
 
-      let higherReference = new Array(samples.length).fill(null);
-      let lowerReference = new Array(samples.length).fill(null);
+      let higherReference;
+      let lowerReference;
 
-      for (let i = 0; i < samples.length; i++) {
-        const averageDiammeter = (samples[i].diammeter1 + samples[i].diammeter2) / 2;
-        const correctionFound = correctionFactorArr.find((e) => e.diammHeightRatio === averageDiammeter);
+      const correctionFound = correctionFactorArr.find((e) => e.diammHeightRatio === heightDiammeterRatio);
 
-        if (correctionFound) {
-          higherReference[i] = correctionFound;
-          lowerReference[i] = correctionFound;
-        } else {
-          let lowerIndex: number | undefined;
-          let higherIndex: number | undefined;
+      if (correctionFound) {
+        higherReference = correctionFound;
+        lowerReference = correctionFound;
+      } else {
+        let lowerIndex: number | undefined;
+        let higherIndex: number | undefined;
 
-          for (let j = 0; j < correctionFactorArr.length; j++) {
-            if (correctionFactorArr[j].diammHeightRatio < averageDiammeter) {
-              lowerIndex = j;
-            } else if (correctionFactorArr[j].diammHeightRatio > averageDiammeter) {
-              higherIndex = j;
-              break;
-            }
+        for (let j = 0; j < correctionFactorArr.length; j++) {
+          if (
+            correctionFactorArr[j].diammHeightRatio > heightDiammeterRatio &&
+            correctionFactorArr[j + 1].diammHeightRatio < heightDiammeterRatio
+          ) {
+            higherIndex = j;
+            lowerIndex = j + 1;
           }
-
-          const higherReferenceArr = higherIndex !== undefined ? correctionFactorArr[higherIndex] : null;
-          higherReference[i] = higherReferenceArr;
-          const lowerReferenceArr = lowerIndex !== undefined ? correctionFactorArr[lowerIndex] : null;
-          lowerReference[i] = lowerReferenceArr;
         }
-      }
 
+        const higherReferenceArr = higherIndex !== undefined ? correctionFactorArr[higherIndex] : null;
+        higherReference = higherReferenceArr;
+        const lowerReferenceArr = lowerIndex !== undefined ? correctionFactorArr[lowerIndex] : null;
+        lowerReference = lowerReferenceArr;
+      }
       return { higherReference, lowerReference };
     } catch (error) {
       throw error;
@@ -132,23 +158,27 @@ export class Calc_CONCRETERC_Service {
       const { higherReference, lowerReference } = refs;
       const averageDiammeters = new Array(samples.length).fill(null);
       const tolerances = new Array(samples.length).fill(null);
+      let toleranceRatio;
 
       for (let i = 0; i < samples.length; i++) {
-        const ageDifference = (higherReference[i].age * 60) - (lowerReference[i].age * 60);
-        const toleranceDifference = higherReference[i].tolerance - lowerReference[i].tolerance;
+        if (refs.higherReference[i].age !== refs.lowerReference[i].age) {
+          const ageDifference = higherReference[i].age * 60 - lowerReference[i].age * 60;
+          const toleranceDifference = higherReference[i].tolerance - lowerReference[i].tolerance;
 
-        const averageDiammeter = (samples[i].diammeter1 + samples[i].diammeter2) / 2;
-        averageDiammeters[i] = averageDiammeter;
+          const averageDiammeter = (samples[i].diammeter1 + samples[i].diammeter2) / 2;
+          averageDiammeters[i] = averageDiammeter;
 
-        const ageInput = (higherReference[i].age * 60) - samples[i].age;
-        const ageRatio = ageDifference / ageInput;
-        const toleranceValue = (ageRatio * higherReference[i].tolerance) / toleranceDifference;
-        const toleranceRatio = toleranceValue / higherReference[i].tolerance;
-
-        tolerances[i] = toleranceRatio;
+          const ageInput = higherReference[i].age * 60 - samples[i].age;
+          const ageRatio = ageDifference / ageInput;
+          const toleranceValue = (ageRatio * higherReference[i].tolerance) / toleranceDifference;
+          toleranceRatio = toleranceValue / higherReference[i].tolerance;
+          tolerances[i] = toleranceRatio;
+        } else {
+          toleranceRatio = refs.higherReference[i].tolerance;
+          tolerances[i] = toleranceRatio;
+        }
 
         const { success } = this.verifyToleranceInput(samples[i].tolerance, toleranceRatio);
-
 
         if (!success) {
           throw new BadRequestException(`Invalid tolerance input > index: ${i}`);
@@ -161,40 +191,45 @@ export class Calc_CONCRETERC_Service {
     }
   }
 
-  calculateCorrectionFactor(maximumStrength, samples, correctionRefs) {
+  calculateCorrectionFactor(samples, correctionRefs) {
     try {
       this.logger.log('calculate correction factor on calc.rc.service.ts > [body]');
 
       let correctionFactor = new Array(samples.length).fill(null);
 
       for (let i = 0; i < samples.length; i++) {
-        const averageDiammeter = (samples[i].diammeter1 + samples[i].diammeter2) / 2;
+        if (correctionRefs[i] !== null && Object.keys(correctionRefs[i]).some((key) => key === 'higherReference')) {
+          const averageDiammeter = (samples[i].diammeter1 + samples[i].diammeter2) / 2;
+          const heightDiammeterRatio = samples[i].height / averageDiammeter;
 
-        if (averageDiammeter >= 2.06) {
-          throw new BadRequestException('Diameter ratio needs to be smaller than 2.06');
-        } else if (averageDiammeter <= 1.94) {
-          const correctionFound = correctionFactorArr.find((e) => e.diammHeightRatio === averageDiammeter);
-          if (!correctionFound) {
-            // Interpolação
-            const diammterRatioDifference =
-              correctionRefs.higherReference[i].diammHeightRatio - correctionRefs.lowerReference[i].diammHeightRatio;
-            const correctionFactorDifference =
-              correctionRefs.higherReference[i].correctionFactor - correctionRefs.lowerReference[i].correctionFactor;
+          if (heightDiammeterRatio >= 2.06) {
+            throw new BadRequestException('Diameter ratio needs to be smaller than 2.06');
+          } else if (heightDiammeterRatio <= 1.94) {
+            const correctionFound = correctionFactorArr.find((e) => e.diammHeightRatio === heightDiammeterRatio);
+            if (!correctionFound) {
+              // Interpolação
+              const diammterRatioDifference =
+                correctionRefs[i].higherReference.diammHeightRatio - correctionRefs[i].lowerReference.diammHeightRatio;
+              const correctionFactorDifference =
+                correctionRefs[i].higherReference.correctionFactor - correctionRefs[i].lowerReference.correctionFactor;
 
-            const value = correctionRefs.higherReference[i].diammHeightRatio - averageDiammeter;
-            const ratio = diammterRatioDifference / value;
-            const correctionValue = (ratio * correctionRefs.higherReference[i].correctionFactor) / correctionFactorDifference;
-            const correctionRatio = correctionValue / correctionRefs.higherReference[i].correctionFactor;
+              const value = correctionRefs[i].higherReference.diammHeightRatio - heightDiammeterRatio;
+              const ratio = diammterRatioDifference / value;
+              const correctionValue =
+                (ratio * correctionRefs[i].higherReference.correctionFactor) / correctionFactorDifference;
+              const correctionRatio = correctionValue / correctionRefs[i].higherReference.correctionFactor;
 
-            correctionFactor[i] = correctionRatio;
-          } else if (averageDiammeter <= 1.94 && averageDiammeter >= 2.06) {
-            correctionFactor[i] = maximumStrength;
+              correctionFactor[i] = correctionRatio;
+            } else if (heightDiammeterRatio <= 1.94 && heightDiammeterRatio >= 2.06) {
+              correctionFactor[i] = samples[i].maximumStrength;
+            }
           }
+
+          correctionFactor[i] = samples[i].maximumStrength * correctionFactor[i];
+        } else {
+          correctionFactor[i] = samples[i].maximumStrength * correctionRefs[i];
         }
-
-        correctionFactor[i] = (4 * maximumStrength) / (Math.PI * averageDiammeter);
       }
-
       return correctionFactor;
     } catch (error) {
       throw error;

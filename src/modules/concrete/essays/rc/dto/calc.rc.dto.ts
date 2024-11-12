@@ -15,4 +15,5 @@ export class Calc_CONCRETERC_Dto {
 export interface Calc_CONCRETERC_Out {
   tolerances: number[];
   correctionFactors: number[]
+  finalResult: number[]
 }
