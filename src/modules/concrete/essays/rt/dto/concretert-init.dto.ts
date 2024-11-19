@@ -4,7 +4,4 @@ import { Material } from "modules/concrete/materials/schemas";
 export class ConcreteRtInitDto {
     @IsNotEmpty()
     name: string;
-  
-    @IsNotEmpty()
-    material: Material;
   }

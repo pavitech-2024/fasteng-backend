@@ -6,7 +6,7 @@ export class Calc_Concrete_RT_Dto {
   generalData: RT['generalData'];
 
   @IsNotEmpty()
-  step2Data: RT['step2Data'];
+  step2Data: RT['step2Data'][];
 
   @IsNotEmpty()
   step3Data: RT['step3Data'];
