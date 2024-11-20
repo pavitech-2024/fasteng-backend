@@ -9,10 +9,7 @@ export class Calc_CONCRETERC_Service {
 
   constructor() {}
 
-  async calculateRc({
-    step2Data,
-    step3Data,
-  }: Calc_CONCRETERC_Dto): Promise<{ success: boolean; result: Calc_CONCRETERC_Out }> {
+  async calculateRc({ step2Data }: Calc_CONCRETERC_Dto): Promise<{ success: boolean; result: Calc_CONCRETERC_Out }> {
     try {
       this.logger.log('calculate rc on calc.rc.service.ts > [body]');
 
@@ -22,7 +19,7 @@ export class Calc_CONCRETERC_Service {
       const result = {
         tolerances: new Array(samples.length).fill(null),
         correctionFactors: new Array(samples.length).fill(null),
-        finalResult: new Array(samples.length).fill(null)
+        finalResult: new Array(samples.length).fill(null),
       };
 
       const toleranceRefs = this.findToleranceRefs(samples);
@@ -47,7 +44,7 @@ export class Calc_CONCRETERC_Service {
 
       result.correctionFactors = this.calculateCorrectionFactor(samples, correctionRefs);
 
-      result.finalResult = this.calculateFinalResult(samples, result.correctionFactors);
+      result.finalResult = this.calculateFinalResults(samples, result.correctionFactors);
 
       return {
         success: true,
@@ -57,21 +54,17 @@ export class Calc_CONCRETERC_Service {
       throw error;
     }
   }
-  calculateFinalResult(samples: RC_step2Data[], correctionFactors: number[]) {
-    try {
-      this.logger.log('calculate final result on calc.rc.service.ts > [body]');
+  
+  calculateFinalResults(samples: RC_step2Data[], correctionFactors: number[]): number[] {
+    const results = new Array(samples.length);
+    const factor = 4 / Math.PI;
 
-      const finalResult = new Array(samples.length).fill(null);
-
-      for (let i = 0; i < samples.length; i++) {
-        const averageDiammeter = (samples[i].diammeter1 + samples[i].diammeter2) / 2;
-        finalResult[i] = (4 * correctionFactors[i]) / Math.PI * averageDiammeter;
-      }
-      
-      return finalResult;
-    } catch (error) {
-      throw error;
+    for (let i = 0; i < samples.length; i++) {
+      const averageDiameter = (samples[i].diammeter1 + samples[i].diammeter2) / 2;
+      results[i] = factor * correctionFactors[i] / averageDiameter ** 2;
     }
+
+    return results;
   }
 
   findToleranceRefs(samples: Calc_CONCRETERC_Dto['step2Data']) {
@@ -132,18 +125,17 @@ export class Calc_CONCRETERC_Service {
 
         for (let j = 0; j < correctionFactorArr.length; j++) {
           if (
-            correctionFactorArr[j].diammHeightRatio > heightDiammeterRatio &&
-            correctionFactorArr[j + 1].diammHeightRatio < heightDiammeterRatio
+            correctionFactorArr[j].diammHeightRatio <= heightDiammeterRatio &&
+            correctionFactorArr[j + 1]?.diammHeightRatio > heightDiammeterRatio
           ) {
-            higherIndex = j;
-            lowerIndex = j + 1;
+            lowerIndex = j;
+            higherIndex = j + 1;
+            break;
           }
         }
 
-        const higherReferenceArr = higherIndex !== undefined ? correctionFactorArr[higherIndex] : null;
-        higherReference = higherReferenceArr;
-        const lowerReferenceArr = lowerIndex !== undefined ? correctionFactorArr[lowerIndex] : null;
-        lowerReference = lowerReferenceArr;
+        higherReference = higherIndex !== undefined ? correctionFactorArr[higherIndex] : null;
+        lowerReference = lowerIndex !== undefined ? correctionFactorArr[lowerIndex] : null;
       }
       return { higherReference, lowerReference };
     } catch (error) {
@@ -163,7 +155,7 @@ export class Calc_CONCRETERC_Service {
       for (let i = 0; i < samples.length; i++) {
         if (refs.higherReference[i].age !== refs.lowerReference[i].age) {
           const ageDifference = higherReference[i].age * 60 - lowerReference[i].age * 60;
-          const toleranceDifference = higherReference[i].tolerance - lowerReference[i].tolerance;
+          const toleranceDifference = higherReference[i].tolerance * 60 - lowerReference[i].tolerance * 60;
 
           const averageDiammeter = (samples[i].diammeter1 + samples[i].diammeter2) / 2;
           averageDiammeters[i] = averageDiammeter;
@@ -200,34 +192,38 @@ export class Calc_CONCRETERC_Service {
       for (let i = 0; i < samples.length; i++) {
         if (correctionRefs[i] !== null && Object.keys(correctionRefs[i]).some((key) => key === 'higherReference')) {
           const averageDiammeter = (samples[i].diammeter1 + samples[i].diammeter2) / 2;
-          const heightDiammeterRatio = samples[i].height / averageDiammeter;
+          const heightDiammeterRatio = Number((samples[i].height / averageDiammeter).toFixed(2));
 
+          // Validate height/diameter ratio
           if (heightDiammeterRatio >= 2.06) {
             throw new BadRequestException('Diameter ratio needs to be smaller than 2.06');
           } else if (heightDiammeterRatio <= 1.94) {
+            // Find correction factor directly or perform interpolation
             const correctionFound = correctionFactorArr.find((e) => e.diammHeightRatio === heightDiammeterRatio);
             if (!correctionFound) {
-              // Interpolação
+              // Perform interpolation if exact match is not found
               const diammterRatioDifference =
                 correctionRefs[i].higherReference.diammHeightRatio - correctionRefs[i].lowerReference.diammHeightRatio;
               const correctionFactorDifference =
                 correctionRefs[i].higherReference.correctionFactor - correctionRefs[i].lowerReference.correctionFactor;
 
               const value = correctionRefs[i].higherReference.diammHeightRatio - heightDiammeterRatio;
-              const ratio = diammterRatioDifference / value;
-              const correctionValue =
-                (ratio * correctionRefs[i].higherReference.correctionFactor) / correctionFactorDifference;
-              const correctionRatio = correctionValue / correctionRefs[i].higherReference.correctionFactor;
+              const formattedValue = Number(value.toFixed(2));
+
+              const ratio = diammterRatioDifference / formattedValue;
+
+              const ratio2 = correctionFactorDifference / ratio;
+
+              const finalInterpolation = correctionRefs[i].higherReference.correctionFactor - ratio2;
+
+              const correctionRatio = finalInterpolation * samples[i].maximumStrenghth;
 
               correctionFactor[i] = correctionRatio;
             } else if (heightDiammeterRatio <= 1.94 && heightDiammeterRatio >= 2.06) {
-              correctionFactor[i] = samples[i].maximumStrength;
+              // Use the height/diameter ratio directly if within range
+              correctionFactor[i] = heightDiammeterRatio;
             }
           }
-
-          correctionFactor[i] = samples[i].maximumStrength * correctionFactor[i];
-        } else {
-          correctionFactor[i] = samples[i].maximumStrength * correctionRefs[i];
         }
       }
       return correctionFactor;
