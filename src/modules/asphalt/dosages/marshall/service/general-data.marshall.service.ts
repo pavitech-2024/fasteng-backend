@@ -50,11 +50,13 @@ export class GeneralData_Marshall_Service {
       const marshallExists: any = await this.marshallRepository.findOne(name, userId);
 
       const { isConsult, ...marshallDosageWithoutIsConsult } = body;
+      
 
-      const completedMarshallDosage = {
-        ...marshallExists._doc,
-        saveMarshallDosage: marshallDosageWithoutIsConsult,
-      };
+      // const completedMarshallDosage = {
+      //   ...marshallExists._doc,
+      //   saveMarshallDosage: marshallDosageWithoutIsConsult,
+      // };
+      const completedMarshallDosage = { ...marshallExists._doc, ...marshallDosageWithoutIsConsult };
 
       await this.marshallModel.updateOne({ _id: marshallExists._doc._id }, completedMarshallDosage);
 
