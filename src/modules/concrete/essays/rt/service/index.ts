@@ -6,7 +6,6 @@ import { ConcreteRtRepository } from "../repository";
 import { GeneralData_CONCRETERT_Service } from "./general-data.rt.service";
 import { Calc_ConcreteRt_Service } from "./calc.rt.service";
 import { Calc_Concrete_RT_Dto, Calc_Concrete_RT_Out } from "../dto/calc.rt.dto";
-import { ConcreteRtInterpolationDto } from "../dto/concrete-rt-interpolation.dto";
 
 @Injectable()
 export class ConcreteRtService {
@@ -29,17 +28,6 @@ export class ConcreteRtService {
     }
   }
 
-  async calculateConcreteRtInterpolation(body: ConcreteRtInterpolationDto) {
-    try {
-      const result = await this.calc_ConcreteRt_Service.calculateConcreteRtInterpolation(body);
-
-      return { success: true, result };
-    } catch (error) {
-      const { status, name, message } = error;
-      return { success: false, error: { status, message, name } };
-    }
-  }
-
   async calculateRt(body: Calc_Concrete_RT_Dto) {
     try {
       return await this.calc_ConcreteRt_Service.calculateConcreteRt(body);
@@ -53,7 +41,6 @@ export class ConcreteRtService {
     try {
       const {
         name,
-        material: { _id: materialId },
         userId,
       } = body.generalData;
       
@@ -61,10 +48,8 @@ export class ConcreteRtService {
       // verifica se existe uma Rt com mesmo nome , materialId e userId no banco de dados
       const alreadyExists = await this.rt_Repository.findOne({
         'generalData.name': name,
-        'generalData.material._id': materialId,
         'generalData.userId': userId,
       });
-      
 
       // se existir, retorna erro
       if (alreadyExists) throw new AlreadyExists(`rt with name "${name}" from user "${userId}"`);
@@ -79,5 +64,4 @@ export class ConcreteRtService {
       return { success: false, error: { status, message, name } };
     }
   }
-
 }

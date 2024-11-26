@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { SuperpaveRepository } from '../repository/index';
 import { SuperpaveInitDto } from '../dto/superpave-init.dto';
 import { AlreadyExists } from '../../../../../utils/exceptions';
@@ -32,6 +32,26 @@ export class GeneralData_Superpave_Service {
       await this.superpaveRepository.saveStep(createdPartialSuperpave._doc, 1);
 
       return true;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getDosageById(dosageId: string) {
+    try {
+      this.logger.log(
+        'get dosage by id on general-data.superpave.service.ts > [body]',
+        {
+          dosageId,
+        },
+      );
+      const dosage = await this.superpaveRepository.findById(dosageId);
+
+      if (!dosage) {
+        throw new NotFoundException(`Dosage whith id ${dosageId} not found`);
+      }
+
+      return dosage;
     } catch (error) {
       throw error;
     }
