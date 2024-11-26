@@ -76,6 +76,20 @@ export class SuperpaveService {
     }
   }
 
+  async getDosageById(dosageId: string) {
+    try {
+      const dosage = await this.generalData_Service.getDosageById(dosageId);
+
+      this.logger.log(`dosage returned > [dosage]`);
+
+      return { dosage, success: true };
+    } catch (error) {
+      this.logger.error(`error on getting dosage by id > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { materials: [], success: false, error: { status, message, name } };
+    }
+  }
+
   async saveMaterialSelectionStep(body: any, userId: string) {
     try {
       const success = await this.materialSelection_Service.saveMaterials(body, userId);

@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { IsNotEmpty } from "class-validator";
-import { Material } from "modules/concrete/materials/schemas";
 import { HydratedDocument } from "mongoose";
 import { Calc_Concrete_RT_Out } from "../dto/calc.rt.dto";
 
@@ -9,7 +8,6 @@ export type RtDocument = HydratedDocument<RT>;
 export type RtGeneralData = {
   userId: string;
   name: string;
-  material: Material;
   createdAt: Date;
   operator?: string;
   calculist?: string;
@@ -17,20 +15,13 @@ export type RtGeneralData = {
 };
 
 type ConcreteRtSteptep2 = {
-  age: {
-    hours: number;
-    minutes: number;
-  };
-  tolerance: {
-    hours: number;
-    minutes: number;
-  };
-  finalTolerance: number
+  age: number;
+  tolerance: number;
+  appliedCharge: number;
+  supportsDistance: number;
 };
 
 type ConcreteRtStep3 = {
-  appliedCharge: number;
-  supportsDistance: number;
   graphImg: {
     name: string;
     src: string;
