@@ -14,7 +14,7 @@ export class GeneralData_CONCRETERT_Service {
     try {
       this.logger.log('verify init rt on general-data.rt.service.ts > [body]');
 
-      // verificar se existe uma rt com mesmo nome e materialId no banco de dados
+      // verificar se existe uma rt com mesmo nome no banco de dados
       const rtExists = await this.rtRepository.findOne({ generalData: { name } });
 
       // se existir, retorna erro
