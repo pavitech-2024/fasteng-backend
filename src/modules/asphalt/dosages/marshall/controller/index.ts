@@ -12,8 +12,8 @@ export class MarshallController {
   constructor(private readonly marshallService: MarshallService) { }
 
   @Get('all/:id')
-  @ApiOperation({ summary: 'Retorna todas as dosagens do banco de dados de um usuário.' })
-  @ApiResponse({ status: 200, description: 'Dosagens encontrados com sucesso!' })
+  @ApiOperation({ summary: 'Retorna todas as dosagens Marshall do banco de dados de um usuário.' })
+  @ApiResponse({ status: 200, description: 'Dosagens encontradas com sucesso!' })
   @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
   async getAllByUserId(@Param('id') userId: string) {
     this.logger.log(`get all dosages by user id > [id]: ${userId}`);
@@ -22,10 +22,10 @@ export class MarshallController {
   }
 
   @Post('verify-init/:id')
-  @ApiOperation({ summary: 'Verifica se é possível criar uma Marshall com os dados enviados.' })
+  @ApiOperation({ summary: 'Verifica se é possível criar uma dosagem Marshall com os dados enviados.' })
   @ApiResponse({
     status: 200,
-    description: 'É possível criar uma Marshall com os dados enviados.',
+    description: 'É possível criar uma dosagem Marshall com os dados enviados.',
     content: { 'application/json': { schema: { example: { success: true } } } },
   })
   @ApiResponse({
@@ -55,6 +55,19 @@ export class MarshallController {
     
 
     const status = await this.marshallService.getUserMaterials(userId);
+
+    return response.status(200).json(status);
+  }
+
+  @Get(':id')
+  @ApiOperation({ summary: 'Retorna uma dosagem do banco de dados com o id informado.' })
+  @ApiResponse({ status: 200, description: 'Dosagem encontrada com sucesso!' })
+  @ApiResponse({ status: 400, description: 'Dosagem não encontrada!' })
+  async getDosageById(@Res() response: Response, @Param('id') dosageId: string) {
+    this.logger.log(`get all materials, by user id, with the necessary dosage essays > [id]: ${dosageId}`);
+    this.logger.log(`get a dosage by dosage id > [id]: ${dosageId}`);
+
+    const status = await this.marshallService.getDosageById(dosageId);
 
     return response.status(200).json(status);
   }

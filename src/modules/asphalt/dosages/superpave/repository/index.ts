@@ -30,6 +30,10 @@ export class SuperpaveRepository {
     });
   }
 
+  async findById(dosageId: string): Promise<Superpave> {
+    return this.superpaveModel.findById(dosageId);
+  }
+
   async createPartialSuperpave(superpave: any, userId: string): Promise<any> {
     try {
       const createdPartialSuperpave = await this.superpaveModel.create({

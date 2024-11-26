@@ -1,4 +1,4 @@
-import { Injectable, Logger } from "@nestjs/common";
+import { Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { MarshallRepository } from '../repository/index';
 import { AlreadyExists } from "../../../../../utils/exceptions";
 import { InjectModel } from "@nestjs/mongoose";
@@ -33,6 +33,26 @@ export class GeneralData_Marshall_Service {
       return true;
     } catch (error) {
       throw error
+    }
+  }
+
+  async getDosageById(dosageId: string) {
+    try {
+      this.logger.log(
+        'get dosage by id on general-data.marshall.service.ts > [body]',
+        {
+          dosageId,
+        },
+      );
+      const dosage = await this.marshallRepository.findById(dosageId);
+
+      if (!dosage) {
+        throw new NotFoundException(`Dosage whith id ${dosageId} not found`);
+      }
+
+      return dosage;
+    } catch (error) {
+      throw error;
     }
   }
 
