@@ -11,18 +11,16 @@ export class GeneralData_CONCRETERT_Service {
   constructor(private readonly rtRepository: ConcreteRtRepository) {}
 
   async verifyInitRt({ name }: ConcreteRtInitDto) {
-    try {
-      this.logger.log('verify init rt on general-data.rt.service.ts > [body]');
+  try {
+    const existingRt = await this.rtRepository.findOne({ generalData: { name } });
 
-      // verificar se existe uma rt com mesmo nome no banco de dados
-      const rtExists = await this.rtRepository.findOne({ generalData: { name } });
-
-      // se existir, retorna erro
-      if (rtExists) throw new AlreadyExists(`RT with name "${name}"`);
-
-      return true;
-    } catch (error) {
-      throw error;
+    if (existingRt) {
+      throw new AlreadyExists(`RT with name "${name}"`);
     }
+
+    return true;
+  } catch (error) {
+    throw error;
   }
+}
 }
