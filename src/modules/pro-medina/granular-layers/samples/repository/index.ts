@@ -73,7 +73,7 @@ export class GranularLayers_SamplesRepository {
   }
 
   async findOneById(sampleId: string): Promise<GranularLayers_Sample> {
-    const sample = await this.granularLayers_sampleModel.findOne({ _id: sampleId });
+    const sample = await this.granularLayers_sampleModel.findById(sampleId);
 
     return sample;
   }
