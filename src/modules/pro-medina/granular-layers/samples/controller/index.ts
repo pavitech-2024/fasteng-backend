@@ -19,7 +19,6 @@ export class GranularLayersSamplesController {
   @ApiResponse({ status: 413, description: 'Imagens grandes demais!' })
   async createSample(@Body() sample: CreateGranularLayersSampleDto) {
     this.logger.log('Create granular layers sample > [body]');
-
     try {
       const createdSample = await this.granularLayersSamplesService.createSample(sample);
       

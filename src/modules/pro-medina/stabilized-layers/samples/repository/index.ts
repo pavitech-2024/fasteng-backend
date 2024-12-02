@@ -96,7 +96,7 @@ export class StabilizedLayers_SamplesRepository {
 
   async findOneById(sampleId: string): 
   Promise<StabilizedLayers_Sample> {
-    const sample = await this.stabilizedLayers_sampleModel.findOne({ _id: sampleId });
+    const sample = await this.stabilizedLayers_sampleModel.findById(sampleId);
     
     return sample;
   }

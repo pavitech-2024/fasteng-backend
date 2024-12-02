@@ -50,10 +50,14 @@ export class BinderAsphaltConcreteSamplesController {
   @Get('all')
   @ApiOperation({ summary: 'Retorna todas as amostras de ligante asfáltico/concreto do banco de dados.' })
   @ApiResponse({ status: 200, description: 'Amostras de ligante asfáltico/concreto encontradas com sucesso!' })
-  async getAll() {
+  async getAllSamples(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10
+  ) {
     this.logger.log(`get all samples`);
 
-    return this.binderAsphaltConcreteSamplesService.getAllSamples();
+
+    return this.binderAsphaltConcreteSamplesService.getAllSamples({page, limit});
   }
 
   @Get(':id')

@@ -13,9 +13,9 @@ export class StabilizedLayersSamplesController {
   constructor(private readonly stabilizedLayersSamplesService: StabilizedLayersSamplesService) {}
 
   @Post('save')
-  @ApiOperation({ summary: 'Cria uma amostra de camadas stabilizedes no banco de dados.' })
-  @ApiResponse({ status: 201, description: 'Amostra de camadas stabilizedes criada com sucesso!' })
-  @ApiResponse({ status: 400, description: 'Erro ao criar amostra de camadas stabilizedes!' })
+  @ApiOperation({ summary: 'Cria uma amostra de camadas estabilizadas no banco de dados.' })
+  @ApiResponse({ status: 201, description: 'Amostra de camadas estabilizadas criada com sucesso!' })
+  @ApiResponse({ status: 400, description: 'Erro ao criar amostra de camadas estabilizadas!' })
   async createSample(@Body() sample: CreateStabilizedLayersSampleDto) {
     this.logger.log('create stabilized layers sample > [body]');
     try {
@@ -60,9 +60,9 @@ export class StabilizedLayersSamplesController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Retorna uma amostra de camadas stabilizedes do banco de dados.' })
-  @ApiResponse({ status: 200, description: 'Amostra de camadas stabilizedes encontrada com sucesso!' })
-  @ApiResponse({ status: 400, description: 'Amostra de camadas stabilizedes não encontrada!' })
+  @ApiOperation({ summary: 'Retorna uma amostra de camadas estabilizadas do banco de dados.' })
+  @ApiResponse({ status: 200, description: 'Amostra de camadas estabilizadas encontrada com sucesso!' })
+  @ApiResponse({ status: 400, description: 'Amostra de camadas estabilizadas não encontrada!' })
   async getSampleById(@Param('id') sampleId: string) {
     this.logger.log(`get sample by id > [id]: ${sampleId}`);
 
@@ -70,9 +70,9 @@ export class StabilizedLayersSamplesController {
   }
 
   @Put(':id')
-  @ApiOperation({ summary: 'Atualiza uma amostra de camadas stabilizedes do banco de dados.' })
-  @ApiResponse({ status: 200, description: 'Amostra de camadas stabilizedes atualizada com sucesso!' })
-  @ApiResponse({ status: 400, description: 'Amostra de camadas stabilizedes não encontrada!' })
+  @ApiOperation({ summary: 'Atualiza uma amostra de camadas estabilizadas do banco de dados.' })
+  @ApiResponse({ status: 200, description: 'Amostra de camadas estabilizadas atualizada com sucesso!' })
+  @ApiResponse({ status: 400, description: 'Amostra de camadas estabilizadas não encontrada!' })
   async updateSampleById(@Param('id') sampleId: string, @Body() sample: StabilizedLayers_Sample) {
     this.logger.log(`update sample by id > [id]: ${sampleId}`);
 
@@ -80,9 +80,9 @@ export class StabilizedLayersSamplesController {
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Deleta uma amostra de camadas stabilizedes do banco de dados.' })
-  @ApiResponse({ status: 200, description: 'Amostra de camadas stabilizedes deletada com sucesso!' })
-  @ApiResponse({ status: 400, description: 'Amostra de camadas stabilizedes não encontrada!' })
+  @ApiOperation({ summary: 'Deleta uma amostra de camadas estabilizadas do banco de dados.' })
+  @ApiResponse({ status: 200, description: 'Amostra de camadas estabilizadas deletada com sucesso!' })
+  @ApiResponse({ status: 400, description: 'Amostra de camadas estabilizadas não encontrada!' })
   async deleteSampleById(@Param('id') sampleId: string) {
     this.logger.log(`delete sample by id > [id]: ${sampleId}`);
 
