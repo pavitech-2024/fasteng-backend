@@ -36,10 +36,10 @@ export class BinderAsphaltConcreteSamplesService {
     }
   }
 
-  async getAllSamples(): Promise<BinderAsphaltConcrete_Sample[]> {
+  async getAllSamples(options: { page: number; limit: number }): Promise<BinderAsphaltConcrete_Sample[]> {
     try {
       // busca todas as amostras no banco de dados
-      const samples = await this.binderAsphaltConcrete_SamplesRepository.find();
+      const samples = await this.binderAsphaltConcrete_SamplesRepository.findAll(options);
 
       // retorna as amostras encontradas que pertencem ao usuário
       return samples;
@@ -92,7 +92,7 @@ export class BinderAsphaltConcreteSamplesService {
   async updateSample(sample: BinderAsphaltConcrete_Sample): Promise<BinderAsphaltConcrete_Sample> {
     try {
       // busca uma amostra com o id passado no banco de dados
-      const sampleFound = await this.binderAsphaltConcrete_SamplesRepository.findOne({ _id: sample._id });
+      const sampleFound = await this.binderAsphaltConcrete_SamplesRepository.findOneById(sample._id);
 
       // se não encontrar a amostra, retorna um erro
       if (!sampleFound) throw new NotFound('Sample');

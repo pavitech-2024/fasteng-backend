@@ -91,7 +91,7 @@ export class GranularLayersSamplesService {
   async updateSample(sample: GranularLayers_Sample): Promise<GranularLayers_Sample> {
     try {
       // busca uma amostra com o id passado no banco de dados
-      const sampleFound = await this.granularLayers_SamplesRepository.findOne({ _id: sample._id });
+      const sampleFound = await this.granularLayers_SamplesRepository.findOneById(sample._id);
 
       // se não encontrar a amostra, retorna um erro
       if (!sampleFound) throw new NotFound('Sample');
