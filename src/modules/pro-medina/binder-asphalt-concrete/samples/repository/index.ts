@@ -28,7 +28,11 @@ export class BinderAsphaltConcrete_SamplesRepository {
       const formattedLimit = Number(limit);
       const skip = (fomattedPage - 1) * formattedLimit;
 
-      const docs = await this.binderAsphaltConcrete_sampleModel.find().skip(skip).limit(formattedLimit).lean();
+      const docs = await this.binderAsphaltConcrete_sampleModel.find()
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(formattedLimit)
+      .lean();
 
       const count = await this.binderAsphaltConcrete_sampleModel.countDocuments();
 
@@ -66,7 +70,7 @@ export class BinderAsphaltConcrete_SamplesRepository {
 
     const docs = await this.binderAsphaltConcrete_sampleModel
       .find(query)
-      .sort({ createdAt: 1 })
+      .sort({ createdAt: -1 })
       .collation({ locale: 'en', strength: 2 })
       .skip(skip)
       .limit(Number(limit))

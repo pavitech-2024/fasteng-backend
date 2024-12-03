@@ -71,7 +71,10 @@ export type GranularLayersStep3Data = {
   observations: string;
 };
 
-@Schema({ collection: 'granularLayersSamples' })
+@Schema({ 
+  collection: 'granularLayersSamples',
+  timestamps: true, 
+})
 export class GranularLayers_Sample {
   _id: string;
 
