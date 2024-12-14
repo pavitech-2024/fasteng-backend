@@ -31,7 +31,10 @@ export class GeneralData_Superpave_Service {
 
       await this.superpaveRepository.saveStep(createdPartialSuperpave._doc, 1);
 
-      return true;
+      return {
+        success: true,
+        dosage: createdPartialSuperpave,
+      };
     } catch (error) {
       throw error;
     }

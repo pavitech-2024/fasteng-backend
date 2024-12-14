@@ -30,7 +30,10 @@ export class GeneralData_Marshall_Service {
 
       await this.marshallRepository.saveStep(createdPartialMarshall._doc, 1);
 
-      return true;
+      return {
+        success: true,
+        dosage: createdPartialMarshall
+      };
     } catch (error) {
       throw error
     }
