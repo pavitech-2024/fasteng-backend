@@ -62,25 +62,22 @@ export class MaterialSelection_Superpave_Service {
     }
   }
 
-  async saveMaterials(body: any, userId: string) {
+  async saveMaterialSelectionStep({ materialSelectionData }, userId: string) {
     try {
-      this.logger.log('save superpave materials step on material-selection.superpave.service.ts > [body]', { body });
+      const { name, ...materialData } = materialSelectionData;
 
-      const { name } = body.materialSelectionData;
+      const superpave = await this.superpaveRepository.findOne(name, userId);
 
-      const superpaveExists: any = await this.superpaveRepository.findOne(name, userId);
+      await this.superpaveModel.updateOne(
+        { _id: superpave._id },
+        { materialSelectionData: materialData },
+      );
 
-      const { name: materialName, ...materialDataWithoutName } = body.materialSelectionData;
-
-      const superpaveWithMaterials = { ...superpaveExists._doc, materialSelectionData: materialDataWithoutName };
-
-      await this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithMaterials);
-
-      if (superpaveExists._doc.generalData.step < 2) {
-        await this.superpaveRepository.saveStep(superpaveExists, 2);
+      if (superpave.generalData.step < 2) {
+        await this.superpaveRepository.saveStep(superpave, 2);
       }
 
-      return true;
+      return { success: true, step: 2 };
     } catch (error) {
       throw error;
     }
