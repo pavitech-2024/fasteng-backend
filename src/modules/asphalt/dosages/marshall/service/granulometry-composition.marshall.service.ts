@@ -238,35 +238,37 @@ export class GranulometryComposition_Marshall_Service {
           const stringIndex = keys.indexOf('_');
           const label = keys.substring(0, stringIndex);
           const id = keys.substring(stringIndex + 1);
-          
-          // Remove nulos de percentsOfMaterials
-          newArray = percentsOfMaterials.map((innerArray) =>
+
+          // Remove null values from the percentsOfMaterials array
+          const newArray = percentsOfMaterials.map((innerArray) =>
             innerArray.filter((value) => value !== null)
           );
-      
+
           const index = tableRows.indexOf(element);
-      
+
           if (label === 'passant') {
+            // Find the key in the current element that matches the pattern 'passant_${id}'
             const key = Object.keys(tableRows[index]).find((k) => k === `passant_${id}`);
-      
+
+            // If the key exists, find the corresponding value in the newArray
             if (key) {
-              // Encontre o índice no newArray que contém o id
+              // Find the index in the newArray that contains the id
               let newArrIndex = newArray.findIndex((e) => e[0] && e[0].hasOwnProperty(id));
-      
+
+              // If the index is not -1 and the value exists, insert the value into the newTableRows array
               if (newArrIndex !== -1 && newArray[newArrIndex][index] && newArray[newArrIndex][index][id]) {
-                // Insere o valor se o id existir no newArray
                 newTableRows[index][key] = newArray[newArrIndex][index][id];
               } else {
-                // Adiciona 'total_passant_${id}' com '---' no objeto
-                if (!newTableRows[index]) newTableRows[index] = {}; // Garante que o objeto exista
+                // If the index is -1 or the value does not exist, add 'total_passant_${id}' with '---' to the object
+                if (!newTableRows[index]) newTableRows[index] = {}; // Make sure the object exists
                 newTableRows[index][`total_passant_${id}`] = '---';
-                console.log(`O id "${id}" não foi encontrado no índice ${index} do newArray.`);
+                console.log(`The id "${id}" was not found in the index ${index} of the newArray.`);
               }
             } else {
-              // Caso a chave não exista em tableRows
-              if (!newTableRows[index]) newTableRows[index] = {}; // Garante que o objeto exista
+              // If the key does not exist in the current element, add 'total_passant_${id}' with '---' to the object
+              if (!newTableRows[index]) newTableRows[index] = {}; // Make sure the object exists
               newTableRows[index][`total_passant_${id}`] = '---';
-              console.log(`A chave "passant_${id}" não foi encontrada no objeto no índice ${index}.`);
+              console.log(`The key "passant_${id}" was not found in the object at index ${index}.`);
             }
           }
         });
