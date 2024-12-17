@@ -238,29 +238,40 @@ export class GranulometryComposition_Marshall_Service {
           const stringIndex = keys.indexOf('_');
           const label = keys.substring(0, stringIndex);
           const id = keys.substring(stringIndex + 1);
-          newArray = percentsOfMaterials.map((innerArray) => innerArray.filter((value) => value !== null));
+          
+          // Remove nulos de percentsOfMaterials
+          newArray = percentsOfMaterials.map((innerArray) =>
+            innerArray.filter((value) => value !== null)
+          );
+      
           const index = tableRows.indexOf(element);
+      
           if (label === 'passant') {
             const key = Object.keys(tableRows[index]).find((k) => k === `passant_${id}`);
-
+      
             if (key) {
-              let newArrIndex = newArray.findIndex((e) => e[0].hasOwnProperty(id));
-              newTableRows[index][key] = newArray[newArrIndex][index][id];
+              // Encontre o índice no newArray que contém o id
+              let newArrIndex = newArray.findIndex((e) => e[0] && e[0].hasOwnProperty(id));
+      
+              if (newArrIndex !== -1 && newArray[newArrIndex][index] && newArray[newArrIndex][index][id]) {
+                // Insere o valor se o id existir no newArray
+                newTableRows[index][key] = newArray[newArrIndex][index][id];
+              } else {
+                // Adiciona 'total_passant_${id}' com '---' no objeto
+                if (!newTableRows[index]) newTableRows[index] = {}; // Garante que o objeto exista
+                newTableRows[index][`total_passant_${id}`] = '---';
+                console.log(`O id "${id}" não foi encontrado no índice ${index} do newArray.`);
+              }
             } else {
-              console.log(`A chave "passant_${id}" não foi encontrada no objeto no índice ${index}.`);
-            }
-          } else if (label === 'passant') {
-            const key = Object.keys(tableRows[index]).find((k) => k === `passant_${id}`);
-
-            if (key) {
-              newTableRows[index][key] = newArray[1][index];
-            } else {
+              // Caso a chave não exista em tableRows
+              if (!newTableRows[index]) newTableRows[index] = {}; // Garante que o objeto exista
+              newTableRows[index][`total_passant_${id}`] = '---';
               console.log(`A chave "passant_${id}" não foi encontrada no objeto no índice ${index}.`);
             }
           }
         });
       });
-
+      
       const projections = [];
 
       sumOfPercents.map((e, idx) => {
@@ -314,6 +325,19 @@ export class GranulometryComposition_Marshall_Service {
           band.lower[i],
         ]);
       }
+
+
+      newTableRows.map((row) => {
+        Object.values(row).some((value) => {
+          if (value === null) {
+            Object.keys(row).forEach((key) => {
+              if (row[key] === null) {
+                row[key] = '---';
+              }
+            });
+          }
+        });
+      });
 
       const data = {
         percentsOfMaterials,
