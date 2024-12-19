@@ -16,6 +16,6 @@ export class Calc_Concrete_RT_Dto {
 }
 
 export interface Calc_Concrete_RT_Out {
-  flexualTensileStrength: number,
-  compressionResistance: number,
+  flexualTensileStrength: number;
+  compressionResistance: number;
 }
