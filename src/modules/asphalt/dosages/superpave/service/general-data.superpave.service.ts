@@ -60,19 +60,19 @@ export class GeneralData_Superpave_Service {
     }
   }
 
-  async deleteSuperpaveDosage(id: string) {
+  async deleteSuperpaveDosage(dosageId: string) {
     try {
       this.logger.log(
         'delete superpave dosage on general-data.superpave.service.ts > [body]',
         {
-          id,
+          dosageId,
         },
       );
 
-      const result = await this.superpaveModel.findByIdAndDelete(id);
+      const result = await this.superpaveModel.findByIdAndDelete(dosageId);
 
       if (!result) {
-        throw new Error('Documento não encontrado para deletar.')
+        throw new Error(`Dosage whith id ${dosageId} not found`)
       }
 
       return true;

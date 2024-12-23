@@ -62,22 +62,45 @@ export class MaterialSelection_Superpave_Service {
     }
   }
 
-  async saveMaterialSelectionStep({ materialSelectionData }, userId: string) {
+  // async saveMaterialSelectionStep({ materialSelectionData }, userId: string) {
+  //   try {
+  //     const { name, ...materialData } = materialSelectionData;
+
+  //     const superpave = await this.superpaveRepository.findOne(name, userId);
+
+  //     await this.superpaveModel.updateOne(
+  //       { _id: superpave._id },
+  //       { materialSelectionData: materialData },
+  //     );
+
+  //     if (superpave.generalData.step < 2) {
+  //       await this.superpaveRepository.saveStep(superpave, 2);
+  //     }
+
+  //     return { success: true, step: 2 };
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // }
+  async saveMaterials(body: any, userId: string) {
     try {
-      const { name, ...materialData } = materialSelectionData;
+      this.logger.log('save superpave materials step on material-selection.superpave.service.ts > [body]', { body });
 
-      const superpave = await this.superpaveRepository.findOne(name, userId);
+      const { name } = body.materialSelectionData;
 
-      await this.superpaveModel.updateOne(
-        { _id: superpave._id },
-        { materialSelectionData: materialData },
-      );
+      const superpaveExists: any = await this.superpaveRepository.findOne(name, userId);
 
-      if (superpave.generalData.step < 2) {
-        await this.superpaveRepository.saveStep(superpave, 2);
+      const { name: materialName, ...materialDataWithoutName } = body.materialSelectionData;
+
+      const superpaveWithMaterials = { ...superpaveExists._doc, materialSelectionData: materialDataWithoutName };
+
+      await this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithMaterials);
+
+      if (superpaveExists._doc.generalData.step < 2) {
+        await this.superpaveRepository.saveStep(superpaveExists, 2);
       }
 
-      return { success: true, step: 2 };
+      return true;
     } catch (error) {
       throw error;
     }

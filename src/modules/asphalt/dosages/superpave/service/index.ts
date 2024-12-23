@@ -36,9 +36,9 @@ export class SuperpaveService {
 
   async verifyInitSuperpave(body: SuperpaveInitDto, userId: string) {
     try {
-      const data = await this.generalData_Service.verifyInitSuperpave(body, userId);
+      const dosage = await this.generalData_Service.verifyInitSuperpave(body, userId);
 
-      return data;
+      return dosage;
     } catch (error) {
       this.logger.error(`error on verify init > [error]: ${error}`);
       const { status, name, message } = error;
@@ -92,7 +92,7 @@ export class SuperpaveService {
 
   async saveMaterialSelectionStep(body: any, userId: string) {
     try {
-      const result = await this.materialSelection_Service.saveMaterialSelectionStep(body, userId);
+      const result = await this.materialSelection_Service.saveMaterials(body, userId);
       return result;
     } catch (error) {
       this.logger.error(`Error saving material selection step: ${error.message}`);
