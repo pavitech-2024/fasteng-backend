@@ -1,4 +1,4 @@
-import { Injectable, Logger } from "@nestjs/common";
+import { Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { MarshallRepository } from '../repository/index';
 import { AlreadyExists } from "../../../../../utils/exceptions";
 import { InjectModel } from "@nestjs/mongoose";
@@ -30,9 +30,32 @@ export class GeneralData_Marshall_Service {
 
       await this.marshallRepository.saveStep(createdPartialMarshall._doc, 1);
 
-      return true;
+      return {
+        success: true,
+        dosage: createdPartialMarshall
+      };
     } catch (error) {
       throw error
+    }
+  }
+
+  async getDosageById(dosageId: string) {
+    try {
+      this.logger.log(
+        'get dosage by id on general-data.marshall.service.ts > [body]',
+        {
+          dosageId,
+        },
+      );
+      const dosage = await this.marshallRepository.findById(dosageId);
+
+      if (!dosage) {
+        throw new NotFoundException(`Dosage whith id ${dosageId} not found`);
+      }
+
+      return dosage;
+    } catch (error) {
+      throw error;
     }
   }
 
@@ -50,11 +73,13 @@ export class GeneralData_Marshall_Service {
       const marshallExists: any = await this.marshallRepository.findOne(name, userId);
 
       const { isConsult, ...marshallDosageWithoutIsConsult } = body;
+      
 
-      const completedMarshallDosage = {
-        ...marshallExists._doc,
-        saveMarshallDosage: marshallDosageWithoutIsConsult,
-      };
+      // const completedMarshallDosage = {
+      //   ...marshallExists._doc,
+      //   saveMarshallDosage: marshallDosageWithoutIsConsult,
+      // };
+      const completedMarshallDosage = { ...marshallExists._doc, ...marshallDosageWithoutIsConsult };
 
       await this.marshallModel.updateOne({ _id: marshallExists._doc._id }, completedMarshallDosage);
 

@@ -30,6 +30,10 @@ export class MarshallRepository {
     });
   }
 
+  async findById(dosageId: string): Promise<Marshall> {
+    return this.marshallModel.findById(dosageId);
+  }
+
   async createPartialMarshall(marshall: any, userId: string): Promise<any> {
     try {
       const createdPartialMarshall = await this.marshallModel.create({

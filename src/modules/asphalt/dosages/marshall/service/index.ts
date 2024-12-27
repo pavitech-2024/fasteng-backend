@@ -47,9 +47,9 @@ export class MarshallService {
 
   async verifyInitMarshall(body: MarshallInitDto, userId: string) {
     try {
-      const success = await this.generalData_Service.verifyInitMarshall(body, userId);
+      const dosage = await this.generalData_Service.verifyInitMarshall(body, userId);
 
-      return { success };
+      return dosage;
     } catch (error) {
       this.logger.error(`error on verify init > [error]: ${error}`);
       const { status, name, message } = error;
@@ -66,6 +66,20 @@ export class MarshallService {
       return { materials, success: true };
     } catch (error) {
       this.logger.error(`error on getting all materials by user id > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { materials: [], success: false, error: { status, message, name } };
+    }
+  }
+
+  async getDosageById(dosageId: string) {
+    try {
+      const dosage = await this.generalData_Service.getDosageById(dosageId);
+
+      this.logger.log(`dosage returned > [dosage]`);
+
+      return { dosage, success: true };
+    } catch (error) {
+      this.logger.error(`error on getting dosage by id > [error]: ${error}`);
       const { status, name, message } = error;
       return { materials: [], success: false, error: { status, message, name } };
     }

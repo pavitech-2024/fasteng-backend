@@ -3,7 +3,6 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { SuperpaveService } from '../service';
 import { SuperpaveInitDto } from '../dto/superpave-init.dto';
-import { SuperpaveStep3Dto } from '../dto/step-3-superpave.dto';
 
 @ApiTags('superpave')
 @Controller('asphalt/dosages/superpave')
@@ -22,6 +21,7 @@ export class SuperpaveController {
     return this.superpaveService.getAllDosages(userId);
   }
 
+  // Deveria entregar os dados salvos no banco de dados da Superpave
   @Post('verify-init/:id')
   @ApiOperation({ summary: 'Verifica se é possível criar uma Superpave com os dados enviados.' })
   @ApiResponse({
@@ -55,6 +55,20 @@ export class SuperpaveController {
     this.logger.log(`get all materials, by user id, with the necessary dosage essays > [id]: ${userId}`);
 
     const status = await this.superpaveService.getUserMaterials(userId);
+
+    return response.status(200).json(status);
+  }
+
+  @Get(':id')
+  @ApiOperation({ summary: 'Retorna uma dosagem do banco de dados com o id informado.' })
+  @ApiResponse({ status: 200, description: 'Dosagem encontrada com sucesso!' })
+  @ApiResponse({ status: 400, description: 'Dosagem não encontrada!' })
+  async getDosageById(@Res() response: Response, @Param('id') dosageId: string) {
+    this.logger.log(`get all materials, by user id, with the necessary dosage essays > [id]: ${dosageId}`);
+    this.logger.log(`get a dosage by dosage id > [id]: ${dosageId}`);
+
+
+    const status = await this.superpaveService.getDosageById(dosageId);
 
     return response.status(200).json(status);
   }

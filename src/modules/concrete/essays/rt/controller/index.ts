@@ -14,15 +14,15 @@ export class ConcreteRtController {
   constructor(private readonly concreteRtService: ConcreteRtService) {}
 
   @Post('verify-init')
-  @ApiOperation({ summary: 'Verifica se é possível criar uma resistência à tração de concreto com os dados enviados.' })
+  @ApiOperation({ summary: 'Verifica se é possível criar umensaio de compressão de corpos de prova cilíndricos de concreto com os dados enviados.' })
   @ApiResponse({
     status: 200,
-    description: 'É possível criar uma resistência à tração de concreto com os dados enviados.',
+    description: 'É possível criar umensaio de compressão de corpos de prova cilíndricos de concreto com os dados enviados.',
     content: { 'application/json': { schema: { example: { success: true } } } },
   })
   @ApiResponse({
     status: 200,
-    description: 'Não é possível criar uma resistência à tração de concreto com os dados enviados.',
+    description: 'Não é possível criar umensaio de compressão de corpos de prova cilíndricos de concreto com os dados enviados.',
     content: {
       'application/json': {
         schema: { example: { success: false, error: { message: 'Sample Not Found.', status: 400, name: 'NotFound' } } },
@@ -31,29 +31,12 @@ export class ConcreteRtController {
   })
   @ApiResponse({
     status: 400,
-    description: 'Erro ao verificar se é possível criar uma resistência à tração de concreto com os dados enviados.',
+    description: 'Erro ao verificar se é possível criar umensaio de compressão de corpos de prova cilíndricos de concreto com os dados enviados.',
   })
   async verifyInitConcreteRt(@Res() response: Response, @Body() body: ConcreteRtInitDto) {
     this.logger.log('verify init concrete rt > [body]');
 
     const status = await this.concreteRtService.verifyInitRt(body);
-
-    return response.status(200).json(status);
-  }
-
-  @Post('interpolation')
-  @ApiOperation({
-    summary: 'Realiza uma tnterpolação com os valores recebidos do segundo passo do ensaio de resistência à tração em concreto.',
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'Retorna um valor de tolerância gerado a partir da interpolação dos dados enviados no ensaio de resistência à tração.',
-    content: { 'application/json': { schema: { example: { success: true } } } },
-  })
-  async calculateConcreteRcInterpolation(@Res() response: Response, @Body() body: ConcreteRtInterpolationDto) {
-    this.logger.log('verify init concrete rt > [body]');
-
-    const status = await this.concreteRtService.calculateConcreteRtInterpolation(body);
 
     return response.status(200).json(status);
   }
@@ -72,7 +55,6 @@ export class ConcreteRtController {
   async calculateConcreteRt(@Body() body: Calc_Concrete_RT_Dto) {
     this.logger.log('calculate concrete rt > [body]');
     
-
     const rt = await this.concreteRtService.calculateRt(body);
 
     if (rt.success) this.logger.log('calculate concrete rt > [success]');

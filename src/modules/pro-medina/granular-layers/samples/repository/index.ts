@@ -44,6 +44,7 @@ export class GranularLayers_SamplesRepository {
 
     const docs = await this.granularLayers_sampleModel
       .find(query)
+      .sort({ createdAt: -1 })
       .collation({ locale: 'en_US', caseFirst: 'off', strength: 2 })
       .skip(skip)
       .limit(formattedLimit)
@@ -73,7 +74,7 @@ export class GranularLayers_SamplesRepository {
   }
 
   async findOneById(sampleId: string): Promise<GranularLayers_Sample> {
-    const sample = await this.granularLayers_sampleModel.findOne({ _id: sampleId });
+    const sample = await this.granularLayers_sampleModel.findById(sampleId);
 
     return sample;
   }

@@ -31,14 +31,14 @@ export class SuperpaveService {
     private readonly chosenCurvePercentages_Service: ChosenCurvePercentages_Superpave_Service,
     private readonly secondCompression_Service: SecondCompression_Superpave_Service,
     private readonly secondCompressionParameters_Service: SecondCompressionParameters_Superpave_Service,
-    private readonly resumeDosageEquation_Service: ResumeDosage_Superpave_Service
+    private readonly resumeDosageEquation_Service: ResumeDosage_Superpave_Service,
   ) {}
 
   async verifyInitSuperpave(body: SuperpaveInitDto, userId: string) {
     try {
-      const success = await this.generalData_Service.verifyInitSuperpave(body, userId);
+      const dosage = await this.generalData_Service.verifyInitSuperpave(body, userId);
 
-      return { success };
+      return dosage;
     } catch (error) {
       this.logger.error(`error on verify init > [error]: ${error}`);
       const { status, name, message } = error;
@@ -76,13 +76,26 @@ export class SuperpaveService {
     }
   }
 
+  async getDosageById(dosageId: string) {
+    try {
+      const dosage = await this.generalData_Service.getDosageById(dosageId);
+
+      this.logger.log(`dosage returned > [dosage]`);
+
+      return { dosage, success: true };
+    } catch (error) {
+      this.logger.error(`error on getting dosage by id > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { materials: [], success: false, error: { status, message, name } };
+    }
+  }
+
   async saveMaterialSelectionStep(body: any, userId: string) {
     try {
-      const success = await this.materialSelection_Service.saveMaterials(body, userId);
-
-      return { success };
+      const result = await this.materialSelection_Service.saveMaterials(body, userId);
+      return result;
     } catch (error) {
-      this.logger.error(`error on save materials data superpave step > [error]: ${error}`);
+      this.logger.error(`Error saving material selection step: ${error.message}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
     }
@@ -1303,7 +1316,8 @@ export class SuperpaveService {
 
   async calculateVolumetricParametersOfConfirmGranulometryComposition(body: any) {
     try {
-      const data = await this.resumeDosageEquation_Service.calculateVolumetricParametersOfConfirmGranulometryComposition(body);
+      const data =
+        await this.resumeDosageEquation_Service.calculateVolumetricParametersOfConfirmGranulometryComposition(body);
 
       return { data, success: true };
     } catch (error) {
@@ -1341,7 +1355,7 @@ export class SuperpaveService {
     try {
       const success = await this.generalData_Service.deleteSuperpaveDosage(id);
 
-      return { success }
+      return { success };
     } catch (error) {
       this.logger.error(`error on delete superpave dosage > [error]: ${error}`);
       const { status, name, message } = error;
