@@ -9,8 +9,7 @@ export class AppService {
   async healthCheck() {
     try {
       const result = await axios.get('https://minhaconta.fastengapp.com.br/api/status');
-      console.log(result);
-      return result;
+      return result.data;
     } catch (error) {
       console.log(error);
     }
