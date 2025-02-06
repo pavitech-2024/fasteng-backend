@@ -11,7 +11,7 @@ export class MaterialsService {
 
   constructor(
     private readonly materialsRepository: MaterialsRepository,
-    private readonly getEssaysByMaterial_Service: GetEssaysByMaterial_Service
+    private readonly getEssaysByMaterial_Service: GetEssaysByMaterial_Service,
   ) {}
 
   async createMaterial(material: CreateAsphaltMaterialDto, userId: string) {
@@ -29,7 +29,7 @@ export class MaterialsService {
       });
 
       // cria um material no banco de dados
-      return createdMaterial
+      return createdMaterial;
     } catch (error) {
       this.logger.error(`error on create material > [error]: ${error}`);
       throw error;
@@ -45,7 +45,7 @@ export class MaterialsService {
       if (!material) throw new NotFound('Material');
 
       // Buscar os ensaios com esse material;
-      const essays = await this.getEssaysByMaterial_Service.getEssaysByMaterial(material)
+      const essays = await this.getEssaysByMaterial_Service.getEssaysByMaterial(material);
 
       // retorna o material encontrado
       return { material, essays };
@@ -57,17 +57,17 @@ export class MaterialsService {
   }
 
   async getSelectedMaterialsById(ids: string): Promise<any> {
-    const idArray = ids.split(',').map(id => id.trim());
+    const idArray = ids.split(',').map((id) => id.trim());
     try {
-      let essays = []
+      let essays = [];
 
       // busca um material com o id passado no banco de dados
       const materials = await this.materialsRepository.findSelectedById(idArray);
 
       // Buscar os ensaios com esse material;
       for (let i = 0; i < materials.length; i++) {
-        let essay = await this.getEssaysByMaterial_Service.getEssaysByMaterial(materials[i])
-        essays.push(essay)
+        let essay = await this.getEssaysByMaterial_Service.getEssaysByMaterial(materials[i]);
+        essays.push(essay);
       }
 
       // retorna o material encontrado
@@ -82,9 +82,10 @@ export class MaterialsService {
   async getAllMaterials(userId: string): Promise<Material[]> {
     try {
       // busca todos os materiais no banco de dados
-      const materials = await this.materialsRepository.findByType({
-        type: { $in: ['filler', 'CAP', 'asphaltBinder', 'coarseAggregate', 'fineAggregate'] },
-      });
+      const materials = await this.materialsRepository.findByType(
+        { $in: ['filler', 'CAP', 'asphaltBinder', 'coarseAggregate', 'fineAggregate'] },
+        userId,
+      );
 
       // retorna os materiais encontrados que pertencem ao usuário
       return materials;
