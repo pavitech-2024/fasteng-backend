@@ -21,11 +21,18 @@ export class UsersService implements IUsersService {
         connections,
         lastLoginList,
         photo,
+        name: '', 
+        email: '', 
+        phone: '', 
+        dob: new Date(), 
         preferences: {
           language: 'pt-BR',
           decimal: 2,
         },
       });
+      /*const createdUser = await this.usersRepository.create(newUser);
+      this.logger.log('user created with success > [id]: ' + createdUser._id);  
+      return createdUser;*/
     } catch (error) {
       // se ocorrer algum erro, retorna o erro
       this.logger.error(`error on create user > [error]: ${error}`);
@@ -59,8 +66,32 @@ export class UsersService implements IUsersService {
       // se não encontrar o usuário, retorna um erro
       if (!user) throw new NotFound('User');
 
+      // Atualizar a foto do usuario
+      if (body.photo) user.photo = body.photo;
+
+      // Atualizar outros campos, caso eles estejam presentes no body
+      if (body.name){
+        user.name = body.name;
+      }
+
+      if (body.email){
+        user.email = body.email;
+      }
+
+      if (body.phone){
+        user.phone = body.phone;
+      }
+
+      if (body.dob){
+        user.dob = body.dob;
+      }
+
+      // Salvar as alteracoes no banco de dados
+      const updateUser = await this.usersRepository.findOneAndUpdate({ _id: id }, user);
+      return updateUser;
+
       // atualiza o usuário no banco de dados
-      return this.usersRepository.findOneAndUpdate({ _id: id }, body);
+      //return this.usersRepository.findOneAndUpdate({ _id: id }, body);
     } catch (error) {
       this.logger.error(`error on update user > [error]: ${error}`);
 

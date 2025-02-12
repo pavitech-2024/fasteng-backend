@@ -25,6 +25,22 @@ export class User {
     language: string;
     decimal: number;
   };
+
+  @IsNotEmpty()
+  @Prop()
+  name: string;
+
+  @IsNotEmpty()
+  @Prop()
+  email: string;
+
+  @IsNotEmpty()
+  @Prop()
+  phone: string;
+
+  @IsNotEmpty()
+  @Prop()
+  dob: Date;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
