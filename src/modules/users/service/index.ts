@@ -4,6 +4,7 @@ import { User } from '../schemas';
 import { UsersRepository } from '../repository';
 import { IUsersService } from '../interfaces';
 import { AlreadyExists, NotFound } from '../../../utils/exceptions';
+import { UpdateUserDto } from '../dto/update-user.dto';
 @Injectable() // permite que a classe seja injetada em outros lugares
 /** @see (Document){IUsersService} */
 export class UsersService implements IUsersService {
@@ -58,7 +59,7 @@ export class UsersService implements IUsersService {
     }
   }
 
-  async updateUser(id: string, body: User): Promise<User> {
+  async updateUser(id: string, body: UpdateUserDto): Promise<User> {
     try {
       // busca um usuário com o id passado no banco de dados
       const user = await this.usersRepository.findOne({ _id: id });
@@ -83,7 +84,7 @@ export class UsersService implements IUsersService {
       }
 
       if (body.dob){
-        user.dob = body.dob;
+        user.dob = new Date(body.dob);
       }
 
       // Salvar as alteracoes no banco de dados

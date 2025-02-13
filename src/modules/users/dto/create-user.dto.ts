@@ -22,29 +22,29 @@ export class InputCreateUserDto {
 }
 
 
-export class UpdateUserDto {
-  @IsOptional()
-  @IsString()
-  uuid?: string;
+// export class UpdateUserDto {
+//   @IsOptional()
+//   @IsString()
+//   uuid?: string;
 
-  @IsNumber()
-  @Min(1)
-  @Max(3)
-  @Type(() => Number)
-  connections?: number; 
+//   @IsNumber()
+//   @Min(1)
+//   @Max(3)
+//   @Type(() => Number)
+//   connections?: number; 
 
-  @IsString()
-  photo?: string; 
+//   @IsString()
+//   photo?: string; 
 
-  @IsString()
-  name?: string; 
+//   @IsString()
+//   name?: string; 
 
-  @IsString()
-  email?: string; 
+//   @IsString()
+//   email?: string; 
 
-  @IsString()
-  phone?: string; 
+//   @IsString()
+//   phone?: string; 
 
-  @IsDate()
-  dob?: string;
-}
+//   @IsDate()
+//   dob?: string;
+// }
