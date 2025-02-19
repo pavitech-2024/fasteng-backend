@@ -49,7 +49,7 @@ export class UsersController {
   @ApiResponse({ status: 200, description: 'Usuário atualizado com sucesso!' }) // detalha a resposta no swagger
   @ApiResponse({ status: 400, description: 'Usuário não encontrado!' }) // detalha a resposta no swagger
   @ApiOperation({ summary: 'Atualiza um usuário no banco de dados' }) // detalha a operação no swagger
-  async updateUser(@Param('id') id: string, @Body() body: User): Promise<User> {
+  async updateUser(@Param('id') id: string, @Body() body: any): Promise<User> {
     this.logger.log(`update user > [user]`);
 
     const user = await this.usersService.updateUser(id, body);
