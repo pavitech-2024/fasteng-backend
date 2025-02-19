@@ -59,46 +59,26 @@ export class UsersService implements IUsersService {
     }
   }
 
-  async updateUser(id: string, body: UpdateUserDto): Promise<User> {
-    try {
-      // busca um usuário com o id passado no banco de dados
-      const user = await this.usersRepository.findOne({ _id: id });
+  async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+  try {
+    const existingUser = await this.usersRepository.findOne({ _id: id });
+    if (!existingUser) throw new NotFound('User');
 
-      // se não encontrar o usuário, retorna um erro
-      if (!user) throw new NotFound('User');
+    const { photo, name, email, phone, dob, preferences } = updateUserDto;
 
-      // Atualizar a foto do usuario
-      if (body.photo) user.photo = body.photo;
+    if (photo) existingUser.photo = photo;
+    if (name) existingUser.name = name;
+    if (email) existingUser.email = email;
+    if (phone) existingUser.phone = phone;
+    if (dob) existingUser.dob = new Date(dob);
+    if (preferences) existingUser.preferences = preferences;
 
-      // Atualizar outros campos, caso eles estejam presentes no body
-      if (body.name){
-        user.name = body.name;
-      }
-
-      if (body.email){
-        user.email = body.email;
-      }
-
-      if (body.phone){
-        user.phone = body.phone;
-      }
-
-      if (body.dob){
-        user.dob = new Date(body.dob);
-      }
-
-      // Salvar as alteracoes no banco de dados
-      const updateUser = await this.usersRepository.findOneAndUpdate({ _id: id }, user);
-      return updateUser;
-
-      // atualiza o usuário no banco de dados
-      //return this.usersRepository.findOneAndUpdate({ _id: id }, body);
-    } catch (error) {
-      this.logger.error(`error on update user > [error]: ${error}`);
-
-      throw error;
-    }
+    return await this.usersRepository.findOneAndUpdate({ _id: id }, existingUser);
+  } catch (error) {
+    this.logger.error(`Error updating user: ${error}`);
+    throw error;
   }
+}
 
   async deleteUser(id: string): Promise<User> {
     try {

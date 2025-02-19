@@ -25,6 +25,21 @@ export class ErrorsInterceptor implements NestInterceptor {
         if (error instanceof UnauthorizedException) throw new ForbiddenException();
 
         throw new InternalServerErrorException();
+
+        // Se estiver em desenvolvimento e precisar de detalhes do erro para debugar, descomentar o código abaixo e comentar o código acima
+
+        // Se for erro de validação, retorna a resposta original com detalhes
+        // if (error instanceof BadRequestException) {
+        //   return throwError(() => error);
+        // }
+
+        // Se for um erro de autenticação, transforma em ForbiddenException
+        // if (error instanceof UnauthorizedException) {
+        //   return throwError(() => new ForbiddenException());
+        // }
+
+        // Para outros erros desconhecidos, retorna um Internal Server Error
+        // return throwError(() => new InternalServerErrorException());
       }),
     );
   }
