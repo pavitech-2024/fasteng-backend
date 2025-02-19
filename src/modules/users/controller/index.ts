@@ -3,6 +3,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { InputCreateUserDto } from '../dto';
 import { User } from '../schemas';
 import { UsersService } from '../service';
+import { UpdateUserDto } from '../dto/update-user.dto';
 
 @Controller('users') // define a rota
 @ApiTags('users') // define a tag no swagger

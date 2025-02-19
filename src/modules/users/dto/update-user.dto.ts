@@ -7,12 +7,12 @@
 // }
 
 import { Type } from "class-transformer";
-import { IsOptional, IsString, IsNumber, Min, Max, IsDate } from "class-validator";
+import { IsOptional, IsString, IsNumber, Min, Max, IsDate, IsNotEmpty, IsArray } from "class-validator";
 
 export class UpdateUserDto {
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
-  uuid?: string;
+  _id: string;
 
   @IsNumber()
   @Min(1)
@@ -36,4 +36,15 @@ export class UpdateUserDto {
   @IsDate()
   @Type(() => Date)
   dob?: Date;
+
+  @IsNotEmpty()
+  @IsArray()
+  lastLoginList: String[]
+
+  @IsOptional()
+  @IsString()
+  planName: string
+
+  @IsNotEmpty()
+  preferences: any
 }
