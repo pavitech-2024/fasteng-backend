@@ -3,6 +3,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { InputCreateUserDto } from '../dto';
 import { User } from '../schemas';
 import { UsersService } from '../service';
+import { UpdateUserDto } from '../dto/update-user.dto';
 
 @Controller('users') // define a rota
 @ApiTags('users') // define a tag no swagger
@@ -45,11 +46,11 @@ export class UsersController {
     return user;
   }
 
-  @Put(':id') //define a rota
-  @ApiResponse({ status: 200, description: 'Usuário atualizado com sucesso!' }) // detalha a resposta no swagger
-  @ApiResponse({ status: 400, description: 'Usuário não encontrado!' }) // detalha a resposta no swagger
-  @ApiOperation({ summary: 'Atualiza um usuário no banco de dados' }) // detalha a operação no swagger
-  async updateUser(@Param('id') id: string, @Body() body: any): Promise<User> {
+  @Put(':id')
+  @ApiResponse({ status: 200, description: 'Usuário atualizado com sucesso!' })
+  @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
+  @ApiOperation({ summary: 'Atualiza um usuário no banco de dados' })
+  async updateUser(@Param('id') id: string, @Body() body: UpdateUserDto): Promise<User> {
     this.logger.log(`update user > [user]`);
 
     const user = await this.usersService.updateUser(id, body);
@@ -59,10 +60,10 @@ export class UsersController {
     return user;
   }
 
-  @Delete(':id') //define a rota
-  @ApiResponse({ status: 200, description: 'Usuário excluído com sucesso!' }) // detalha a resposta no swagger
-  @ApiResponse({ status: 400, description: 'Usuário não encontrado!' }) // detalha a resposta no swagger
-  @ApiOperation({ summary: 'Deleta um usuário no banco de dados' }) // detalha a operação no swagger
+  @Delete(':id')
+  @ApiResponse({ status: 200, description: 'Usuário excluído com sucesso!' })
+  @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
+  @ApiOperation({ summary: 'Deleta um usuário no banco de dados' })
   async deleteUser(@Param('id') id: string): Promise<User> {
     this.logger.log(`delete user > [id]: ${id}`);
 

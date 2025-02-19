@@ -1,39 +1,76 @@
-// export class UpdateUserDto {
-//   name?: string;
-//   email?: string;
-//   phone?: string;
-//   dob?: Date;
-//   photo?: string;
-// }
+import { 
+  IsString, 
+  IsOptional, 
+  IsNumber, 
+  Min, 
+  Max, 
+  IsUUID, 
+  IsArray, 
+  IsDate, 
+  ValidateNested, 
+  ValidateIf
+} from 'class-validator';
+import { Transform, Type } from 'class-transformer';
 
-import { Type } from "class-transformer";
-import { IsOptional, IsString, IsNumber, Min, Max, IsDate } from "class-validator";
+class PreferencesDto {
+  @IsString()
+  language: string;
+
+  @IsNumber()
+  decimal: number;
+}
 
 export class UpdateUserDto {
+  @IsUUID()
+  @IsOptional()
+  _id?: string;
+
+  @IsArray()
+  @IsOptional()
+  @IsDate({ each: true })
+  @Type(() => Date)
+  lastLoginList?: Date[];
+
   @IsOptional()
   @IsString()
-  uuid?: string;
+  photo?: string | null;
 
   @IsNumber()
   @Min(1)
   @Max(3)
+  @IsOptional()
   @Type(() => Number)
-  connections?: number; 
-
-  @IsString()
-  photo?: string; 
-
-  @IsString()
-  name?: string; 
-
-  @IsString()
-  email?: string; 
-
-  @IsString()
-  phone?: string; 
+  connections?: number;
 
   @IsOptional()
+  @ValidateNested()
+  @Type(() => PreferencesDto)
+  preferences?: PreferencesDto;
+
+  @IsString()
+  @IsOptional()
+  name?: string;
+
+  @IsString()
+  @IsOptional()
+  email?: string;
+
+  @IsString()
+  @IsOptional()
+  phone?: string;
+
+  @IsOptional()
+  @ValidateIf((obj) => obj.dob !== null && obj.dob !== '') // Só valida se não for null ou ''
   @IsDate()
-  @Type(() => Date)
-  dob?: Date;
+  @Transform(({ value }) => {
+    if (value === '' || value === null) {
+      return null;
+    }
+    const date = new Date(value);
+    return isNaN(date.getTime()) ? null : date; // Retorna null se a data for inválida
+  })
+  dob?: Date | null;
+
+  @IsOptional()
+  __v?: number;
 }
