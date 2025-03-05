@@ -47,7 +47,6 @@ export class GranulometryComposition_Marshall_Service {
         });
       });
 
-      //
       const table_column_headers: string[] = [];
       const table_rows = [];
 
@@ -61,8 +60,6 @@ export class GranulometryComposition_Marshall_Service {
           granulometry_data.forEach((aggregate) => {
             const { _id, passants } = aggregate;
 
-            // aggregates_data[_id] = {}
-            // aggregates_data[_id]['_id'] = _id
             aggregates_data['total_passant_'.concat(_id)] = passants[sieve.label];
             aggregates_data['passant_'.concat(_id)] = null;
 
@@ -146,8 +143,6 @@ export class GranulometryComposition_Marshall_Service {
           }
         });
       });
-
-      let newArray;
 
       const axisX = [
         76, 64, 50, 38, 32, 25, 19, 12.5, 9.5, 6.3, 4.8, 2.4, 2, 1.2, 0.85, 0.6, 0.43, 0.3, 0.25, 0.18, 0.15, 0.106,

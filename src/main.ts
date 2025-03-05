@@ -2,6 +2,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import * as bodyParser from 'body-parser';
 
 //Commons Modules
 import { AuthModule } from './modules/auth/auth.module';
@@ -18,6 +19,10 @@ async function bootstrap() {
 
   // garante que todos os endpoints sejam protegidos contra o recebimento de dados incorretos.
   app.useGlobalPipes(new ValidationPipe());
+
+  // Aumenta o limite do payload (ex: 50MB)
+  app.use(bodyParser.json({ limit: '10mb' }));
+  app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
   //config Swagger:
   const swagger_asphalt = new DocumentBuilder()
