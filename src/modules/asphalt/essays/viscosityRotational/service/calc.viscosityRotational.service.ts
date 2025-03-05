@@ -49,7 +49,7 @@ export class Calc_ViscosityRotational_Service {
         cont += 1;
       }
 
-      const ranges = this.insertValuesInRanges(150, 190, 250, 310, equation);
+      const ranges = this.insertValuesInRanges(150, 190, 250, 310, dataPoints, equation);
 
       const bandsOfCurve = this.insertBandsOfCurve(temperatures, viscositys, 150, 190, 250, 310);
 
@@ -141,11 +141,11 @@ export class Calc_ViscosityRotational_Service {
     return temperature;
   }
 
-  private insertValuesInRanges(temp1, temp2, temp3, temp4, equation) {
+  private insertValuesInRanges(temp1, temp2, temp3, temp4, dataPoints, equation) {
     const lowerMachiningTemperatureRange = this.calculateTemperature(temp2, equation);
     const higherMachiningTemperatureRange = this.calculateTemperature(temp1, equation);
     const averageMachiningTemperatureRange =
-      this.calculateTemperature(temp2, equation) + this.calculateTemperature(temp2, equation) / 2;
+      (this.calculateTemperature(temp1, equation) + this.calculateTemperature(temp2, equation)) / 2;
 
     const machiningTemperatureRange = {
       lower: lowerMachiningTemperatureRange,
