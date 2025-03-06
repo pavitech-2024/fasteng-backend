@@ -70,7 +70,7 @@ export type StabilizedLayersStep3Data = {
   observations: string;
 };
 
-@Schema({ collection: 'stabilizedLayersSamples' })
+@Schema({ collection: 'stabilizedLayersSamples', timestamps: true })
 export class StabilizedLayers_Sample {
   _id: string;
 
