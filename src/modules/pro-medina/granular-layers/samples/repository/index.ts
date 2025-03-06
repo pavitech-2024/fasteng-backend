@@ -51,6 +51,7 @@ export class GranularLayers_SamplesRepository {
       .lean();
 
     const countQuery = formattedFilter.length > 0 ? { $and: formattedFilter } : {};
+    
     const count = await this.granularLayers_sampleModel.countDocuments(countQuery);
 
     let totalPages;
