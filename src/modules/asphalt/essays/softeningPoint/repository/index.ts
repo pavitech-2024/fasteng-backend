@@ -19,4 +19,8 @@ export class SofteningPointRepository {
 
     return createdSofteningPoint.save();
   }
+
+  async findAllByMaterialId(materialId: string): Promise<SofteningPoint[]> {
+    return this.softeningPointModel.find({ material: materialId }).exec();
+  }
 }

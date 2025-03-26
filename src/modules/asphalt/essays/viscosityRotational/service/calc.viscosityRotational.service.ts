@@ -156,7 +156,7 @@ export class Calc_ViscosityRotational_Service {
     const lowerCompressionTemperatureRange = this.calculateTemperature(temp4, equation);
     const higherCompressionTemperatureRange = this.calculateTemperature(temp3, equation);
     const averageCompressionTemperatureRange =
-      this.calculateTemperature(temp3, equation) + this.calculateTemperature(temp4, equation) / 2;
+      (this.calculateTemperature(temp3, equation) + this.calculateTemperature(temp4, equation)) / 2;
 
     const compressionTemperatureRange = {
       lower: lowerCompressionTemperatureRange,
