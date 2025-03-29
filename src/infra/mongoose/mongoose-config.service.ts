@@ -13,7 +13,6 @@ export class CommonDatabaseConfig implements MongooseOptionsFactory {
     const host = this.config.get('DATABASE_HOST');
 
     const uri = `mongodb+srv://${username}:${password}@${host}/${DATABASE_CONNECTION.COMMON}?retryWrites=true&w=majority`;
-
     return {
       uri,
     };
