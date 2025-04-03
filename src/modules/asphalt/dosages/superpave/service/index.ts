@@ -977,21 +977,21 @@ export class SuperpaveService {
           null,
           null,
           null,
-          100,
+          100,    //sieve 2 pol - 50 mm
           null,
-          95,
-          80,
+          95,     //sieve 1 pol - 25 mm
+          80,     //sieve 3/8 pol - 19 mm
           null,
-          45,
+          45,     //sieve 3/8 pol - 9,5 mm
           null,
-          28,
+          28,     //sieve N° 4 - 4,8 mm
           null,
-          20,
+          20,     //sieve N° 10 - 2,0 mm
           null,
           null,
-          10,
+          10,     //sieve N° 40 - 0,43 mm
           null,
-          8,
+          8,      //sieve N° 80 - 0,18 mm
           null,
           3,
         ];
