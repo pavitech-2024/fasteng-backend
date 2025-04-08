@@ -13,10 +13,10 @@ export class GranulometryComposition_Superpave_Service {
   private logger = new Logger(GranulometryComposition_Superpave_Service.name);
 
   constructor(
-    @InjectModel(Superpave.name, DATABASE_CONNECTION.ASPHALT) 
+    @InjectModel(Superpave.name, DATABASE_CONNECTION.ASPHALT)
     private superpaveModel: Model<SuperpaveDocument>,
     private readonly superpaveRepository: SuperpaveRepository,
-    private readonly granulometry_repository: AsphaltGranulometryRepository
+    private readonly granulometry_repository: AsphaltGranulometryRepository,
   ) {}
 
   async getGranulometryData(aggregates: { _id: string; name: string }[]) {
@@ -96,7 +96,14 @@ export class GranulometryComposition_Superpave_Service {
 
   async calculateGranulometry(body: any) {
     try {
-      const { chosenCurves, percentageInputs: percentsOfDosage, percentsToList, dnitBand, materials, nominalSize } = body;
+      const {
+        chosenCurves,
+        percentageInputs: percentsOfDosage,
+        percentsToList,
+        dnitBand,
+        materials,
+        nominalSize,
+      } = body;
 
       let pointsOfCurve = [];
       let band = { higher: [Number], lower: [Number] };
@@ -104,18 +111,17 @@ export class GranulometryComposition_Superpave_Service {
 
       let lowerComposition = {
         sumOfPercents: [],
-        percentsOfMaterials: null
+        percentsOfMaterials: null,
       };
-      
 
       let averageComposition = {
         sumOfPercents: [],
-        percentsOfMaterials: null
+        percentsOfMaterials: null,
       };
 
       let higherComposition = {
         sumOfPercents: [],
-        percentsOfMaterials: null
+        percentsOfMaterials: null,
       };
 
       let granulometryComposition = {
@@ -138,7 +144,6 @@ export class GranulometryComposition_Superpave_Service {
           },
         },
       };
-      
 
       if (chosenCurves.lower && percentsOfDosage[0].length !== 0) {
         granulometryComposition.lower.percentsOfDosage.value = percentsOfDosage[0];
@@ -160,14 +165,57 @@ export class GranulometryComposition_Superpave_Service {
       } else {
         granulometryComposition.higher.percentsOfDosage.isEmpty = true;
       }
-      
 
       const axisX = [
         75, 64, 50, 37.5, 32, 25, 19, 12.5, 9.5, 6.3, 4.8, 2.4, 2, 1.2, 0.6, 0.43, 0.3, 0.18, 0.15, 0.075, 0,
       ];
 
       const higherBandA = this.insertBlankPointsOnCurve(
-        [null, null, 100, 100, null, 100, 90, null, 65, null, 50, null, 40, null, null, 30, null, 20, null, 8],
+        // Banda A Superior
+        // [
+        //   null, 
+        //   null, 
+        //   100,   //sieve 2 pol - 50 mm
+        //   100,   //sieve 1 1/2 pol - 37,5 mm
+        //   null, 
+        //   100,   //sieve 1 pol - 25 mm
+        //   90,    //sieve 3/4 pol - 19 mm
+        //   null,  
+        //   65,    //sieve 3/8 pol - 9,5 mm
+        //   null, 
+        //   50,    //sieve N° 4 - 4,8 mm
+        //   null, 
+        //   40,    //sieve N° 10 - 2,0 mm
+        //   null, 
+        //   null, 
+        //   30,    //sieve N° 40 - 0,43 mm
+        //   null, 
+        //   20,    //sieve N° 80 - 0,18 mm
+        //   null, 
+        //   8
+        // ],
+        [
+          null, 
+          null, 
+          100,   //sieve 2 pol - 50 mm
+          100,   //sieve 1 1/2 pol - 37,5 mm
+          null, 
+          100,   //sieve 1 pol - 25 mm
+          89,    //sieve 3/4 pol - 19 mm
+          null,  
+          71,    //sieve 3/8 pol - 9,5 mm
+          null, 
+          55,    //sieve N° 4 - 4,8 mm
+          null, 
+          40,    //sieve N° 10 - 2,0 mm
+          null, 
+          null, 
+          30,    //sieve N° 40 - 0,43 mm
+          null, 
+          20,    //sieve N° 80 - 0,18 mm
+          null, 
+          8
+        ],
         axisX,
       );
       const lowerBandA = this.insertBlankPointsOnCurve(
@@ -242,10 +290,7 @@ export class GranulometryComposition_Superpave_Service {
       }
 
       if (!granulometryComposition.average.percentsOfDosage.isEmpty) {
-        sumOfPercents[1] = this.insertBlankPointsOnCurve(
-          sumOfPercents[1],
-          axisX
-        );
+        sumOfPercents[1] = this.insertBlankPointsOnCurve(sumOfPercents[1], axisX);
       } else {
         sumOfPercents[1] = [
           null,
@@ -272,10 +317,7 @@ export class GranulometryComposition_Superpave_Service {
       }
 
       if (!granulometryComposition.higher.percentsOfDosage.isEmpty) {
-        sumOfPercents[2] = this.insertBlankPointsOnCurve(
-          sumOfPercents[2],
-          axisX
-        );
+        sumOfPercents[2] = this.insertBlankPointsOnCurve(sumOfPercents[2], axisX);
       } else {
         sumOfPercents[2] = [
           null,
@@ -300,7 +342,7 @@ export class GranulometryComposition_Superpave_Service {
           null,
         ];
       }
-        
+
       for (let i = 0; i < 20 + 1; i++) {
         pointsOfCurve.push([
           Math.pow(axisX[i] / nominalSize.value, 0.45),
@@ -331,7 +373,7 @@ export class GranulometryComposition_Superpave_Service {
       }
 
       pointsOfCurve = pointsOfCurve;
-      
+
       const data = {
         lowerComposition,
         averageComposition,
@@ -384,7 +426,7 @@ export class GranulometryComposition_Superpave_Service {
         if (!percentsOfMaterialsToShow[idx][i]) {
           percentsOfMaterialsToShow[idx][i] = [];
         }
-    
+
         if (Array.isArray(subArr) && subArr.length > 1) {
           percentsOfMaterialsToShow[idx][i] = subArr[1];
         } else {
@@ -394,8 +436,8 @@ export class GranulometryComposition_Superpave_Service {
     });
 
     Object.values(percentsOfDosage).forEach((value) => {
-      newPercentsOfDosage.push(value)
-    })
+      newPercentsOfDosage.push(value);
+    });
 
     let sumOfPercents = [
       null,
@@ -430,7 +472,7 @@ export class GranulometryComposition_Superpave_Service {
           sumOfPercents[j] += percentsOfMaterials[i][j];
         } else {
           percentsOfMaterials[i][j] = null;
-        } 
+        }
       }
     }
 
@@ -439,7 +481,10 @@ export class GranulometryComposition_Superpave_Service {
 
   async saveStep3Data(body: any, userId: string) {
     try {
-      this.logger.log('save superpave granulometry composition step on granulometry-composition.superpave.service.ts > [body]', { body });
+      this.logger.log(
+        'save superpave granulometry composition step on granulometry-composition.superpave.service.ts > [body]',
+        { body },
+      );
 
       const { name } = body.granulometryCompositionData;
 
@@ -447,12 +492,12 @@ export class GranulometryComposition_Superpave_Service {
 
       const { name: materialName, ...granulometryCompositionWithoutName } = body.granulometryCompositionData;
 
-      const superpaveWithGranulometryComposition = { ...superpaveExists._doc, granulometryCompositionData: granulometryCompositionWithoutName };
+      const superpaveWithGranulometryComposition = {
+        ...superpaveExists._doc,
+        granulometryCompositionData: granulometryCompositionWithoutName,
+      };
 
-      await this.superpaveModel.updateOne(
-        { _id: superpaveExists._doc._id },
-        superpaveWithGranulometryComposition
-      );
+      await this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithGranulometryComposition);
 
       if (superpaveExists._doc.generalData.step < 3) {
         await this.superpaveRepository.saveStep(superpaveExists, 3);
@@ -460,13 +505,15 @@ export class GranulometryComposition_Superpave_Service {
 
       return true;
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
   async saveStep4Data(body: any, userId: string) {
     try {
-      this.logger.log('save superpave initial binder step on granulometry-composition.superpave.service.ts > [body]', { body });
+      this.logger.log('save superpave initial binder step on granulometry-composition.superpave.service.ts > [body]', {
+        body,
+      });
 
       const { name } = body.initialBinderData;
 
@@ -476,10 +523,7 @@ export class GranulometryComposition_Superpave_Service {
 
       const superpaveWithInitialBinder = { ...superpaveExists._doc, initialBinderData: initialBinderWithoutName };
 
-      await this.superpaveModel.updateOne(
-        { _id: superpaveExists._doc._id },
-        superpaveWithInitialBinder
-      );
+      await this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithInitialBinder);
 
       if (superpaveExists._doc.generalData.step < 4) {
         await this.superpaveRepository.saveStep(superpaveExists, 4);
@@ -487,7 +531,7 @@ export class GranulometryComposition_Superpave_Service {
 
       return true;
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 }
