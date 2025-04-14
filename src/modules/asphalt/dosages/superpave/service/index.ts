@@ -928,117 +928,82 @@ export class SuperpaveService {
 
       if (dnitBand === 'A') {
         higherBand = [
-          null,
-          null,
-          100,
-          100,
-          null,
-          100,
-          90,
-          null,
-          65,
-          null,
-          50,
-          null,
-          40,
-          null,
-          null,
-          30,
-          null,
-          20,
-          null,
-          8,
+          100, //sieve 1 1/2 pol - 38,1 mm
+          100, //sieve 1 pol - 25,4 mm
+          89, //sieve 3/4 pol - 19,1 mm
+          78, //sieve 1/2 pol - 12,7 mm
+          71, //sieve 3/8 pol - 9,5 mm
+          61, //sieve 1/4 pol - 6,3 mm
+          55, //sieve N° 4 - 4,8 mm
+          45, //sieve N° 8 - 2,36 mm
+          36, //sieve N° 16 - 1,18 mm
+          28, //sieve N° 30 - 0,60 mm
+          21, //sieve N° 50 - 0,30 mm
+          14, //sieve N° 100 - 0,150 mm
+          7, //sieve N° 200 - 0,075 mm
         ];
         lowerBand = [null, null, 100, 95, null, 75, 60, null, 35, null, 25, null, 20, null, null, 10, null, 5, null, 1];
       } else if (dnitBand === 'B') {
         higherBand = [
-          null,
-          null,
-          null,
-          100,    //sieve 2 pol - 50 mm
-          null,
-          100,    //sieve 1 pol - 25 mm
-          100,    //sieve 3/8 pol - 19 mm
-          null,
-          80,     //sieve 3/8 pol - 9,5 mm
-          null,
-          60,     //sieve N° 4 - 4,8 mm
-          null,
-          45,     //sieve N° 10 - 2,0 mm
-          null,
-          null,
-          32,     //sieve N° 40 - 0,43 mm
-          null,
-          20,     //sieve N° 80 - 0,18 mm
-          null,
-          8,
+          100, //sieve 1 1/2 pol - 38,1 mm
+          90, //sieve 1 pol - 25,4 mm
+          75, //sieve 3/4 pol - 19,1 mm
+          58, //sieve 1/2 pol - 12,7 mm
+          48, //sieve 3/8 pol - 9,5 mm
+          35, //sieve 1/4 pol - 6,3 mm
+          29, //sieve N° 4 - 4,8 mm
+          19, //sieve N° 8 - 2,36 mm
+          13, //sieve N° 16 - 1,18 mm
+          9, //sieve N° 30 - 0,60 mm
+          5, //sieve N° 50 - 0,30 mm
+          2, //sieve N° 100 - 0,150 mm
+          1, //sieve N° 200 - 0,075 mm
         ];
         lowerBand = [
-          null,
-          null,
-          null,
-          100,    //sieve 2 pol - 50 mm
-          null,
-          95,     //sieve 1 pol - 25 mm
-          80,     //sieve 3/8 pol - 19 mm
-          null,
-          45,     //sieve 3/8 pol - 9,5 mm
-          null,
-          28,     //sieve N° 4 - 4,8 mm
-          null,
-          20,     //sieve N° 10 - 2,0 mm
-          null,
-          null,
-          10,     //sieve N° 40 - 0,43 mm
-          null,
-          8,      //sieve N° 80 - 0,18 mm
-          null,
-          3,
+          null, //sieve 1 1/2 pol - 38,1 mm
+          100, //sieve 1 pol - 25,4 mm
+          90, //sieve 3/4 pol - 19,1 mm
+          70, //sieve 1/2 pol - 12,7 mm
+          55, //sieve 3/8 pol - 9,5 mm
+          42, //sieve 1/4 pol - 6,3 mm
+          35, //sieve N° 4 - 4,8 mm
+          23, //sieve N° 8 - 2,36 mm
+          16, //sieve N° 16 - 1,18 mm
+          10, //sieve N° 30 - 0,60 mm
+          6, //sieve N° 50 - 0,30 mm
+          4, //sieve N° 100 - 0,150 mm
+          2, //sieve N° 200 - 0,075 mm
         ];
       } else if (dnitBand === 'C') {
         higherBand = [
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          100,
-          100,
-          90,
-          null,
-          72,
-          null,
-          50,
-          null,
-          null,
-          26,
-          null,
-          16,
-          null,
-          10,
+          null, //sieve 1 1/2 pol - 38,1 mm
+          null, //sieve 1 pol - 25,4 mm
+          100, //sieve 3/4 pol - 19,1 mm
+          100, //sieve 1/2 pol - 12,7 mm
+          89, //sieve 3/8 pol - 9,5 mm
+          78, //sieve 1/4 pol - 6,3 mm
+          72, //sieve N° 4 - 4,8 mm
+          58, //sieve N° 8 - 2,36 mm
+          45, //sieve N° 16 - 1,18 mm
+          35, //sieve N° 30 - 0,60 mm
+          25, //sieve N° 50 - 0,30 mm
+          17, //sieve N° 100 - 0,150 mm
+          10, //sieve N° 200 - 0,075 mm
         ];
         lowerBand = [
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          100,
-          80,
-          70,
-          null,
-          44,
-          null,
-          22,
-          null,
-          null,
-          8,
-          null,
-          4,
-          null,
-          2,
+          null, //sieve 1 1/2 pol - 38,1 mm
+          null, //sieve 1 pol - 25,4 mm
+          100, //sieve 3/4 pol - 19,1 mm
+          90, //sieve 1/2 pol - 12,7 mm
+          73, //sieve 3/8 pol - 9,5 mm
+          53, //sieve 1/4 pol - 6,3 mm
+          44, //sieve N° 4 - 4,8 mm
+          28, //sieve N° 8 - 2,36 mm
+          17, //sieve N° 16 - 1,18 mm
+          11, //sieve N° 30 - 0,60 mm
+          6, //sieve N° 50 - 0,30 mm
+          4, //sieve N° 100 - 0,150 mm
+          2, //sieve N° 200 - 0,075 mm
         ];
       }
 

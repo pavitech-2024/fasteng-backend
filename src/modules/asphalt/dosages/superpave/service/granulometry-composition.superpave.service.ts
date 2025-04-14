@@ -173,69 +173,179 @@ export class GranulometryComposition_Superpave_Service {
       const higherBandA = this.insertBlankPointsOnCurve(
         // Banda A Superior
         // [
-        //   null, 
-        //   null, 
+        //   null,
+        //   null,
         //   100,   //sieve 2 pol - 50 mm
         //   100,   //sieve 1 1/2 pol - 37,5 mm
-        //   null, 
+        //   null,
         //   100,   //sieve 1 pol - 25 mm
         //   90,    //sieve 3/4 pol - 19 mm
-        //   null,  
+        //   null,
         //   65,    //sieve 3/8 pol - 9,5 mm
-        //   null, 
+        //   null,
         //   50,    //sieve N° 4 - 4,8 mm
-        //   null, 
+        //   null,
         //   40,    //sieve N° 10 - 2,0 mm
-        //   null, 
-        //   null, 
+        //   null,
+        //   null,
         //   30,    //sieve N° 40 - 0,43 mm
-        //   null, 
+        //   null,
         //   20,    //sieve N° 80 - 0,18 mm
-        //   null, 
+        //   null,
         //   8
         // ],
         [
-          null, 
-          null, 
-          100,   //sieve 2 pol - 50 mm
-          100,   //sieve 1 1/2 pol - 37,5 mm
-          null, 
-          100,   //sieve 1 pol - 25 mm
-          89,    //sieve 3/4 pol - 19 mm
-          null,  
-          71,    //sieve 3/8 pol - 9,5 mm
-          null, 
-          55,    //sieve N° 4 - 4,8 mm
-          null, 
-          40,    //sieve N° 10 - 2,0 mm
-          null, 
-          null, 
-          30,    //sieve N° 40 - 0,43 mm
-          null, 
-          20,    //sieve N° 80 - 0,18 mm
-          null, 
-          8
+          null,  // sieve 3 pol - 75 mm
+          null,  // sieve 2 1/2 pol - 64mm
+          null,  // sieve 2 pol - 50mm
+          100,   // sieve 1 1/2 pol - 38,1 mm
+          null,  // sieve 1 1/4 pol - 32mm
+          100,   // sieve 1 pol - 25,4 mm
+          89,    // sieve 3/4 pol - 19,1 mm
+          78,    // sieve 1/2 pol - 12,7 mm
+          71,    // sieve 3/8 pol - 9,5 mm
+          61,    // sieve 1/4 pol - 6,3 mm
+          55,    // sieve N° 4 - 4,8 mm
+          45,    // sieve N° 8 - 2,36 mm
+          null,  // sieve N° 10 - 2,0 mm
+          36,    // sieve N° 16 - 1,18 mm
+          28,    // sieve N° 30 - 0,60 mm
+          null,  // sieve N° 40 - 0,43 mm
+          21,    // sieve N° 50 - 0,30 mm
+          null,  // sieve N° 80 - 0,18 mm
+          14,    // sieve N° 100 - 0,150 mm
+          7,     // sieve N° 200 - 0,075 mm
         ],
         axisX,
       );
       const lowerBandA = this.insertBlankPointsOnCurve(
-        [null, null, 100, 95, null, 75, 60, null, 35, null, 25, null, 20, null, null, 10, null, 5, null, 1],
+        // [null, null, 100, 95, null, 75, 60, null, 35, null, 25, null, 20, null, null, 10, null, 5, null, 1],
+        [
+          null,  // sieve 3 pol - 75 mm
+          null,  // sieve 2 1/2 pol - 64mm
+          null,  // sieve 2 pol - 50mm
+          100,   // sieve 1 1/2 pol - 38,1 mm
+          null,  // sieve 1 1/4 pol - 32mm
+          90,   // sieve 1 pol - 25,4 mm
+          75,    // sieve 3/4 pol - 19,1 mm
+          58,    // sieve 1/2 pol - 12,7 mm
+          48,    // sieve 3/8 pol - 9,5 mm
+          35,    // sieve 1/4 pol - 6,3 mm
+          29,    // sieve N° 4 - 4,8 mm
+          19,    // sieve N° 8 - 2,36 mm
+          null,  // sieve N° 10 - 2,0 mm
+          13,    // sieve N° 16 - 1,18 mm
+          9,    // sieve N° 30 - 0,60 mm
+          null,  // sieve N° 40 - 0,43 mm
+          5,    // sieve N° 50 - 0,30 mm
+          null,  // sieve N° 80 - 0,18 mm
+          2,    // sieve N° 100 - 0,150 mm
+          1,     // sieve N° 200 - 0,075 mm
+        ],
         axisX,
       );
       const higherBandB = this.insertBlankPointsOnCurve(
-        [null, null, null, 100, null, 100, 100, null, 80, null, 60, null, 45, null, null, 32, null, 20, null, 8],
+        // [null, null, null, 100, null, 100, 100, null, 80, null, 60, null, 45, null, null, 32, null, 20, null, 8],
+        [
+          null,  // sieve 3 pol - 75 mm
+          null,  // sieve 2 1/2 pol - 64mm
+          null,  // sieve 2 pol - 50mm
+          null,   // sieve 1 1/2 pol - 38,1 mm
+          null,  // sieve 1 1/4 pol - 32mm
+          100,    // sieve 1 pol - 25,4 mm
+          100,    // sieve 3/4 pol - 19,1 mm
+          89,    // sieve 1/2 pol - 12,7 mm
+          82,    // sieve 3/8 pol - 9,5 mm
+          70,    // sieve 1/4 pol - 6,3 mm
+          63,    // sieve N° 4 - 4,8 mm
+          49,    // sieve N° 8 - 2,36 mm
+          null,  // sieve N° 10 - 2,0 mm
+          37,    // sieve N° 16 - 1,18 mm
+          28,     // sieve N° 30 - 0,60 mm
+          null,  // sieve N° 40 - 0,43 mm
+          20,     // sieve N° 50 - 0,30 mm
+          null,  // sieve N° 80 - 0,18 mm
+          13,     // sieve N° 100 - 0,150 mm
+          8,     // sieve N° 200 - 0,075 mm
+        ],
         axisX,
       );
       const lowerBandB = this.insertBlankPointsOnCurve(
-        [null, null, null, 100, null, 95, 80, null, 45, null, 28, null, 20, null, null, 10, null, 8, null, 3],
+        // [null, null, null, 100, null, 95, 80, null, 45, null, 28, null, 20, null, null, 10, null, 8, null, 3],
+        [
+          null,   // sieve 3 pol - 75 mm
+          null,   // sieve 2 1/2 pol - 64mm
+          null,   // sieve 2 pol - 50mm
+          null,   // sieve 1 1/2 pol - 38,1 mm
+          null,   // sieve 1 1/4 pol - 32mm
+          100,    // sieve 1 pol - 25,4 mm
+          90,     // sieve 3/4 pol - 19,1 mm
+          70,     // sieve 1/2 pol - 12,7 mm
+          55,     // sieve 3/8 pol - 9,5 mm
+          42,     // sieve 1/4 pol - 6,3 mm
+          35,     // sieve N° 4 - 4,8 mm
+          23,     // sieve N° 8 - 2,36 mm
+          null,   // sieve N° 10 - 2,0 mm
+          16,     // sieve N° 16 - 1,18 mm
+          10,     // sieve N° 30 - 0,60 mm
+          null,   // sieve N° 40 - 0,43 mm
+          6,      // sieve N° 50 - 0,30 mm
+          null,   // sieve N° 80 - 0,18 mm
+          4,      // sieve N° 100 - 0,150 mm
+          2,      // sieve N° 200 - 0,075 mm
+        ],
         axisX,
       );
       const higherBandC = this.insertBlankPointsOnCurve(
-        [null, null, null, null, null, null, 100, 100, 90, null, 72, null, 50, null, null, 26, null, 16, null, 10],
+        // [null, null, null, null, null, null, 100, 100, 90, null, 72, null, 50, null, null, 26, null, 16, null, 10],
+        [
+          null,   // sieve 3 pol - 75 mm
+          null,   // sieve 2 1/2 pol - 64mm
+          null,   // sieve 2 pol - 50mm
+          null,   // sieve 1 1/2 pol - 38,1 mm
+          null,   // sieve 1 1/4 pol - 32mm
+          null,   // sieve 1 pol - 25,4 mm
+          100,    // sieve 3/4 pol - 19,1 mm
+          100,    // sieve 1/2 pol - 12,7 mm
+          89,     // sieve 3/8 pol - 9,5 mm
+          78,     // sieve 1/4 pol - 6,3 mm
+          72,     // sieve N° 4 - 4,8 mm
+          58,     // sieve N° 8 - 2,36 mm
+          null,   // sieve N° 10 - 2,0 mm
+          45,     // sieve N° 16 - 1,18 mm
+          35,     // sieve N° 30 - 0,60 mm
+          null,   // sieve N° 40 - 0,43 mm
+          25,     // sieve N° 50 - 0,30 mm
+          null,   // sieve N° 80 - 0,18 mm
+          17,     // sieve N° 100 - 0,150 mm
+          10,     // sieve N° 200 - 0,075 mm
+        ],
         axisX,
       );
       const lowerBandC = this.insertBlankPointsOnCurve(
-        [null, null, null, null, null, null, 100, 80, 70, null, 44, null, 22, null, null, 8, null, 4, null, 2],
+        // [null, null, null, null, null, null, 100, 80, 70, null, 44, null, 22, null, null, 8, null, 4, null, 2],
+        [
+          null,   // sieve 3 pol - 75 mm
+          null,   // sieve 2 1/2 pol - 64mm
+          null,   // sieve 2 pol - 50mm
+          null,   //sieve 1 1/2 pol - 38,1 mm
+          null,  // sieve 1 1/4 pol - 32mm
+          null,   //sieve 1 pol - 25,4 mm
+          100,    //sieve 3/4 pol - 19,1 mm
+          90,     //sieve 1/2 pol - 12,7 mm
+          73,     //sieve 3/8 pol - 9,5 mm
+          53,     //sieve 1/4 pol - 6,3 mm
+          44,     //sieve N° 4 - 4,8 mm
+          28,     //sieve N° 8 - 2,36 mm
+          null,  // sieve N° 10 - 2,0 mm
+          17,     //sieve N° 16 - 1,18 mm
+          11,     //sieve N° 30 - 0,60 mm
+          null,  // sieve N° 40 - 0,43 mm
+          6,      //sieve N° 50 - 0,30 mm
+          null,  // sieve N° 80 - 0,18 mm
+          4,      //sieve N° 100 - 0,150 mm
+          2,      //sieve N° 200 - 0,075 mm
+        ],
         axisX,
       );
 
@@ -440,13 +550,6 @@ export class GranulometryComposition_Superpave_Service {
     });
 
     let sumOfPercents = [
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
       null,
       null,
       null,
