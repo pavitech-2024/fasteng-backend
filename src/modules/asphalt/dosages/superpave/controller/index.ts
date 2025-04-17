@@ -47,6 +47,17 @@ export class SuperpaveController {
     return response.status(200).json(status);
   }
 
+  @Post('calculate-granulometry-essay-data')
+  async calculateGranulometryEssayData(@Res()resopnse: Response, @Body() body: any) {
+    this.logger.log(`calculate granulometry essay data step > [body]: ${body}`);
+
+    const status = await this.superpaveService.calculateGranulometryEssayData(body);
+
+    return resopnse.status(200).json(status);
+  }
+
+
+
   @Get('material-selection/:id')
   @ApiOperation({ summary: 'Retorna todos os materiais do banco de dados de um usuário, que possuam os ensaios para a dosagem.' })
   @ApiResponse({ status: 200, description: 'Materiais encontrados com sucesso!' })

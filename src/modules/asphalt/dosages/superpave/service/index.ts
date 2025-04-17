@@ -14,6 +14,8 @@ import { ChosenCurvePercentages_Superpave_Service } from './chosen-curves-percen
 import { SecondCompression_Superpave_Service } from './second-compression.superpave.service';
 import { SecondCompressionParameters_Superpave_Service } from './second-compression-parameters.service';
 import { ResumeDosage_Superpave_Service } from './resume-dosage.service';
+import { GranulometryEssay_Superpave_Service } from './granulometryEssay.service';
+import { Calc_Superpave_GranulometyEssay_Dto } from '../dto/granulometry-essay.dto';
 
 @Injectable()
 export class SuperpaveService {
@@ -22,6 +24,7 @@ export class SuperpaveService {
   constructor(
     private readonly superpave_repository: SuperpaveRepository,
     private readonly generalData_Service: GeneralData_Superpave_Service,
+    private readonly granulometryEssay_Service: GranulometryEssay_Superpave_Service,
     private readonly materialSelection_Service: MaterialSelection_Superpave_Service,
     private readonly granulometryComposition_Service: GranulometryComposition_Superpave_Service,
     private readonly granulometryRepository: AsphaltGranulometryRepository,
@@ -59,6 +62,18 @@ export class SuperpaveService {
       this.logger.error(`error on get all dosages > [error]: ${error}`);
 
       throw error;
+    }
+  }
+
+  async calculateGranulometryEssayData(body: Calc_Superpave_GranulometyEssay_Dto) {
+    try {
+      const granulometry = await this.granulometryEssay_Service.calculateGranulometryEssay(body);
+
+      return { granulometry, success: true };
+    } catch (error) {
+      this.logger.error(`error on calculate granulometry essay data > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { materials: [], success: false, error: { status, message, name } };
     }
   }
 
