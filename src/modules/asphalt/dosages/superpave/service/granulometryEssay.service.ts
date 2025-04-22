@@ -5,6 +5,7 @@ import { DATABASE_CONNECTION } from 'infra/mongoose/database.config';
 import { Model } from 'mongoose';
 import { getSieveValue } from 'modules/soils/util/sieves';
 import { Calc_Superpave_GranulometyEssay_Dto } from '../dto/granulometry-essay.dto';
+import { SuperpaveRepository } from '../repository';
 
 type limit = { value: number; index: number };
 
@@ -15,6 +16,7 @@ export class GranulometryEssay_Superpave_Service {
   constructor(
     @InjectModel(Superpave.name, DATABASE_CONNECTION.ASPHALT)
     private superpaveModel: Model<SuperpaveDocument>,
+    private readonly superpave_repository: SuperpaveRepository,
   ) {}
 
   /**
@@ -78,15 +80,15 @@ export class GranulometryEssay_Superpave_Service {
           if (total_retained === 5) nominal_size = getSieveValue(label);
           else {
             if (i === 0) nominal_size = getSieveValue(label);
-            else nominal_size = getSieveValue(table_data[i - 1].sieve_label);
+            else nominal_size = getSieveValue(table_data[i - 1].sieve_label, true);
           }
         }
 
         if (total_retained > 10 && nominal_diameter_flag) {
           nominal_diameter_flag = false;
-          if (i === 1) nominal_diameter = getSieveValue(label);
+          if (i === 1) nominal_diameter = getSieveValue(label, true);
           else if (i === 0) nominal_diameter = value;
-          else nominal_diameter = getSieveValue(table_data[i - 1].sieve_label);
+          else nominal_diameter = getSieveValue(table_data[i - 1].sieve_label, true);
         }
 
         graph_data.push([value, passant_porcentage]);
@@ -133,11 +135,11 @@ export class GranulometryEssay_Superpave_Service {
 
   /**
    * This function calculate the diameter of a particle given the percentage of particles that passed and retained.
-   * 
+   *
    * @param table_data - The table data with the passant and retained values.
    * @param percentage - The percentage of the particles that passed.
    * @param limits - The limits of the two points of the line.
-   * 
+   *
    * @returns The diameter of the particle.
    */
   getDiameter = (
@@ -195,4 +197,29 @@ export class GranulometryEssay_Superpave_Service {
       },
     );
   };
+
+  async saveGranulometryEssay(body: any, userId: string) {
+    console.log('Teste');
+    try {
+      this.logger.log('save superpave materials step on material-selection.superpave.service.ts > [body]', { body });
+
+      const { name } = body.granulometryEssayData;
+
+      const superpaveExists: any = await this.superpave_repository.findOne(name, userId);
+
+      const { name: materialName, ...materialDataWithoutName } = body.granulometryEssayData;
+
+      const superpaveWithMaterials = { ...superpaveExists._doc, granulometryEssayData: materialDataWithoutName };
+
+      await this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithMaterials);
+
+      if (superpaveExists._doc.generalData.step < 2) {
+        await this.superpave_repository.saveStep(superpaveExists, 2);
+      }
+
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  }
 }

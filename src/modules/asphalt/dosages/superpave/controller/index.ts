@@ -56,7 +56,18 @@ export class SuperpaveController {
     return resopnse.status(200).json(status);
   }
 
+  @Post('save-granulometry-essay-step/:id')
+  async saveGranulometryEssayStep(
+    @Res() response: Response,
+    @Body() body: any,
+    @Param('id') userId: string,
+  ) {
+    this.logger.log(`save granulometry essay data step in user superpave dosage > [body]: ${body}`);
 
+    const status = await this.superpaveService.saveGranulometryEssayStep(body, userId);
+
+    return response.status(200).json(status);
+  }
 
   @Get('material-selection/:id')
   @ApiOperation({ summary: 'Retorna todos os materiais do banco de dados de um usuário, que possuam os ensaios para a dosagem.' })

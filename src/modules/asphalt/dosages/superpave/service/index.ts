@@ -77,6 +77,17 @@ export class SuperpaveService {
     }
   }
 
+  async saveGranulometryEssayStep(body: any, userId: string) {
+    try {
+      const result = await this.granulometryEssay_Service.saveGranulometryEssay(body, userId);
+      return result;
+    } catch (error) {
+      this.logger.error(`Error saving granulometry essay step: ${error.message}`);
+      const { status, name, message } = error;
+      return { success: false, error: { status, message, name } };
+    }
+  }
+
   async getUserMaterials(userId: string) {
     try {
       const materials = await this.materialSelection_Service.getMaterials(userId);
