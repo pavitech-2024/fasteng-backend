@@ -14,6 +14,10 @@ export class IggRepository {
     return this.iggModel.find();
   }
 
+  async findAllByUserId(id: string): Promise<Igg[]> {
+    return this.iggModel.find({"generalData.userId": id});
+  }
+
   async create(igg: any): Promise<Igg> {
     const createdIgg = new this.iggModel(igg);
 

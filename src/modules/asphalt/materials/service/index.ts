@@ -4,6 +4,8 @@ import { CreateAsphaltMaterialDto } from '../dto/create-asphalt-material.dto';
 import { AlreadyExists, NotFound } from '../../../../utils/exceptions';
 import { Material } from '../schemas';
 import { GetEssaysByMaterial_Service } from './get-essays-by-material.service';
+import { FwdRepository } from 'modules/asphalt/essays/fwd/repository';
+import { IggRepository } from 'modules/asphalt/essays/igg/repository';
 
 @Injectable()
 export class MaterialsService {
@@ -11,7 +13,9 @@ export class MaterialsService {
 
   constructor(
     private readonly materialsRepository: MaterialsRepository,
-    private readonly getEssaysByMaterial_Service: GetEssaysByMaterial_Service
+    private readonly getEssaysByMaterial_Service: GetEssaysByMaterial_Service,
+    private readonly fwdRepository: FwdRepository,
+    private readonly iggRepository: IggRepository
   ) {}
 
   async createMaterial(material: CreateAsphaltMaterialDto, userId: string) {
@@ -29,7 +33,7 @@ export class MaterialsService {
       });
 
       // cria um material no banco de dados
-      return createdMaterial
+      return createdMaterial;
     } catch (error) {
       this.logger.error(`error on create material > [error]: ${error}`);
       throw error;
@@ -45,7 +49,7 @@ export class MaterialsService {
       if (!material) throw new NotFound('Material');
 
       // Buscar os ensaios com esse material;
-      const essays = await this.getEssaysByMaterial_Service.getEssaysByMaterial(material)
+      const essays = await this.getEssaysByMaterial_Service.getEssaysByMaterial(material);
 
       // retorna o material encontrado
       return { material, essays };
@@ -57,17 +61,17 @@ export class MaterialsService {
   }
 
   async getSelectedMaterialsById(ids: string): Promise<any> {
-    const idArray = ids.split(',').map(id => id.trim());
+    const idArray = ids.split(',').map((id) => id.trim());
     try {
-      let essays = []
+      let essays = [];
 
       // busca um material com o id passado no banco de dados
       const materials = await this.materialsRepository.findSelectedById(idArray);
 
       // Buscar os ensaios com esse material;
       for (let i = 0; i < materials.length; i++) {
-        let essay = await this.getEssaysByMaterial_Service.getEssaysByMaterial(materials[i])
-        essays.push(essay)
+        let essay = await this.getEssaysByMaterial_Service.getEssaysByMaterial(materials[i]);
+        essays.push(essay);
       }
 
       // retorna o material encontrado
@@ -79,15 +83,23 @@ export class MaterialsService {
     }
   }
 
-  async getAllMaterials(userId: string): Promise<Material[]> {
+  async getAllMaterials(userId: string): Promise<any> {
     try {
       // busca todos os materiais no banco de dados
-      const materials = await this.materialsRepository.findByType({
-        type: { $in: ['filler', 'CAP', 'asphaltBinder', 'coarseAggregate', 'fineAggregate'] },
-      });
+      const materials = await this.materialsRepository.findByType(
+        { $in: ['filler', 'CAP', 'asphaltBinder', 'coarseAggregate', 'fineAggregate'] },
+        userId,
+      );
+
+      const fwdEssays = await this.fwdRepository.findAllByUserId(userId);
+      const iggEssays = await this.iggRepository.findAllByUserId(userId)
 
       // retorna os materiais encontrados que pertencem ao usuário
-      return materials;
+      return {
+        materials,
+        fwdEssays,
+        iggEssays
+      };
     } catch (error) {
       this.logger.error(`error on get all materials > [error]: ${error}`);
       throw error;

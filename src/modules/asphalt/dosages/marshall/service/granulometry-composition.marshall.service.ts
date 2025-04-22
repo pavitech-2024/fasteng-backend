@@ -47,7 +47,6 @@ export class GranulometryComposition_Marshall_Service {
         });
       });
 
-      //
       const table_column_headers: string[] = [];
       const table_rows = [];
 
@@ -61,8 +60,6 @@ export class GranulometryComposition_Marshall_Service {
           granulometry_data.forEach((aggregate) => {
             const { _id, passants } = aggregate;
 
-            // aggregates_data[_id] = {}
-            // aggregates_data[_id]['_id'] = _id
             aggregates_data['total_passant_'.concat(_id)] = passants[sieve.label];
             aggregates_data['passant_'.concat(_id)] = null;
 
@@ -146,8 +143,6 @@ export class GranulometryComposition_Marshall_Service {
           }
         });
       });
-
-      let newArray;
 
       const axisX = [
         76, 64, 50, 38, 32, 25, 19, 12.5, 9.5, 6.3, 4.8, 2.4, 2, 1.2, 0.85, 0.6, 0.43, 0.3, 0.25, 0.18, 0.15, 0.106,
@@ -238,29 +233,42 @@ export class GranulometryComposition_Marshall_Service {
           const stringIndex = keys.indexOf('_');
           const label = keys.substring(0, stringIndex);
           const id = keys.substring(stringIndex + 1);
-          newArray = percentsOfMaterials.map((innerArray) => innerArray.filter((value) => value !== null));
+
+          // Remove null values from the percentsOfMaterials array
+          const newArray = percentsOfMaterials.map((innerArray) =>
+            innerArray.filter((value) => value !== null)
+          );
+
           const index = tableRows.indexOf(element);
+
           if (label === 'passant') {
+            // Find the key in the current element that matches the pattern 'passant_${id}'
             const key = Object.keys(tableRows[index]).find((k) => k === `passant_${id}`);
 
+            // If the key exists, find the corresponding value in the newArray
             if (key) {
-              let newArrIndex = newArray.findIndex((e) => e[0].hasOwnProperty(id));
-              newTableRows[index][key] = newArray[newArrIndex][index][id];
-            } else {
-              console.log(`A chave "passant_${id}" não foi encontrada no objeto no índice ${index}.`);
-            }
-          } else if (label === 'passant') {
-            const key = Object.keys(tableRows[index]).find((k) => k === `passant_${id}`);
+              // Find the index in the newArray that contains the id
+              let newArrIndex = newArray.findIndex((e) => e[0] && e[0].hasOwnProperty(id));
 
-            if (key) {
-              newTableRows[index][key] = newArray[1][index];
+              // If the index is not -1 and the value exists, insert the value into the newTableRows array
+              if (newArrIndex !== -1 && newArray[newArrIndex][index] && newArray[newArrIndex][index][id]) {
+                newTableRows[index][key] = newArray[newArrIndex][index][id];
+              } else {
+                // If the index is -1 or the value does not exist, add 'total_passant_${id}' with '---' to the object
+                if (!newTableRows[index]) newTableRows[index] = {}; // Make sure the object exists
+                newTableRows[index][`total_passant_${id}`] = '---';
+                console.log(`The id "${id}" was not found in the index ${index} of the newArray.`);
+              }
             } else {
-              console.log(`A chave "passant_${id}" não foi encontrada no objeto no índice ${index}.`);
+              // If the key does not exist in the current element, add 'total_passant_${id}' with '---' to the object
+              if (!newTableRows[index]) newTableRows[index] = {}; // Make sure the object exists
+              newTableRows[index][`total_passant_${id}`] = '---';
+              console.log(`The key "passant_${id}" was not found in the object at index ${index}.`);
             }
           }
         });
       });
-
+      
       const projections = [];
 
       sumOfPercents.map((e, idx) => {
@@ -314,6 +322,19 @@ export class GranulometryComposition_Marshall_Service {
           band.lower[i],
         ]);
       }
+
+
+      newTableRows.map((row) => {
+        Object.values(row).some((value) => {
+          if (value === null) {
+            Object.keys(row).forEach((key) => {
+              if (row[key] === null) {
+                row[key] = '---';
+              }
+            });
+          }
+        });
+      });
 
       const data = {
         percentsOfMaterials,

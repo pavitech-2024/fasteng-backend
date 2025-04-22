@@ -21,6 +21,7 @@ export class SuperpaveController {
     return this.superpaveService.getAllDosages(userId);
   }
 
+  // Deveria entregar os dados salvos no banco de dados da Superpave
   @Post('verify-init/:id')
   @ApiOperation({ summary: 'Verifica se é possível criar uma Superpave com os dados enviados.' })
   @ApiResponse({

@@ -22,8 +22,11 @@ export class MaterialsRepository {
     return material;
   }
 
-  async findByType(types: any) {
-    const materials = await this.materialModel.find(types).sort({ createdAt: -1 });;
+  async findByType(types: any, userId: string) {
+    const materials = await this.materialModel.find({
+      "userId": userId,
+      "type": types
+    }).sort({ createdAt: -1 });
     return materials;
   }
 

@@ -3,7 +3,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { InputCreateUserDto } from '../dto';
 import { User } from '../schemas';
 import { UsersService } from '../service';
-import { UpdateUserDto } from '../dto/update-user.dto';
+
 
 @Controller('users') // define a rota
 @ApiTags('users') // define a tag no swagger
@@ -32,8 +32,8 @@ export class UsersController {
     return user;
   }
 
-  @Get(':id') // define a rota
-  @ApiOperation({ summary: 'Retorna um usuário do banco de dados.' }) // detalha a operação no swagger
+  @Get(':id')
+  @ApiOperation({ summary: 'Retorna um usuário do banco de dados.' }) 
   @ApiResponse({ status: 200, description: 'Usuário encontrado com sucesso!' }) // detalha a resposta no swagger
   @ApiResponse({ status: 400, description: 'Usuário não encontrado!' }) // detalha a resposta no swagger
   async getUser(@Param('id') id: string): Promise<User> {
@@ -46,11 +46,11 @@ export class UsersController {
     return user;
   }
 
-  @Put(':id')
-  @ApiResponse({ status: 200, description: 'Usuário atualizado com sucesso!' })
-  @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
-  @ApiOperation({ summary: 'Atualiza um usuário no banco de dados' })
-  async updateUser(@Param('id') id: string, @Body() body: UpdateUserDto): Promise<User> {
+  @Put(':id') //define a rota
+  @ApiResponse({ status: 200, description: 'Usuário atualizado com sucesso!' }) 
+  @ApiResponse({ status: 400, description: 'Usuário não encontrado!' }) 
+  @ApiOperation({ summary: 'Atualiza um usuário no banco de dados' }) 
+  async updateUser(@Param('id') id: string, @Body() body: User): Promise<User> {
     this.logger.log(`update user > [user]`);
 
     const user = await this.usersService.updateUser(id, body);

@@ -62,6 +62,26 @@ export class MaterialSelection_Superpave_Service {
     }
   }
 
+  // async saveMaterialSelectionStep({ materialSelectionData }, userId: string) {
+  //   try {
+  //     const { name, ...materialData } = materialSelectionData;
+
+  //     const superpave = await this.superpaveRepository.findOne(name, userId);
+
+  //     await this.superpaveModel.updateOne(
+  //       { _id: superpave._id },
+  //       { materialSelectionData: materialData },
+  //     );
+
+  //     if (superpave.generalData.step < 2) {
+  //       await this.superpaveRepository.saveStep(superpave, 2);
+  //     }
+
+  //     return { success: true, step: 2 };
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // }
   async saveMaterials(body: any, userId: string) {
     try {
       this.logger.log('save superpave materials step on material-selection.superpave.service.ts > [body]', { body });
