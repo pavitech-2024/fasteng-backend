@@ -26,7 +26,7 @@ export class MaterialsRepository {
     const materials = await this.materialModel.find({
       "userId": userId,
       "type": types
-    }).sort({ createdAt: -1 });;
+    }).sort({ createdAt: -1 });
     return materials;
   }
 

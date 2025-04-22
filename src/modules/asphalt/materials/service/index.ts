@@ -4,6 +4,8 @@ import { CreateAsphaltMaterialDto } from '../dto/create-asphalt-material.dto';
 import { AlreadyExists, NotFound } from '../../../../utils/exceptions';
 import { Material } from '../schemas';
 import { GetEssaysByMaterial_Service } from './get-essays-by-material.service';
+import { FwdRepository } from 'modules/asphalt/essays/fwd/repository';
+import { IggRepository } from 'modules/asphalt/essays/igg/repository';
 
 @Injectable()
 export class MaterialsService {
@@ -12,6 +14,8 @@ export class MaterialsService {
   constructor(
     private readonly materialsRepository: MaterialsRepository,
     private readonly getEssaysByMaterial_Service: GetEssaysByMaterial_Service,
+    private readonly fwdRepository: FwdRepository,
+    private readonly iggRepository: IggRepository
   ) {}
 
   async createMaterial(material: CreateAsphaltMaterialDto, userId: string) {
@@ -79,7 +83,7 @@ export class MaterialsService {
     }
   }
 
-  async getAllMaterials(userId: string): Promise<Material[]> {
+  async getAllMaterials(userId: string): Promise<any> {
     try {
       // busca todos os materiais no banco de dados
       const materials = await this.materialsRepository.findByType(
@@ -87,8 +91,15 @@ export class MaterialsService {
         userId,
       );
 
+      const fwdEssays = await this.fwdRepository.findAllByUserId(userId);
+      const iggEssays = await this.iggRepository.findAllByUserId(userId)
+
       // retorna os materiais encontrados que pertencem ao usuário
-      return materials;
+      return {
+        materials,
+        fwdEssays,
+        iggEssays
+      };
     } catch (error) {
       this.logger.error(`error on get all materials > [error]: ${error}`);
       throw error;
