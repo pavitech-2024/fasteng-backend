@@ -16,6 +16,9 @@ import { SecondCompressionParameters_Superpave_Service } from './second-compress
 import { ResumeDosage_Superpave_Service } from './resume-dosage.service';
 import { GranulometryEssay_Superpave_Service } from './granulometryEssay.service';
 import { Calc_Superpave_GranulometyEssay_Dto } from '../dto/granulometry-essay.dto';
+import { AsphaltGranulometryService } from 'modules/asphalt/essays/granulometry/service';
+import { Calc_AsphaltGranulometry_Dto } from 'modules/asphalt/essays/granulometry/dto/asphalt.calc.granulometry.dto';
+import { ViscosityRotationalService } from 'modules/asphalt/essays/viscosityRotational/service/viscosityRotational.service';
 
 @Injectable()
 export class SuperpaveService {
@@ -35,6 +38,8 @@ export class SuperpaveService {
     private readonly secondCompression_Service: SecondCompression_Superpave_Service,
     private readonly secondCompressionParameters_Service: SecondCompressionParameters_Superpave_Service,
     private readonly resumeDosageEquation_Service: ResumeDosage_Superpave_Service,
+    private readonly asphaltGranulometry_Service: AsphaltGranulometryService,
+    private readonly rotationalViscosity_Service: ViscosityRotationalService
   ) {}
 
   async verifyInitSuperpave(body: SuperpaveInitDto, userId: string) {
@@ -65,17 +70,53 @@ export class SuperpaveService {
     }
   }
 
-  async calculateGranulometryEssayData(body: Calc_Superpave_GranulometyEssay_Dto) {
-    try {
-      const granulometry = await this.granulometryEssay_Service.calculateGranulometryEssay(body);
 
-      return { granulometry, success: true };
+  /**
+   * Calcula a granulometria dos materiais de uma dosagem superpave.
+   * @param body Objeto com as propriedades granulometrys (array de granulometrias) e viscosity (objeto de viscosidade).
+   * @returns Um objeto com as propriedades granulometry (array de granulometrias calculadas) e success (booleano indicando se houve sucesso).
+   * Caso haja erro, retorna um objeto com as propriedades error (objeto com status, name e message do erro) e success (false).
+   */
+  async calculateGranulometryEssayData(body: any) {
+    try {
+      const { granulometrys, viscosity } = body;
+  
+      const formattedBody: Calc_AsphaltGranulometry_Dto[] = granulometrys.map((item) => {
+        const { material, material_mass, table_data, bottom } = item;
+        return {
+          generalData: material,
+          step2Data: { material_mass, table_data, bottom }
+        };
+      });
+  
+      const results = await Promise.allSettled(
+        formattedBody.map((dto) => this.asphaltGranulometry_Service.calculateGranulometry(dto))
+      );
+  
+      const granulometry = results.map((result, index) => {
+        if (result.status === 'fulfilled') {
+          return {
+            ...result.value,
+            material: granulometrys[index].material
+          };
+        } else {
+          this.logger.warn(`Failed to calculate material ${granulometrys[index].material?.name || index}: ${result.reason}`);
+          return null;
+        }
+      }).filter(Boolean); // remove os nulos
+
+      const data = {viscosityRotational: viscosity, generalData: viscosity.material}; 
+      const viscosityResult = await this.rotationalViscosity_Service.calculateViscosityRotational(data);
+
+  
+      return { granulometry,viscosityResult, success: true };
     } catch (error) {
       this.logger.error(`error on calculate granulometry essay data > [error]: ${error}`);
       const { status, name, message } = error;
       return { materials: [], success: false, error: { status, message, name } };
     }
   }
+  
 
   async saveGranulometryEssayStep(body: any, userId: string) {
     try {

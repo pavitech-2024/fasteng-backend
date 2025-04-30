@@ -9,7 +9,7 @@ import { SuperpaveInitDto } from '../dto/superpave-init.dto';
 export class SuperpaveController {
   private logger = new Logger(SuperpaveController.name);
 
-  constructor(private readonly superpaveService: SuperpaveService) { }
+  constructor(private readonly superpaveService: SuperpaveService) {}
 
   @Get('all/:id')
   @ApiOperation({ summary: 'Retorna todas as dosagens do banco de dados de um usuário.' })
@@ -38,7 +38,10 @@ export class SuperpaveController {
       },
     },
   })
-  @ApiResponse({ status: 400, description: 'Erro ao verificar se é possível criar uma Superpave com os dados enviados.' })
+  @ApiResponse({
+    status: 400,
+    description: 'Erro ao verificar se é possível criar uma Superpave com os dados enviados.',
+  })
   async verifyInitSuperpave(@Res() response: Response, @Body() body: SuperpaveInitDto, @Param('id') userId: string) {
     this.logger.log('verify init Superpave > [body]');
 
@@ -48,20 +51,31 @@ export class SuperpaveController {
   }
 
   @Post('calculate-granulometry-essay-data')
-  async calculateGranulometryEssayData(@Res()resopnse: Response, @Body() body: any) {
-    this.logger.log(`calculate granulometry essay data step > [body]: ${body}`);
+  @ApiOperation({ summary: 'Calcula os ensaios de granulometria.' })
+  @ApiResponse({
+    status: 200,
+    description: 'Ensaios de granulometria calculados com sucesso!',
+    content: { 'application/json': { schema: { example: { success: true } } } },
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Erro ao calcular os ensaios de granulometria.',
+    content: {
+      'application/json': {
+        schema: { example: { success: false, error: { message: 'Internal error.', status: 400, name: 'Error' } } },
+      },
+    },
+  })
+  async calculateGranulometryEssaysData(@Res() response: Response, @Body() body: any) {
+    this.logger.log(`calculate granulometry essays of granulometry essay data step > [body]: ${body}`);
 
     const status = await this.superpaveService.calculateGranulometryEssayData(body);
 
-    return resopnse.status(200).json(status);
+    return response.status(200).json(status);
   }
 
   @Post('save-granulometry-essay-step/:id')
-  async saveGranulometryEssayStep(
-    @Res() response: Response,
-    @Body() body: any,
-    @Param('id') userId: string,
-  ) {
+  async saveGranulometryEssayStep(@Res() response: Response, @Body() body: any, @Param('id') userId: string) {
     this.logger.log(`save granulometry essay data step in user superpave dosage > [body]: ${body}`);
 
     const status = await this.superpaveService.saveGranulometryEssayStep(body, userId);
@@ -70,7 +84,9 @@ export class SuperpaveController {
   }
 
   @Get('material-selection/:id')
-  @ApiOperation({ summary: 'Retorna todos os materiais do banco de dados de um usuário, que possuam os ensaios para a dosagem.' })
+  @ApiOperation({
+    summary: 'Retorna todos os materiais do banco de dados de um usuário, que possuam os ensaios para a dosagem.',
+  })
   @ApiResponse({ status: 200, description: 'Materiais encontrados com sucesso!' })
   @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
   async getMaterialsByUserId(@Res() response: Response, @Param('id') userId: string) {
@@ -89,18 +105,13 @@ export class SuperpaveController {
     this.logger.log(`get all materials, by user id, with the necessary dosage essays > [id]: ${dosageId}`);
     this.logger.log(`get a dosage by dosage id > [id]: ${dosageId}`);
 
-
     const status = await this.superpaveService.getDosageById(dosageId);
 
     return response.status(200).json(status);
   }
 
   @Post('save-material-selection-step/:id')
-  async saveMaterialSelectionStep(
-    @Res() response: Response,
-    @Body() body: any,
-    @Param('id') userId: string,
-  ) {
+  async saveMaterialSelectionStep(@Res() response: Response, @Body() body: any, @Param('id') userId: string) {
     this.logger.log(`save materials selection step in user superpave dosage > [body]: ${body}`);
 
     const status = await this.superpaveService.saveMaterialSelectionStep(body, userId);
@@ -109,11 +120,13 @@ export class SuperpaveController {
   }
 
   @Post('step-3-data')
-  @ApiOperation({ summary: 'Retorna os dados iniciais necessários para a terceira tela (composição granulométrica) da dosagem' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiOperation({
+    summary: 'Retorna os dados iniciais necessários para a terceira tela (composição granulométrica) da dosagem',
+  })
+  @ApiResponse({
+    status: 200,
     description: 'Dados carregados com sucesso!',
-    content: { 'application/json': { schema: { example: { data: {}, success: true } } } }, 
+    content: { 'application/json': { schema: { example: { data: {}, success: true } } } },
   })
   @ApiResponse({ status: 400, description: 'Dados não encontrados!' })
   async getStep3Data(@Res() response: Response, @Body() body: any) {
@@ -134,11 +147,7 @@ export class SuperpaveController {
   }
 
   @Post('save-granulometry-composition-step/:userId')
-  async saveGranulometryCompositionStep(
-    @Res() response: Response,
-    @Param('userId') userId: string,
-    @Body() body: any
-  ) {
+  async saveGranulometryCompositionStep(@Res() response: Response, @Param('userId') userId: string, @Body() body: any) {
     this.logger.log(`save step 3 data > [body]: ${body}`);
 
     const status = await this.superpaveService.saveStep3Data(body, userId);
@@ -147,11 +156,13 @@ export class SuperpaveController {
   }
 
   @Post('step-4-specific-masses')
-  @ApiOperation({ summary: 'Retorna os dados iniciais necessários para a quarta tela (teor de ligante inicial) da dosagem' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiOperation({
+    summary: 'Retorna os dados iniciais necessários para a quarta tela (teor de ligante inicial) da dosagem',
+  })
+  @ApiResponse({
+    status: 200,
     description: 'Dados carregados com sucesso!',
-    content: { 'application/json': { schema: { example: { data: {}, success: true } } } }, 
+    content: { 'application/json': { schema: { example: { data: {}, success: true } } } },
   })
   async getStep4SpecificMasses(@Res() response: Response, @Body() body: any) {
     this.logger.log(`get step 4 data > [body]: ${body}`);
@@ -163,10 +174,10 @@ export class SuperpaveController {
 
   @Post('step-4-data')
   @ApiOperation({ summary: 'Calcula os dados inseridos para a quarta tela (teor de ligante inicial) da dosagem' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'Dados carregados com sucesso!',
-    content: { 'application/json': { schema: { example: { data: {}, success: true } } } }, 
+    content: { 'application/json': { schema: { example: { data: {}, success: true } } } },
   })
   @ApiResponse({ status: 400, description: 'Dados não encontrados!' })
   async getStep4Data(@Res() response: Response, @Body() body: any) {
@@ -178,11 +189,7 @@ export class SuperpaveController {
   }
 
   @Post('save-initial-binder-step/:userId')
-  async saveInitialBinderStep(
-    @Res() response: Response,
-    @Param('userId') userId: string,
-    @Body() body: any
-  ) {
+  async saveInitialBinderStep(@Res() response: Response, @Param('userId') userId: string, @Body() body: any) {
     this.logger.log(`save step 4 data > [body]: ${body}`);
 
     const status = await this.superpaveService.saveStep4Data(body, userId);
@@ -193,18 +200,14 @@ export class SuperpaveController {
   @Post('calculate-gmm')
   async calculateRiceTest(@Res() response: Response, @Body() body: any) {
     this.logger.log(`calculate step 5 rice test data > [body]: ${body}`);
-  
+
     const status = await this.superpaveService.calculateGmm(body);
 
     return response.status(200).json(status);
   }
 
   @Post('save-first-compression-step/:userId')
-  async saveFirstCompressionStep(
-    @Res() response: Response,
-    @Param('userId') userId: string,
-    @Body() body: any
-  ) {
+  async saveFirstCompressionStep(@Res() response: Response, @Param('userId') userId: string, @Body() body: any) {
     this.logger.log(`save step 5 data > [body]: ${body}`);
 
     const status = await this.superpaveService.saveStep5Data(body, userId);
@@ -213,11 +216,13 @@ export class SuperpaveController {
   }
 
   @Post('step-5-parameters')
-  @ApiOperation({ summary: 'Retorna os dados iniciais necessários para a quinta tela (porcentagens da curva escolhida) da dosagem' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiOperation({
+    summary: 'Retorna os dados iniciais necessários para a quinta tela (porcentagens da curva escolhida) da dosagem',
+  })
+  @ApiResponse({
+    status: 200,
     description: 'Dados carregados com sucesso!',
-    content: { 'application/json': { schema: { example: { data: {}, success: true } } } }, 
+    content: { 'application/json': { schema: { example: { data: {}, success: true } } } },
   })
   async getStep6Parameters(@Res() response: Response, @Body() body: any) {
     this.logger.log(`get step 6 data > [body]: ${body}`);
@@ -226,14 +231,9 @@ export class SuperpaveController {
 
     return response.status(200).json(status);
   }
-  
 
   @Post('save-first-curve-percentage-step/:userId')
-  async saveStep6Data(
-    @Res() response: Response,
-    @Param('userId') userId: string,
-    @Body() body: any
-  ) {
+  async saveStep6Data(@Res() response: Response, @Param('userId') userId: string, @Body() body: any) {
     this.logger.log(`save step 6 data > [body]: ${body}`);
 
     const status = await this.superpaveService.saveStep6Data(body, userId);
@@ -242,11 +242,13 @@ export class SuperpaveController {
   }
 
   @Post('step-7-parameters')
-  @ApiOperation({ summary: 'Retorna os dados iniciais necessários para a sétima tela (porcentagens da curva escolhida) da dosagem' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiOperation({
+    summary: 'Retorna os dados iniciais necessários para a sétima tela (porcentagens da curva escolhida) da dosagem',
+  })
+  @ApiResponse({
+    status: 200,
     description: 'Dados carregados com sucesso!',
-    content: { 'application/json': { schema: { example: { data: {}, success: true } } } }, 
+    content: { 'application/json': { schema: { example: { data: {}, success: true } } } },
   })
   async getStep7Parameters(@Res() response: Response, @Body() body: any) {
     this.logger.log(`get step 7 data > [body]: ${body}`);
@@ -257,11 +259,7 @@ export class SuperpaveController {
   }
 
   @Post('save-chosen-curve-percentage-step/:userId')
-  async saveStep7Data(
-    @Res() response: Response,
-    @Param('userId') userId: string,
-    @Body() body: any
-  ) {
+  async saveStep7Data(@Res() response: Response, @Param('userId') userId: string, @Body() body: any) {
     this.logger.log(`save step 7 data > [body]: ${body}`);
 
     const status = await this.superpaveService.saveStep7Data(body, userId);
@@ -272,7 +270,7 @@ export class SuperpaveController {
   @Post('calculate-step-7-rice-test')
   async calculateStep7RiceTest(@Res() response: Response, @Body() body: any) {
     this.logger.log(`calculate step 5 rice test data > [body]: ${body}`);
-  
+
     const status = await this.superpaveService.calculateStep7RiceTest(body);
 
     return response.status(200).json(status);
@@ -281,7 +279,7 @@ export class SuperpaveController {
   @Post('calculate-step-7-gmm')
   async calculateStep7Gmm(@Res() response: Response, @Body() body: any) {
     this.logger.log(`calculate step 5 gmm data > [body]: ${body}`);
-  
+
     const status = await this.superpaveService.calculateStep7Gmm(body);
 
     return response.status(200).json(status);
@@ -289,33 +287,32 @@ export class SuperpaveController {
 
   @Post('confirm-second-compression-data')
   async calculateVolumetricParametersOfChoosenGranulometryComposition(@Res() response: Response, @Body() body: any) {
-    this.logger.log(`calculate step 7 volumetric parameters of choosen granulometry composition data > [body]: ${body}`);
-  
+    this.logger.log(
+      `calculate step 7 volumetric parameters of choosen granulometry composition data > [body]: ${body}`,
+    );
+
     const status = await this.superpaveService.calculateVolumetricParametersOfChoosenGranulometryComposition(body);
 
     return response.status(200).json(status);
   }
 
   @Post('save-second-compression-data-step/:userId')
-  async saveStep8Data(
-    @Res() response: Response,
-    @Param('userId') userId: string,
-    @Body() body: any
-  ) {
+  async saveStep8Data(@Res() response: Response, @Param('userId') userId: string, @Body() body: any) {
     this.logger.log(`save step 8 data > [body]: ${body}`);
 
     const status = await this.superpaveService.saveStep8Data(body, userId);
 
     return response.status(200).json(status);
-    
   }
 
   @Post('get-step-9-data')
-  @ApiOperation({ summary: 'Retorna os dados iniciais necessários para a nona tela (parâmetros da segunda compactação) da dosagem' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiOperation({
+    summary: 'Retorna os dados iniciais necessários para a nona tela (parâmetros da segunda compactação) da dosagem',
+  })
+  @ApiResponse({
+    status: 200,
     description: 'Dados carregados com sucesso!',
-    content: { 'application/json': { schema: { example: { data: {}, success: true } } } }, 
+    content: { 'application/json': { schema: { example: { data: {}, success: true } } } },
   })
   async getStep9Data(@Res() response: Response, @Body() body: any) {
     this.logger.log(`get step 9 data > [body]: ${body}`);
@@ -326,11 +323,7 @@ export class SuperpaveController {
   }
 
   @Post('save-second-compression-params-step/:userId')
-  async saveStep9Data(
-    @Res() response: Response,
-    @Param('userId') userId: string,
-    @Body() body: any
-  ) {
+  async saveStep9Data(@Res() response: Response, @Param('userId') userId: string, @Body() body: any) {
     this.logger.log(`save step 9 data > [body]: ${body}`);
 
     const status = await this.superpaveService.saveStep9Data(body, userId);
@@ -339,10 +332,7 @@ export class SuperpaveController {
   }
 
   @Post('calculate-step-9-rice-test')
-  async calculateStep9RiceTest(
-    @Res() response: Response,
-    @Body() body: any
-  ) {
+  async calculateStep9RiceTest(@Res() response: Response, @Body() body: any) {
     this.logger.log(`calculate dosage equation > [body]: ${body}`);
 
     const status = await this.superpaveService.calculateStep9RiceTest(body);
@@ -350,12 +340,8 @@ export class SuperpaveController {
     return response.status(200).json(status);
   }
 
-
   @Post('calculate-dosage-equation')
-  async calculateVolumetricParametersOfConfirmGranulometryComposition(
-    @Res() response: Response,
-    @Body() body: any
-  ) {
+  async calculateVolumetricParametersOfConfirmGranulometryComposition(@Res() response: Response, @Body() body: any) {
     this.logger.log(`calculate dosage equation > [body]: ${body}`);
 
     const status = await this.superpaveService.calculateVolumetricParametersOfConfirmGranulometryComposition(body);
@@ -364,11 +350,7 @@ export class SuperpaveController {
   }
 
   @Post('save-confirmattion-compression-step/:userId')
-  async saveStep10Data(
-    @Res() response: Response,
-    @Param('userId') userId: string,
-    @Body() body: any
-  ) {
+  async saveStep10Data(@Res() response: Response, @Param('userId') userId: string, @Body() body: any) {
     this.logger.log(`save step 10 data > [body]: ${body}`);
 
     const status = await this.superpaveService.saveStep10Data(body, userId);
@@ -377,11 +359,7 @@ export class SuperpaveController {
   }
 
   @Post('save-superpave-dosage/:userId')
-  async saveSuperpaveDosage(
-    @Res() response: Response,
-    @Param('userId') userId: string,
-    @Body() body: any
-  ) {
+  async saveSuperpaveDosage(@Res() response: Response, @Param('userId') userId: string, @Body() body: any) {
     this.logger.log(`save superpave dosage > [body]: ${body}`);
 
     const status = await this.superpaveService.saveSuperpaveDosage(body, userId);
@@ -390,10 +368,7 @@ export class SuperpaveController {
   }
 
   @Delete(':id')
-  async deleteMarshallDosage(
-    @Res() response: Response,
-    @Param('id') id: string
-  ) {
+  async deleteMarshallDosage(@Res() response: Response, @Param('id') id: string) {
     this.logger.log(`delete superpave dosage > [body]: ${id}`);
 
     const status = await this.superpaveService.deleteSuperpaveDosage(id);

@@ -15,7 +15,7 @@ export class Calc_AsphaltGranulometry_Service {
 
   async calculateGranulometry({ step2Data }: Calc_AsphaltGranulometry_Dto): Promise<{ success: boolean; result: Calc_AsphaltGranulometry_Out }> {
     try {
-      this.logger.log('calculate granulometry on calc.granulometry.service.ts > [body]');
+      this.logger.log('calculate asphalt granulometry on calc.granulometry.service.ts > [body]');
 
       const { table_data, material_mass, bottom } = step2Data;
 
