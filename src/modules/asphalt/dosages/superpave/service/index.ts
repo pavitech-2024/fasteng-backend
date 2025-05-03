@@ -107,9 +107,8 @@ export class SuperpaveService {
 
       const data = {viscosityRotational: viscosity, generalData: viscosity.material}; 
       const viscosityResult = await this.rotationalViscosity_Service.calculateViscosityRotational(data);
-
   
-      return { granulometry,viscosityResult, success: true };
+      return { granulometry, viscosity: {material: viscosity.material, result: viscosityResult}, success: true };
     } catch (error) {
       this.logger.error(`error on calculate granulometry essay data > [error]: ${error}`);
       const { status, name, message } = error;
