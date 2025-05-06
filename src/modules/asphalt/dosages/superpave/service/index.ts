@@ -199,10 +199,10 @@ export class SuperpaveService {
       const allGranulometrys: any[] = await this.granulometryRepository.findAll();
 
       const ids = aggregates.map((aggregate) => {
-        return aggregate.material._id.toString();
+        return aggregate.data.material._id.toString();
       });
 
-      const selectedGranulometrys = await this.granulometryRepository.findById(ids);
+      // const selectedGranulometrys = await this.granulometryRepository.findById(ids);
 
       const granulometryData: {
         _id: string;
@@ -210,7 +210,7 @@ export class SuperpaveService {
       }[] = [];
 
       aggregates.forEach((aggregate) => {
-        const { table_data } = aggregate;
+        const { table_data } = aggregate.data;
 
         let passants = {};
 
@@ -219,19 +219,19 @@ export class SuperpaveService {
         });
 
         granulometryData.push({
-          _id: aggregate._id,
+          _id: aggregate.data.material._id,
           passants: passants,
         });
       });
 
       percentsOfMaterials = aggregates.map((granulometry) => {
-        if (granulometry.results.nominal_size > nominalSize) nominalSize = granulometry.results.nominal_size;
-        return granulometry.results.passant;
+        if (granulometry.results.result.nominal_size > nominalSize) nominalSize = granulometry.results.result.nominal_size;
+        return granulometry.results.result.passant;
       });
 
       result.nominalSize.value = nominalSize;
 
-      for (let i = 0; i < selectedGranulometrys.length; i++) {
+      for (let i = 0; i < aggregates.length; i++) {
         porcentagesPassantsN200[i] = null;
         if (percentsOfMaterials[i][10] !== null) porcentagesPassantsN200[i] = percentsOfMaterials[i][10][1];
       }
@@ -1003,7 +1003,21 @@ export class SuperpaveService {
           14, //sieve N° 100 - 0,150 mm
           7, //sieve N° 200 - 0,075 mm
         ];
-        lowerBand = [null, null, 100, 95, null, 75, 60, null, 35, null, 25, null, 20, null, null, 10, null, 5, null, 1];
+        lowerBand = [
+          100, //sieve 1 1/2 pol - 38,1 mm
+          90, //sieve 1 pol - 25,4 mm
+          75, //sieve 3/4 pol - 19,1 mm
+          58, //sieve 1/2 pol - 12,7 mm
+          48, //sieve 3/8 pol - 9,5 mm
+          35, //sieve 1/4 pol - 6,3 mm
+          29, //sieve N° 4 - 4,8 mm
+          19, //sieve N° 8 - 2,36 mm
+          13, //sieve N° 16 - 1,18 mm
+          9, //sieve N° 30 - 0,60 mm
+          5, //sieve N° 50 - 0,30 mm
+          2, //sieve N° 100 - 0,150 mm];
+          1, //sieve N° 200 - 0,075 mm
+        ];
       } else if (dnitBand === 'B') {
         higherBand = [
           100, //sieve 1 1/2 pol - 38,1 mm
@@ -1067,6 +1081,7 @@ export class SuperpaveService {
           2, //sieve N° 200 - 0,075 mm
         ];
       }
+
 
       const data = {
         nominalSize: result.nominalSize,
