@@ -167,7 +167,7 @@ export class SuperpaveService {
     }
   }
 
-  async getStep3Data(body: SuperpaveStep3Dto) {
+  async getStep3Data(body: any) {
     try {
       const { dnitBand, aggregates } = body;
 
@@ -196,10 +196,10 @@ export class SuperpaveService {
         percentsOfMaterials: [],
       };
 
-      const allGranulometrys = await this.granulometryRepository.findAll();
+      const allGranulometrys: any[] = await this.granulometryRepository.findAll();
 
       const ids = aggregates.map((aggregate) => {
-        return aggregate._id.toString();
+        return aggregate.material._id.toString();
       });
 
       const selectedGranulometrys = await this.granulometryRepository.findById(ids);
@@ -210,16 +210,11 @@ export class SuperpaveService {
       }[] = [];
 
       aggregates.forEach((aggregate) => {
-        const granulometry: any = allGranulometrys.find(({ generalData }) => {
-          const { material } = generalData;
-          return aggregate._id.toString() === material._id.toString();
-        });
-
-        const { passant } = granulometry.step2Data;
+        const { table_data } = aggregate;
 
         let passants = {};
 
-        passant.forEach((p) => {
+        table_data.forEach((p) => {
           passants[p.sieve_label] = p.passant;
         });
 
@@ -229,7 +224,7 @@ export class SuperpaveService {
         });
       });
 
-      percentsOfMaterials = selectedGranulometrys.map((granulometry) => {
+      percentsOfMaterials = aggregates.map((granulometry) => {
         if (granulometry.results.nominal_size > nominalSize) nominalSize = granulometry.results.nominal_size;
         return granulometry.results.passant;
       });
