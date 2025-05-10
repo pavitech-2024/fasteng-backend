@@ -526,6 +526,7 @@ export class GranulometryComposition_Superpave_Service {
   calculatePercentOfMaterials(band, materials, percentsOfDosage, percentsToList) {
     let percentsOfMaterialsToShow = [];
     let newPercentsOfDosage = [];
+    let materialsWithoutBinder = materials.filter((material) => material.type !== 'asphaltBinder' && material.type !== 'CAP' && material.type !== 'other');
 
     for (let i = 0; i < percentsToList.length; i++) {
       percentsOfMaterialsToShow.push([]);
@@ -567,7 +568,7 @@ export class GranulometryComposition_Superpave_Service {
 
     let percentsOfMaterials = [];
 
-    for (let i = 0; i < materials.length; i++) {
+    for (let i = 0; i < materialsWithoutBinder.length; i++) {
       percentsOfMaterials.push([]);
       for (let j = 0; j < percentsOfMaterialsToShow[i].length; j++) {
         if (percentsOfMaterialsToShow[i][j] !== null) {

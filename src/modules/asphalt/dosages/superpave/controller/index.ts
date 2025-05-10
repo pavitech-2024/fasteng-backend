@@ -137,7 +137,7 @@ export class SuperpaveController {
     return response.status(200).json(status);
   }
 
-  @Post('calculate-step-3-data')
+  @Post('calculate-granulometric-composition-data')
   async calculateStep3Data(@Res() response: Response, @Body() body: any) {
     this.logger.log(`calculate step 3 data > [body]: ${body}`);
 
