@@ -6,6 +6,8 @@ import { Material } from '../schemas';
 import { GetEssaysByMaterial_Service } from './get-essays-by-material.service';
 import { FwdRepository } from 'modules/asphalt/essays/fwd/repository';
 import { IggRepository } from 'modules/asphalt/essays/igg/repository';
+import { RtcdRepository } from 'modules/asphalt/essays/rtcd/repository';
+import { DduiRepository } from 'modules/asphalt/essays/ddui/repository';
 
 @Injectable()
 export class MaterialsService {
@@ -15,7 +17,9 @@ export class MaterialsService {
     private readonly materialsRepository: MaterialsRepository,
     private readonly getEssaysByMaterial_Service: GetEssaysByMaterial_Service,
     private readonly fwdRepository: FwdRepository,
-    private readonly iggRepository: IggRepository
+    private readonly iggRepository: IggRepository,
+    private readonly rtcdRepository: RtcdRepository,
+    private readonly dduiRepository: DduiRepository,
   ) {}
 
   async createMaterial(material: CreateAsphaltMaterialDto, userId: string) {
@@ -92,13 +96,17 @@ export class MaterialsService {
       );
 
       const fwdEssays = await this.fwdRepository.findAllByUserId(userId);
-      const iggEssays = await this.iggRepository.findAllByUserId(userId)
+      const iggEssays = await this.iggRepository.findAllByUserId(userId);
+      const rtcdEssays = await this.rtcdRepository.findAllByUserId(userId);
+      const dduiEssays = await this.dduiRepository.findAllByUserId(userId)
 
       // retorna os materiais encontrados que pertencem ao usuário
       return {
         materials,
         fwdEssays,
-        iggEssays
+        iggEssays,
+        rtcdEssays,
+        dduiEssays
       };
     } catch (error) {
       this.logger.error(`error on get all materials > [error]: ${error}`);

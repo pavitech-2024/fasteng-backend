@@ -14,6 +14,10 @@ export class RtcdRepository {
     return this.rtcdModel.find();
   }
 
+  async findAllByUserId(id: string): Promise<Rtcd[]> {
+      return this.rtcdModel.find({"generalData.userId": id});
+    }
+
   async create(rtcd: any): Promise<Rtcd> {
     const createdRtcd = new this.rtcdModel(rtcd);
 

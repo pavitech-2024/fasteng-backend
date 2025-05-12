@@ -33,7 +33,16 @@ export class MaterialsController {
   async getAllByUserId(@Param('id') userId: string) {
     this.logger.log(`get all materials by user id > [id]: ${userId}`);
 
-    return this.materialsService.getAllMaterials(userId);
+    const materials = await this.materialsService.getAllMaterials(userId);
+  
+    // Garante que sempre retornará um array
+    if (!Array.isArray(materials)) {
+      return [materials].filter(Boolean); // Converte para array e remove valores nulos
+    }
+    
+    return materials;
+
+    //return this.materialsService.getAllMaterials(userId);
   }
 
   @Get(':id')
