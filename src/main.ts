@@ -9,6 +9,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 //Soils Modules
 import { SamplesModule } from './modules/soils/samples/samples.module';
+import { AllExceptionsFilter } from 'config/filters/http-exception.filter';
 
 async function bootstrap() {
   // cria uma instância da aplicação
@@ -19,6 +20,9 @@ async function bootstrap() {
 
   // garante que todos os endpoints sejam protegidos contra o recebimento de dados incorretos.
   app.useGlobalPipes(new ValidationPipe());
+
+  // adiciona um filtro global para lidar com exceções
+  app.useGlobalFilters(new AllExceptionsFilter());
 
   // Aumenta o limite do payload (ex: 50MB)
   app.use(bodyParser.json({ limit: '10mb' }));

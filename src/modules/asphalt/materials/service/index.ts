@@ -22,26 +22,39 @@ export class MaterialsService {
     private readonly dduiRepository: DduiRepository,
   ) {}
 
+  // async createMaterial(material: CreateAsphaltMaterialDto, userId: string) {
+  //   try {
+  //     // verifica se já existe um material com o mesmo nome no banco de dados
+  //     if (await this.materialsRepository.findOne({ name: material.name, userId }))
+  //       throw new AlreadyExists(`Material with name "${material.name}"`);
+
+  //     this.logger.log(userId);
+
+  //     const createdMaterial = await this.materialsRepository.create({
+  //       ...material,
+  //       createdAt: new Date(),
+  //       userId,
+  //     });
+
+  //     // cria um material no banco de dados
+  //     return createdMaterial;
+  //   } catch (error) {
+  //     this.logger.error(`error on create material > [error]: ${error}`);
+  //     throw error;
+  //   }
+  // }
   async createMaterial(material: CreateAsphaltMaterialDto, userId: string) {
-    try {
-      // verifica se já existe um material com o mesmo nome no banco de dados
-      if (await this.materialsRepository.findOne({ name: material.name, userId }))
-        throw new AlreadyExists(`Material with name "${material.name}"`);
+    // Remove o try-catch aqui!
+    if (await this.materialsRepository.findOne({ name: material.name, userId }))
+      throw new AlreadyExists(`Material with name "${material.name}"`);
 
-      this.logger.log(userId);
+    const createdMaterial = await this.materialsRepository.create({
+      ...material,
+      createdAt: new Date(),
+      userId,
+    });
 
-      const createdMaterial = await this.materialsRepository.create({
-        ...material,
-        createdAt: new Date(),
-        userId,
-      });
-
-      // cria um material no banco de dados
-      return createdMaterial;
-    } catch (error) {
-      this.logger.error(`error on create material > [error]: ${error}`);
-      throw error;
-    }
+    return createdMaterial;
   }
 
   async getMaterial(materialId: string): Promise<any> {
