@@ -145,21 +145,21 @@ export class GranulometryComposition_Superpave_Service {
         },
       };
 
-      if (chosenCurves.lower && percentsOfDosage[0].length !== 0) {
+      if (chosenCurves === 'lower') {
         granulometryComposition.lower.percentsOfDosage.value = percentsOfDosage[0];
         granulometryComposition.lower.percentsOfDosage.isEmpty = false;
       } else {
         granulometryComposition.lower.percentsOfDosage.isEmpty = true;
       }
 
-      if (chosenCurves.average && percentsOfDosage[0].length !== 0) {
+      if (chosenCurves.average === 'average') {
         granulometryComposition.average.percentsOfDosage.value = percentsOfDosage[0];
         granulometryComposition.average.percentsOfDosage.isEmpty = false;
       } else {
         granulometryComposition.average.percentsOfDosage.isEmpty = true;
       }
 
-      if (chosenCurves.higher && percentsOfDosage[0].length !== 0) {
+      if (chosenCurves === 'higher') {
         granulometryComposition.higher.percentsOfDosage.value = percentsOfDosage[0];
         granulometryComposition.higher.percentsOfDosage.isEmpty = false;
       } else {
