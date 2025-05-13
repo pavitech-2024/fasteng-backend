@@ -471,16 +471,16 @@ export class GranulometryComposition_Superpave_Service {
           pointsOfCurve[i].push(sumOfPercents[0][i]);
         }
       }
-      if (!granulometryComposition.average.percentsOfDosage.isEmpty) {
-        for (let i = 0; i < 20 + 1; i++) {
-          pointsOfCurve[i].push(sumOfPercents[1][i]);
-        }
-      }
-      if (!granulometryComposition.higher.percentsOfDosage.isEmpty) {
-        for (let i = 0; i < 20 + 1; i++) {
-          pointsOfCurve[i].push(sumOfPercents[2][i]);
-        }
-      }
+      // if (!granulometryComposition.average.percentsOfDosage.isEmpty) {
+      //   for (let i = 0; i < 20 + 1; i++) {
+      //     pointsOfCurve[i].push(sumOfPercents[1][i]);
+      //   }
+      // }
+      // if (!granulometryComposition.higher.percentsOfDosage.isEmpty) {
+      //   for (let i = 0; i < 20 + 1; i++) {
+      //     pointsOfCurve[i].push(sumOfPercents[2][i]);
+      //   }
+      // }
 
       pointsOfCurve = pointsOfCurve;
 
