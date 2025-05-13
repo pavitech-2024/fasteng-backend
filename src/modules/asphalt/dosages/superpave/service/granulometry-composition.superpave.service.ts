@@ -389,13 +389,6 @@ export class GranulometryComposition_Superpave_Service {
           null,
           null,
           null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
         ];
       }
 
@@ -453,7 +446,7 @@ export class GranulometryComposition_Superpave_Service {
         ];
       }
 
-      for (let i = 0; i < 20 + 1; i++) {
+      for (let i = 0; i <= 13; i++) {
         pointsOfCurve.push([
           Math.pow(axisX[i] / nominalSize.value, 0.45),
           nominalSize.controlPoints.lower[i],
@@ -467,7 +460,7 @@ export class GranulometryComposition_Superpave_Service {
       }
 
       if (!granulometryComposition.lower.percentsOfDosage.isEmpty) {
-        for (let i = 0; i < 20 + 1; i++) {
+        for (let i = 0; i <= 13; i++) {
           pointsOfCurve[i].push(sumOfPercents[0][i]);
         }
       }

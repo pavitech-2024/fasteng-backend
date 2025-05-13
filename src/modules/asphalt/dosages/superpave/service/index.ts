@@ -39,7 +39,7 @@ export class SuperpaveService {
     private readonly secondCompressionParameters_Service: SecondCompressionParameters_Superpave_Service,
     private readonly resumeDosageEquation_Service: ResumeDosage_Superpave_Service,
     private readonly asphaltGranulometry_Service: AsphaltGranulometryService,
-    private readonly rotationalViscosity_Service: ViscosityRotationalService
+    private readonly rotationalViscosity_Service: ViscosityRotationalService,
   ) {}
 
   async verifyInitSuperpave(body: SuperpaveInitDto, userId: string) {
@@ -70,7 +70,6 @@ export class SuperpaveService {
     }
   }
 
-
   /**
    * Calcula a granulometria dos materiais de uma dosagem superpave.
    * @param body Objeto com as propriedades granulometrys (array de granulometrias) e viscosity (objeto de viscosidade).
@@ -80,42 +79,45 @@ export class SuperpaveService {
   async calculateGranulometryEssayData(body: any) {
     try {
       const { granulometrys, viscosity } = body;
-  
+
       const formattedBody: Calc_AsphaltGranulometry_Dto[] = granulometrys.map((item) => {
         const { material, material_mass, table_data, bottom } = item;
         return {
           generalData: material,
-          step2Data: { material_mass, table_data, bottom }
+          step2Data: { material_mass, table_data, bottom },
         };
       });
-  
-      const results = await Promise.allSettled(
-        formattedBody.map((dto) => this.asphaltGranulometry_Service.calculateGranulometry(dto))
-      );
-  
-      const granulometry = results.map((result, index) => {
-        if (result.status === 'fulfilled') {
-          return {
-            ...result.value,
-            material: granulometrys[index].material
-          };
-        } else {
-          this.logger.warn(`Failed to calculate material ${granulometrys[index].material?.name || index}: ${result.reason}`);
-          return null;
-        }
-      }).filter(Boolean); // remove os nulos
 
-      const data = {viscosityRotational: viscosity, generalData: viscosity.material}; 
+      const results = await Promise.allSettled(
+        formattedBody.map((dto) => this.asphaltGranulometry_Service.calculateGranulometry(dto)),
+      );
+
+      const granulometry = results
+        .map((result, index) => {
+          if (result.status === 'fulfilled') {
+            return {
+              ...result.value,
+              material: granulometrys[index].material,
+            };
+          } else {
+            this.logger.warn(
+              `Failed to calculate material ${granulometrys[index].material?.name || index}: ${result.reason}`,
+            );
+            return null;
+          }
+        })
+        .filter(Boolean); // remove os nulos
+
+      const data = { viscosityRotational: viscosity, generalData: viscosity.material };
       const viscosityResult = await this.rotationalViscosity_Service.calculateViscosityRotational(data);
-  
-      return { granulometry, viscosity: {material: viscosity.material, result: viscosityResult}, success: true };
+
+      return { granulometry, viscosity: { material: viscosity.material, result: viscosityResult }, success: true };
     } catch (error) {
       this.logger.error(`error on calculate granulometry essay data > [error]: ${error}`);
       const { status, name, message } = error;
       return { materials: [], success: false, error: { status, message, name } };
     }
   }
-  
 
   async saveGranulometryEssayStep(body: any, userId: string) {
     try {
@@ -225,7 +227,8 @@ export class SuperpaveService {
       });
 
       percentsOfMaterials = aggregates.map((granulometry) => {
-        if (granulometry.results.result.nominal_size > nominalSize) nominalSize = granulometry.results.result.nominal_size;
+        if (granulometry.results.result.nominal_size > nominalSize)
+          nominalSize = granulometry.results.result.nominal_size;
         return granulometry.results.result.passant;
       });
 
@@ -236,9 +239,10 @@ export class SuperpaveService {
         if (percentsOfMaterials[i][10] !== null) porcentagesPassantsN200[i] = percentsOfMaterials[i][10][1];
       }
 
-      const axisX = [
-        75, 64, 50, 37.5, 32, 25, 19, 12.5, 9.5, 6.3, 4.8, 2.4, 2, 1.2, 0.6, 0.43, 0.3, 0.18, 0.15, 0.075, 0,
-      ];
+      // const axisX = [
+      //   75, 64, 50, 37.5, 32, 25, 19, 12.5, 9.5, 6.3, 4.8, 2.4, 2, 1.2, 0.6, 0.43, 0.3, 0.18, 0.15, 0.075, 0,
+      // ];
+      const axisX = [38.1, 25.4, 19.1, 12.7, 9.5, 6.3, 4.8, 2.36, 1.18, 0.6, 0.3, 0.15, 0.075];
 
       const curve37 = [
         null,
@@ -1081,7 +1085,6 @@ export class SuperpaveService {
           2, //sieve N° 200 - 0,075 mm
         ];
       }
-
 
       const data = {
         nominalSize: result.nominalSize,
