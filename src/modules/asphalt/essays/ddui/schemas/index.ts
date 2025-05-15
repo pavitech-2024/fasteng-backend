@@ -34,7 +34,7 @@ export type Ddui_Step3 = {
   }[]
 };
 
-@Schema({ collection: 'ddui' })
+@Schema({ collection: 'ddui', timestamps: true })
 export class Ddui {
   _id: string;
 

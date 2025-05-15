@@ -100,7 +100,7 @@ export class MaterialsService {
     }
   }
 
-  async getAllMaterials(userId: string): Promise<any> {
+  async getAllMaterialsList(userId: string): Promise<any> { //Antigo método getAllMaterials
     try {
       // busca todos os materiais no banco de dados
       const materials = await this.materialsRepository.findByType(
@@ -121,6 +121,22 @@ export class MaterialsService {
         rtcdEssays,
         dduiEssays
       };
+    } catch (error) {
+      this.logger.error(`error on get all materials > [error]: ${error}`);
+      throw error;
+    }
+  }
+
+  async getAllMaterials(userId: string): Promise<Material[]> {
+    try {
+      // busca todos os materiais no banco de dados
+      const materials = await this.materialsRepository.findByType(
+        { $in: ['filler', 'CAP', 'asphaltBinder', 'coarseAggregate', 'fineAggregate'] },
+        userId,
+      );
+
+      // retorna os materiais encontrados que pertencem ao usuário
+      return materials;
     } catch (error) {
       this.logger.error(`error on get all materials > [error]: ${error}`);
       throw error;
