@@ -121,7 +121,7 @@ export class SuperpaveController {
 
   @Post('step-3-data')
   @ApiOperation({
-    summary: 'Retorna os dados iniciais necessários para a terceira tela (composição granulométrica) da dosagem',
+    summary: 'Retorna os dados iniciais necessários para a etapa de composição granulometrica da dosagem',
   })
   @ApiResponse({
     status: 200,

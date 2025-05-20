@@ -25,19 +25,19 @@ export const AllSieves = [
     value: 32, // mm
   },
   {
-    label: '1 pol - 25mm',
+    label: '1 pol - 25mm', // 5
     value: 25, // mm
   },
   {
-    label: '3/4 pol - 19mm',
+    label: '3/4 pol - 19mm', // 6
     value: 19, // mm
   },
   {
-    label: '1/2 pol - 12,5mm',
+    label: '1/2 pol - 12,5mm', // 7
     value: 12.5, // mm
   },
   {
-    label: '3/8 pol - 9,5mm',
+    label: '3/8 pol - 9,5mm', // 8
     value: 9.5, // mm
   },
   {
@@ -45,35 +45,35 @@ export const AllSieves = [
     value: 6.3, // mm
   },
   {
-    label: 'Nº4 - 4,8mm',
+    label: 'Nº4 - 4,8mm', // 10
     value: 4.8, // mm
   },
   {
-    label: 'Nº8 - 2,4mm',
+    label: 'Nº8 - 2,4mm', // 11
     value: 2.4, // mm
   },
   {
-    label: 'Nº10 - 2,0mm',
+    label: 'Nº10 - 2,0mm', // 12
     value: 2.0, // mm
   },
   {
-    label: 'Nº16 - 1,2mm',
+    label: 'Nº16 - 1,2mm', // 13
     value: 1.2, // mm
   },
   {
-    label: 'Nº30 - 0,6mm',
+    label: 'Nº30 - 0,6mm', // 14
     value: 0.6, // mm
   },
   {
-    label: 'Nº40 - 0,43mm',
+    label: 'Nº40 - 0,43mm', // 15
     value: 0.43, // mm
   },
   {
-    label: 'Nº50 - 0,3mm',
+    label: 'Nº50 - 0,3mm', // 16
     value: 0.3, // mm
   },
   {
-    label: 'Nº80 - 0,18mm',
+    label: 'Nº80 - 0,18mm', // 17
     value: 0.18, // mm
   },
   {
@@ -133,7 +133,7 @@ export const AllSievesSuperpaveUpdatedAstm: Sieve[] = [
   },
   {
     label: 'Nº100 - 0,15mm',
-    value: 0.150, // mm
+    value: 0.15, // mm
   },
   {
     label: 'Nº200 - 0,075mm',
