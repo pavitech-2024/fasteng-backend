@@ -13,11 +13,11 @@ export const AllSieves = [
     value: 64, // mm
   },
   {
-    label: '2 pol - 50mm',
+    label: '2 pol - 50mm',  // 2
     value: 50, // mm
   },
   {
-    label: '1 1/2 pol - 37,5mm',
+    label: '1 1/2 pol - 37,5mm', // 3
     value: 37.5, // mm
   },
   {
