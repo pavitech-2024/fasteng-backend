@@ -14,6 +14,7 @@ export type SuperpaveGeneralData = {
   objective: 'bearing' | 'bonding';
   dnitBand: 'A' | 'B' | 'C';
   description?: string;
+  step: number;
 };
 
 export type SuperpaveMaterialData = {

@@ -47,9 +47,9 @@ export class MarshallService {
 
   async verifyInitMarshall(body: MarshallInitDto, userId: string) {
     try {
-      const success = await this.generalData_Service.verifyInitMarshall(body, userId);
+      const dosage = await this.generalData_Service.verifyInitMarshall(body, userId);
 
-      return { success };
+      return dosage;
     } catch (error) {
       this.logger.error(`error on verify init > [error]: ${error}`);
       const { status, name, message } = error;

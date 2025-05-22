@@ -50,33 +50,36 @@ export class BinderAsphaltConcrete_SamplesRepository {
 
   async findAllByFilter(queryFilter: CommonQueryFilter): Promise<any> {
     const { filter, limit, page, need_count } = queryFilter;
+    const fomattedPage = Number(page);
+    const formattedLimit = Number(limit);
+    const skip = (fomattedPage - 1) * formattedLimit;
     const parsedFilter = JSON.parse(filter);
 
-    const formattedFilter: BinderAsphaltConcrete_Sample[] = parsedFilter.map(obj => {
-      const filter = {};
+    const formattedFilter = [];
 
-      if (obj.name) filter['generalData.name'] = { $regex: `.*${obj.name}.*`, $options: 'i' };
-      if (obj.cityState) filter['generalData.cityState'] = { $regex: `.*${obj.cityState}.*`, $options: 'i' };
-      if (obj.zone) filter['generalData.zone'] = { $regex: `.*${obj.zone}.*`, $options: 'i' };
-      if (obj.layer) filter['generalData.layer'] = { $regex: `.*${obj.layer}.*`, $options: 'i' };
-      if (obj.highway) filter['generalData.highway'] = { $regex: `.*${obj.highway}.*`, $options: 'i' };
-
-      return filter;
+    parsedFilter.forEach(obj => {
+      if (obj.name) formattedFilter.push({ 'generalData.name': { $regex: `.*${obj.name}.*`, $options: 'i' } });
+      if (obj.cityState) formattedFilter.push({ 'generalData.cityState': { $regex: `.*${obj.cityState}.*`, $options: 'i' } });
+      if (obj.zone) formattedFilter.push({ 'generalData.zone': { $regex: `.*${obj.zone}.*`, $options: 'i' } });
+      if (obj.layer) formattedFilter.push({ 'generalData.layer': { $regex: `.*${obj.layer}.*`, $options: 'i' } });
+      if (obj.highway) formattedFilter.push({ 'generalData.highway': { $regex: `.*${obj.highway}.*`, $options: 'i' } });
     });
 
-    const query = formattedFilter.length > 0 ? { $and: formattedFilter } : {};
+    let query = {};
 
-    const skip = (Number(page) - 1) * Number(limit);
-
+    if (formattedFilter.length > 0) {
+      query = { $and: formattedFilter };
+    }
     const docs = await this.binderAsphaltConcrete_sampleModel
-      .find(query)
-      .sort({ createdAt: -1 })
-      .collation({ locale: 'en', strength: 2 })
-      .skip(skip)
-      .limit(Number(limit))
-      .lean();
+    .find(query)
+    .sort({ createdAt: -1 })
+    .collation({ locale: 'en_US', caseFirst: 'off', strength: 2 })
+    .skip(skip)
+    .limit(formattedLimit)
+    .lean();
 
     const countQuery = formattedFilter.length > 0 ? { $and: formattedFilter } : {};
+
     const count = await this.binderAsphaltConcrete_sampleModel.countDocuments(countQuery);
 
     let totalPages;

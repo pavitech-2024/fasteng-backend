@@ -19,6 +19,8 @@ import { ReportErrorModule } from './modules/report-error/report-error.module';
 import { ReportErrorController } from './modules/report-error/report-error.controller';
 import { ProMedinaModule } from './modules/pro-medina/pro-medina.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { AppController } from 'app.controller';
+import { AppService } from 'app.service';
 
 @Module({
   imports: [
@@ -33,8 +35,8 @@ import { MongooseModule } from '@nestjs/mongoose';
     ProMedinaModule,
     MongooseModule,
   ],
-  controllers: [ReportErrorController],
-  providers: [{ provide: APP_INTERCEPTOR, useClass: ErrorsInterceptor }],
+  controllers: [ReportErrorController, AppController],
+  providers: [{ provide: APP_INTERCEPTOR, useClass: ErrorsInterceptor }, AppService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
@@ -48,6 +50,7 @@ export class AppModule implements NestModule {
         { path: 'docs/soils', method: RequestMethod.GET }, // libera a rota de documentação da API
         { path: 'docs/concrete', method: RequestMethod.GET }, // libera a rota de documentação da API
         { path: 'docs/promedina', method: RequestMethod.GET }, // libera a rota de documentação da API
+        { path: 'app/health-check', method: RequestMethod.GET },
       )
       .forRoutes('*');
   }

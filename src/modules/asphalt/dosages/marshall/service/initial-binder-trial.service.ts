@@ -52,7 +52,7 @@ export class SetBinderTrial_Marshall_Service {
         halfPlus.push({
           material: modifiedPercentsOfDosages[i]._id,
           value: ((newPercent - 0.5) * modifiedPercentsOfDosages[i].value) / 100,
-          trial: 'halPlus',
+          trial: 'halfPlus',
         });
         halfLess.push({
           material: modifiedPercentsOfDosages[i]._id,

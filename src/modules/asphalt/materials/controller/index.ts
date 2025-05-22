@@ -65,6 +65,7 @@ export class MaterialsController {
 
     return this.materialsService.updateMaterial(material);
   }
+  
 
   @Delete(':id')
   @ApiOperation({ summary: 'Deleta um material do banco de dados.' })

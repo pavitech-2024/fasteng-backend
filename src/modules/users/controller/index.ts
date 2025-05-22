@@ -32,8 +32,8 @@ export class UsersController {
     return user;
   }
 
-  @Get(':id') // define a rota
-  @ApiOperation({ summary: 'Retorna um usuário do banco de dados.' }) // detalha a operação no swagger
+  @Get(':id')
+  @ApiOperation({ summary: 'Retorna um usuário do banco de dados.' }) 
   @ApiResponse({ status: 200, description: 'Usuário encontrado com sucesso!' }) // detalha a resposta no swagger
   @ApiResponse({ status: 400, description: 'Usuário não encontrado!' }) // detalha a resposta no swagger
   async getUser(@Param('id') id: string): Promise<User> {

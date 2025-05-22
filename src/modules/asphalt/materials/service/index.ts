@@ -11,29 +11,42 @@ export class MaterialsService {
 
   constructor(
     private readonly materialsRepository: MaterialsRepository,
-    private readonly getEssaysByMaterial_Service: GetEssaysByMaterial_Service
+    private readonly getEssaysByMaterial_Service: GetEssaysByMaterial_Service,
   ) {}
 
+  // async createMaterial(material: CreateAsphaltMaterialDto, userId: string) {
+  //   try {
+  //     // verifica se já existe um material com o mesmo nome no banco de dados
+  //     if (await this.materialsRepository.findOne({ name: material.name, userId }))
+  //       throw new AlreadyExists(`Material with name "${material.name}"`);
+
+  //     this.logger.log(userId);
+
+  //     const createdMaterial = await this.materialsRepository.create({
+  //       ...material,
+  //       createdAt: new Date(),
+  //       userId,
+  //     });
+
+  //     // cria um material no banco de dados
+  //     return createdMaterial;
+  //   } catch (error) {
+  //     this.logger.error(`error on create material > [error]: ${error}`);
+  //     throw error;
+  //   }
+  // }
   async createMaterial(material: CreateAsphaltMaterialDto, userId: string) {
-    try {
-      // verifica se já existe um material com o mesmo nome no banco de dados
-      if (await this.materialsRepository.findOne({ name: material.name, userId }))
-        throw new AlreadyExists(`Material with name "${material.name}"`);
+    // Remove o try-catch aqui!
+    if (await this.materialsRepository.findOne({ name: material.name, userId }))
+      throw new AlreadyExists(`Material with name "${material.name}"`);
 
-      this.logger.log(userId);
+    const createdMaterial = await this.materialsRepository.create({
+      ...material,
+      createdAt: new Date(),
+      userId,
+    });
 
-      const createdMaterial = await this.materialsRepository.create({
-        ...material,
-        createdAt: new Date(),
-        userId,
-      });
-
-      // cria um material no banco de dados
-      return createdMaterial
-    } catch (error) {
-      this.logger.error(`error on create material > [error]: ${error}`);
-      throw error;
-    }
+    return createdMaterial;
   }
 
   async getMaterial(materialId: string): Promise<any> {
@@ -45,7 +58,7 @@ export class MaterialsService {
       if (!material) throw new NotFound('Material');
 
       // Buscar os ensaios com esse material;
-      const essays = await this.getEssaysByMaterial_Service.getEssaysByMaterial(material)
+      const essays = await this.getEssaysByMaterial_Service.getEssaysByMaterial(material);
 
       // retorna o material encontrado
       return { material, essays };
@@ -57,17 +70,17 @@ export class MaterialsService {
   }
 
   async getSelectedMaterialsById(ids: string): Promise<any> {
-    const idArray = ids.split(',').map(id => id.trim());
+    const idArray = ids.split(',').map((id) => id.trim());
     try {
-      let essays = []
+      let essays = [];
 
       // busca um material com o id passado no banco de dados
       const materials = await this.materialsRepository.findSelectedById(idArray);
 
       // Buscar os ensaios com esse material;
       for (let i = 0; i < materials.length; i++) {
-        let essay = await this.getEssaysByMaterial_Service.getEssaysByMaterial(materials[i])
-        essays.push(essay)
+        let essay = await this.getEssaysByMaterial_Service.getEssaysByMaterial(materials[i]);
+        essays.push(essay);
       }
 
       // retorna o material encontrado
@@ -82,9 +95,10 @@ export class MaterialsService {
   async getAllMaterials(userId: string): Promise<Material[]> {
     try {
       // busca todos os materiais no banco de dados
-      const materials = await this.materialsRepository.findByType({
-        type: { $in: ['filler', 'CAP', 'asphaltBinder', 'coarseAggregate', 'fineAggregate'] },
-      });
+      const materials = await this.materialsRepository.findByType(
+        { $in: ['filler', 'CAP', 'asphaltBinder', 'coarseAggregate', 'fineAggregate'] },
+        userId,
+      );
 
       // retorna os materiais encontrados que pertencem ao usuário
       return materials;

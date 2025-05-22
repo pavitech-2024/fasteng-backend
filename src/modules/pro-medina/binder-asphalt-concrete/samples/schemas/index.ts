@@ -87,7 +87,7 @@ export type BinderAsphaltConcreteStep4Data = {
   observations: string;
 };
 
-@Schema({ collection: 'binderAsphaltConcreteSamples' })
+@Schema({ collection: 'binderAsphaltConcreteSamples', timestamps: true })
 export class BinderAsphaltConcrete_Sample {
   _id: string;
 
