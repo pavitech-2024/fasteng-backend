@@ -44,6 +44,7 @@ export class UsersController {
     const user = await this.usersService.getUser(id);
 
     if (user) this.logger.log(`user found with sucess > [user]`);
+    
 
     return user;
     
