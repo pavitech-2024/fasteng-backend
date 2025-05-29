@@ -23,7 +23,7 @@ export class InitialBinder_Superpave_Service {
     private readonly specificMassRepository: SpecifyMassRepository,
   ) {}
 
-  async getStep4SpecificMasses(body: any) {
+  async getStep5SpecificMasses(body: any) {
     try {
       const { materials, binder } = body;
 
@@ -61,7 +61,7 @@ export class InitialBinder_Superpave_Service {
     }
   }
 
-  async getStep4Data(body: any) {
+  async calculateStep5Data(body: any) {
     try {
       const {
         specificMassesData,
@@ -106,7 +106,7 @@ export class InitialBinder_Superpave_Service {
         tex: '',
       };
 
-      const binderSpecificMass = Number(materialsData.find(e => e.type === 'binder').realSpecificMass);
+      const binderSpecificMass = Number(materialsData.find(e => e.type === 'asphaltBinder' || e.type === 'CAP').realSpecificMass);
 
       if (specificMassesData?.length > 0) {
         specificMassesData.forEach((element) => {

@@ -432,12 +432,12 @@ export class GranulometryComposition_Superpave_Service {
         }
       }
       if (!granulometryComposition.average.percentsOfDosage.isEmpty) {
-        for (let i = 0; i < 13; i++) {
+        for (let i = 0; i <= 13; i++) {
           pointsOfCurve[i].push(sumOfPercents[1][i]);
         }
       }
       if (!granulometryComposition.higher.percentsOfDosage.isEmpty) {
-        for (let i = 0; i < 13; i++) {
+        for (let i = 0; i <= 13; i++) {
           pointsOfCurve[i].push(sumOfPercents[2][i]);
         }
       }
@@ -531,7 +531,7 @@ export class GranulometryComposition_Superpave_Service {
     return { sumOfPercents, percentsOfMaterials };
   }
 
-  async saveStep3Data(body: any, userId: string) {
+  async saveStep4Data(body: any, userId: string) {
     try {
       this.logger.log(
         'save superpave granulometry composition step on granulometry-composition.superpave.service.ts > [body]',
@@ -551,8 +551,8 @@ export class GranulometryComposition_Superpave_Service {
 
       await this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithGranulometryComposition);
 
-      if (superpaveExists._doc.generalData.step < 3) {
-        await this.superpaveRepository.saveStep(superpaveExists, 3);
+      if (superpaveExists._doc.generalData.step < 4) {
+        await this.superpaveRepository.saveStep(superpaveExists, 4);
       }
 
       return true;
@@ -561,7 +561,7 @@ export class GranulometryComposition_Superpave_Service {
     }
   }
 
-  async saveStep4Data(body: any, userId: string) {
+  async saveStep5Data(body: any, userId: string) {
     try {
       this.logger.log('save superpave initial binder step on granulometry-composition.superpave.service.ts > [body]', {
         body,
@@ -577,8 +577,8 @@ export class GranulometryComposition_Superpave_Service {
 
       await this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithInitialBinder);
 
-      if (superpaveExists._doc.generalData.step < 4) {
-        await this.superpaveRepository.saveStep(superpaveExists, 4);
+      if (superpaveExists._doc.generalData.step < 5) {
+        await this.superpaveRepository.saveStep(superpaveExists, 5);
       }
 
       return true;

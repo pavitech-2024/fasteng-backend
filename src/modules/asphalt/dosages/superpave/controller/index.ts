@@ -148,14 +148,14 @@ export class SuperpaveController {
 
   @Post('save-granulometry-composition-step/:userId')
   async saveGranulometryCompositionStep(@Res() response: Response, @Param('userId') userId: string, @Body() body: any) {
-    this.logger.log(`save step 3 data > [body]: ${body}`);
+    this.logger.log(`save step 4 data > [body]: ${body}`);
 
-    const status = await this.superpaveService.saveStep3Data(body, userId);
+    const status = await this.superpaveService.saveStep4Data(body, userId);
 
     return response.status(200).json(status);
   }
 
-  @Post('step-4-specific-masses')
+  @Post('step-5-specific-masses')
   @ApiOperation({
     summary: 'Retorna os dados iniciais necessários para a quarta tela (teor de ligante inicial) da dosagem',
   })
@@ -164,15 +164,15 @@ export class SuperpaveController {
     description: 'Dados carregados com sucesso!',
     content: { 'application/json': { schema: { example: { data: {}, success: true } } } },
   })
-  async getStep4SpecificMasses(@Res() response: Response, @Body() body: any) {
-    this.logger.log(`get step 4 data > [body]: ${body}`);
+  async getStep5SpecificMasses(@Res() response: Response, @Body() body: any) {
+    this.logger.log(`get step 5 data > [body]: ${body}`);
 
-    const status = await this.superpaveService.getStep4SpecificMasses(body);
+    const status = await this.superpaveService.getStep5SpecificMasses(body);
 
     return response.status(200).json(status);
   }
 
-  @Post('step-4-data')
+  @Post('calculate-step-5-data')
   @ApiOperation({ summary: 'Calcula os dados inseridos para a quarta tela (teor de ligante inicial) da dosagem' })
   @ApiResponse({
     status: 200,
@@ -180,10 +180,10 @@ export class SuperpaveController {
     content: { 'application/json': { schema: { example: { data: {}, success: true } } } },
   })
   @ApiResponse({ status: 400, description: 'Dados não encontrados!' })
-  async getStep4Data(@Res() response: Response, @Body() body: any) {
-    this.logger.log(`get step 3 data > [body]: ${body}`);
+  async calculateStep5Data(@Res() response: Response, @Body() body: any) {
+    this.logger.log(`calculate step 5 data > [body]: ${body}`);
 
-    const status = await this.superpaveService.getStep4Data(body);
+    const status = await this.superpaveService.calculateStep5Data(body);
 
     return response.status(200).json(status);
   }

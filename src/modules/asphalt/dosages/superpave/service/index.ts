@@ -1485,7 +1485,7 @@ export class SuperpaveService {
 
   async saveStep3Data(body: any, userId: string) {
     try {
-      const success = await this.granulometryComposition_Service.saveStep3Data(body, userId);
+      const success = await this.granulometryComposition_Service.saveStep4Data(body, userId);
 
       return { success };
     } catch (error) {
@@ -1495,25 +1495,25 @@ export class SuperpaveService {
     }
   }
 
-  async getStep4SpecificMasses(body: any) {
+  async getStep5SpecificMasses(body: any) {
     try {
-      const data = await this.initialBinder_Service.getStep4SpecificMasses(body);
+      const data = await this.initialBinder_Service.getStep5SpecificMasses(body);
 
       return { data, success: true };
     } catch (error) {
-      this.logger.error(`error on get step 4 data superpave > [error]: ${error}`);
+      this.logger.error(`error on get step 5 data superpave > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
     }
   }
 
-  async getStep4Data(body: any) {
+  async calculateStep5Data(body: any) {
     try {
-      const data = await this.initialBinder_Service.getStep4Data(body);
+      const data = await this.initialBinder_Service.calculateStep5Data(body);
 
       return { data, success: true };
     } catch (error) {
-      this.logger.error(`error on save step 3 data superpave > [error]: ${error}`);
+      this.logger.error(`error on calculate step 5 data superpave > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
     }
@@ -1525,7 +1525,7 @@ export class SuperpaveService {
 
       return { success };
     } catch (error) {
-      this.logger.error(`error on save step 4 data superpave > [error]: ${error}`);
+      this.logger.error(`error on save step 5 data superpave > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
     }
