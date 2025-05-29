@@ -13,7 +13,7 @@ export class Calc_AsphaltGranulometry_Service {
 
   constructor(private readonly granulometryRepository: AsphaltGranulometryRepository, private readonly materialsRepository: MaterialsRepository) { }
 
-  async calculateGranulometry({ step2Data }: Calc_AsphaltGranulometry_Dto): Promise<{ success: boolean; result: Calc_AsphaltGranulometry_Out }> {
+  async calculateGranulometry({ step2Data, isSuperpave=true }: Calc_AsphaltGranulometry_Dto): Promise<{ success: boolean; result: Calc_AsphaltGranulometry_Out }> {
     try {
       this.logger.log('calculate asphalt granulometry on calc.granulometry.service.ts > [body]');
 
@@ -61,18 +61,18 @@ export class Calc_AsphaltGranulometry_Service {
 
         if (total_retained >= 5 && nominal_size_flag) {
           nominal_size_flag = false;
-          if (total_retained === 5) nominal_size = getSieveValue(label);
+          if (total_retained === 5) nominal_size = getSieveValue(label, isSuperpave);
           else {
-            if (i === 0) nominal_size = getSieveValue(label);
-            else nominal_size = getSieveValue(table_data[i - 1].sieve_label);
+            if (i === 0) nominal_size = getSieveValue(label, isSuperpave);
+            else nominal_size = getSieveValue(table_data[i - 1].sieve_label, isSuperpave);
           }
         }
 
         if (total_retained > 10 && nominal_diameter_flag) {
           nominal_diameter_flag = false;
-          if (i === 1) nominal_diameter = getSieveValue(label);
+          if (i === 1) nominal_diameter = getSieveValue(label, isSuperpave);
           else if (i === 0) nominal_diameter = value;
-          else nominal_diameter = getSieveValue(table_data[i - 1].sieve_label);
+          else nominal_diameter = getSieveValue(table_data[i - 1].sieve_label, isSuperpave);
         }
 
         graph_data.push(([value, passant_porcentage]));

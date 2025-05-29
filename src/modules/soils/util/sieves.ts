@@ -10,5 +10,6 @@ import { AllSieves, AllSievesSuperpaveUpdatedAstm, Sieve } from '../../../utils/
 export const getSieveValue = (label: string, isSuperpave?: boolean): number => {
   let sieveSeries = AllSieves;
   if (isSuperpave) sieveSeries = AllSievesSuperpaveUpdatedAstm;
-  return sieveSeries.find((sieve: Sieve) => sieve.label === label).value;
+  const value = sieveSeries.find((sieve: Sieve) => sieve.label === label).value;
+  return value;
 } 
