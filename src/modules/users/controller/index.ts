@@ -31,7 +31,7 @@ export class UsersController {
     if (user) this.logger.log(`user created with success > [id]: ${user._id}`);
 
     return user;
-    
+
   }
 
   @Get(':id')
@@ -46,6 +46,7 @@ export class UsersController {
     if (user) this.logger.log(`user found with sucess > [user]`);
 
     return user;
+    
   }
 
   @Put(':id') //define a rota
