@@ -25,12 +25,13 @@ export class UsersController {
       connections: body.connections,
       lastLoginList: [new Date()],
       photo: null,
-      
+
     });
 
     if (user) this.logger.log(`user created with success > [id]: ${user._id}`);
 
     return user;
+    
   }
 
   @Get(':id')
