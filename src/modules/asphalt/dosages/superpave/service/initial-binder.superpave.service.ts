@@ -106,7 +106,9 @@ export class InitialBinder_Superpave_Service {
         tex: '',
       };
 
-      const binderSpecificMass = Number(materialsData.find(e => e.type === 'asphaltBinder' || e.type === 'CAP').realSpecificMass);
+      const binderSpecificMass = Number(
+        materialsData.find((e) => e.type === 'asphaltBinder' || e.type === 'CAP').realSpecificMass,
+      );
 
       if (specificMassesData?.length > 0) {
         specificMassesData.forEach((element) => {
@@ -125,7 +127,7 @@ export class InitialBinder_Superpave_Service {
             apparent: element.apparentSpecificMass,
             absorption: element.absorption,
           };
-          listOfSpecificMasses.push(obj)
+          listOfSpecificMasses.push(obj);
         });
       }
 
@@ -141,7 +143,7 @@ export class InitialBinder_Superpave_Service {
 
         Object.values(percentsOfDosage[0]).forEach((e) => {
           percentsOfDosageArray.push(e);
-        })
+        });
 
         for (let i = 0; i < percentsOfDosageArray.length; i++) {
           lowerAbsorve += ((percentsOfDosageArray[i] / 100) * listOfSpecificMasses[i].absorption) / 100;
@@ -152,7 +154,14 @@ export class InitialBinder_Superpave_Service {
             ((0.95 + 0.96) / (0.05 / binderSpecificMass + 0.95 / granulometryComposition[0].gse)) *
             (1 / granulometryComposition[0].combinedGsb - 1 / granulometryComposition[0].gse);
           granulometryComposition[0].tmn = nominalSize.value / 24.384;
-          granulometryComposition[0].vle = 0.081 - 0.02931 * Math.log(granulometryComposition[0].tmn);
+
+          //todo: remover esta condiccional após resolver o problema do tamanho nominal
+          if (granulometryComposition[0].tmn < 0.5) {
+            granulometryComposition[0].vle = 0.081 - 0.02931 * 0;
+          } else {
+            granulometryComposition[0].vle = 0.081 - 0.02931 * Math.log(granulometryComposition[0].tmn);
+          }
+
           granulometryComposition[0].mag =
             (0.95 * 0.96) / (0.05 / binderSpecificMass + 0.95 / granulometryComposition[0].gse);
           granulometryComposition[0].pli =
@@ -192,7 +201,7 @@ export class InitialBinder_Superpave_Service {
 
         Object.values(percentsOfDosage[1]).forEach((e) => {
           percentsOfDosageArray.push(e);
-        })
+        });
 
         for (let i = 0; i < percentsOfDosageArray.length; i++) {
           averageAbsorve += ((percentsOfDosageArray[i] / 100) * listOfSpecificMasses[i].absorption) / 100;
@@ -206,7 +215,14 @@ export class InitialBinder_Superpave_Service {
           (1 / granulometryComposition[1].combinedGsb - 1 / granulometryComposition[1].gse);
 
         granulometryComposition[1].tmn = nominalSize.value / 24.384;
-        granulometryComposition[1].vle = 0.081 - 0.02931 * Math.log(granulometryComposition[1].tmn);
+
+        //todo: remover esta condiccional após resolver o problema do tamanho nominal
+        if (granulometryComposition[1].tmn < 0.5) {
+          granulometryComposition[1].vle = 0.081 - 0.02931 * 0;
+        } else {
+          granulometryComposition[1].vle = 0.081 - 0.02931 * Math.log(granulometryComposition[1].tmn);
+        }
+
         granulometryComposition[1].mag =
           (0.95 * 0.96) / (0.05 / binderSpecificMass + 0.95 / granulometryComposition[1].gse);
         granulometryComposition[1].pli =
@@ -245,7 +261,7 @@ export class InitialBinder_Superpave_Service {
 
         Object.values(percentsOfDosage[2]).forEach((e) => {
           percentsOfDosageArray.push(e);
-        })
+        });
 
         for (let i = 0; i < percentsOfDosageArray.length; i++) {
           higherAbsorve += ((percentsOfDosageArray[i] / 100) * listOfSpecificMasses[i].absorption) / 100;
@@ -259,7 +275,14 @@ export class InitialBinder_Superpave_Service {
           (1 / granulometryComposition[2].combinedGsb - 1 / granulometryComposition[2].gse);
 
         granulometryComposition[2].tmn = nominalSize.value / 24.384;
-        granulometryComposition[2].vle = 0.081 - 0.02931 * Math.log(granulometryComposition[2].tmn);
+
+        //todo: remover esta condiccional após resolver o problema do tamanho nominal
+        if (granulometryComposition[2].tmn < 0.5) {
+          granulometryComposition[2].vle = 0.081 - 0.02931 * 0;
+        } else {
+          granulometryComposition[2].vle = 0.081 - 0.02931 * Math.log(granulometryComposition[2].tmn);
+        }
+
         granulometryComposition[2].mag =
           (0.95 * 0.96) / (0.05 / binderSpecificMass + 0.95 / granulometryComposition[2].gse);
         granulometryComposition[2].pli =
