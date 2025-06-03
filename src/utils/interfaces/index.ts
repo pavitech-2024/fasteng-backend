@@ -21,7 +21,7 @@ export const AllSieves = [
     value: 37.5, // mm
   },
   {
-    label: '1 1/4 pol - 32mm',
+    label: '1 1/4 pol - 32mm', // 4
     value: 32, // mm
   },
   {

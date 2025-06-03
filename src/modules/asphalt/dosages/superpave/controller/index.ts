@@ -119,7 +119,7 @@ export class SuperpaveController {
     return response.status(200).json(status);
   }
 
-  @Post('step-3-data')
+  @Post('get-granulometric-composition-data')
   @ApiOperation({
     summary: 'Retorna os dados iniciais necessários para a etapa de composição granulometrica da dosagem',
   })
@@ -130,18 +130,18 @@ export class SuperpaveController {
   })
   @ApiResponse({ status: 400, description: 'Dados não encontrados!' })
   async getStep3Data(@Res() response: Response, @Body() body: any) {
-    this.logger.log(`get step 3 data > [body]: ${body}`);
+    this.logger.log(`get get granulometric composition data > [body]: ${body}`);
 
-    const status = await this.superpaveService.getStep3Data(body);
+    const status = await this.superpaveService.getGranulometricCompositionData(body);
 
     return response.status(200).json(status);
   }
 
   @Post('calculate-granulometric-composition-data')
   async calculateStep3Data(@Res() response: Response, @Body() body: any) {
-    this.logger.log(`calculate step 3 data > [body]: ${body}`);
+    this.logger.log(`calculate granulometric composition data > [body]: ${body}`);
 
-    const status = await this.superpaveService.calculateStep3Data(body);
+    const status = await this.superpaveService.calculateGranulometricCompositionData(body);
 
     return response.status(200).json(status);
   }

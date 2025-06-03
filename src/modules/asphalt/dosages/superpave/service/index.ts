@@ -170,7 +170,7 @@ export class SuperpaveService {
     }
   }
 
-  async getStep3Data(body: any) {
+  async getGranulometricCompositionData(body: any) {
     try {
       const { dnitBand, aggregates } = body;
 
@@ -198,14 +198,6 @@ export class SuperpaveService {
         percentsOfMaterialsToShow: [],
         percentsOfMaterials: [],
       };
-
-      const allGranulometrys: any[] = await this.granulometryRepository.findAll();
-
-      const ids = aggregates.map((aggregate) => {
-        return aggregate.data.material._id.toString();
-      });
-
-      // const selectedGranulometrys = await this.granulometryRepository.findById(ids);
 
       const granulometryData: {
         _id: string;
@@ -239,7 +231,10 @@ export class SuperpaveService {
 
       for (let i = 0; i < aggregates.length; i++) {
         porcentagesPassantsN200[i] = null;
-        if (percentsOfMaterials[i][10] !== null) porcentagesPassantsN200[i] = percentsOfMaterials[i][10][1];
+        // ?: Por que exatamente a peneira do índice 10?
+        // peneiras antigas: o índice 10 é o meio da lista (4.8). O equivalente nas novas peneiras seria o índice 6 (4.8);
+        // if (percentsOfMaterials[i][10] !== null) porcentagesPassantsN200[i] = percentsOfMaterials[i][10][1];
+        if (percentsOfMaterials[i][6] !== null) porcentagesPassantsN200[i] = percentsOfMaterials[i][6][1];
       }
 
       // const axisX = [
@@ -383,12 +378,31 @@ export class SuperpaveService {
       curve9_5[curve9_5.length - 1] = 0;
 
       if (nominalSize === 38.1) {
-        result.nominalSize.controlPoints.lower = [
-          null,
-          null,
+        result.nominalSize.controlPoints.lower = 
+        // [
+        //   null,
+        //   null,
+        //   100, // 50
+        //   90, // 37.5
+        //   null,
+        //   null,
+        //   null,
+        //   null,
+        //   null,
+        //   null,
+        //   null,
+        //   15, // idx 11
+        //   null,
+        //   null,
+        //   null,
+        //   null,
+        //   null,
+        //   null,
+        //   null,
+        //   0,
+        // ];
+        [
           100,
-          90,
-          null,
           null,
           null,
           null,
@@ -400,18 +414,34 @@ export class SuperpaveService {
           null,
           null,
           null,
-          null,
-          null,
-          null,
-          0,
-        ];
+          0
+        ]
 
-        result.nominalSize.controlPoints.higher = [
-          null,
-          null,
-          null,
+        result.nominalSize.controlPoints.higher = 
+        // [
+        //   null,
+        //   null,
+        //   null,
+        //   100, // 37.5
+        //   null,
+        //   90, // 25
+        //   null,
+        //   null,
+        //   null,
+        //   null,
+        //   null,
+        //   41, // i 11
+        //   null,
+        //   null,
+        //   null,
+        //   null,
+        //   null,
+        //   null,
+        //   null,
+        //   6,
+        // ];
+        [
           100,
-          null,
           90,
           null,
           null,
@@ -423,18 +453,33 @@ export class SuperpaveService {
           null,
           null,
           null,
-          null,
-          null,
-          null,
-          6,
-        ];
+          6
+        ]
 
         result.nominalSize.restrictedZone.lower = await this.insertBlankPointsOnCurve(
+          // [
+          //   null,
+          //   null,
+          //   null,
+          //   null,
+          //   null,
+          //   null,
+          //   null,
+          //   null,
+          //   null,
+          //   null,
+          //   34.7, // i 10
+          //   23.3,
+          //   null,
+          //   15.5, // i 13
+          //   11.7,
+          //   null,
+          //   10,
+          //   null,
+          //   null,
+          //   null,
+          // ],
           [
-            null,
-            null,
-            null,
-            null,
             null,
             null,
             null,
@@ -443,12 +488,9 @@ export class SuperpaveService {
             null,
             34.7,
             23.3,
-            null,
             15.5,
             11.7,
-            null,
             10,
-            null,
             null,
             null,
           ],
@@ -456,11 +498,29 @@ export class SuperpaveService {
         );
 
         result.nominalSize.restrictedZone.higher = await this.insertBlankPointsOnCurve(
+          // [
+          //   null,
+          //   null,
+          //   null,
+          //   null,
+          //   null,
+          //   null,
+          //   null,
+          //   null,
+          //   null,
+          //   null,
+          //   34.7,
+          //   27.3,
+          //   null,
+          //   21.5,
+          //   15.7,
+          //   null,
+          //   10,
+          //   null,
+          //   null,
+          //   null,
+          // ],
           [
-            null,
-            null,
-            null,
-            null,
             null,
             null,
             null,
@@ -469,12 +529,9 @@ export class SuperpaveService {
             null,
             34.7,
             27.3,
-            null,
             21.5,
             15.7,
-            null,
             10,
-            null,
             null,
             null,
           ],
@@ -1471,13 +1528,13 @@ export class SuperpaveService {
     return curve;
   }
 
-  async calculateStep3Data(body: any) {
+  async calculateGranulometricCompositionData(body: any) {
     try {
       const granulometry = await this.granulometryComposition_Service.calculateGranulometry(body);
 
       return { data: granulometry.data, success: true };
     } catch (error) {
-      this.logger.error(`error on getting the step 3 data > [error]: ${error}`);
+      this.logger.error(`error on calculating granulometric composition data > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
     }
@@ -1507,18 +1564,6 @@ export class SuperpaveService {
     }
   }
 
-  async calculateStep5Data(body: any) {
-    try {
-      const data = await this.initialBinder_Service.calculateStep5Data(body);
-
-      return { data, success: true };
-    } catch (error) {
-      this.logger.error(`error on calculate step 5 data superpave > [error]: ${error}`);
-      const { status, name, message } = error;
-      return { success: false, error: { status, message, name } };
-    }
-  }
-
   async saveStep4Data(body: any, userId: string) {
     try {
       const success = await this.granulometryComposition_Service.saveStep4Data(body, userId);
@@ -1526,6 +1571,18 @@ export class SuperpaveService {
       return { success };
     } catch (error) {
       this.logger.error(`error on save step 5 data superpave > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { success: false, error: { status, message, name } };
+    }
+  }
+
+  async calculateStep5Data(body: any) {
+    try {
+      const data = await this.initialBinder_Service.calculateStep5Data(body);
+
+      return { data, success: true };
+    } catch (error) {
+      this.logger.error(`error on calculate step 5 data superpave > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
     }
