@@ -42,7 +42,6 @@ export class MaterialsController {
     
     return materials;
 
-    //return this.materialsService.getAllMaterials(userId);
   }
 
    @Get('all/:id')
