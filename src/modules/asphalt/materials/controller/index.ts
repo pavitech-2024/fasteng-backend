@@ -51,6 +51,7 @@ export class MaterialsController {
   @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
   async getAllByUserId(@Param('id') userId: string) {
     this.logger.log(`get all materials by user id > [id]: ${userId}`);
+    
 
     return this.materialsService.getAllMaterials(userId);
   }
