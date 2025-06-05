@@ -68,6 +68,8 @@ export class Calc_AsphaltGranulometry_Service {
           }
         }
 
+        
+
         if (total_retained > 10 && nominal_diameter_flag) {
           nominal_diameter_flag = false;
           if (i === 1) nominal_diameter = getSieveValue(label);

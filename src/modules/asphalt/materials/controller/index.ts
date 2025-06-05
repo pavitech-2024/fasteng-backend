@@ -30,6 +30,24 @@ export class MaterialsController {
   @ApiOperation({ summary: 'Retorna todos os materiais do banco de dados de um usuário.' })
   @ApiResponse({ status: 200, description: 'Materiais encontrados com sucesso!' })
   @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
+  async getAllByUserIdList(@Param('id') userId: string) { //Antigo método getAllByUserId
+    this.logger.log(`get all materials by user id > [id]: ${userId}`);
+
+    const materials = await this.materialsService.getAllMaterialsList(userId);
+  
+    // Garante que sempre retornará um array
+    if (!Array.isArray(materials)) {
+      return [materials].filter(Boolean); // Converte para array e remove valores nulos
+    }
+    
+    return materials;
+
+  }
+
+   @Get('all/:id')
+  @ApiOperation({ summary: 'Retorna todos os materiais do banco de dados de um usuário.' })
+  @ApiResponse({ status: 200, description: 'Materiais encontrados com sucesso!' })
+  @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
   async getAllByUserId(@Param('id') userId: string) {
     this.logger.log(`get all materials by user id > [id]: ${userId}`);
     
