@@ -130,7 +130,7 @@ export class SuperpaveController {
   })
   @ApiResponse({ status: 400, description: 'Dados não encontrados!' })
   async getStep3Data(@Res() response: Response, @Body() body: any) {
-    this.logger.log(`get get granulometric composition data > [body]: ${body}`);
+    this.logger.log(`get granulometric composition data > [body]: ${body}`);
 
     const status = await this.superpaveService.getGranulometricCompositionData(body);
 

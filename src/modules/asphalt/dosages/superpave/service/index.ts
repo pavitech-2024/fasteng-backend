@@ -1362,7 +1362,7 @@ export class SuperpaveService {
       }
 
       for (let i = 0; i < percentsOfMaterials.length; i++) {
-        for (let j = 0; j < 20; j++) {
+        for (let j = 0; j < 13; j++) {
           if (percentsOfMaterials[i][j] !== 100 && percentsOfMaterials[i][j] !== null) {
             for (let k = j - 1; k >= 0; k--) {
               if (percentsOfMaterials[i][k] === 100) {
@@ -1377,7 +1377,7 @@ export class SuperpaveService {
 
       index = Math.min(...indexes);
       for (let i = 0; i < percentsOfMaterials.length; i++) {
-        for (let j = 0; j < 20; j++) {
+        for (let j = 0; j < 13; j++) {
           if (j >= index) {
             listOfPercentsToReturn[i][j] = percentsOfMaterials[i][j];
           }
