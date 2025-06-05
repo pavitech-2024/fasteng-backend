@@ -32,9 +32,9 @@ export class SamplesController {
   async getAllByUserId(@Param('id') userId: string) {
     this.logger.log(`get all samples by user id > [id]: ${userId}`);
 
-    return this.samplesService.getAllSamples(userId).then(samples => ({
+    return this.samplesService.getAllSamples(userId).then(samples => ([{
       materials: samples,
-    }));
+    }]));
   }
   
   @Get(':id')
