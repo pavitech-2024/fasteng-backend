@@ -14,6 +14,10 @@ export class FwdRepository {
     return this.fwdModel.find();
   }
 
+  async findAllByUserId(id: string): Promise<Fwd[]> {
+    return this.fwdModel.find({"generalData.userId": id});
+  }
+
   async create(fwd: any): Promise<Fwd> {
     const createdFwd = new this.fwdModel(fwd);
 

@@ -4,6 +4,7 @@ import { InputCreateUserDto } from '../dto';
 import { User } from '../schemas';
 import { UsersService } from '../service';
 
+
 @Controller('users') // define a rota
 @ApiTags('users') // define a tag no swagger
 export class UsersController {
@@ -24,11 +25,13 @@ export class UsersController {
       connections: body.connections,
       lastLoginList: [new Date()],
       photo: null,
+
     });
 
     if (user) this.logger.log(`user created with success > [id]: ${user._id}`);
 
     return user;
+
   }
 
   @Get(':id')
@@ -41,8 +44,10 @@ export class UsersController {
     const user = await this.usersService.getUser(id);
 
     if (user) this.logger.log(`user found with sucess > [user]`);
+    
 
     return user;
+    
   }
 
   @Put(':id') //define a rota
@@ -60,8 +65,8 @@ export class UsersController {
   }
 
   @Delete(':id')
-  @ApiResponse({ status: 200, description: 'Usuário excluído com sucesso!' }) 
-  @ApiResponse({ status: 400, description: 'Usuário não encontrado!' }) 
+  @ApiResponse({ status: 200, description: 'Usuário excluído com sucesso!' })
+  @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
   @ApiOperation({ summary: 'Deleta um usuário no banco de dados' })
   async deleteUser(@Param('id') id: string): Promise<User> {
     this.logger.log(`delete user > [id]: ${id}`);
