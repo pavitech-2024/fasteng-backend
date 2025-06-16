@@ -265,9 +265,9 @@ export class SuperpaveService {
       //   null,
       //   0,
       // ];
-      const curve38_1 = Array(AllSievesSuperpaveUpdatedAstm.length).fill(null);
-      curve38_1[0] = 100; // 38.1 mm (1 1/2 pol)
-      curve38_1[curve38_1.length - 1] = 0;
+      const curve37_5 = Array(AllSievesSuperpaveUpdatedAstm.length).fill(null);
+      curve37_5[0] = 100; // 38.1 mm (1 1/2 pol)
+      curve37_5[curve37_5.length - 1] = 0;
 
       // const curve25 = [
       //   null,
@@ -292,9 +292,9 @@ export class SuperpaveService {
       //   null,
       //   0,
       // ];
-      const curve25_4 = Array(AllSievesSuperpaveUpdatedAstm.length).fill(null);
-      curve25_4[1] = 100; // 25.4 mm (1 pol)
-      curve25_4[curve25_4.length - 1] = 0;
+      const curve25 = Array(AllSievesSuperpaveUpdatedAstm.length).fill(null);
+      curve25[0] = 100; // 25.4 mm (1 pol)
+      curve25[curve25.length - 1] = 0;
 
       // const curve19 = [
       //   null,
@@ -319,9 +319,9 @@ export class SuperpaveService {
       //   null,
       //   0,
       // ];
-      const curve19_1 = Array(AllSievesSuperpaveUpdatedAstm.length).fill(null);
-      curve19_1[2] = 100; // 19.1 mm (3/4 pol)
-      curve19_1[curve19_1.length - 1] = 0;
+      const curve19 = Array(AllSievesSuperpaveUpdatedAstm.length).fill(null);
+      curve19[1] = 100; // 19.1 mm (3/4 pol)
+      curve19[curve19.length - 1] = 0;
 
       // const curve12 = [
       //   null,
@@ -346,9 +346,9 @@ export class SuperpaveService {
       //   null,
       //   0,
       // ];
-      const curve12_7 = Array(AllSievesSuperpaveUpdatedAstm.length).fill(null);
-      curve12_7[3] = 100; // 12.7 mm (1/2 pol)
-      curve12_7[curve12_7.length - 1] = 0;
+      const curve12 = Array(AllSievesSuperpaveUpdatedAstm.length).fill(null);
+      curve12[2] = 100; // 12.7 mm (1/2 pol)
+      curve12[curve12.length - 1] = 0;
 
       // const curve9 = [
       //   null,
@@ -373,11 +373,11 @@ export class SuperpaveService {
       //   null,
       //   0,
       // ];
-      const curve9_5 = Array(AllSievesSuperpaveUpdatedAstm.length).fill(null);
-      curve9_5[4] = 100; // 9.5 mm (3/8 pol)
-      curve9_5[curve9_5.length - 1] = 0;
+      const curve9 = Array(AllSievesSuperpaveUpdatedAstm.length).fill(null);
+      curve9[3] = 100; // 9.5 mm (3/8 pol)
+      curve9[curve9.length - 1] = 0;
 
-      if (nominalSize === 38.1) {
+      if (nominalSize === 37.5) {
         result.nominalSize.controlPoints.lower = 
         // [
         //   null,
@@ -403,7 +403,7 @@ export class SuperpaveService {
         // ];
         [
           100,
-          null,
+          90,
           null,
           null,
           null,
@@ -449,6 +449,7 @@ export class SuperpaveService {
           null,
           null,
           41,
+          null,
           null,
           null,
           null,
@@ -538,7 +539,7 @@ export class SuperpaveService {
           axisX,
         );
 
-        result.nominalSize.curve = curve38_1;
+        result.nominalSize.curve = curve37_5;
       } else if (nominalSize === 25) {
         result.nominalSize.controlPoints.lower =
           // [
@@ -608,8 +609,8 @@ export class SuperpaveService {
             null, // 12.7
             null, // 9.5
             null, // 6.3
-            45, // 4.8
-            null, // 2.36
+            null, // 4.8
+            45, // 2.36
             null, // 1.18
             null, // 0.6
             null, // 0.3
@@ -690,13 +691,13 @@ export class SuperpaveService {
             30.8, // 2.36
             24.1, // 1.18
             17.6, // 0.6
-            11.4, // 0.3
+            13.7, // 0.3
             null, // 0.15
             null, // 0.075
           ],
           axisX,
         );
-        result.nominalSize.curve = curve25_4;
+        result.nominalSize.curve = curve25;
       } else if (nominalSize === 19) {
         result.nominalSize.controlPoints.lower =
           // [
@@ -855,7 +856,7 @@ export class SuperpaveService {
           ],
           axisX,
         );
-        result.nominalSize.curve = curve19_1;
+        result.nominalSize.curve = curve19;
       } else if (nominalSize === 12.5) {
         result.nominalSize.controlPoints.lower =
           // [
@@ -926,8 +927,8 @@ export class SuperpaveService {
             100, // 12.7
             90, // 9.5
             null, // 6.3
-            58, // 4.8
-            null, // 2.36
+            null, // 4.8
+            58, // 2.36
             null, // 1.18
             null, // 0.6
             null, // 0.3
@@ -1017,7 +1018,7 @@ export class SuperpaveService {
           // [null, null, null, null, null, null, null, 34.7, 27.3, null, 21.5, 15.7, null],
           axisX,
         );
-        result.nominalSize.curve = curve12_7;
+        result.nominalSize.curve = curve12;
       } else if (nominalSize === 9.5) {
         result.nominalSize.controlPoints.lower =
           // [
@@ -1127,10 +1128,10 @@ export class SuperpaveService {
             null, // 6.3
             null, // 4.8
             47.2, // 2.36
-            null, // 1.18
-            31.6, // 0.6
-            23.5, // 0.3
-            18.7, // 0.15
+            31.6, // 1.18
+            23.1, // 0.6
+            18.7, // 0.3
+            null, // 0.15
             null, // 0.075
           ],
           // [null, null, null, null, null, null, null, null, 34.7, 23.3, null, 15.5, 11.7],
@@ -1169,7 +1170,7 @@ export class SuperpaveService {
             null, // 4.8
             47.2, // 2.36
             37.6, // 1.18
-            27.5, // 0.6
+            37.5, // 0.6
             18.7, // 0.3
             null, // 0.15
             null, // 0.075
@@ -1177,7 +1178,7 @@ export class SuperpaveService {
           // [null, null, null, null, null, null, null, null, 34.7, 27.3, null, 21.5, 15.7],
           axisX,
         );
-        result.nominalSize.curve = curve9_5;
+        result.nominalSize.curve = curve9;
       } else {
         result.nominalSize.controlPoints.lower =
           // [
@@ -1335,7 +1336,7 @@ export class SuperpaveService {
           ],
           axisX,
         );
-        result.nominalSize.curve = curve9_5;
+        result.nominalSize.curve = curve9;
       }
 
       for (let i = 0; i < percentsOfMaterials.length; i++) {
@@ -1420,19 +1421,19 @@ export class SuperpaveService {
         ];
       } else if (dnitBand === 'B') {
         higherBand = [
-          100, //sieve 1 1/2 pol - 38,1 mm
-          90, //sieve 1 pol - 25,4 mm
-          75, //sieve 3/4 pol - 19,1 mm
-          58, //sieve 1/2 pol - 12,7 mm
-          48, //sieve 3/8 pol - 9,5 mm
-          35, //sieve 1/4 pol - 6,3 mm
-          29, //sieve N° 4 - 4,8 mm
-          19, //sieve N° 8 - 2,36 mm
-          13, //sieve N° 16 - 1,18 mm
-          9, //sieve N° 30 - 0,60 mm
-          5, //sieve N° 50 - 0,30 mm
-          2, //sieve N° 100 - 0,150 mm
-          1, //sieve N° 200 - 0,075 mm
+          null, //sieve 1 1/2 pol - 38,1 mm
+          100, //sieve 1 pol - 25,4 mm
+          100, //sieve 3/4 pol - 19,1 mm
+          89, //sieve 1/2 pol - 12,7 mm
+          82, //sieve 3/8 pol - 9,5 mm
+          70, //sieve 1/4 pol - 6,3 mm
+          63, //sieve N° 4 - 4,8 mm
+          49, //sieve N° 8 - 2,36 mm
+          37, //sieve N° 16 - 1,18 mm
+          28, //sieve N° 30 - 0,60 mm
+          20, //sieve N° 50 - 0,30 mm
+          13, //sieve N° 100 - 0,150 mm
+          8, //sieve N° 200 - 0,075 mm
         ];
         lowerBand = [
           null, //sieve 1 1/2 pol - 38,1 mm
