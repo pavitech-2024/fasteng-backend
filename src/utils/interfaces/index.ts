@@ -88,35 +88,35 @@ export const AllSieves = [
 
 export const AllSievesSuperpaveUpdatedAstm: Sieve[] = [
   {
-    label: '1 1/2 pol - 30,1mm',
+    label: '1 1/2 pol - 30,1mm', // 0
     value: 38.1, // mm
   },
   {
-    label: '1 pol - 25,4mm',
+    label: '1 pol - 25,4mm', // 1
     value: 25.4, // mm
   },
   {
-    label: '3/4 pol - 19,1mm',
+    label: '3/4 pol - 19,1mm', // 2
     value: 19.1, // mm
   },
   {
-    label: '1/2 pol - 12,7mm',
+    label: '1/2 pol - 12,7mm', // 3
     value: 12.7, // mm
   },
   {
-    label: '3/8 pol - 9,5mm',
+    label: '3/8 pol - 9,5mm', // 4
     value: 9.5, // mm
   },
   {
-    label: '1/4 pol - 6,3mm',
+    label: '1/4 pol - 6,3mm', // 5
     value: 6.3, // mm
   },
   {
-    label: 'Nº4 - 4,8mm',
+    label: 'Nº4 - 4,8mm', // 6
     value: 4.8, // mm
   },
   {
-    label: 'Nº8 - 2,36mm',
+    label: 'Nº8 - 2,36mm', // 7
     value: 2.36, // mm
   },
   {
