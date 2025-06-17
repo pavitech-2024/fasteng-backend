@@ -295,27 +295,42 @@ export class GranulometryComposition_Superpave_Service {
       );
       const lowerBandB = this.insertBlankPointsOnCurve(
         // [null, null, null, 100, null, 95, 80, null, 45, null, 28, null, 20, null, null, 10, null, 8, null, 3],
+        // [
+        //   null, // sieve 3 pol - 75 mm
+        //   null, // sieve 2 1/2 pol - 64mm
+        //   null, // sieve 2 pol - 50mm
+        //   100, // sieve 1 1/2 pol - 38,1 mm
+        //   null, // sieve 1 1/4 pol - 32mm
+        //   95, // sieve 1 pol - 25,4 mm
+        //   80, // sieve 3/4 pol - 19,1 mm
+        //   null, // sieve 1/2 pol - 12,7 mm
+        //   45, // sieve 3/8 pol - 9,5 mm
+        //   null, // sieve 1/4 pol - 6,3 mm
+        //   28, // sieve N° 4 - 4,8 mm
+        //   null, // sieve N° 8 - 2,36 mm
+        //   20, // sieve N° 10 - 2,0 mm
+        //   null, // sieve N° 16 - 1,18 mm
+        //   null, // sieve N° 30 - 0,60 mm
+        //   10, // sieve N° 40 - 0,43 mm
+        //   null, // sieve N° 50 - 0,30 mm
+        //   8, // sieve N° 80 - 0,18 mm
+        //   null, // sieve N° 100 - 0,150 mm
+        //   3, // sieve N° 200 - 0,075 mm
+        // ],
         [
-          null, // sieve 3 pol - 75 mm
-          null, // sieve 2 1/2 pol - 64mm
-          null, // sieve 2 pol - 50mm
-          null, // sieve 1 1/2 pol - 38,1 mm
-          null, // sieve 1 1/4 pol - 32mm
-          100, // sieve 1 pol - 25,4 mm
-          90, // sieve 3/4 pol - 19,1 mm
-          70, // sieve 1/2 pol - 12,7 mm
-          55, // sieve 3/8 pol - 9,5 mm
-          42, // sieve 1/4 pol - 6,3 mm
-          35, // sieve N° 4 - 4,8 mm
-          23, // sieve N° 8 - 2,36 mm
-          null, // sieve N° 10 - 2,0 mm
-          16, // sieve N° 16 - 1,18 mm
-          10, // sieve N° 30 - 0,60 mm
-          null, // sieve N° 40 - 0,43 mm
-          6, // sieve N° 50 - 0,30 mm
-          null, // sieve N° 80 - 0,18 mm
-          4, // sieve N° 100 - 0,150 mm
-          2, // sieve N° 200 - 0,075 mm
+          100, // 38.1
+          95, // 25.4
+          80, // 19.1
+          null, // 12.7
+          45, // 9.5
+          null, // 6.3
+          28, // 4.8
+          null, // 2.36
+          null, // 1.18
+          null, // 0.6
+          null, // 0.3
+          null, // 0.15
+          3, // 0.075
         ],
         axisX,
       );
