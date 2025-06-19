@@ -1,17 +1,20 @@
-import { Injectable, Logger } from "@nestjs/common";
+import { Injectable, Logger } from '@nestjs/common';
 import { MaterialsRepository } from '../../../materials/repository';
-import { getSieveValue } from "../../../../../modules/soils/util/sieves";
-import { Calc_AsphaltGranulometry_Dto, Calc_AsphaltGranulometry_Out } from "../dto/asphalt.calc.granulometry.dto";
-import { AsphaltGranulometryRepository } from "../repository";
+import { getSieveValue } from '../../../../../modules/soils/util/sieves';
+import { Calc_AsphaltGranulometry_Dto, Calc_AsphaltGranulometry_Out } from '../dto/asphalt.calc.granulometry.dto';
+import { AsphaltGranulometryRepository } from '../repository';
+import { AllSievesSuperpaveUpdatedAstm } from 'utils/interfaces';
 
-type limit = { value: number, index: number };
+type limit = { value: number; index: number };
 
 @Injectable()
 export class Calc_AsphaltGranulometry_Service {
   private logger = new Logger(Calc_AsphaltGranulometry_Service.name);
-  
 
-  constructor(private readonly granulometryRepository: AsphaltGranulometryRepository, private readonly materialsRepository: MaterialsRepository) { }
+  constructor(
+    private readonly granulometryRepository: AsphaltGranulometryRepository,
+    private readonly materialsRepository: MaterialsRepository,
+  ) {}
 
   async calculateGranulometry({ step2Data, isSuperpave=true }: Calc_AsphaltGranulometry_Dto): Promise<{ success: boolean; result: Calc_AsphaltGranulometry_Out }> {
     try {
@@ -115,6 +118,7 @@ export class Calc_AsphaltGranulometry_Service {
       };
 
     } catch (error) {
+      this.logger.error(`error on calculate asphalt granulometry > [error]: ${error}`);
       return {
         success: false,
         result: null
@@ -122,7 +126,12 @@ export class Calc_AsphaltGranulometry_Service {
     }
   }
 
-  getDiameter = (table_data: { sieve_label: string, passant: number, retained: number }[], percentage: number, limits: { upperLimit: limit, inferiorLimit: limit }) => {
+
+  getDiameter = (
+    table_data: { sieve_label: string; passant: number; retained: number }[],
+    percentage: number,
+    limits: { upperLimit: limit; inferiorLimit: limit },
+  ) => {
     if (limits.upperLimit.value === percentage) return table_data[limits.upperLimit.index].passant;
     if (limits.inferiorLimit.value === percentage) return table_data[limits.inferiorLimit.index].passant;
 
@@ -132,9 +141,9 @@ export class Calc_AsphaltGranulometry_Service {
     const coefficientB = limits.upperLimit.value / (coefficientA * table_data[limits.upperLimit.index].passant);
 
     return (percentage - coefficientB) / coefficientA;
-  }
+  };
 
-  getPercentage = (percentage: number, table_data: { sieve_label: string, passant: number, retained: number }[]) => {
+  getPercentage = (percentage: number, table_data: { sieve_label: string; passant: number; retained: number }[]) => {
     return table_data.reduce(
       (accumulate, sieve, index) => {
         const { upperLimit, inferiorLimit } = accumulate;
@@ -143,13 +152,13 @@ export class Calc_AsphaltGranulometry_Service {
           if (upperLimit.value === 0 || sieve.passant < upperLimit.value)
             accumulate.upperLimit = {
               value: sieve.passant,
-              index: index
+              index: index,
             };
         } else {
           if (inferiorLimit.value === 0 || sieve.passant > inferiorLimit.value)
             accumulate.inferiorLimit = {
               value: sieve.passant,
-              index: index
+              index: index,
             };
         }
         return accumulate;
@@ -157,13 +166,13 @@ export class Calc_AsphaltGranulometry_Service {
       {
         upperLimit: {
           value: 0,
-          index: 0
+          index: 0,
         },
         inferiorLimit: {
           value: 0,
-          index: 0
-        }
-      }
+          index: 0,
+        },
+      },
     );
-  }
+  };
 }

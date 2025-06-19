@@ -1349,7 +1349,7 @@ export class SuperpaveService {
           }
         }
       }
-
+      
       for (let i = 0; i < percentsOfMaterials.length; i++) {
         listOfPercentsToReturn.push([]);
         for (let j = 0; j < percentsOfMaterials[i].length; j++) {
