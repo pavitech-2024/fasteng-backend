@@ -110,9 +110,10 @@ export class InitialBinder_Superpave_Service {
         materialsData.find((e) => e.type === 'asphaltBinder' || e.type === 'CAP').realSpecificMass,
       );
 
+
       if (specificMassesData?.length > 0) {
         specificMassesData.forEach((element) => {
-          if (element) {
+          if (element && (element.type.includes('Aggregate') || element.type.includes('filler'))) {
             listOfSpecificMasses.push({
               bulk: element.realSpecificMass,
               apparent: element.apparentSpecificMass,
@@ -319,6 +320,7 @@ export class InitialBinder_Superpave_Service {
         turnNumber.tex = 'Alto (interestaduais, muito pesado)';
       }
 
+
       const data = {
         granulometryComposition,
         turnNumber,
@@ -333,6 +335,7 @@ export class InitialBinder_Superpave_Service {
   calculateDenominatorGsa_Gsb(listOfSpecificMasses, percentsOfDosage) {
     let denominatorGsb = 0;
     let denominatorGsa = 0;
+
 
     for (let j = 0; j < listOfSpecificMasses.length; j++) {
       denominatorGsb += percentsOfDosage[0].material_1 / listOfSpecificMasses[j].bulk;
