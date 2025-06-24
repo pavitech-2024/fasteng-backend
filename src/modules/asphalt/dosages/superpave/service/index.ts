@@ -229,6 +229,7 @@ export class SuperpaveService {
 
       result.nominalSize.value = nominalSize;
 
+
       for (let i = 0; i < aggregates.length; i++) {
         porcentagesPassantsN200[i] = null;
         // ?: Por que exatamente a peneira do índice 10?
@@ -1339,28 +1340,28 @@ export class SuperpaveService {
         result.nominalSize.curve = curve9;
       }
 
-      for (let i = 0; i < percentsOfMaterials.length; i++) {
-        for (let j = 0; j < percentsOfMaterials[i].length; j++) {
-          if (percentsOfMaterials[i][j] !== null) {
-            for (let k = j; k >= 0; k--) {
-              percentsOfMaterials[i][k] = 100;
-            }
-            break;
-          }
-        }
-      }
+      // for (let i = 0; i < percentsOfMaterials.length; i++) {
+      //   for (let j = 0; j < percentsOfMaterials[i].length; j++) {
+      //     if (percentsOfMaterials[i][j] !== null) {
+      //       for (let k = j; k >= 0; k--) {
+      //         percentsOfMaterials[i][k] = 100;
+      //       }
+      //       break;
+      //     }
+      //   }
+      // }
       
-      for (let i = 0; i < percentsOfMaterials.length; i++) {
-        listOfPercentsToReturn.push([]);
-        for (let j = 0; j < percentsOfMaterials[i].length; j++) {
-          listOfPercentsToReturn[i].push(null);
-          if (percentsOfMaterials[i][j] === null) {
-            for (let k = 0; k < percentsOfMaterials.length; k++) {
-              percentsOfMaterials[k][j] = null;
-            }
-          }
-        }
-      }
+      // for (let i = 0; i < percentsOfMaterials.length; i++) {
+      //   listOfPercentsToReturn.push([]);
+      //   for (let j = 0; j < percentsOfMaterials[i].length; j++) {
+      //     listOfPercentsToReturn[i].push(null);
+      //     if (percentsOfMaterials[i][j] === null) {
+      //       for (let k = 0; k < percentsOfMaterials.length; k++) {
+      //         percentsOfMaterials[k][j] = null;
+      //       }
+      //     }
+      //   }
+      // }
 
       for (let i = 0; i < percentsOfMaterials.length; i++) {
         for (let j = 0; j < 13; j++) {
@@ -1485,7 +1486,8 @@ export class SuperpaveService {
 
       const data = {
         nominalSize: result.nominalSize,
-        percentsToList: listOfPercentsToReturn,
+        // percentsToList: listOfPercentsToReturn,
+        percentsToList: percentsOfMaterials,
         porcentagesPassantsN200,
         bands: {
           letter: dnitBand,
