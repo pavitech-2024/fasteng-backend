@@ -224,7 +224,7 @@ export class SuperpaveService {
           nominalSize = granulometry.results.result.nominal_size;
         }
 
-        return granulometry.results.result.passant;
+        return granulometry.results.result.passant_porcentage;
       });
 
       result.nominalSize.value = nominalSize;
@@ -1377,14 +1377,14 @@ export class SuperpaveService {
         }
       }
 
-      index = Math.min(...indexes);
-      for (let i = 0; i < percentsOfMaterials.length; i++) {
-        for (let j = 0; j < 13; j++) {
-          if (j >= index) {
-            listOfPercentsToReturn[i][j] = percentsOfMaterials[i][j];
-          }
-        }
-      }
+      // index = Math.min(...indexes);
+      // for (let i = 0; i < percentsOfMaterials.length; i++) {
+      //   for (let j = 0; j < 13; j++) {
+      //     if (j >= index) {
+      //       listOfPercentsToReturn[i][j] = percentsOfMaterials[i][j];
+      //     }
+      //   }
+      // }
 
       result.percentsOfMaterialsToShow = listOfPercentsToReturn;
       result.percentsOfMaterials = percentsOfMaterials;
