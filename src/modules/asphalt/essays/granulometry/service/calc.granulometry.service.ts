@@ -59,23 +59,24 @@ export class Calc_AsphaltGranulometry_Service {
 
         fineness_module += accumulated_retained[i][1]
 
-        if (total_retained >= 5 && nominal_size_flag) {
+        if (nominal_size_flag && accumulated_retained[i][1] >= 5) {
           nominal_size_flag = false;
-          if (total_retained === 5) nominal_size = getSieveValue(label);
-          else {
-            if (i === 0) nominal_size = getSieveValue(label);
-            else nominal_size = getSieveValue(table_data[i - 1].sieve_label);
+          if (i === 0) {
+            nominal_size = getSieveValue(label);
+          } else {
+            const previous_retained = accumulated_retained[i - 1][1];
+            nominal_size = previous_retained <= 5 ? getSieveValue(table_data[i - 1].sieve_label) : getSieveValue(label);
           }
         }
+        
 
         
 
         if (total_retained > 10 && nominal_diameter_flag) {
           nominal_diameter_flag = false;
-          if (i === 1) nominal_diameter = getSieveValue(label);
-          else if (i === 0) nominal_diameter = value;
-          else nominal_diameter = getSieveValue(table_data[i - 1].sieve_label);
+          nominal_diameter = getSieveValue(table_data[i].sieve_label);
         }
+        
 
         graph_data.push(([value, passant_porcentage]));
 
