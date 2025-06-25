@@ -148,7 +148,7 @@ export class Calc_AsphaltGranulometry_Service {
             const previous_retained = accumulated_retained[i - 1][1];
             nominal_size = previous_retained <= 5 ? getSieveValue(table_data[i - 1].sieve_label) : getSieveValue(label);
           }
-        }
+        }        
         
 
         if (total_retained > 10 && nominal_diameter_flag) {
