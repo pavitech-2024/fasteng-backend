@@ -26,7 +26,7 @@ export class Calc_AsphaltGranulometry_Service {
       const passant: [string, number][] = []
       const retained_porcentage: [string, number][] = []
 
-      const graph_data: [number, number][] = []
+      const graph_data: [number, number][] = []  
 
       let total_retained = 0;
 
