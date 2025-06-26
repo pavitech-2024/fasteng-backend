@@ -145,6 +145,7 @@ export class InitialBinder_Superpave_Service {
         Object.values(percentsOfDosage[0]).forEach((e) => {
           percentsOfDosageArray.push(e);
         });
+        
 
         for (let i = 0; i < percentsOfDosageArray.length; i++) {
           lowerAbsorve += ((percentsOfDosageArray[i] / 100) * listOfSpecificMasses[i].absorption) / 100;
