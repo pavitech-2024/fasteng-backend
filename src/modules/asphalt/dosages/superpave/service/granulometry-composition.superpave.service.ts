@@ -458,7 +458,7 @@ export class GranulometryComposition_Superpave_Service {
         sumOfPercents[2] = [null, null, null, null, null, null, null, null, null, null, null, null, null];
       }
 
-      for (let i = 0; i <= nominalSize.curve.length; i++) {
+      for (let i = 0; i < nominalSize.curve.length; i++) {
         pointsOfCurve.push([
           Math.pow(axisX[i] / nominalSize.value, 0.45),
           nominalSize.controlPoints.lower[i],
@@ -472,17 +472,17 @@ export class GranulometryComposition_Superpave_Service {
       }
 
       if (!granulometryComposition.lower.percentsOfDosage.isEmpty) {
-        for (let i = 0; i <= 13; i++) {
+        for (let i = 0; i < 13; i++) {
           pointsOfCurve[i].push(sumOfPercents[0][i]);
         }
       }
       if (!granulometryComposition.average.percentsOfDosage.isEmpty) {
-        for (let i = 0; i <= 13; i++) {
+        for (let i = 0; i < 13; i++) {
           pointsOfCurve[i].push(sumOfPercents[1][i]);
         }
       }
       if (!granulometryComposition.higher.percentsOfDosage.isEmpty) {
-        for (let i = 0; i <= 13; i++) {
+        for (let i = 0; i < 13; i++) {
           pointsOfCurve[i].push(sumOfPercents[2][i]);
         }
       }
