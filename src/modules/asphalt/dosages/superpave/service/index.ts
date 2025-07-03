@@ -402,7 +402,20 @@ export class SuperpaveService {
           //   null,
           //   0,
           // ];
-          [100, 90, null, null, null, null, null, 15, null, null, null, null, 0];
+          [100, 
+            90, 
+            null, 
+            null, 
+            null, 
+            null, 
+            null, 
+            15, 
+            null, 
+            null, 
+            null, 
+            null, 
+            0
+          ];
 
         result.nominalSize.controlPoints.higher =
           // [

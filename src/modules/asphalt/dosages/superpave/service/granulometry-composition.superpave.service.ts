@@ -127,74 +127,27 @@ export class GranulometryComposition_Superpave_Service {
       let granulometryComposition = {
         lower: {
           percentsOfDosage: {
-            value: [],
-            isEmpty: true,
+            value: chosenCurves.includes('lower') ? percentsOfDosage[0] : [],
+            isEmpty: chosenCurves.includes('lower'),
           },
         },
         average: {
           percentsOfDosage: {
-            value: [],
-            isEmpty: true,
+            value: chosenCurves.includes('average') ? percentsOfDosage[1] : [],
+            isEmpty: chosenCurves.includes('average'),
           },
         },
         higher: {
           percentsOfDosage: {
-            value: [],
-            isEmpty: true,
+            value: chosenCurves.includes('average') ? percentsOfDosage[2] : [],
+            isEmpty: chosenCurves.includes('higher'),
           },
         },
       };
 
-      if (chosenCurves === 'lower') {
-        granulometryComposition.lower.percentsOfDosage.value = percentsOfDosage[0];
-        granulometryComposition.lower.percentsOfDosage.isEmpty = false;
-      } else {
-        granulometryComposition.lower.percentsOfDosage.isEmpty = true;
-      }
-
-      if (chosenCurves === 'average') {
-        granulometryComposition.average.percentsOfDosage.value = percentsOfDosage[0];
-        granulometryComposition.average.percentsOfDosage.isEmpty = false;
-      } else {
-        granulometryComposition.average.percentsOfDosage.isEmpty = true;
-      }
-
-      if (chosenCurves === 'higher') {
-        granulometryComposition.higher.percentsOfDosage.value = percentsOfDosage[0];
-        granulometryComposition.higher.percentsOfDosage.isEmpty = false;
-      } else {
-        granulometryComposition.higher.percentsOfDosage.isEmpty = true;
-      }
-
-      // const axisX = [
-      //   75, 64, 50, 37.5, 32, 25, 19, 12.5, 9.5, 6.3, 4.8, 2.4, 2, 1.2, 0.6, 0.43, 0.3, 0.18, 0.15, 0.075, 0,
-      // ];
       const axisX = [38.1, 25.4, 19.1, 12.7, 9.5, 6.3, 4.8, 2.36, 1.18, 0.6, 0.3, 0.15, 0.075];
 
       const higherBandA = this.insertBlankPointsOnCurve(
-        // Banda A Superior
-        // [
-        //   null,
-        //   null,
-        //   100,   //sieve 2 pol - 50 mm
-        //   100,   //sieve 1 1/2 pol - 37,5 mm
-        //   null,
-        //   100,   //sieve 1 pol - 25 mm
-        //   90,    //sieve 3/4 pol - 19 mm
-        //   null,
-        //   65,    //sieve 3/8 pol - 9,5 mm
-        //   null,
-        //   50,    //sieve N° 4 - 4,8 mm
-        //   null,
-        //   40,    //sieve N° 10 - 2,0 mm
-        //   null,
-        //   null,
-        //   30,    //sieve N° 40 - 0,43 mm
-        //   null,
-        //   20,    //sieve N° 80 - 0,18 mm
-        //   null,
-        //   8
-        // ],
         [
           100, // 38.1
           100, // 25.4
@@ -213,28 +166,6 @@ export class GranulometryComposition_Superpave_Service {
         axisX,
       );
       const lowerBandA = this.insertBlankPointsOnCurve(
-        // [
-        // null,
-        // null,
-        // 100, --> 50
-        // 95, --> 37.5
-        // null,
-        // 75, --> 25
-        // 60, --> 19
-        // null,
-        // 35, --> 9.5
-        // null,
-        // 25, --> 4.8
-        // null,
-        // 20, --> 2.0
-        // null,
-        // null,
-        // 10, --> 0.43
-        // null,
-        // 5, --> 0.18
-        // null,
-        // 1
-        // ],
         [
           100, // 38.1
           90, // 25.4
@@ -253,29 +184,6 @@ export class GranulometryComposition_Superpave_Service {
         axisX,
       );
       const higherBandB = this.insertBlankPointsOnCurve(
-        // [null, null, null, 100, null, 100, 100, null, 80, null, 60, null, 45, null, null, 32, null, 20, null, 8],
-        // [
-        //   null, // sieve 3 pol - 75 mm
-        //   null, // sieve 2 1/2 pol - 64mm
-        //   null, // sieve 2 pol - 50mm
-        //   100, // sieve 1 1/2 pol - 38,1 mm
-        //   null, // sieve 1 1/4 pol - 32mm
-        //   100, // sieve 1 pol - 25,4 mm
-        //   100, // sieve 3/4 pol - 19,1 mm
-        //   null, // sieve 1/2 pol - 12,7 mm
-        //   80, // sieve 3/8 pol - 9,5 mm
-        //   null, // sieve 1/4 pol - 6,3 mm
-        //   60, // sieve N° 4 - 4,8 mm
-        //   null, // sieve N° 8 - 2,36 mm
-        //   45, // sieve N° 10 - 2,0 mm
-        //   null, // sieve N° 16 - 1,18 mm
-        //   null, // sieve N° 30 - 0,60 mm
-        //   32, // sieve N° 40 - 0,43 mm
-        //   null, // sieve N° 50 - 0,30 mm
-        //   20, // sieve N° 80 - 0,18 mm
-        //   null, // sieve N° 100 - 0,150 mm
-        //   8, // sieve N° 200 - 0,075 mm
-        // ],
         [
           null, // 38.1
           100, // 25.4
@@ -294,29 +202,6 @@ export class GranulometryComposition_Superpave_Service {
         axisX,
       );
       const lowerBandB = this.insertBlankPointsOnCurve(
-        // [null, null, null, 100, null, 95, 80, null, 45, null, 28, null, 20, null, null, 10, null, 8, null, 3],
-        // [
-        //   null, // sieve 3 pol - 75 mm
-        //   null, // sieve 2 1/2 pol - 64mm
-        //   null, // sieve 2 pol - 50mm
-        //   100, // sieve 1 1/2 pol - 38,1 mm
-        //   null, // sieve 1 1/4 pol - 32mm
-        //   95, // sieve 1 pol - 25,4 mm
-        //   80, // sieve 3/4 pol - 19,1 mm
-        //   null, // sieve 1/2 pol - 12,7 mm
-        //   45, // sieve 3/8 pol - 9,5 mm
-        //   null, // sieve 1/4 pol - 6,3 mm
-        //   28, // sieve N° 4 - 4,8 mm
-        //   null, // sieve N° 8 - 2,36 mm
-        //   20, // sieve N° 10 - 2,0 mm
-        //   null, // sieve N° 16 - 1,18 mm
-        //   null, // sieve N° 30 - 0,60 mm
-        //   10, // sieve N° 40 - 0,43 mm
-        //   null, // sieve N° 50 - 0,30 mm
-        //   8, // sieve N° 80 - 0,18 mm
-        //   null, // sieve N° 100 - 0,150 mm
-        //   3, // sieve N° 200 - 0,075 mm
-        // ],
         [
           null, // 38.1
           100, // 25.4
@@ -335,87 +220,10 @@ export class GranulometryComposition_Superpave_Service {
         axisX,
       );
       const higherBandC = this.insertBlankPointsOnCurve(
-        // [null, null, null, null, null, null, 100, 100, 90, null, 72, null, 50, null, null, 26, null, 16, null, 10],
-        // [
-        //   null, // sieve 3 pol - 75 mm
-        //   null, // sieve 2 1/2 pol - 64mm
-        //   null, // sieve 2 pol - 50mm
-        //   null, // sieve 1 1/2 pol - 38,1 mm
-        //   null, // sieve 1 1/4 pol - 32mm
-        //   null, // sieve 1 pol - 25,4 mm
-        //   100, // sieve 3/4 pol - 19,1 mm
-        //   100, // sieve 1/2 pol - 12,7 mm
-        //   89, // sieve 3/8 pol - 9,5 mm
-        //   78, // sieve 1/4 pol - 6,3 mm
-        //   72, // sieve N° 4 - 4,8 mm
-        //   58, // sieve N° 8 - 2,36 mm
-        //   null, // sieve N° 10 - 2,0 mm
-        //   45, // sieve N° 16 - 1,18 mm
-        //   35, // sieve N° 30 - 0,60 mm
-        //   null, // sieve N° 40 - 0,43 mm
-        //   25, // sieve N° 50 - 0,30 mm
-        //   null, // sieve N° 80 - 0,18 mm
-        //   17, // sieve N° 100 - 0,150 mm
-        //   10, // sieve N° 200 - 0,075 mm
-        // ],
-        [
-          null,
-          null,
-          null,
-          100,
-          100,
-          89,
-          83,
-          67,
-          52,
-          40,
-          29,
-          19,
-          10
-        ],
+        [null, null, null, 100, 100, 89, 83, 67, 52, 40, 29, 19, 10],
         axisX,
       );
-      const lowerBandC = this.insertBlankPointsOnCurve(
-        // [null, null, null, null, null, null, 100, 80, 70, null, 44, null, 22, null, null, 8, null, 4, null, 2],
-        // [
-        //   null, // sieve 3 pol - 75 mm
-        //   null, // sieve 2 1/2 pol - 64mm
-        //   null, // sieve 2 pol - 50mm
-        //   null, //sieve 1 1/2 pol - 38,1 mm
-        //   null, // sieve 1 1/4 pol - 32mm
-        //   null, //sieve 1 pol - 25,4 mm
-        //   100, //sieve 3/4 pol - 19,1 mm
-        //   90, //sieve 1/2 pol - 12,7 mm
-        //   73, //sieve 3/8 pol - 9,5 mm
-        //   53, //sieve 1/4 pol - 6,3 mm
-        //   44, //sieve N° 4 - 4,8 mm
-        //   28, //sieve N° 8 - 2,36 mm
-        //   null, // sieve N° 10 - 2,0 mm
-        //   17, //sieve N° 16 - 1,18 mm
-        //   11, //sieve N° 30 - 0,60 mm
-        //   null, // sieve N° 40 - 0,43 mm
-        //   6, //sieve N° 50 - 0,30 mm
-        //   null, // sieve N° 80 - 0,18 mm
-        //   4, //sieve N° 100 - 0,150 mm
-        //   2, //sieve N° 200 - 0,075 mm
-        // ],
-        [
-          null,
-          null,
-          null,
-          100,
-          90,
-          65,
-          53,
-          32,
-          20,
-          13,
-          8,
-          4,
-          2
-        ],
-        axisX,
-      );
+      const lowerBandC = this.insertBlankPointsOnCurve([null, null, null, 100, 90, 65, 53, 32, 20, 13, 8, 4, 2], axisX);
 
       if (dnitBand === 'A') {
         band = { higher: higherBandA, lower: lowerBandA };
@@ -425,34 +233,39 @@ export class GranulometryComposition_Superpave_Service {
         band = { higher: higherBandC, lower: lowerBandC };
       }
 
-      if (!granulometryComposition.lower.percentsOfDosage.isEmpty) {
-        lowerComposition = this.calculatePercentOfMaterials(0, materials, percentsOfDosage[0], percentsToList);
+      if (granulometryComposition.lower.percentsOfDosage.isEmpty) {
+        lowerComposition = this.calculatePercentOfMaterials(materials, percentsOfDosage[0], percentsToList);
         sumOfPercents[0] = lowerComposition.sumOfPercents.map((e) => e);
       }
+      // if (granulometryComposition.lower.percentsOfDosage.isEmpty) {
+      //   const percentsOfDosageValues = granulometryComposition.lower.percentsOfDosage.value;
+      //   lowerComposition = this.calculatePercentOfMaterials(0, materials, percentsOfDosageValues, percentsToList);
+      //   sumOfPercents[0] = lowerComposition.sumOfPercents.map((e) => e);
+      // }
 
-      if (!granulometryComposition.average.percentsOfDosage.isEmpty) {
-        averageComposition = this.calculatePercentOfMaterials(1, materials, percentsOfDosage[1], percentsToList);
+      if (granulometryComposition.average.percentsOfDosage.isEmpty) {
+        averageComposition = this.calculatePercentOfMaterials(materials, percentsOfDosage[1], percentsToList);
         sumOfPercents[1] = averageComposition.sumOfPercents.map((e) => e);
       }
 
-      if (!granulometryComposition.higher.percentsOfDosage.isEmpty) {
-        higherComposition = this.calculatePercentOfMaterials(2, materials, percentsOfDosage[2], percentsToList);
+      if (granulometryComposition.higher.percentsOfDosage.isEmpty) {
+        higherComposition = this.calculatePercentOfMaterials(materials, percentsOfDosage[2], percentsToList);
         sumOfPercents[2] = higherComposition.sumOfPercents.map((e) => e);
       }
 
-      if (!granulometryComposition.lower.percentsOfDosage.isEmpty) {
+      if (granulometryComposition.lower.percentsOfDosage.isEmpty) {
         sumOfPercents[0] = this.insertBlankPointsOnCurve(sumOfPercents[0], axisX);
       } else {
         sumOfPercents[0] = [null, null, null, null, null, null, null, null, null, null, null, null, null];
       }
 
-      if (!granulometryComposition.average.percentsOfDosage.isEmpty) {
+      if (granulometryComposition.average.percentsOfDosage.isEmpty) {
         sumOfPercents[1] = this.insertBlankPointsOnCurve(sumOfPercents[1], axisX);
       } else {
         sumOfPercents[1] = [null, null, null, null, null, null, null, null, null, null, null, null, null];
       }
 
-      if (!granulometryComposition.higher.percentsOfDosage.isEmpty) {
+      if (granulometryComposition.higher.percentsOfDosage.isEmpty) {
         sumOfPercents[2] = this.insertBlankPointsOnCurve(sumOfPercents[2], axisX);
       } else {
         sumOfPercents[2] = [null, null, null, null, null, null, null, null, null, null, null, null, null];
@@ -471,17 +284,17 @@ export class GranulometryComposition_Superpave_Service {
         ]);
       }
 
-      if (!granulometryComposition.lower.percentsOfDosage.isEmpty) {
+      if (granulometryComposition.lower.percentsOfDosage.isEmpty) {
         for (let i = 0; i < 13; i++) {
           pointsOfCurve[i].push(sumOfPercents[0][i]);
         }
       }
-      if (!granulometryComposition.average.percentsOfDosage.isEmpty) {
+      if (granulometryComposition.average.percentsOfDosage.isEmpty) {
         for (let i = 0; i < 13; i++) {
           pointsOfCurve[i].push(sumOfPercents[1][i]);
         }
       }
-      if (!granulometryComposition.higher.percentsOfDosage.isEmpty) {
+      if (granulometryComposition.higher.percentsOfDosage.isEmpty) {
         for (let i = 0; i < 13; i++) {
           pointsOfCurve[i].push(sumOfPercents[2][i]);
         }
@@ -528,7 +341,7 @@ export class GranulometryComposition_Superpave_Service {
     return curve;
   }
 
-  calculatePercentOfMaterials(band, materials, percentsOfDosage, percentsToList) {
+  calculatePercentOfMaterials(materials, percentsOfDosage, percentsToList) {
     let percentsOfMaterialsToShow = [];
     let newPercentsOfDosage = [];
     let materialsWithoutBinder = materials.filter(
