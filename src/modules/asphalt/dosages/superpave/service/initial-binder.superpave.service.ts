@@ -1,27 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { AsphaltGranulometryRepository } from 'modules/asphalt/essays/granulometry/repository';
-import { SuperpaveRepository } from '../repository';
-import { GeneralData_Superpave_Service } from './general-data.superpave.service';
-import { GranulometryComposition_Superpave_Service } from './granulometry-composition.superpave.service';
-import { MaterialSelection_Superpave_Service } from './material-selection.superpave.service';
-import { MaterialsRepository } from 'modules/asphalt/materials/repository';
-import { SpecifyMassService } from 'modules/asphalt/essays/specifyMass/service';
 import { SpecifyMassRepository } from 'modules/asphalt/essays/specifyMass/repository';
-import { Material } from 'modules/asphalt/materials/schemas';
-import { SpecifyMass } from 'modules/asphalt/essays/specifyMass/schemas';
 
 @Injectable()
 export class InitialBinder_Superpave_Service {
   private logger = new Logger(InitialBinder_Superpave_Service.name);
 
-  constructor(
-    private readonly superpave_repository: SuperpaveRepository,
-    private readonly generalData_Service: GeneralData_Superpave_Service,
-    private readonly materialSelection_Service: MaterialSelection_Superpave_Service,
-    private readonly granulometryComposition_Service: GranulometryComposition_Superpave_Service,
-    private readonly asphaltMaterialRepository: MaterialsRepository,
-    private readonly specificMassRepository: SpecifyMassRepository,
-  ) {}
+  constructor(private readonly specificMassRepository: SpecifyMassRepository) {}
 
   async getStep5SpecificMasses(body: any) {
     try {
@@ -83,19 +67,8 @@ export class InitialBinder_Superpave_Service {
         mag: number;
         pli: number;
         percentsOfDosageWithBinder: number[];
-      }[] = [
-        {
-          combinedGsb: 0,
-          combinedGsa: 0,
-          gse: 0,
-          vla: 0,
-          tmn: 0,
-          vle: 0,
-          mag: 0,
-          pli: 0,
-          percentsOfDosageWithBinder: [],
-        },
-      ];
+        curve: string;
+      }[] = [];
 
       let listOfSpecificMasses = [];
 
@@ -109,7 +82,6 @@ export class InitialBinder_Superpave_Service {
       const binderSpecificMass = Number(
         materialsData.find((e) => e.type === 'asphaltBinder' || e.type === 'CAP').realSpecificMass,
       );
-
 
       if (specificMassesData?.length > 0) {
         specificMassesData.forEach((element) => {
@@ -132,58 +104,15 @@ export class InitialBinder_Superpave_Service {
         });
       }
 
-      if (chosenCurves.lower) {
+      if (chosenCurves.includes('lower')) {
         const denominatorsLower = this.calculateDenominatorGsa_Gsb(listOfSpecificMasses, percentsOfDosage);
 
-        granulometryComposition[0].combinedGsb = 100 / denominatorsLower.denominatorGsb;
-        granulometryComposition[0].combinedGsa = 100 / denominatorsLower.denominatorGsa;
+        const combinedGsb = 100 / denominatorsLower.denominatorGsb;
+        const combinedGsa = 100 / denominatorsLower.denominatorGsa;
 
-        let lowerAbsorve = 0;
-
-        let percentsOfDosageArray = [];
-
-        Object.values(percentsOfDosage[0]).forEach((e) => {
-          percentsOfDosageArray.push(e);
-        });
-        
-
-        for (let i = 0; i < percentsOfDosageArray.length; i++) {
-          lowerAbsorve += ((percentsOfDosageArray[i] / 100) * listOfSpecificMasses[i].absorption) / 100;
-          granulometryComposition[0].gse =
-            granulometryComposition[0].combinedGsb +
-            lowerAbsorve * (granulometryComposition[0].combinedGsa - granulometryComposition[0].combinedGsb);
-          granulometryComposition[0].vla =
-            ((0.95 + 0.96) / (0.05 / binderSpecificMass + 0.95 / granulometryComposition[0].gse)) *
-            (1 / granulometryComposition[0].combinedGsb - 1 / granulometryComposition[0].gse);
-          granulometryComposition[0].tmn = nominalSize.value / 24.384;
-
-          //todo: remover esta condiccional após resolver o problema do tamanho nominal
-          if (granulometryComposition[0].tmn < 0.5) {
-            granulometryComposition[0].vle = 0.081 - 0.02931 * 0;
-          } else {
-            granulometryComposition[0].vle = 0.081 - 0.02931 * Math.log(granulometryComposition[0].tmn);
-          }
-
-          granulometryComposition[0].mag =
-            (0.95 * 0.96) / (0.05 / binderSpecificMass + 0.95 / granulometryComposition[0].gse);
-          granulometryComposition[0].pli =
-            ((binderSpecificMass * (granulometryComposition[0].vle + granulometryComposition[0].vla)) /
-              (binderSpecificMass * (granulometryComposition[0].vle + granulometryComposition[0].vla) +
-                granulometryComposition[0].mag)) *
-            100;
-
-          for (let j = 0; j < listOfSpecificMasses.length; j++) {
-            granulometryComposition[0].percentsOfDosageWithBinder[j] =
-              ((100 - granulometryComposition[0].pli) * percentsOfDosageArray[j]) / 100;
-          }
-        }
-      }
-
-      //Cálculos para a curva intermediária caso tenha sido selecionada
-      if (chosenCurves.average) {
-        granulometryComposition[1] = {
-          combinedGsb: 0,
-          combinedGsa: 0,
+        granulometryComposition.push({
+          combinedGsa,
+          combinedGsb,
           gse: 0,
           vla: 0,
           tmn: 0,
@@ -191,12 +120,69 @@ export class InitialBinder_Superpave_Service {
           mag: 0,
           pli: 0,
           percentsOfDosageWithBinder: [],
-        };
+          curve: 'lower',
+        });
 
+        let lowerAbsorve = 0;
+        let percentsOfDosageArray = [];
+
+        Object.values(percentsOfDosage[0]).forEach((e) => {
+          percentsOfDosageArray.push(e);
+        });
+
+        for (let i = 0; i < percentsOfDosageArray.length; i++) {
+          lowerAbsorve += ((percentsOfDosageArray[i] / 100) * listOfSpecificMasses[i].absorption) / 100;
+          const lowerGse = combinedGsb + lowerAbsorve * (combinedGsa - combinedGsb);
+          const lowerVla =
+            ((0.95 + 0.96) / (0.05 / binderSpecificMass + 0.95 / lowerGse)) * (1 / combinedGsb - 1 / lowerGse);
+          const lowerTmn = nominalSize.value / 24.384;
+
+          //todo: remover esta condiccional após resolver o problema do tamanho nominal
+          let lowerVle;
+          if (lowerTmn < 0.5) {
+            lowerVle = 0.081 - 0.02931 * 0;
+          } else {
+            lowerVle = 0.081 - 0.02931 * Math.log(lowerTmn);
+          }
+
+          const lowerMag = (0.95 * 0.96) / (0.05 / binderSpecificMass + 0.95 / lowerGse);
+          const lowerPli =
+            ((binderSpecificMass * (lowerVle + lowerVla)) / (binderSpecificMass * (lowerVle + lowerVla) + lowerMag)) *
+            100;
+
+          for (let j = 0; j < listOfSpecificMasses.length; j++) {
+            granulometryComposition[0].percentsOfDosageWithBinder[j] =
+              ((100 - lowerPli) * percentsOfDosageArray[j]) / 100;
+          }
+
+          granulometryComposition[0].gse = lowerGse;
+          granulometryComposition[0].vla = lowerVla;
+          granulometryComposition[0].tmn = lowerTmn;
+          granulometryComposition[0].vle = lowerVle;
+          granulometryComposition[0].mag = lowerMag;
+          granulometryComposition[0].pli = lowerPli;
+        }
+      }
+
+      //Cálculos para a curva intermediária caso tenha sido selecionada
+      if (chosenCurves.includes('average')) {
         const denominatorsAverage = this.calculateDenominatorGsa_Gsb(listOfSpecificMasses, percentsOfDosage);
 
-        granulometryComposition[1].combinedGsb = 100 / denominatorsAverage.denominatorGsb;
-        granulometryComposition[1].combinedGsa = 100 / denominatorsAverage.denominatorGsa;
+        const combinedGsb = 100 / denominatorsAverage.denominatorGsb;
+        const combinedGsa = 100 / denominatorsAverage.denominatorGsa;
+
+        granulometryComposition.push({
+          combinedGsb,
+          combinedGsa,
+          gse: 0,
+          vla: 0,
+          tmn: 0,
+          vle: 0,
+          mag: 0,
+          pli: 0,
+          percentsOfDosageWithBinder: [],
+          curve: 'average',
+        });
 
         let averageAbsorve = 0;
         let percentsOfDosageArray = [];
@@ -209,41 +195,49 @@ export class InitialBinder_Superpave_Service {
           averageAbsorve += ((percentsOfDosageArray[i] / 100) * listOfSpecificMasses[i].absorption) / 100;
         }
 
-        granulometryComposition[1].gse =
-          granulometryComposition[1].combinedGsb +
-          averageAbsorve * (granulometryComposition[1].combinedGsa - granulometryComposition[1].combinedGsb);
-        granulometryComposition[1].vla =
-          ((0.95 + 0.965) / (0.05 / binderSpecificMass + 0.95 / granulometryComposition[1].gse)) *
-          (1 / granulometryComposition[1].combinedGsb - 1 / granulometryComposition[1].gse);
+        const averageGse = combinedGsb + averageAbsorve * (combinedGsa - combinedGsb);
+        const averageVla =
+          ((0.95 + 0.965) / (0.05 / binderSpecificMass + 0.95 / averageGse)) * (1 / combinedGsb - 1 / averageGse);
 
-        granulometryComposition[1].tmn = nominalSize.value / 24.384;
+        const averageTmn = nominalSize.value / 24.384;
 
         //todo: remover esta condiccional após resolver o problema do tamanho nominal
-        if (granulometryComposition[1].tmn < 0.5) {
-          granulometryComposition[1].vle = 0.081 - 0.02931 * 0;
+        let averageVle;
+        if (averageTmn < 0.5) {
+          averageVle = 0.081 - 0.02931 * 0;
         } else {
-          granulometryComposition[1].vle = 0.081 - 0.02931 * Math.log(granulometryComposition[1].tmn);
+          averageVle = 0.081 - 0.02931 * Math.log(averageTmn);
         }
 
-        granulometryComposition[1].mag =
-          (0.95 * 0.96) / (0.05 / binderSpecificMass + 0.95 / granulometryComposition[1].gse);
-        granulometryComposition[1].pli =
-          ((binderSpecificMass * (granulometryComposition[1].vle + granulometryComposition[1].vla)) /
-            (binderSpecificMass * (granulometryComposition[1].vle + granulometryComposition[1].vla) +
-              granulometryComposition[1].mag)) *
+        const averageMag = (0.95 * 0.96) / (0.05 / binderSpecificMass + 0.95 / averageGse);
+        const averagePli =
+          ((binderSpecificMass * (averageVle + averageVla)) /
+            (binderSpecificMass * (averageVle + averageVla) + averageMag)) *
           100;
 
         for (let j = 0; j < listOfSpecificMasses.length; j++) {
           granulometryComposition[1].percentsOfDosageWithBinder[j] =
-            ((100 - granulometryComposition[1].pli) * percentsOfDosageArray[j]) / 100;
+            ((100 - averagePli) * percentsOfDosageArray[j]) / 100;
         }
+
+        granulometryComposition[1].gse = averageGse;
+        granulometryComposition[1].vla = averageVla;
+        granulometryComposition[1].tmn = averageTmn;
+        granulometryComposition[1].vle = averageVle;
+        granulometryComposition[1].mag = averageMag;
+        granulometryComposition[1].pli = averagePli;
       }
 
       //Cálculos para a curva intermediária caso tenha sido selecionada
-      if (chosenCurves.higher) {
-        granulometryComposition[2] = {
-          combinedGsb: 0,
-          combinedGsa: 0,
+      if (chosenCurves.includes('higher')) {
+        const denominatorsAverage = this.calculateDenominatorGsa_Gsb(listOfSpecificMasses, percentsOfDosage);
+
+        const combinedGsb = 100 / denominatorsAverage.denominatorGsb;
+        const combinedGsa = 100 / denominatorsAverage.denominatorGsa;
+
+        granulometryComposition.push({
+          combinedGsb,
+          combinedGsa,
           gse: 0,
           vla: 0,
           tmn: 0,
@@ -251,12 +245,8 @@ export class InitialBinder_Superpave_Service {
           mag: 0,
           pli: 0,
           percentsOfDosageWithBinder: [],
-        };
-
-        const denominatorsAverage = this.calculateDenominatorGsa_Gsb(listOfSpecificMasses, percentsOfDosage);
-
-        granulometryComposition[2].combinedGsb = 100 / denominatorsAverage.denominatorGsb;
-        granulometryComposition[2].combinedGsa = 100 / denominatorsAverage.denominatorGsa;
+          curve: 'average',
+        });
 
         let higherAbsorve = 0;
         let percentsOfDosageArray = [];
@@ -269,33 +259,29 @@ export class InitialBinder_Superpave_Service {
           higherAbsorve += ((percentsOfDosageArray[i] / 100) * listOfSpecificMasses[i].absorption) / 100;
         }
 
-        granulometryComposition[2].gse =
-          granulometryComposition[2].combinedGsb +
-          higherAbsorve * (granulometryComposition[2].combinedGsa - granulometryComposition[2].combinedGsb);
-        granulometryComposition[2].vla =
-          ((0.95 + 0.965) / (0.05 / binderSpecificMass + 0.95 / granulometryComposition[2].gse)) *
-          (1 / granulometryComposition[2].combinedGsb - 1 / granulometryComposition[2].gse);
+        const higherGse = combinedGsb + higherAbsorve * (combinedGsa - combinedGsb);
+        const higherVla =
+          ((0.95 + 0.965) / (0.05 / binderSpecificMass + 0.95 / higherGse)) * (1 / combinedGsb - 1 / higherGse);
 
-        granulometryComposition[2].tmn = nominalSize.value / 24.384;
+        const higherTmn = nominalSize.value / 24.384;
 
         //todo: remover esta condiccional após resolver o problema do tamanho nominal
-        if (granulometryComposition[2].tmn < 0.5) {
-          granulometryComposition[2].vle = 0.081 - 0.02931 * 0;
+        let higherVle;
+        if (higherTmn < 0.5) {
+          higherVle = 0.081 - 0.02931 * 0;
         } else {
-          granulometryComposition[2].vle = 0.081 - 0.02931 * Math.log(granulometryComposition[2].tmn);
+          higherVle = 0.081 - 0.02931 * Math.log(higherTmn);
         }
 
-        granulometryComposition[2].mag =
-          (0.95 * 0.96) / (0.05 / binderSpecificMass + 0.95 / granulometryComposition[2].gse);
-        granulometryComposition[2].pli =
-          ((binderSpecificMass * (granulometryComposition[2].vle + granulometryComposition[2].vla)) /
-            (binderSpecificMass * (granulometryComposition[2].vle + granulometryComposition[2].vla) +
-              granulometryComposition[2].mag)) *
+        const higherMag = (0.95 * 0.96) / (0.05 / binderSpecificMass + 0.95 / higherGse);
+        const higherPli =
+          ((binderSpecificMass * (higherVle + higherVla)) /
+            (binderSpecificMass * (higherVle + higherVla) + granulometryComposition[2].mag)) *
           100;
 
         for (let j = 0; j < listOfSpecificMasses.length; j++) {
           granulometryComposition[2].percentsOfDosageWithBinder[j] =
-            ((100 - granulometryComposition[2].pli) * percentsOfDosageArray[j]) / 100;
+            ((100 - higherPli) * percentsOfDosageArray[j]) / 100;
         }
       }
 
@@ -321,7 +307,6 @@ export class InitialBinder_Superpave_Service {
         turnNumber.tex = 'Alto (interestaduais, muito pesado)';
       }
 
-
       const data = {
         granulometryComposition,
         turnNumber,
@@ -336,7 +321,6 @@ export class InitialBinder_Superpave_Service {
   calculateDenominatorGsa_Gsb(listOfSpecificMasses, percentsOfDosage) {
     let denominatorGsb = 0;
     let denominatorGsa = 0;
-
 
     for (let j = 0; j < listOfSpecificMasses.length; j++) {
       denominatorGsb += percentsOfDosage[0].material_1 / listOfSpecificMasses[j].bulk;

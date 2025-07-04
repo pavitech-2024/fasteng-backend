@@ -377,8 +377,7 @@ export class SuperpaveService {
       curve9[3] = 100; // 9.5 mm (3/8 pol)
       curve9[curve9.length - 1] = 0;
 
-      // E se o nominalSize for maior que 7.5?
-      if (nominalSize === 37.5) {
+      if (nominalSize === 38.1) {
         result.nominalSize.controlPoints.lower =
           // [
           //   null,
