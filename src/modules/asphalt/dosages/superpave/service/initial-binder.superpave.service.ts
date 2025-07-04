@@ -146,9 +146,15 @@ export class InitialBinder_Superpave_Service {
           }
 
           const lowerMag = (0.95 * 0.96) / (0.05 / binderSpecificMass + 0.95 / lowerGse);
+          // const lowerPli =
+          //   ((binderSpecificMass * (lowerVle + lowerVla)) / (binderSpecificMass * (lowerVle + lowerVla) + lowerMag)) *
+          //   100;
           const lowerPli =
-            ((binderSpecificMass * (lowerVle + lowerVla)) / (binderSpecificMass * (lowerVle + lowerVla) + lowerMag)) *
-            100;
+            binderSpecificMass === 0 && lowerMag === 0
+              ? 0
+              : ((binderSpecificMass * (lowerVle + lowerVla)) /
+                  (binderSpecificMass * (lowerVle + lowerVla) + lowerMag)) *
+                100;
 
           for (let j = 0; j < listOfSpecificMasses.length; j++) {
             granulometryComposition[0].percentsOfDosageWithBinder[j] =
@@ -210,10 +216,16 @@ export class InitialBinder_Superpave_Service {
         }
 
         const averageMag = (0.95 * 0.96) / (0.05 / binderSpecificMass + 0.95 / averageGse);
+        // const averagePli =
+        //   ((binderSpecificMass * (averageVle + averageVla)) /
+        //     (binderSpecificMass * (averageVle + averageVla) + averageMag)) *
+        //   100;
         const averagePli =
-          ((binderSpecificMass * (averageVle + averageVla)) /
-            (binderSpecificMass * (averageVle + averageVla) + averageMag)) *
-          100;
+          binderSpecificMass === 0 && averageMag === 0
+            ? 0
+            : ((binderSpecificMass * (averageVle + averageVla)) /
+                (binderSpecificMass * (averageVle + averageVla) + averageMag)) *
+              100;
 
         for (let j = 0; j < listOfSpecificMasses.length; j++) {
           granulometryComposition[1].percentsOfDosageWithBinder[j] =
@@ -274,10 +286,16 @@ export class InitialBinder_Superpave_Service {
         }
 
         const higherMag = (0.95 * 0.96) / (0.05 / binderSpecificMass + 0.95 / higherGse);
+        // const higherPli =
+        //   ((binderSpecificMass * (higherVle + higherVla)) /
+        //     (binderSpecificMass * (higherVle + higherVla) + higherMag)) *
+        //   100;
         const higherPli =
-          ((binderSpecificMass * (higherVle + higherVla)) /
-            (binderSpecificMass * (higherVle + higherVla) + granulometryComposition[2].mag)) *
-          100;
+          binderSpecificMass === 0 && higherMag === 0
+            ? 0
+            : ((binderSpecificMass * (higherVle + higherVla)) /
+                (binderSpecificMass * (higherVle + higherVla) + higherMag)) *
+              100;
 
         for (let j = 0; j < listOfSpecificMasses.length; j++) {
           granulometryComposition[2].percentsOfDosageWithBinder[j] =
