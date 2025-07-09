@@ -28,25 +28,20 @@ export class GranulometryComposition_Superpave_Service {
 
       const granulometrys = await this.granulometry_repository.findAll();
 
+      // Percorre cada agregado e encontra a granulometria correspondente no banco de dados
       aggregates.forEach((aggregate) => {
-        const granulometry: AsphaltGranulometry = granulometrys.find(({ generalData }) => {
-          const { material } = generalData;
-          return aggregate._id.toString() === material._id.toString();
-        });
+        // Encontra a granulometria correspondente ao agregado
+        const granulometry = granulometrys.find(({ generalData }) => 
+          aggregate._id.toString() === generalData.material._id.toString()
+        ) as AsphaltGranulometry;
 
-        const { passant } = granulometry.results;
+        // Cria um objeto com as passantes para cada agregado
+        const passants = Object.fromEntries(granulometry.results.passant);
 
-        let passants = {};
-
-        passant.forEach((p) => {
-          passants[p[0]] = p[1];
-        });
-
-        console.log(passants);
-
+        // Adiciona o objeto com as passantes ao array de dados
         granulometry_data.push({
           _id: aggregate._id,
-          passants: passants,
+          passants,
         });
       });
 
@@ -147,78 +142,10 @@ export class GranulometryComposition_Superpave_Service {
 
       const axisX = [38.1, 25.4, 19.1, 12.7, 9.5, 6.3, 4.8, 2.36, 1.18, 0.6, 0.3, 0.15, 0.075];
 
-      const higherBandA = this.insertBlankPointsOnCurve(
-        [
-          100, // 38.1
-          100, // 25.4
-          89, // 19.1
-          78, // 12.7
-          71, // 9.5
-          61, // 6.3
-          55, // 4.8
-          45, // 2.36
-          36, // 1.18
-          28, // 0.6
-          24, // 0.3
-          14, // 0.15
-          7, // 0.075
-        ],
-        axisX,
-      );
-      const lowerBandA = this.insertBlankPointsOnCurve(
-        [
-          100, // 38.1
-          90, // 25.4
-          75, // 19.1
-          58, // 12.7
-          48, // 9.5
-          35, // 6.3
-          29, // 4.8
-          19, // 2.36
-          13, // 1.18
-          9, // 0.6
-          5, // 0.3
-          2, // 0.15
-          1, // 0.075
-        ],
-        axisX,
-      );
-      const higherBandB = this.insertBlankPointsOnCurve(
-        [
-          null, // 38.1
-          100, // 25.4
-          100, // 19.1
-          89, // 12.7
-          82, // 9.5
-          70, // 6.3
-          63, // 4.8
-          49, // 2.36
-          37, // 1.18
-          28, // 0.6
-          20, // 0.3
-          13, // 0.15
-          8, // 0.075
-        ],
-        axisX,
-      );
-      const lowerBandB = this.insertBlankPointsOnCurve(
-        [
-          null, // 38.1
-          100, // 25.4
-          90, // 19.1
-          70, // 12.7
-          55, // 9.5
-          42, // 6.3
-          35, // 4.8
-          23, // 2.36
-          16, // 1.18
-          10, // 0.6
-          6, // 0.3
-          4, // 0.15
-          2, // 0.075
-        ],
-        axisX,
-      );
+      const higherBandA = this.insertBlankPointsOnCurve([100, 100, 89, 78, 71, 61, 55, 45, 36, 28, 24, 14, 7], axisX);
+      const lowerBandA = this.insertBlankPointsOnCurve([100, 90, 75, 58, 48, 35, 29, 19, 13, 9, 5, 2, 1], axisX);
+      const higherBandB = this.insertBlankPointsOnCurve([null, 100, 100, 89, 82, 70, 63, 49, 37, 28, 20, 13, 8], axisX);
+      const lowerBandB = this.insertBlankPointsOnCurve([null, 100, 90, 70, 55, 42, 35, 23, 16, 10, 6, 4, 2], axisX);
       const higherBandC = this.insertBlankPointsOnCurve(
         [null, null, null, 100, 100, 89, 83, 67, 52, 40, 29, 19, 10],
         axisX,

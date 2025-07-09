@@ -239,9 +239,9 @@ export class SuperpaveService {
 
       const axisX = [38.1, 25.4, 19.1, 12.7, 9.5, 6.3, 4.8, 2.36, 1.18, 0.6, 0.3, 0.15, 0.075];
 
-      const curve37_5 = Array(AllSievesSuperpaveUpdatedAstm.length).fill(null);
-      curve37_5[0] = 100; // 38.1 mm (1 1/2 pol)
-      curve37_5[curve37_5.length - 1] = 0;
+      const curve38_1 = Array(AllSievesSuperpaveUpdatedAstm.length).fill(null);
+      curve38_1[0] = 100; // 38.1 mm (1 1/2 pol)
+      curve38_1[curve38_1.length - 1] = 0;
 
       const curve25 = Array(AllSievesSuperpaveUpdatedAstm.length).fill(null);
       curve25[0] = 100; // 25.4 mm (1 pol)
@@ -260,24 +260,24 @@ export class SuperpaveService {
       curve9[curve9.length - 1] = 0;
 
       if (nominalSize === 38.1) {
-        result.nominalSize.controlPoints.lower =
-          [100, 
-            90, 
-            null, 
-            null, 
-            null, 
-            null, 
-            null, 
-            15, 
-            null, 
-            null, 
-            null, 
-            null, 
-            0
-          ];
+        result.nominalSize.controlPoints.lower = [100, 90, null, null, null, null, null, 15, null, null, null, null, 0];
 
-        result.nominalSize.controlPoints.higher =
-          [100, 90, null, null, null, null, null, 41, null, null, null, null, null, 6];
+        result.nominalSize.controlPoints.higher = [
+          100,
+          90,
+          null,
+          null,
+          null,
+          null,
+          null,
+          41,
+          null,
+          null,
+          null,
+          null,
+          null,
+          6,
+        ];
         result.nominalSize.restrictedZone.lower = await this.insertBlankPointsOnCurve(
           [
             null, // i 0
@@ -302,40 +302,38 @@ export class SuperpaveService {
           axisX,
         );
 
-        result.nominalSize.curve = curve37_5;
+        result.nominalSize.curve = curve38_1;
       } else if (nominalSize === 25) {
-        result.nominalSize.controlPoints.lower =
-          [
-            100, // 38.1
-            90, // 25.4
-            null, // 19.1
-            null, // 12.7
-            null, // 9.5
-            null, // 6.3
-            null, // 4.8
-            19, // 2.36
-            null, // 1.18
-            null, // 0.6
-            null, // 0.3
-            null, // 0.15
-            1, // 0.075
-          ];
-        result.nominalSize.controlPoints.higher =
-          [
-            null, // 38.1
-            100, // 25.4
-            90, // 19.1
-            null, // 12.7
-            null, // 9.5
-            null, // 6.3
-            null, // 4.8
-            45, // 2.36
-            null, // 1.18
-            null, // 0.6
-            null, // 0.3
-            null, // 0.15
-            7, // 0.075
-          ];
+        result.nominalSize.controlPoints.lower = [
+          100, // 38.1
+          90, // 25.4
+          null, // 19.1
+          null, // 12.7
+          null, // 9.5
+          null, // 6.3
+          null, // 4.8
+          19, // 2.36
+          null, // 1.18
+          null, // 0.6
+          null, // 0.3
+          null, // 0.15
+          1, // 0.075
+        ];
+        result.nominalSize.controlPoints.higher = [
+          null, // 38.1
+          100, // 25.4
+          90, // 19.1
+          null, // 12.7
+          null, // 9.5
+          null, // 6.3
+          null, // 4.8
+          45, // 2.36
+          null, // 1.18
+          null, // 0.6
+          null, // 0.3
+          null, // 0.15
+          7, // 0.075
+        ];
         result.nominalSize.restrictedZone.lower = await this.insertBlankPointsOnCurve(
           [
             null, // 38.1
@@ -374,38 +372,36 @@ export class SuperpaveService {
         );
         result.nominalSize.curve = curve25;
       } else if (nominalSize === 19) {
-        result.nominalSize.controlPoints.lower =
-          [
-            null, // 38.1
-            100, // 25.4
-            90, // 19.1
-            null, // 12.7
-            null, // 9.5
-            null, // 6.3
-            null, // 4.8
-            23, // 2.36
-            null, // 1.18
-            null, // 0.6
-            null, // 0.3
-            null, // 0.15
-            2, // 0.075
-          ];
-        result.nominalSize.controlPoints.higher =
-          [
-            null, // 38.1
-            null, // 25.4
-            100, // 19.1
-            90, // 12.7
-            null, // 9.5
-            null, // 6.3
-            null, // 4.8
-            49, // 2.36
-            null, // 1.18
-            null, // 0.6
-            null, // 0.3
-            null, // 0.15
-            8, // 0.075
-          ];
+        result.nominalSize.controlPoints.lower = [
+          null, // 38.1
+          100, // 25.4
+          90, // 19.1
+          null, // 12.7
+          null, // 9.5
+          null, // 6.3
+          null, // 4.8
+          23, // 2.36
+          null, // 1.18
+          null, // 0.6
+          null, // 0.3
+          null, // 0.15
+          2, // 0.075
+        ];
+        result.nominalSize.controlPoints.higher = [
+          null, // 38.1
+          null, // 25.4
+          100, // 19.1
+          90, // 12.7
+          null, // 9.5
+          null, // 6.3
+          null, // 4.8
+          49, // 2.36
+          null, // 1.18
+          null, // 0.6
+          null, // 0.3
+          null, // 0.15
+          8, // 0.075
+        ];
         result.nominalSize.restrictedZone.lower = await this.insertBlankPointsOnCurve(
           [
             null, // 38.1
@@ -444,38 +440,36 @@ export class SuperpaveService {
         );
         result.nominalSize.curve = curve19;
       } else if (nominalSize === 12.5) {
-        result.nominalSize.controlPoints.lower =
-          [
-            null, // 38.1
-            null, // 25.4
-            100, // 19.1
-            90, // 12.7
-            null, // 9.5
-            null, // 6.3
-            null, // 4.8
-            28, // 2.36
-            null, // 1.18
-            null, // 0.6
-            null, // 0.3
-            null, // 0.15
-            2, // 0.075
-          ];
-        result.nominalSize.controlPoints.higher =
-          [
-            null, // 38.1
-            null, // 25.4
-            null, // 19.1
-            100, // 12.7
-            90, // 9.5
-            null, // 6.3
-            null, // 4.8
-            58, // 2.36
-            null, // 1.18
-            null, // 0.6
-            null, // 0.3
-            null, // 0.15
-            10, // 0.075
-          ];
+        result.nominalSize.controlPoints.lower = [
+          null, // 38.1
+          null, // 25.4
+          100, // 19.1
+          90, // 12.7
+          null, // 9.5
+          null, // 6.3
+          null, // 4.8
+          28, // 2.36
+          null, // 1.18
+          null, // 0.6
+          null, // 0.3
+          null, // 0.15
+          2, // 0.075
+        ];
+        result.nominalSize.controlPoints.higher = [
+          null, // 38.1
+          null, // 25.4
+          null, // 19.1
+          100, // 12.7
+          90, // 9.5
+          null, // 6.3
+          null, // 4.8
+          58, // 2.36
+          null, // 1.18
+          null, // 0.6
+          null, // 0.3
+          null, // 0.15
+          10, // 0.075
+        ];
         result.nominalSize.restrictedZone.lower = await this.insertBlankPointsOnCurve(
           [
             null, // 38.1
@@ -516,38 +510,36 @@ export class SuperpaveService {
         );
         result.nominalSize.curve = curve12;
       } else if (nominalSize === 9.5) {
-        result.nominalSize.controlPoints.lower =
-          [
-            null, // 38.1
-            null, // 25.4
-            null, // 19.1
-            100, // 12.7
-            90, // 9.5
-            null, // 6.3
-            null, // 4.8
-            32, // 2.36
-            null, // 1.18
-            null, // 0.6
-            null, // 0.3
-            null, // 0.15
-            2, // 0.075
-          ];
-        result.nominalSize.controlPoints.higher =
-          [
-            null, // 38.1
-            null, // 25.4
-            null, // 19.1
-            null, // 12.7
-            100, // 9.5
-            null, // 6.3
-            90, // 4.8
-            67, // 2.36
-            null, // 1.18
-            null, // 0.6
-            null, // 0.3
-            null, // 0.15
-            10, // 0.075
-          ];
+        result.nominalSize.controlPoints.lower = [
+          null, // 38.1
+          null, // 25.4
+          null, // 19.1
+          100, // 12.7
+          90, // 9.5
+          null, // 6.3
+          null, // 4.8
+          32, // 2.36
+          null, // 1.18
+          null, // 0.6
+          null, // 0.3
+          null, // 0.15
+          2, // 0.075
+        ];
+        result.nominalSize.controlPoints.higher = [
+          null, // 38.1
+          null, // 25.4
+          null, // 19.1
+          null, // 12.7
+          100, // 9.5
+          null, // 6.3
+          90, // 4.8
+          67, // 2.36
+          null, // 1.18
+          null, // 0.6
+          null, // 0.3
+          null, // 0.15
+          10, // 0.075
+        ];
         result.nominalSize.restrictedZone.lower = await this.insertBlankPointsOnCurve(
           [
             null, // 38.1
@@ -588,39 +580,36 @@ export class SuperpaveService {
         );
         result.nominalSize.curve = curve9;
       } else {
-        result.nominalSize.controlPoints.lower =
-          // Aqui não há peneira de 50mm (estou considerando o maior tamanho nominal)
-          [
-            100, // 38.1
-            90, // 25.4
-            null, // 19.1
-            null, // 12.7
-            null, // 9.5
-            null, // 6.3
-            null, // 4.8
-            15, // 2.36
-            null, // 1.18
-            null, // 0.6
-            null, // 0.3
-            null, // 0.15
-            0, // 0.075
-          ];
-        result.nominalSize.controlPoints.higher =
-          [
-            100, // 38.1
-            90, // 25.4
-            null, // 19.1
-            null, // 12.7
-            null, // 9.5
-            null, // 6.3
-            null, // 4.8
-            41, // 2.36
-            null, // 1.18
-            null, // 0.6
-            null, // 0.3
-            null, // 0.15
-            6, // 0.075
-          ];
+        result.nominalSize.controlPoints.lower = [
+          null, // 38.1
+          null, // 25.4
+          100, // 19.1
+          90, // 12.7
+          null, // 9.5
+          null, // 6.3
+          null, // 4.8
+          28, // 2.36
+          null, // 1.18
+          null, // 0.6
+          null, // 0.3
+          null, // 0.15
+          2, // 0.075
+        ];
+        result.nominalSize.controlPoints.higher = [
+          null, // 38.1
+          null, // 25.4
+          null, // 19.1
+          100, // 12.7
+          90, // 9.5
+          null, // 6.3
+          null, // 4.8
+          58, // 2.36
+          null, // 1.18
+          null, // 0.6
+          null, // 0.3
+          null, // 0.15
+          10, // 0.075
+        ];
         result.nominalSize.restrictedZone.lower = await this.insertBlankPointsOnCurve(
           [
             null, // 38.1
@@ -629,11 +618,11 @@ export class SuperpaveService {
             null, // 12.7
             null, // 9.5
             null, // 6.3
-            34.7, // 4.8
-            23.3, // 2.36
-            15.5, // 1.18
-            11.7, // 0.6
-            10, // 0.3
+            null, // 4.8
+            39.1, // 2.36
+            25.6, // 1.18
+            19.1, // 0.6
+            15.5, // 0.3
             null, // 0.15
             null, // 0.075
           ],
@@ -647,18 +636,17 @@ export class SuperpaveService {
             null, // 12.7
             null, // 9.5
             null, // 6.3
-            34.7, // 4.8
-            27.3, // 2.36
-            21.5, // 1.18
-            15.7, // 0.6
-            10, // 0.3
+            null, // 4.8
+            39.1, // 2.36
+            31.6, // 1.18
+            23.1, // 0.6
+            15.5, // 0.3
             null, // 0.15
             null, // 0.075
           ],
           axisX,
         );
-        // result.nominalSize.curve = curve9;
-        result.nominalSize.curve = curve37_5;
+        result.nominalSize.curve = curve12;
       }
 
       for (let i = 0; i < percentsOfMaterials.length; i++) {
