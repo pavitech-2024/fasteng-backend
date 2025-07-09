@@ -131,7 +131,9 @@ export class InitialBinder_Superpave_Service {
         });
 
         for (let i = 0; i < percentsOfDosageArray.length; i++) {
-          lowerAbsorve += ((percentsOfDosageArray[i] / 100) * listOfSpecificMasses[i].absorption) / 100;
+          if (listOfSpecificMasses.length < i) {
+            lowerAbsorve += ((percentsOfDosageArray[i] / 100) * listOfSpecificMasses[i].absorption) / 100;
+          }
           const lowerGse = combinedGsb + lowerAbsorve * (combinedGsa - combinedGsb);
           const lowerVla =
             ((0.95 + 0.96) / (0.05 / binderSpecificMass + 0.95 / lowerGse)) * (1 / combinedGsb - 1 / lowerGse);
@@ -198,7 +200,9 @@ export class InitialBinder_Superpave_Service {
         });
 
         for (let i = 0; i < percentsOfDosageArray.length; i++) {
-          averageAbsorve += ((percentsOfDosageArray[i] / 100) * listOfSpecificMasses[i].absorption) / 100;
+          if (listOfSpecificMasses.length < i) {
+            averageAbsorve += ((percentsOfDosageArray[i] / 100) * listOfSpecificMasses[i].absorption) / 100;
+          }
         }
 
         const averageGse = combinedGsb + averageAbsorve * (combinedGsa - combinedGsb);
@@ -216,10 +220,6 @@ export class InitialBinder_Superpave_Service {
         }
 
         const averageMag = (0.95 * 0.96) / (0.05 / binderSpecificMass + 0.95 / averageGse);
-        // const averagePli =
-        //   ((binderSpecificMass * (averageVle + averageVla)) /
-        //     (binderSpecificMass * (averageVle + averageVla) + averageMag)) *
-        //   100;
         const averagePli =
           binderSpecificMass === 0 && averageMag === 0
             ? 0
@@ -257,7 +257,7 @@ export class InitialBinder_Superpave_Service {
           mag: 0,
           pli: 0,
           percentsOfDosageWithBinder: [],
-          curve: 'average',
+          curve: 'higher',
         });
 
         let higherAbsorve = 0;
@@ -268,7 +268,8 @@ export class InitialBinder_Superpave_Service {
         });
 
         for (let i = 0; i < percentsOfDosageArray.length; i++) {
-          higherAbsorve += ((percentsOfDosageArray[i] / 100) * listOfSpecificMasses[i].absorption) / 100;
+          if (listOfSpecificMasses.length < i)
+            higherAbsorve += ((percentsOfDosageArray[i] / 100) * listOfSpecificMasses[i].absorption) / 100;
         }
 
         const higherGse = combinedGsb + higherAbsorve * (combinedGsa - combinedGsb);
@@ -286,10 +287,6 @@ export class InitialBinder_Superpave_Service {
         }
 
         const higherMag = (0.95 * 0.96) / (0.05 / binderSpecificMass + 0.95 / higherGse);
-        // const higherPli =
-        //   ((binderSpecificMass * (higherVle + higherVla)) /
-        //     (binderSpecificMass * (higherVle + higherVla) + higherMag)) *
-        //   100;
         const higherPli =
           binderSpecificMass === 0 && higherMag === 0
             ? 0
@@ -336,13 +333,40 @@ export class InitialBinder_Superpave_Service {
     }
   }
 
-  calculateDenominatorGsa_Gsb(listOfSpecificMasses, percentsOfDosage) {
+  // calculateDenominatorGsa_Gsb(listOfSpecificMasses, percentsOfDosage) {
+  //   let denominatorGsb = 0;
+  //   let denominatorGsa = 0;
+
+  //   for (let j = 0; j < listOfSpecificMasses.length; j++) {
+  //     denominatorGsb += percentsOfDosage[0].material_1 / listOfSpecificMasses[j].bulk;
+  //     denominatorGsa += percentsOfDosage[0].material_2 / listOfSpecificMasses[j].apparent;
+  //   }
+
+  //   return { denominatorGsb, denominatorGsa };
+  // }
+  calculateDenominatorGsa_Gsb(
+    listOfSpecificMasses: { bulk: string; apparent: string }[],
+    percentsOfDosage: Record<string, string>[],
+  ) {
     let denominatorGsb = 0;
     let denominatorGsa = 0;
 
+    // Para cada índice de material
     for (let j = 0; j < listOfSpecificMasses.length; j++) {
-      denominatorGsb += percentsOfDosage[0].material_1 / listOfSpecificMasses[j].bulk;
-      denominatorGsa += percentsOfDosage[0].material_2 / listOfSpecificMasses[j].apparent;
+      let percentSum = 0;
+
+      // Para cada dosagem (linha)
+      for (const dosage of percentsOfDosage) {
+        const materialKey = Object.keys(dosage)[j];
+        const percent = parseFloat(dosage[materialKey] || '0');
+        percentSum += percent;
+      }
+
+      const bulk = parseFloat(listOfSpecificMasses[j].bulk);
+      const apparent = parseFloat(listOfSpecificMasses[j].apparent);
+
+      denominatorGsb += percentSum / bulk;
+      denominatorGsa += percentSum / apparent;
     }
 
     return { denominatorGsb, denominatorGsa };
