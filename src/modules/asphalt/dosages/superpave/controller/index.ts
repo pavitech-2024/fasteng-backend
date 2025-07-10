@@ -231,11 +231,11 @@ export class SuperpaveController {
     return response.status(200).json(status);
   }
 
-  @Post('save-first-curve-percentage-step/:userId')
+  @Post('save-percents-of-chosen-curve-step/:userId')
   async saveStep6Data(@Res() response: Response, @Param('userId') userId: string, @Body() body: any) {
-    this.logger.log(`save step 6 data > [body]: ${body}`);
+    this.logger.log(`save percents of chosen curve data > [body]: ${body}`);
 
-    // const status = await this.superpaveService.saveStep6Data(body, userId);
+    const status = await this.superpaveService.savePercentsOfChosenCurveData(body, userId);
 
     return response.status(200).json(status);
   }
@@ -299,24 +299,24 @@ export class SuperpaveController {
   async saveStep8Data(@Res() response: Response, @Param('userId') userId: string, @Body() body: any) {
     this.logger.log(`save step 8 data > [body]: ${body}`);
 
-    const status = await this.superpaveService.saveStep8Data(body, userId);
+    // const status = await this.superpaveService.saveStep8Data(body, userId);
 
     return response.status(200).json(status);
   }
 
-  @Post('get-step-9-data')
+  @Post('get-second-compression-percentage-data')
   @ApiOperation({
-    summary: 'Retorna os dados iniciais necessários para a nona tela (parâmetros da segunda compactação) da dosagem',
+    summary: 'Retorna os dados iniciais necessários para a tela de porcentagens da segunda compactação da dosagem',
   })
   @ApiResponse({
     status: 200,
     description: 'Dados carregados com sucesso!',
     content: { 'application/json': { schema: { example: { data: {}, success: true } } } },
   })
-  async getStep9Data(@Res() response: Response, @Body() body: any) {
-    this.logger.log(`get step 9 data > [body]: ${body}`);
+  async getSecondCompressionPercentageData(@Res() response: Response, @Body() body: any) {
+    this.logger.log(`get second compression percentage data > [body]: ${body}`);
 
-    const status = await this.superpaveService.getStep9Data(body);
+    const status = await this.superpaveService.getSecondCompressionPercentageData(body);
 
     return response.status(200).json(status);
   }

@@ -916,13 +916,13 @@ export class SuperpaveService {
     }
   }
 
-  async saveStep8Data(body: any, userId: string) {
+  async savePercentsOfChosenCurveData(body: any, userId: string) {
     try {
-      const success = await this.firstCurvePercentages_Service.saveStep8Data(body, userId);
+      const success = await this.firstCurvePercentages_Service.savePercentsOfChosenCurveData(body, userId);
 
       return { success };
     } catch (error) {
-      this.logger.error(`error on save step 6 data superpave > [error]: ${error}`);
+      this.logger.error(`error on save percents of chosen curve data superpave > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
     }
@@ -1010,13 +1010,13 @@ export class SuperpaveService {
     }
   }
 
-  async getStep9Data(body: any) {
+  async getSecondCompressionPercentageData(body: any) {
     try {
-      const data = await this.secondCompressionParameters_Service.getStep9Data(body);
+      const data = await this.secondCompressionParameters_Service.getSecondCompressionPercentageData(body);
 
       return { data, success: true };
     } catch (error) {
-      this.logger.error(`error on get step 9 data superpave > [error]: ${error}`);
+      this.logger.error(`error on get second compression percentage data superpave > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
     }

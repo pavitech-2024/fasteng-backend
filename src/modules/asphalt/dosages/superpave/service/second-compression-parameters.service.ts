@@ -15,10 +15,9 @@ export class SecondCompressionParameters_Superpave_Service {
     private readonly superpave_repository: SuperpaveRepository,
   ) {}
 
-  async getStep9Data(body: any) {
+  async getSecondCompressionPercentageData(body: any) {
     try {
-      this;
-      this.logger.log({}, 'start get step 8 Data > SecondCompressionPercentage_Superpave_Service');
+      this.logger.log({}, 'start get second compression percentage data > SecondCompressionPercentage_Superpave_Service');
 
       const { expectedPli, composition } = body;
 
