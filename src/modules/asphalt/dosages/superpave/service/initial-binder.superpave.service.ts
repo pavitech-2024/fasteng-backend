@@ -1,15 +1,24 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { SpecifyMassRepository } from 'modules/asphalt/essays/specifyMass/repository';
+import { SuperpaveRepository } from '../repository';
+import { Model } from 'mongoose';
+import { SuperpaveDocument } from '../schemas';
 
 @Injectable()
 export class InitialBinder_Superpave_Service {
   private logger = new Logger(InitialBinder_Superpave_Service.name);
 
-  constructor(private readonly specificMassRepository: SpecifyMassRepository) {}
+  constructor(
+    private superpaveModel: Model<SuperpaveDocument>,
+    private readonly specificMassRepository: SpecifyMassRepository,
+    private readonly superpave_repository: SuperpaveRepository
+  ) {}
 
   async getStep5SpecificMasses(body: any) {
     try {
-      const { materials, binder } = body;
+      const { materials } = body;
+
+      const binder = materials.find((material) => material.type === 'asphaltBinder' || material.type === 'CAP');
 
       let materialsIds = [];
       let specificMasses = [];
@@ -52,7 +61,6 @@ export class InitialBinder_Superpave_Service {
         materials: materialsData,
         percentsOfDosage,
         chosenCurves,
-        composition,
         nominalSize,
         trafficVolume,
       } = body;
@@ -148,9 +156,6 @@ export class InitialBinder_Superpave_Service {
           }
 
           const lowerMag = (0.95 * 0.96) / (0.05 / binderSpecificMass + 0.95 / lowerGse);
-          // const lowerPli =
-          //   ((binderSpecificMass * (lowerVle + lowerVla)) / (binderSpecificMass * (lowerVle + lowerVla) + lowerMag)) *
-          //   100;
           const lowerPli =
             binderSpecificMass === 0 && lowerMag === 0
               ? 0
@@ -333,17 +338,16 @@ export class InitialBinder_Superpave_Service {
     }
   }
 
-  // calculateDenominatorGsa_Gsb(listOfSpecificMasses, percentsOfDosage) {
-  //   let denominatorGsb = 0;
-  //   let denominatorGsa = 0;
-
-  //   for (let j = 0; j < listOfSpecificMasses.length; j++) {
-  //     denominatorGsb += percentsOfDosage[0].material_1 / listOfSpecificMasses[j].bulk;
-  //     denominatorGsa += percentsOfDosage[0].material_2 / listOfSpecificMasses[j].apparent;
-  //   }
-
-  //   return { denominatorGsb, denominatorGsa };
-  // }
+  /**
+   * Calculates the denominators for specific gravity of bulk (Gsb) and apparent (Gsa)
+   * for a list of specific masses and their corresponding dosage percentages.
+   *
+   * @param listOfSpecificMasses - An array of objects, each containing bulk and apparent
+   * specific gravity values as strings.
+   * @param percentsOfDosage - An array of records where each record contains dosage
+   * percentages for different materials, keyed by material identifiers.
+   * @returns An object containing the calculated denominators for Gsb and Gsa.
+   */
   calculateDenominatorGsa_Gsb(
     listOfSpecificMasses: { bulk: string; apparent: string }[],
     percentsOfDosage: Record<string, string>[],
@@ -370,5 +374,35 @@ export class InitialBinder_Superpave_Service {
     }
 
     return { denominatorGsb, denominatorGsa };
+  }
+
+    async saveStep5Data(body: any, userId: string) {
+    try {
+      this.logger.log(
+        'save superpave initial binder step on initial-binder.superpave.service.ts > [body]',
+        { body },
+      );
+
+      const { name } = body.initialBinderData;
+
+      const superpaveExists: any = await this.superpave_repository.findOne(name, userId);
+
+      const { name: materialName, ...granulometryCompositionWithoutName } = body.granulometryCompositionData;
+
+      const superpaveWithGranulometryComposition = {
+        ...superpaveExists._doc,
+        granulometryCompositionData: granulometryCompositionWithoutName,
+      };
+
+      await this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithGranulometryComposition);
+
+      if (superpaveExists._doc.generalData.step < 5) {
+        await this.superpave_repository.saveStep(superpaveExists, 5);
+      }
+
+      return true;
+    } catch (error) {
+      throw error;
+    }
   }
 }

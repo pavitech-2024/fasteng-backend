@@ -21,7 +21,6 @@ export class SuperpaveController {
     return this.superpaveService.getAllDosages(userId);
   }
 
-  // Deveria entregar os dados salvos no banco de dados da Superpave
   @Post('verify-init/:id')
   @ApiOperation({ summary: 'Verifica se é possível criar uma Superpave com os dados enviados.' })
   @ApiResponse({
@@ -190,9 +189,9 @@ export class SuperpaveController {
 
   @Post('save-initial-binder-step/:userId')
   async saveInitialBinderStep(@Res() response: Response, @Param('userId') userId: string, @Body() body: any) {
-    this.logger.log(`save step 4 data > [body]: ${body}`);
+    this.logger.log(`save step 5 data > [body]: ${body}`);
 
-    const status = await this.superpaveService.saveStep4Data(body, userId);
+    const status = await this.superpaveService.saveStep5Data(body, userId);
 
     return response.status(200).json(status);
   }

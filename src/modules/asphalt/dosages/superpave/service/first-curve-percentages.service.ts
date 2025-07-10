@@ -933,7 +933,7 @@ export class FirstCurvePercentages_Service {
     return graphData;
   }
 
-  async saveStep6Data(body: any, userId: string) {
+  async saveStep8Data(body: any, userId: string) {
     try {
       this.logger.log('save superpave first curve percentages step on first-curve-percentages.superpave.service.ts > [body]', { body });
 
@@ -950,8 +950,8 @@ export class FirstCurvePercentages_Service {
         superpaveWithFirstCurvePercentages
       );
 
-      if (superpaveExists._doc.generalData.step < 6) {
-        await this.superpave_repository.saveStep(superpaveExists, 6);
+      if (superpaveExists._doc.generalData.step < 8) {
+        await this.superpave_repository.saveStep(superpaveExists, 8);
       }
 
       return true;

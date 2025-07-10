@@ -182,7 +182,7 @@ export class ResumeDosage_Superpave_Service {
     return [averageDryMass, averageSubmergedMass, averageSaturedMass];
   }
 
-  async saveStep10Data(body: any, userId: string) {
+  async saveStep11Data(body: any, userId: string) {
     try {
       this.logger.log('save superpave vonfirm compression step on resume-dosage.superpave.service.ts > [body]', { body });
 
@@ -199,8 +199,8 @@ export class ResumeDosage_Superpave_Service {
         superpaveWithConfirmationCompressionData
       );
 
-      if (superpaveExists._doc.generalData.step < 10) {
-        await this.superpave_repository.saveStep(superpaveExists, 10);
+      if (superpaveExists._doc.generalData.step < 11) {
+        await this.superpave_repository.saveStep(superpaveExists, 11);
       }
 
       return true;
