@@ -15,9 +15,9 @@ export class FirstCurvePercentages_Service {
     private readonly superpave_repository: SuperpaveRepository,
   ) {}
 
-  async getStep6Parameters(body: any) {
+  async getFirstCompressionParametersData(body: any) {
     try {
-      this.logger.log({ body }, 'start calculate step 5 data > [service]');
+      this.logger.log({ body }, 'start calculate first compression parameters data > [service]');
       const {
         granulometryComposition,
         trafficVolume,

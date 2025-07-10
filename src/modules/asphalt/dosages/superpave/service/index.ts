@@ -832,9 +832,9 @@ export class SuperpaveService {
     }
   }
 
-  async getStep5SpecificMasses(body: any) {
+  async getFirstCompressionSpecificMasses(body: any) {
     try {
-      const data = await this.initialBinder_Service.getStep5SpecificMasses(body);
+      const data = await this.initialBinder_Service.getFirstCompressionSpecificMasses(body);
 
       return { data, success: true };
     } catch (error) {
@@ -880,37 +880,37 @@ export class SuperpaveService {
     }
   }
 
-    async saveStep5Data(body: any, userId: string) {
+    async saveInitialBinderStep(body: any, userId: string) {
     try {
-      const success = await this.initialBinder_Service.saveStep5Data(body, userId);
+      const success = await this.initialBinder_Service.saveInitialBinderStep(body, userId);
 
       return { success };
     } catch (error) {
-      this.logger.error(`error on save step 5 data superpave > [error]: ${error}`);
+      this.logger.error(`error on save initial binder data superpave > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
     }
   }
 
-  async saveStep6Data(body: any, userId: string) {
+  async saveFirstCompressionData(body: any, userId: string) {
     try {
-      const success = await this.firstCompression_Service.saveStep6Data(body, userId);
+      const success = await this.firstCompression_Service.saveFirstCompressionData(body, userId);
 
       return { success };
     } catch (error) {
-      this.logger.error(`error on save step 5 data superpave > [error]: ${error}`);
+      this.logger.error(`error on save first compression data on superpave > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
     }
   }
 
-  async getStep6Parameters(body: any) {
+  async getFirstCompressionParametersData(body: any) {
     try {
-      const data = await this.firstCurvePercentages_Service.getStep6Parameters(body);
+      const data = await this.firstCurvePercentages_Service.getFirstCompressionParametersData(body);
 
       return { data, success: true };
     } catch (error) {
-      this.logger.error(`error on get step 6 data superpave > [error]: ${error}`);
+      this.logger.error(`error on get first compression parameters data superpave > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
     }

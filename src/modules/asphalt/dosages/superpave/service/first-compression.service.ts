@@ -68,7 +68,7 @@ export class FirstCompression_Superpave_Service {
     }
   }
 
-  async saveStep6Data(body: any, userId: string) {
+  async saveFirstCompressionData(body: any, userId: string) {
     try {
       this.logger.log('save superpave first compression step on first-compression.superpave.service.ts > [body]', { body });
 

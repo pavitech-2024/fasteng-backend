@@ -154,9 +154,9 @@ export class SuperpaveController {
     return response.status(200).json(status);
   }
 
-  @Post('step-5-specific-masses')
+  @Post('get-first-compression-specific-masses')
   @ApiOperation({
-    summary: 'Retorna os dados iniciais necessários para a quarta tela (teor de ligante inicial) da dosagem',
+    summary: 'Retorna os dados iniciais necessários para a tela de Primeira Compactação da dosagem',
   })
   @ApiResponse({
     status: 200,
@@ -164,9 +164,9 @@ export class SuperpaveController {
     content: { 'application/json': { schema: { example: { data: {}, success: true } } } },
   })
   async getStep5SpecificMasses(@Res() response: Response, @Body() body: any) {
-    this.logger.log(`get step 5 data > [body]: ${body}`);
+    this.logger.log(`get first compression specific masses data > [body]: ${body}`);
 
-    const status = await this.superpaveService.getStep5SpecificMasses(body);
+    const status = await this.superpaveService.getFirstCompressionSpecificMasses(body);
 
     return response.status(200).json(status);
   }
@@ -191,14 +191,14 @@ export class SuperpaveController {
   async saveInitialBinderStep(@Res() response: Response, @Param('userId') userId: string, @Body() body: any) {
     this.logger.log(`save step 5 data > [body]: ${body}`);
 
-    const status = await this.superpaveService.saveStep5Data(body, userId);
+    const status = await this.superpaveService.saveInitialBinderStep(body, userId);
 
     return response.status(200).json(status);
   }
 
   @Post('calculate-gmm')
   async calculateRiceTest(@Res() response: Response, @Body() body: any) {
-    this.logger.log(`calculate step 5 rice test data > [body]: ${body}`);
+    this.logger.log(`calculate rice test data > [body]: ${body}`);
 
     const status = await this.superpaveService.calculateGmm(body);
 
@@ -206,27 +206,27 @@ export class SuperpaveController {
   }
 
   @Post('save-first-compression-step/:userId')
-  async saveFirstCompressionStep(@Res() response: Response, @Param('userId') userId: string, @Body() body: any) {
-    this.logger.log(`save step 5 data > [body]: ${body}`);
+  async saveFirstCompressionData(@Res() response: Response, @Param('userId') userId: string, @Body() body: any) {
+    this.logger.log(`save first compression data > [body]: ${body}`);
 
-    const status = await this.superpaveService.saveStep5Data(body, userId);
+    const status = await this.superpaveService.saveFirstCompressionData(body, userId);
 
     return response.status(200).json(status);
   }
 
-  @Post('step-5-parameters')
+  @Post('get-first-compression-parameters')
   @ApiOperation({
-    summary: 'Retorna os dados iniciais necessários para a quinta tela (porcentagens da curva escolhida) da dosagem',
+    summary: 'Retorna os dados iniciais necessários para a tela de parâmetros da primiera compactaão da dosagem',
   })
   @ApiResponse({
     status: 200,
     description: 'Dados carregados com sucesso!',
     content: { 'application/json': { schema: { example: { data: {}, success: true } } } },
   })
-  async getStep6Parameters(@Res() response: Response, @Body() body: any) {
-    this.logger.log(`get step 6 data > [body]: ${body}`);
+  async getFirstCompressionParametersData(@Res() response: Response, @Body() body: any) {
+    this.logger.log(`get first compression parameters data > [body]: ${body}`);
 
-    const status = await this.superpaveService.getStep6Parameters(body);
+    const status = await this.superpaveService.getFirstCompressionParametersData(body);
 
     return response.status(200).json(status);
   }
@@ -235,7 +235,7 @@ export class SuperpaveController {
   async saveStep6Data(@Res() response: Response, @Param('userId') userId: string, @Body() body: any) {
     this.logger.log(`save step 6 data > [body]: ${body}`);
 
-    const status = await this.superpaveService.saveStep6Data(body, userId);
+    // const status = await this.superpaveService.saveStep6Data(body, userId);
 
     return response.status(200).json(status);
   }

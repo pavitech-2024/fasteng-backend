@@ -2,19 +2,22 @@ import { Injectable, Logger } from '@nestjs/common';
 import { SpecifyMassRepository } from 'modules/asphalt/essays/specifyMass/repository';
 import { SuperpaveRepository } from '../repository';
 import { Model } from 'mongoose';
-import { SuperpaveDocument } from '../schemas';
+import { Superpave, SuperpaveDocument } from '../schemas';
+import { InjectModel } from '@nestjs/mongoose';
+import { DATABASE_CONNECTION } from 'infra/mongoose/database.config';
 
 @Injectable()
 export class InitialBinder_Superpave_Service {
   private logger = new Logger(InitialBinder_Superpave_Service.name);
 
   constructor(
+    @InjectModel(Superpave.name, DATABASE_CONNECTION.ASPHALT)
     private superpaveModel: Model<SuperpaveDocument>,
     private readonly specificMassRepository: SpecifyMassRepository,
     private readonly superpave_repository: SuperpaveRepository
   ) {}
 
-  async getStep5SpecificMasses(body: any) {
+  async getFirstCompressionSpecificMasses(body: any) {
     try {
       const { materials } = body;
 
@@ -376,7 +379,7 @@ export class InitialBinder_Superpave_Service {
     return { denominatorGsb, denominatorGsa };
   }
 
-    async saveStep5Data(body: any, userId: string) {
+    async saveInitialBinderStep(body: any, userId: string) {
     try {
       this.logger.log(
         'save superpave initial binder step on initial-binder.superpave.service.ts > [body]',
@@ -387,14 +390,14 @@ export class InitialBinder_Superpave_Service {
 
       const superpaveExists: any = await this.superpave_repository.findOne(name, userId);
 
-      const { name: materialName, ...granulometryCompositionWithoutName } = body.granulometryCompositionData;
+      const { name: materialName, ...initialBinderData } = body.initialBinderData;
 
-      const superpaveWithGranulometryComposition = {
+      const superpaveWithInitialBinderData = {
         ...superpaveExists._doc,
-        granulometryCompositionData: granulometryCompositionWithoutName,
+        initialBinderData,
       };
 
-      await this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithGranulometryComposition);
+      await this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithInitialBinderData);
 
       if (superpaveExists._doc.generalData.step < 5) {
         await this.superpave_repository.saveStep(superpaveExists, 5);
