@@ -25,12 +25,17 @@ export class FirstCurvePercentages_Service {
         turnNumber,
         chosenCurves,
         porcentagesPassantsN200,
-        binderSpecificGravity,
+        binderSpecificGravity: binderSpecificGravityValue,
         riceTest,
         maximumDensity,
         binderCompositions,
         percentageInputs,
       } = body;
+
+      let binderSpecificGravity = binderSpecificGravityValue;
+
+      // Todo: remover este fallback após descobrir comom obter o valor da massa especifica do ligante;
+      if (!binderSpecificGravityValue) binderSpecificGravity = 0;
 
       let expectedPorcentageGmmInitialN;
       let expectedPorcentageGmmProjectN;
@@ -549,8 +554,8 @@ export class FirstCurvePercentages_Service {
           passantN200lower /
           ((-(100 - expectedPliLower) *
             binderSpecificGravity *
-            (updatedGranulometryComposition.lower.gse - updatedGranulometryComposition.lower.combinedGsb)) /
-            (updatedGranulometryComposition.lower.gse * updatedGranulometryComposition.lower.combinedGsb) +
+            (binderCompositions[0].gse - binderCompositions[0].combinedGsb)) /
+            (binderCompositions[0].gse * binderCompositions[0].combinedGsb) +
             expectedPliLower);
 
         table2Lower = {
@@ -620,8 +625,8 @@ export class FirstCurvePercentages_Service {
           passantN200average /
           ((-(100 - expectedPliAverage) *
             binderSpecificGravity *
-            (updatedGranulometryComposition.average.gse - updatedGranulometryComposition.average.combinedGsb)) /
-            (updatedGranulometryComposition.average.gse * updatedGranulometryComposition.average.combinedGsb) +
+            (binderCompositions[1].gse - binderCompositions[1].combinedGsb)) /
+            (binderCompositions[1].gse * binderCompositions[1].combinedGsb) +
             expectedPliAverage);
 
         table2Average = {
@@ -691,8 +696,8 @@ export class FirstCurvePercentages_Service {
           passantN200higher /
           ((-(100 - expectedPliHigher) *
             binderSpecificGravity *
-            (updatedGranulometryComposition.higher.gse - updatedGranulometryComposition.higher.combinedGsb)) /
-            (updatedGranulometryComposition.higher.gse * updatedGranulometryComposition.higher.combinedGsb) +
+            (binderCompositions[2].gse - binderCompositions[2].combinedGsb)) /
+            (binderCompositions[2].gse * binderCompositions[2].combinedGsb) +
             expectedPliHigher);
 
         table2Higher = {
