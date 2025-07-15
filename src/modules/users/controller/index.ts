@@ -3,7 +3,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { InputCreateUserDto } from '../dto';
 import { User } from '../schemas';
 import { UsersService } from '../service';
-import { UpdateUserDto } from '../dto/update-user.dto';
+
 
 @Controller('users') // define a rota
 @ApiTags('users') // define a tag no swagger
@@ -25,11 +25,13 @@ export class UsersController {
       connections: body.connections,
       lastLoginList: [new Date()],
       photo: null,
+
     });
 
     if (user) this.logger.log(`user created with success > [id]: ${user._id}`);
 
     return user;
+
   }
 
   @Get(':id')
@@ -42,15 +44,17 @@ export class UsersController {
     const user = await this.usersService.getUser(id);
 
     if (user) this.logger.log(`user found with sucess > [user]`);
+    
 
     return user;
+    
   }
 
-  @Put(':id')
-  @ApiResponse({ status: 200, description: 'Usuário atualizado com sucesso!' })
-  @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
-  @ApiOperation({ summary: 'Atualiza um usuário no banco de dados' })
-  async updateUser(@Param('id') id: string, @Body() body: UpdateUserDto): Promise<User> {
+  @Put(':id') //define a rota
+  @ApiResponse({ status: 200, description: 'Usuário atualizado com sucesso!' }) 
+  @ApiResponse({ status: 400, description: 'Usuário não encontrado!' }) 
+  @ApiOperation({ summary: 'Atualiza um usuário no banco de dados' }) 
+  async updateUser(@Param('id') id: string, @Body() body: User): Promise<User> {
     this.logger.log(`update user > [user]`);
 
     const user = await this.usersService.updateUser(id, body);

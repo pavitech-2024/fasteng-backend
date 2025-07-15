@@ -19,4 +19,8 @@ export class DduiRepository {
 
     return createdDdui.save();
   }
+
+  async findAllByUserId(id: string): Promise<Ddui[]> {
+      return this.dduiModel.find({"generalData.userId": id});
+    }
 }

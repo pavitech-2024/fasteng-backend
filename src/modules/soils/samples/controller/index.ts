@@ -32,9 +32,11 @@ export class SamplesController {
   async getAllByUserId(@Param('id') userId: string) {
     this.logger.log(`get all samples by user id > [id]: ${userId}`);
 
-    return this.samplesService.getAllSamples(userId);
+    return this.samplesService.getAllSamples(userId).then(samples => ({
+      materials: samples,
+    }));
   }
-
+  
   @Get(':id')
   @ApiOperation({ summary: 'Retorna uma amostra do banco de dados.' })
   @ApiResponse({ status: 200, description: 'Amostra encontrada com sucesso!' })

@@ -56,6 +56,7 @@ export class UsersService implements IUsersService {
       this.logger.error(`error on get user > [error]: ${error}`);
 
       throw error;
+      
     }
   }
 

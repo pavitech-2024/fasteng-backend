@@ -32,7 +32,7 @@ type Rtcd_Step3 = {
   }[];
 };
 
-@Schema({ collection: 'rtcd' })
+@Schema({ collection: 'rtcd', timestamps: true })
 export class Rtcd {
   _id: string;
 
