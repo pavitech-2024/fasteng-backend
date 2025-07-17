@@ -982,16 +982,16 @@ export class SuperpaveService {
     }
   }
 
-  async calculateVolumetricParametersOfChoosenGranulometryComposition(body: any) {
+  async calculateSecondCompressionData(body: any) {
     try {
-      const gmm = await this.secondCompression_Service.calculateVolumetricParametersOfChoosenGranulometryComposition(
+      const gmm = await this.secondCompression_Service.calculateSecondCompressionData(
         body,
       );
 
       return { data: gmm, success: true };
     } catch (error) {
       this.logger.error(
-        `error on getting the step 7 volumetric parameters of choosen granulometry composition > [error]: ${error}`,
+        `error on calculating the second compression data > [error]: ${error}`,
       );
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };

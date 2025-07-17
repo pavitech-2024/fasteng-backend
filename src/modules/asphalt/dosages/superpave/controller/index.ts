@@ -285,12 +285,12 @@ export class SuperpaveController {
   }
 
   @Post('confirm-second-compression-data')
-  async calculateVolumetricParametersOfChoosenGranulometryComposition(@Res() response: Response, @Body() body: any) {
+  async calculateSecondCompressionData(@Res() response: Response, @Body() body: any) {
     this.logger.log(
-      `calculate step 7 volumetric parameters of choosen granulometry composition data > [body]: ${body}`,
+      `calculate second compression data > [body]: ${body}`,
     );
 
-    const status = await this.superpaveService.calculateVolumetricParametersOfChoosenGranulometryComposition(body);
+    const status = await this.superpaveService.calculateSecondCompressionData(body);
 
     return response.status(200).json(status);
   }

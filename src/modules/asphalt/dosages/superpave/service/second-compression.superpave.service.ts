@@ -61,11 +61,11 @@ export class SecondCompression_Superpave_Service {
     }
   }
 
-  async calculateVolumetricParametersOfChoosenGranulometryComposition(body: any) {
+  async calculateSecondCompressionData(body: any) {
     try {
       this.logger.log(
         { body },
-        'start step 7 volumetric parameters of choosen granulometry composition > SecondCompression_Superpave_Service',
+        'start calculating the second compression data > SecondCompression_Superpave_Service',
       );
 
       const {
