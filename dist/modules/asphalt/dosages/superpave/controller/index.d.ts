@@ -1,0 +1,36 @@
+import { Response } from 'express';
+import { SuperpaveService } from '../service';
+import { SuperpaveInitDto } from '../dto/superpave-init.dto';
+export declare class SuperpaveController {
+    private readonly superpaveService;
+    private logger;
+    constructor(superpaveService: SuperpaveService);
+    getAllByUserId(userId: string): Promise<import("../schemas").Superpave[]>;
+    verifyInitSuperpave(response: Response, body: SuperpaveInitDto, userId: string): Promise<Response<any, Record<string, any>>>;
+    getMaterialsByUserId(response: Response, userId: string): Promise<Response<any, Record<string, any>>>;
+    getDosageById(response: Response, dosageId: string): Promise<Response<any, Record<string, any>>>;
+    saveMaterialSelectionStep(response: Response, body: any, userId: string): Promise<Response<any, Record<string, any>>>;
+    getStep3Data(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
+    calculateStep3Data(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
+    saveGranulometryCompositionStep(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
+    getStep4SpecificMasses(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
+    getStep4Data(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
+    saveInitialBinderStep(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
+    calculateRiceTest(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
+    saveFirstCompressionStep(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
+    getStep6Parameters(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
+    saveStep6Data(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
+    getStep7Parameters(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
+    saveStep7Data(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
+    calculateStep7RiceTest(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
+    calculateStep7Gmm(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
+    calculateVolumetricParametersOfChoosenGranulometryComposition(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
+    saveStep8Data(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
+    getStep9Data(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
+    saveStep9Data(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
+    calculateStep9RiceTest(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
+    calculateVolumetricParametersOfConfirmGranulometryComposition(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
+    saveStep10Data(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
+    saveSuperpaveDosage(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
+    deleteMarshallDosage(response: Response, id: string): Promise<Response<any, Record<string, any>>>;
+}
