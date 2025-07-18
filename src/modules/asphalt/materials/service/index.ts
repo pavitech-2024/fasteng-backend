@@ -4,6 +4,10 @@ import { CreateAsphaltMaterialDto } from '../dto/create-asphalt-material.dto';
 import { AlreadyExists, NotFound } from '../../../../utils/exceptions';
 import { Material } from '../schemas';
 import { GetEssaysByMaterial_Service } from './get-essays-by-material.service';
+import { FwdRepository } from 'modules/asphalt/essays/fwd/repository';
+import { IggRepository } from 'modules/asphalt/essays/igg/repository';
+import { RtcdRepository } from 'modules/asphalt/essays/rtcd/repository';
+import { DduiRepository } from 'modules/asphalt/essays/ddui/repository';
 
 @Injectable()
 export class MaterialsService {
@@ -12,6 +16,10 @@ export class MaterialsService {
   constructor(
     private readonly materialsRepository: MaterialsRepository,
     private readonly getEssaysByMaterial_Service: GetEssaysByMaterial_Service,
+    private readonly fwdRepository: FwdRepository,
+    private readonly iggRepository: IggRepository,
+    private readonly rtcdRepository: RtcdRepository,
+    private readonly dduiRepository: DduiRepository,
   ) {}
 
   // async createMaterial(material: CreateAsphaltMaterialDto, userId: string) {
@@ -88,6 +96,33 @@ export class MaterialsService {
     } catch (error) {
       this.logger.error(`error on get material > [error]: ${error}`);
 
+      throw error;
+    }
+  }
+
+  async getAllMaterialsList(userId: string): Promise<any> { //Antigo método getAllMaterials
+    try {
+      // busca todos os materiais no banco de dados
+      const materials = await this.materialsRepository.findByType(
+        { $in: ['filler', 'CAP', 'asphaltBinder', 'coarseAggregate', 'fineAggregate'] },
+        userId,
+      );
+
+      const fwdEssays = await this.fwdRepository.findAllByUserId(userId);
+      const iggEssays = await this.iggRepository.findAllByUserId(userId);
+      const rtcdEssays = await this.rtcdRepository.findAllByUserId(userId);
+      const dduiEssays = await this.dduiRepository.findAllByUserId(userId)
+
+      // retorna os materiais encontrados que pertencem ao usuário
+      return {
+        materials,
+        fwdEssays,
+        iggEssays,
+        rtcdEssays,
+        dduiEssays
+      };
+    } catch (error) {
+      this.logger.error(`error on get all materials > [error]: ${error}`);
       throw error;
     }
   }
