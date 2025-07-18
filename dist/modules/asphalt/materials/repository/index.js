@@ -53,7 +53,6 @@ let MaterialsRepository = class MaterialsRepository {
                 "userId": userId,
                 "type": types
             }).sort({ createdAt: -1 });
-            ;
             return materials;
         });
     }

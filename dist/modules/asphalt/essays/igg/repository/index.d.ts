@@ -5,5 +5,6 @@ export declare class IggRepository {
     constructor(iggModel: Model<IggDocument>);
     findOne(iggFilterQuery: FilterQuery<Igg>): Promise<Igg>;
     findAll(): Promise<Igg[]>;
+    findAllByUserId(id: string): Promise<Igg[]>;
     create(igg: any): Promise<Igg>;
 }

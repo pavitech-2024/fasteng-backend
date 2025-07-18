@@ -5,5 +5,6 @@ export declare class RtcdRepository {
     constructor(rtcdModel: Model<RtcdDocument>);
     findOne(rtcdFilterQuery: any): Promise<Rtcd>;
     findAll(): Promise<Rtcd[]>;
+    findAllByUserId(id: string): Promise<Rtcd[]>;
     create(rtcd: any): Promise<Rtcd>;
 }

@@ -36,7 +36,7 @@ __decorate([
     __metadata("design:type", Object)
 ], Ddui.prototype, "results", void 0);
 exports.Ddui = Ddui = __decorate([
-    (0, mongoose_1.Schema)({ collection: 'ddui' })
+    (0, mongoose_1.Schema)({ collection: 'ddui', timestamps: true })
 ], Ddui);
 exports.DduiSchema = mongoose_1.SchemaFactory.createForClass(Ddui);
 //# sourceMappingURL=index.js.map

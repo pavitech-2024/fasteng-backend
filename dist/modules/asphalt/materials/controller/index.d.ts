@@ -6,6 +6,7 @@ export declare class MaterialsController {
     private logger;
     constructor(materialsService: MaterialsService);
     createMaterial(material: CreateAsphaltMaterialDto, userId: string): Promise<Material>;
+    getAllByUserIdList(userId: string): Promise<any[]>;
     getAllByUserId(userId: string): Promise<Material[]>;
     getMaterialById(materialId: string): Promise<any>;
     getSelectedMaterialsById(ids: string): Promise<any>;

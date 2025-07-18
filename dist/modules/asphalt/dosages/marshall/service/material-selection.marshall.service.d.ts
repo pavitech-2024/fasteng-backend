@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 import { MarshallRepository } from '../repository';
 import { MarshallDocument } from '../schemas';
 import { ViscosityRotationalRepository } from '../../../essays/viscosityRotational/repository';
-import { SpecifyMassRepository } from 'modules/asphalt/essays/specifyMass/repository';
+import { SpecifyMassRepository } from '../../../essays/specifyMass/repository/index';
 export declare class MaterialSelection_Marshall_Service {
     private marshallModel;
     private readonly material_repository;

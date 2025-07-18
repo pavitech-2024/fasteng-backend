@@ -5,5 +5,6 @@ export declare class FwdRepository {
     constructor(fwdModel: Model<FwdDocument>);
     findOne(fwdFilterQuery: FilterQuery<Fwd>): Promise<Fwd>;
     findAll(): Promise<Fwd[]>;
+    findAllByUserId(id: string): Promise<Fwd[]>;
     create(fwd: any): Promise<Fwd>;
 }

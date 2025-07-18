@@ -36,7 +36,7 @@ __decorate([
     __metadata("design:type", Object)
 ], Rtcd.prototype, "results", void 0);
 exports.Rtcd = Rtcd = __decorate([
-    (0, mongoose_1.Schema)({ collection: 'rtcd' })
+    (0, mongoose_1.Schema)({ collection: 'rtcd', timestamps: true })
 ], Rtcd);
 exports.RtcdSchema = mongoose_1.SchemaFactory.createForClass(Rtcd);
 //# sourceMappingURL=index.js.map

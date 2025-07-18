@@ -40,6 +40,11 @@ let FwdRepository = class FwdRepository {
             return this.fwdModel.find();
         });
     }
+    findAllByUserId(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.fwdModel.find({ "generalData.userId": id });
+        });
+    }
     create(fwd) {
         return __awaiter(this, void 0, void 0, function* () {
             const createdFwd = new this.fwdModel(fwd);
