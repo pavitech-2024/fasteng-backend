@@ -6,7 +6,9 @@ export declare class MaterialsController {
     private logger;
     constructor(materialsService: MaterialsService);
     createMaterial(material: CreateConcreteMaterialDto, userId: string): Promise<Material>;
-    getAllByUserId(userId: string): Promise<Material[]>;
+    getAllByUserId(userId: string): Promise<{
+        materials: Material[];
+    }[]>;
     getMaterialById(materialId: string): Promise<any>;
     updateMaterialById(materialId: string, material: Material): Promise<Material>;
     deleteMaterialById(materialId: string): Promise<Material>;

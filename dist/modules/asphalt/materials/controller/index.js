@@ -43,6 +43,16 @@ let MaterialsController = MaterialsController_1 = class MaterialsController {
             return createdMaterial;
         });
     }
+    getAllByUserIdList(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.log(`get all materials by user id > [id]: ${userId}`);
+            const materials = yield this.materialsService.getAllMaterialsList(userId);
+            if (!Array.isArray(materials)) {
+                return [materials].filter(Boolean);
+            }
+            return materials;
+        });
+    }
     getAllByUserId(userId) {
         return __awaiter(this, void 0, void 0, function* () {
             this.logger.log(`get all materials by user id > [id]: ${userId}`);
@@ -86,6 +96,16 @@ __decorate([
     __metadata("design:paramtypes", [create_asphalt_material_dto_1.CreateAsphaltMaterialDto, String]),
     __metadata("design:returntype", Promise)
 ], MaterialsController.prototype, "createMaterial", null);
+__decorate([
+    (0, common_1.Get)('all/:id'),
+    (0, swagger_1.ApiOperation)({ summary: 'Retorna todos os materiais do banco de dados de um usuário.' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Materiais encontrados com sucesso!' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Usuário não encontrado!' }),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], MaterialsController.prototype, "getAllByUserIdList", null);
 __decorate([
     (0, common_1.Get)('all/:id'),
     (0, swagger_1.ApiOperation)({ summary: 'Retorna todos os materiais do banco de dados de um usuário.' }),

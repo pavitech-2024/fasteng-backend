@@ -6,4 +6,5 @@ export declare class DduiRepository {
     findOne(dduiFilterQuery: any): Promise<Ddui>;
     findAll(): Promise<Ddui[]>;
     create(ddui: any): Promise<Ddui>;
+    findAllByUserId(id: string): Promise<Ddui[]>;
 }

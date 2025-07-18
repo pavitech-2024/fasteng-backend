@@ -43,7 +43,7 @@ const schemas_1 = require("../schemas");
 const mongoose_2 = require("@nestjs/mongoose");
 const database_config_1 = require("../../../../../infra/mongoose/database.config");
 const repository_4 = require("../../../essays/viscosityRotational/repository");
-const repository_5 = require("../../../essays/specifyMass/repository");
+const index_1 = require("../../../essays/specifyMass/repository/index");
 let MaterialSelection_Marshall_Service = MaterialSelection_Marshall_Service_1 = class MaterialSelection_Marshall_Service {
     constructor(marshallModel, material_repository, granulometry_repository, marshallRepository, rotationalViscosity_repository, specificMass_repository) {
         this.marshallModel = marshallModel;
@@ -121,6 +121,6 @@ exports.MaterialSelection_Marshall_Service = MaterialSelection_Marshall_Service 
         repository_1.AsphaltGranulometryRepository,
         repository_3.MarshallRepository,
         repository_4.ViscosityRotationalRepository,
-        repository_5.SpecifyMassRepository])
+        index_1.SpecifyMassRepository])
 ], MaterialSelection_Marshall_Service);
 //# sourceMappingURL=material-selection.marshall.service.js.map

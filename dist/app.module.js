@@ -28,7 +28,7 @@ let AppModule = class AppModule {
     configure(consumer) {
         consumer
             .apply(middlewares_1.AuthMiddleware)
-            .exclude({ path: 'auth/refresh-login', method: common_1.RequestMethod.POST }, { path: 'auth/login', method: common_1.RequestMethod.POST }, { path: 'users', method: common_1.RequestMethod.POST }, { path: 'docs/asphalt', method: common_1.RequestMethod.GET }, { path: 'docs/soils', method: common_1.RequestMethod.GET }, { path: 'docs/concrete', method: common_1.RequestMethod.GET }, { path: 'docs/promedina', method: common_1.RequestMethod.GET }, { path: 'app/health-check', method: common_1.RequestMethod.GET })
+            .exclude({ path: '/', method: common_1.RequestMethod.GET }, { path: 'favicon.ico', method: common_1.RequestMethod.GET }, { path: 'favicon.png', method: common_1.RequestMethod.GET }, { path: 'auth/refresh-login', method: common_1.RequestMethod.POST }, { path: 'auth/login', method: common_1.RequestMethod.POST }, { path: 'users', method: common_1.RequestMethod.POST }, { path: 'docs/asphalt', method: common_1.RequestMethod.GET }, { path: 'docs/soils', method: common_1.RequestMethod.GET }, { path: 'docs/concrete', method: common_1.RequestMethod.GET }, { path: 'docs/promedina', method: common_1.RequestMethod.GET }, { path: 'app/health-check', method: common_1.RequestMethod.GET })
             .forRoutes('*');
     }
 };

@@ -46,6 +46,11 @@ let DduiRepository = class DduiRepository {
             return createdDdui.save();
         });
     }
+    findAllByUserId(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.dduiModel.find({ "generalData.userId": id });
+        });
+    }
 };
 exports.DduiRepository = DduiRepository;
 exports.DduiRepository = DduiRepository = __decorate([

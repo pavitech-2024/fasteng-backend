@@ -24,10 +24,18 @@ const common_1 = require("@nestjs/common");
 const repository_1 = require("../repository");
 const exceptions_1 = require("../../../../utils/exceptions");
 const get_essays_by_material_service_1 = require("./get-essays-by-material.service");
+const repository_2 = require("../../essays/fwd/repository");
+const repository_3 = require("../../essays/igg/repository");
+const repository_4 = require("../../essays/rtcd/repository");
+const repository_5 = require("../../essays/ddui/repository");
 let MaterialsService = MaterialsService_1 = class MaterialsService {
-    constructor(materialsRepository, getEssaysByMaterial_Service) {
+    constructor(materialsRepository, getEssaysByMaterial_Service, fwdRepository, iggRepository, rtcdRepository, dduiRepository) {
         this.materialsRepository = materialsRepository;
         this.getEssaysByMaterial_Service = getEssaysByMaterial_Service;
+        this.fwdRepository = fwdRepository;
+        this.iggRepository = iggRepository;
+        this.rtcdRepository = rtcdRepository;
+        this.dduiRepository = dduiRepository;
         this.logger = new common_1.Logger(MaterialsService_1.name);
     }
     createMaterial(material, userId) {
@@ -67,6 +75,28 @@ let MaterialsService = MaterialsService_1 = class MaterialsService {
             }
             catch (error) {
                 this.logger.error(`error on get material > [error]: ${error}`);
+                throw error;
+            }
+        });
+    }
+    getAllMaterialsList(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const materials = yield this.materialsRepository.findByType({ $in: ['filler', 'CAP', 'asphaltBinder', 'coarseAggregate', 'fineAggregate'] }, userId);
+                const fwdEssays = yield this.fwdRepository.findAllByUserId(userId);
+                const iggEssays = yield this.iggRepository.findAllByUserId(userId);
+                const rtcdEssays = yield this.rtcdRepository.findAllByUserId(userId);
+                const dduiEssays = yield this.dduiRepository.findAllByUserId(userId);
+                return {
+                    materials,
+                    fwdEssays,
+                    iggEssays,
+                    rtcdEssays,
+                    dduiEssays
+                };
+            }
+            catch (error) {
+                this.logger.error(`error on get all materials > [error]: ${error}`);
                 throw error;
             }
         });
@@ -116,6 +146,10 @@ exports.MaterialsService = MaterialsService;
 exports.MaterialsService = MaterialsService = MaterialsService_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_1.MaterialsRepository,
-        get_essays_by_material_service_1.GetEssaysByMaterial_Service])
+        get_essays_by_material_service_1.GetEssaysByMaterial_Service,
+        repository_2.FwdRepository,
+        repository_3.IggRepository,
+        repository_4.RtcdRepository,
+        repository_5.DduiRepository])
 ], MaterialsService);
 //# sourceMappingURL=index.js.map

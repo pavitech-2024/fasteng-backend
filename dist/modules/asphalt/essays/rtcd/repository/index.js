@@ -40,6 +40,11 @@ let RtcdRepository = class RtcdRepository {
             return this.rtcdModel.find();
         });
     }
+    findAllByUserId(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.rtcdModel.find({ "generalData.userId": id });
+        });
+    }
     create(rtcd) {
         return __awaiter(this, void 0, void 0, function* () {
             const createdRtcd = new this.rtcdModel(rtcd);
