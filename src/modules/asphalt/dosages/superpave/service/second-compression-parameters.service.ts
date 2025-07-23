@@ -15,10 +15,9 @@ export class SecondCompressionParameters_Superpave_Service {
     private readonly superpave_repository: SuperpaveRepository,
   ) {}
 
-  async getStep9Data(body: any) {
+  async getSecondCompressionPercentageData(body: any) {
     try {
-      this;
-      this.logger.log({}, 'start get step 8 Data > SecondCompressionPercentage_Superpave_Service');
+      this.logger.log({}, 'start get second compression percentage data > SecondCompressionPercentage_Superpave_Service');
 
       const { expectedPli, composition } = body;
 
@@ -137,7 +136,7 @@ export class SecondCompressionParameters_Superpave_Service {
     }
   }
   
-  async saveStep9Data(body: any, userId: string) {
+  async saveStep10Data(body: any, userId: string) {
     try {
       this.logger.log('save superpave second compression percentages step on second-compression-percentages.superpave.service.ts > [body]', { body });
 
@@ -154,8 +153,8 @@ export class SecondCompressionParameters_Superpave_Service {
         superpaveWithSecondCompressionParams
       );
 
-      if (superpaveExists._doc.generalData.step < 9) {
-        await this.superpave_repository.saveStep(superpaveExists, 9);
+      if (superpaveExists._doc.generalData.step < 10) {
+        await this.superpave_repository.saveStep(superpaveExists, 10);
       }
 
       return true;

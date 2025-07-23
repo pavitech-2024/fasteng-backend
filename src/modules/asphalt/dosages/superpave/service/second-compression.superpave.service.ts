@@ -61,11 +61,11 @@ export class SecondCompression_Superpave_Service {
     }
   }
 
-  async calculateVolumetricParametersOfChoosenGranulometryComposition(body: any) {
+  async calculateSecondCompressionData(body: any) {
     try {
       this.logger.log(
         { body },
-        'start step 7 volumetric parameters of choosen granulometry composition > SecondCompression_Superpave_Service',
+        'start calculating the second compression data > SecondCompression_Superpave_Service',
       );
 
       const {
@@ -488,7 +488,7 @@ export class SecondCompression_Superpave_Service {
     return (1 - curve.projectN.gmb / curve.gmm) * 100;
   }
 
-  async saveStep8Data(body: any, userId: string) {
+  async saveStep9Data(body: any, userId: string) {
     try {
       this.logger.log('save superpave second compression data step on second-compression-data.superpave.service.ts > [body]', { body });
 
@@ -505,8 +505,8 @@ export class SecondCompression_Superpave_Service {
         superpaveWithSecondCompression
       );
 
-      if (superpaveExists._doc.generalData.step < 8) {
-        await this.superpaveRepository.saveStep(superpaveExists, 8);
+      if (superpaveExists._doc.generalData.step < 9) {
+        await this.superpaveRepository.saveStep(superpaveExists, 9);
       }
 
       return true;

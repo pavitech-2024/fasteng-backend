@@ -17,6 +17,12 @@ export type SuperpaveGeneralData = {
   step: number;
 };
 
+export type SuperpaveGranulometryEssayData =  {
+  material_mass: number;
+  table_data: { sieve_label: string; sieve_value: number, passant: number, retained: number }[];
+  bottom: number;
+}
+
 export type SuperpaveMaterialData = {
   aggregates: {
     name: string;
@@ -407,6 +413,10 @@ export class Superpave {
   @IsNotEmpty()
   @Prop({ type: Object })
   generalData: SuperpaveGeneralData;
+
+  @IsNotEmpty()
+  @Prop({ type: Object })
+  granulometryEssayData: SuperpaveGranulometryEssayData
 
   @IsNotEmpty()
   @Prop({ type: Object })

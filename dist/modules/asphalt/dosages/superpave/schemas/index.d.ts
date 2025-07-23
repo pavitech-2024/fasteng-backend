@@ -12,6 +12,16 @@ export type SuperpaveGeneralData = {
     description?: string;
     step: number;
 };
+export type SuperpaveGranulometryEssayData = {
+    material_mass: number;
+    table_data: {
+        sieve_label: string;
+        sieve_value: number;
+        passant: number;
+        retained: number;
+    }[];
+    bottom: number;
+};
 export type SuperpaveMaterialData = {
     aggregates: {
         name: string;
@@ -388,6 +398,7 @@ export declare class Superpave {
     _id: string;
     step: number;
     generalData: SuperpaveGeneralData;
+    granulometryEssayData: SuperpaveGranulometryEssayData;
     materialSelectionData: SuperpaveMaterialData;
     granulometryCompositionData: GranulometryCompositionData;
     initialBinderData: InitialBinderData;

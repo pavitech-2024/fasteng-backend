@@ -8,7 +8,7 @@ export declare class SecondCompression_Superpave_Service {
     constructor(superpaveModel: Model<SuperpaveDocument>, superpaveRepository: SuperpaveRepository);
     calculateStep7RiceTest(sampleAirDryMass: number, containerMassWaterSample: number, containerWaterMass: number, waterTemperatureCorrection: number): any;
     calculateStep7Gmm(gmm: any): any[];
-    calculateVolumetricParametersOfChoosenGranulometryComposition(body: any): Promise<{
+    calculateSecondCompressionData(body: any): Promise<{
         composition: {
             halfLess: {
                 projectN: {
@@ -85,5 +85,5 @@ export declare class SecondCompression_Superpave_Service {
     percentageWaterAbsorbed(data: any): number;
     calculateMassMedia(data: any): number[];
     calculateVv(curve: any): number;
-    saveStep8Data(body: any, userId: string): Promise<boolean>;
+    saveStep9Data(body: any, userId: string): Promise<boolean>;
 }

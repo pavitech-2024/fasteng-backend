@@ -46,31 +46,31 @@ let Calc_CONCRETEGRANULOMETRY_Service = Calc_CONCRETEGRANULOMETRY_Service_1 = cl
                     if (upperLimit.value === 0 || sieve.passant < upperLimit.value)
                         accumulate.upperLimit = {
                             value: sieve.passant,
-                            index: index
+                            index: index,
                         };
                 }
                 else {
                     if (inferiorLimit.value === 0 || sieve.passant > inferiorLimit.value)
                         accumulate.inferiorLimit = {
                             value: sieve.passant,
-                            index: index
+                            index: index,
                         };
                 }
                 return accumulate;
             }, {
                 upperLimit: {
                     value: 0,
-                    index: 0
+                    index: 0,
                 },
                 inferiorLimit: {
                     value: 0,
-                    index: 0
-                }
+                    index: 0,
+                },
             });
         };
     }
     calculateGranulometry(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ step2Data }) {
+        return __awaiter(this, arguments, void 0, function* ({ step2Data, }) {
             try {
                 this.logger.log('calculate granulometry on calc.granulometry.service.ts > [body]');
                 const { table_data, material_mass, bottom } = step2Data;
@@ -117,19 +117,19 @@ let Calc_CONCRETEGRANULOMETRY_Service = Calc_CONCRETEGRANULOMETRY_Service_1 = cl
                         else
                             nominal_diameter = (0, sieves_1.getSieveValue)(table_data[i].sieve);
                     }
-                    graph_data.push(([(0, sieves_1.getSieveValue)(label), passant_porcentage]));
+                    graph_data.push([(0, sieves_1.getSieveValue)(label), passant_porcentage]);
                 }
-                fineness_module = Math.round(100 * fineness_module / 100) / 100;
+                fineness_module = Math.round((100 * fineness_module) / 100) / 100;
                 total_retained = Math.round(100 * total_retained) / 100;
-                const error = Math.round(100 * (material_mass - total_retained - bottom) * 100 / material_mass) / 100;
+                const error = Math.round((100 * (material_mass - total_retained - bottom) * 100) / material_mass) / 100;
                 const limit_10 = this.getPercentage(10, table_data);
                 const limit_30 = this.getPercentage(30, table_data);
                 const limit_60 = this.getPercentage(60, table_data);
                 const diameter10 = this.getDiameter(table_data, 10, limit_10);
                 const diameter30 = this.getDiameter(table_data, 30, limit_30);
                 const diameter60 = this.getDiameter(table_data, 60, limit_60);
-                const cnu = Math.round(100 * diameter60 / diameter10) / 100;
-                const cc = Math.round(100 * Math.pow(diameter30, 2) / (diameter60 * diameter10)) / 100;
+                const cnu = Math.round((100 * diameter60) / diameter10) / 100;
+                const cc = Math.round((100 * Math.pow(diameter30, 2)) / (diameter60 * diameter10)) / 100;
                 return {
                     success: true,
                     result: {
@@ -144,13 +144,13 @@ let Calc_CONCRETEGRANULOMETRY_Service = Calc_CONCRETEGRANULOMETRY_Service_1 = cl
                         cc,
                         cnu,
                         error,
-                    }
+                    },
                 };
             }
             catch (error) {
                 return {
                     success: false,
-                    result: null
+                    result: null,
                 };
             }
         });
@@ -159,6 +159,7 @@ let Calc_CONCRETEGRANULOMETRY_Service = Calc_CONCRETEGRANULOMETRY_Service_1 = cl
 exports.Calc_CONCRETEGRANULOMETRY_Service = Calc_CONCRETEGRANULOMETRY_Service;
 exports.Calc_CONCRETEGRANULOMETRY_Service = Calc_CONCRETEGRANULOMETRY_Service = Calc_CONCRETEGRANULOMETRY_Service_1 = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [repository_1.ConcreteGranulometryRepository, repository_2.MaterialsRepository])
+    __metadata("design:paramtypes", [repository_1.ConcreteGranulometryRepository,
+        repository_2.MaterialsRepository])
 ], Calc_CONCRETEGRANULOMETRY_Service);
 //# sourceMappingURL=calc.granulometry.service.js.map

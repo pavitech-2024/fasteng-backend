@@ -6,7 +6,7 @@ export declare class FirstCurvePercentages_Service {
     private readonly superpave_repository;
     private logger;
     constructor(superpaveModel: Model<SuperpaveDocument>, superpave_repository: SuperpaveRepository);
-    getStep6Parameters(body: any): Promise<{
+    getFirstCompressionParametersData(body: any): Promise<{
         table1: {
             trafficVolume: any;
             nominalSize: any;
@@ -77,5 +77,5 @@ export declare class FirstCurvePercentages_Service {
     calculateMassMedia(data: any): number[];
     calculateVv2(curve: any): number;
     calculateGraphData(data: any): any[];
-    saveStep6Data(body: any, userId: string): Promise<boolean>;
+    savePercentsOfChosenCurveData(body: any, userId: string): Promise<boolean>;
 }

@@ -24,6 +24,11 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, mongoose_1.Prop)({ type: Object }),
     __metadata("design:type", Object)
+], Superpave.prototype, "granulometryEssayData", void 0);
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, mongoose_1.Prop)({ type: Object }),
+    __metadata("design:type", Object)
 ], Superpave.prototype, "materialSelectionData", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
