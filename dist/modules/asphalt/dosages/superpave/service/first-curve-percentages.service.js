@@ -46,11 +46,14 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
         this.superpave_repository = superpave_repository;
         this.logger = new common_1.Logger(FirstCurvePercentages_Service_1.name);
     }
-    getStep6Parameters(body) {
+    getFirstCompressionParametersData(body) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                this.logger.log({ body }, 'start calculate step 5 data > [service]');
-                const { granulometryComposition, trafficVolume, nominalSize, turnNumber, chosenCurves, porcentagesPassantsN200, binderSpecificGravity, riceTest, maximumDensity, binderCompositions, percentageInputs, } = body;
+                this.logger.log({ body }, 'start calculate first compression parameters data > [service]');
+                const { granulometryComposition, trafficVolume, nominalSize, turnNumber, chosenCurves, porcentagesPassantsN200, binderSpecificGravity: binderSpecificGravityValue, riceTest, maximumDensity, binderCompositions, percentageInputs, } = body;
+                let binderSpecificGravity = binderSpecificGravityValue;
+                if (!binderSpecificGravityValue)
+                    binderSpecificGravity = 0;
                 let expectedPorcentageGmmInitialN;
                 let expectedPorcentageGmmProjectN;
                 let expectedPorcentageGmmMaxN;
@@ -82,7 +85,7 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
                         expectedPli: null,
                         gse: null,
                         combinedGsb: null,
-                        Gmb: null
+                        Gmb: null,
                     },
                     average: {
                         pli: null,
@@ -108,7 +111,7 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
                         expectedPli: null,
                         gse: null,
                         combinedGsb: null,
-                        Gmb: null
+                        Gmb: null,
                     },
                     higher: {
                         pli: null,
@@ -134,60 +137,57 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
                         expectedPli: null,
                         gse: null,
                         combinedGsb: null,
-                        Gmb: null
+                        Gmb: null,
                     },
                 };
-                if (trafficVolume === 'high' || trafficVolume === 'medium-high') {
-                    expectedPorcentageGmmInitialN = 89;
-                    expectedPorcentageGmmProjectN = 96;
-                    expectedPorcentageGmmMaxN = 98;
-                    if (nominalSize.value === 37.5)
-                        expectedVam = 11;
-                    else if (nominalSize.value === 25)
-                        expectedVam = 12;
-                    else if (nominalSize.value === 19)
-                        expectedVam = 13;
-                    else if (nominalSize.value === 12.5)
-                        expectedVam = 14;
-                    else if (nominalSize.value === 9.5)
-                        expectedVam = 15;
-                    expectedRBV_Higher = 75;
-                    expectedRBV_Lower = 65;
-                }
-                else if (trafficVolume === 'medium') {
-                    expectedPorcentageGmmInitialN = 90.5;
-                    expectedPorcentageGmmProjectN = 96;
-                    expectedPorcentageGmmMaxN = 98;
-                    if (nominalSize.value === 37.5)
-                        expectedVam = 11;
-                    else if (nominalSize.value === 25)
-                        expectedVam = 12;
-                    else if (nominalSize.value === 19)
-                        expectedVam = 13;
-                    else if (nominalSize.value === 12.5)
-                        expectedVam = 14;
-                    else if (nominalSize.value === 9.5)
-                        expectedVam = 15;
-                    else
-                        expectedVam = 16;
-                    expectedRBV_Higher = 78;
-                    expectedRBV_Lower = 65;
-                }
-                else if (trafficVolume === 'low') {
-                    expectedPorcentageGmmInitialN = 90.5;
-                    expectedPorcentageGmmProjectN = null;
-                    expectedPorcentageGmmMaxN = null;
-                    expectedVam = null;
-                    expectedRBV_Higher = 80;
-                    expectedRBV_Lower = 70;
-                }
+                const trafficVolumeExpectations = {
+                    high: {
+                        expectedPorcentageGmmInitialN: 89,
+                        expectedPorcentageGmmProjectN: 96,
+                        expectedPorcentageGmmMaxN: 98,
+                        expectedVam: nominalSize.value <= 25 ? 11 : 12,
+                        expectedRBV_Higher: 75,
+                        expectedRBV_Lower: 65,
+                    },
+                    'medium-high': {
+                        expectedPorcentageGmmInitialN: 89,
+                        expectedPorcentageGmmProjectN: 96,
+                        expectedPorcentageGmmMaxN: 98,
+                        expectedVam: nominalSize.value <= 25 ? 11 : 12,
+                        expectedRBV_Higher: 75,
+                        expectedRBV_Lower: 65,
+                    },
+                    medium: {
+                        expectedPorcentageGmmInitialN: 90.5,
+                        expectedPorcentageGmmProjectN: 96,
+                        expectedPorcentageGmmMaxN: 98,
+                        expectedVam: nominalSize.value <= 25 ? 11 : 12,
+                        expectedRBV_Higher: 78,
+                        expectedRBV_Lower: 65,
+                    },
+                    low: {
+                        expectedPorcentageGmmInitialN: 90.5,
+                        expectedPorcentageGmmProjectN: null,
+                        expectedPorcentageGmmMaxN: null,
+                        expectedVam: null,
+                        expectedRBV_Higher: 80,
+                        expectedRBV_Lower: 70,
+                    },
+                };
+                const expectations = trafficVolumeExpectations[trafficVolume];
+                expectedPorcentageGmmInitialN = expectations.expectedPorcentageGmmInitialN;
+                expectedPorcentageGmmProjectN = expectations.expectedPorcentageGmmProjectN;
+                expectedPorcentageGmmMaxN = expectations.expectedPorcentageGmmMaxN;
+                expectedVam = expectations.expectedVam;
+                expectedRBV_Higher = expectations.expectedRBV_Higher;
+                expectedRBV_Lower = expectations.expectedRBV_Lower;
                 let initialNIndex = turnNumber.initialN - 1;
                 let projectNIndex = turnNumber.projectN - 1;
                 let maxNIndex = turnNumber.maxN - 1;
                 let passantN200lower = 0;
-                if (chosenCurves.lower) {
+                if (chosenCurves.includes('lower')) {
                     updatedGranulometryComposition = Object.assign(Object.assign({}, updatedGranulometryComposition), { lower: {
-                            gmm: riceTest.find((e) => e.curve === 'lower').gmm,
+                            gmm: riceTest.length > 0 ? riceTest.find((e) => e.curve === 'lower').gmm : 0,
                             pli: binderCompositions[0].pli,
                             data: [],
                             percentWaterAbs: null,
@@ -210,7 +210,7 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
                             expectedPli: null,
                             gse: null,
                             combinedGsb: null,
-                            Gmb: null
+                            Gmb: null,
                         } });
                     updatedGranulometryComposition.lower.data = this.calculateExpectedGmb(granulometryComposition[0]);
                     updatedGranulometryComposition.lower.data = this.calculateGmbCP(updatedGranulometryComposition.lower.data);
@@ -252,9 +252,9 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
                                 updatedGranulometryComposition.lower.pli);
                 }
                 let passantN200average = 0;
-                if (chosenCurves.average) {
+                if (chosenCurves.includes('average')) {
                     updatedGranulometryComposition = Object.assign(Object.assign({}, updatedGranulometryComposition), { average: {
-                            gmm: riceTest.find((e) => e.curve === 'average').gmm,
+                            gmm: riceTest.length ? riceTest.find((e) => e.curve === 'average').gmm : 0,
                             pli: binderCompositions[0].pli,
                             data: [],
                             percentWaterAbs: null,
@@ -277,7 +277,7 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
                             expectedPli: null,
                             gse: null,
                             combinedGsb: null,
-                            Gmb: null
+                            Gmb: null,
                         } });
                     updatedGranulometryComposition.average.data = this.calculateExpectedGmb(granulometryComposition[1]);
                     updatedGranulometryComposition.average.data = this.calculateGmbCP(updatedGranulometryComposition.average.data);
@@ -319,9 +319,9 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
                                 updatedGranulometryComposition.average.pli);
                 }
                 let passantN200higher = 0;
-                if (chosenCurves.higher) {
+                if (chosenCurves.includes('higher')) {
                     updatedGranulometryComposition = Object.assign(Object.assign({}, updatedGranulometryComposition), { higher: {
-                            gmm: riceTest.find((e) => e.curve === 'higher').gmm,
+                            gmm: riceTest.length ? riceTest.find((e) => e.curve === 'higher').gmm : 0,
                             pli: binderCompositions[0].pli,
                             data: [],
                             percentWaterAbs: null,
@@ -344,7 +344,7 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
                             expectedPli: null,
                             gse: null,
                             combinedGsb: null,
-                            Gmb: null
+                            Gmb: null,
                         } });
                     updatedGranulometryComposition.higher.data = this.calculateExpectedGmb(granulometryComposition[2]);
                     updatedGranulometryComposition.higher.data = this.calculateGmbCP(updatedGranulometryComposition.higher.data);
@@ -397,7 +397,7 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
                 };
                 let table3Lower = {};
                 let table4Lower = {};
-                if (chosenCurves.lower) {
+                if (chosenCurves.includes('lower')) {
                     const expectedPliLower = updatedGranulometryComposition.lower.pli - 0.4 * (4 - updatedGranulometryComposition.lower.Vv);
                     updatedGranulometryComposition.lower.expectedPli = expectedPliLower;
                     let Clower;
@@ -412,8 +412,8 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
                     const expectedRatioDustAsphaltLower = passantN200lower /
                         ((-(100 - expectedPliLower) *
                             binderSpecificGravity *
-                            (updatedGranulometryComposition.lower.gse - updatedGranulometryComposition.lower.combinedGsb)) /
-                            (updatedGranulometryComposition.lower.gse * updatedGranulometryComposition.lower.combinedGsb) +
+                            (binderCompositions[0].gse - binderCompositions[0].combinedGsb)) /
+                            (binderCompositions[0].gse * binderCompositions[0].combinedGsb) +
                             expectedPliLower);
                     table2Lower = {
                         percentageGmmInitialN: updatedGranulometryComposition.lower.initialN.percentageGmm,
@@ -450,7 +450,7 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
                 };
                 let table3Average = {};
                 let table4Average = {};
-                if (chosenCurves.average) {
+                if (chosenCurves.includes('average')) {
                     const expectedPliAverage = updatedGranulometryComposition.average.pli - 0.4 * (4 - updatedGranulometryComposition.average.Vv);
                     updatedGranulometryComposition.average.expectedPli = expectedPliAverage;
                     let Caverage;
@@ -465,8 +465,8 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
                     const expectedRatioDustAsphaltAverage = passantN200average /
                         ((-(100 - expectedPliAverage) *
                             binderSpecificGravity *
-                            (updatedGranulometryComposition.average.gse - updatedGranulometryComposition.average.combinedGsb)) /
-                            (updatedGranulometryComposition.average.gse * updatedGranulometryComposition.average.combinedGsb) +
+                            (binderCompositions[1].gse - binderCompositions[1].combinedGsb)) /
+                            (binderCompositions[1].gse * binderCompositions[1].combinedGsb) +
                             expectedPliAverage);
                     table2Average = {
                         percentageGmmInitialN: updatedGranulometryComposition.average.initialN.percentageGmm,
@@ -503,7 +503,7 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
                 };
                 let table3Higher = {};
                 let table4Higher = {};
-                if (chosenCurves.higher) {
+                if (chosenCurves.includes('higher')) {
                     const expectedPliHigher = updatedGranulometryComposition.higher.pli - 0.4 * (4 - updatedGranulometryComposition.higher.Vv);
                     updatedGranulometryComposition.higher.expectedPli = expectedPliHigher;
                     let Chigher;
@@ -518,8 +518,8 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
                     const expectedRatioDustAsphaltHigher = passantN200higher /
                         ((-(100 - expectedPliHigher) *
                             binderSpecificGravity *
-                            (updatedGranulometryComposition.higher.gse - updatedGranulometryComposition.higher.combinedGsb)) /
-                            (updatedGranulometryComposition.higher.gse * updatedGranulometryComposition.higher.combinedGsb) +
+                            (binderCompositions[2].gse - binderCompositions[2].combinedGsb)) /
+                            (binderCompositions[2].gse * binderCompositions[2].combinedGsb) +
                             expectedPliHigher);
                     table2Higher = {
                         percentageGmmInitialN: updatedGranulometryComposition.higher.initialN.percentageGmm,
@@ -748,7 +748,7 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
         }
         return graphData;
     }
-    saveStep6Data(body, userId) {
+    savePercentsOfChosenCurveData(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('save superpave first curve percentages step on first-curve-percentages.superpave.service.ts > [body]', { body });
@@ -757,8 +757,8 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
                 const _a = body.firstCurvePercentagesData, { name: materialName } = _a, firstCurvePercentagesWithoutName = __rest(_a, ["name"]);
                 const superpaveWithFirstCurvePercentages = Object.assign(Object.assign({}, superpaveExists._doc), { firstCurvePercentagesData: firstCurvePercentagesWithoutName });
                 yield this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithFirstCurvePercentages);
-                if (superpaveExists._doc.generalData.step < 6) {
-                    yield this.superpave_repository.saveStep(superpaveExists, 6);
+                if (superpaveExists._doc.generalData.step < 8) {
+                    yield this.superpave_repository.saveStep(superpaveExists, 8);
                 }
                 return true;
             }

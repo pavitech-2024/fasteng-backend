@@ -91,7 +91,7 @@ let FirstCompression_Superpave_Service = FirstCompression_Superpave_Service_1 = 
             }
         });
     }
-    saveStep5Data(body, userId) {
+    saveFirstCompressionData(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('save superpave first compression step on first-compression.superpave.service.ts > [body]', { body });
@@ -100,8 +100,8 @@ let FirstCompression_Superpave_Service = FirstCompression_Superpave_Service_1 = 
                 const _a = body.firstCompressionData, { name: materialName } = _a, firstCompressionWithoutName = __rest(_a, ["name"]);
                 const superpaveWithFirstCompression = Object.assign(Object.assign({}, superpaveExists._doc), { firstCompressionData: firstCompressionWithoutName });
                 yield this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithFirstCompression);
-                if (superpaveExists._doc.generalData.step < 5) {
-                    yield this.superpaveRepository.saveStep(superpaveExists, 5);
+                if (superpaveExists._doc.generalData.step < 6) {
+                    yield this.superpaveRepository.saveStep(superpaveExists, 6);
                 }
                 return true;
             }

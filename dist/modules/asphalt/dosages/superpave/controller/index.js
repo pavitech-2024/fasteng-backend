@@ -45,6 +45,20 @@ let SuperpaveController = SuperpaveController_1 = class SuperpaveController {
             return response.status(200).json(status);
         });
     }
+    calculateGranulometryEssaysData(response, body) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.log(`calculate granulometry essays of granulometry essay data step > [body]: ${body}`);
+            const status = yield this.superpaveService.calculateGranulometryEssayData(body);
+            return response.status(200).json(status);
+        });
+    }
+    saveGranulometryEssayStep(response, body, userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.log(`save granulometry essay data step in user superpave dosage > [body]: ${body}`);
+            const status = yield this.superpaveService.saveGranulometryEssayStep(body, userId);
+            return response.status(200).json(status);
+        });
+    }
     getMaterialsByUserId(response, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             this.logger.log(`get all materials, by user id, with the necessary dosage essays > [id]: ${userId}`);
@@ -69,71 +83,71 @@ let SuperpaveController = SuperpaveController_1 = class SuperpaveController {
     }
     getStep3Data(response, body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`get step 3 data > [body]: ${body}`);
-            const status = yield this.superpaveService.getStep3Data(body);
+            this.logger.log(`get granulometric composition data > [body]: ${body}`);
+            const status = yield this.superpaveService.getGranulometricCompositionData(body);
             return response.status(200).json(status);
         });
     }
     calculateStep3Data(response, body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`calculate step 3 data > [body]: ${body}`);
-            const status = yield this.superpaveService.calculateStep3Data(body);
+            this.logger.log(`calculate granulometric composition data > [body]: ${body}`);
+            const status = yield this.superpaveService.calculateGranulometricCompositionData(body);
             return response.status(200).json(status);
         });
     }
     saveGranulometryCompositionStep(response, userId, body) {
-        return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`save step 3 data > [body]: ${body}`);
-            const status = yield this.superpaveService.saveStep3Data(body, userId);
-            return response.status(200).json(status);
-        });
-    }
-    getStep4SpecificMasses(response, body) {
-        return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`get step 4 data > [body]: ${body}`);
-            const status = yield this.superpaveService.getStep4SpecificMasses(body);
-            return response.status(200).json(status);
-        });
-    }
-    getStep4Data(response, body) {
-        return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`get step 3 data > [body]: ${body}`);
-            const status = yield this.superpaveService.getStep4Data(body);
-            return response.status(200).json(status);
-        });
-    }
-    saveInitialBinderStep(response, userId, body) {
         return __awaiter(this, void 0, void 0, function* () {
             this.logger.log(`save step 4 data > [body]: ${body}`);
             const status = yield this.superpaveService.saveStep4Data(body, userId);
             return response.status(200).json(status);
         });
     }
+    getStep5SpecificMasses(response, body) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.log(`get first compression specific masses data > [body]: ${body}`);
+            const status = yield this.superpaveService.getFirstCompressionSpecificMasses(body);
+            return response.status(200).json(status);
+        });
+    }
+    calculateStep5Data(response, body) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.log(`calculate step 5 data > [body]: ${body}`);
+            const status = yield this.superpaveService.calculateStep5Data(body);
+            return response.status(200).json(status);
+        });
+    }
+    saveInitialBinderStep(response, userId, body) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.log(`save step 5 data > [body]: ${body}`);
+            const status = yield this.superpaveService.saveInitialBinderStep(body, userId);
+            return response.status(200).json(status);
+        });
+    }
     calculateRiceTest(response, body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`calculate step 5 rice test data > [body]: ${body}`);
+            this.logger.log(`calculate rice test data > [body]: ${body}`);
             const status = yield this.superpaveService.calculateGmm(body);
             return response.status(200).json(status);
         });
     }
-    saveFirstCompressionStep(response, userId, body) {
+    saveFirstCompressionData(response, userId, body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`save step 5 data > [body]: ${body}`);
-            const status = yield this.superpaveService.saveStep5Data(body, userId);
+            this.logger.log(`save first compression data > [body]: ${body}`);
+            const status = yield this.superpaveService.saveFirstCompressionData(body, userId);
             return response.status(200).json(status);
         });
     }
-    getStep6Parameters(response, body) {
+    getFirstCompressionParametersData(response, body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`get step 6 data > [body]: ${body}`);
-            const status = yield this.superpaveService.getStep6Parameters(body);
+            this.logger.log(`get first compression parameters data > [body]: ${body}`);
+            const status = yield this.superpaveService.getFirstCompressionParametersData(body);
             return response.status(200).json(status);
         });
     }
     saveStep6Data(response, userId, body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`save step 6 data > [body]: ${body}`);
-            const status = yield this.superpaveService.saveStep6Data(body, userId);
+            this.logger.log(`save percents of chosen curve data > [body]: ${body}`);
+            const status = yield this.superpaveService.savePercentsOfChosenCurveData(body, userId);
             return response.status(200).json(status);
         });
     }
@@ -165,24 +179,23 @@ let SuperpaveController = SuperpaveController_1 = class SuperpaveController {
             return response.status(200).json(status);
         });
     }
-    calculateVolumetricParametersOfChoosenGranulometryComposition(response, body) {
+    calculateSecondCompressionData(response, body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`calculate step 7 volumetric parameters of choosen granulometry composition data > [body]: ${body}`);
-            const status = yield this.superpaveService.calculateVolumetricParametersOfChoosenGranulometryComposition(body);
+            this.logger.log(`calculate second compression data > [body]: ${body}`);
+            const status = yield this.superpaveService.calculateSecondCompressionData(body);
             return response.status(200).json(status);
         });
     }
     saveStep8Data(response, userId, body) {
         return __awaiter(this, void 0, void 0, function* () {
             this.logger.log(`save step 8 data > [body]: ${body}`);
-            const status = yield this.superpaveService.saveStep8Data(body, userId);
             return response.status(200).json(status);
         });
     }
-    getStep9Data(response, body) {
+    getSecondCompressionPercentageData(response, body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`get step 9 data > [body]: ${body}`);
-            const status = yield this.superpaveService.getStep9Data(body);
+            this.logger.log(`get second compression percentage data > [body]: ${body}`);
+            const status = yield this.superpaveService.getSecondCompressionPercentageData(body);
             return response.status(200).json(status);
         });
     }
@@ -257,7 +270,10 @@ __decorate([
             },
         },
     }),
-    (0, swagger_1.ApiResponse)({ status: 400, description: 'Erro ao verificar se é possível criar uma Superpave com os dados enviados.' }),
+    (0, swagger_1.ApiResponse)({
+        status: 400,
+        description: 'Erro ao verificar se é possível criar uma Superpave com os dados enviados.',
+    }),
     __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Body)()),
     __param(2, (0, common_1.Param)('id')),
@@ -266,8 +282,42 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], SuperpaveController.prototype, "verifyInitSuperpave", null);
 __decorate([
+    (0, common_1.Post)('calculate-granulometry-essay-data'),
+    (0, swagger_1.ApiOperation)({ summary: 'Calcula os ensaios de granulometria.' }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'Ensaios de granulometria calculados com sucesso!',
+        content: { 'application/json': { schema: { example: { success: true } } } },
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 400,
+        description: 'Erro ao calcular os ensaios de granulometria.',
+        content: {
+            'application/json': {
+                schema: { example: { success: false, error: { message: 'Internal error.', status: 400, name: 'Error' } } },
+            },
+        },
+    }),
+    __param(0, (0, common_1.Res)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], SuperpaveController.prototype, "calculateGranulometryEssaysData", null);
+__decorate([
+    (0, common_1.Post)('save-granulometry-essay-step/:id'),
+    __param(0, (0, common_1.Res)()),
+    __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object, String]),
+    __metadata("design:returntype", Promise)
+], SuperpaveController.prototype, "saveGranulometryEssayStep", null);
+__decorate([
     (0, common_1.Get)('material-selection/:id'),
-    (0, swagger_1.ApiOperation)({ summary: 'Retorna todos os materiais do banco de dados de um usuário, que possuam os ensaios para a dosagem.' }),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Retorna todos os materiais do banco de dados de um usuário, que possuam os ensaios para a dosagem.',
+    }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Materiais encontrados com sucesso!' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Usuário não encontrado!' }),
     __param(0, (0, common_1.Res)()),
@@ -297,8 +347,10 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], SuperpaveController.prototype, "saveMaterialSelectionStep", null);
 __decorate([
-    (0, common_1.Post)('step-3-data'),
-    (0, swagger_1.ApiOperation)({ summary: 'Retorna os dados iniciais necessários para a terceira tela (composição granulométrica) da dosagem' }),
+    (0, common_1.Post)('get-granulometric-composition-data'),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Retorna os dados iniciais necessários para a etapa de composição granulometrica da dosagem',
+    }),
     (0, swagger_1.ApiResponse)({
         status: 200,
         description: 'Dados carregados com sucesso!',
@@ -312,7 +364,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], SuperpaveController.prototype, "getStep3Data", null);
 __decorate([
-    (0, common_1.Post)('calculate-step-3-data'),
+    (0, common_1.Post)('calculate-granulometric-composition-data'),
     __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -329,8 +381,10 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], SuperpaveController.prototype, "saveGranulometryCompositionStep", null);
 __decorate([
-    (0, common_1.Post)('step-4-specific-masses'),
-    (0, swagger_1.ApiOperation)({ summary: 'Retorna os dados iniciais necessários para a quarta tela (teor de ligante inicial) da dosagem' }),
+    (0, common_1.Post)('get-first-compression-specific-masses'),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Retorna os dados iniciais necessários para a tela de Primeira Compactação da dosagem',
+    }),
     (0, swagger_1.ApiResponse)({
         status: 200,
         description: 'Dados carregados com sucesso!',
@@ -341,9 +395,9 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
-], SuperpaveController.prototype, "getStep4SpecificMasses", null);
+], SuperpaveController.prototype, "getStep5SpecificMasses", null);
 __decorate([
-    (0, common_1.Post)('step-4-data'),
+    (0, common_1.Post)('calculate-step-5-data'),
     (0, swagger_1.ApiOperation)({ summary: 'Calcula os dados inseridos para a quarta tela (teor de ligante inicial) da dosagem' }),
     (0, swagger_1.ApiResponse)({
         status: 200,
@@ -356,7 +410,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
-], SuperpaveController.prototype, "getStep4Data", null);
+], SuperpaveController.prototype, "calculateStep5Data", null);
 __decorate([
     (0, common_1.Post)('save-initial-binder-step/:userId'),
     __param(0, (0, common_1.Res)()),
@@ -382,10 +436,12 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String, Object]),
     __metadata("design:returntype", Promise)
-], SuperpaveController.prototype, "saveFirstCompressionStep", null);
+], SuperpaveController.prototype, "saveFirstCompressionData", null);
 __decorate([
-    (0, common_1.Post)('step-5-parameters'),
-    (0, swagger_1.ApiOperation)({ summary: 'Retorna os dados iniciais necessários para a quinta tela (porcentagens da curva escolhida) da dosagem' }),
+    (0, common_1.Post)('get-first-compression-parameters'),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Retorna os dados iniciais necessários para a tela de parâmetros da primiera compactaão da dosagem',
+    }),
     (0, swagger_1.ApiResponse)({
         status: 200,
         description: 'Dados carregados com sucesso!',
@@ -396,9 +452,9 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
-], SuperpaveController.prototype, "getStep6Parameters", null);
+], SuperpaveController.prototype, "getFirstCompressionParametersData", null);
 __decorate([
-    (0, common_1.Post)('save-first-curve-percentage-step/:userId'),
+    (0, common_1.Post)('save-percents-of-chosen-curve-step/:userId'),
     __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Param)('userId')),
     __param(2, (0, common_1.Body)()),
@@ -408,7 +464,9 @@ __decorate([
 ], SuperpaveController.prototype, "saveStep6Data", null);
 __decorate([
     (0, common_1.Post)('step-7-parameters'),
-    (0, swagger_1.ApiOperation)({ summary: 'Retorna os dados iniciais necessários para a sétima tela (porcentagens da curva escolhida) da dosagem' }),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Retorna os dados iniciais necessários para a sétima tela (porcentagens da curva escolhida) da dosagem',
+    }),
     (0, swagger_1.ApiResponse)({
         status: 200,
         description: 'Dados carregados com sucesso!',
@@ -452,7 +510,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
-], SuperpaveController.prototype, "calculateVolumetricParametersOfChoosenGranulometryComposition", null);
+], SuperpaveController.prototype, "calculateSecondCompressionData", null);
 __decorate([
     (0, common_1.Post)('save-second-compression-data-step/:userId'),
     __param(0, (0, common_1.Res)()),
@@ -463,8 +521,10 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], SuperpaveController.prototype, "saveStep8Data", null);
 __decorate([
-    (0, common_1.Post)('get-step-9-data'),
-    (0, swagger_1.ApiOperation)({ summary: 'Retorna os dados iniciais necessários para a nona tela (parâmetros da segunda compactação) da dosagem' }),
+    (0, common_1.Post)('get-second-compression-percentage-data'),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Retorna os dados iniciais necessários para a tela de porcentagens da segunda compactação da dosagem',
+    }),
     (0, swagger_1.ApiResponse)({
         status: 200,
         description: 'Dados carregados com sucesso!',
@@ -475,7 +535,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
-], SuperpaveController.prototype, "getStep9Data", null);
+], SuperpaveController.prototype, "getSecondCompressionPercentageData", null);
 __decorate([
     (0, common_1.Post)('save-second-compression-params-step/:userId'),
     __param(0, (0, common_1.Res)()),

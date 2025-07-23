@@ -8,5 +8,5 @@ export declare class FirstCompression_Superpave_Service {
     constructor(superpaveModel: Model<SuperpaveDocument>, superpaveRepository: SuperpaveRepository);
     calculateGmm(body: any): Promise<any>;
     claculateRiceTest(body: any): Promise<number>;
-    saveStep5Data(body: any, userId: string): Promise<boolean>;
+    saveFirstCompressionData(body: any, userId: string): Promise<boolean>;
 }

@@ -93,6 +93,7 @@ let MaterialSelection_Superpave_Service = MaterialSelection_Superpave_Service_1 
     }
     saveMaterials(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
+            console.log("Teste");
             try {
                 this.logger.log('save superpave materials step on material-selection.superpave.service.ts > [body]', { body });
                 const { name } = body.materialSelectionData;

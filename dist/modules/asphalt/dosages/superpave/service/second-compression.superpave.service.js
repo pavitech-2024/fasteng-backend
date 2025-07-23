@@ -76,10 +76,10 @@ let SecondCompression_Superpave_Service = SecondCompression_Superpave_Service_1 
             throw error;
         }
     }
-    calculateVolumetricParametersOfChoosenGranulometryComposition(body) {
+    calculateSecondCompressionData(body) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                this.logger.log({ body }, 'start step 7 volumetric parameters of choosen granulometry composition > SecondCompression_Superpave_Service');
+                this.logger.log({ body }, 'start calculating the second compression data > SecondCompression_Superpave_Service');
                 const { composition, binderSpecificGravity, porcentagesPassantsN200, maximumDensities: gmm, expectedPli, combinedGsb, percentsOfDosage, Gse, } = body;
                 const choosenGranulometryComposition = {
                     composition: {
@@ -382,7 +382,7 @@ let SecondCompression_Superpave_Service = SecondCompression_Superpave_Service_1 
     calculateVv(curve) {
         return (1 - curve.projectN.gmb / curve.gmm) * 100;
     }
-    saveStep8Data(body, userId) {
+    saveStep9Data(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('save superpave second compression data step on second-compression-data.superpave.service.ts > [body]', { body });
@@ -391,8 +391,8 @@ let SecondCompression_Superpave_Service = SecondCompression_Superpave_Service_1 
                 const _a = body.secondCompressionData, { name: materialName } = _a, secondCompressionWithoutName = __rest(_a, ["name"]);
                 const superpaveWithSecondCompression = Object.assign(Object.assign({}, superpaveExists._doc), { secondCompressionData: secondCompressionWithoutName });
                 yield this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithSecondCompression);
-                if (superpaveExists._doc.generalData.step < 8) {
-                    yield this.superpaveRepository.saveStep(superpaveExists, 8);
+                if (superpaveExists._doc.generalData.step < 9) {
+                    yield this.superpaveRepository.saveStep(superpaveExists, 9);
                 }
                 return true;
             }

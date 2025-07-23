@@ -10,7 +10,7 @@ export declare class Calc_CONCRETEGRANULOMETRY_Service {
     private readonly materialsRepository;
     private logger;
     constructor(granulometryRepository: ConcreteGranulometryRepository, materialsRepository: MaterialsRepository);
-    calculateGranulometry({ step2Data }: Calc_CONCRETEGRANULOMETRY_Dto): Promise<{
+    calculateGranulometry({ step2Data, }: Calc_CONCRETEGRANULOMETRY_Dto): Promise<{
         success: boolean;
         result: Calc_CONCRETEGRANULOMETRY_Out;
     }>;

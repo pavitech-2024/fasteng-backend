@@ -10,7 +10,7 @@ export declare class Calc_GRANULOMETRY_Service {
     private readonly sampleRepository;
     private logger;
     constructor(granulometryRepository: GranulometryRepository, sampleRepository: SamplesRepository);
-    calculateGranulometry({ step2Data }: Calc_GRANULOMETRY_Dto): Promise<{
+    calculateGranulometry({ step2Data, }: Calc_GRANULOMETRY_Dto): Promise<{
         success: boolean;
         result: Calc_GRANULOMETRY_Out;
     }>;

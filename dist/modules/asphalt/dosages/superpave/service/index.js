@@ -33,10 +33,15 @@ const chosen_curves_percentages_service_1 = require("./chosen-curves-percentages
 const second_compression_superpave_service_1 = require("./second-compression.superpave.service");
 const second_compression_parameters_service_1 = require("./second-compression-parameters.service");
 const resume_dosage_service_1 = require("./resume-dosage.service");
+const granulometryEssay_service_1 = require("./granulometryEssay.service");
+const service_1 = require("../../../essays/granulometry/service");
+const viscosityRotational_service_1 = require("../../../essays/viscosityRotational/service/viscosityRotational.service");
+const interfaces_1 = require("../../../../../utils/interfaces");
 let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
-    constructor(superpave_repository, generalData_Service, materialSelection_Service, granulometryComposition_Service, granulometryRepository, initialBinder_Service, firstCompression_Service, firstCurvePercentages_Service, chosenCurvePercentages_Service, secondCompression_Service, secondCompressionParameters_Service, resumeDosageEquation_Service) {
+    constructor(superpave_repository, generalData_Service, granulometryEssay_Service, materialSelection_Service, granulometryComposition_Service, granulometryRepository, initialBinder_Service, firstCompression_Service, firstCurvePercentages_Service, chosenCurvePercentages_Service, secondCompression_Service, secondCompressionParameters_Service, resumeDosageEquation_Service, asphaltGranulometry_Service, rotationalViscosity_Service) {
         this.superpave_repository = superpave_repository;
         this.generalData_Service = generalData_Service;
+        this.granulometryEssay_Service = granulometryEssay_Service;
         this.materialSelection_Service = materialSelection_Service;
         this.granulometryComposition_Service = granulometryComposition_Service;
         this.granulometryRepository = granulometryRepository;
@@ -47,6 +52,8 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
         this.secondCompression_Service = secondCompression_Service;
         this.secondCompressionParameters_Service = secondCompressionParameters_Service;
         this.resumeDosageEquation_Service = resumeDosageEquation_Service;
+        this.asphaltGranulometry_Service = asphaltGranulometry_Service;
+        this.rotationalViscosity_Service = rotationalViscosity_Service;
         this.logger = new common_1.Logger(SuperpaveService_1.name);
     }
     verifyInitSuperpave(body, userId) {
@@ -72,6 +79,54 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
             catch (error) {
                 this.logger.error(`error on get all dosages > [error]: ${error}`);
                 throw error;
+            }
+        });
+    }
+    calculateGranulometryEssayData(body) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { granulometrys, viscosity } = body;
+                const formattedBody = granulometrys.map((item) => {
+                    const { material, material_mass, table_data, bottom } = item;
+                    return {
+                        generalData: material,
+                        step2Data: { material_mass, table_data, bottom },
+                    };
+                });
+                const results = yield Promise.allSettled(formattedBody.map((dto) => this.asphaltGranulometry_Service.calculateGranulometry(dto)));
+                const granulometry = results
+                    .map((result, index) => {
+                    var _a;
+                    if (result.status === 'fulfilled') {
+                        return Object.assign(Object.assign({}, result.value), { material: granulometrys[index].material });
+                    }
+                    else {
+                        this.logger.warn(`Failed to calculate material ${((_a = granulometrys[index].material) === null || _a === void 0 ? void 0 : _a.name) || index}: ${result.reason}`);
+                        return null;
+                    }
+                })
+                    .filter(Boolean);
+                const data = { viscosityRotational: viscosity, generalData: viscosity.material };
+                const viscosityResult = yield this.rotationalViscosity_Service.calculateViscosityRotational(data);
+                return { granulometry, viscosity: { material: viscosity.material, result: viscosityResult }, success: true };
+            }
+            catch (error) {
+                this.logger.error(`error on calculate granulometry essay data > [error]: ${error}`);
+                const { status, name, message } = error;
+                return { materials: [], success: false, error: { status, message, name } };
+            }
+        });
+    }
+    saveGranulometryEssayStep(body, userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const result = yield this.granulometryEssay_Service.saveGranulometryEssay(body, userId);
+                return result;
+            }
+            catch (error) {
+                this.logger.error(`Error saving granulometry essay step: ${error.message}`);
+                const { status, name, message } = error;
+                return { success: false, error: { status, message, name } };
             }
         });
     }
@@ -116,7 +171,7 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
             }
         });
     }
-    getStep3Data(body) {
+    getGranulometricCompositionData(body) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { dnitBand, aggregates } = body;
@@ -144,185 +199,50 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
                     percentsOfMaterialsToShow: [],
                     percentsOfMaterials: [],
                 };
-                const allGranulometrys = yield this.granulometryRepository.findAll();
-                const ids = aggregates.map((aggregate) => {
-                    return aggregate._id.toString();
-                });
-                const selectedGranulometrys = yield this.granulometryRepository.findById(ids);
                 const granulometryData = [];
                 aggregates.forEach((aggregate) => {
-                    const granulometry = allGranulometrys.find(({ generalData }) => {
-                        const { material } = generalData;
-                        return aggregate._id.toString() === material._id.toString();
-                    });
-                    const { passant } = granulometry.step2Data;
+                    const { table_data } = aggregate.data;
                     let passants = {};
-                    passant.forEach((p) => {
+                    table_data.forEach((p) => {
                         passants[p.sieve_label] = p.passant;
                     });
                     granulometryData.push({
-                        _id: aggregate._id,
+                        _id: aggregate.data.material._id,
                         passants: passants,
                     });
                 });
-                percentsOfMaterials = selectedGranulometrys.map((granulometry) => {
-                    if (granulometry.results.nominal_size > nominalSize)
-                        nominalSize = granulometry.results.nominal_size;
-                    return granulometry.results.passant;
+                percentsOfMaterials = aggregates.map((granulometry) => {
+                    if (granulometry.results.result.nominal_size > nominalSize) {
+                        nominalSize = granulometry.results.result.nominal_size;
+                    }
+                    return granulometry.results.result.passant_porcentage;
                 });
                 result.nominalSize.value = nominalSize;
-                for (let i = 0; i < selectedGranulometrys.length; i++) {
+                for (let i = 0; i < aggregates.length; i++) {
                     porcentagesPassantsN200[i] = null;
-                    if (percentsOfMaterials[i][10] !== null)
-                        porcentagesPassantsN200[i] = percentsOfMaterials[i][10][1];
+                    if (percentsOfMaterials[i][6] !== null)
+                        porcentagesPassantsN200[i] = percentsOfMaterials[i][6][1];
                 }
-                const axisX = [
-                    75, 64, 50, 37.5, 32, 25, 19, 12.5, 9.5, 6.3, 4.8, 2.4, 2, 1.2, 0.6, 0.43, 0.3, 0.18, 0.15, 0.075, 0,
-                ];
-                const curve37 = [
-                    null,
-                    null,
-                    100,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    0,
-                ];
-                const curve25 = [
-                    null,
-                    null,
-                    null,
-                    100,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    0,
-                ];
-                const curve19 = [
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    100,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    0,
-                ];
-                const curve12 = [
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    100,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    0,
-                ];
-                const curve9 = [
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    100,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    0,
-                ];
-                if (nominalSize === 37.5) {
-                    result.nominalSize.controlPoints.lower = [
-                        null,
-                        null,
-                        100,
-                        90,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        15,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        0,
-                    ];
+                const axisX = [38.1, 25.4, 19.1, 12.7, 9.5, 6.3, 4.8, 2.36, 1.18, 0.6, 0.3, 0.15, 0.075];
+                const curve38_1 = Array(interfaces_1.AllSievesSuperpaveUpdatedAstm.length).fill(null);
+                curve38_1[0] = 100;
+                curve38_1[curve38_1.length - 1] = 0;
+                const curve25 = Array(interfaces_1.AllSievesSuperpaveUpdatedAstm.length).fill(null);
+                curve25[0] = 100;
+                curve25[curve25.length - 1] = 0;
+                const curve19 = Array(interfaces_1.AllSievesSuperpaveUpdatedAstm.length).fill(null);
+                curve19[1] = 100;
+                curve19[curve19.length - 1] = 0;
+                const curve12 = Array(interfaces_1.AllSievesSuperpaveUpdatedAstm.length).fill(null);
+                curve12[2] = 100;
+                curve12[curve12.length - 1] = 0;
+                const curve9 = Array(interfaces_1.AllSievesSuperpaveUpdatedAstm.length).fill(null);
+                curve9[3] = 100;
+                curve9[curve9.length - 1] = 0;
+                if (nominalSize === 38.1) {
+                    result.nominalSize.controlPoints.lower = [100, 90, null, null, null, null, null, 15, null, null, null, null, 0];
                     result.nominalSize.controlPoints.higher = [
-                        null,
-                        null,
-                        null,
                         100,
-                        null,
                         90,
                         null,
                         null,
@@ -330,8 +250,6 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
                         null,
                         null,
                         41,
-                        null,
-                        null,
                         null,
                         null,
                         null,
@@ -346,52 +264,20 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
                         null,
                         null,
                         null,
-                        null,
-                        null,
-                        null,
-                        null,
                         34.7,
                         23.3,
-                        null,
                         15.5,
                         11.7,
-                        null,
                         10,
                         null,
                         null,
-                        null,
                     ], axisX);
-                    result.nominalSize.restrictedZone.higher = yield this.insertBlankPointsOnCurve([
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        34.7,
-                        27.3,
-                        null,
-                        21.5,
-                        15.7,
-                        null,
-                        10,
-                        null,
-                        null,
-                        null,
-                    ], axisX);
-                    result.nominalSize.curve = curve37;
+                    result.nominalSize.restrictedZone.higher = yield this.insertBlankPointsOnCurve([null, null, null, null, null, null, 34.7, 27.3, 21.5, 15.7, 10, null, null], axisX);
+                    result.nominalSize.curve = curve38_1;
                 }
                 else if (nominalSize === 25) {
                     result.nominalSize.controlPoints.lower = [
-                        null,
-                        null,
-                        null,
                         100,
-                        null,
                         90,
                         null,
                         null,
@@ -403,16 +289,9 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
                         null,
                         null,
                         null,
-                        null,
-                        null,
-                        null,
                         1,
                     ];
                     result.nominalSize.controlPoints.higher = [
-                        null,
-                        null,
-                        null,
-                        null,
                         null,
                         100,
                         90,
@@ -421,9 +300,6 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
                         null,
                         null,
                         45,
-                        null,
-                        null,
-                        null,
                         null,
                         null,
                         null,
@@ -437,18 +313,11 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
                         null,
                         null,
                         null,
-                        null,
-                        null,
-                        null,
-                        null,
                         39.5,
                         26.8,
-                        null,
                         18.1,
                         13.6,
-                        null,
                         11.4,
-                        null,
                         null,
                         null,
                     ], axisX);
@@ -459,18 +328,11 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
                         null,
                         null,
                         null,
-                        null,
-                        null,
-                        null,
-                        null,
                         39.5,
                         30.8,
-                        null,
                         24.1,
                         17.6,
-                        null,
-                        11.4,
-                        null,
+                        13.7,
                         null,
                         null,
                     ], axisX);
@@ -478,10 +340,6 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
                 }
                 else if (nominalSize === 19) {
                     result.nominalSize.controlPoints.lower = [
-                        null,
-                        null,
-                        null,
-                        null,
                         null,
                         100,
                         90,
@@ -494,16 +352,9 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
                         null,
                         null,
                         null,
-                        null,
-                        null,
-                        null,
                         2,
                     ];
                     result.nominalSize.controlPoints.higher = [
-                        null,
-                        null,
-                        null,
-                        null,
                         null,
                         null,
                         100,
@@ -516,9 +367,6 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
                         null,
                         null,
                         null,
-                        null,
-                        null,
-                        null,
                         8,
                     ];
                     result.nominalSize.restrictedZone.lower = yield this.insertBlankPointsOnCurve([
@@ -529,17 +377,10 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
                         null,
                         null,
                         null,
-                        null,
-                        null,
-                        null,
-                        null,
                         34.6,
-                        null,
                         22.3,
                         16.7,
-                        null,
                         13.7,
-                        null,
                         null,
                         null,
                     ], axisX);
@@ -551,17 +392,10 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
                         null,
                         null,
                         null,
-                        null,
-                        null,
-                        null,
-                        null,
                         34.6,
-                        null,
                         28.3,
                         20.7,
-                        null,
                         13.7,
-                        null,
                         null,
                         null,
                     ], axisX);
@@ -569,10 +403,6 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
                 }
                 else if (nominalSize === 12.5) {
                     result.nominalSize.controlPoints.lower = [
-                        null,
-                        null,
-                        null,
-                        null,
                         null,
                         null,
                         100,
@@ -585,16 +415,9 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
                         null,
                         null,
                         null,
-                        null,
-                        null,
-                        null,
                         2,
                     ];
                     result.nominalSize.controlPoints.higher = [
-                        null,
-                        null,
-                        null,
-                        null,
                         null,
                         null,
                         null,
@@ -607,9 +430,6 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
                         null,
                         null,
                         null,
-                        null,
-                        null,
-                        null,
                         10,
                     ];
                     result.nominalSize.restrictedZone.lower = yield this.insertBlankPointsOnCurve([
@@ -620,17 +440,10 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
                         null,
                         null,
                         null,
-                        null,
-                        null,
-                        null,
-                        null,
                         39.1,
-                        null,
                         25.6,
                         19.1,
-                        null,
                         15.5,
-                        null,
                         null,
                         null,
                     ], axisX);
@@ -642,17 +455,10 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
                         null,
                         null,
                         null,
-                        null,
-                        null,
-                        null,
-                        null,
                         39.1,
-                        null,
                         31.6,
                         23.1,
-                        null,
                         15.5,
-                        null,
                         null,
                         null,
                     ], axisX);
@@ -663,18 +469,11 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
                         null,
                         null,
                         null,
-                        null,
-                        null,
-                        null,
-                        null,
                         100,
                         90,
                         null,
                         null,
                         32,
-                        null,
-                        null,
-                        null,
                         null,
                         null,
                         null,
@@ -686,17 +485,10 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
                         null,
                         null,
                         null,
-                        null,
-                        null,
-                        null,
-                        null,
                         100,
                         null,
                         90,
                         67,
-                        null,
-                        null,
-                        null,
                         null,
                         null,
                         null,
@@ -711,17 +503,10 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
                         null,
                         null,
                         null,
-                        null,
-                        null,
-                        null,
-                        null,
                         47.2,
-                        null,
                         31.6,
-                        23.5,
-                        null,
+                        23.1,
                         18.7,
-                        null,
                         null,
                         null,
                     ], axisX);
@@ -733,17 +518,10 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
                         null,
                         null,
                         null,
-                        null,
-                        null,
-                        null,
-                        null,
                         47.2,
-                        null,
                         37.6,
-                        27.5,
-                        null,
+                        37.5,
                         18.7,
-                        null,
                         null,
                         null,
                     ], axisX);
@@ -753,19 +531,12 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
                     result.nominalSize.controlPoints.lower = [
                         null,
                         null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
                         100,
                         90,
                         null,
                         null,
-                        32,
                         null,
-                        null,
-                        null,
+                        28,
                         null,
                         null,
                         null,
@@ -776,18 +547,11 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
                         null,
                         null,
                         null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
                         100,
-                        null,
                         90,
-                        67,
                         null,
                         null,
-                        null,
+                        58,
                         null,
                         null,
                         null,
@@ -802,17 +566,10 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
                         null,
                         null,
                         null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        47.2,
-                        null,
-                        31.6,
-                        23.5,
-                        null,
-                        18.7,
-                        null,
+                        39.1,
+                        25.6,
+                        19.1,
+                        15.5,
                         null,
                         null,
                     ], axisX);
@@ -824,45 +581,17 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
                         null,
                         null,
                         null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        47.2,
-                        null,
-                        37.6,
-                        27.5,
-                        null,
-                        18.7,
-                        null,
+                        39.1,
+                        31.6,
+                        23.1,
+                        15.5,
                         null,
                         null,
                     ], axisX);
-                    result.nominalSize.curve = curve9;
+                    result.nominalSize.curve = curve12;
                 }
                 for (let i = 0; i < percentsOfMaterials.length; i++) {
-                    for (let j = 0; j < percentsOfMaterials[i].length; j++) {
-                        if (percentsOfMaterials[i][j] !== null) {
-                            for (let k = j; k >= 0; k--) {
-                                percentsOfMaterials[i][k] = 100;
-                            }
-                            break;
-                        }
-                    }
-                }
-                for (let i = 0; i < percentsOfMaterials.length; i++) {
-                    listOfPercentsToReturn.push([]);
-                    for (let j = 0; j < percentsOfMaterials[i].length; j++) {
-                        listOfPercentsToReturn[i].push(null);
-                        if (percentsOfMaterials[i][j] === null) {
-                            for (let k = 0; k < percentsOfMaterials.length; k++) {
-                                percentsOfMaterials[k][j] = null;
-                            }
-                        }
-                    }
-                }
-                for (let i = 0; i < percentsOfMaterials.length; i++) {
-                    for (let j = 0; j < 20; j++) {
+                    for (let j = 0; j < 13; j++) {
                         if (percentsOfMaterials[i][j] !== 100 && percentsOfMaterials[i][j] !== null) {
                             for (let k = j - 1; k >= 0; k--) {
                                 if (percentsOfMaterials[i][k] === 100) {
@@ -874,136 +603,107 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
                         }
                     }
                 }
-                index = Math.min(...indexes);
-                for (let i = 0; i < percentsOfMaterials.length; i++) {
-                    for (let j = 0; j < 20; j++) {
-                        if (j >= index) {
-                            listOfPercentsToReturn[i][j] = percentsOfMaterials[i][j];
-                        }
-                    }
-                }
                 result.percentsOfMaterialsToShow = listOfPercentsToReturn;
                 result.percentsOfMaterials = percentsOfMaterials;
                 if (dnitBand === 'A') {
                     higherBand = [
-                        null,
-                        null,
                         100,
                         100,
-                        null,
+                        89,
+                        78,
+                        71,
+                        61,
+                        55,
+                        45,
+                        36,
+                        28,
+                        21,
+                        14,
+                        7,
+                    ];
+                    lowerBand = [
                         100,
                         90,
-                        null,
-                        65,
-                        null,
-                        50,
-                        null,
-                        40,
-                        null,
-                        null,
-                        30,
-                        null,
-                        20,
-                        null,
-                        8,
+                        75,
+                        58,
+                        48,
+                        35,
+                        29,
+                        19,
+                        13,
+                        9,
+                        5,
+                        2,
+                        1,
                     ];
-                    lowerBand = [null, null, 100, 95, null, 75, 60, null, 35, null, 25, null, 20, null, null, 10, null, 5, null, 1];
                 }
                 else if (dnitBand === 'B') {
                     higherBand = [
                         null,
-                        null,
-                        null,
-                        100,
-                        null,
                         100,
                         100,
-                        null,
-                        80,
-                        null,
-                        60,
-                        null,
-                        45,
-                        null,
-                        null,
-                        32,
-                        null,
+                        89,
+                        82,
+                        70,
+                        63,
+                        49,
+                        37,
+                        28,
                         20,
-                        null,
+                        13,
                         8,
                     ];
                     lowerBand = [
                         null,
-                        null,
-                        null,
                         100,
-                        null,
-                        95,
-                        80,
-                        null,
-                        45,
-                        null,
-                        28,
-                        null,
-                        20,
-                        null,
-                        null,
+                        90,
+                        70,
+                        55,
+                        42,
+                        35,
+                        23,
+                        16,
                         10,
-                        null,
-                        8,
-                        null,
-                        3,
+                        6,
+                        4,
+                        2,
                     ];
                 }
                 else if (dnitBand === 'C') {
                     higherBand = [
                         null,
                         null,
-                        null,
-                        null,
-                        null,
-                        null,
                         100,
                         100,
-                        90,
-                        null,
+                        89,
+                        78,
                         72,
-                        null,
-                        50,
-                        null,
-                        null,
-                        26,
-                        null,
-                        16,
-                        null,
+                        58,
+                        45,
+                        35,
+                        25,
+                        17,
                         10,
                     ];
                     lowerBand = [
                         null,
                         null,
-                        null,
-                        null,
-                        null,
-                        null,
                         100,
-                        80,
-                        70,
-                        null,
+                        90,
+                        73,
+                        53,
                         44,
-                        null,
-                        22,
-                        null,
-                        null,
-                        8,
-                        null,
+                        28,
+                        17,
+                        11,
+                        6,
                         4,
-                        null,
                         2,
                     ];
                 }
                 const data = {
                     nominalSize: result.nominalSize,
-                    percentsToList: listOfPercentsToReturn,
+                    percentsToList: percentsOfMaterials,
                     porcentagesPassantsN200,
                     bands: {
                         letter: dnitBand,
@@ -1051,14 +751,14 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
             return curve;
         });
     }
-    calculateStep3Data(body) {
+    calculateGranulometricCompositionData(body) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const granulometry = yield this.granulometryComposition_Service.calculateGranulometry(body);
                 return { data: granulometry.data, success: true };
             }
             catch (error) {
-                this.logger.error(`error on getting the step 3 data > [error]: ${error}`);
+                this.logger.error(`error on calculating granulometric composition data > [error]: ${error}`);
                 const { status, name, message } = error;
                 return { data: null, success: false, error: { status, message, name } };
             }
@@ -1067,7 +767,7 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
     saveStep3Data(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const success = yield this.granulometryComposition_Service.saveStep3Data(body, userId);
+                const success = yield this.granulometryComposition_Service.saveStep4Data(body, userId);
                 return { success };
             }
             catch (error) {
@@ -1077,27 +777,14 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
             }
         });
     }
-    getStep4SpecificMasses(body) {
+    getFirstCompressionSpecificMasses(body) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const data = yield this.initialBinder_Service.getStep4SpecificMasses(body);
+                const data = yield this.initialBinder_Service.getFirstCompressionSpecificMasses(body);
                 return { data, success: true };
             }
             catch (error) {
-                this.logger.error(`error on get step 4 data superpave > [error]: ${error}`);
-                const { status, name, message } = error;
-                return { success: false, error: { status, message, name } };
-            }
-        });
-    }
-    getStep4Data(body) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const data = yield this.initialBinder_Service.getStep4Data(body);
-                return { data, success: true };
-            }
-            catch (error) {
-                this.logger.error(`error on save step 3 data superpave > [error]: ${error}`);
+                this.logger.error(`error on get step 5 data superpave > [error]: ${error}`);
                 const { status, name, message } = error;
                 return { success: false, error: { status, message, name } };
             }
@@ -1116,6 +803,19 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
             }
         });
     }
+    calculateStep5Data(body) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const data = yield this.initialBinder_Service.calculateStep5Data(body);
+                return { data, success: true };
+            }
+            catch (error) {
+                this.logger.error(`error on calculate step 5 data superpave > [error]: ${error}`);
+                const { status, name, message } = error;
+                return { success: false, error: { status, message, name } };
+            }
+        });
+    }
     calculateGmm(body) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -1129,40 +829,53 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
             }
         });
     }
-    saveStep5Data(body, userId) {
+    saveInitialBinderStep(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const success = yield this.firstCompression_Service.saveStep5Data(body, userId);
+                const success = yield this.initialBinder_Service.saveInitialBinderStep(body, userId);
                 return { success };
             }
             catch (error) {
-                this.logger.error(`error on save step 5 data superpave > [error]: ${error}`);
+                this.logger.error(`error on save initial binder data superpave > [error]: ${error}`);
                 const { status, name, message } = error;
                 return { success: false, error: { status, message, name } };
             }
         });
     }
-    getStep6Parameters(body) {
+    saveFirstCompressionData(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const data = yield this.firstCurvePercentages_Service.getStep6Parameters(body);
+                const success = yield this.firstCompression_Service.saveFirstCompressionData(body, userId);
+                return { success };
+            }
+            catch (error) {
+                this.logger.error(`error on save first compression data on superpave > [error]: ${error}`);
+                const { status, name, message } = error;
+                return { success: false, error: { status, message, name } };
+            }
+        });
+    }
+    getFirstCompressionParametersData(body) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const data = yield this.firstCurvePercentages_Service.getFirstCompressionParametersData(body);
                 return { data, success: true };
             }
             catch (error) {
-                this.logger.error(`error on get step 6 data superpave > [error]: ${error}`);
+                this.logger.error(`error on get first compression parameters data superpave > [error]: ${error}`);
                 const { status, name, message } = error;
                 return { success: false, error: { status, message, name } };
             }
         });
     }
-    saveStep6Data(body, userId) {
+    savePercentsOfChosenCurveData(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const success = yield this.firstCurvePercentages_Service.saveStep6Data(body, userId);
+                const success = yield this.firstCurvePercentages_Service.savePercentsOfChosenCurveData(body, userId);
                 return { success };
             }
             catch (error) {
-                this.logger.error(`error on save step 6 data superpave > [error]: ${error}`);
+                this.logger.error(`error on save percents of chosen curve data superpave > [error]: ${error}`);
                 const { status, name, message } = error;
                 return { success: false, error: { status, message, name } };
             }
@@ -1221,23 +934,23 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
             }
         });
     }
-    calculateVolumetricParametersOfChoosenGranulometryComposition(body) {
+    calculateSecondCompressionData(body) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const gmm = yield this.secondCompression_Service.calculateVolumetricParametersOfChoosenGranulometryComposition(body);
+                const gmm = yield this.secondCompression_Service.calculateSecondCompressionData(body);
                 return { data: gmm, success: true };
             }
             catch (error) {
-                this.logger.error(`error on getting the step 7 volumetric parameters of choosen granulometry composition > [error]: ${error}`);
+                this.logger.error(`error on calculating the second compression data > [error]: ${error}`);
                 const { status, name, message } = error;
                 return { data: null, success: false, error: { status, message, name } };
             }
         });
     }
-    saveStep8Data(body, userId) {
+    saveStep9Data(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const success = yield this.secondCompression_Service.saveStep8Data(body, userId);
+                const success = yield this.secondCompression_Service.saveStep9Data(body, userId);
                 return { success };
             }
             catch (error) {
@@ -1247,23 +960,23 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
             }
         });
     }
-    getStep9Data(body) {
+    getSecondCompressionPercentageData(body) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const data = yield this.secondCompressionParameters_Service.getStep9Data(body);
+                const data = yield this.secondCompressionParameters_Service.getSecondCompressionPercentageData(body);
                 return { data, success: true };
             }
             catch (error) {
-                this.logger.error(`error on get step 9 data superpave > [error]: ${error}`);
+                this.logger.error(`error on get second compression percentage data superpave > [error]: ${error}`);
                 const { status, name, message } = error;
                 return { success: false, error: { status, message, name } };
             }
         });
     }
-    saveStep9Data(body, userId) {
+    saveStep10Data(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const success = yield this.secondCompressionParameters_Service.saveStep9Data(body, userId);
+                const success = yield this.secondCompressionParameters_Service.saveStep10Data(body, userId);
                 return { success };
             }
             catch (error) {
@@ -1299,14 +1012,14 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
             }
         });
     }
-    saveStep10Data(body, userId) {
+    saveStep11Data(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const success = yield this.resumeDosageEquation_Service.saveStep10Data(body, userId);
+                const success = yield this.resumeDosageEquation_Service.saveStep11Data(body, userId);
                 return { success };
             }
             catch (error) {
-                this.logger.error(`error on save step 10 data superpave > [error]: ${error}`);
+                this.logger.error(`error on save step 11 data superpave > [error]: ${error}`);
                 const { status, name, message } = error;
                 return { success: false, error: { status, message, name } };
             }
@@ -1344,6 +1057,7 @@ exports.SuperpaveService = SuperpaveService = SuperpaveService_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [index_1.SuperpaveRepository,
         general_data_superpave_service_1.GeneralData_Superpave_Service,
+        granulometryEssay_service_1.GranulometryEssay_Superpave_Service,
         material_selection_superpave_service_1.MaterialSelection_Superpave_Service,
         granulometry_composition_superpave_service_1.GranulometryComposition_Superpave_Service,
         repository_1.AsphaltGranulometryRepository,
@@ -1353,6 +1067,8 @@ exports.SuperpaveService = SuperpaveService = SuperpaveService_1 = __decorate([
         chosen_curves_percentages_service_1.ChosenCurvePercentages_Superpave_Service,
         second_compression_superpave_service_1.SecondCompression_Superpave_Service,
         second_compression_parameters_service_1.SecondCompressionParameters_Superpave_Service,
-        resume_dosage_service_1.ResumeDosage_Superpave_Service])
+        resume_dosage_service_1.ResumeDosage_Superpave_Service,
+        service_1.AsphaltGranulometryService,
+        viscosityRotational_service_1.ViscosityRotationalService])
 ], SuperpaveService);
 //# sourceMappingURL=index.js.map
