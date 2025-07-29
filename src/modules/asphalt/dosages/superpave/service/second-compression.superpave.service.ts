@@ -63,10 +63,7 @@ export class SecondCompression_Superpave_Service {
 
   async calculateSecondCompressionData(body: any) {
     try {
-      this.logger.log(
-        { body },
-        'start calculating the second compression data > SecondCompression_Superpave_Service',
-      );
+      this.logger.log({ body }, 'start calculating the second compression data > SecondCompression_Superpave_Service');
 
       const {
         composition,
@@ -329,11 +326,11 @@ export class SecondCompression_Superpave_Service {
 
       for (let i = 0; i < choosenGranulometryComposition.composition.halfLess.projectN.samplesData.length; i++) {
         if (
-          choosenGranulometryComposition.composition.halfLess.projectN.samplesData[i].diametralTractionResistance  !==
+          choosenGranulometryComposition.composition.halfLess.projectN.samplesData[i].diametralTractionResistance !==
           undefined
         ) {
           sumIndirectTensileStrength +=
-            choosenGranulometryComposition.composition.halfLess.projectN.samplesData[i].diametralTractionResistance ;
+            choosenGranulometryComposition.composition.halfLess.projectN.samplesData[i].diametralTractionResistance;
           nIndirectTensileStrength++;
         }
       }
@@ -434,11 +431,20 @@ export class SecondCompression_Superpave_Service {
     return Gmb;
   }
 
+  // Densidade relativa aparente da mistura asfática (Gmb)
   calculateGmbCP(data) {
     for (let i = 0; i < data.length; i++) {
-      data[i].gmb =
-        (Math.round((data[i].dryMass / (data[i].drySurfaceSaturatedMass - data[i].submergedMass)) * 1e3) / 1e3) *
-        data[i].waterTemperatureCorrection;
+      const denominator = data[i].drySurfaceSaturatedMass - data[i].submergedMass;
+
+      // Verifica se o denominador é 0 ou muito pequeno (evita divisão por 0)
+      if (Math.abs(denominator) < 1e-6) {
+        data[i].gmb = 0;
+        continue;
+      }
+
+      const gmb = (Math.round((data[i].dryMass / denominator) * 1e3) / 1e3) * data[i].waterTemperatureCorrection;
+
+      data[i].gmb = gmb;
     }
     return data;
   }
@@ -458,11 +464,28 @@ export class SecondCompression_Superpave_Service {
     return curve.gmb;
   }
 
-  percentageWaterAbsorbed(data) {
-    // a porcentagem de água absorvida que é = 100(sss-mse)/(sss-msu);
+  // percentageWaterAbsorbed(data) {
+  //   // a porcentagem de água absorvida que é = 100(sss-mse)/(sss-msu);
 
+  //   const [averageDryMass, averageSubmergedMass, averageSaturedMass] = this.calculateMassMedia(data);
+  //   const percentWaterAbs = (100 * (averageSaturedMass - averageDryMass)) / (averageSaturedMass - averageSubmergedMass);
+  //   return percentWaterAbs;
+  // }
+  percentageWaterAbsorbed(data) {
     const [averageDryMass, averageSubmergedMass, averageSaturedMass] = this.calculateMassMedia(data);
-    const percentWaterAbs = (100 * (averageSaturedMass - averageDryMass)) / (averageSaturedMass - averageSubmergedMass);
+
+    // Verifica se todos os valores são números válidos
+    const isValid = [averageDryMass, averageSubmergedMass, averageSaturedMass].every(
+      (val) => typeof val === 'number' && !isNaN(val),
+    );
+
+    const denominator = averageSaturedMass - averageSubmergedMass;
+
+    if (!isValid || Math.abs(denominator) < 1e-6) {
+      return 0;
+    }
+
+    const percentWaterAbs = (100 * (averageSaturedMass - averageDryMass)) / denominator;
     return percentWaterAbs;
   }
 
@@ -485,12 +508,16 @@ export class SecondCompression_Superpave_Service {
   }
 
   calculateVv(curve) {
-    return (1 - curve.projectN.gmb / curve.gmm) * 100;
+    const vv = (1 - curve.projectN.gmb / curve.gmm) * 100;
+    return vv;
   }
 
   async saveStep9Data(body: any, userId: string) {
     try {
-      this.logger.log('save superpave second compression data step on second-compression-data.superpave.service.ts > [body]', { body });
+      this.logger.log(
+        'save superpave second compression data step on second-compression-data.superpave.service.ts > [body]',
+        { body },
+      );
 
       const { name } = body.secondCompressionData;
 
@@ -498,12 +525,12 @@ export class SecondCompression_Superpave_Service {
 
       const { name: materialName, ...secondCompressionWithoutName } = body.secondCompressionData;
 
-      const superpaveWithSecondCompression = { ...superpaveExists._doc, secondCompressionData: secondCompressionWithoutName };
+      const superpaveWithSecondCompression = {
+        ...superpaveExists._doc,
+        secondCompressionData: secondCompressionWithoutName,
+      };
 
-      await this.superpaveModel.updateOne(
-        { _id: superpaveExists._doc._id },
-        superpaveWithSecondCompression
-      );
+      await this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithSecondCompression);
 
       if (superpaveExists._doc.generalData.step < 9) {
         await this.superpaveRepository.saveStep(superpaveExists, 9);
@@ -511,7 +538,7 @@ export class SecondCompression_Superpave_Service {
 
       return true;
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 }

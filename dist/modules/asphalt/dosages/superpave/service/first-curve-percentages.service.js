@@ -51,6 +51,7 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
             try {
                 this.logger.log({ body }, 'start calculate first compression parameters data > [service]');
                 const { granulometryComposition, trafficVolume, nominalSize, turnNumber, chosenCurves, porcentagesPassantsN200, binderSpecificGravity: binderSpecificGravityValue, riceTest, maximumDensity, binderCompositions, percentageInputs, } = body;
+                console.log('🚀 ~ FirstCurvePercentages_Service ~ getFirstCompressionParametersData ~ granulometryComposition:', granulometryComposition);
                 let binderSpecificGravity = binderSpecificGravityValue;
                 if (!binderSpecificGravityValue)
                     binderSpecificGravity = 0;
@@ -187,7 +188,7 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
                 let passantN200lower = 0;
                 if (chosenCurves.includes('lower')) {
                     updatedGranulometryComposition = Object.assign(Object.assign({}, updatedGranulometryComposition), { lower: {
-                            gmm: riceTest.length > 0 ? riceTest.find((e) => e.curve === 'lower').gmm : 0,
+                            gmm: riceTest.find((e) => e.curve === 'lower').gmm ? riceTest.find((e) => e.curve === 'lower').gmm : 0,
                             pli: binderCompositions[0].pli,
                             data: [],
                             percentWaterAbs: null,
@@ -591,9 +592,13 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
         let updatedData = data;
         for (let i = 0; i < data.length; i++) {
             updatedData[i].Gmb = null;
-            updatedData[i].Gmb =
-                (Math.round((data[i].dryMass / (data[i].drySurfaceSaturatedMass - data[i].submergedMass)) * 1e3) / 1e3) *
-                    data[i].waterTemperatureCorrection;
+            const numerator = data[i].dryMass;
+            const denominator = data[i].drySurfaceSaturatedMass - data[i].submergedMass;
+            if (denominator === 0) {
+                updatedData[i].Gmb = 0;
+                continue;
+            }
+            updatedData[i].Gmb = (Math.round((numerator / denominator) * 1e3) / 1e3) * data[i].waterTemperatureCorrection;
         }
         return updatedData;
     }

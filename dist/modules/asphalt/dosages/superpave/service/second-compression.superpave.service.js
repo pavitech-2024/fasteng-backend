@@ -343,9 +343,13 @@ let SecondCompression_Superpave_Service = SecondCompression_Superpave_Service_1 
     }
     calculateGmbCP(data) {
         for (let i = 0; i < data.length; i++) {
-            data[i].gmb =
-                (Math.round((data[i].dryMass / (data[i].drySurfaceSaturatedMass - data[i].submergedMass)) * 1e3) / 1e3) *
-                    data[i].waterTemperatureCorrection;
+            const denominator = data[i].drySurfaceSaturatedMass - data[i].submergedMass;
+            if (Math.abs(denominator) < 1e-6) {
+                data[i].gmb = 0;
+                continue;
+            }
+            const gmb = (Math.round((data[i].dryMass / denominator) * 1e3) / 1e3) * data[i].waterTemperatureCorrection;
+            data[i].gmb = gmb;
         }
         return data;
     }
@@ -362,7 +366,12 @@ let SecondCompression_Superpave_Service = SecondCompression_Superpave_Service_1 
     }
     percentageWaterAbsorbed(data) {
         const [averageDryMass, averageSubmergedMass, averageSaturedMass] = this.calculateMassMedia(data);
-        const percentWaterAbs = (100 * (averageSaturedMass - averageDryMass)) / (averageSaturedMass - averageSubmergedMass);
+        const isValid = [averageDryMass, averageSubmergedMass, averageSaturedMass].every((val) => typeof val === 'number' && !isNaN(val));
+        const denominator = averageSaturedMass - averageSubmergedMass;
+        if (!isValid || Math.abs(denominator) < 1e-6) {
+            return 0;
+        }
+        const percentWaterAbs = (100 * (averageSaturedMass - averageDryMass)) / denominator;
         return percentWaterAbs;
     }
     calculateMassMedia(data) {
@@ -380,7 +389,8 @@ let SecondCompression_Superpave_Service = SecondCompression_Superpave_Service_1 
         return [averageDryMass, averageSubmergedMass, averageSaturedMass];
     }
     calculateVv(curve) {
-        return (1 - curve.projectN.gmb / curve.gmm) * 100;
+        const vv = (1 - curve.projectN.gmb / curve.gmm) * 100;
+        return vv;
     }
     saveStep9Data(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {

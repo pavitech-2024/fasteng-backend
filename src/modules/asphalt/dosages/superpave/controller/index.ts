@@ -240,15 +240,16 @@ export class SuperpaveController {
     return response.status(200).json(status);
   }
 
-  @Post('step-7-parameters')
+  @Post('calculate-chosen-curve-percentages')
   @ApiOperation({
-    summary: 'Retorna os dados iniciais necessários para a sétima tela (porcentagens da curva escolhida) da dosagem',
+    summary: 'Calcula os dados da sétima tela (porcentagens da curva escolhida) da dosagem',
   })
   @ApiResponse({
     status: 200,
     description: 'Dados carregados com sucesso!',
     content: { 'application/json': { schema: { example: { data: {}, success: true } } } },
   })
+  
   async getStep7Parameters(@Res() response: Response, @Body() body: any) {
     this.logger.log(`get step 7 data > [body]: ${body}`);
 

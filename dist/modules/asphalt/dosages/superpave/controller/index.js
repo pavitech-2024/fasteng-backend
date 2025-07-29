@@ -463,9 +463,9 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], SuperpaveController.prototype, "saveStep6Data", null);
 __decorate([
-    (0, common_1.Post)('step-7-parameters'),
+    (0, common_1.Post)('calculate-chosen-curve-percentages'),
     (0, swagger_1.ApiOperation)({
-        summary: 'Retorna os dados iniciais necessários para a sétima tela (porcentagens da curva escolhida) da dosagem',
+        summary: 'Calcula os dados da sétima tela (porcentagens da curva escolhida) da dosagem',
     }),
     (0, swagger_1.ApiResponse)({
         status: 200,
