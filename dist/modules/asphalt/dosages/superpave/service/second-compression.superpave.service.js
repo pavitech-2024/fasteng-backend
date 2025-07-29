@@ -279,10 +279,10 @@ let SecondCompression_Superpave_Service = SecondCompression_Superpave_Service_1 
                 sumIndirectTensileStrength = 0;
                 nIndirectTensileStrength = 0;
                 for (let i = 0; i < choosenGranulometryComposition.composition.normal.projectN.samplesData.length; i++) {
-                    if (choosenGranulometryComposition.composition.normal.projectN.samplesData[i].indirectTensileStrength !==
+                    if (choosenGranulometryComposition.composition.normal.projectN.samplesData[i].diametralTractionResistance !==
                         undefined) {
                         sumIndirectTensileStrength +=
-                            choosenGranulometryComposition.composition.normal.projectN.samplesData[i].indirectTensileStrength;
+                            choosenGranulometryComposition.composition.normal.projectN.samplesData[i].diametralTractionResistance;
                         nIndirectTensileStrength++;
                     }
                 }
@@ -292,10 +292,10 @@ let SecondCompression_Superpave_Service = SecondCompression_Superpave_Service_1 
                 sumIndirectTensileStrength = 0;
                 nIndirectTensileStrength = 0;
                 for (let i = 0; i < choosenGranulometryComposition.composition.halfPlus.projectN.samplesData.length; i++) {
-                    if (choosenGranulometryComposition.composition.halfPlus.projectN.samplesData[i].indirectTensileStrength !==
+                    if (choosenGranulometryComposition.composition.halfPlus.projectN.samplesData[i].diametralTractionResistance !==
                         undefined) {
                         sumIndirectTensileStrength +=
-                            choosenGranulometryComposition.composition.halfPlus.projectN.samplesData[i].indirectTensileStrength;
+                            choosenGranulometryComposition.composition.halfPlus.projectN.samplesData[i].diametralTractionResistance;
                         nIndirectTensileStrength++;
                     }
                 }
@@ -305,10 +305,10 @@ let SecondCompression_Superpave_Service = SecondCompression_Superpave_Service_1 
                 sumIndirectTensileStrength = 0;
                 nIndirectTensileStrength = 0;
                 for (let i = 0; i < choosenGranulometryComposition.composition.onePlus.projectN.samplesData.length; i++) {
-                    if (choosenGranulometryComposition.composition.onePlus.projectN.samplesData[i].indirectTensileStrength !==
+                    if (choosenGranulometryComposition.composition.onePlus.projectN.samplesData[i].diametralTractionResistance !==
                         undefined) {
                         sumIndirectTensileStrength +=
-                            choosenGranulometryComposition.composition.onePlus.projectN.samplesData[i].indirectTensileStrength;
+                            choosenGranulometryComposition.composition.onePlus.projectN.samplesData[i].diametralTractionResistance;
                         nIndirectTensileStrength++;
                     }
                 }
