@@ -50,7 +50,7 @@ export class ResumeDosage_Superpave_Service {
       samplesData,
       Gmb: null,
       Vv: null,
-      Gmm: Number(gmmValue),
+      Gmm: parseFloat(gmmValue.replace(',', '.')),
       percentWaterAbs: null,
       specifiesMass: null,
       Vam: null,

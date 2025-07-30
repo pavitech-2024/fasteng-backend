@@ -65,7 +65,7 @@ let ResumeDosage_Superpave_Service = ResumeDosage_Superpave_Service_1 = class Re
             samplesData,
             Gmb: null,
             Vv: null,
-            Gmm: Number(gmmValue),
+            Gmm: parseFloat(gmmValue.replace(',', '.')),
             percentWaterAbs: null,
             specifiesMass: null,
             Vam: null,
