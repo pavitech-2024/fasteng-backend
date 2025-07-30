@@ -31,10 +31,6 @@ export class FirstCurvePercentages_Service {
         binderCompositions,
         percentageInputs,
       } = body;
-      console.log(
-        '🚀 ~ FirstCurvePercentages_Service ~ getFirstCompressionParametersData ~ granulometryComposition:',
-        granulometryComposition,
-      );
 
       let binderSpecificGravity = binderSpecificGravityValue;
 
@@ -317,7 +313,7 @@ export class FirstCurvePercentages_Service {
         updatedGranulometryComposition = {
           ...updatedGranulometryComposition,
           average: {
-            gmm: riceTest.length ? riceTest.find((e) => e.curve === 'average').gmm : 0,
+            gmm: riceTest.find((e) => e.curve === 'average').gmm ? riceTest.find((e) => e.curve === 'average').gmm : 0,
             pli: binderCompositions[0].pli,
             data: [],
             percentWaterAbs: null,
@@ -429,7 +425,7 @@ export class FirstCurvePercentages_Service {
         updatedGranulometryComposition = {
           ...updatedGranulometryComposition,
           higher: {
-            gmm: riceTest.length ? riceTest.find((e) => e.curve === 'higher').gmm : 0,
+            gmm: riceTest.find((e) => e.curve === 'higher').gmm ? riceTest.find((e) => e.curve === 'higher').gmm : 0,
             pli: binderCompositions[0].pli,
             data: [],
             percentWaterAbs: null,
@@ -791,16 +787,6 @@ export class FirstCurvePercentages_Service {
     return data;
   }
 
-  // calculateGmbCP(data) {
-  //   let updatedData = data;
-  //   for (let i = 0; i < data.length; i++) {
-  //     updatedData[i].Gmb = null;
-  //     updatedData[i].Gmb =
-  //       (Math.round((data[i].dryMass / (data[i].drySurfaceSaturatedMass - data[i].submergedMass)) * 1e3) / 1e3) *
-  //       data[i].waterTemperatureCorrection;
-  //   }
-  //   return updatedData;
-  // }
   calculateGmbCP(data) {
     let updatedData = data;
     for (let i = 0; i < data.length; i++) {

@@ -51,7 +51,6 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
             try {
                 this.logger.log({ body }, 'start calculate first compression parameters data > [service]');
                 const { granulometryComposition, trafficVolume, nominalSize, turnNumber, chosenCurves, porcentagesPassantsN200, binderSpecificGravity: binderSpecificGravityValue, riceTest, maximumDensity, binderCompositions, percentageInputs, } = body;
-                console.log('🚀 ~ FirstCurvePercentages_Service ~ getFirstCompressionParametersData ~ granulometryComposition:', granulometryComposition);
                 let binderSpecificGravity = binderSpecificGravityValue;
                 if (!binderSpecificGravityValue)
                     binderSpecificGravity = 0;
@@ -255,7 +254,7 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
                 let passantN200average = 0;
                 if (chosenCurves.includes('average')) {
                     updatedGranulometryComposition = Object.assign(Object.assign({}, updatedGranulometryComposition), { average: {
-                            gmm: riceTest.length ? riceTest.find((e) => e.curve === 'average').gmm : 0,
+                            gmm: riceTest.find((e) => e.curve === 'average').gmm ? riceTest.find((e) => e.curve === 'average').gmm : 0,
                             pli: binderCompositions[0].pli,
                             data: [],
                             percentWaterAbs: null,
@@ -322,7 +321,7 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
                 let passantN200higher = 0;
                 if (chosenCurves.includes('higher')) {
                     updatedGranulometryComposition = Object.assign(Object.assign({}, updatedGranulometryComposition), { higher: {
-                            gmm: riceTest.length ? riceTest.find((e) => e.curve === 'higher').gmm : 0,
+                            gmm: riceTest.find((e) => e.curve === 'higher').gmm ? riceTest.find((e) => e.curve === 'higher').gmm : 0,
                             pli: binderCompositions[0].pli,
                             data: [],
                             percentWaterAbs: null,
