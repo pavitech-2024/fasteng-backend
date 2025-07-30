@@ -13,6 +13,7 @@ import { SecondCompression_Superpave_Service } from './service/second-compressio
 import { SecondCompressionParameters_Superpave_Service } from './service/second-compression-parameters.service';
 import { ResumeDosage_Superpave_Service } from './service/resume-dosage.service';
 import { GranulometryEssay_Superpave_Service } from './service/granulometryEssay.service';
+import { ConfirmCompaction_Superpave_Service } from './service/confirm-compaction.service';
 
 const services = [
   SuperpaveService,
@@ -26,6 +27,7 @@ const services = [
   ChosenCurvePercentages_Superpave_Service,
   SecondCompression_Superpave_Service,
   SecondCompressionParameters_Superpave_Service,
+  ConfirmCompaction_Superpave_Service,
   ResumeDosage_Superpave_Service
 ];
 

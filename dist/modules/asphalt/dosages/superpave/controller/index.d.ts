@@ -27,12 +27,12 @@ export declare class SuperpaveController {
     calculateStep7RiceTest(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
     calculateStep7Gmm(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
     calculateSecondCompressionData(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
-    saveStep8Data(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
+    saveSecondCompressionData(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
     getSecondCompressionPercentageData(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
-    saveStep9Data(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
+    saveSecondCompressionParams(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
     calculateStep9RiceTest(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
-    calculateVolumetricParametersOfConfirmGranulometryComposition(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
-    saveStep10Data(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
+    calculateDosageResumeEquation(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
+    saveConfirmattionCompressionData(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
     saveSuperpaveDosage(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
     deleteMarshallDosage(response: Response, id: string): Promise<Response<any, Record<string, any>>>;
 }

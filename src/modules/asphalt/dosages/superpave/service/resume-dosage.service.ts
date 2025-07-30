@@ -15,17 +15,9 @@ export class ResumeDosage_Superpave_Service {
     private readonly superpave_repository: SuperpaveRepository,
   ) {}
 
-  riceTest(
-    massOfDrySample,
-    containerSampleWaterMass,
-    containerWaterMass,
-    temperatureOfWater = 1.0
-  ) {
-    return (
-      massOfDrySample /
-      (massOfDrySample + containerWaterMass - containerSampleWaterMass)
-    ) * temperatureOfWater;
-  };
+  riceTest(massOfDrySample, containerSampleWaterMass, containerWaterMass, temperatureOfWater = 1.0) {
+    return (massOfDrySample / (massOfDrySample + containerWaterMass - containerSampleWaterMass)) * temperatureOfWater;
+  }
 
   calculateStep9RiceTest(body) {
     const { gmm, riceTest } = body;
@@ -33,11 +25,16 @@ export class ResumeDosage_Superpave_Service {
     let gmmValue;
 
     if (gmm) gmmValue = gmm;
-    else gmmValue = this.riceTest(riceTest.sampleAirDryMass, riceTest.containerSampleWaterMass, riceTest.containerWaterMass);
+    else
+      gmmValue = this.riceTest(
+        riceTest.sampleAirDryMass,
+        riceTest.containerSampleWaterMass,
+        riceTest.containerWaterMass,
+      );
     return gmmValue;
   }
 
-  calculateVolumetricParametersOfConfirmGranulometryComposition(body) {
+  calculateDosageResumeEquation(body) {
     const {
       samplesData,
       optimumContent,
@@ -45,9 +42,8 @@ export class ResumeDosage_Superpave_Service {
       binderSpecificGravity,
       listOfSpecificGravities,
       porcentagesPassantsN200,
-      gmm: gmmValue
+      gmm: gmmValue,
     } = body;
-  
 
     const confirmGranulometryComposition = {
       ponderatedPercentsOfDosage: null,
@@ -64,10 +60,13 @@ export class ResumeDosage_Superpave_Service {
       ratioDustAsphalt: null,
     };
 
+    const isNumber = !isNaN(Number(optimumContent));
+    const optimumContentFormatted = isNumber ? optimumContent : 0;
+
     const ponderatedPercentsOfDosage = choosenGranulometryComposition.percentsOfDosage.map(
-      (percent) => ((100 - optimumContent) * percent) / 100,
+      (percent) => ((100 - optimumContentFormatted) * percent) / 100,
     );
-    
+
     confirmGranulometryComposition.ponderatedPercentsOfDosage = ponderatedPercentsOfDosage;
 
     confirmGranulometryComposition.samplesData = samplesData;
@@ -93,7 +92,6 @@ export class ResumeDosage_Superpave_Service {
     confirmGranulometryComposition.quantitative = ponderatedPercentsOfDosage.map(
       (percent, i) => (gmm * percent * 10) / 1000 / listOfSpecificGravities[i].realSpecificMass,
     );
-    
 
     confirmGranulometryComposition.quantitative.unshift(gmm * optimumContent * 10);
 
@@ -109,7 +107,8 @@ export class ResumeDosage_Superpave_Service {
     }
 
     if (ndiametralTractionResistance !== 0) {
-      confirmGranulometryComposition.diametralTractionResistance = sumdiametralTractionResistance / ndiametralTractionResistance;
+      confirmGranulometryComposition.diametralTractionResistance =
+        sumdiametralTractionResistance / ndiametralTractionResistance;
     }
 
     let passantN200 = 0;
@@ -117,7 +116,6 @@ export class ResumeDosage_Superpave_Service {
     for (let i = 0; i < porcentagesPassantsN200.length; i++) {
       passantN200 += (porcentagesPassantsN200[i] * choosenGranulometryComposition.percentsOfDosage[i]) / 100;
     }
-
 
     confirmGranulometryComposition.ratioDustAsphalt =
       passantN200 /
@@ -184,7 +182,9 @@ export class ResumeDosage_Superpave_Service {
 
   async saveStep11Data(body: any, userId: string) {
     try {
-      this.logger.log('save superpave vonfirm compression step on resume-dosage.superpave.service.ts > [body]', { body });
+      this.logger.log('save superpave vonfirm compression step on resume-dosage.superpave.service.ts > [body]', {
+        body,
+      });
 
       const { name } = body.confirmationCompressionData;
 
@@ -192,12 +192,12 @@ export class ResumeDosage_Superpave_Service {
 
       const { name: materialName, ...confirmationCompressionDataWithoutName } = body.confirmationCompressionData;
 
-      const superpaveWithConfirmationCompressionData = { ...superpaveExists._doc, confirmationCompressionData: confirmationCompressionDataWithoutName };
+      const superpaveWithConfirmationCompressionData = {
+        ...superpaveExists._doc,
+        confirmationCompressionData: confirmationCompressionDataWithoutName,
+      };
 
-      await this.superpaveModel.updateOne(
-        { _id: superpaveExists._doc._id },
-        superpaveWithConfirmationCompressionData
-      );
+      await this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithConfirmationCompressionData);
 
       if (superpaveExists._doc.generalData.step < 11) {
         await this.superpave_repository.saveStep(superpaveExists, 11);
@@ -205,7 +205,7 @@ export class ResumeDosage_Superpave_Service {
 
       return true;
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
@@ -221,10 +221,7 @@ export class ResumeDosage_Superpave_Service {
 
       const superpaveWithResumeDosage = { ...superpaveExists._doc, dosageResume: superpaveDosageWithoutName };
 
-      await this.superpaveModel.updateOne(
-        { _id: superpaveExists._doc._id },
-        superpaveWithResumeDosage
-      );
+      await this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithResumeDosage);
 
       if (superpaveExists._doc.generalData.step < 10) {
         await this.superpave_repository.saveStep(superpaveExists, 10);
@@ -232,7 +229,7 @@ export class ResumeDosage_Superpave_Service {
 
       return true;
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 }

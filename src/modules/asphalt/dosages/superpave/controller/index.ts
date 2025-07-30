@@ -249,7 +249,6 @@ export class SuperpaveController {
     description: 'Dados carregados com sucesso!',
     content: { 'application/json': { schema: { example: { data: {}, success: true } } } },
   })
-  
   async getStep7Parameters(@Res() response: Response, @Body() body: any) {
     this.logger.log(`get step 7 data > [body]: ${body}`);
 
@@ -287,9 +286,7 @@ export class SuperpaveController {
 
   @Post('confirm-second-compression-data')
   async calculateSecondCompressionData(@Res() response: Response, @Body() body: any) {
-    this.logger.log(
-      `calculate second compression data > [body]: ${body}`,
-    );
+    this.logger.log(`calculate second compression data > [body]: ${body}`);
 
     const status = await this.superpaveService.calculateSecondCompressionData(body);
 
@@ -297,10 +294,10 @@ export class SuperpaveController {
   }
 
   @Post('save-second-compression-data-step/:userId')
-  async saveStep8Data(@Res() response: Response, @Param('userId') userId: string, @Body() body: any) {
+  async saveSecondCompressionData(@Res() response: Response, @Param('userId') userId: string, @Body() body: any) {
     this.logger.log(`save step 8 data > [body]: ${body}`);
 
-    // const status = await this.superpaveService.saveStep8Data(body, userId);
+    const status = await this.superpaveService.saveSecondCompressionData(body, userId);
 
     return response.status(200).json(status);
   }
@@ -323,10 +320,10 @@ export class SuperpaveController {
   }
 
   @Post('save-second-compression-params-step/:userId')
-  async saveStep9Data(@Res() response: Response, @Param('userId') userId: string, @Body() body: any) {
-    this.logger.log(`save step 9 data > [body]: ${body}`);
+  async saveSecondCompressionParams(@Res() response: Response, @Param('userId') userId: string, @Body() body: any) {
+    this.logger.log(`save second compression data > [body]: ${body}`);
 
-    const status = await this.superpaveService.saveStep9Data(body, userId);
+    const status = await this.superpaveService.saveSecondCompressionParams(body, userId);
 
     return response.status(200).json(status);
   }
@@ -341,19 +338,19 @@ export class SuperpaveController {
   }
 
   @Post('calculate-dosage-equation')
-  async calculateVolumetricParametersOfConfirmGranulometryComposition(@Res() response: Response, @Body() body: any) {
+  async calculateDosageResumeEquation(@Res() response: Response, @Body() body: any) {
     this.logger.log(`calculate dosage equation > [body]: ${body}`);
 
-    const status = await this.superpaveService.calculateVolumetricParametersOfConfirmGranulometryComposition(body);
+    const status = await this.superpaveService.calculateDosageResumeEquation(body);
 
     return response.status(200).json(status);
   }
 
   @Post('save-confirmattion-compression-step/:userId')
-  async saveStep10Data(@Res() response: Response, @Param('userId') userId: string, @Body() body: any) {
-    this.logger.log(`save step 10 data > [body]: ${body}`);
+  async saveConfirmattionCompressionData(@Res() response: Response, @Param('userId') userId: string, @Body() body: any) {
+    this.logger.log(`save confirmattion compression data > [body]: ${body}`);
 
-    const status = await this.superpaveService.saveStep10Data(body, userId);
+    const status = await this.superpaveService.saveConfirmattionCompressionData(body, userId);
 
     return response.status(200).json(status);
   }

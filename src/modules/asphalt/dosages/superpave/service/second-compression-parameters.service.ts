@@ -143,7 +143,7 @@ export class SecondCompressionParameters_Superpave_Service {
     }
   }
   
-  async saveStep10Data(body: any, userId: string) {
+  async saveSecondCompressionParams(body: any, userId: string) {
     try {
       this.logger.log('save superpave second compression percentages step on second-compression-percentages.superpave.service.ts > [body]', { body });
 

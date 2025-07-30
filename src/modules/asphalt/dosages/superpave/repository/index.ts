@@ -31,7 +31,8 @@ export class SuperpaveRepository {
   }
 
   async findById(dosageId: string): Promise<Superpave> {
-    return this.superpaveModel.findById(dosageId);
+    const dosage = this.superpaveModel.findById(dosageId);
+    return dosage;
   }
 
   async createPartialSuperpave(superpave: any, userId: string): Promise<any> {

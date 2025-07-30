@@ -60,7 +60,8 @@ let SuperpaveRepository = class SuperpaveRepository {
     }
     findById(dosageId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.superpaveModel.findById(dosageId);
+            const dosage = this.superpaveModel.findById(dosageId);
+            return dosage;
         });
     }
     createPartialSuperpave(superpave, userId) {

@@ -513,7 +513,7 @@ export class SecondCompression_Superpave_Service {
     return vv;
   }
 
-  async saveStep9Data(body: any, userId: string) {
+  async saveSecondCompressionData(body: any, userId: string) {
     try {
       this.logger.log(
         'save superpave second compression data step on second-compression-data.superpave.service.ts > [body]',
@@ -533,8 +533,8 @@ export class SecondCompression_Superpave_Service {
 
       await this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithSecondCompression);
 
-      if (superpaveExists._doc.generalData.step < 9) {
-        await this.superpaveRepository.saveStep(superpaveExists, 9);
+      if (superpaveExists._doc.generalData.step < 8) {
+        await this.superpaveRepository.saveStep(superpaveExists, 8);
       }
 
       return true;
