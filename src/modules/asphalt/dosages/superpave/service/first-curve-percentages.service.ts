@@ -185,11 +185,12 @@ export class FirstCurvePercentages_Service {
 
       let passantN200lower = 0;
 
+      // Se a curva 'lower' estiver selecionada, faça as seguintes operações
       if (chosenCurves.includes('lower')) {
         updatedGranulometryComposition = {
           ...updatedGranulometryComposition,
           lower: {
-            gmm: riceTest.length > 0 ? riceTest.find((e) => e.curve === 'lower').gmm : 0,
+            gmm: riceTest.find((e) => e.curve === 'lower').gmm ? riceTest.find((e) => e.curve === 'lower').gmm : 0,
             pli: binderCompositions[0].pli,
             data: [],
             percentWaterAbs: null,
@@ -216,25 +217,35 @@ export class FirstCurvePercentages_Service {
           },
         };
 
+        // Calcula o GmbCP
         updatedGranulometryComposition.lower.data = this.calculateExpectedGmb(granulometryComposition[0]);
         updatedGranulometryComposition.lower.data = this.calculateGmbCP(updatedGranulometryComposition.lower.data);
 
+        // Calcula o Gmb2
         updatedGranulometryComposition.lower.data = this.calculateGmb2(updatedGranulometryComposition.lower.data);
 
+        // Calcula o C
         updatedGranulometryComposition.lower.data = this.calculateC(granulometryComposition[0], maxNIndex);
         updatedGranulometryComposition.lower.data = this.calculateExpectedGmb_C(
           updatedGranulometryComposition.lower.data,
         );
+        // Calcula o percentual de Gmm
         updatedGranulometryComposition.lower.data = this.calculatePercentageGmm(updatedGranulometryComposition.lower);
+        // Calcula a planilha Vv
         updatedGranulometryComposition.lower.data = this.calculatePlanilhaVv(updatedGranulometryComposition.lower.data);
+        // Calcula o Vcb
         updatedGranulometryComposition.lower.data = this.calculateVcb(updatedGranulometryComposition.lower);
+        // Calcula o Vam
         updatedGranulometryComposition.lower.data = this.calculateVam(updatedGranulometryComposition.lower.data);
+        // Calcula o Rbv
         updatedGranulometryComposition.lower.data = this.calculateRbv(updatedGranulometryComposition.lower.data);
 
+        // Calcula o percentual de absorção de água
         updatedGranulometryComposition.lower.percentWaterAbs = this.percentageWaterAbsorbed(
           updatedGranulometryComposition.lower.data,
         );
 
+        // Separa os valores de N para cada curva
         updatedGranulometryComposition.lower.initialN.samplesData = this.separateNValues(
           updatedGranulometryComposition.lower.data,
           initialNIndex,
@@ -250,6 +261,7 @@ export class FirstCurvePercentages_Service {
           maxNIndex,
         );
 
+        // Calcula o percentual de Gmm para cada curva
         updatedGranulometryComposition.lower.initialN.percentageGmm = this.calculateAveragePercentageGmm(
           updatedGranulometryComposition.lower.initialN.samplesData,
         );
@@ -260,13 +272,15 @@ export class FirstCurvePercentages_Service {
           updatedGranulometryComposition.lower.maxN.samplesData,
         );
 
+        // Calcula o Vv2
         updatedGranulometryComposition.lower.Vv = this.calculateVv2(updatedGranulometryComposition.lower);
 
+        // Calcula o Vam
         updatedGranulometryComposition.lower.Vam = this.calculateAverageVAM(
           updatedGranulometryComposition.lower.projectN.samplesData,
         );
 
-        // Formatar percentageinputs;
+        // Formata os valores de entrada
         let inputsValues = [];
         Object.values(percentageInputs[0]).forEach((e) => {
           inputsValues.push(Number(e));
@@ -274,6 +288,7 @@ export class FirstCurvePercentages_Service {
 
         updatedGranulometryComposition.lower.percentsOfDosage = inputsValues;
 
+        // Calcula o passante N200
         for (let i = 0; i < porcentagesPassantsN200.length; i++) {
           if (porcentagesPassantsN200[i] === null) {
             porcentagesPassantsN200[i] = 0;
@@ -282,6 +297,7 @@ export class FirstCurvePercentages_Service {
           }
         }
 
+        // Calcula a razão poeira asfalto
         updatedGranulometryComposition.lower.ratioDustAsphalt =
           passantN200lower /
           ((-(100 - updatedGranulometryComposition.lower.pli) *
@@ -297,7 +313,7 @@ export class FirstCurvePercentages_Service {
         updatedGranulometryComposition = {
           ...updatedGranulometryComposition,
           average: {
-            gmm: riceTest.length ? riceTest.find((e) => e.curve === 'average').gmm : 0,
+            gmm: riceTest.find((e) => e.curve === 'average').gmm ? riceTest.find((e) => e.curve === 'average').gmm : 0,
             pli: binderCompositions[0].pli,
             data: [],
             percentWaterAbs: null,
@@ -409,7 +425,7 @@ export class FirstCurvePercentages_Service {
         updatedGranulometryComposition = {
           ...updatedGranulometryComposition,
           higher: {
-            gmm: riceTest.length ? riceTest.find((e) => e.curve === 'higher').gmm : 0,
+            gmm: riceTest.find((e) => e.curve === 'higher').gmm ? riceTest.find((e) => e.curve === 'higher').gmm : 0,
             pli: binderCompositions[0].pli,
             data: [],
             percentWaterAbs: null,
@@ -775,9 +791,16 @@ export class FirstCurvePercentages_Service {
     let updatedData = data;
     for (let i = 0; i < data.length; i++) {
       updatedData[i].Gmb = null;
-      updatedData[i].Gmb =
-        (Math.round((data[i].dryMass / (data[i].drySurfaceSaturatedMass - data[i].submergedMass)) * 1e3) / 1e3) *
-        data[i].waterTemperatureCorrection;
+
+      const numerator = data[i].dryMass;
+      const denominator = data[i].drySurfaceSaturatedMass - data[i].submergedMass;
+
+      if (denominator === 0) {
+        updatedData[i].Gmb = 0; // ou 0, ou lançar erro, depende da regra de negócio
+        continue;
+      }
+
+      updatedData[i].Gmb = (Math.round((numerator / denominator) * 1e3) / 1e3) * data[i].waterTemperatureCorrection;
     }
     return updatedData;
   }

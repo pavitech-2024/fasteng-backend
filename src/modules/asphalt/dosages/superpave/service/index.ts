@@ -20,6 +20,7 @@ import { AsphaltGranulometryService } from 'modules/asphalt/essays/granulometry/
 import { Calc_AsphaltGranulometry_Dto } from 'modules/asphalt/essays/granulometry/dto/asphalt.calc.granulometry.dto';
 import { ViscosityRotationalService } from 'modules/asphalt/essays/viscosityRotational/service/viscosityRotational.service';
 import { AllSievesSuperpaveUpdatedAstm } from 'utils/interfaces';
+import { ConfirmCompaction_Superpave_Service } from './confirm-compaction.service';
 
 @Injectable()
 export class SuperpaveService {
@@ -38,6 +39,7 @@ export class SuperpaveService {
     private readonly chosenCurvePercentages_Service: ChosenCurvePercentages_Superpave_Service,
     private readonly secondCompression_Service: SecondCompression_Superpave_Service,
     private readonly secondCompressionParameters_Service: SecondCompressionParameters_Superpave_Service,
+    private readonly confirmCompaction_Service: ConfirmCompaction_Superpave_Service,
     private readonly resumeDosageEquation_Service: ResumeDosage_Superpave_Service,
     private readonly asphaltGranulometry_Service: AsphaltGranulometryService,
     private readonly rotationalViscosity_Service: ViscosityRotationalService,
@@ -997,14 +999,14 @@ export class SuperpaveService {
       return { data: null, success: false, error: { status, message, name } };
     }
   }
-
-  async saveStep9Data(body: any, userId: string) {
+  
+  async saveSecondCompressionData(body: any, userId: string) {
     try {
-      const success = await this.secondCompression_Service.saveStep9Data(body, userId);
+      const success = await this.secondCompression_Service.saveSecondCompressionData(body, userId);
 
       return { success };
     } catch (error) {
-      this.logger.error(`error on save step 8 data superpave > [error]: ${error}`);
+      this.logger.error(`error on save second compression data superpave > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
     }
@@ -1022,13 +1024,25 @@ export class SuperpaveService {
     }
   }
 
-  async saveStep10Data(body: any, userId: string) {
+  async saveSecondCompressionParams(body: any, userId: string) {
     try {
-      const success = await this.secondCompressionParameters_Service.saveStep10Data(body, userId);
+      const success = await this.secondCompressionParameters_Service.saveSecondCompressionParams(body, userId);
 
       return { success };
     } catch (error) {
       this.logger.error(`error on save step 9 data superpave > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { success: false, error: { status, message, name } };
+    }
+  }
+
+  async saveConfirmattionCompressionData(body: any, userId: string) {
+    try {
+      const success = await this.confirmCompaction_Service.saveConfirmattionCompressionData(body, userId);
+
+      return { success };
+    } catch (error) {
+      this.logger.error(`error on save confirm compaction step data superpave > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
     }
@@ -1046,10 +1060,10 @@ export class SuperpaveService {
     }
   }
 
-  async calculateVolumetricParametersOfConfirmGranulometryComposition(body: any) {
+  async calculateDosageResumeEquation(body: any) {
     try {
       const data =
-        await this.resumeDosageEquation_Service.calculateVolumetricParametersOfConfirmGranulometryComposition(body);
+        await this.resumeDosageEquation_Service.calculateDosageResumeEquation(body);
 
       return { data, success: true };
     } catch (error) {

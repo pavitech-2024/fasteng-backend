@@ -85,5 +85,5 @@ export declare class SecondCompression_Superpave_Service {
     percentageWaterAbsorbed(data: any): number;
     calculateMassMedia(data: any): number[];
     calculateVv(curve: any): number;
-    saveStep9Data(body: any, userId: string): Promise<boolean>;
+    saveSecondCompressionData(body: any, userId: string): Promise<boolean>;
 }

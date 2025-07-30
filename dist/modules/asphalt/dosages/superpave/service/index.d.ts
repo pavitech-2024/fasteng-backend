@@ -15,6 +15,7 @@ import { ResumeDosage_Superpave_Service } from './resume-dosage.service';
 import { GranulometryEssay_Superpave_Service } from './granulometryEssay.service';
 import { AsphaltGranulometryService } from 'modules/asphalt/essays/granulometry/service';
 import { ViscosityRotationalService } from 'modules/asphalt/essays/viscosityRotational/service/viscosityRotational.service';
+import { ConfirmCompaction_Superpave_Service } from './confirm-compaction.service';
 export declare class SuperpaveService {
     private readonly superpave_repository;
     private readonly generalData_Service;
@@ -28,11 +29,12 @@ export declare class SuperpaveService {
     private readonly chosenCurvePercentages_Service;
     private readonly secondCompression_Service;
     private readonly secondCompressionParameters_Service;
+    private readonly confirmCompaction_Service;
     private readonly resumeDosageEquation_Service;
     private readonly asphaltGranulometry_Service;
     private readonly rotationalViscosity_Service;
     private logger;
-    constructor(superpave_repository: SuperpaveRepository, generalData_Service: GeneralData_Superpave_Service, granulometryEssay_Service: GranulometryEssay_Superpave_Service, materialSelection_Service: MaterialSelection_Superpave_Service, granulometryComposition_Service: GranulometryComposition_Superpave_Service, granulometryRepository: AsphaltGranulometryRepository, initialBinder_Service: InitialBinder_Superpave_Service, firstCompression_Service: FirstCompression_Superpave_Service, firstCurvePercentages_Service: FirstCurvePercentages_Service, chosenCurvePercentages_Service: ChosenCurvePercentages_Superpave_Service, secondCompression_Service: SecondCompression_Superpave_Service, secondCompressionParameters_Service: SecondCompressionParameters_Superpave_Service, resumeDosageEquation_Service: ResumeDosage_Superpave_Service, asphaltGranulometry_Service: AsphaltGranulometryService, rotationalViscosity_Service: ViscosityRotationalService);
+    constructor(superpave_repository: SuperpaveRepository, generalData_Service: GeneralData_Superpave_Service, granulometryEssay_Service: GranulometryEssay_Superpave_Service, materialSelection_Service: MaterialSelection_Superpave_Service, granulometryComposition_Service: GranulometryComposition_Superpave_Service, granulometryRepository: AsphaltGranulometryRepository, initialBinder_Service: InitialBinder_Superpave_Service, firstCompression_Service: FirstCompression_Superpave_Service, firstCurvePercentages_Service: FirstCurvePercentages_Service, chosenCurvePercentages_Service: ChosenCurvePercentages_Superpave_Service, secondCompression_Service: SecondCompression_Superpave_Service, secondCompressionParameters_Service: SecondCompressionParameters_Superpave_Service, confirmCompaction_Service: ConfirmCompaction_Superpave_Service, resumeDosageEquation_Service: ResumeDosage_Superpave_Service, asphaltGranulometry_Service: AsphaltGranulometryService, rotationalViscosity_Service: ViscosityRotationalService);
     verifyInitSuperpave(body: SuperpaveInitDto, userId: string): Promise<{
         success: boolean;
         dosage: any;
@@ -508,7 +510,7 @@ export declare class SuperpaveService {
             name: any;
         };
     }>;
-    saveStep9Data(body: any, userId: string): Promise<{
+    saveSecondCompressionData(body: any, userId: string): Promise<{
         success: boolean;
         error?: undefined;
     } | {
@@ -543,7 +545,18 @@ export declare class SuperpaveService {
         };
         data?: undefined;
     }>;
-    saveStep10Data(body: any, userId: string): Promise<{
+    saveSecondCompressionParams(body: any, userId: string): Promise<{
+        success: boolean;
+        error?: undefined;
+    } | {
+        success: boolean;
+        error: {
+            status: any;
+            message: any;
+            name: any;
+        };
+    }>;
+    saveConfirmattionCompressionData(body: any, userId: string): Promise<{
         success: boolean;
         error?: undefined;
     } | {
@@ -567,7 +580,7 @@ export declare class SuperpaveService {
         };
         data?: undefined;
     }>;
-    calculateVolumetricParametersOfConfirmGranulometryComposition(body: any): Promise<{
+    calculateDosageResumeEquation(body: any): Promise<{
         data: {
             ponderatedPercentsOfDosage: any;
             samplesData: any;
