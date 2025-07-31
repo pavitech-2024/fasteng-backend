@@ -119,14 +119,27 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
             }
         });
     }
-    saveGranulometryEssayStep(body, userId) {
+    saveGranulometryEssayData(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const result = yield this.granulometryEssay_Service.saveGranulometryEssay(body, userId);
+                const result = yield this.granulometryEssay_Service.saveGranulometryEssayData(body, userId);
                 return result;
             }
             catch (error) {
-                this.logger.error(`Error saving granulometry essay step: ${error.message}`);
+                this.logger.error(`Error saving granulometry essay data: ${error.message}`);
+                const { status, name, message } = error;
+                return { success: false, error: { status, message, name } };
+            }
+        });
+    }
+    saveGranulometryEssayResults(body, userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const result = yield this.granulometryEssay_Service.saveGranulometryEssayResults(body, userId);
+                return result;
+            }
+            catch (error) {
+                this.logger.error(`Error saving granulometry essay results: ${error.message}`);
                 const { status, name, message } = error;
                 return { success: false, error: { status, message, name } };
             }

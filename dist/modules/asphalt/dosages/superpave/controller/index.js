@@ -52,10 +52,17 @@ let SuperpaveController = SuperpaveController_1 = class SuperpaveController {
             return response.status(200).json(status);
         });
     }
-    saveGranulometryEssayStep(response, body, userId) {
+    saveGranulometryEssayData(response, body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`save granulometry essay data step in user superpave dosage > [body]: ${body}`);
-            const status = yield this.superpaveService.saveGranulometryEssayStep(body, userId);
+            this.logger.log(`save granulometry essay data in user superpave dosage > [body]: ${body}`);
+            const status = yield this.superpaveService.saveGranulometryEssayData(body, userId);
+            return response.status(200).json(status);
+        });
+    }
+    saveGranulometryEssayResults(response, body, userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.log(`save granulometry essay results in user superpave dosage > [body]: ${body}`);
+            const status = yield this.superpaveService.saveGranulometryEssayResults(body, userId);
             return response.status(200).json(status);
         });
     }
@@ -306,14 +313,23 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], SuperpaveController.prototype, "calculateGranulometryEssaysData", null);
 __decorate([
-    (0, common_1.Post)('save-granulometry-essay-step/:id'),
+    (0, common_1.Post)('save-granulometry-essay-data/:id'),
     __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Body)()),
     __param(2, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object, String]),
     __metadata("design:returntype", Promise)
-], SuperpaveController.prototype, "saveGranulometryEssayStep", null);
+], SuperpaveController.prototype, "saveGranulometryEssayData", null);
+__decorate([
+    (0, common_1.Post)('save-granulometry-essay-results/:id'),
+    __param(0, (0, common_1.Res)()),
+    __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object, String]),
+    __metadata("design:returntype", Promise)
+], SuperpaveController.prototype, "saveGranulometryEssayResults", null);
 __decorate([
     (0, common_1.Get)('material-selection/:id'),
     (0, swagger_1.ApiOperation)({

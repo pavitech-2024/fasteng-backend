@@ -49,6 +49,7 @@ export declare class GranulometryEssay_Superpave_Service {
             index: number;
         };
     };
-    saveGranulometryEssay(body: any, userId: string): Promise<boolean>;
+    saveGranulometryEssayData(body: any, userId: string): Promise<boolean>;
+    saveGranulometryEssayResults(body: any, userId: string): Promise<boolean>;
 }
 export {};

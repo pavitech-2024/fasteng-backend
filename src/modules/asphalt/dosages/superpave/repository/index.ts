@@ -24,6 +24,12 @@ export class SuperpaveRepository {
     return dosage;
   }
 
+  /**
+   * Encontra uma dosagem que atenda ao filtro fornecido e atualiza seus dados com base nos dados fornecidos.
+   * @param superpaveFilterQuery O filtro para encontrar a dosagem.
+   * @param superpave Os dados que serão atualizados na dosagem.
+   * @returns Uma promessa que resolve com a dosagem atualizada.
+   */
   async findOneAndUpdate(superpaveFilterQuery: FilterQuery<Superpave>, superpave: Partial<Superpave>): Promise<Superpave> {
     return this.superpaveModel.findOneAndUpdate(superpaveFilterQuery, superpave, {
       new: true,
@@ -35,6 +41,13 @@ export class SuperpaveRepository {
     return dosage;
   }
 
+  /**
+   * Cria uma dosagem parcial, com base em um dado parcial de dosagem.
+   * @param superpave O dado parcial de dosagem que será salvo.
+   * @param userId O id do usuário que está criando a dosagem.
+   * @returns Uma promessa que resolve com a dosagem parcial criada.
+   * @throws Erro caso não seja possível criar a dosagem parcial.
+   */
   async createPartialSuperpave(superpave: any, userId: string): Promise<any> {
     try {
       const createdPartialSuperpave = await this.superpaveModel.create({
@@ -48,6 +61,13 @@ export class SuperpaveRepository {
     }
   }
 
+  /**
+   * Salva o passo atual da dosagem no banco de dados.
+   * @param superpave O dosage que ter  o passo atualizado.
+   * @param step O novo passo que será salvo.
+   * @returns Uma promessa que resolve sem parâmetro caso o passo seja salvo com sucesso.
+   * @throws Erro caso não seja possível salvar o passo.
+   */
   async saveStep(superpave: any, step: number): Promise<void> {
     try {
       await this.superpaveModel.updateOne(

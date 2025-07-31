@@ -73,11 +73,20 @@ export class SuperpaveController {
     return response.status(200).json(status);
   }
 
-  @Post('save-granulometry-essay-step/:id')
-  async saveGranulometryEssayStep(@Res() response: Response, @Body() body: any, @Param('id') userId: string) {
-    this.logger.log(`save granulometry essay data step in user superpave dosage > [body]: ${body}`);
+  @Post('save-granulometry-essay-data/:id')
+  async saveGranulometryEssayData(@Res() response: Response, @Body() body: any, @Param('id') userId: string) {
+    this.logger.log(`save granulometry essay data in user superpave dosage > [body]: ${body}`);
 
-    const status = await this.superpaveService.saveGranulometryEssayStep(body, userId);
+    const status = await this.superpaveService.saveGranulometryEssayData(body, userId);
+
+    return response.status(200).json(status);
+  }
+
+  @Post('save-granulometry-essay-results/:id')
+  async saveGranulometryEssayResults(@Res() response: Response, @Body() body: any, @Param('id') userId: string) {
+    this.logger.log(`save granulometry essay results in user superpave dosage > [body]: ${body}`);
+
+    const status = await this.superpaveService.saveGranulometryEssayResults(body, userId);
 
     return response.status(200).json(status);
   }
@@ -347,7 +356,11 @@ export class SuperpaveController {
   }
 
   @Post('save-confirmattion-compression-step/:userId')
-  async saveConfirmattionCompressionData(@Res() response: Response, @Param('userId') userId: string, @Body() body: any) {
+  async saveConfirmattionCompressionData(
+    @Res() response: Response,
+    @Param('userId') userId: string,
+    @Body() body: any,
+  ) {
     this.logger.log(`save confirmattion compression data > [body]: ${body}`);
 
     const status = await this.superpaveService.saveConfirmattionCompressionData(body, userId);
