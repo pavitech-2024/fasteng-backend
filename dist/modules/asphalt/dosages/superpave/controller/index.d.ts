@@ -8,7 +8,8 @@ export declare class SuperpaveController {
     getAllByUserId(userId: string): Promise<import("../schemas").Superpave[]>;
     verifyInitSuperpave(response: Response, body: SuperpaveInitDto, userId: string): Promise<Response<any, Record<string, any>>>;
     calculateGranulometryEssaysData(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
-    saveGranulometryEssayStep(response: Response, body: any, userId: string): Promise<Response<any, Record<string, any>>>;
+    saveGranulometryEssayData(response: Response, body: any, userId: string): Promise<Response<any, Record<string, any>>>;
+    saveGranulometryEssayResults(response: Response, body: any, userId: string): Promise<Response<any, Record<string, any>>>;
     getMaterialsByUserId(response: Response, userId: string): Promise<Response<any, Record<string, any>>>;
     getDosageById(response: Response, dosageId: string): Promise<Response<any, Record<string, any>>>;
     saveMaterialSelectionStep(response: Response, body: any, userId: string): Promise<Response<any, Record<string, any>>>;

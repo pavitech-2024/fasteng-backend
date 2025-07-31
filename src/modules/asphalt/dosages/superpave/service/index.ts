@@ -122,12 +122,23 @@ export class SuperpaveService {
     }
   }
 
-  async saveGranulometryEssayStep(body: any, userId: string) {
+  async saveGranulometryEssayData(body: any, userId: string) {
     try {
-      const result = await this.granulometryEssay_Service.saveGranulometryEssay(body, userId);
+      const result = await this.granulometryEssay_Service.saveGranulometryEssayData(body, userId);
       return result;
     } catch (error) {
-      this.logger.error(`Error saving granulometry essay step: ${error.message}`);
+      this.logger.error(`Error saving granulometry essay data: ${error.message}`);
+      const { status, name, message } = error;
+      return { success: false, error: { status, message, name } };
+    }
+  }
+
+  async saveGranulometryEssayResults(body: any, userId: string) {
+    try {
+      const result = await this.granulometryEssay_Service.saveGranulometryEssayResults(body, userId);
+      return result;
+    } catch (error) {
+      this.logger.error(`Error saving granulometry essay results: ${error.message}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
     }
@@ -882,7 +893,7 @@ export class SuperpaveService {
     }
   }
 
-    async saveInitialBinderStep(body: any, userId: string) {
+  async saveInitialBinderStep(body: any, userId: string) {
     try {
       const success = await this.initialBinder_Service.saveInitialBinderStep(body, userId);
 
@@ -986,20 +997,16 @@ export class SuperpaveService {
 
   async calculateSecondCompressionData(body: any) {
     try {
-      const gmm = await this.secondCompression_Service.calculateSecondCompressionData(
-        body,
-      );
+      const gmm = await this.secondCompression_Service.calculateSecondCompressionData(body);
 
       return { data: gmm, success: true };
     } catch (error) {
-      this.logger.error(
-        `error on calculating the second compression data > [error]: ${error}`,
-      );
+      this.logger.error(`error on calculating the second compression data > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
     }
   }
-  
+
   async saveSecondCompressionData(body: any, userId: string) {
     try {
       const success = await this.secondCompression_Service.saveSecondCompressionData(body, userId);
@@ -1062,8 +1069,7 @@ export class SuperpaveService {
 
   async calculateDosageResumeEquation(body: any) {
     try {
-      const data =
-        await this.resumeDosageEquation_Service.calculateDosageResumeEquation(body);
+      const data = await this.resumeDosageEquation_Service.calculateDosageResumeEquation(body);
 
       return { data, success: true };
     } catch (error) {

@@ -89,7 +89,15 @@ export declare class SuperpaveService {
         granulometry?: undefined;
         viscosity?: undefined;
     }>;
-    saveGranulometryEssayStep(body: any, userId: string): Promise<boolean | {
+    saveGranulometryEssayData(body: any, userId: string): Promise<boolean | {
+        success: boolean;
+        error: {
+            status: any;
+            message: any;
+            name: any;
+        };
+    }>;
+    saveGranulometryEssayResults(body: any, userId: string): Promise<boolean | {
         success: boolean;
         error: {
             status: any;

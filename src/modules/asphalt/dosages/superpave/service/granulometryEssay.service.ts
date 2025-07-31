@@ -197,12 +197,10 @@ export class GranulometryEssay_Superpave_Service {
       },
     );
   };
-  
 
-  async saveGranulometryEssay(body: any, userId: string) {
-    console.log('Teste');
+  async saveGranulometryEssayData(body: any, userId: string) {
     try {
-      this.logger.log('save superpave materials step on material-selection.superpave.service.ts > [body]', { body });
+      this.logger.log('save superpave materials data on material-selection.superpave.service.ts > [body]', { body });
 
       const { name } = body.granulometryEssayData;
 
@@ -214,8 +212,32 @@ export class GranulometryEssay_Superpave_Service {
 
       await this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithMaterials);
 
+      if (superpaveExists._doc.generalData.step < 1) {
+        await this.superpave_repository.saveStep(superpaveExists, 1);
+      }
+
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async saveGranulometryEssayResults(body: any, userId: string) {
+    try {
+      this.logger.log('save superpave materials results on material-selection.superpave.service.ts > [body]', { body });
+
+      const { name } = body.granulometryEssayResults;
+
+      const superpaveExists: any = await this.superpave_repository.findOne(name, userId);
+
+      const { name: materialName, ...materialDataWithoutName } = body.granulometryEssayResults;
+
+      const superpaveWithMaterials = { ...superpaveExists._doc, granulometryEssayResults: materialDataWithoutName };
+
+      await this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithMaterials);
+
       if (superpaveExists._doc.generalData.step < 2) {
-        await this.superpave_repository.saveStep(superpaveExists, 2);
+        await this.superpave_repository.saveStep(superpaveWithMaterials, 2);
       }
 
       return true;
