@@ -1,6 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { SuperpaveRepository } from '../repository';
-import { GeneralData_Superpave_Service } from './general-data.superpave.service';
 import { InjectModel } from '@nestjs/mongoose';
 import { Superpave, SuperpaveDocument } from '../schemas';
 import { DATABASE_CONNECTION } from 'infra/mongoose/database.config';
@@ -69,7 +68,7 @@ export class FirstCompression_Superpave_Service {
     }
   }
 
-  async saveStep5Data(body: any, userId: string) {
+  async saveFirstCompressionData(body: any, userId: string) {
     try {
       this.logger.log('save superpave first compression step on first-compression.superpave.service.ts > [body]', { body });
 
@@ -86,8 +85,8 @@ export class FirstCompression_Superpave_Service {
         superpaveWithFirstCompression
       );
 
-      if (superpaveExists._doc.generalData.step < 5) {
-        await this.superpaveRepository.saveStep(superpaveExists, 5);
+      if (superpaveExists._doc.generalData.step < 6) {
+        await this.superpaveRepository.saveStep(superpaveExists, 6);
       }
 
       return true;

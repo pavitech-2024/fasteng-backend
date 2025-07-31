@@ -15,29 +15,33 @@ export class SecondCompressionParameters_Superpave_Service {
     private readonly superpave_repository: SuperpaveRepository,
   ) {}
 
-  async getStep9Data(body: any) {
+  async getSecondCompressionPercentageData(body: any) {
     try {
-      this;
-      this.logger.log({}, 'start get step 8 Data > SecondCompressionPercentage_Superpave_Service');
+      this.logger.log({}, 'start get second compression percentage data > SecondCompressionPercentage_Superpave_Service');
 
       const { expectedPli, composition } = body;
 
       const PolynomialRegression = require('ml-regression-polynomial');
       const { quadSolver } = require('quadratic-solver');
       const Pli = expectedPli;
+
+      // Volume de vazios da mistura paracada teor
       const dataVv = [
         composition.halfLess.Vv,
         composition.normal.Vv,
         composition.halfPlus.Vv,
         composition.onePlus.Vv,
       ];
+    
       const dataPli = [Pli - 0.5, Pli, Pli + 0.5, Pli + 1];
       const regression = new PolynomialRegression(dataPli, dataVv, 2);
+      
       const optimumContent = quadSolver(
         regression.coefficients[2],
         regression.coefficients[1],
         regression.coefficients[0] - 4,
       )[1];
+
       const graphVv = [
         ['Teor', 'Vv'],
         [
@@ -98,10 +102,12 @@ export class SecondCompressionParameters_Superpave_Service {
         [Pli + 0.5, composition.halfPlus.ratioDustAsphalt],
         [Pli + 1, composition.onePlus.ratioDustAsphalt],
       ];
+
       let halfLessPointOfRT;
       let normalPointOfRT;
       let halfPlusPointOfRT;
       let onePlusPointOfRT;
+      
       if (composition.halfLess.indirectTensileStrength !== undefined) {
         halfLessPointOfRT = composition.halfLess.indirectTensileStrength;
       } else halfLessPointOfRT = null;
@@ -137,7 +143,7 @@ export class SecondCompressionParameters_Superpave_Service {
     }
   }
   
-  async saveStep9Data(body: any, userId: string) {
+  async saveSecondCompressionParams(body: any, userId: string) {
     try {
       this.logger.log('save superpave second compression percentages step on second-compression-percentages.superpave.service.ts > [body]', { body });
 
@@ -154,8 +160,8 @@ export class SecondCompressionParameters_Superpave_Service {
         superpaveWithSecondCompressionParams
       );
 
-      if (superpaveExists._doc.generalData.step < 9) {
-        await this.superpave_repository.saveStep(superpaveExists, 9);
+      if (superpaveExists._doc.generalData.step < 10) {
+        await this.superpave_repository.saveStep(superpaveExists, 10);
       }
 
       return true;

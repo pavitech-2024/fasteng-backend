@@ -15,9 +15,9 @@ export class FirstCurvePercentages_Service {
     private readonly superpave_repository: SuperpaveRepository,
   ) {}
 
-  async getStep6Parameters(body: any) {
+  async getFirstCompressionParametersData(body: any) {
     try {
-      this.logger.log({ body }, 'start calculate step 5 data > [service]');
+      this.logger.log({ body }, 'start calculate first compression parameters data > [service]');
       const {
         granulometryComposition,
         trafficVolume,
@@ -25,12 +25,17 @@ export class FirstCurvePercentages_Service {
         turnNumber,
         chosenCurves,
         porcentagesPassantsN200,
-        binderSpecificGravity,
+        binderSpecificGravity: binderSpecificGravityValue,
         riceTest,
         maximumDensity,
         binderCompositions,
         percentageInputs,
       } = body;
+
+      let binderSpecificGravity = binderSpecificGravityValue;
+
+      // Todo: remover este fallback após descobrir comom obter o valor da massa especifica do ligante;
+      if (!binderSpecificGravityValue) binderSpecificGravity = 0;
 
       let expectedPorcentageGmmInitialN;
       let expectedPorcentageGmmProjectN;
@@ -64,7 +69,7 @@ export class FirstCurvePercentages_Service {
           expectedPli: null,
           gse: null,
           combinedGsb: null,
-          Gmb: null
+          Gmb: null,
         },
         average: {
           pli: null,
@@ -90,7 +95,7 @@ export class FirstCurvePercentages_Service {
           expectedPli: null,
           gse: null,
           combinedGsb: null,
-          Gmb: null
+          Gmb: null,
         },
         higher: {
           pli: null,
@@ -116,42 +121,63 @@ export class FirstCurvePercentages_Service {
           expectedPli: null,
           gse: null,
           combinedGsb: null,
-          Gmb: null
+          Gmb: null,
         },
       };
 
-      if (trafficVolume === 'high' || trafficVolume === 'medium-high') {
-        expectedPorcentageGmmInitialN = 89;
-        expectedPorcentageGmmProjectN = 96;
-        expectedPorcentageGmmMaxN = 98;
+      const trafficVolumeExpectations: Record<
+        string,
+        {
+          expectedPorcentageGmmInitialN: number;
+          expectedPorcentageGmmProjectN: number | null;
+          expectedPorcentageGmmMaxN: number | null;
+          expectedVam: number | null;
+          expectedRBV_Higher: number;
+          expectedRBV_Lower: number;
+        }
+      > = {
+        high: {
+          expectedPorcentageGmmInitialN: 89,
+          expectedPorcentageGmmProjectN: 96,
+          expectedPorcentageGmmMaxN: 98,
+          expectedVam: nominalSize.value <= 25 ? 11 : 12,
+          expectedRBV_Higher: 75,
+          expectedRBV_Lower: 65,
+        },
+        'medium-high': {
+          expectedPorcentageGmmInitialN: 89,
+          expectedPorcentageGmmProjectN: 96,
+          expectedPorcentageGmmMaxN: 98,
+          expectedVam: nominalSize.value <= 25 ? 11 : 12,
+          expectedRBV_Higher: 75,
+          expectedRBV_Lower: 65,
+        },
+        medium: {
+          expectedPorcentageGmmInitialN: 90.5,
+          expectedPorcentageGmmProjectN: 96,
+          expectedPorcentageGmmMaxN: 98,
+          expectedVam: nominalSize.value <= 25 ? 11 : 12,
+          expectedRBV_Higher: 78,
+          expectedRBV_Lower: 65,
+        },
+        low: {
+          expectedPorcentageGmmInitialN: 90.5,
+          expectedPorcentageGmmProjectN: null,
+          expectedPorcentageGmmMaxN: null,
+          expectedVam: null,
+          expectedRBV_Higher: 80,
+          expectedRBV_Lower: 70,
+        },
+      };
 
-        if (nominalSize.value === 37.5) expectedVam = 11;
-        else if (nominalSize.value === 25) expectedVam = 12;
-        else if (nominalSize.value === 19) expectedVam = 13;
-        else if (nominalSize.value === 12.5) expectedVam = 14;
-        else if (nominalSize.value === 9.5) expectedVam = 15;
-        expectedRBV_Higher = 75;
-        expectedRBV_Lower = 65;
-      } else if (trafficVolume === 'medium') {
-        expectedPorcentageGmmInitialN = 90.5;
-        expectedPorcentageGmmProjectN = 96;
-        expectedPorcentageGmmMaxN = 98;
-        if (nominalSize.value === 37.5) expectedVam = 11;
-        else if (nominalSize.value === 25) expectedVam = 12;
-        else if (nominalSize.value === 19) expectedVam = 13;
-        else if (nominalSize.value === 12.5) expectedVam = 14;
-        else if (nominalSize.value === 9.5) expectedVam = 15;
-        else expectedVam = 16;
-        expectedRBV_Higher = 78;
-        expectedRBV_Lower = 65;
-      } else if (trafficVolume === 'low') {
-        expectedPorcentageGmmInitialN = 90.5;
-        expectedPorcentageGmmProjectN = null;
-        expectedPorcentageGmmMaxN = null;
-        expectedVam = null;
-        expectedRBV_Higher = 80;
-        expectedRBV_Lower = 70;
-      }
+      const expectations = trafficVolumeExpectations[trafficVolume];
+
+      expectedPorcentageGmmInitialN = expectations.expectedPorcentageGmmInitialN;
+      expectedPorcentageGmmProjectN = expectations.expectedPorcentageGmmProjectN;
+      expectedPorcentageGmmMaxN = expectations.expectedPorcentageGmmMaxN;
+      expectedVam = expectations.expectedVam;
+      expectedRBV_Higher = expectations.expectedRBV_Higher;
+      expectedRBV_Lower = expectations.expectedRBV_Lower;
 
       let initialNIndex = turnNumber.initialN - 1;
       let projectNIndex = turnNumber.projectN - 1;
@@ -159,11 +185,12 @@ export class FirstCurvePercentages_Service {
 
       let passantN200lower = 0;
 
-      if (chosenCurves.lower) {
+      // Se a curva 'lower' estiver selecionada, faça as seguintes operações
+      if (chosenCurves.includes('lower')) {
         updatedGranulometryComposition = {
           ...updatedGranulometryComposition,
           lower: {
-            gmm: riceTest.find((e) => e.curve === 'lower').gmm,
+            gmm: riceTest.find((e) => e.curve === 'lower').gmm ? riceTest.find((e) => e.curve === 'lower').gmm : 0,
             pli: binderCompositions[0].pli,
             data: [],
             percentWaterAbs: null,
@@ -186,29 +213,39 @@ export class FirstCurvePercentages_Service {
             expectedPli: null,
             gse: null,
             combinedGsb: null,
-            Gmb: null
+            Gmb: null,
           },
         };
 
+        // Calcula o GmbCP
         updatedGranulometryComposition.lower.data = this.calculateExpectedGmb(granulometryComposition[0]);
         updatedGranulometryComposition.lower.data = this.calculateGmbCP(updatedGranulometryComposition.lower.data);
 
+        // Calcula o Gmb2
         updatedGranulometryComposition.lower.data = this.calculateGmb2(updatedGranulometryComposition.lower.data);
 
+        // Calcula o C
         updatedGranulometryComposition.lower.data = this.calculateC(granulometryComposition[0], maxNIndex);
         updatedGranulometryComposition.lower.data = this.calculateExpectedGmb_C(
           updatedGranulometryComposition.lower.data,
         );
+        // Calcula o percentual de Gmm
         updatedGranulometryComposition.lower.data = this.calculatePercentageGmm(updatedGranulometryComposition.lower);
+        // Calcula a planilha Vv
         updatedGranulometryComposition.lower.data = this.calculatePlanilhaVv(updatedGranulometryComposition.lower.data);
+        // Calcula o Vcb
         updatedGranulometryComposition.lower.data = this.calculateVcb(updatedGranulometryComposition.lower);
+        // Calcula o Vam
         updatedGranulometryComposition.lower.data = this.calculateVam(updatedGranulometryComposition.lower.data);
+        // Calcula o Rbv
         updatedGranulometryComposition.lower.data = this.calculateRbv(updatedGranulometryComposition.lower.data);
 
+        // Calcula o percentual de absorção de água
         updatedGranulometryComposition.lower.percentWaterAbs = this.percentageWaterAbsorbed(
           updatedGranulometryComposition.lower.data,
         );
 
+        // Separa os valores de N para cada curva
         updatedGranulometryComposition.lower.initialN.samplesData = this.separateNValues(
           updatedGranulometryComposition.lower.data,
           initialNIndex,
@@ -224,6 +261,7 @@ export class FirstCurvePercentages_Service {
           maxNIndex,
         );
 
+        // Calcula o percentual de Gmm para cada curva
         updatedGranulometryComposition.lower.initialN.percentageGmm = this.calculateAveragePercentageGmm(
           updatedGranulometryComposition.lower.initialN.samplesData,
         );
@@ -234,13 +272,15 @@ export class FirstCurvePercentages_Service {
           updatedGranulometryComposition.lower.maxN.samplesData,
         );
 
+        // Calcula o Vv2
         updatedGranulometryComposition.lower.Vv = this.calculateVv2(updatedGranulometryComposition.lower);
 
+        // Calcula o Vam
         updatedGranulometryComposition.lower.Vam = this.calculateAverageVAM(
           updatedGranulometryComposition.lower.projectN.samplesData,
         );
 
-        // Formatar percentageinputs;
+        // Formata os valores de entrada
         let inputsValues = [];
         Object.values(percentageInputs[0]).forEach((e) => {
           inputsValues.push(Number(e));
@@ -248,6 +288,7 @@ export class FirstCurvePercentages_Service {
 
         updatedGranulometryComposition.lower.percentsOfDosage = inputsValues;
 
+        // Calcula o passante N200
         for (let i = 0; i < porcentagesPassantsN200.length; i++) {
           if (porcentagesPassantsN200[i] === null) {
             porcentagesPassantsN200[i] = 0;
@@ -256,6 +297,7 @@ export class FirstCurvePercentages_Service {
           }
         }
 
+        // Calcula a razão poeira asfalto
         updatedGranulometryComposition.lower.ratioDustAsphalt =
           passantN200lower /
           ((-(100 - updatedGranulometryComposition.lower.pli) *
@@ -267,11 +309,11 @@ export class FirstCurvePercentages_Service {
 
       let passantN200average = 0;
 
-      if (chosenCurves.average) {
+      if (chosenCurves.includes('average')) {
         updatedGranulometryComposition = {
           ...updatedGranulometryComposition,
           average: {
-            gmm: riceTest.find((e) => e.curve === 'average').gmm,
+            gmm: riceTest.find((e) => e.curve === 'average').gmm ? riceTest.find((e) => e.curve === 'average').gmm : 0,
             pli: binderCompositions[0].pli,
             data: [],
             percentWaterAbs: null,
@@ -294,7 +336,7 @@ export class FirstCurvePercentages_Service {
             expectedPli: null,
             gse: null,
             combinedGsb: null,
-            Gmb: null
+            Gmb: null,
           },
         };
 
@@ -379,11 +421,11 @@ export class FirstCurvePercentages_Service {
 
       let passantN200higher = 0;
 
-      if (chosenCurves.higher) {
+      if (chosenCurves.includes('higher')) {
         updatedGranulometryComposition = {
           ...updatedGranulometryComposition,
           higher: {
-            gmm: riceTest.find((e) => e.curve === 'higher').gmm,
+            gmm: riceTest.find((e) => e.curve === 'higher').gmm ? riceTest.find((e) => e.curve === 'higher').gmm : 0,
             pli: binderCompositions[0].pli,
             data: [],
             percentWaterAbs: null,
@@ -406,7 +448,7 @@ export class FirstCurvePercentages_Service {
             expectedPli: null,
             gse: null,
             combinedGsb: null,
-            Gmb: null
+            Gmb: null,
           },
         };
 
@@ -420,9 +462,7 @@ export class FirstCurvePercentages_Service {
         updatedGranulometryComposition.higher.data = this.calculateExpectedGmb_C(
           updatedGranulometryComposition.higher.data,
         );
-        updatedGranulometryComposition.higher.data = this.calculatePercentageGmm(
-          updatedGranulometryComposition.higher,
-        );
+        updatedGranulometryComposition.higher.data = this.calculatePercentageGmm(updatedGranulometryComposition.higher);
         updatedGranulometryComposition.higher.data = this.calculatePlanilhaVv(
           updatedGranulometryComposition.higher.data,
         );
@@ -504,8 +544,9 @@ export class FirstCurvePercentages_Service {
 
       let table4Lower = {};
 
-      if (chosenCurves.lower) {
-        const expectedPliLower = updatedGranulometryComposition.lower.pli - 0.4 * (4 - updatedGranulometryComposition.lower.Vv);
+      if (chosenCurves.includes('lower')) {
+        const expectedPliLower =
+          updatedGranulometryComposition.lower.pli - 0.4 * (4 - updatedGranulometryComposition.lower.Vv);
 
         updatedGranulometryComposition.lower.expectedPli = expectedPliLower;
 
@@ -514,7 +555,8 @@ export class FirstCurvePercentages_Service {
         if (updatedGranulometryComposition.lower.Vv < 4) Clower = 0.1;
         else Clower = 0.2;
 
-        const expectedVamLower = updatedGranulometryComposition.lower.Vam + Clower * (4 - updatedGranulometryComposition.lower.Vv);
+        const expectedVamLower =
+          updatedGranulometryComposition.lower.Vam + Clower * (4 - updatedGranulometryComposition.lower.Vv);
 
         const expectedRBVLower = (expectedVamLower - 4) / expectedVamLower;
 
@@ -528,8 +570,8 @@ export class FirstCurvePercentages_Service {
           passantN200lower /
           ((-(100 - expectedPliLower) *
             binderSpecificGravity *
-            (updatedGranulometryComposition.lower.gse - updatedGranulometryComposition.lower.combinedGsb)) /
-            (updatedGranulometryComposition.lower.gse * updatedGranulometryComposition.lower.combinedGsb) +
+            (binderCompositions[0].gse - binderCompositions[0].combinedGsb)) /
+            (binderCompositions[0].gse * binderCompositions[0].combinedGsb) +
             expectedPliLower);
 
         table2Lower = {
@@ -573,8 +615,9 @@ export class FirstCurvePercentages_Service {
 
       let table4Average = {};
 
-      if (chosenCurves.average) {
-        const expectedPliAverage = updatedGranulometryComposition.average.pli - 0.4 * (4 - updatedGranulometryComposition.average.Vv);
+      if (chosenCurves.includes('average')) {
+        const expectedPliAverage =
+          updatedGranulometryComposition.average.pli - 0.4 * (4 - updatedGranulometryComposition.average.Vv);
 
         updatedGranulometryComposition.average.expectedPli = expectedPliAverage;
 
@@ -583,7 +626,8 @@ export class FirstCurvePercentages_Service {
         if (updatedGranulometryComposition.average.Vv < 4) Caverage = 0.1;
         else Caverage = 0.2;
 
-        const expectedVamAverage = updatedGranulometryComposition.average.Vam + Caverage * (4 - updatedGranulometryComposition.average.Vv);
+        const expectedVamAverage =
+          updatedGranulometryComposition.average.Vam + Caverage * (4 - updatedGranulometryComposition.average.Vv);
 
         const expectedRBVAverage = (expectedVamAverage - 4) / expectedVamAverage;
 
@@ -597,8 +641,8 @@ export class FirstCurvePercentages_Service {
           passantN200average /
           ((-(100 - expectedPliAverage) *
             binderSpecificGravity *
-            (updatedGranulometryComposition.average.gse - updatedGranulometryComposition.average.combinedGsb)) /
-            (updatedGranulometryComposition.average.gse * updatedGranulometryComposition.average.combinedGsb) +
+            (binderCompositions[1].gse - binderCompositions[1].combinedGsb)) /
+            (binderCompositions[1].gse * binderCompositions[1].combinedGsb) +
             expectedPliAverage);
 
         table2Average = {
@@ -642,8 +686,9 @@ export class FirstCurvePercentages_Service {
 
       let table4Higher = {};
 
-      if (chosenCurves.higher) {
-        const expectedPliHigher = updatedGranulometryComposition.higher.pli - 0.4 * (4 - updatedGranulometryComposition.higher.Vv);
+      if (chosenCurves.includes('higher')) {
+        const expectedPliHigher =
+          updatedGranulometryComposition.higher.pli - 0.4 * (4 - updatedGranulometryComposition.higher.Vv);
 
         updatedGranulometryComposition.higher.expectedPli = expectedPliHigher;
 
@@ -652,7 +697,8 @@ export class FirstCurvePercentages_Service {
         if (updatedGranulometryComposition.higher.Vv < 4) Chigher = 0.1;
         else Chigher = 0.2;
 
-        const expectedVamHigher = updatedGranulometryComposition.higher.Vam + Chigher * (4 - updatedGranulometryComposition.higher.Vv);
+        const expectedVamHigher =
+          updatedGranulometryComposition.higher.Vam + Chigher * (4 - updatedGranulometryComposition.higher.Vv);
 
         const expectedRBVHigher = (expectedVamHigher - 4) / expectedVamHigher;
 
@@ -666,8 +712,8 @@ export class FirstCurvePercentages_Service {
           passantN200higher /
           ((-(100 - expectedPliHigher) *
             binderSpecificGravity *
-            (updatedGranulometryComposition.higher.gse - updatedGranulometryComposition.higher.combinedGsb)) /
-            (updatedGranulometryComposition.higher.gse * updatedGranulometryComposition.higher.combinedGsb) +
+            (binderCompositions[2].gse - binderCompositions[2].combinedGsb)) /
+            (binderCompositions[2].gse * binderCompositions[2].combinedGsb) +
             expectedPliHigher);
 
         table2Higher = {
@@ -745,9 +791,16 @@ export class FirstCurvePercentages_Service {
     let updatedData = data;
     for (let i = 0; i < data.length; i++) {
       updatedData[i].Gmb = null;
-      updatedData[i].Gmb =
-        (Math.round((data[i].dryMass / (data[i].drySurfaceSaturatedMass - data[i].submergedMass)) * 1e3) / 1e3) *
-        data[i].waterTemperatureCorrection;
+
+      const numerator = data[i].dryMass;
+      const denominator = data[i].drySurfaceSaturatedMass - data[i].submergedMass;
+
+      if (denominator === 0) {
+        updatedData[i].Gmb = 0; // ou 0, ou lançar erro, depende da regra de negócio
+        continue;
+      }
+
+      updatedData[i].Gmb = (Math.round((numerator / denominator) * 1e3) / 1e3) * data[i].waterTemperatureCorrection;
     }
     return updatedData;
   }
@@ -776,7 +829,6 @@ export class FirstCurvePercentages_Service {
     let data = curve.data;
     for (let i = 0; i < data.length; i++) {
       for (let j = 0; j < data[i].planilha.length; j++) {
-        // data[i].planilha[j].percentageGmm = 100 * (data[i].planilha[j].GMBe_C / curve.gmm);
         if (curve.gmm === 0) {
           data[i].planilha[j].percentageGmm = 0;
         } else {
@@ -892,7 +944,6 @@ export class FirstCurvePercentages_Service {
     const averageSubmergedMass = sumSubmergedMass / data.length;
     const averageSaturedMass = saturatedMass / data.length;
 
-
     return [averageDryMass, averageSubmergedMass, averageSaturedMass];
   }
 
@@ -904,7 +955,6 @@ export class FirstCurvePercentages_Service {
     }
     return sumVv / data.length;
   }
-  
 
   calculateGraphData(data) {
     let graphData: any[] = [['Nº de Giros', 'Altura (mm)', '%Gmm (%)', 'Vv (%)']];
@@ -933,9 +983,12 @@ export class FirstCurvePercentages_Service {
     return graphData;
   }
 
-  async saveStep6Data(body: any, userId: string) {
+  async savePercentsOfChosenCurveData(body: any, userId: string) {
     try {
-      this.logger.log('save superpave first curve percentages step on first-curve-percentages.superpave.service.ts > [body]', { body });
+      this.logger.log(
+        'save superpave first curve percentages step on first-curve-percentages.superpave.service.ts > [body]',
+        { body },
+      );
 
       const { name } = body.firstCurvePercentagesData;
 
@@ -943,20 +996,20 @@ export class FirstCurvePercentages_Service {
 
       const { name: materialName, ...firstCurvePercentagesWithoutName } = body.firstCurvePercentagesData;
 
-      const superpaveWithFirstCurvePercentages = { ...superpaveExists._doc, firstCurvePercentagesData: firstCurvePercentagesWithoutName };
+      const superpaveWithFirstCurvePercentages = {
+        ...superpaveExists._doc,
+        firstCurvePercentagesData: firstCurvePercentagesWithoutName,
+      };
 
-      await this.superpaveModel.updateOne(
-        { _id: superpaveExists._doc._id },
-        superpaveWithFirstCurvePercentages
-      );
+      await this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithFirstCurvePercentages);
 
-      if (superpaveExists._doc.generalData.step < 6) {
-        await this.superpave_repository.saveStep(superpaveExists, 6);
+      if (superpaveExists._doc.generalData.step < 8) {
+        await this.superpave_repository.saveStep(superpaveExists, 8);
       }
 
       return true;
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 }

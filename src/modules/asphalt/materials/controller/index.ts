@@ -55,6 +55,7 @@ export class MaterialsController {
     return this.materialsService.getAllMaterials(userId);
   }
 
+  
   @Get(':id')
   @ApiOperation({ summary: 'Retorna um material do banco de dados.' })
   @ApiResponse({ status: 200, description: 'Material encontrado com sucesso!' })
