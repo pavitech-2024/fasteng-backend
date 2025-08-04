@@ -81,8 +81,8 @@ let Calc_ANGULARITY_Service = Calc_ANGULARITY_Service_1 = class Calc_ANGULARITY_
             };
         };
     }
-    calculateAngularity(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ step2Data }) {
+    calculateAngularity({ step2Data }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('calculate angularity on calc.angularity.service.ts > [body]');
                 const { relative_density, cylinder_volume, method, determinations } = step2Data;
@@ -102,9 +102,9 @@ let Calc_ANGULARITY_Service = Calc_ANGULARITY_Service_1 = class Calc_ANGULARITY_
         });
     }
 };
-exports.Calc_ANGULARITY_Service = Calc_ANGULARITY_Service;
-exports.Calc_ANGULARITY_Service = Calc_ANGULARITY_Service = Calc_ANGULARITY_Service_1 = __decorate([
+Calc_ANGULARITY_Service = Calc_ANGULARITY_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_1.AngularityRepository, repository_2.MaterialsRepository])
 ], Calc_ANGULARITY_Service);
+exports.Calc_ANGULARITY_Service = Calc_ANGULARITY_Service;
 //# sourceMappingURL=calc.angularity.service.js.map

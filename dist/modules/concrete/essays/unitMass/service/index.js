@@ -89,12 +89,12 @@ let UnitMassService = class UnitMassService {
         });
     }
 };
-exports.UnitMassService = UnitMassService;
-exports.UnitMassService = UnitMassService = __decorate([
+UnitMassService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [general_data_unitMass_service_1.GeneralData_UnitMass_Service,
         step2Data_unitMass_service_1.step2Data_Service,
         result_unitMass_service_1.Result_UnitMass_Service,
         repository_1.UnitMassRepository])
 ], UnitMassService);
+exports.UnitMassService = UnitMassService;
 //# sourceMappingURL=index.js.map

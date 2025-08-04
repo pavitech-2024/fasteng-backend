@@ -14,7 +14,6 @@ const class_validator_1 = require("class-validator");
 const schemas_1 = require("../../../materials/schemas");
 class SandEquivalentInitDto {
 }
-exports.SandEquivalentInitDto = SandEquivalentInitDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
@@ -23,4 +22,5 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", schemas_1.Material)
 ], SandEquivalentInitDto.prototype, "material", void 0);
+exports.SandEquivalentInitDto = SandEquivalentInitDto;
 //# sourceMappingURL=init-sandEquivalent.dto.js.map

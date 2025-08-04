@@ -63,7 +63,6 @@ let RtcdController = RtcdController_1 = class RtcdController {
         });
     }
 };
-exports.RtcdController = RtcdController;
 __decorate([
     (0, common_1.Post)('verify-init'),
     (0, swagger_1.ApiOperation)({ summary: 'Verifica se é possível criar um ensaio rtcd com os dados enviados.' }),
@@ -122,9 +121,10 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], RtcdController.prototype, "saveEssay", null);
-exports.RtcdController = RtcdController = RtcdController_1 = __decorate([
+RtcdController = RtcdController_1 = __decorate([
     (0, swagger_1.ApiTags)('rtcd'),
     (0, common_1.Controller)('asphalt/essays/rtcd'),
     __metadata("design:paramtypes", [rtcd_service_1.RtcdService])
 ], RtcdController);
+exports.RtcdController = RtcdController;
 //# sourceMappingURL=index.js.map

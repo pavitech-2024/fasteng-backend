@@ -16,8 +16,7 @@ const calc_igg_service_1 = require("./services/calc.igg.service");
 const services = [services_1.IggService, general_data_igg_service_1.GeneralData_Igg_Service, calc_igg_service_1.Calc_Igg_Service];
 let IggModule = class IggModule {
 };
-exports.IggModule = IggModule;
-exports.IggModule = IggModule = __decorate([
+IggModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [controller_1.IggController],
@@ -25,4 +24,5 @@ exports.IggModule = IggModule = __decorate([
         exports: [services_1.IggService, repository_1.IggRepository],
     })
 ], IggModule);
+exports.IggModule = IggModule;
 //# sourceMappingURL=igg.module.js.map

@@ -63,7 +63,6 @@ let SpecifyMassController = SpecifyMassController_1 = class SpecifyMassControlle
         });
     }
 };
-exports.SpecifyMassController = SpecifyMassController;
 __decorate([
     (0, common_1.Post)('verify-init'),
     (0, swagger_1.ApiOperation)({ summary: 'Verifica se é possível criar uma SPECIFYMASS com os dados enviados.' }),
@@ -131,9 +130,10 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], SpecifyMassController.prototype, "saveEssay", null);
-exports.SpecifyMassController = SpecifyMassController = SpecifyMassController_1 = __decorate([
+SpecifyMassController = SpecifyMassController_1 = __decorate([
     (0, swagger_1.ApiTags)('specifyMass'),
     (0, common_1.Controller)('asphalt/essays/specifyMass'),
     __metadata("design:paramtypes", [service_1.SpecifyMassService])
 ], SpecifyMassController);
+exports.SpecifyMassController = SpecifyMassController;
 //# sourceMappingURL=index.js.map

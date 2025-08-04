@@ -13,8 +13,7 @@ const controller_1 = require("./controller");
 const binder_asphalt_concrete_samples_service_1 = require("./service/binder-asphalt-concrete-samples.service");
 let BinderAsphaltConcreteSamplesModule = class BinderAsphaltConcreteSamplesModule {
 };
-exports.BinderAsphaltConcreteSamplesModule = BinderAsphaltConcreteSamplesModule;
-exports.BinderAsphaltConcreteSamplesModule = BinderAsphaltConcreteSamplesModule = __decorate([
+BinderAsphaltConcreteSamplesModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [controller_1.BinderAsphaltConcreteSamplesController],
@@ -22,4 +21,5 @@ exports.BinderAsphaltConcreteSamplesModule = BinderAsphaltConcreteSamplesModule 
         exports: [binder_asphalt_concrete_samples_service_1.BinderAsphaltConcreteSamplesService, repository_1.BinderAsphaltConcrete_SamplesRepository],
     })
 ], BinderAsphaltConcreteSamplesModule);
+exports.BinderAsphaltConcreteSamplesModule = BinderAsphaltConcreteSamplesModule;
 //# sourceMappingURL=binder-asphalt-concrete-samples.module.js.map

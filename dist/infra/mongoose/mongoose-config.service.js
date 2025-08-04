@@ -27,11 +27,11 @@ let CommonDatabaseConfig = class CommonDatabaseConfig {
         };
     }
 };
-exports.CommonDatabaseConfig = CommonDatabaseConfig;
-exports.CommonDatabaseConfig = CommonDatabaseConfig = __decorate([
+CommonDatabaseConfig = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [config_1.ConfigService])
 ], CommonDatabaseConfig);
+exports.CommonDatabaseConfig = CommonDatabaseConfig;
 let AsphaltDatabaseConfig = class AsphaltDatabaseConfig {
     constructor(config) {
         this.config = config;
@@ -46,11 +46,11 @@ let AsphaltDatabaseConfig = class AsphaltDatabaseConfig {
         };
     }
 };
-exports.AsphaltDatabaseConfig = AsphaltDatabaseConfig;
-exports.AsphaltDatabaseConfig = AsphaltDatabaseConfig = __decorate([
+AsphaltDatabaseConfig = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [config_1.ConfigService])
 ], AsphaltDatabaseConfig);
+exports.AsphaltDatabaseConfig = AsphaltDatabaseConfig;
 let SoilsDatabaseConfig = class SoilsDatabaseConfig {
     constructor(config) {
         this.config = config;
@@ -65,11 +65,11 @@ let SoilsDatabaseConfig = class SoilsDatabaseConfig {
         };
     }
 };
-exports.SoilsDatabaseConfig = SoilsDatabaseConfig;
-exports.SoilsDatabaseConfig = SoilsDatabaseConfig = __decorate([
+SoilsDatabaseConfig = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [config_1.ConfigService])
 ], SoilsDatabaseConfig);
+exports.SoilsDatabaseConfig = SoilsDatabaseConfig;
 let ConcreteDatabaseConfig = class ConcreteDatabaseConfig {
     constructor(config) {
         this.config = config;
@@ -84,11 +84,11 @@ let ConcreteDatabaseConfig = class ConcreteDatabaseConfig {
         };
     }
 };
-exports.ConcreteDatabaseConfig = ConcreteDatabaseConfig;
-exports.ConcreteDatabaseConfig = ConcreteDatabaseConfig = __decorate([
+ConcreteDatabaseConfig = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [config_1.ConfigService])
 ], ConcreteDatabaseConfig);
+exports.ConcreteDatabaseConfig = ConcreteDatabaseConfig;
 let PromedinaDatabaseConfig = class PromedinaDatabaseConfig {
     constructor(config) {
         this.config = config;
@@ -103,9 +103,9 @@ let PromedinaDatabaseConfig = class PromedinaDatabaseConfig {
         };
     }
 };
-exports.PromedinaDatabaseConfig = PromedinaDatabaseConfig;
-exports.PromedinaDatabaseConfig = PromedinaDatabaseConfig = __decorate([
+PromedinaDatabaseConfig = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [config_1.ConfigService])
 ], PromedinaDatabaseConfig);
+exports.PromedinaDatabaseConfig = PromedinaDatabaseConfig;
 //# sourceMappingURL=mongoose-config.service.js.map

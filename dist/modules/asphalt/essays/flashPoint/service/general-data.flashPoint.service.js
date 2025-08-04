@@ -31,8 +31,8 @@ let GeneralData_FLASHPOINT_Service = GeneralData_FLASHPOINT_Service_1 = class Ge
         this.materialRepository = materialRepository;
         this.logger = new common_1.Logger(GeneralData_FLASHPOINT_Service_1.name);
     }
-    verifyInitFlashPoint(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ name, material }) {
+    verifyInitFlashPoint({ name, material }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('verify init flashPoint on general-data.flashPoint.service.ts > [body]');
                 const materialExists = yield this.materialRepository.findOne({
@@ -54,9 +54,9 @@ let GeneralData_FLASHPOINT_Service = GeneralData_FLASHPOINT_Service_1 = class Ge
         });
     }
 };
-exports.GeneralData_FLASHPOINT_Service = GeneralData_FLASHPOINT_Service;
-exports.GeneralData_FLASHPOINT_Service = GeneralData_FLASHPOINT_Service = GeneralData_FLASHPOINT_Service_1 = __decorate([
+GeneralData_FLASHPOINT_Service = GeneralData_FLASHPOINT_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_1.FlashPointRepository, repository_2.MaterialsRepository])
 ], GeneralData_FLASHPOINT_Service);
+exports.GeneralData_FLASHPOINT_Service = GeneralData_FLASHPOINT_Service;
 //# sourceMappingURL=general-data.flashPoint.service.js.map

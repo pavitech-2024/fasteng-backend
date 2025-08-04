@@ -30,8 +30,8 @@ let GeneralData_ViscosityRotational_Service = GeneralData_ViscosityRotational_Se
         this.materialsRepository = materialsRepository;
         this.logger = new common_1.Logger(GeneralData_ViscosityRotational_Service_1.name);
     }
-    verifyInitViscosityRotational(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ name, material }) {
+    verifyInitViscosityRotational({ name, material }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('verify init Viscosity Rotational on general-data.viscosityRotational.service.ts > [body]');
                 const materialExists = yield this.materialsRepository.findOne({ _id: material._id });
@@ -50,10 +50,10 @@ let GeneralData_ViscosityRotational_Service = GeneralData_ViscosityRotational_Se
         });
     }
 };
-exports.GeneralData_ViscosityRotational_Service = GeneralData_ViscosityRotational_Service;
-exports.GeneralData_ViscosityRotational_Service = GeneralData_ViscosityRotational_Service = GeneralData_ViscosityRotational_Service_1 = __decorate([
+GeneralData_ViscosityRotational_Service = GeneralData_ViscosityRotational_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_2.ViscosityRotationalRepository,
         repository_1.MaterialsRepository])
 ], GeneralData_ViscosityRotational_Service);
+exports.GeneralData_ViscosityRotational_Service = GeneralData_ViscosityRotational_Service;
 //# sourceMappingURL=general-data.viscosityRotational.service.js.map

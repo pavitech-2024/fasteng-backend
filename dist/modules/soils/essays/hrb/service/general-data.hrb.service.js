@@ -30,8 +30,8 @@ let GeneralData_HRB_Service = GeneralData_HRB_Service_1 = class GeneralData_HRB_
         this.sampleRepository = sampleRepository;
         this.logger = new common_1.Logger(GeneralData_HRB_Service_1.name);
     }
-    verifyInitHrb(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ name, sample }) {
+    verifyInitHrb({ name, sample }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('verify init hrb on general-data.hrb.service.ts > [body]');
                 const sampleExists = yield this.sampleRepository.findOne({ _id: sample._id });
@@ -48,9 +48,9 @@ let GeneralData_HRB_Service = GeneralData_HRB_Service_1 = class GeneralData_HRB_
         });
     }
 };
-exports.GeneralData_HRB_Service = GeneralData_HRB_Service;
-exports.GeneralData_HRB_Service = GeneralData_HRB_Service = GeneralData_HRB_Service_1 = __decorate([
+GeneralData_HRB_Service = GeneralData_HRB_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_2.HrbRepository, repository_1.SamplesRepository])
 ], GeneralData_HRB_Service);
+exports.GeneralData_HRB_Service = GeneralData_HRB_Service;
 //# sourceMappingURL=general-data.hrb.service.js.map

@@ -13,7 +13,6 @@ exports.InputRefreshLoginDto = void 0;
 const class_validator_1 = require("class-validator");
 class InputRefreshLoginDto {
 }
-exports.InputRefreshLoginDto = InputRefreshLoginDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
@@ -22,4 +21,5 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], InputRefreshLoginDto.prototype, "token", void 0);
+exports.InputRefreshLoginDto = InputRefreshLoginDto;
 //# sourceMappingURL=refresh-login-user.dto.js.map

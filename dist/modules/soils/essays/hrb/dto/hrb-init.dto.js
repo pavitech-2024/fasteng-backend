@@ -14,7 +14,6 @@ const class_validator_1 = require("class-validator");
 const schemas_1 = require("../../../samples/schemas");
 class HrbInitDto {
 }
-exports.HrbInitDto = HrbInitDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
@@ -23,4 +22,5 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", schemas_1.Sample)
 ], HrbInitDto.prototype, "sample", void 0);
+exports.HrbInitDto = HrbInitDto;
 //# sourceMappingURL=hrb-init.dto.js.map

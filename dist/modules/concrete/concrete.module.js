@@ -53,12 +53,12 @@ const Modules = [
 ];
 let ConcreteModule = class ConcreteModule {
 };
-exports.ConcreteModule = ConcreteModule;
-exports.ConcreteModule = ConcreteModule = __decorate([
+ConcreteModule = __decorate([
     (0, common_1.Global)(),
     (0, common_1.Module)({
         imports: [mongoose_1.MongooseModule.forFeature(Models, database_config_1.DATABASE_CONNECTION.CONCRETE), ...Modules],
         exports: [mongoose_1.MongooseModule, ...Modules],
     })
 ], ConcreteModule);
+exports.ConcreteModule = ConcreteModule;
 //# sourceMappingURL=concrete.module.js.map

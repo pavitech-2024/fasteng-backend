@@ -13,7 +13,6 @@ exports.Calc_HRB_Dto = void 0;
 const class_validator_1 = require("class-validator");
 class Calc_HRB_Dto {
 }
-exports.Calc_HRB_Dto = Calc_HRB_Dto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
@@ -22,4 +21,5 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
 ], Calc_HRB_Dto.prototype, "step2Data", void 0);
+exports.Calc_HRB_Dto = Calc_HRB_Dto;
 //# sourceMappingURL=calc.hrb.dto.js.map

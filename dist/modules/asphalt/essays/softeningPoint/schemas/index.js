@@ -14,7 +14,6 @@ const mongoose_1 = require("@nestjs/mongoose");
 const class_validator_1 = require("class-validator");
 let SofteningPoint = class SofteningPoint {
 };
-exports.SofteningPoint = SofteningPoint;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, mongoose_1.Prop)({ type: Object }),
@@ -30,8 +29,9 @@ __decorate([
     (0, mongoose_1.Prop)({ type: Object }),
     __metadata("design:type", Object)
 ], SofteningPoint.prototype, "results", void 0);
-exports.SofteningPoint = SofteningPoint = __decorate([
+SofteningPoint = __decorate([
     (0, mongoose_1.Schema)({ collection: 'softeningPoint' })
 ], SofteningPoint);
+exports.SofteningPoint = SofteningPoint;
 exports.SofteningPointSchema = mongoose_1.SchemaFactory.createForClass(SofteningPoint);
 //# sourceMappingURL=index.js.map

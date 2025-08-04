@@ -16,8 +16,7 @@ const service_1 = require("./service");
 const services = [service_1.RtfoService, general_data_rtfo_service_1.GeneralData_Rtfo_Service, calc_rtfo_service_1.Calc_Rtfo_Service];
 let RtfoModule = class RtfoModule {
 };
-exports.RtfoModule = RtfoModule;
-exports.RtfoModule = RtfoModule = __decorate([
+RtfoModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [controller_1.RtfoController],
@@ -25,4 +24,5 @@ exports.RtfoModule = RtfoModule = __decorate([
         exports: [service_1.RtfoService, repository_1.RtfoRepository],
     })
 ], RtfoModule);
+exports.RtfoModule = RtfoModule;
 //# sourceMappingURL=rtfo.module.js.map

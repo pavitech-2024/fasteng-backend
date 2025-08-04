@@ -52,9 +52,9 @@ let IggRepository = class IggRepository {
         });
     }
 };
-exports.IggRepository = IggRepository;
-exports.IggRepository = IggRepository = __decorate([
+IggRepository = __decorate([
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.Igg.name, database_config_1.DATABASE_CONNECTION.ASPHALT)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], IggRepository);
+exports.IggRepository = IggRepository;
 //# sourceMappingURL=index.js.map

@@ -28,8 +28,8 @@ let GeneralData_Igg_Service = GeneralData_Igg_Service_1 = class GeneralData_Igg_
         this.iggRepository = iggRepository;
         this.logger = new common_1.Logger(GeneralData_Igg_Service_1.name);
     }
-    verifyInitIgg(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ name }) {
+    verifyInitIgg({ name }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('verify init igg on general-data.igg.service.ts > [body]');
                 const iggExists = yield this.iggRepository.findOne({
@@ -45,9 +45,9 @@ let GeneralData_Igg_Service = GeneralData_Igg_Service_1 = class GeneralData_Igg_
         });
     }
 };
-exports.GeneralData_Igg_Service = GeneralData_Igg_Service;
-exports.GeneralData_Igg_Service = GeneralData_Igg_Service = GeneralData_Igg_Service_1 = __decorate([
+GeneralData_Igg_Service = GeneralData_Igg_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_1.IggRepository])
 ], GeneralData_Igg_Service);
+exports.GeneralData_Igg_Service = GeneralData_Igg_Service;
 //# sourceMappingURL=general-data.igg.service.js.map

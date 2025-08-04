@@ -14,7 +14,6 @@ const mongoose_1 = require("@nestjs/mongoose");
 const class_validator_1 = require("class-validator");
 let ElasticRecovery = class ElasticRecovery {
 };
-exports.ElasticRecovery = ElasticRecovery;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, mongoose_1.Prop)({ type: Object }),
@@ -30,8 +29,9 @@ __decorate([
     (0, mongoose_1.Prop)({ type: Object }),
     __metadata("design:type", Object)
 ], ElasticRecovery.prototype, "results", void 0);
-exports.ElasticRecovery = ElasticRecovery = __decorate([
+ElasticRecovery = __decorate([
     (0, mongoose_1.Schema)({ collection: 'elasticRecoverys' })
 ], ElasticRecovery);
+exports.ElasticRecovery = ElasticRecovery;
 exports.ElasticRecoverySchema = mongoose_1.SchemaFactory.createForClass(ElasticRecovery);
 //# sourceMappingURL=index.js.map

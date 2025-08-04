@@ -14,7 +14,6 @@ const mongoose_1 = require("@nestjs/mongoose");
 const class_validator_1 = require("class-validator");
 let BinderAsphaltConcrete_Sample = class BinderAsphaltConcrete_Sample {
 };
-exports.BinderAsphaltConcrete_Sample = BinderAsphaltConcrete_Sample;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, mongoose_1.Prop)({ type: Object }),
@@ -35,8 +34,9 @@ __decorate([
     (0, mongoose_1.Prop)({ type: Object }),
     __metadata("design:type", Object)
 ], BinderAsphaltConcrete_Sample.prototype, "step4Data", void 0);
-exports.BinderAsphaltConcrete_Sample = BinderAsphaltConcrete_Sample = __decorate([
+BinderAsphaltConcrete_Sample = __decorate([
     (0, mongoose_1.Schema)({ collection: 'binderAsphaltConcreteSamples', timestamps: true })
 ], BinderAsphaltConcrete_Sample);
+exports.BinderAsphaltConcrete_Sample = BinderAsphaltConcrete_Sample;
 exports.BinderAsphaltConcrete_SampleSchema = mongoose_1.SchemaFactory.createForClass(BinderAsphaltConcrete_Sample);
 //# sourceMappingURL=index.js.map

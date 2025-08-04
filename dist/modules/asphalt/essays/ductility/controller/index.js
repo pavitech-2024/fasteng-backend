@@ -63,7 +63,6 @@ let DuctilityController = DuctilityController_1 = class DuctilityController {
         });
     }
 };
-exports.DuctilityController = DuctilityController;
 __decorate([
     (0, common_1.Post)('verify-init'),
     (0, swagger_1.ApiOperation)({ summary: 'Verifica se é possível criar uma DUCTILITY com os dados enviados.' }),
@@ -131,9 +130,10 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], DuctilityController.prototype, "saveEssay", null);
-exports.DuctilityController = DuctilityController = DuctilityController_1 = __decorate([
+DuctilityController = DuctilityController_1 = __decorate([
     (0, swagger_1.ApiTags)('ductility'),
     (0, common_1.Controller)('asphalt/essays/ductility'),
     __metadata("design:paramtypes", [service_1.DuctilityService])
 ], DuctilityController);
+exports.DuctilityController = DuctilityController;
 //# sourceMappingURL=index.js.map

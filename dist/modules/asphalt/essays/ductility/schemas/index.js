@@ -14,7 +14,6 @@ const mongoose_1 = require("@nestjs/mongoose");
 const class_validator_1 = require("class-validator");
 let Ductility = class Ductility {
 };
-exports.Ductility = Ductility;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, mongoose_1.Prop)({ type: Object }),
@@ -30,8 +29,9 @@ __decorate([
     (0, mongoose_1.Prop)({ type: Object }),
     __metadata("design:type", Object)
 ], Ductility.prototype, "results", void 0);
-exports.Ductility = Ductility = __decorate([
+Ductility = __decorate([
     (0, mongoose_1.Schema)({ collection: 'ductilitys' })
 ], Ductility);
+exports.Ductility = Ductility;
 exports.DuctilitySchema = mongoose_1.SchemaFactory.createForClass(Ductility);
 //# sourceMappingURL=index.js.map

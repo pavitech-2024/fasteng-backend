@@ -74,11 +74,11 @@ let ViscosityRotationalService = class ViscosityRotationalService {
         });
     }
 };
-exports.ViscosityRotationalService = ViscosityRotationalService;
-exports.ViscosityRotationalService = ViscosityRotationalService = __decorate([
+ViscosityRotationalService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [general_data_viscosityRotational_service_1.GeneralData_ViscosityRotational_Service,
         repository_1.ViscosityRotationalRepository,
         calc_viscosityRotational_service_1.Calc_ViscosityRotational_Service])
 ], ViscosityRotationalService);
+exports.ViscosityRotationalService = ViscosityRotationalService;
 //# sourceMappingURL=viscosityRotational.service.js.map

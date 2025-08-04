@@ -30,8 +30,8 @@ let GeneralData_ELONGATEDPARTICLES_Service = GeneralData_ELONGATEDPARTICLES_Serv
         this.materialRepository = materialRepository;
         this.logger = new common_1.Logger(GeneralData_ELONGATEDPARTICLES_Service_1.name);
     }
-    verifyInitElongatedParticles(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ name, material }) {
+    verifyInitElongatedParticles({ name, material }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('verify init elongatedParticles on general-data.elongatedParticles.service.ts > [body]');
                 const materialExists = yield this.materialRepository.findOne({
@@ -53,9 +53,9 @@ let GeneralData_ELONGATEDPARTICLES_Service = GeneralData_ELONGATEDPARTICLES_Serv
         });
     }
 };
-exports.GeneralData_ELONGATEDPARTICLES_Service = GeneralData_ELONGATEDPARTICLES_Service;
-exports.GeneralData_ELONGATEDPARTICLES_Service = GeneralData_ELONGATEDPARTICLES_Service = GeneralData_ELONGATEDPARTICLES_Service_1 = __decorate([
+GeneralData_ELONGATEDPARTICLES_Service = GeneralData_ELONGATEDPARTICLES_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_1.ElongatedParticlesRepository, repository_2.MaterialsRepository])
 ], GeneralData_ELONGATEDPARTICLES_Service);
+exports.GeneralData_ELONGATEDPARTICLES_Service = GeneralData_ELONGATEDPARTICLES_Service;
 //# sourceMappingURL=general-data.elongatedParticles.service.js.map

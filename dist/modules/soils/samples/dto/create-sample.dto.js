@@ -13,9 +13,9 @@ exports.CreateSampleDto = void 0;
 const class_validator_1 = require("class-validator");
 class CreateSampleDto {
 }
-exports.CreateSampleDto = CreateSampleDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], CreateSampleDto.prototype, "name", void 0);
+exports.CreateSampleDto = CreateSampleDto;
 //# sourceMappingURL=create-sample.dto.js.map

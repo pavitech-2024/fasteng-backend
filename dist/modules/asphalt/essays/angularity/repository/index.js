@@ -20,7 +20,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var AngularityRepository_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AngularityRepository = void 0;
 const mongoose_1 = require("@nestjs/mongoose");
@@ -28,10 +27,10 @@ const schemas_1 = require("../schemas");
 const database_config_1 = require("../../../../../infra/mongoose/database.config");
 const mongoose_2 = require("mongoose");
 const common_1 = require("@nestjs/common");
-let AngularityRepository = AngularityRepository_1 = class AngularityRepository {
+let AngularityRepository = class AngularityRepository {
     constructor(angularityModel) {
         this.angularityModel = angularityModel;
-        this.logger = new common_1.Logger(AngularityRepository_1.name);
+        this.logger = new common_1.Logger(AngularityRepository.name);
     }
     findOne(angularityFilterQuery) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -50,9 +49,9 @@ let AngularityRepository = AngularityRepository_1 = class AngularityRepository {
         });
     }
 };
-exports.AngularityRepository = AngularityRepository;
-exports.AngularityRepository = AngularityRepository = AngularityRepository_1 = __decorate([
+AngularityRepository = __decorate([
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.Angularity.name, database_config_1.DATABASE_CONNECTION.ASPHALT)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], AngularityRepository);
+exports.AngularityRepository = AngularityRepository;
 //# sourceMappingURL=index.js.map

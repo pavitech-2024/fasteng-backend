@@ -29,8 +29,8 @@ let Calc_CBR_Service = Calc_CBR_Service_1 = class Calc_CBR_Service {
         this.sampleRepository = sampleRepository;
         this.logger = new common_1.Logger(Calc_CBR_Service_1.name);
     }
-    calculateCbr(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ step2Data, expansionData }) {
+    calculateCbr({ step2Data, expansionData }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('calculate cbr on calc.cbr.service.ts > [body]');
                 const { ring_constant, cylinder_height, extended_reads } = step2Data;
@@ -79,9 +79,9 @@ let Calc_CBR_Service = Calc_CBR_Service_1 = class Calc_CBR_Service {
         });
     }
 };
-exports.Calc_CBR_Service = Calc_CBR_Service;
-exports.Calc_CBR_Service = Calc_CBR_Service = Calc_CBR_Service_1 = __decorate([
+Calc_CBR_Service = Calc_CBR_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_1.CbrRepository, repository_2.SamplesRepository])
 ], Calc_CBR_Service);
+exports.Calc_CBR_Service = Calc_CBR_Service;
 //# sourceMappingURL=calc.cbr.service.js.map

@@ -15,8 +15,7 @@ const repository_1 = require("./repository");
 const services = [service_1.CoarseAggregateService, general_data_coarseAggregate_service_1.GeneralData_CoarseAggregate_Service];
 let CoarseAggregateModule = class CoarseAggregateModule {
 };
-exports.CoarseAggregateModule = CoarseAggregateModule;
-exports.CoarseAggregateModule = CoarseAggregateModule = __decorate([
+CoarseAggregateModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [controller_1.CoarseAggregateController],
@@ -24,4 +23,5 @@ exports.CoarseAggregateModule = CoarseAggregateModule = __decorate([
         exports: [service_1.CoarseAggregateService, repository_1.CoarseAggregateSpecificMassRepository],
     })
 ], CoarseAggregateModule);
+exports.CoarseAggregateModule = CoarseAggregateModule;
 //# sourceMappingURL=coarseAggregate.module.js.map

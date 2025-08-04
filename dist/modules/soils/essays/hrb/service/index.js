@@ -74,11 +74,11 @@ let HrbService = class HrbService {
         });
     }
 };
-exports.HrbService = HrbService;
-exports.HrbService = HrbService = __decorate([
+HrbService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [general_data_hrb_service_1.GeneralData_HRB_Service,
         calc_hrb_service_1.Calc_HRB_Service,
         repository_1.HrbRepository])
 ], HrbService);
+exports.HrbService = HrbService;
 //# sourceMappingURL=index.js.map

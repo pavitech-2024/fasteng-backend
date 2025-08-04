@@ -14,7 +14,6 @@ const mongoose_1 = require("@nestjs/mongoose");
 const class_validator_1 = require("class-validator");
 let Compression = class Compression {
 };
-exports.Compression = Compression;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, mongoose_1.Prop)({ type: Object }),
@@ -35,8 +34,9 @@ __decorate([
     (0, mongoose_1.Prop)({ type: Object }),
     __metadata("design:type", Object)
 ], Compression.prototype, "results", void 0);
-exports.Compression = Compression = __decorate([
+Compression = __decorate([
     (0, mongoose_1.Schema)({ collection: 'compressions' })
 ], Compression);
+exports.Compression = Compression;
 exports.CompressionSchema = mongoose_1.SchemaFactory.createForClass(Compression);
 //# sourceMappingURL=index.js.map

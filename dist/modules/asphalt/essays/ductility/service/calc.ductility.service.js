@@ -29,8 +29,8 @@ let Calc_DUCTILITY_Service = Calc_DUCTILITY_Service_1 = class Calc_DUCTILITY_Ser
         this.materialRepository = materialRepository;
         this.logger = new common_1.Logger(Calc_DUCTILITY_Service_1.name);
     }
-    calculateDuctility(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ step2Data }) {
+    calculateDuctility({ step2Data }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('calculate ductility on calc.ductility.service.ts > [body]');
                 const { first_rupture_length, second_rupture_length, third_rupture_length } = step2Data;
@@ -70,9 +70,9 @@ let Calc_DUCTILITY_Service = Calc_DUCTILITY_Service_1 = class Calc_DUCTILITY_Ser
         });
     }
 };
-exports.Calc_DUCTILITY_Service = Calc_DUCTILITY_Service;
-exports.Calc_DUCTILITY_Service = Calc_DUCTILITY_Service = Calc_DUCTILITY_Service_1 = __decorate([
+Calc_DUCTILITY_Service = Calc_DUCTILITY_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_1.DuctilityRepository, repository_2.MaterialsRepository])
 ], Calc_DUCTILITY_Service);
+exports.Calc_DUCTILITY_Service = Calc_DUCTILITY_Service;
 //# sourceMappingURL=calc.ductility.service.js.map

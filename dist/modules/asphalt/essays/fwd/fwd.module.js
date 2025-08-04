@@ -16,8 +16,7 @@ const calc_fwd_service_1 = require("./services/calc.fwd.service");
 const services = [services_1.FwdService, general_data_fwd_service_1.GeneralData_Fwd_Service, calc_fwd_service_1.Calc_Fwd_Service];
 let FwdModule = class FwdModule {
 };
-exports.FwdModule = FwdModule;
-exports.FwdModule = FwdModule = __decorate([
+FwdModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [controller_1.FwdController],
@@ -25,4 +24,5 @@ exports.FwdModule = FwdModule = __decorate([
         exports: [services_1.FwdService, repository_1.FwdRepository],
     })
 ], FwdModule);
+exports.FwdModule = FwdModule;
 //# sourceMappingURL=fwd.module.js.map

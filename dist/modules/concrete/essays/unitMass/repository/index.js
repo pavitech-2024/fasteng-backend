@@ -58,9 +58,9 @@ let UnitMassRepository = class UnitMassRepository {
         });
     }
 };
-exports.UnitMassRepository = UnitMassRepository;
-exports.UnitMassRepository = UnitMassRepository = __decorate([
+UnitMassRepository = __decorate([
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.UnitMass.name, database_config_1.DATABASE_CONNECTION.CONCRETE)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], UnitMassRepository);
+exports.UnitMassRepository = UnitMassRepository;
 //# sourceMappingURL=index.js.map

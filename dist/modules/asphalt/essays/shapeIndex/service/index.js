@@ -76,11 +76,11 @@ let ShapeIndexService = ShapeIndexService_1 = class ShapeIndexService {
         });
     }
 };
-exports.ShapeIndexService = ShapeIndexService;
-exports.ShapeIndexService = ShapeIndexService = ShapeIndexService_1 = __decorate([
+ShapeIndexService = ShapeIndexService_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [general_data_shapeIndex_service_1.GeneralData_SHAPEINDEX_Service,
         calc_shapeIndex_service_1.Calc_SHAPEINDEX_Service,
         repository_1.ShapeIndexRepository])
 ], ShapeIndexService);
+exports.ShapeIndexService = ShapeIndexService;
 //# sourceMappingURL=index.js.map

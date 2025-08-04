@@ -81,9 +81,9 @@ let CoarseAggregateSpecificMassRepository = class CoarseAggregateSpecificMassRep
         });
     }
 };
-exports.CoarseAggregateSpecificMassRepository = CoarseAggregateSpecificMassRepository;
-exports.CoarseAggregateSpecificMassRepository = CoarseAggregateSpecificMassRepository = __decorate([
+CoarseAggregateSpecificMassRepository = __decorate([
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.CoarseAggregateSpecificMass.name, database_config_1.DATABASE_CONNECTION.CONCRETE)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], CoarseAggregateSpecificMassRepository);
+exports.CoarseAggregateSpecificMassRepository = CoarseAggregateSpecificMassRepository;
 //# sourceMappingURL=index.js.map

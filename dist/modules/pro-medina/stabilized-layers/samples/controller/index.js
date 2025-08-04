@@ -54,8 +54,8 @@ let StabilizedLayersSamplesController = StabilizedLayersSamplesController_1 = cl
             }
         });
     }
-    getAllSamples() {
-        return __awaiter(this, arguments, void 0, function* (page = 1, limit = 10) {
+    getAllSamples(page = 1, limit = 10) {
+        return __awaiter(this, void 0, void 0, function* () {
             this.logger.log(`get all samples`);
             return this.stabilizedLayersSamplesService.getAllSamples({ page, limit });
         });
@@ -85,7 +85,6 @@ let StabilizedLayersSamplesController = StabilizedLayersSamplesController_1 = cl
         });
     }
 };
-exports.StabilizedLayersSamplesController = StabilizedLayersSamplesController;
 __decorate([
     (0, common_1.Post)('save'),
     (0, swagger_1.ApiOperation)({ summary: 'Cria uma amostra de camadas estabilizadas no banco de dados.' }),
@@ -147,9 +146,10 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], StabilizedLayersSamplesController.prototype, "deleteSampleById", null);
-exports.StabilizedLayersSamplesController = StabilizedLayersSamplesController = StabilizedLayersSamplesController_1 = __decorate([
+StabilizedLayersSamplesController = StabilizedLayersSamplesController_1 = __decorate([
     (0, swagger_1.ApiTags)('samples'),
     (0, common_1.Controller)('promedina/stabilized-layers/stabilized-layers-samples'),
     __metadata("design:paramtypes", [stabilized_layers_samples_service_1.StabilizedLayersSamplesService])
 ], StabilizedLayersSamplesController);
+exports.StabilizedLayersSamplesController = StabilizedLayersSamplesController;
 //# sourceMappingURL=index.js.map

@@ -13,7 +13,6 @@ exports.Calc_ELONGATEDPARTICLES_Dto = void 0;
 const class_validator_1 = require("class-validator");
 class Calc_ELONGATEDPARTICLES_Dto {
 }
-exports.Calc_ELONGATEDPARTICLES_Dto = Calc_ELONGATEDPARTICLES_Dto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
@@ -22,4 +21,5 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
 ], Calc_ELONGATEDPARTICLES_Dto.prototype, "step2Data", void 0);
+exports.Calc_ELONGATEDPARTICLES_Dto = Calc_ELONGATEDPARTICLES_Dto;
 //# sourceMappingURL=calc.elongatedParticles.dto.js.map

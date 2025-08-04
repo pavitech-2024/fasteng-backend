@@ -47,9 +47,9 @@ let SandEquivalentRepository = class SandEquivalentRepository {
         });
     }
 };
-exports.SandEquivalentRepository = SandEquivalentRepository;
-exports.SandEquivalentRepository = SandEquivalentRepository = __decorate([
+SandEquivalentRepository = __decorate([
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.SandEquivalent.name, database_config_1.DATABASE_CONNECTION.ASPHALT)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], SandEquivalentRepository);
+exports.SandEquivalentRepository = SandEquivalentRepository;
 //# sourceMappingURL=index.js.map

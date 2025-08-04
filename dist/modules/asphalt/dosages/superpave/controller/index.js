@@ -250,7 +250,6 @@ let SuperpaveController = SuperpaveController_1 = class SuperpaveController {
         });
     }
 };
-exports.SuperpaveController = SuperpaveController;
 __decorate([
     (0, common_1.Get)('all/:id'),
     (0, swagger_1.ApiOperation)({ summary: 'Retorna todas as dosagens do banco de dados de um usuário.' }),
@@ -604,9 +603,10 @@ __decorate([
     __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)
 ], SuperpaveController.prototype, "deleteMarshallDosage", null);
-exports.SuperpaveController = SuperpaveController = SuperpaveController_1 = __decorate([
+SuperpaveController = SuperpaveController_1 = __decorate([
     (0, swagger_1.ApiTags)('superpave'),
     (0, common_1.Controller)('asphalt/dosages/superpave'),
     __metadata("design:paramtypes", [service_1.SuperpaveService])
 ], SuperpaveController);
+exports.SuperpaveController = SuperpaveController;
 //# sourceMappingURL=index.js.map

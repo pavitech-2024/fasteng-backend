@@ -47,9 +47,9 @@ let AbrasionRepository = class AbrasionRepository {
         });
     }
 };
-exports.AbrasionRepository = AbrasionRepository;
-exports.AbrasionRepository = AbrasionRepository = __decorate([
+AbrasionRepository = __decorate([
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.Abrasion.name, database_config_1.DATABASE_CONNECTION.ASPHALT)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], AbrasionRepository);
+exports.AbrasionRepository = AbrasionRepository;
 //# sourceMappingURL=index.js.map

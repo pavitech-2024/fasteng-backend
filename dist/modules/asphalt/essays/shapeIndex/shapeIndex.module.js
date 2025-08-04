@@ -16,8 +16,7 @@ const general_data_shapeIndex_service_1 = require("./service/general-data.shapeI
 const services = [index_1.ShapeIndexService, general_data_shapeIndex_service_1.GeneralData_SHAPEINDEX_Service, calc_shapeIndex_service_1.Calc_SHAPEINDEX_Service];
 let ShapeIndexModule = class ShapeIndexModule {
 };
-exports.ShapeIndexModule = ShapeIndexModule;
-exports.ShapeIndexModule = ShapeIndexModule = __decorate([
+ShapeIndexModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [controller_1.ShapeIndexController],
@@ -25,4 +24,5 @@ exports.ShapeIndexModule = ShapeIndexModule = __decorate([
         exports: [index_1.ShapeIndexService, repository_1.ShapeIndexRepository],
     })
 ], ShapeIndexModule);
+exports.ShapeIndexModule = ShapeIndexModule;
 //# sourceMappingURL=shapeIndex.module.js.map

@@ -13,7 +13,6 @@ exports.Calc_SUCS_Dto = void 0;
 const class_validator_1 = require("class-validator");
 class Calc_SUCS_Dto {
 }
-exports.Calc_SUCS_Dto = Calc_SUCS_Dto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
@@ -22,4 +21,5 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
 ], Calc_SUCS_Dto.prototype, "step2Data", void 0);
+exports.Calc_SUCS_Dto = Calc_SUCS_Dto;
 //# sourceMappingURL=calc.sucs.dto.js.map

@@ -76,11 +76,11 @@ let AngularityService = AngularityService_1 = class AngularityService {
         });
     }
 };
-exports.AngularityService = AngularityService;
-exports.AngularityService = AngularityService = AngularityService_1 = __decorate([
+AngularityService = AngularityService_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [general_data_angularity_service_1.GeneralData_ANGULARITY_Service,
         calc_angularity_service_1.Calc_ANGULARITY_Service,
         repository_1.AngularityRepository])
 ], AngularityService);
+exports.AngularityService = AngularityService;
 //# sourceMappingURL=index.js.map

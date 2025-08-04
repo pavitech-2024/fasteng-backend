@@ -63,7 +63,6 @@ let CbrController = CbrController_1 = class CbrController {
         });
     }
 };
-exports.CbrController = CbrController;
 __decorate([
     (0, common_1.Post)('verify-init'),
     (0, swagger_1.ApiOperation)({ summary: 'Verifica se é possível criar uma CBR com os dados enviados.' }),
@@ -131,9 +130,10 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], CbrController.prototype, "saveEssay", null);
-exports.CbrController = CbrController = CbrController_1 = __decorate([
+CbrController = CbrController_1 = __decorate([
     (0, swagger_1.ApiTags)('cbr'),
     (0, common_1.Controller)('soils/essays/cbr'),
     __metadata("design:paramtypes", [service_1.CbrService])
 ], CbrController);
+exports.CbrController = CbrController;
 //# sourceMappingURL=index.js.map

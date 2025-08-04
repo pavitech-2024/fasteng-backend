@@ -76,11 +76,11 @@ let DuctilityService = DuctilityService_1 = class DuctilityService {
         });
     }
 };
-exports.DuctilityService = DuctilityService;
-exports.DuctilityService = DuctilityService = DuctilityService_1 = __decorate([
+DuctilityService = DuctilityService_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [general_data_ductility_service_1.GeneralData_DUCTILITY_Service,
         calc_ductility_service_1.Calc_DUCTILITY_Service,
         repository_1.DuctilityRepository])
 ], DuctilityService);
+exports.DuctilityService = DuctilityService;
 //# sourceMappingURL=index.js.map

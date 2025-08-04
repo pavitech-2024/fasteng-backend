@@ -20,7 +20,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var SpecifyMassRepository_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SpecifyMassRepository = void 0;
 const mongoose_1 = require("@nestjs/mongoose");
@@ -28,10 +27,10 @@ const schemas_1 = require("../schemas");
 const database_config_1 = require("../../../../../infra/mongoose/database.config");
 const mongoose_2 = require("mongoose");
 const common_1 = require("@nestjs/common");
-let SpecifyMassRepository = SpecifyMassRepository_1 = class SpecifyMassRepository {
+let SpecifyMassRepository = class SpecifyMassRepository {
     constructor(specifyMassModel) {
         this.specifyMassModel = specifyMassModel;
-        this.logger = new common_1.Logger(SpecifyMassRepository_1.name);
+        this.logger = new common_1.Logger(SpecifyMassRepository.name);
     }
     findOne(specifyMassFilterQuery) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -51,9 +50,9 @@ let SpecifyMassRepository = SpecifyMassRepository_1 = class SpecifyMassRepositor
         });
     }
 };
-exports.SpecifyMassRepository = SpecifyMassRepository;
-exports.SpecifyMassRepository = SpecifyMassRepository = SpecifyMassRepository_1 = __decorate([
+SpecifyMassRepository = __decorate([
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.SpecifyMass.name, database_config_1.DATABASE_CONNECTION.ASPHALT)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], SpecifyMassRepository);
+exports.SpecifyMassRepository = SpecifyMassRepository;
 //# sourceMappingURL=index.js.map

@@ -14,7 +14,6 @@ const mongoose_1 = require("@nestjs/mongoose");
 const class_validator_1 = require("class-validator");
 let Abrasion = class Abrasion {
 };
-exports.Abrasion = Abrasion;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, mongoose_1.Prop)({ type: Object }),
@@ -30,8 +29,9 @@ __decorate([
     (0, mongoose_1.Prop)({ type: Object }),
     __metadata("design:type", Object)
 ], Abrasion.prototype, "results", void 0);
-exports.Abrasion = Abrasion = __decorate([
+Abrasion = __decorate([
     (0, mongoose_1.Schema)({ collection: 'abrasions' })
 ], Abrasion);
+exports.Abrasion = Abrasion;
 exports.AbrasionSchema = mongoose_1.SchemaFactory.createForClass(Abrasion);
 //# sourceMappingURL=index.js.map

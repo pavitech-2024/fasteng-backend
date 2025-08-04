@@ -13,9 +13,9 @@ exports.SuperpaveInitDto = void 0;
 const class_validator_1 = require("class-validator");
 class SuperpaveInitDto {
 }
-exports.SuperpaveInitDto = SuperpaveInitDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], SuperpaveInitDto.prototype, "name", void 0);
+exports.SuperpaveInitDto = SuperpaveInitDto;
 //# sourceMappingURL=superpave-init.dto.js.map

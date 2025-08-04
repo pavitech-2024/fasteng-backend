@@ -27,8 +27,8 @@ let Calc_SofteningPoint_Service = Calc_SofteningPoint_Service_1 = class Calc_Sof
         this.materialsService = materialsService;
         this.logger = new common_1.Logger(Calc_SofteningPoint_Service_1.name);
     }
-    calculateSofteningPoint(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ softeningPoint, generalData }) {
+    calculateSofteningPoint({ softeningPoint, generalData }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('calculate softening point on calc.softeningPoint.service.ts > [body]');
                 const { material } = generalData;
@@ -114,9 +114,9 @@ let Calc_SofteningPoint_Service = Calc_SofteningPoint_Service_1 = class Calc_Sof
         });
     }
 };
-exports.Calc_SofteningPoint_Service = Calc_SofteningPoint_Service;
-exports.Calc_SofteningPoint_Service = Calc_SofteningPoint_Service = Calc_SofteningPoint_Service_1 = __decorate([
+Calc_SofteningPoint_Service = Calc_SofteningPoint_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [service_1.MaterialsService])
 ], Calc_SofteningPoint_Service);
+exports.Calc_SofteningPoint_Service = Calc_SofteningPoint_Service;
 //# sourceMappingURL=calc-softeningPoint.softeningPoint.service.js.map

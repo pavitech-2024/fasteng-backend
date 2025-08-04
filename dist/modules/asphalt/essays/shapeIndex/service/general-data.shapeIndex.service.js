@@ -31,8 +31,8 @@ let GeneralData_SHAPEINDEX_Service = GeneralData_SHAPEINDEX_Service_1 = class Ge
         this.materialRepository = materialRepository;
         this.logger = new common_1.Logger(GeneralData_SHAPEINDEX_Service_1.name);
     }
-    verifyInitShapeIndex(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ name, material }) {
+    verifyInitShapeIndex({ name, material }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('verify init shapeIndex on general-data.shapeIndex.service.ts > [body]');
                 const materialExists = yield this.materialRepository.findOne({
@@ -54,9 +54,9 @@ let GeneralData_SHAPEINDEX_Service = GeneralData_SHAPEINDEX_Service_1 = class Ge
         });
     }
 };
-exports.GeneralData_SHAPEINDEX_Service = GeneralData_SHAPEINDEX_Service;
-exports.GeneralData_SHAPEINDEX_Service = GeneralData_SHAPEINDEX_Service = GeneralData_SHAPEINDEX_Service_1 = __decorate([
+GeneralData_SHAPEINDEX_Service = GeneralData_SHAPEINDEX_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_1.ShapeIndexRepository, repository_2.MaterialsRepository])
 ], GeneralData_SHAPEINDEX_Service);
+exports.GeneralData_SHAPEINDEX_Service = GeneralData_SHAPEINDEX_Service;
 //# sourceMappingURL=general-data.shapeIndex.service.js.map

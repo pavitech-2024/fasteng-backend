@@ -13,7 +13,6 @@ exports.Calc_Rtcd_Dto = void 0;
 const class_validator_1 = require("class-validator");
 class Calc_Rtcd_Dto {
 }
-exports.Calc_Rtcd_Dto = Calc_Rtcd_Dto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
@@ -26,4 +25,5 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
 ], Calc_Rtcd_Dto.prototype, "rtcdStep3", void 0);
+exports.Calc_Rtcd_Dto = Calc_Rtcd_Dto;
 //# sourceMappingURL=calc-rtcd.dto.js.map

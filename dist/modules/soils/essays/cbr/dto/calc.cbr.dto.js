@@ -13,7 +13,6 @@ exports.Calc_CBR_Dto = void 0;
 const class_validator_1 = require("class-validator");
 class Calc_CBR_Dto {
 }
-exports.Calc_CBR_Dto = Calc_CBR_Dto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
@@ -26,4 +25,5 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
 ], Calc_CBR_Dto.prototype, "expansionData", void 0);
+exports.Calc_CBR_Dto = Calc_CBR_Dto;
 //# sourceMappingURL=calc.cbr.dto.js.map

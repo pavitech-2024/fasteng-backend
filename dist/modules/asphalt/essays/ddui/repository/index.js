@@ -52,9 +52,9 @@ let DduiRepository = class DduiRepository {
         });
     }
 };
-exports.DduiRepository = DduiRepository;
-exports.DduiRepository = DduiRepository = __decorate([
+DduiRepository = __decorate([
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.Ddui.name, database_config_1.DATABASE_CONNECTION.ASPHALT)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], DduiRepository);
+exports.DduiRepository = DduiRepository;
 //# sourceMappingURL=index.js.map

@@ -13,7 +13,6 @@ exports.correctionFactorReference = exports.toleranceReference = void 0;
 const class_validator_1 = require("class-validator");
 class toleranceReference {
 }
-exports.toleranceReference = toleranceReference;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsNumber)(),
@@ -24,9 +23,9 @@ __decorate([
     (0, class_validator_1.IsNumber)(),
     __metadata("design:type", Number)
 ], toleranceReference.prototype, "tolerance", void 0);
+exports.toleranceReference = toleranceReference;
 class correctionFactorReference {
 }
-exports.correctionFactorReference = correctionFactorReference;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsNumber)(),
@@ -37,4 +36,5 @@ __decorate([
     (0, class_validator_1.IsNumber)(),
     __metadata("design:type", Number)
 ], correctionFactorReference.prototype, "correctionFactor", void 0);
+exports.correctionFactorReference = correctionFactorReference;
 //# sourceMappingURL=calc.interpolation.dto.js.map

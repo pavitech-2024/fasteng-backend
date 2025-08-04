@@ -27,8 +27,7 @@ const Models = [
 const Modules = [granular_layers_samples_module_1.GranularLayersSamplesModule, stabilized_layers_samples_module_1.StabilizedLayersSamplesModule, binder_asphalt_concrete_samples_module_1.BinderAsphaltConcreteSamplesModule];
 let ProMedinaModule = class ProMedinaModule {
 };
-exports.ProMedinaModule = ProMedinaModule;
-exports.ProMedinaModule = ProMedinaModule = __decorate([
+ProMedinaModule = __decorate([
     (0, common_1.Global)(),
     (0, common_1.Module)({
         imports: [
@@ -41,4 +40,5 @@ exports.ProMedinaModule = ProMedinaModule = __decorate([
         exports: [mongoose_1.MongooseModule, ...Modules],
     })
 ], ProMedinaModule);
+exports.ProMedinaModule = ProMedinaModule;
 //# sourceMappingURL=pro-medina.module.js.map

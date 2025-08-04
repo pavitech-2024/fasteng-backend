@@ -73,11 +73,11 @@ let RtcdService = class RtcdService {
         });
     }
 };
-exports.RtcdService = RtcdService;
-exports.RtcdService = RtcdService = __decorate([
+RtcdService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [general_data_rtcd_service_1.GeneralData_Rtcd_Service,
         repository_1.RtcdRepository,
         calc_rtcd_service_1.Calc_Rtcd_Service])
 ], RtcdService);
+exports.RtcdService = RtcdService;
 //# sourceMappingURL=rtcd.service.js.map

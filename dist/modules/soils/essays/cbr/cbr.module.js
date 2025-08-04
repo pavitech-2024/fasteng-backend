@@ -16,8 +16,7 @@ const calc_cbr_service_1 = require("./service/calc.cbr.service");
 const services = [service_1.CbrService, general_data_cbr_service_1.GeneralData_CBR_Service, calc_cbr_service_1.Calc_CBR_Service];
 let CbrModule = class CbrModule {
 };
-exports.CbrModule = CbrModule;
-exports.CbrModule = CbrModule = __decorate([
+CbrModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [controller_1.CbrController],
@@ -25,4 +24,5 @@ exports.CbrModule = CbrModule = __decorate([
         exports: [service_1.CbrService, repository_1.CbrRepository],
     })
 ], CbrModule);
+exports.CbrModule = CbrModule;
 //# sourceMappingURL=cbr.module.js.map

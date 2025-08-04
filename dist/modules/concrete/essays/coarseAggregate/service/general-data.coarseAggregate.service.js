@@ -30,8 +30,8 @@ let GeneralData_CoarseAggregate_Service = GeneralData_CoarseAggregate_Service_1 
         this.materialsRepository = materialsRepository;
         this.logger = new common_1.Logger(GeneralData_CoarseAggregate_Service_1.name);
     }
-    verifyInitCoarseAggregate(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ name, material }) {
+    verifyInitCoarseAggregate({ name, material }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('verify init coarseAggregate on general-data.coarseAggregate.service.ts > [body]');
                 const materialExists = yield this.materialsRepository.findOne({ _id: material._id });
@@ -50,10 +50,10 @@ let GeneralData_CoarseAggregate_Service = GeneralData_CoarseAggregate_Service_1 
         });
     }
 };
-exports.GeneralData_CoarseAggregate_Service = GeneralData_CoarseAggregate_Service;
-exports.GeneralData_CoarseAggregate_Service = GeneralData_CoarseAggregate_Service = GeneralData_CoarseAggregate_Service_1 = __decorate([
+GeneralData_CoarseAggregate_Service = GeneralData_CoarseAggregate_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_2.CoarseAggregateSpecificMassRepository,
         repository_1.MaterialsRepository])
 ], GeneralData_CoarseAggregate_Service);
+exports.GeneralData_CoarseAggregate_Service = GeneralData_CoarseAggregate_Service;
 //# sourceMappingURL=general-data.coarseAggregate.service.js.map

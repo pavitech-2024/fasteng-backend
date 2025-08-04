@@ -74,11 +74,11 @@ let SandEquivalentService = class SandEquivalentService {
         });
     }
 };
-exports.SandEquivalentService = SandEquivalentService;
-exports.SandEquivalentService = SandEquivalentService = __decorate([
+SandEquivalentService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [general_data_sandEquivalent_service_1.GeneralData_SandEquivalent_Service,
         repository_1.SandEquivalentRepository,
         calc_sandEquivalent_service_1.Calc_SandEquivalent_Service])
 ], SandEquivalentService);
+exports.SandEquivalentService = SandEquivalentService;
 //# sourceMappingURL=index.js.map

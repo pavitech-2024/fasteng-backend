@@ -66,11 +66,11 @@ let ConfirmCompaction_Superpave_Service = ConfirmCompaction_Superpave_Service_1 
         });
     }
 };
-exports.ConfirmCompaction_Superpave_Service = ConfirmCompaction_Superpave_Service;
-exports.ConfirmCompaction_Superpave_Service = ConfirmCompaction_Superpave_Service = ConfirmCompaction_Superpave_Service_1 = __decorate([
+ConfirmCompaction_Superpave_Service = ConfirmCompaction_Superpave_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_2.InjectModel)(schemas_1.Superpave.name, database_config_1.DATABASE_CONNECTION.ASPHALT)),
     __metadata("design:paramtypes", [mongoose_1.Model,
         repository_1.SuperpaveRepository])
 ], ConfirmCompaction_Superpave_Service);
+exports.ConfirmCompaction_Superpave_Service = ConfirmCompaction_Superpave_Service;
 //# sourceMappingURL=confirm-compaction.service.js.map

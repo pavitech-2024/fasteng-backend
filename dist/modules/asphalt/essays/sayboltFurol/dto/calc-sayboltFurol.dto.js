@@ -13,7 +13,6 @@ exports.Calc_SayboltFurol_Dto = void 0;
 const class_validator_1 = require("class-validator");
 class Calc_SayboltFurol_Dto {
 }
-exports.Calc_SayboltFurol_Dto = Calc_SayboltFurol_Dto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
@@ -22,4 +21,5 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
 ], Calc_SayboltFurol_Dto.prototype, "sayboltFurol", void 0);
+exports.Calc_SayboltFurol_Dto = Calc_SayboltFurol_Dto;
 //# sourceMappingURL=calc-sayboltFurol.dto.js.map

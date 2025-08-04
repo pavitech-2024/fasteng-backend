@@ -13,7 +13,6 @@ exports.CreateBinderAsphaltConcreteSampleDto = void 0;
 const class_validator_1 = require("class-validator");
 class CreateBinderAsphaltConcreteSampleDto {
 }
-exports.CreateBinderAsphaltConcreteSampleDto = CreateBinderAsphaltConcreteSampleDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
@@ -30,4 +29,5 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
 ], CreateBinderAsphaltConcreteSampleDto.prototype, "step4Data", void 0);
+exports.CreateBinderAsphaltConcreteSampleDto = CreateBinderAsphaltConcreteSampleDto;
 //# sourceMappingURL=create-binder-asphalt-concrete-samples.dto.js.map

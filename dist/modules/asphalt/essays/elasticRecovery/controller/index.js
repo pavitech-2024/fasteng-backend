@@ -63,7 +63,6 @@ let ElasticRecoveryController = ElasticRecoveryController_1 = class ElasticRecov
         });
     }
 };
-exports.ElasticRecoveryController = ElasticRecoveryController;
 __decorate([
     (0, common_1.Post)('verify-init'),
     (0, swagger_1.ApiOperation)({ summary: 'Verifica se é possível criar uma ElasticRecovery com os dados enviados.' }),
@@ -131,9 +130,10 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], ElasticRecoveryController.prototype, "saveEssay", null);
-exports.ElasticRecoveryController = ElasticRecoveryController = ElasticRecoveryController_1 = __decorate([
+ElasticRecoveryController = ElasticRecoveryController_1 = __decorate([
     (0, swagger_1.ApiTags)('elasticRecovery'),
     (0, common_1.Controller)('asphalt/essays/elasticRecovery'),
     __metadata("design:paramtypes", [service_1.ElasticRecoveryService])
 ], ElasticRecoveryController);
+exports.ElasticRecoveryController = ElasticRecoveryController;
 //# sourceMappingURL=index.js.map

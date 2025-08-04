@@ -14,7 +14,6 @@ const mongoose_1 = require("@nestjs/mongoose");
 const class_validator_1 = require("class-validator");
 let ViscosityRotational = class ViscosityRotational {
 };
-exports.ViscosityRotational = ViscosityRotational;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, mongoose_1.Prop)({ type: Object }),
@@ -30,8 +29,9 @@ __decorate([
     (0, mongoose_1.Prop)({ type: Object }),
     __metadata("design:type", Object)
 ], ViscosityRotational.prototype, "results", void 0);
-exports.ViscosityRotational = ViscosityRotational = __decorate([
+ViscosityRotational = __decorate([
     (0, mongoose_1.Schema)({ collection: 'viscosityRotational' })
 ], ViscosityRotational);
+exports.ViscosityRotational = ViscosityRotational;
 exports.ViscosityRotationalSchema = mongoose_1.SchemaFactory.createForClass(ViscosityRotational);
 //# sourceMappingURL=index.js.map

@@ -284,11 +284,11 @@ let OptimumBinderContent_Marshall_Service = class OptimumBinderContent_Marshall_
         });
     }
 };
-exports.OptimumBinderContent_Marshall_Service = OptimumBinderContent_Marshall_Service;
-exports.OptimumBinderContent_Marshall_Service = OptimumBinderContent_Marshall_Service = __decorate([
+OptimumBinderContent_Marshall_Service = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.Marshall.name, database_config_1.DATABASE_CONNECTION.ASPHALT)),
     __metadata("design:paramtypes", [mongoose_2.Model,
         repository_1.MarshallRepository])
 ], OptimumBinderContent_Marshall_Service);
+exports.OptimumBinderContent_Marshall_Service = OptimumBinderContent_Marshall_Service;
 //# sourceMappingURL=optimum-binder.marshall.service.js.map
