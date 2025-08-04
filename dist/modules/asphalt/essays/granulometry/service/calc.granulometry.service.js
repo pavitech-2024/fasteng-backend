@@ -30,10 +30,12 @@ let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = clas
         this.materialsRepository = materialsRepository;
         this.logger = new common_1.Logger(Calc_AsphaltGranulometry_Service_1.name);
         this.getDiameter = (table_data, percentage, limits) => {
-            if (limits.upperLimit.value === percentage)
+            if (limits.upperLimit.value === percentage) {
                 return table_data[limits.upperLimit.index].passant;
-            if (limits.inferiorLimit.value === percentage)
+            }
+            if (limits.inferiorLimit.value === percentage) {
                 return table_data[limits.inferiorLimit.index].passant;
+            }
             const coefficientA = (limits.upperLimit.value - limits.inferiorLimit.value) /
                 (table_data[limits.upperLimit.index].passant - table_data[limits.inferiorLimit.index].passant);
             const coefficientB = limits.upperLimit.value / (coefficientA * table_data[limits.upperLimit.index].passant);
@@ -41,16 +43,15 @@ let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = clas
         };
         this.getPercentage = (percentage, table_data) => {
             return table_data.reduce((accumulate, sieve, index) => {
-                const { upperLimit, inferiorLimit } = accumulate;
                 if (sieve.passant >= percentage) {
-                    if (upperLimit.value === 0 || sieve.passant < upperLimit.value)
+                    if (accumulate.upperLimit.value === 0 || sieve.passant < accumulate.upperLimit.value)
                         accumulate.upperLimit = {
                             value: sieve.passant,
                             index: index,
                         };
                 }
                 else {
-                    if (inferiorLimit.value === 0 || sieve.passant > inferiorLimit.value)
+                    if (accumulate.inferiorLimit.value === 0 || sieve.passant > accumulate.inferiorLimit.value)
                         accumulate.inferiorLimit = {
                             value: sieve.passant,
                             index: index,
@@ -72,7 +73,7 @@ let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = clas
     calculateGranulometry({ step2Data, isSuperpave = true, }) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                this.logger.log('calculate asphalt granulometry on calc.granulometry.service.ts > [body]');
+                this.logger.log(`calculate asphalt granulometry on calc.granulometry.service.ts > [${isSuperpave ? 'Superpave' : 'Granulometry'}] [${step2Data}]`);
                 const { table_data, material_mass, bottom } = step2Data;
                 const length = table_data.length;
                 const accumulated_retained = [];
