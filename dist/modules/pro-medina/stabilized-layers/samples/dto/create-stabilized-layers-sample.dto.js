@@ -13,7 +13,6 @@ exports.CreateStabilizedLayersSampleDto = void 0;
 const class_validator_1 = require("class-validator");
 class CreateStabilizedLayersSampleDto {
 }
-exports.CreateStabilizedLayersSampleDto = CreateStabilizedLayersSampleDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
@@ -26,4 +25,5 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
 ], CreateStabilizedLayersSampleDto.prototype, "step3Data", void 0);
+exports.CreateStabilizedLayersSampleDto = CreateStabilizedLayersSampleDto;
 //# sourceMappingURL=create-stabilized-layers-sample.dto.js.map

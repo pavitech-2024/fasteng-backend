@@ -18,8 +18,7 @@ const services = [
 ];
 let MaterialsModule = class MaterialsModule {
 };
-exports.MaterialsModule = MaterialsModule;
-exports.MaterialsModule = MaterialsModule = __decorate([
+MaterialsModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [controller_1.MaterialsController],
@@ -27,4 +26,5 @@ exports.MaterialsModule = MaterialsModule = __decorate([
         exports: [service_1.MaterialsService, repository_1.MaterialsRepository],
     })
 ], MaterialsModule);
+exports.MaterialsModule = MaterialsModule;
 //# sourceMappingURL=materials.module.js.map

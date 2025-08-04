@@ -13,9 +13,9 @@ exports.ConcreteRcInitDto = void 0;
 const class_validator_1 = require("class-validator");
 class ConcreteRcInitDto {
 }
-exports.ConcreteRcInitDto = ConcreteRcInitDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], ConcreteRcInitDto.prototype, "name", void 0);
+exports.ConcreteRcInitDto = ConcreteRcInitDto;
 //# sourceMappingURL=concretert-init.dto.js.map

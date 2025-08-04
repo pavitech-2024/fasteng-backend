@@ -190,11 +190,11 @@ let SecondCompressionParameters_Superpave_Service = SecondCompressionParameters_
         });
     }
 };
-exports.SecondCompressionParameters_Superpave_Service = SecondCompressionParameters_Superpave_Service;
-exports.SecondCompressionParameters_Superpave_Service = SecondCompressionParameters_Superpave_Service = SecondCompressionParameters_Superpave_Service_1 = __decorate([
+SecondCompressionParameters_Superpave_Service = SecondCompressionParameters_Superpave_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.Superpave.name, database_config_1.DATABASE_CONNECTION.ASPHALT)),
     __metadata("design:paramtypes", [mongoose_2.Model,
         repository_1.SuperpaveRepository])
 ], SecondCompressionParameters_Superpave_Service);
+exports.SecondCompressionParameters_Superpave_Service = SecondCompressionParameters_Superpave_Service;
 //# sourceMappingURL=second-compression-parameters.service.js.map

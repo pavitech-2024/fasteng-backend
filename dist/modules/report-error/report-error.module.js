@@ -12,8 +12,7 @@ const report_error_controller_1 = require("./report-error.controller");
 const report_error_service_1 = require("./report-error.service");
 let ReportErrorModule = class ReportErrorModule {
 };
-exports.ReportErrorModule = ReportErrorModule;
-exports.ReportErrorModule = ReportErrorModule = __decorate([
+ReportErrorModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [report_error_controller_1.ReportErrorController],
@@ -21,4 +20,5 @@ exports.ReportErrorModule = ReportErrorModule = __decorate([
         exports: [report_error_service_1.ReportErrorService],
     })
 ], ReportErrorModule);
+exports.ReportErrorModule = ReportErrorModule;
 //# sourceMappingURL=report-error.module.js.map

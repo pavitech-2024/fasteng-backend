@@ -63,7 +63,6 @@ let SayboltFurolController = SayboltFurolController_1 = class SayboltFurolContro
         });
     }
 };
-exports.SayboltFurolController = SayboltFurolController;
 __decorate([
     (0, common_1.Post)('verify-init'),
     (0, swagger_1.ApiOperation)({ summary: 'Verifica se é possível criar um ensaio de viscosidade Saybolt-Furol com os dados enviados.' }),
@@ -117,9 +116,10 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], SayboltFurolController.prototype, "saveEssay", null);
-exports.SayboltFurolController = SayboltFurolController = SayboltFurolController_1 = __decorate([
+SayboltFurolController = SayboltFurolController_1 = __decorate([
     (0, swagger_1.ApiTags)('sayboltFurol'),
     (0, common_1.Controller)('asphalt/essays/sayboltFurol'),
     __metadata("design:paramtypes", [service_1.SayboltFurolService])
 ], SayboltFurolController);
+exports.SayboltFurolController = SayboltFurolController;
 //# sourceMappingURL=index.js.map

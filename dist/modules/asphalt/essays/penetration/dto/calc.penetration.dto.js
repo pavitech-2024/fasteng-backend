@@ -13,7 +13,6 @@ exports.Calc_Penetration_Dto = void 0;
 const class_validator_1 = require("class-validator");
 class Calc_Penetration_Dto {
 }
-exports.Calc_Penetration_Dto = Calc_Penetration_Dto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
@@ -22,4 +21,5 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
 ], Calc_Penetration_Dto.prototype, "penetrationCalc", void 0);
+exports.Calc_Penetration_Dto = Calc_Penetration_Dto;
 //# sourceMappingURL=calc.penetration.dto.js.map

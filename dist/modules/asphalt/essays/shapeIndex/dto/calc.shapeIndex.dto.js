@@ -13,7 +13,6 @@ exports.Calc_SHAPEINDEX_Dto = void 0;
 const class_validator_1 = require("class-validator");
 class Calc_SHAPEINDEX_Dto {
 }
-exports.Calc_SHAPEINDEX_Dto = Calc_SHAPEINDEX_Dto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
@@ -22,4 +21,5 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
 ], Calc_SHAPEINDEX_Dto.prototype, "step2Data", void 0);
+exports.Calc_SHAPEINDEX_Dto = Calc_SHAPEINDEX_Dto;
 //# sourceMappingURL=calc.shapeIndex.dto.js.map

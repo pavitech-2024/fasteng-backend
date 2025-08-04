@@ -22,7 +22,7 @@ const hrb_classifications_1 = require("../utils/hrb-classifications");
 let Calc_HRB_Service = Calc_HRB_Service_1 = class Calc_HRB_Service {
     constructor() {
         this.logger = new common_1.Logger(Calc_HRB_Service_1.name);
-        this.calculateHrb = (_a) => __awaiter(this, [_a], void 0, function* ({ step2Data }) {
+        this.calculateHrb = ({ step2Data }) => __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('calculate hrb on calc.hrb.service.ts > [body]');
                 const classifications = hrb_classifications_1.default;
@@ -67,8 +67,8 @@ let Calc_HRB_Service = Calc_HRB_Service_1 = class Calc_HRB_Service {
         };
     }
 };
-exports.Calc_HRB_Service = Calc_HRB_Service;
-exports.Calc_HRB_Service = Calc_HRB_Service = Calc_HRB_Service_1 = __decorate([
+Calc_HRB_Service = Calc_HRB_Service_1 = __decorate([
     (0, common_1.Injectable)()
 ], Calc_HRB_Service);
+exports.Calc_HRB_Service = Calc_HRB_Service;
 //# sourceMappingURL=calc.hrb.service.js.map

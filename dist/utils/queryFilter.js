@@ -19,7 +19,6 @@ class PageQueryFilter {
         this.page = 0;
     }
 }
-exports.PageQueryFilter = PageQueryFilter;
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Number of items to be returned',
@@ -47,9 +46,9 @@ __decorate([
         : 0),
     __metadata("design:type", Number)
 ], PageQueryFilter.prototype, "page", void 0);
+exports.PageQueryFilter = PageQueryFilter;
 class NeedCountQueryFilter extends PageQueryFilter {
 }
-exports.NeedCountQueryFilter = NeedCountQueryFilter;
 __decorate([
     (0, swagger_1.ApiProperty)({ required: false }),
     (0, class_transformer_1.Transform)(({ value }) => Boolean(value)),
@@ -57,6 +56,7 @@ __decorate([
     (0, class_validator_1.IsBoolean)(),
     __metadata("design:type", Boolean)
 ], NeedCountQueryFilter.prototype, "need_count", void 0);
+exports.NeedCountQueryFilter = NeedCountQueryFilter;
 class CommonQueryFilter extends NeedCountQueryFilter {
     constructor() {
         super(...arguments);
@@ -64,7 +64,6 @@ class CommonQueryFilter extends NeedCountQueryFilter {
         this.sort = [];
     }
 }
-exports.CommonQueryFilter = CommonQueryFilter;
 __decorate([
     (0, swagger_1.ApiProperty)({ required: false }),
     (0, class_validator_1.IsOptional)(),
@@ -84,4 +83,5 @@ __decorate([
     (0, class_transformer_1.Transform)((element) => JSON.parse(element.value)),
     __metadata("design:type", Object)
 ], CommonQueryFilter.prototype, "sort", void 0);
+exports.CommonQueryFilter = CommonQueryFilter;
 //# sourceMappingURL=queryFilter.js.map

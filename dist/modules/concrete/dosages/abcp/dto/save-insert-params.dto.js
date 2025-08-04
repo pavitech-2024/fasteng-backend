@@ -13,9 +13,9 @@ exports.InsertParamsDataDto = void 0;
 const class_validator_1 = require("class-validator");
 class InsertParamsDataDto {
 }
-exports.InsertParamsDataDto = InsertParamsDataDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
 ], InsertParamsDataDto.prototype, "insertParamsData", void 0);
+exports.InsertParamsDataDto = InsertParamsDataDto;
 //# sourceMappingURL=save-insert-params.dto.js.map

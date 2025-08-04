@@ -52,9 +52,9 @@ let SayboltFurolRepository = class SayboltFurolRepository {
         });
     }
 };
-exports.SayboltFurolRepository = SayboltFurolRepository;
-exports.SayboltFurolRepository = SayboltFurolRepository = __decorate([
+SayboltFurolRepository = __decorate([
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.SayboltFurol.name, database_config_1.DATABASE_CONNECTION.ASPHALT)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], SayboltFurolRepository);
+exports.SayboltFurolRepository = SayboltFurolRepository;
 //# sourceMappingURL=index.js.map

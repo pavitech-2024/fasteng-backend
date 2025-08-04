@@ -16,8 +16,7 @@ const service_1 = require("./service");
 const database_config_1 = require("../../infra/mongoose/database.config");
 let UsersModule = class UsersModule {
 };
-exports.UsersModule = UsersModule;
-exports.UsersModule = UsersModule = __decorate([
+UsersModule = __decorate([
     (0, common_1.Global)(),
     (0, common_1.Module)({
         imports: [mongoose_1.MongooseModule.forFeature([{ name: schemas_1.User.name, schema: schemas_1.UserSchema }], database_config_1.DATABASE_CONNECTION.COMMON)],
@@ -26,4 +25,5 @@ exports.UsersModule = UsersModule = __decorate([
         exports: [service_1.UsersService, repository_1.UsersRepository],
     })
 ], UsersModule);
+exports.UsersModule = UsersModule;
 //# sourceMappingURL=users.module.js.map

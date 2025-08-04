@@ -63,7 +63,6 @@ let HrbController = HrbController_1 = class HrbController {
         });
     }
 };
-exports.HrbController = HrbController;
 __decorate([
     (0, common_1.Post)('verify-init'),
     (0, swagger_1.ApiOperation)({ summary: 'Verifica se é possível criar uma HRB com os dados enviados.' }),
@@ -131,9 +130,10 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], HrbController.prototype, "saveEssay", null);
-exports.HrbController = HrbController = HrbController_1 = __decorate([
+HrbController = HrbController_1 = __decorate([
     (0, swagger_1.ApiTags)('hrb'),
     (0, common_1.Controller)('soils/essays/hrb'),
     __metadata("design:paramtypes", [service_1.HrbService])
 ], HrbController);
+exports.HrbController = HrbController;
 //# sourceMappingURL=index.js.map

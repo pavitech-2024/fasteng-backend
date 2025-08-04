@@ -20,7 +20,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var FlashPointRepository_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FlashPointRepository = void 0;
 const mongoose_1 = require("@nestjs/mongoose");
@@ -28,10 +27,10 @@ const schemas_1 = require("../schemas");
 const database_config_1 = require("../../../../../infra/mongoose/database.config");
 const mongoose_2 = require("mongoose");
 const common_1 = require("@nestjs/common");
-let FlashPointRepository = FlashPointRepository_1 = class FlashPointRepository {
+let FlashPointRepository = class FlashPointRepository {
     constructor(flashPointModel) {
         this.flashPointModel = flashPointModel;
-        this.logger = new common_1.Logger(FlashPointRepository_1.name);
+        this.logger = new common_1.Logger(FlashPointRepository.name);
     }
     findOne(flashPointFilterQuery) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -50,9 +49,9 @@ let FlashPointRepository = FlashPointRepository_1 = class FlashPointRepository {
         });
     }
 };
-exports.FlashPointRepository = FlashPointRepository;
-exports.FlashPointRepository = FlashPointRepository = FlashPointRepository_1 = __decorate([
+FlashPointRepository = __decorate([
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.FlashPoint.name, database_config_1.DATABASE_CONNECTION.ASPHALT)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], FlashPointRepository);
+exports.FlashPointRepository = FlashPointRepository;
 //# sourceMappingURL=index.js.map

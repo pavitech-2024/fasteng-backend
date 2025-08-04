@@ -93,11 +93,11 @@ let GranulometryService = GranulometryService_1 = class GranulometryService {
         });
     }
 };
-exports.GranulometryService = GranulometryService;
-exports.GranulometryService = GranulometryService = GranulometryService_1 = __decorate([
+GranulometryService = GranulometryService_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [general_data_granulometry_service_1.GeneralData_GRANULOMETRY_Service,
         calc_granulometry_service_1.Calc_GRANULOMETRY_Service,
         repository_1.GranulometryRepository])
 ], GranulometryService);
+exports.GranulometryService = GranulometryService;
 //# sourceMappingURL=index.js.map

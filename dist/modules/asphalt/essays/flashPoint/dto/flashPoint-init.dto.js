@@ -14,7 +14,6 @@ const class_validator_1 = require("class-validator");
 const schemas_1 = require("../../../materials/schemas");
 class FlashPointInitDto {
 }
-exports.FlashPointInitDto = FlashPointInitDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
@@ -23,4 +22,5 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", schemas_1.Material)
 ], FlashPointInitDto.prototype, "material", void 0);
+exports.FlashPointInitDto = FlashPointInitDto;
 //# sourceMappingURL=flashPoint-init.dto.js.map

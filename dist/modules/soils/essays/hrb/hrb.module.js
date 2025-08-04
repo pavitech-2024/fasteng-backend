@@ -16,8 +16,7 @@ const calc_hrb_service_1 = require("./service/calc.hrb.service");
 const services = [service_1.HrbService, general_data_hrb_service_1.GeneralData_HRB_Service, calc_hrb_service_1.Calc_HRB_Service];
 let HrbModule = class HrbModule {
 };
-exports.HrbModule = HrbModule;
-exports.HrbModule = HrbModule = __decorate([
+HrbModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [controller_1.HrbController],
@@ -25,4 +24,5 @@ exports.HrbModule = HrbModule = __decorate([
         exports: [service_1.HrbService, repository_1.HrbRepository],
     })
 ], HrbModule);
+exports.HrbModule = HrbModule;
 //# sourceMappingURL=hrb.module.js.map

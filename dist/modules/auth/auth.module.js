@@ -13,12 +13,12 @@ const controller_1 = require("./controller");
 const service_1 = require("./service");
 let AuthModule = class AuthModule {
 };
-exports.AuthModule = AuthModule;
-exports.AuthModule = AuthModule = __decorate([
+AuthModule = __decorate([
     (0, common_1.Module)({
         imports: [users_module_1.UsersModule],
         controllers: [controller_1.AuthController],
         providers: [service_1.AuthService],
     })
 ], AuthModule);
+exports.AuthModule = AuthModule;
 //# sourceMappingURL=auth.module.js.map

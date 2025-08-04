@@ -326,12 +326,12 @@ let GranulometryComposition_Superpave_Service = GranulometryComposition_Superpav
         });
     }
 };
-exports.GranulometryComposition_Superpave_Service = GranulometryComposition_Superpave_Service;
-exports.GranulometryComposition_Superpave_Service = GranulometryComposition_Superpave_Service = GranulometryComposition_Superpave_Service_1 = __decorate([
+GranulometryComposition_Superpave_Service = GranulometryComposition_Superpave_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.Superpave.name, database_config_1.DATABASE_CONNECTION.ASPHALT)),
     __metadata("design:paramtypes", [mongoose_2.Model,
         repository_2.SuperpaveRepository,
         repository_1.AsphaltGranulometryRepository])
 ], GranulometryComposition_Superpave_Service);
+exports.GranulometryComposition_Superpave_Service = GranulometryComposition_Superpave_Service;
 //# sourceMappingURL=granulometry-composition.superpave.service.js.map

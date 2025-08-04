@@ -42,9 +42,9 @@ let CompressionRepository = class CompressionRepository {
         });
     }
 };
-exports.CompressionRepository = CompressionRepository;
-exports.CompressionRepository = CompressionRepository = __decorate([
+CompressionRepository = __decorate([
     __param(0, (0, mongoose_1.InjectModel)(schema_1.Compression.name, database_config_1.DATABASE_CONNECTION.SOILS)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], CompressionRepository);
+exports.CompressionRepository = CompressionRepository;
 //# sourceMappingURL=index.js.map

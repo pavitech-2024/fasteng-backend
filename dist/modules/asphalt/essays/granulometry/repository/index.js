@@ -60,9 +60,9 @@ let AsphaltGranulometryRepository = class AsphaltGranulometryRepository {
         });
     }
 };
-exports.AsphaltGranulometryRepository = AsphaltGranulometryRepository;
-exports.AsphaltGranulometryRepository = AsphaltGranulometryRepository = __decorate([
+AsphaltGranulometryRepository = __decorate([
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.AsphaltGranulometry.name, database_config_1.DATABASE_CONNECTION.ASPHALT)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], AsphaltGranulometryRepository);
+exports.AsphaltGranulometryRepository = AsphaltGranulometryRepository;
 //# sourceMappingURL=index.js.map

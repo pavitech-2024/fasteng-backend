@@ -29,8 +29,8 @@ let Calc_SHAPEINDEX_Service = Calc_SHAPEINDEX_Service_1 = class Calc_SHAPEINDEX_
         this.materialRepository = materialRepository;
         this.logger = new common_1.Logger(Calc_SHAPEINDEX_Service_1.name);
     }
-    calculateShapeIndex(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ step2Data }) {
+    calculateShapeIndex({ step2Data }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('calculate shapeIndex on calc.shapeIndex.service.ts > [body]');
                 const { method, total_mass, graduation, circular_sieves_table_data, sieves_table_data, reads_table_data } = step2Data;
@@ -112,9 +112,9 @@ let Calc_SHAPEINDEX_Service = Calc_SHAPEINDEX_Service_1 = class Calc_SHAPEINDEX_
         return { sum1, sum2 };
     }
 };
-exports.Calc_SHAPEINDEX_Service = Calc_SHAPEINDEX_Service;
-exports.Calc_SHAPEINDEX_Service = Calc_SHAPEINDEX_Service = Calc_SHAPEINDEX_Service_1 = __decorate([
+Calc_SHAPEINDEX_Service = Calc_SHAPEINDEX_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_1.ShapeIndexRepository, repository_2.MaterialsRepository])
 ], Calc_SHAPEINDEX_Service);
+exports.Calc_SHAPEINDEX_Service = Calc_SHAPEINDEX_Service;
 //# sourceMappingURL=calc.shapeIndex.service.js.map

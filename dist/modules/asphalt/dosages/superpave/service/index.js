@@ -1080,8 +1080,7 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
         });
     }
 };
-exports.SuperpaveService = SuperpaveService;
-exports.SuperpaveService = SuperpaveService = SuperpaveService_1 = __decorate([
+SuperpaveService = SuperpaveService_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [index_1.SuperpaveRepository,
         general_data_superpave_service_1.GeneralData_Superpave_Service,
@@ -1100,4 +1099,5 @@ exports.SuperpaveService = SuperpaveService = SuperpaveService_1 = __decorate([
         service_1.AsphaltGranulometryService,
         viscosityRotational_service_1.ViscosityRotationalService])
 ], SuperpaveService);
+exports.SuperpaveService = SuperpaveService;
 //# sourceMappingURL=index.js.map

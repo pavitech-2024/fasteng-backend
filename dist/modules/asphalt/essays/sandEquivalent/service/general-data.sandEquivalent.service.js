@@ -30,8 +30,8 @@ let GeneralData_SandEquivalent_Service = GeneralData_SandEquivalent_Service_1 = 
         this.materialsRepository = materialsRepository;
         this.logger = new common_1.Logger(GeneralData_SandEquivalent_Service_1.name);
     }
-    verifyInitSandEquivalent(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ name, material }) {
+    verifyInitSandEquivalent({ name, material }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('verify init sand equivalent on general-data.sandEquivalent.service.ts > [body]');
                 const materialExists = yield this.materialsRepository.findOne({ _id: material._id });
@@ -50,10 +50,10 @@ let GeneralData_SandEquivalent_Service = GeneralData_SandEquivalent_Service_1 = 
         });
     }
 };
-exports.GeneralData_SandEquivalent_Service = GeneralData_SandEquivalent_Service;
-exports.GeneralData_SandEquivalent_Service = GeneralData_SandEquivalent_Service = GeneralData_SandEquivalent_Service_1 = __decorate([
+GeneralData_SandEquivalent_Service = GeneralData_SandEquivalent_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_2.SandEquivalentRepository,
         repository_1.MaterialsRepository])
 ], GeneralData_SandEquivalent_Service);
+exports.GeneralData_SandEquivalent_Service = GeneralData_SandEquivalent_Service;
 //# sourceMappingURL=general-data.sandEquivalent.service.js.map

@@ -30,8 +30,8 @@ let Calc_Compression_Service = Calc_Compression_Service_1 = class Calc_Compressi
         this.sampleRepository = sampleRepository;
         this.logger = new common_1.Logger(Calc_Compression_Service_1.name);
     }
-    calculateCompression(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ hygroscopicData, humidityDeterminationData, }) {
+    calculateCompression({ hygroscopicData, humidityDeterminationData, }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('calculate compression on calc.compression.service.ts > [body]');
                 const { hygroscopicTable, moldNumber, moldVolume, moldWeight, socketWeight, spaceDiscThickness, strokesPerLayer, layers, } = hygroscopicData;
@@ -119,10 +119,10 @@ let Calc_Compression_Service = Calc_Compression_Service_1 = class Calc_Compressi
         return { a_index, b_index };
     }
 };
-exports.Calc_Compression_Service = Calc_Compression_Service;
-exports.Calc_Compression_Service = Calc_Compression_Service = Calc_Compression_Service_1 = __decorate([
+Calc_Compression_Service = Calc_Compression_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_1.CompressionRepository,
         repository_2.SamplesRepository])
 ], Calc_Compression_Service);
+exports.Calc_Compression_Service = Calc_Compression_Service;
 //# sourceMappingURL=calc.compression.service.js.map

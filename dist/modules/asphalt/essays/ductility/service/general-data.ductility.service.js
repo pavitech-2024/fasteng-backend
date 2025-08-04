@@ -31,8 +31,8 @@ let GeneralData_DUCTILITY_Service = GeneralData_DUCTILITY_Service_1 = class Gene
         this.materialRepository = materialRepository;
         this.logger = new common_1.Logger(GeneralData_DUCTILITY_Service_1.name);
     }
-    verifyInitDuctility(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ name, material }) {
+    verifyInitDuctility({ name, material }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('verify init ductility on general-data.ductility.service.ts > [body]');
                 const materialExists = yield this.materialRepository.findOne({
@@ -54,9 +54,9 @@ let GeneralData_DUCTILITY_Service = GeneralData_DUCTILITY_Service_1 = class Gene
         });
     }
 };
-exports.GeneralData_DUCTILITY_Service = GeneralData_DUCTILITY_Service;
-exports.GeneralData_DUCTILITY_Service = GeneralData_DUCTILITY_Service = GeneralData_DUCTILITY_Service_1 = __decorate([
+GeneralData_DUCTILITY_Service = GeneralData_DUCTILITY_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_1.DuctilityRepository, repository_2.MaterialsRepository])
 ], GeneralData_DUCTILITY_Service);
+exports.GeneralData_DUCTILITY_Service = GeneralData_DUCTILITY_Service;
 //# sourceMappingURL=general-data.ductility.service.js.map

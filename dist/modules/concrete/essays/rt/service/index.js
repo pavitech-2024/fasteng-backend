@@ -76,11 +76,11 @@ let ConcreteRtService = ConcreteRtService_1 = class ConcreteRtService {
         });
     }
 };
-exports.ConcreteRtService = ConcreteRtService;
-exports.ConcreteRtService = ConcreteRtService = ConcreteRtService_1 = __decorate([
+ConcreteRtService = ConcreteRtService_1 = __decorate([
     (0, decorators_1.Injectable)(),
     __metadata("design:paramtypes", [general_data_rt_service_1.GeneralData_CONCRETERT_Service,
         calc_rt_service_1.Calc_ConcreteRt_Service,
         repository_1.ConcreteRtRepository])
 ], ConcreteRtService);
+exports.ConcreteRtService = ConcreteRtService;
 //# sourceMappingURL=index.js.map

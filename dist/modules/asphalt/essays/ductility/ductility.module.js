@@ -16,8 +16,7 @@ const general_data_ductility_service_1 = require("./service/general-data.ductili
 const services = [index_1.DuctilityService, general_data_ductility_service_1.GeneralData_DUCTILITY_Service, calc_ductility_service_1.Calc_DUCTILITY_Service];
 let DuctilityModule = class DuctilityModule {
 };
-exports.DuctilityModule = DuctilityModule;
-exports.DuctilityModule = DuctilityModule = __decorate([
+DuctilityModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [controller_1.DuctilityController],
@@ -25,4 +24,5 @@ exports.DuctilityModule = DuctilityModule = __decorate([
         exports: [index_1.DuctilityService, repository_1.DuctilityRepository],
     })
 ], DuctilityModule);
+exports.DuctilityModule = DuctilityModule;
 //# sourceMappingURL=ductility.module.js.map

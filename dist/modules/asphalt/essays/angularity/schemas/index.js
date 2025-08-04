@@ -14,7 +14,6 @@ const mongoose_1 = require("@nestjs/mongoose");
 const class_validator_1 = require("class-validator");
 let Angularity = class Angularity {
 };
-exports.Angularity = Angularity;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, mongoose_1.Prop)({ type: Object }),
@@ -30,8 +29,9 @@ __decorate([
     (0, mongoose_1.Prop)({ type: Object }),
     __metadata("design:type", Object)
 ], Angularity.prototype, "results", void 0);
-exports.Angularity = Angularity = __decorate([
+Angularity = __decorate([
     (0, mongoose_1.Schema)({ collection: 'angularitys' })
 ], Angularity);
+exports.Angularity = Angularity;
 exports.AngularitySchema = mongoose_1.SchemaFactory.createForClass(Angularity);
 //# sourceMappingURL=index.js.map

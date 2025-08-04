@@ -16,8 +16,7 @@ const general_data_ddui_service_1 = require("./service/general-data.ddui.service
 const services = [service_1.DduiService, general_data_ddui_service_1.GeneralData_Ddui_Service, calc_ddui_service_1.Calc_Ddui_Service];
 let DduiModule = class DduiModule {
 };
-exports.DduiModule = DduiModule;
-exports.DduiModule = DduiModule = __decorate([
+DduiModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [controller_1.DduiController],
@@ -25,4 +24,5 @@ exports.DduiModule = DduiModule = __decorate([
         exports: [service_1.DduiService, repository_1.DduiRepository],
     })
 ], DduiModule);
+exports.DduiModule = DduiModule;
 //# sourceMappingURL=ddui.module.js.map

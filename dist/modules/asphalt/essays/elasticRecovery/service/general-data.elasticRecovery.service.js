@@ -30,8 +30,8 @@ let GeneralData_ElasticRecovery_Service = GeneralData_ElasticRecovery_Service_1 
         this.materialRepository = materialRepository;
         this.logger = new common_1.Logger(GeneralData_ElasticRecovery_Service_1.name);
     }
-    verifyInitElasticRecovery(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ name, material }) {
+    verifyInitElasticRecovery({ name, material }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('verify init elasticRecovery on general-data.elasticRecovery.service.ts > [body]');
                 const materialExists = yield this.materialRepository.findOne({
@@ -53,9 +53,9 @@ let GeneralData_ElasticRecovery_Service = GeneralData_ElasticRecovery_Service_1 
         });
     }
 };
-exports.GeneralData_ElasticRecovery_Service = GeneralData_ElasticRecovery_Service;
-exports.GeneralData_ElasticRecovery_Service = GeneralData_ElasticRecovery_Service = GeneralData_ElasticRecovery_Service_1 = __decorate([
+GeneralData_ElasticRecovery_Service = GeneralData_ElasticRecovery_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_1.ElasticRecoveryRepository, repository_2.MaterialsRepository])
 ], GeneralData_ElasticRecovery_Service);
+exports.GeneralData_ElasticRecovery_Service = GeneralData_ElasticRecovery_Service;
 //# sourceMappingURL=general-data.elasticRecovery.service.js.map

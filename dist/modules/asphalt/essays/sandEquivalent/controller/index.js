@@ -63,7 +63,6 @@ let SandEquivalentController = SandEquivalentController_1 = class SandEquivalent
         });
     }
 };
-exports.SandEquivalentController = SandEquivalentController;
 __decorate([
     (0, common_1.Post)('verify-init'),
     (0, swagger_1.ApiOperation)({ summary: 'Verifica se é possível criar um ensaio de equivalente de areia com os dados enviados.' }),
@@ -117,9 +116,10 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], SandEquivalentController.prototype, "saveEssay", null);
-exports.SandEquivalentController = SandEquivalentController = SandEquivalentController_1 = __decorate([
+SandEquivalentController = SandEquivalentController_1 = __decorate([
     (0, swagger_1.ApiTags)('sandEquivalent'),
     (0, common_1.Controller)('asphalt/essays/sandEquivalent'),
     __metadata("design:paramtypes", [service_1.SandEquivalentService])
 ], SandEquivalentController);
+exports.SandEquivalentController = SandEquivalentController;
 //# sourceMappingURL=index.js.map

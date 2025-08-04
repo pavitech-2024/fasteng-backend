@@ -13,7 +13,6 @@ exports.Calc_Concrete_RT_Dto = void 0;
 const class_validator_1 = require("class-validator");
 class Calc_Concrete_RT_Dto {
 }
-exports.Calc_Concrete_RT_Dto = Calc_Concrete_RT_Dto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
@@ -30,4 +29,5 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
 ], Calc_Concrete_RT_Dto.prototype, "step4Data", void 0);
+exports.Calc_Concrete_RT_Dto = Calc_Concrete_RT_Dto;
 //# sourceMappingURL=calc.rt.dto.js.map

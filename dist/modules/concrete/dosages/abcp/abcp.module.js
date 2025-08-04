@@ -26,8 +26,7 @@ const services = [
 ];
 let ABCPModule = class ABCPModule {
 };
-exports.ABCPModule = ABCPModule;
-exports.ABCPModule = ABCPModule = __decorate([
+ABCPModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [controller_1.ABCPController],
@@ -35,4 +34,5 @@ exports.ABCPModule = ABCPModule = __decorate([
         exports: [service_1.ABCPService, repository_1.ABCPRepository],
     })
 ], ABCPModule);
+exports.ABCPModule = ABCPModule;
 //# sourceMappingURL=abcp.module.js.map

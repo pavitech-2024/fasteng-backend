@@ -20,7 +20,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var DuctilityRepository_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DuctilityRepository = void 0;
 const mongoose_1 = require("@nestjs/mongoose");
@@ -28,10 +27,10 @@ const schemas_1 = require("../schemas");
 const database_config_1 = require("../../../../../infra/mongoose/database.config");
 const mongoose_2 = require("mongoose");
 const common_1 = require("@nestjs/common");
-let DuctilityRepository = DuctilityRepository_1 = class DuctilityRepository {
+let DuctilityRepository = class DuctilityRepository {
     constructor(ductilityModel) {
         this.ductilityModel = ductilityModel;
-        this.logger = new common_1.Logger(DuctilityRepository_1.name);
+        this.logger = new common_1.Logger(DuctilityRepository.name);
     }
     findOne(ductilityFilterQuery) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -50,9 +49,9 @@ let DuctilityRepository = DuctilityRepository_1 = class DuctilityRepository {
         });
     }
 };
-exports.DuctilityRepository = DuctilityRepository;
-exports.DuctilityRepository = DuctilityRepository = DuctilityRepository_1 = __decorate([
+DuctilityRepository = __decorate([
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.Ductility.name, database_config_1.DATABASE_CONNECTION.ASPHALT)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], DuctilityRepository);
+exports.DuctilityRepository = DuctilityRepository;
 //# sourceMappingURL=index.js.map

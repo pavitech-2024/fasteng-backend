@@ -74,11 +74,11 @@ let PenetrationService = class PenetrationService {
         });
     }
 };
-exports.PenetrationService = PenetrationService;
-exports.PenetrationService = PenetrationService = __decorate([
+PenetrationService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [general_data_penetration_service_1.GeneralData_Penetration_Service,
         calc_penetration_service_1.Calc_Penetration_Service,
         repository_1.PenetrationRepository])
 ], PenetrationService);
+exports.PenetrationService = PenetrationService;
 //# sourceMappingURL=index.js.map

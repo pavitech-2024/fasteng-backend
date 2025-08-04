@@ -30,8 +30,8 @@ let GeneralData_Penetration_Service = GeneralData_Penetration_Service_1 = class 
         this.materialRepository = materialRepository;
         this.logger = new common_1.Logger(GeneralData_Penetration_Service_1.name);
     }
-    verifyInitPenetration(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ name, material }) {
+    verifyInitPenetration({ name, material }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('verify init penetration on general-data.penetration.service.ts > [body]');
                 const materialExists = yield this.materialRepository.findOne({ _id: material._id });
@@ -48,9 +48,9 @@ let GeneralData_Penetration_Service = GeneralData_Penetration_Service_1 = class 
         });
     }
 };
-exports.GeneralData_Penetration_Service = GeneralData_Penetration_Service;
-exports.GeneralData_Penetration_Service = GeneralData_Penetration_Service = GeneralData_Penetration_Service_1 = __decorate([
+GeneralData_Penetration_Service = GeneralData_Penetration_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_2.PenetrationRepository, repository_1.MaterialsRepository])
 ], GeneralData_Penetration_Service);
+exports.GeneralData_Penetration_Service = GeneralData_Penetration_Service;
 //# sourceMappingURL=general-data.penetration.service.js.map

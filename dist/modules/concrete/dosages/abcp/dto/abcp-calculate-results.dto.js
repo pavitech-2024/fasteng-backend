@@ -13,7 +13,6 @@ exports.SaveAbcpDto = exports.Calc_ABCP_Dto = void 0;
 const class_validator_1 = require("class-validator");
 class Calc_ABCP_Dto {
 }
-exports.Calc_ABCP_Dto = Calc_ABCP_Dto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
@@ -30,9 +29,9 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
 ], Calc_ABCP_Dto.prototype, "insertParamsData", void 0);
+exports.Calc_ABCP_Dto = Calc_ABCP_Dto;
 class SaveAbcpDto {
 }
-exports.SaveAbcpDto = SaveAbcpDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
@@ -53,4 +52,5 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
 ], SaveAbcpDto.prototype, "results", void 0);
+exports.SaveAbcpDto = SaveAbcpDto;
 //# sourceMappingURL=abcp-calculate-results.dto.js.map

@@ -47,9 +47,9 @@ let AdhesivenessRepository = class AdhesivenessRepository {
         });
     }
 };
-exports.AdhesivenessRepository = AdhesivenessRepository;
-exports.AdhesivenessRepository = AdhesivenessRepository = __decorate([
+AdhesivenessRepository = __decorate([
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.Adhesiveness.name, database_config_1.DATABASE_CONNECTION.ASPHALT)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], AdhesivenessRepository);
+exports.AdhesivenessRepository = AdhesivenessRepository;
 //# sourceMappingURL=index.js.map

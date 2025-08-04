@@ -13,7 +13,6 @@ exports.UnitMass_Step2_Dto = void 0;
 const class_validator_1 = require("class-validator");
 class UnitMass_Step2_Dto {
 }
-exports.UnitMass_Step2_Dto = UnitMass_Step2_Dto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
@@ -26,4 +25,5 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
 ], UnitMass_Step2_Dto.prototype, "sampleContainerWeight", void 0);
+exports.UnitMass_Step2_Dto = UnitMass_Step2_Dto;
 //# sourceMappingURL=unitMass-step2.dto.js.map

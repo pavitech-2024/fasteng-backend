@@ -74,11 +74,11 @@ let ChapmanService = class ChapmanService {
         });
     }
 };
-exports.ChapmanService = ChapmanService;
-exports.ChapmanService = ChapmanService = __decorate([
+ChapmanService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [general_data_chapman_service_1.GeneralData_Chapman_Service,
         repository_1.ChapmanRepository,
         calc_chapman_service_1.Calc_CHAPMAN_Service])
 ], ChapmanService);
+exports.ChapmanService = ChapmanService;
 //# sourceMappingURL=champan.service.js.map

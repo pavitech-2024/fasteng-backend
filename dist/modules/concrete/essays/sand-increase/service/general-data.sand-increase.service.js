@@ -30,8 +30,8 @@ let GeneralData_SandIncrease_Service = GeneralData_SandIncrease_Service_1 = clas
         this.materialsRepository = materialsRepository;
         this.logger = new common_1.Logger(GeneralData_SandIncrease_Service_1.name);
     }
-    verifyInitSandIncrease(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ name, material }) {
+    verifyInitSandIncrease({ name, material }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('verify init sand swelling on general-data.sand-swelling.service.ts > [body]');
                 const materialExists = yield this.materialsRepository.findOne({ _id: material._id });
@@ -48,10 +48,10 @@ let GeneralData_SandIncrease_Service = GeneralData_SandIncrease_Service_1 = clas
         });
     }
 };
-exports.GeneralData_SandIncrease_Service = GeneralData_SandIncrease_Service;
-exports.GeneralData_SandIncrease_Service = GeneralData_SandIncrease_Service = GeneralData_SandIncrease_Service_1 = __decorate([
+GeneralData_SandIncrease_Service = GeneralData_SandIncrease_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_1.SandIncreaseRepository,
         repository_2.MaterialsRepository])
 ], GeneralData_SandIncrease_Service);
+exports.GeneralData_SandIncrease_Service = GeneralData_SandIncrease_Service;
 //# sourceMappingURL=general-data.sand-increase.service.js.map

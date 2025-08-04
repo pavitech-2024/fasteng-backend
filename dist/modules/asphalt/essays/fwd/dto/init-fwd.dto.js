@@ -13,9 +13,9 @@ exports.FwdInitDto = void 0;
 const class_validator_1 = require("class-validator");
 class FwdInitDto {
 }
-exports.FwdInitDto = FwdInitDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], FwdInitDto.prototype, "name", void 0);
+exports.FwdInitDto = FwdInitDto;
 //# sourceMappingURL=init-fwd.dto.js.map

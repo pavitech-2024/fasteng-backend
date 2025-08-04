@@ -111,9 +111,9 @@ let GranularLayers_SamplesRepository = class GranularLayers_SamplesRepository {
         });
     }
 };
-exports.GranularLayers_SamplesRepository = GranularLayers_SamplesRepository;
-exports.GranularLayers_SamplesRepository = GranularLayers_SamplesRepository = __decorate([
+GranularLayers_SamplesRepository = __decorate([
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.GranularLayers_Sample.name, database_config_1.DATABASE_CONNECTION.PROMEDINA)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], GranularLayers_SamplesRepository);
+exports.GranularLayers_SamplesRepository = GranularLayers_SamplesRepository;
 //# sourceMappingURL=index.js.map

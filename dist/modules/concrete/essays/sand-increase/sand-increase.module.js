@@ -18,8 +18,7 @@ const calc_moistureContents_service_1 = require("./service/calc.moistureContents
 const services = [service_1.SandIncreaseService, general_data_sand_increase_service_1.GeneralData_SandIncrease_Service, calc_unitMass_service_1.Calc_UnitMass_Service, calc_moistureContents_service_1.Calc_MoistureContent_Service, calc_sand_increase_service_1.Calc_SandIncrease_Service];
 let SandIncreaseModule = class SandIncreaseModule {
 };
-exports.SandIncreaseModule = SandIncreaseModule;
-exports.SandIncreaseModule = SandIncreaseModule = __decorate([
+SandIncreaseModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [controller_1.SandIncreaseController],
@@ -27,4 +26,5 @@ exports.SandIncreaseModule = SandIncreaseModule = __decorate([
         exports: [service_1.SandIncreaseService, repository_1.SandIncreaseRepository]
     })
 ], SandIncreaseModule);
+exports.SandIncreaseModule = SandIncreaseModule;
 //# sourceMappingURL=sand-increase.module.js.map

@@ -85,9 +85,9 @@ let MaterialsRepository = class MaterialsRepository {
         });
     }
 };
-exports.MaterialsRepository = MaterialsRepository;
-exports.MaterialsRepository = MaterialsRepository = __decorate([
+MaterialsRepository = __decorate([
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.Material.name, database_config_1.DATABASE_CONNECTION.ASPHALT)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], MaterialsRepository);
+exports.MaterialsRepository = MaterialsRepository;
 //# sourceMappingURL=index.js.map

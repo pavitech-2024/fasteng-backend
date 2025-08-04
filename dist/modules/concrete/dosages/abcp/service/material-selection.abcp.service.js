@@ -105,8 +105,7 @@ let MaterialSelection_ABCP_Service = MaterialSelection_ABCP_Service_1 = class Ma
         });
     }
 };
-exports.MaterialSelection_ABCP_Service = MaterialSelection_ABCP_Service;
-exports.MaterialSelection_ABCP_Service = MaterialSelection_ABCP_Service = MaterialSelection_ABCP_Service_1 = __decorate([
+MaterialSelection_ABCP_Service = MaterialSelection_ABCP_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.ABCP.name, database_config_1.DATABASE_CONNECTION.CONCRETE)),
     __metadata("design:paramtypes", [mongoose_2.Model,
@@ -115,4 +114,5 @@ exports.MaterialSelection_ABCP_Service = MaterialSelection_ABCP_Service = Materi
         repository_2.UnitMassRepository,
         repository_4.ABCPRepository])
 ], MaterialSelection_ABCP_Service);
+exports.MaterialSelection_ABCP_Service = MaterialSelection_ABCP_Service;
 //# sourceMappingURL=material-selection.abcp.service.js.map

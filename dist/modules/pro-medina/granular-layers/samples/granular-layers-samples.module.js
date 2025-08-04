@@ -13,8 +13,7 @@ const repository_1 = require("./repository");
 const controller_1 = require("./controller");
 let GranularLayersSamplesModule = class GranularLayersSamplesModule {
 };
-exports.GranularLayersSamplesModule = GranularLayersSamplesModule;
-exports.GranularLayersSamplesModule = GranularLayersSamplesModule = __decorate([
+GranularLayersSamplesModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [controller_1.GranularLayersSamplesController],
@@ -22,4 +21,5 @@ exports.GranularLayersSamplesModule = GranularLayersSamplesModule = __decorate([
         exports: [granular_layers_samples_service_1.GranularLayersSamplesService, repository_1.GranularLayers_SamplesRepository],
     })
 ], GranularLayersSamplesModule);
+exports.GranularLayersSamplesModule = GranularLayersSamplesModule;
 //# sourceMappingURL=granular-layers-samples.module.js.map

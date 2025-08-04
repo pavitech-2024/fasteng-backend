@@ -52,8 +52,8 @@ let EssaySelection_ABCP_Service = EssaySelection_ABCP_Service_1 = class EssaySel
         this.abcpRepository = abcpRepository;
         this.logger = new common_1.Logger(EssaySelection_ABCP_Service_1.name);
     }
-    getEssays(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ cement, coarseAggregate, fineAggregate }) {
+    getEssays({ cement, coarseAggregate, fineAggregate }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 const materials = yield this.material_repository.find();
                 const cementData = materials.find((material) => {
@@ -121,8 +121,7 @@ let EssaySelection_ABCP_Service = EssaySelection_ABCP_Service_1 = class EssaySel
         });
     }
 };
-exports.EssaySelection_ABCP_Service = EssaySelection_ABCP_Service;
-exports.EssaySelection_ABCP_Service = EssaySelection_ABCP_Service = EssaySelection_ABCP_Service_1 = __decorate([
+EssaySelection_ABCP_Service = EssaySelection_ABCP_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.ABCP.name, database_config_1.DATABASE_CONNECTION.CONCRETE)),
     __metadata("design:paramtypes", [mongoose_2.Model,
@@ -131,4 +130,5 @@ exports.EssaySelection_ABCP_Service = EssaySelection_ABCP_Service = EssaySelecti
         repository_3.UnitMassRepository,
         repository_4.ABCPRepository])
 ], EssaySelection_ABCP_Service);
+exports.EssaySelection_ABCP_Service = EssaySelection_ABCP_Service;
 //# sourceMappingURL=essay-selection.abcp.service.js.map

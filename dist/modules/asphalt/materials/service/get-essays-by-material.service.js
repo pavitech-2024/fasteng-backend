@@ -252,8 +252,7 @@ let GetEssaysByMaterial_Service = GetEssaysByMaterial_Service_1 = class GetEssay
         return possiblesExperimentTypes;
     }
 };
-exports.GetEssaysByMaterial_Service = GetEssaysByMaterial_Service;
-exports.GetEssaysByMaterial_Service = GetEssaysByMaterial_Service = GetEssaysByMaterial_Service_1 = __decorate([
+GetEssaysByMaterial_Service = GetEssaysByMaterial_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.Material.name, database_config_1.DATABASE_CONNECTION.ASPHALT)),
     __metadata("design:paramtypes", [mongoose_2.Model,
@@ -274,4 +273,5 @@ exports.GetEssaysByMaterial_Service = GetEssaysByMaterial_Service = GetEssaysByM
         repository_15.RtfoRepository,
         repository_16.ElasticRecoveryRepository])
 ], GetEssaysByMaterial_Service);
+exports.GetEssaysByMaterial_Service = GetEssaysByMaterial_Service;
 //# sourceMappingURL=get-essays-by-material.service.js.map

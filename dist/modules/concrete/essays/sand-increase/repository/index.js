@@ -42,9 +42,9 @@ let SandIncreaseRepository = class SandIncreaseRepository {
         });
     }
 };
-exports.SandIncreaseRepository = SandIncreaseRepository;
-exports.SandIncreaseRepository = SandIncreaseRepository = __decorate([
+SandIncreaseRepository = __decorate([
     __param(0, (0, mongoose_1.InjectModel)(schema_1.SandIncrease.name, database_config_1.DATABASE_CONNECTION.CONCRETE)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], SandIncreaseRepository);
+exports.SandIncreaseRepository = SandIncreaseRepository;
 //# sourceMappingURL=index.js.map

@@ -28,8 +28,8 @@ let GeneralData_CONCRETERC_Service = GeneralData_CONCRETERC_Service_1 = class Ge
         this.rcRepository = rcRepository;
         this.logger = new common_1.Logger(GeneralData_CONCRETERC_Service_1.name);
     }
-    verifyInitRc(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ name }) {
+    verifyInitRc({ name }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('verify init rc on general-data.rc.service.ts > [body]');
                 const rcExists = yield this.rcRepository.findOne({
@@ -45,9 +45,9 @@ let GeneralData_CONCRETERC_Service = GeneralData_CONCRETERC_Service_1 = class Ge
         });
     }
 };
-exports.GeneralData_CONCRETERC_Service = GeneralData_CONCRETERC_Service;
-exports.GeneralData_CONCRETERC_Service = GeneralData_CONCRETERC_Service = GeneralData_CONCRETERC_Service_1 = __decorate([
+GeneralData_CONCRETERC_Service = GeneralData_CONCRETERC_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [respository_1.ConcreteRCRepository])
 ], GeneralData_CONCRETERC_Service);
+exports.GeneralData_CONCRETERC_Service = GeneralData_CONCRETERC_Service;
 //# sourceMappingURL=general-data.rc.service.js.map

@@ -13,9 +13,9 @@ exports.EssaySelectionDataDto = void 0;
 const class_validator_1 = require("class-validator");
 class EssaySelectionDataDto {
 }
-exports.EssaySelectionDataDto = EssaySelectionDataDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
 ], EssaySelectionDataDto.prototype, "essaySelectionData", void 0);
+exports.EssaySelectionDataDto = EssaySelectionDataDto;
 //# sourceMappingURL=save-essay-selection.dto.js.map

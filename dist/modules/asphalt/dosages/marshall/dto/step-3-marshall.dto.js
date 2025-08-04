@@ -13,7 +13,6 @@ exports.MarshallStep3Dto = void 0;
 const class_validator_1 = require("class-validator");
 class MarshallStep3Dto {
 }
-exports.MarshallStep3Dto = MarshallStep3Dto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
@@ -22,4 +21,5 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Array)
 ], MarshallStep3Dto.prototype, "aggregates", void 0);
+exports.MarshallStep3Dto = MarshallStep3Dto;
 //# sourceMappingURL=step-3-marshall.dto.js.map

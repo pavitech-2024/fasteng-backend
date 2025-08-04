@@ -15,9 +15,9 @@ let CoarseAggregateController = CoarseAggregateController_1 = class CoarseAggreg
         this.logger = new common_1.Logger(CoarseAggregateController_1.name);
     }
 };
-exports.CoarseAggregateController = CoarseAggregateController;
-exports.CoarseAggregateController = CoarseAggregateController = CoarseAggregateController_1 = __decorate([
+CoarseAggregateController = CoarseAggregateController_1 = __decorate([
     (0, swagger_1.ApiTags)('coarse-aggregate'),
     (0, common_1.Controller)('soils/essays/coarse-aggregate')
 ], CoarseAggregateController);
+exports.CoarseAggregateController = CoarseAggregateController;
 //# sourceMappingURL=index.js.map

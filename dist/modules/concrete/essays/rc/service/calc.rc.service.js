@@ -26,8 +26,8 @@ let Calc_CONCRETERC_Service = Calc_CONCRETERC_Service_1 = class Calc_CONCRETERC_
     constructor() {
         this.logger = new common_1.Logger(Calc_CONCRETERC_Service_1.name);
     }
-    calculateRc(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ step2Data }) {
+    calculateRc({ step2Data }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('calculate rc on calc.rc.service.ts > [body]');
                 const samples = step2Data;
@@ -230,9 +230,9 @@ let Calc_CONCRETERC_Service = Calc_CONCRETERC_Service_1 = class Calc_CONCRETERC_
         }
     }
 };
-exports.Calc_CONCRETERC_Service = Calc_CONCRETERC_Service;
-exports.Calc_CONCRETERC_Service = Calc_CONCRETERC_Service = Calc_CONCRETERC_Service_1 = __decorate([
+Calc_CONCRETERC_Service = Calc_CONCRETERC_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [])
 ], Calc_CONCRETERC_Service);
+exports.Calc_CONCRETERC_Service = Calc_CONCRETERC_Service;
 //# sourceMappingURL=calc.rc.service.js.map

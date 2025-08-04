@@ -16,8 +16,7 @@ const calc_rt_service_1 = require("./service/calc.rt.service");
 const services = [service_1.ConcreteRtService, general_data_rt_service_1.GeneralData_CONCRETERT_Service, calc_rt_service_1.Calc_ConcreteRt_Service];
 let ConcreteRtModule = class ConcreteRtModule {
 };
-exports.ConcreteRtModule = ConcreteRtModule;
-exports.ConcreteRtModule = ConcreteRtModule = __decorate([
+ConcreteRtModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [controller_1.ConcreteRtController],
@@ -25,4 +24,5 @@ exports.ConcreteRtModule = ConcreteRtModule = __decorate([
         exports: [service_1.ConcreteRtService, repository_1.ConcreteRtRepository],
     })
 ], ConcreteRtModule);
+exports.ConcreteRtModule = ConcreteRtModule;
 //# sourceMappingURL=rt.module.js.map

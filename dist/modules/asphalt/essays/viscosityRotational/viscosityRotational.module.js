@@ -23,8 +23,7 @@ const services = [
 ];
 let ViscosityRotationalModule = class ViscosityRotationalModule {
 };
-exports.ViscosityRotationalModule = ViscosityRotationalModule;
-exports.ViscosityRotationalModule = ViscosityRotationalModule = __decorate([
+ViscosityRotationalModule = __decorate([
     (0, common_1.Module)({
         imports: [marshall_module_1.MarshallModule],
         controllers: [controller_1.ViscosityRotationalController],
@@ -32,4 +31,5 @@ exports.ViscosityRotationalModule = ViscosityRotationalModule = __decorate([
         exports: [viscosityRotational_service_1.ViscosityRotationalService, repository_1.ViscosityRotationalRepository],
     })
 ], ViscosityRotationalModule);
+exports.ViscosityRotationalModule = ViscosityRotationalModule;
 //# sourceMappingURL=viscosityRotational.module.js.map

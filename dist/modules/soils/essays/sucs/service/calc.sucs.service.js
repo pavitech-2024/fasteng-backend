@@ -69,8 +69,8 @@ let Calc_SUCS_Service = Calc_SUCS_Service_1 = class Calc_SUCS_Service {
             });
         };
     }
-    calculateSucs(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ step2Data }) {
+    calculateSucs({ step2Data }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('calculate sucs on calc.sucs.service.ts > [body]');
                 const classifications = sucs_classifications_1.default;
@@ -109,9 +109,9 @@ let Calc_SUCS_Service = Calc_SUCS_Service_1 = class Calc_SUCS_Service {
         });
     }
 };
-exports.Calc_SUCS_Service = Calc_SUCS_Service;
-exports.Calc_SUCS_Service = Calc_SUCS_Service = Calc_SUCS_Service_1 = __decorate([
+Calc_SUCS_Service = Calc_SUCS_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_1.SucsRepository, repository_2.SamplesRepository])
 ], Calc_SUCS_Service);
+exports.Calc_SUCS_Service = Calc_SUCS_Service;
 //# sourceMappingURL=calc.sucs.service.js.map

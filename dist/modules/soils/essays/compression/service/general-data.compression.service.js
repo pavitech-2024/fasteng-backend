@@ -30,8 +30,8 @@ let GeneralData_Compression_Service = GeneralData_Compression_Service_1 = class 
         this.sampleRepository = sampleRepository;
         this.logger = new common_1.Logger(GeneralData_Compression_Service_1.name);
     }
-    verifyInitCompression(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ name, sample }) {
+    verifyInitCompression({ name, sample }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('verify init compression on general-data.compression.service.ts > [body]');
                 const sampleExists = yield this.sampleRepository.findOne({ _id: sample._id });
@@ -50,10 +50,10 @@ let GeneralData_Compression_Service = GeneralData_Compression_Service_1 = class 
         });
     }
 };
-exports.GeneralData_Compression_Service = GeneralData_Compression_Service;
-exports.GeneralData_Compression_Service = GeneralData_Compression_Service = GeneralData_Compression_Service_1 = __decorate([
+GeneralData_Compression_Service = GeneralData_Compression_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_1.CompressionRepository,
         repository_2.SamplesRepository])
 ], GeneralData_Compression_Service);
+exports.GeneralData_Compression_Service = GeneralData_Compression_Service;
 //# sourceMappingURL=general-data.compression.service.js.map

@@ -70,8 +70,8 @@ let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = clas
             });
         };
     }
-    calculateGranulometry(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ step2Data, isSuperpave = true, }) {
+    calculateGranulometry({ step2Data, isSuperpave = true, }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log(`calculate asphalt granulometry on calc.granulometry.service.ts > [${isSuperpave ? 'Superpave' : 'Granulometry'}] [${step2Data}]`);
                 const { table_data, material_mass, bottom } = step2Data;
@@ -166,10 +166,10 @@ let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = clas
         });
     }
 };
-exports.Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service;
-exports.Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = __decorate([
+Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_2.AsphaltGranulometryRepository,
         repository_1.MaterialsRepository])
 ], Calc_AsphaltGranulometry_Service);
+exports.Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service;
 //# sourceMappingURL=calc.granulometry.service.js.map

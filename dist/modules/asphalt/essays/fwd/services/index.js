@@ -74,11 +74,11 @@ let FwdService = class FwdService {
         });
     }
 };
-exports.FwdService = FwdService;
-exports.FwdService = FwdService = __decorate([
+FwdService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [general_data_fwd_service_1.GeneralData_Fwd_Service,
         repository_1.FwdRepository,
         calc_fwd_service_1.Calc_Fwd_Service])
 ], FwdService);
+exports.FwdService = FwdService;
 //# sourceMappingURL=index.js.map

@@ -40,8 +40,8 @@ let AuthMiddleware = class AuthMiddleware {
         }
     }
 };
-exports.AuthMiddleware = AuthMiddleware;
-exports.AuthMiddleware = AuthMiddleware = __decorate([
+AuthMiddleware = __decorate([
     (0, common_1.Injectable)()
 ], AuthMiddleware);
+exports.AuthMiddleware = AuthMiddleware;
 //# sourceMappingURL=auth.middleware.js.map

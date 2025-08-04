@@ -42,11 +42,11 @@ let Calc_MoistureContent_Service = Calc_MoistureContent_Service_1 = class Calc_M
         });
     }
 };
-exports.Calc_MoistureContent_Service = Calc_MoistureContent_Service;
-exports.Calc_MoistureContent_Service = Calc_MoistureContent_Service = Calc_MoistureContent_Service_1 = __decorate([
+Calc_MoistureContent_Service = Calc_MoistureContent_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [])
 ], Calc_MoistureContent_Service);
+exports.Calc_MoistureContent_Service = Calc_MoistureContent_Service;
 function calculateMoistureContents(tableData) {
     const moistureContents = [];
     tableData.forEach(data => {

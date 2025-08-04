@@ -64,11 +64,11 @@ let InsertParams_ABCP_Service = InsertParams_ABCP_Service_1 = class InsertParams
         });
     }
 };
-exports.InsertParams_ABCP_Service = InsertParams_ABCP_Service;
-exports.InsertParams_ABCP_Service = InsertParams_ABCP_Service = InsertParams_ABCP_Service_1 = __decorate([
+InsertParams_ABCP_Service = InsertParams_ABCP_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.ABCP.name, database_config_1.DATABASE_CONNECTION.CONCRETE)),
     __metadata("design:paramtypes", [mongoose_2.Model,
         repository_1.ABCPRepository])
 ], InsertParams_ABCP_Service);
+exports.InsertParams_ABCP_Service = InsertParams_ABCP_Service;
 //# sourceMappingURL=insert-params.abcp.service.js.map

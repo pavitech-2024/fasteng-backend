@@ -13,7 +13,6 @@ exports.ABCPInitDto = void 0;
 const class_validator_1 = require("class-validator");
 class ABCPInitDto {
 }
-exports.ABCPInitDto = ABCPInitDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
@@ -49,4 +48,5 @@ __decorate([
     (0, class_validator_1.IsNumber)(),
     __metadata("design:type", Number)
 ], ABCPInitDto.prototype, "step", void 0);
+exports.ABCPInitDto = ABCPInitDto;
 //# sourceMappingURL=abcp-init.dto.js.map

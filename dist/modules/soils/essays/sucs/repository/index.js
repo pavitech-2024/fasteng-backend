@@ -20,7 +20,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var SucsRepository_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SucsRepository = void 0;
 const mongoose_1 = require("@nestjs/mongoose");
@@ -28,10 +27,10 @@ const schemas_1 = require("../schemas");
 const database_config_1 = require("../../../../../infra/mongoose/database.config");
 const mongoose_2 = require("mongoose");
 const common_1 = require("@nestjs/common");
-let SucsRepository = SucsRepository_1 = class SucsRepository {
+let SucsRepository = class SucsRepository {
     constructor(sucsModel) {
         this.sucsModel = sucsModel;
-        this.logger = new common_1.Logger(SucsRepository_1.name);
+        this.logger = new common_1.Logger(SucsRepository.name);
     }
     findOne(sucsFilterQuery) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -50,9 +49,9 @@ let SucsRepository = SucsRepository_1 = class SucsRepository {
         });
     }
 };
-exports.SucsRepository = SucsRepository;
-exports.SucsRepository = SucsRepository = SucsRepository_1 = __decorate([
+SucsRepository = __decorate([
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.Sucs.name, database_config_1.DATABASE_CONNECTION.SOILS)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], SucsRepository);
+exports.SucsRepository = SucsRepository;
 //# sourceMappingURL=index.js.map

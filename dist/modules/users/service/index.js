@@ -28,8 +28,8 @@ let UsersService = UsersService_1 = class UsersService {
         this.usersRepository = usersRepository;
         this.logger = new common_1.Logger(UsersService_1.name);
     }
-    createUser(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ uuid, connections, lastLoginList, photo }) {
+    createUser({ uuid, connections, lastLoginList, photo }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 if (yield this.usersRepository.findOne({ _id: uuid }))
                     throw new exceptions_1.AlreadyExists('User');
@@ -110,9 +110,9 @@ let UsersService = UsersService_1 = class UsersService {
         });
     }
 };
-exports.UsersService = UsersService;
-exports.UsersService = UsersService = UsersService_1 = __decorate([
+UsersService = UsersService_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_1.UsersRepository])
 ], UsersService);
+exports.UsersService = UsersService;
 //# sourceMappingURL=index.js.map

@@ -47,9 +47,9 @@ let ChapmanRepository = class ChapmanRepository {
         });
     }
 };
-exports.ChapmanRepository = ChapmanRepository;
-exports.ChapmanRepository = ChapmanRepository = __decorate([
+ChapmanRepository = __decorate([
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.Chapman.name, database_config_1.DATABASE_CONNECTION.CONCRETE)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], ChapmanRepository);
+exports.ChapmanRepository = ChapmanRepository;
 //# sourceMappingURL=index.js.map

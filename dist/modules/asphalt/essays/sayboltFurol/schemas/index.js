@@ -14,7 +14,6 @@ const mongoose_1 = require("@nestjs/mongoose");
 const class_validator_1 = require("class-validator");
 let SayboltFurol = class SayboltFurol {
 };
-exports.SayboltFurol = SayboltFurol;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, mongoose_1.Prop)({ type: Object }),
@@ -30,8 +29,9 @@ __decorate([
     (0, mongoose_1.Prop)({ type: Object }),
     __metadata("design:type", Object)
 ], SayboltFurol.prototype, "results", void 0);
-exports.SayboltFurol = SayboltFurol = __decorate([
+SayboltFurol = __decorate([
     (0, mongoose_1.Schema)({ collection: 'sayboltFurol' })
 ], SayboltFurol);
+exports.SayboltFurol = SayboltFurol;
 exports.SayboltFurolSchema = mongoose_1.SchemaFactory.createForClass(SayboltFurol);
 //# sourceMappingURL=index.js.map
