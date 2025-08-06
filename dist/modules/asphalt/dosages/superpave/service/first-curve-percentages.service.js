@@ -50,7 +50,7 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log({ body }, 'start calculate first compression parameters data > [service]');
-                const { granulometryComposition, trafficVolume, nominalSize, turnNumber, chosenCurves, porcentagesPassantsN200, binderSpecificGravity: binderSpecificGravityValue, riceTest, maximumDensity, binderCompositions, percentageInputs, } = body;
+                const { granulometryComposition, trafficVolume, nominalSize, turnNumber, chosenCurves, porcentagesPassantsN200, binderSpecificGravity: binderSpecificGravityValue, riceTest, binderCompositions, percentageInputs, } = body;
                 let binderSpecificGravity = binderSpecificGravityValue;
                 if (!binderSpecificGravityValue)
                     binderSpecificGravity = 0;
@@ -385,6 +385,9 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
                                 (binderCompositions[0].gse * binderCompositions[0].combinedGsb) +
                                 updatedGranulometryComposition.higher.pli);
                 }
+                else {
+                    delete updatedGranulometryComposition.higher;
+                }
                 let table2Lower = {
                     percentageGmmInitialN: {},
                     percentageGmmProjectN: {},
@@ -437,6 +440,9 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
                     table4Lower = {
                         data: graphData,
                     };
+                }
+                else {
+                    delete updatedGranulometryComposition.lower;
                 }
                 let table2Average = {
                     percentageGmmInitialN: {},
@@ -491,6 +497,9 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
                         data: graphData,
                     };
                 }
+                else {
+                    delete updatedGranulometryComposition.average;
+                }
                 let table2Higher = {
                     percentageGmmInitialN: {},
                     percentageGmmProjectN: {},
@@ -544,6 +553,11 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
                         data: graphData,
                     };
                 }
+                else {
+                    table2Higher = null;
+                    table3Higher = null;
+                    table4Higher = null;
+                }
                 const returnScreen6 = {
                     table1: {
                         trafficVolume,
@@ -571,6 +585,20 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
                         table4Higher,
                     },
                 };
+                const suffixMap = {
+                    lower: 'Lower',
+                    average: 'Average',
+                    higher: 'Higher',
+                };
+                const allowedSuffixes = chosenCurves.map((l) => suffixMap[l]);
+                ['table2', 'table3', 'table4'].forEach((tableKey) => {
+                    Object.keys(returnScreen6[tableKey]).forEach((key) => {
+                        const keep = allowedSuffixes.some((suffix) => key.endsWith(suffix));
+                        if (!keep) {
+                            delete returnScreen6[tableKey][key];
+                        }
+                    });
+                });
                 return returnScreen6;
             }
             catch (error) {

@@ -27,7 +27,6 @@ export class FirstCurvePercentages_Service {
         porcentagesPassantsN200,
         binderSpecificGravity: binderSpecificGravityValue,
         riceTest,
-        maximumDensity,
         binderCompositions,
         percentageInputs,
       } = body;
@@ -527,6 +526,8 @@ export class FirstCurvePercentages_Service {
             (binderCompositions[0].gse - binderCompositions[0].combinedGsb)) /
             (binderCompositions[0].gse * binderCompositions[0].combinedGsb) +
             updatedGranulometryComposition.higher.pli);
+      } else {
+        delete updatedGranulometryComposition.higher;
       }
 
       let table2Lower = {
@@ -599,6 +600,8 @@ export class FirstCurvePercentages_Service {
         table4Lower = {
           data: graphData,
         };
+      } else {
+        delete updatedGranulometryComposition.lower;
       }
 
       let table2Average = {
@@ -670,6 +673,8 @@ export class FirstCurvePercentages_Service {
         table4Average = {
           data: graphData,
         };
+      } else {
+        delete updatedGranulometryComposition.average;
       }
 
       let table2Higher = {
@@ -741,6 +746,10 @@ export class FirstCurvePercentages_Service {
         table4Higher = {
           data: graphData,
         };
+      } else {
+        table2Higher = null;
+        table3Higher = null;
+        table4Higher = null;
       }
 
       const returnScreen6 = {
@@ -770,6 +779,25 @@ export class FirstCurvePercentages_Service {
           table4Higher,
         },
       };
+
+      // Mapeia os sufixos para seus prefixos nas tabelas
+      const suffixMap = {
+        lower: 'Lower',
+        average: 'Average',
+        higher: 'Higher',
+      };
+
+      const allowedSuffixes = chosenCurves.map((l) => suffixMap[l]);
+
+      // Remove campos indesejados das tabelas 2 a 4
+      ['table2', 'table3', 'table4'].forEach((tableKey) => {
+        Object.keys(returnScreen6[tableKey]).forEach((key) => {
+          const keep = allowedSuffixes.some((suffix) => key.endsWith(suffix));
+          if (!keep) {
+            delete returnScreen6[tableKey][key];
+          }
+        });
+      });
 
       return returnScreen6;
     } catch (error) {
