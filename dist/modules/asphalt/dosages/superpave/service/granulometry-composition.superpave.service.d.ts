@@ -41,6 +41,6 @@ export declare class GranulometryComposition_Superpave_Service {
         sumOfPercents: any[];
         percentsOfMaterials: any[];
     };
-    saveStep4Data(body: any, userId: string): Promise<boolean>;
+    saveGranulometryCompositionData(body: any, userId: string): Promise<boolean>;
     saveStep5Data(body: any, userId: string): Promise<boolean>;
 }

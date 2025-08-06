@@ -91,19 +91,19 @@ export class SuperpaveController {
     return response.status(200).json(status);
   }
 
-  @Get('material-selection/:id')
-  @ApiOperation({
-    summary: 'Retorna todos os materiais do banco de dados de um usuário, que possuam os ensaios para a dosagem.',
-  })
-  @ApiResponse({ status: 200, description: 'Materiais encontrados com sucesso!' })
-  @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
-  async getMaterialsByUserId(@Res() response: Response, @Param('id') userId: string) {
-    this.logger.log(`get all materials, by user id, with the necessary dosage essays > [id]: ${userId}`);
+  // @Get('material-selection/:id')
+  // @ApiOperation({
+  //   summary: 'Retorna todos os materiais do banco de dados de um usuário, que possuam os ensaios para a dosagem.',
+  // })
+  // @ApiResponse({ status: 200, description: 'Materiais encontrados com sucesso!' })
+  // @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
+  // async getMaterialsByUserId(@Res() response: Response, @Param('id') userId: string) {
+  //   this.logger.log(`get all materials, by user id, with the necessary dosage essays > [id]: ${userId}`);
 
-    const status = await this.superpaveService.getUserMaterials(userId);
+  //   const status = await this.superpaveService.getUserMaterials(userId);
 
-    return response.status(200).json(status);
-  }
+  //   return response.status(200).json(status);
+  // }
 
   @Get(':id')
   @ApiOperation({ summary: 'Retorna uma dosagem do banco de dados com o id informado.' })
@@ -118,14 +118,14 @@ export class SuperpaveController {
     return response.status(200).json(status);
   }
 
-  @Post('save-material-selection-step/:id')
-  async saveMaterialSelectionStep(@Res() response: Response, @Body() body: any, @Param('id') userId: string) {
-    this.logger.log(`save materials selection step in user superpave dosage > [body]: ${body}`);
+  // @Post('save-material-selection-step/:id')
+  // async saveMaterialSelectionStep(@Res() response: Response, @Body() body: any, @Param('id') userId: string) {
+  //   this.logger.log(`save materials selection step in user superpave dosage > [body]: ${body}`);
 
-    const status = await this.superpaveService.saveMaterialSelectionStep(body, userId);
+  //   const status = await this.superpaveService.saveMaterialSelectionStep(body, userId);
 
-    return response.status(200).json(status);
-  }
+  //   return response.status(200).json(status);
+  // }
 
   @Post('get-granulometric-composition-data')
   @ApiOperation({
@@ -156,9 +156,9 @@ export class SuperpaveController {
 
   @Post('save-granulometry-composition-step/:userId')
   async saveGranulometryCompositionStep(@Res() response: Response, @Param('userId') userId: string, @Body() body: any) {
-    this.logger.log(`save step 4 data > [body]: ${body}`);
+    this.logger.log(`save granulometry composition data > [body]: ${body}`);
 
-    const status = await this.superpaveService.saveStep4Data(body, userId);
+    const status = await this.superpaveService.saveGranulometryCompositionData(body, userId);
 
     return response.status(200).json(status);
   }
@@ -205,11 +205,11 @@ export class SuperpaveController {
     return response.status(200).json(status);
   }
 
-  @Post('calculate-gmm')
-  async calculateRiceTest(@Res() response: Response, @Body() body: any) {
-    this.logger.log(`calculate rice test data > [body]: ${body}`);
+  @Post('calculate-gmm-rice-test')
+  async calculateGmm_RiceTest(@Res() response: Response, @Body() body: any) {
+    this.logger.log(`calculate gmm by rice test data > [body]: ${body}`);
 
-    const status = await this.superpaveService.calculateGmm(body);
+    const status = await this.superpaveService.calculateGmm_RiceTest(body);
 
     return response.status(200).json(status);
   }

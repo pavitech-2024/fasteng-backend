@@ -10,16 +10,14 @@ export declare class SuperpaveController {
     calculateGranulometryEssaysData(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
     saveGranulometryEssayData(response: Response, body: any, userId: string): Promise<Response<any, Record<string, any>>>;
     saveGranulometryEssayResults(response: Response, body: any, userId: string): Promise<Response<any, Record<string, any>>>;
-    getMaterialsByUserId(response: Response, userId: string): Promise<Response<any, Record<string, any>>>;
     getDosageById(response: Response, dosageId: string): Promise<Response<any, Record<string, any>>>;
-    saveMaterialSelectionStep(response: Response, body: any, userId: string): Promise<Response<any, Record<string, any>>>;
     getStep3Data(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
     calculateStep3Data(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
     saveGranulometryCompositionStep(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
     getStep5SpecificMasses(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
     calculateStep5Data(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
     saveInitialBinderStep(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
-    calculateRiceTest(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
+    calculateGmm_RiceTest(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
     saveFirstCompressionData(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
     getFirstCompressionParametersData(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
     saveStep6Data(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;

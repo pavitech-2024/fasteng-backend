@@ -105,19 +105,6 @@ export declare class SuperpaveService {
             name: any;
         };
     }>;
-    getUserMaterials(userId: string): Promise<{
-        materials: import("../../../materials/schemas").Material[];
-        success: boolean;
-        error?: undefined;
-    } | {
-        materials: any[];
-        success: boolean;
-        error: {
-            status: any;
-            message: any;
-            name: any;
-        };
-    }>;
     getDosageById(dosageId: string): Promise<{
         dosage: Superpave;
         success: boolean;
@@ -132,14 +119,6 @@ export declare class SuperpaveService {
             name: any;
         };
         dosage?: undefined;
-    }>;
-    saveMaterialSelectionStep(body: any, userId: string): Promise<boolean | {
-        success: boolean;
-        error: {
-            status: any;
-            message: any;
-            name: any;
-        };
     }>;
     getGranulometricCompositionData(body: any): Promise<{
         data: {
@@ -231,7 +210,7 @@ export declare class SuperpaveService {
         };
         data?: undefined;
     }>;
-    saveStep4Data(body: any, userId: string): Promise<{
+    saveGranulometryCompositionData(body: any, userId: string): Promise<{
         success: boolean;
         error?: undefined;
     } | {
@@ -274,7 +253,7 @@ export declare class SuperpaveService {
         };
         data?: undefined;
     }>;
-    calculateGmm(body: any): Promise<{
+    calculateGmm_RiceTest(body: any): Promise<{
         data: any;
         success: boolean;
         error?: undefined;

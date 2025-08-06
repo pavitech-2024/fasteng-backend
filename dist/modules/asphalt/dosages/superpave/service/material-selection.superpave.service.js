@@ -11,26 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __rest = (this && this.__rest) || function (s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                t[p[i]] = s[p[i]];
-        }
-    return t;
-};
 var MaterialSelection_Superpave_Service_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MaterialSelection_Superpave_Service = void 0;
@@ -53,63 +33,6 @@ let MaterialSelection_Superpave_Service = MaterialSelection_Superpave_Service_1 
         this.superpaveRepository = superpaveRepository;
         this.rotationalViscosity_repository = rotationalViscosity_repository;
         this.logger = new common_1.Logger(MaterialSelection_Superpave_Service_1.name);
-    }
-    getMaterials(userId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const materials = yield this.material_repository.findByUserId({
-                    userId: userId,
-                });
-                const granulometrys = yield this.granulometry_repository.findAll();
-                const specifyMasses = yield this.specifyMass_repository.findAll();
-                const viscosities = yield this.rotationalViscosity_repository.findAll();
-                const binders = materials.filter(({ _id }) => {
-                    const viscosity = viscosities.some(({ generalData }) => {
-                        const { material } = generalData;
-                        return _id.toString() === material._id.toString();
-                    });
-                    return viscosity;
-                });
-                const aggregates = materials.filter(({ _id, type }) => {
-                    if (type === 'CAP' || type === 'asphaltBinder')
-                        return false;
-                    const granulometry = granulometrys.some(({ generalData }) => {
-                        const { material } = generalData;
-                        return _id.toString() === material._id.toString();
-                    });
-                    const specifyMass = specifyMasses.some(({ generalData }) => {
-                        const { material } = generalData;
-                        return _id.toString() === material._id.toString();
-                    });
-                    return granulometry;
-                });
-                const filteredMaterials = binders.concat(aggregates);
-                return filteredMaterials;
-            }
-            catch (error) {
-                throw error;
-            }
-        });
-    }
-    saveMaterials(body, userId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            console.log("Teste");
-            try {
-                this.logger.log('save superpave materials step on material-selection.superpave.service.ts > [body]', { body });
-                const { name } = body.materialSelectionData;
-                const superpaveExists = yield this.superpaveRepository.findOne(name, userId);
-                const _a = body.materialSelectionData, { name: materialName } = _a, materialDataWithoutName = __rest(_a, ["name"]);
-                const superpaveWithMaterials = Object.assign(Object.assign({}, superpaveExists._doc), { materialSelectionData: materialDataWithoutName });
-                yield this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithMaterials);
-                if (superpaveExists._doc.generalData.step < 2) {
-                    yield this.superpaveRepository.saveStep(superpaveExists, 2);
-                }
-                return true;
-            }
-            catch (error) {
-                throw error;
-            }
-        });
     }
 };
 exports.MaterialSelection_Superpave_Service = MaterialSelection_Superpave_Service;

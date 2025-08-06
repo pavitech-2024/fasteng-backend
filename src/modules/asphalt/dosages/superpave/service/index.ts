@@ -144,19 +144,19 @@ export class SuperpaveService {
     }
   }
 
-  async getUserMaterials(userId: string) {
-    try {
-      const materials = await this.materialSelection_Service.getMaterials(userId);
+  // async getUserMaterials(userId: string) {
+  //   try {
+  //     const materials = await this.materialSelection_Service.getMaterials(userId);
 
-      this.logger.log(`materials returned > [materials]`);
+  //     this.logger.log(`materials returned > [materials]`);
 
-      return { materials, success: true };
-    } catch (error) {
-      this.logger.error(`error on getting all materials by user id > [error]: ${error}`);
-      const { status, name, message } = error;
-      return { materials: [], success: false, error: { status, message, name } };
-    }
-  }
+  //     return { materials, success: true };
+  //   } catch (error) {
+  //     this.logger.error(`error on getting all materials by user id > [error]: ${error}`);
+  //     const { status, name, message } = error;
+  //     return { materials: [], success: false, error: { status, message, name } };
+  //   }
+  // }
 
   async getDosageById(dosageId: string) {
     try {
@@ -172,16 +172,16 @@ export class SuperpaveService {
     }
   }
 
-  async saveMaterialSelectionStep(body: any, userId: string) {
-    try {
-      const result = await this.materialSelection_Service.saveMaterials(body, userId);
-      return result;
-    } catch (error) {
-      this.logger.error(`Error saving material selection step: ${error.message}`);
-      const { status, name, message } = error;
-      return { success: false, error: { status, message, name } };
-    }
-  }
+  // async saveMaterialSelectionStep(body: any, userId: string) {
+  //   try {
+  //     const result = await this.materialSelection_Service.saveMaterials(body, userId);
+  //     return result;
+  //   } catch (error) {
+  //     this.logger.error(`Error saving material selection step: ${error.message}`);
+  //     const { status, name, message } = error;
+  //     return { success: false, error: { status, message, name } };
+  //   }
+  // }
 
   async getGranulometricCompositionData(body: any) {
     try {
@@ -835,7 +835,7 @@ export class SuperpaveService {
 
   async saveStep3Data(body: any, userId: string) {
     try {
-      const success = await this.granulometryComposition_Service.saveStep4Data(body, userId);
+      const success = await this.granulometryComposition_Service.saveGranulometryCompositionData(body, userId);
 
       return { success };
     } catch (error) {
@@ -857,9 +857,9 @@ export class SuperpaveService {
     }
   }
 
-  async saveStep4Data(body: any, userId: string) {
+  async saveGranulometryCompositionData(body: any, userId: string) {
     try {
-      const success = await this.granulometryComposition_Service.saveStep4Data(body, userId);
+      const success = await this.granulometryComposition_Service.saveGranulometryCompositionData(body, userId);
 
       return { success };
     } catch (error) {
@@ -881,9 +881,9 @@ export class SuperpaveService {
     }
   }
 
-  async calculateGmm(body: any) {
+  async calculateGmm_RiceTest(body: any) {
     try {
-      const gmm = await this.firstCompression_Service.calculateGmm(body);
+      const gmm = await this.firstCompression_Service.calculateGmm_RiceTest(body);
 
       return { data: gmm, success: true };
     } catch (error) {
