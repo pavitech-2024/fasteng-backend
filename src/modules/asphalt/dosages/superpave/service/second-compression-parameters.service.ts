@@ -25,7 +25,7 @@ export class SecondCompressionParameters_Superpave_Service {
       const { quadSolver } = require('quadratic-solver');
       const Pli = expectedPli;
 
-      // Volume de vazios da mistura paracada teor
+      // Volume de vazios da mistura para cada teor
       const dataVv = [
         composition.halfLess.Vv,
         composition.normal.Vv,

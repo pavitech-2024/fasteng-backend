@@ -344,10 +344,6 @@ let SecondCompression_Superpave_Service = SecondCompression_Superpave_Service_1 
     calculateGmbCP(data) {
         for (let i = 0; i < data.length; i++) {
             const denominator = data[i].drySurfaceSaturatedMass - data[i].submergedMass;
-            if (Math.abs(denominator) < 1e-6) {
-                data[i].gmb = 0;
-                continue;
-            }
             const gmb = (Math.round((data[i].dryMass / denominator) * 1e3) / 1e3) * data[i].waterTemperatureCorrection;
             data[i].gmb = gmb;
         }

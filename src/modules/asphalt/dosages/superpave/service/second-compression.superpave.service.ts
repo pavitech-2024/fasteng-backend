@@ -437,12 +437,6 @@ export class SecondCompression_Superpave_Service {
     for (let i = 0; i < data.length; i++) {
       const denominator = data[i].drySurfaceSaturatedMass - data[i].submergedMass;
 
-      // Verifica se o denominador é 0 ou muito pequeno (evita divisão por 0)
-      if (Math.abs(denominator) < 1e-6) {
-        data[i].gmb = 0;
-        continue;
-      }
-
       const gmb = (Math.round((data[i].dryMass / denominator) * 1e3) / 1e3) * data[i].waterTemperatureCorrection;
 
       data[i].gmb = gmb;
