@@ -18,11 +18,11 @@ export declare class SuperpaveController {
     calculateStep5Data(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
     saveInitialBinderStep(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
     calculateGmm_RiceTest(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
-    saveFirstCompressionData(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
     getFirstCompressionParametersData(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
-    saveStep6Data(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
+    saveFirstCompressionData(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
+    saveFirstCompressionParamsData(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
     getStep7Parameters(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
-    saveStep7Data(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
+    savePercentsOfChosenCurveData(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
     calculateStep7RiceTest(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
     calculateStep7Gmm(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
     calculateSecondCompressionData(response: Response, body: any): Promise<Response<any, Record<string, any>>>;

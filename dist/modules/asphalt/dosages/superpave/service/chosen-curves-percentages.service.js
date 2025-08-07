@@ -86,7 +86,7 @@ let ChosenCurvePercentages_Superpave_Service = ChosenCurvePercentages_Superpave_
             }
         });
     }
-    saveStep7Data(body, userId) {
+    savePercentsOfChosenCurveData(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('save superpave chosen curve percentages step on chosen-curve-percentages.superpave.service.ts > [body]', { body });
@@ -95,8 +95,8 @@ let ChosenCurvePercentages_Superpave_Service = ChosenCurvePercentages_Superpave_
                 const _a = body.chosenCurvePercentagesData, { name: materialName } = _a, chosenCurvePercentagesWithoutName = __rest(_a, ["name"]);
                 const superpaveWithChosenCurvePercentages = Object.assign(Object.assign({}, superpaveExists._doc), { chosenCurvePercentagesData: chosenCurvePercentagesWithoutName });
                 yield this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithChosenCurvePercentages);
-                if (superpaveExists._doc.generalData.step < 7) {
-                    yield this.superpave_repository.saveStep(superpaveExists, 7);
+                if (superpaveExists._doc.generalData.step < 8) {
+                    yield this.superpave_repository.saveStep(superpaveExists, 8);
                 }
                 return true;
             }

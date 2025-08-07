@@ -1011,25 +1011,25 @@ export class FirstCurvePercentages_Service {
     return graphData;
   }
 
-  async savePercentsOfChosenCurveData(body: any, userId: string) {
+  async saveFirstCompressionParamsData(body: any, userId: string) {
     try {
       this.logger.log(
-        'save superpave first curve percentages step on first-curve-percentages.superpave.service.ts > [body]',
+        'save superpave first compression parameters data on first-curve-percentages.superpave.service.ts > [body]',
         { body },
       );
 
-      const { name } = body.firstCurvePercentagesData;
+      const { name } = body.firstCompressionData;
 
       const superpaveExists: any = await this.superpave_repository.findOne(name, userId);
 
-      const { name: materialName, ...firstCurvePercentagesWithoutName } = body.firstCurvePercentagesData;
+      const { name: materialName, ...firstCompressionParamsWithoutName } = body.firstCompressionData;
 
-      const superpaveWithFirstCurvePercentages = {
+      const superpaveWithFistrCompressionParamsData = {
         ...superpaveExists._doc,
-        firstCurvePercentagesData: firstCurvePercentagesWithoutName,
+        firstCompressionData: firstCompressionParamsWithoutName,
       };
 
-      await this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithFirstCurvePercentages);
+      await this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithFistrCompressionParamsData);
 
       if (superpaveExists._doc.generalData.step < 8) {
         await this.superpave_repository.saveStep(superpaveExists, 8);

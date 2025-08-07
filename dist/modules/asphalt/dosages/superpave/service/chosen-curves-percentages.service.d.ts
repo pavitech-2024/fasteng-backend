@@ -7,5 +7,5 @@ export declare class ChosenCurvePercentages_Superpave_Service {
     private logger;
     constructor(superpaveModel: Model<SuperpaveDocument>, superpave_repository: SuperpaveRepository);
     getStep7Parameters(body: any): Promise<{}>;
-    saveStep7Data(body: any, userId: string): Promise<boolean>;
+    savePercentsOfChosenCurveData(body: any, userId: string): Promise<boolean>;
 }

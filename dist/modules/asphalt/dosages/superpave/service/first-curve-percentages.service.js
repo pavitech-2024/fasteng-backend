@@ -780,15 +780,15 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
         }
         return graphData;
     }
-    savePercentsOfChosenCurveData(body, userId) {
+    saveFirstCompressionParamsData(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                this.logger.log('save superpave first curve percentages step on first-curve-percentages.superpave.service.ts > [body]', { body });
-                const { name } = body.firstCurvePercentagesData;
+                this.logger.log('save superpave first compression parameters data on first-curve-percentages.superpave.service.ts > [body]', { body });
+                const { name } = body.firstCompressionData;
                 const superpaveExists = yield this.superpave_repository.findOne(name, userId);
-                const _a = body.firstCurvePercentagesData, { name: materialName } = _a, firstCurvePercentagesWithoutName = __rest(_a, ["name"]);
-                const superpaveWithFirstCurvePercentages = Object.assign(Object.assign({}, superpaveExists._doc), { firstCurvePercentagesData: firstCurvePercentagesWithoutName });
-                yield this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithFirstCurvePercentages);
+                const _a = body.firstCompressionData, { name: materialName } = _a, firstCompressionParamsWithoutName = __rest(_a, ["name"]);
+                const superpaveWithFistrCompressionParamsData = Object.assign(Object.assign({}, superpaveExists._doc), { firstCompressionData: firstCompressionParamsWithoutName });
+                yield this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithFistrCompressionParamsData);
                 if (superpaveExists._doc.generalData.step < 8) {
                     yield this.superpave_repository.saveStep(superpaveExists, 8);
                 }

@@ -25,7 +25,7 @@ export declare class SuperpaveService {
     private readonly granulometryRepository;
     private readonly initialBinder_Service;
     private readonly firstCompression_Service;
-    private readonly firstCurvePercentages_Service;
+    private readonly firstCompressionParams_Service;
     private readonly chosenCurvePercentages_Service;
     private readonly secondCompression_Service;
     private readonly secondCompressionParameters_Service;
@@ -34,7 +34,7 @@ export declare class SuperpaveService {
     private readonly asphaltGranulometry_Service;
     private readonly rotationalViscosity_Service;
     private logger;
-    constructor(superpave_repository: SuperpaveRepository, generalData_Service: GeneralData_Superpave_Service, granulometryEssay_Service: GranulometryEssay_Superpave_Service, materialSelection_Service: MaterialSelection_Superpave_Service, granulometryComposition_Service: GranulometryComposition_Superpave_Service, granulometryRepository: AsphaltGranulometryRepository, initialBinder_Service: InitialBinder_Superpave_Service, firstCompression_Service: FirstCompression_Superpave_Service, firstCurvePercentages_Service: FirstCurvePercentages_Service, chosenCurvePercentages_Service: ChosenCurvePercentages_Superpave_Service, secondCompression_Service: SecondCompression_Superpave_Service, secondCompressionParameters_Service: SecondCompressionParameters_Superpave_Service, confirmCompaction_Service: ConfirmCompaction_Superpave_Service, resumeDosageEquation_Service: ResumeDosage_Superpave_Service, asphaltGranulometry_Service: AsphaltGranulometryService, rotationalViscosity_Service: ViscosityRotationalService);
+    constructor(superpave_repository: SuperpaveRepository, generalData_Service: GeneralData_Superpave_Service, granulometryEssay_Service: GranulometryEssay_Superpave_Service, materialSelection_Service: MaterialSelection_Superpave_Service, granulometryComposition_Service: GranulometryComposition_Superpave_Service, granulometryRepository: AsphaltGranulometryRepository, initialBinder_Service: InitialBinder_Superpave_Service, firstCompression_Service: FirstCompression_Superpave_Service, firstCompressionParams_Service: FirstCurvePercentages_Service, chosenCurvePercentages_Service: ChosenCurvePercentages_Superpave_Service, secondCompression_Service: SecondCompression_Superpave_Service, secondCompressionParameters_Service: SecondCompressionParameters_Superpave_Service, confirmCompaction_Service: ConfirmCompaction_Superpave_Service, resumeDosageEquation_Service: ResumeDosage_Superpave_Service, asphaltGranulometry_Service: AsphaltGranulometryService, rotationalViscosity_Service: ViscosityRotationalService);
     verifyInitSuperpave(body: SuperpaveInitDto, userId: string): Promise<{
         success: boolean;
         dosage: any;
@@ -354,6 +354,17 @@ export declare class SuperpaveService {
         };
         data?: undefined;
     }>;
+    saveFirstCompressionParamsData(body: any, userId: string): Promise<{
+        success: boolean;
+        error?: undefined;
+    } | {
+        success: boolean;
+        error: {
+            status: any;
+            message: any;
+            name: any;
+        };
+    }>;
     savePercentsOfChosenCurveData(body: any, userId: string): Promise<{
         success: boolean;
         error?: undefined;
@@ -377,17 +388,6 @@ export declare class SuperpaveService {
             name: any;
         };
         data?: undefined;
-    }>;
-    saveStep7Data(body: any, userId: string): Promise<{
-        success: boolean;
-        error?: undefined;
-    } | {
-        success: boolean;
-        error: {
-            status: any;
-            message: any;
-            name: any;
-        };
     }>;
     calculateStep7RiceTest(body: any): Promise<{
         data: any;

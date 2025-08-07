@@ -35,7 +35,7 @@ export class SuperpaveService {
     private readonly granulometryRepository: AsphaltGranulometryRepository,
     private readonly initialBinder_Service: InitialBinder_Superpave_Service,
     private readonly firstCompression_Service: FirstCompression_Superpave_Service,
-    private readonly firstCurvePercentages_Service: FirstCurvePercentages_Service,
+    private readonly firstCompressionParams_Service: FirstCurvePercentages_Service,
     private readonly chosenCurvePercentages_Service: ChosenCurvePercentages_Superpave_Service,
     private readonly secondCompression_Service: SecondCompression_Superpave_Service,
     private readonly secondCompressionParameters_Service: SecondCompressionParameters_Superpave_Service,
@@ -919,7 +919,7 @@ export class SuperpaveService {
 
   async getFirstCompressionParametersData(body: any) {
     try {
-      const data = await this.firstCurvePercentages_Service.getFirstCompressionParametersData(body);
+      const data = await this.firstCompressionParams_Service.getFirstCompressionParametersData(body);
 
       return { data, success: true };
     } catch (error) {
@@ -929,9 +929,21 @@ export class SuperpaveService {
     }
   }
 
+  async saveFirstCompressionParamsData(body: any, userId: string) {
+    try {
+      const success = await this.firstCompressionParams_Service.saveFirstCompressionParamsData(body, userId);
+
+      return { success };
+    } catch (error) {
+      this.logger.error(`error on save percents of chosen curve data superpave > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { success: false, error: { status, message, name } };
+    }
+  }
+
   async savePercentsOfChosenCurveData(body: any, userId: string) {
     try {
-      const success = await this.firstCurvePercentages_Service.savePercentsOfChosenCurveData(body, userId);
+      const success = await this.chosenCurvePercentages_Service.savePercentsOfChosenCurveData(body, userId);
 
       return { success };
     } catch (error) {
@@ -948,18 +960,6 @@ export class SuperpaveService {
       return { data, success: true };
     } catch (error) {
       this.logger.error(`error on get step 7 data superpave > [error]: ${error}`);
-      const { status, name, message } = error;
-      return { success: false, error: { status, message, name } };
-    }
-  }
-
-  async saveStep7Data(body: any, userId: string) {
-    try {
-      const success = await this.chosenCurvePercentages_Service.saveStep7Data(body, userId);
-
-      return { success };
-    } catch (error) {
-      this.logger.error(`error on save step 7 data superpave > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
     }

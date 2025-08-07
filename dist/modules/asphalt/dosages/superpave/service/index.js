@@ -39,7 +39,7 @@ const viscosityRotational_service_1 = require("../../../essays/viscosityRotation
 const interfaces_1 = require("../../../../../utils/interfaces");
 const confirm_compaction_service_1 = require("./confirm-compaction.service");
 let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
-    constructor(superpave_repository, generalData_Service, granulometryEssay_Service, materialSelection_Service, granulometryComposition_Service, granulometryRepository, initialBinder_Service, firstCompression_Service, firstCurvePercentages_Service, chosenCurvePercentages_Service, secondCompression_Service, secondCompressionParameters_Service, confirmCompaction_Service, resumeDosageEquation_Service, asphaltGranulometry_Service, rotationalViscosity_Service) {
+    constructor(superpave_repository, generalData_Service, granulometryEssay_Service, materialSelection_Service, granulometryComposition_Service, granulometryRepository, initialBinder_Service, firstCompression_Service, firstCompressionParams_Service, chosenCurvePercentages_Service, secondCompression_Service, secondCompressionParameters_Service, confirmCompaction_Service, resumeDosageEquation_Service, asphaltGranulometry_Service, rotationalViscosity_Service) {
         this.superpave_repository = superpave_repository;
         this.generalData_Service = generalData_Service;
         this.granulometryEssay_Service = granulometryEssay_Service;
@@ -48,7 +48,7 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
         this.granulometryRepository = granulometryRepository;
         this.initialBinder_Service = initialBinder_Service;
         this.firstCompression_Service = firstCompression_Service;
-        this.firstCurvePercentages_Service = firstCurvePercentages_Service;
+        this.firstCompressionParams_Service = firstCompressionParams_Service;
         this.chosenCurvePercentages_Service = chosenCurvePercentages_Service;
         this.secondCompression_Service = secondCompression_Service;
         this.secondCompressionParameters_Service = secondCompressionParameters_Service;
@@ -846,7 +846,7 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
     getFirstCompressionParametersData(body) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const data = yield this.firstCurvePercentages_Service.getFirstCompressionParametersData(body);
+                const data = yield this.firstCompressionParams_Service.getFirstCompressionParametersData(body);
                 return { data, success: true };
             }
             catch (error) {
@@ -856,10 +856,23 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
             }
         });
     }
+    saveFirstCompressionParamsData(body, userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const success = yield this.firstCompressionParams_Service.saveFirstCompressionParamsData(body, userId);
+                return { success };
+            }
+            catch (error) {
+                this.logger.error(`error on save percents of chosen curve data superpave > [error]: ${error}`);
+                const { status, name, message } = error;
+                return { success: false, error: { status, message, name } };
+            }
+        });
+    }
     savePercentsOfChosenCurveData(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const success = yield this.firstCurvePercentages_Service.savePercentsOfChosenCurveData(body, userId);
+                const success = yield this.chosenCurvePercentages_Service.savePercentsOfChosenCurveData(body, userId);
                 return { success };
             }
             catch (error) {
@@ -877,19 +890,6 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
             }
             catch (error) {
                 this.logger.error(`error on get step 7 data superpave > [error]: ${error}`);
-                const { status, name, message } = error;
-                return { success: false, error: { status, message, name } };
-            }
-        });
-    }
-    saveStep7Data(body, userId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const success = yield this.chosenCurvePercentages_Service.saveStep7Data(body, userId);
-                return { success };
-            }
-            catch (error) {
-                this.logger.error(`error on save step 7 data superpave > [error]: ${error}`);
                 const { status, name, message } = error;
                 return { success: false, error: { status, message, name } };
             }

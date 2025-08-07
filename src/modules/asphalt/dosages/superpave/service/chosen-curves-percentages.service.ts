@@ -70,7 +70,7 @@ export class ChosenCurvePercentages_Superpave_Service {
     }
   }
 
-  async saveStep7Data(body: any, userId: string) {
+  async savePercentsOfChosenCurveData(body: any, userId: string) {
     try {
       this.logger.log('save superpave chosen curve percentages step on chosen-curve-percentages.superpave.service.ts > [body]', { body });
 
@@ -87,8 +87,8 @@ export class ChosenCurvePercentages_Superpave_Service {
         superpaveWithChosenCurvePercentages
       );
 
-      if (superpaveExists._doc.generalData.step < 7) {
-        await this.superpave_repository.saveStep(superpaveExists, 7);
+      if (superpaveExists._doc.generalData.step < 8) {
+        await this.superpave_repository.saveStep(superpaveExists, 8);
       }
 
       return true;

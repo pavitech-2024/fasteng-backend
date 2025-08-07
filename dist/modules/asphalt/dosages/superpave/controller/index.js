@@ -123,13 +123,6 @@ let SuperpaveController = SuperpaveController_1 = class SuperpaveController {
             return response.status(200).json(status);
         });
     }
-    saveFirstCompressionData(response, userId, body) {
-        return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`save first compression data > [body]: ${body}`);
-            const status = yield this.superpaveService.saveFirstCompressionData(body, userId);
-            return response.status(200).json(status);
-        });
-    }
     getFirstCompressionParametersData(response, body) {
         return __awaiter(this, void 0, void 0, function* () {
             this.logger.log(`get first compression parameters data > [body]: ${body}`);
@@ -137,10 +130,17 @@ let SuperpaveController = SuperpaveController_1 = class SuperpaveController {
             return response.status(200).json(status);
         });
     }
-    saveStep6Data(response, userId, body) {
+    saveFirstCompressionData(response, userId, body) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.log(`save first compression data > [body]: ${body}`);
+            const status = yield this.superpaveService.saveFirstCompressionData(body, userId);
+            return response.status(200).json(status);
+        });
+    }
+    saveFirstCompressionParamsData(response, userId, body) {
         return __awaiter(this, void 0, void 0, function* () {
             this.logger.log(`save percents of chosen curve data > [body]: ${body}`);
-            const status = yield this.superpaveService.savePercentsOfChosenCurveData(body, userId);
+            const status = yield this.superpaveService.saveFirstCompressionParamsData(body, userId);
             return response.status(200).json(status);
         });
     }
@@ -151,10 +151,10 @@ let SuperpaveController = SuperpaveController_1 = class SuperpaveController {
             return response.status(200).json(status);
         });
     }
-    saveStep7Data(response, userId, body) {
+    savePercentsOfChosenCurveData(response, userId, body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`save step 7 data > [body]: ${body}`);
-            const status = yield this.superpaveService.saveStep7Data(body, userId);
+            this.logger.log(`save percents of chose curve data > [body]: ${body}`);
+            const status = yield this.superpaveService.savePercentsOfChosenCurveData(body, userId);
             return response.status(200).json(status);
         });
     }
@@ -410,15 +410,6 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], SuperpaveController.prototype, "calculateGmm_RiceTest", null);
 __decorate([
-    (0, common_1.Post)('save-first-compression-step/:userId'),
-    __param(0, (0, common_1.Res)()),
-    __param(1, (0, common_1.Param)('userId')),
-    __param(2, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, String, Object]),
-    __metadata("design:returntype", Promise)
-], SuperpaveController.prototype, "saveFirstCompressionData", null);
-__decorate([
     (0, common_1.Post)('get-first-compression-parameters'),
     (0, swagger_1.ApiOperation)({
         summary: 'Retorna os dados iniciais necessários para a tela de parâmetros da primiera compactaão da dosagem',
@@ -435,14 +426,23 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], SuperpaveController.prototype, "getFirstCompressionParametersData", null);
 __decorate([
-    (0, common_1.Post)('save-percents-of-chosen-curve-step/:userId'),
+    (0, common_1.Post)('save-first-compression-step/:userId'),
     __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Param)('userId')),
     __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String, Object]),
     __metadata("design:returntype", Promise)
-], SuperpaveController.prototype, "saveStep6Data", null);
+], SuperpaveController.prototype, "saveFirstCompressionData", null);
+__decorate([
+    (0, common_1.Post)('save-first-compression-params/:userId'),
+    __param(0, (0, common_1.Res)()),
+    __param(1, (0, common_1.Param)('userId')),
+    __param(2, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String, Object]),
+    __metadata("design:returntype", Promise)
+], SuperpaveController.prototype, "saveFirstCompressionParamsData", null);
 __decorate([
     (0, common_1.Post)('calculate-chosen-curve-percentages'),
     (0, swagger_1.ApiOperation)({
@@ -467,7 +467,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String, Object]),
     __metadata("design:returntype", Promise)
-], SuperpaveController.prototype, "saveStep7Data", null);
+], SuperpaveController.prototype, "savePercentsOfChosenCurveData", null);
 __decorate([
     (0, common_1.Post)('calculate-step-7-rice-test'),
     __param(0, (0, common_1.Res)()),
