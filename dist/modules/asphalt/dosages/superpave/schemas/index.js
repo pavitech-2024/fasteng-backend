@@ -53,7 +53,7 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, mongoose_1.Prop)({ type: Object }),
     __metadata("design:type", Object)
-], Superpave.prototype, "firstCurvePercentagesData", void 0);
+], Superpave.prototype, "firstCompressionParamsData", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, mongoose_1.Prop)({ type: Object }),

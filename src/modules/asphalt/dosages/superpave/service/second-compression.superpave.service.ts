@@ -15,7 +15,7 @@ export class SecondCompression_Superpave_Service {
     private readonly superpaveRepository: SuperpaveRepository,
   ) {}
 
-  calculateStep7RiceTest(
+  calculateSecondCompressionRiceTest(
     sampleAirDryMass: number,
     containerMassWaterSample: number,
     containerWaterMass: number,
@@ -44,7 +44,7 @@ export class SecondCompression_Superpave_Service {
         if (gmm[i].insertedGmm) {
           gmmValue.push(gmm[i].insertedGmm);
         } else {
-          const value = this.calculateStep7RiceTest(
+          const value = this.calculateSecondCompressionRiceTest(
             gmm.massOfDrySample,
             gmm.massOfContainer_Water_Sample,
             gmm.massOfContainer_Water,

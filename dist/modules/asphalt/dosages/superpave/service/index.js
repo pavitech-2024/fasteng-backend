@@ -882,10 +882,10 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
             }
         });
     }
-    getStep7Parameters(body) {
+    getChosenCurvePercentsData(body) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const data = yield this.chosenCurvePercentages_Service.getStep7Parameters(body);
+                const data = yield this.chosenCurvePercentages_Service.getChosenCurvePercentsData(body);
                 return { data, success: true };
             }
             catch (error) {
@@ -895,11 +895,11 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
             }
         });
     }
-    calculateStep7RiceTest(body) {
+    calculateSecondCompressionRiceTest(body) {
         return __awaiter(this, void 0, void 0, function* () {
             const { sampleAirDryMass, containerMassWaterSample, containerWaterMass, waterTemperatureCorrection } = body;
             try {
-                const gmm = yield this.secondCompression_Service.calculateStep7RiceTest(sampleAirDryMass, containerMassWaterSample, containerWaterMass, waterTemperatureCorrection);
+                const gmm = yield this.secondCompression_Service.calculateSecondCompressionRiceTest(sampleAirDryMass, containerMassWaterSample, containerWaterMass, waterTemperatureCorrection);
                 return { data: gmm, success: true };
             }
             catch (error) {

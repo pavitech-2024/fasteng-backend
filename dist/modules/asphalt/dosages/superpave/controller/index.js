@@ -144,10 +144,10 @@ let SuperpaveController = SuperpaveController_1 = class SuperpaveController {
             return response.status(200).json(status);
         });
     }
-    getStep7Parameters(response, body) {
+    getChosenCurvePercentsData(response, body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`get step 7 data > [body]: ${body}`);
-            const status = yield this.superpaveService.getStep7Parameters(body);
+            this.logger.log(`get chosen curve percents data > [body]: ${body}`);
+            const status = yield this.superpaveService.getChosenCurvePercentsData(body);
             return response.status(200).json(status);
         });
     }
@@ -158,10 +158,10 @@ let SuperpaveController = SuperpaveController_1 = class SuperpaveController {
             return response.status(200).json(status);
         });
     }
-    calculateStep7RiceTest(response, body) {
+    calculateSecondCompressionRiceTest(response, body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`calculate step 5 rice test data > [body]: ${body}`);
-            const status = yield this.superpaveService.calculateStep7RiceTest(body);
+            this.logger.log(`calculate second compression rice test data > [body]: ${body}`);
+            const status = yield this.superpaveService.calculateSecondCompressionRiceTest(body);
             return response.status(200).json(status);
         });
     }
@@ -458,7 +458,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
-], SuperpaveController.prototype, "getStep7Parameters", null);
+], SuperpaveController.prototype, "getChosenCurvePercentsData", null);
 __decorate([
     (0, common_1.Post)('save-chosen-curve-percentage-step/:userId'),
     __param(0, (0, common_1.Res)()),
@@ -469,13 +469,13 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], SuperpaveController.prototype, "savePercentsOfChosenCurveData", null);
 __decorate([
-    (0, common_1.Post)('calculate-step-7-rice-test'),
+    (0, common_1.Post)('calculate-second-compression-rice-test'),
     __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
-], SuperpaveController.prototype, "calculateStep7RiceTest", null);
+], SuperpaveController.prototype, "calculateSecondCompressionRiceTest", null);
 __decorate([
     (0, common_1.Post)('calculate-step-7-gmm'),
     __param(0, (0, common_1.Res)()),

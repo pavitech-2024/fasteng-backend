@@ -6,7 +6,7 @@ export declare class SecondCompression_Superpave_Service {
     private readonly superpaveRepository;
     private logger;
     constructor(superpaveModel: Model<SuperpaveDocument>, superpaveRepository: SuperpaveRepository);
-    calculateStep7RiceTest(sampleAirDryMass: number, containerMassWaterSample: number, containerWaterMass: number, waterTemperatureCorrection: number): any;
+    calculateSecondCompressionRiceTest(sampleAirDryMass: number, containerMassWaterSample: number, containerWaterMass: number, waterTemperatureCorrection: number): any;
     calculateStep7Gmm(gmm: any): any[];
     calculateSecondCompressionData(body: any): Promise<{
         composition: {

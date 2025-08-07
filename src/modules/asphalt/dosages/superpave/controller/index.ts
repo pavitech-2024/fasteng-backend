@@ -235,13 +235,14 @@ export class SuperpaveController {
     description: 'Dados carregados com sucesso!',
     content: { 'application/json': { schema: { example: { data: {}, success: true } } } },
   })
-  async getStep7Parameters(@Res() response: Response, @Body() body: any) {
-    this.logger.log(`get step 7 data > [body]: ${body}`);
+  async getChosenCurvePercentsData(@Res() response: Response, @Body() body: any) {
+    this.logger.log(`get chosen curve percents data > [body]: ${body}`);
 
-    const status = await this.superpaveService.getStep7Parameters(body);
+    const status = await this.superpaveService.getChosenCurvePercentsData(body);
 
     return response.status(200).json(status);
   }
+
 
   @Post('save-chosen-curve-percentage-step/:userId')
   async savePercentsOfChosenCurveData(@Res() response: Response, @Param('userId') userId: string, @Body() body: any) {
@@ -252,11 +253,11 @@ export class SuperpaveController {
     return response.status(200).json(status);
   }
 
-  @Post('calculate-step-7-rice-test')
-  async calculateStep7RiceTest(@Res() response: Response, @Body() body: any) {
-    this.logger.log(`calculate step 5 rice test data > [body]: ${body}`);
+  @Post('calculate-second-compression-rice-test')
+  async calculateSecondCompressionRiceTest(@Res() response: Response, @Body() body: any) {
+    this.logger.log(`calculate second compression rice test data > [body]: ${body}`);
 
-    const status = await this.superpaveService.calculateStep7RiceTest(body);
+    const status = await this.superpaveService.calculateSecondCompressionRiceTest(body);
 
     return response.status(200).json(status);
   }

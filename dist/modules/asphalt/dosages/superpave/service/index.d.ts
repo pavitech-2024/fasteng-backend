@@ -376,7 +376,7 @@ export declare class SuperpaveService {
             name: any;
         };
     }>;
-    getStep7Parameters(body: any): Promise<{
+    getChosenCurvePercentsData(body: any): Promise<{
         data: {};
         success: boolean;
         error?: undefined;
@@ -389,7 +389,7 @@ export declare class SuperpaveService {
         };
         data?: undefined;
     }>;
-    calculateStep7RiceTest(body: any): Promise<{
+    calculateSecondCompressionRiceTest(body: any): Promise<{
         data: any;
         success: boolean;
         error?: undefined;

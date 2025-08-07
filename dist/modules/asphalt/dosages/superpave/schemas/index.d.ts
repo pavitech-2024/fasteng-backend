@@ -153,7 +153,7 @@ export type FirstCompressionData = {
         temperatureOfWater: number;
     }[];
 };
-export type FirstCurvePercentagesData = {
+export type FirstCompressionParamsData = {
     table1: {
         expectedPorcentageGmmInitialN: number;
         expectedPorcentageGmmMaxN: number;
@@ -412,7 +412,7 @@ export declare class Superpave {
     granulometryCompositionData: GranulometryCompositionData;
     initialBinderData: InitialBinderData;
     firstCompressionData: FirstCompressionData;
-    firstCurvePercentagesData: FirstCurvePercentagesData;
+    firstCompressionParamsData: FirstCompressionParamsData;
     chosenCurvePercentagesData: ChosenCurvePercentagesData;
     secondCompressionData: SecondCompressionData;
     secondCompressionParams: SecondCompressionParams;

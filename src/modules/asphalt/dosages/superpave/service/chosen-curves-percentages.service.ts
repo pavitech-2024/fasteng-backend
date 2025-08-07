@@ -20,7 +20,7 @@ export class ChosenCurvePercentages_Superpave_Service {
     private readonly superpave_repository: SuperpaveRepository,
   ) {}
 
-  async getStep7Parameters(body: any) {
+  async getChosenCurvePercentsData(body: any) {
     try {
       this.logger.log({ body }, 'start calculate step 5 gmm data > [service]');
 
@@ -87,8 +87,8 @@ export class ChosenCurvePercentages_Superpave_Service {
         superpaveWithChosenCurvePercentages
       );
 
-      if (superpaveExists._doc.generalData.step < 8) {
-        await this.superpave_repository.saveStep(superpaveExists, 8);
+      if (superpaveExists._doc.generalData.step < 9) {
+        await this.superpave_repository.saveStep(superpaveExists, 9);
       }
 
       return true;

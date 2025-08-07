@@ -46,7 +46,7 @@ let SecondCompression_Superpave_Service = SecondCompression_Superpave_Service_1 
         this.superpaveRepository = superpaveRepository;
         this.logger = new common_1.Logger(SecondCompression_Superpave_Service_1.name);
     }
-    calculateStep7RiceTest(sampleAirDryMass, containerMassWaterSample, containerWaterMass, waterTemperatureCorrection) {
+    calculateSecondCompressionRiceTest(sampleAirDryMass, containerMassWaterSample, containerWaterMass, waterTemperatureCorrection) {
         try {
             this.logger.log({}, 'start calculateStep7RiceTest > SecondCompression_Superpave_Service');
             const gmm = (sampleAirDryMass / (sampleAirDryMass + containerWaterMass - containerMassWaterSample)) *
@@ -66,7 +66,7 @@ let SecondCompression_Superpave_Service = SecondCompression_Superpave_Service_1 
                     gmmValue.push(gmm[i].insertedGmm);
                 }
                 else {
-                    const value = this.calculateStep7RiceTest(gmm.massOfDrySample, gmm.massOfContainer_Water_Sample, gmm.massOfContainer_Water, gmm.waterTemperatureCorrection);
+                    const value = this.calculateSecondCompressionRiceTest(gmm.massOfDrySample, gmm.massOfContainer_Water_Sample, gmm.massOfContainer_Water, gmm.waterTemperatureCorrection);
                     gmmValue.push(value);
                 }
             }

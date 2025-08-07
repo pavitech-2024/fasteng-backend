@@ -953,9 +953,9 @@ export class SuperpaveService {
     }
   }
 
-  async getStep7Parameters(body: any) {
+  async getChosenCurvePercentsData(body: any) {
     try {
-      const data = await this.chosenCurvePercentages_Service.getStep7Parameters(body);
+      const data = await this.chosenCurvePercentages_Service.getChosenCurvePercentsData(body);
 
       return { data, success: true };
     } catch (error) {
@@ -965,10 +965,10 @@ export class SuperpaveService {
     }
   }
 
-  async calculateStep7RiceTest(body: any) {
+  async calculateSecondCompressionRiceTest(body: any) {
     const { sampleAirDryMass, containerMassWaterSample, containerWaterMass, waterTemperatureCorrection } = body;
     try {
-      const gmm = await this.secondCompression_Service.calculateStep7RiceTest(
+      const gmm = await this.secondCompression_Service.calculateSecondCompressionRiceTest(
         sampleAirDryMass,
         containerMassWaterSample,
         containerWaterMass,

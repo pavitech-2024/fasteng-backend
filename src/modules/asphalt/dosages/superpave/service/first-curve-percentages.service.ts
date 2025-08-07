@@ -1018,15 +1018,15 @@ export class FirstCurvePercentages_Service {
         { body },
       );
 
-      const { name } = body.firstCompressionData;
+      const { name } = body.firstCompressionParamsData;
 
       const superpaveExists: any = await this.superpave_repository.findOne(name, userId);
 
-      const { name: materialName, ...firstCompressionParamsWithoutName } = body.firstCompressionData;
+      const { name: materialName, ...firstCompressionParamsWithoutName } = body.firstCompressionParamsData;
 
       const superpaveWithFistrCompressionParamsData = {
         ...superpaveExists._doc,
-        firstCompressionData: firstCompressionParamsWithoutName,
+        firstCompressionParamsData: firstCompressionParamsWithoutName,
       };
 
       await this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithFistrCompressionParamsData);

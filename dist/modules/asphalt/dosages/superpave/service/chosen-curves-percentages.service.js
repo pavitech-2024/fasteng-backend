@@ -46,7 +46,7 @@ let ChosenCurvePercentages_Superpave_Service = ChosenCurvePercentages_Superpave_
         this.superpave_repository = superpave_repository;
         this.logger = new common_1.Logger(ChosenCurvePercentages_Superpave_Service_1.name);
     }
-    getStep7Parameters(body) {
+    getChosenCurvePercentsData(body) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log({ body }, 'start calculate step 5 gmm data > [service]');
@@ -95,8 +95,8 @@ let ChosenCurvePercentages_Superpave_Service = ChosenCurvePercentages_Superpave_
                 const _a = body.chosenCurvePercentagesData, { name: materialName } = _a, chosenCurvePercentagesWithoutName = __rest(_a, ["name"]);
                 const superpaveWithChosenCurvePercentages = Object.assign(Object.assign({}, superpaveExists._doc), { chosenCurvePercentagesData: chosenCurvePercentagesWithoutName });
                 yield this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithChosenCurvePercentages);
-                if (superpaveExists._doc.generalData.step < 8) {
-                    yield this.superpave_repository.saveStep(superpaveExists, 8);
+                if (superpaveExists._doc.generalData.step < 9) {
+                    yield this.superpave_repository.saveStep(superpaveExists, 9);
                 }
                 return true;
             }
