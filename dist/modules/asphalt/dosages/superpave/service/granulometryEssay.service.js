@@ -200,10 +200,10 @@ let GranulometryEssay_Superpave_Service = GranulometryEssay_Superpave_Service_1 
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('save superpave materials results on material-selection.superpave.service.ts > [body]', { body });
-                const { name } = body.granulometryEssayResults;
+                const { name } = body.granulometryResultsData;
                 const superpaveExists = yield this.superpave_repository.findOne(name, userId);
-                const _a = body.granulometryEssayResults, { name: materialName } = _a, materialDataWithoutName = __rest(_a, ["name"]);
-                const superpaveWithMaterials = Object.assign(Object.assign({}, superpaveExists._doc), { granulometryEssayResults: materialDataWithoutName });
+                const _a = body.granulometryResultsData, { name: materialName } = _a, materialDataWithoutName = __rest(_a, ["name"]);
+                const superpaveWithMaterials = Object.assign(Object.assign({}, superpaveExists._doc), { granulometryResultsData: materialDataWithoutName });
                 yield this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithMaterials);
                 if (superpaveExists._doc.generalData.step < 3) {
                     yield this.superpave_repository.saveStep(superpaveWithMaterials, 3);

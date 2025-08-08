@@ -390,7 +390,7 @@ export declare class SuperpaveService {
         data?: undefined;
     }>;
     calculateSecondCompressionRiceTest(body: any): Promise<{
-        data: any;
+        data: number;
         success: boolean;
         error?: undefined;
     } | {

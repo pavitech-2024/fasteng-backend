@@ -46,16 +46,14 @@ let SecondCompression_Superpave_Service = SecondCompression_Superpave_Service_1 
         this.superpaveRepository = superpaveRepository;
         this.logger = new common_1.Logger(SecondCompression_Superpave_Service_1.name);
     }
-    calculateSecondCompressionRiceTest(sampleAirDryMass, containerMassWaterSample, containerWaterMass, waterTemperatureCorrection) {
-        try {
-            this.logger.log({}, 'start calculateStep7RiceTest > SecondCompression_Superpave_Service');
-            const gmm = (sampleAirDryMass / (sampleAirDryMass + containerWaterMass - containerMassWaterSample)) *
-                waterTemperatureCorrection;
-            return gmm;
+    calculateSecondCompressionRiceTest(drySampleMass, containerSampleWaterMass, containerWaterMass, temperatureCorrection) {
+        const numerator = drySampleMass;
+        const denominator = drySampleMass + containerWaterMass - containerSampleWaterMass;
+        if (Math.abs(denominator) < 1e-6) {
+            throw new Error('Denominator is too close to zero');
         }
-        catch (error) {
-            throw error;
-        }
+        const gmm = (numerator / denominator) * temperatureCorrection;
+        return gmm;
     }
     calculateStep7Gmm(gmm) {
         try {

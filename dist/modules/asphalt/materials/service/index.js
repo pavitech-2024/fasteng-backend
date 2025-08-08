@@ -63,18 +63,15 @@ let MaterialsService = MaterialsService_1 = class MaterialsService {
     }
     getSelectedMaterialsById(ids) {
         return __awaiter(this, void 0, void 0, function* () {
-            const idArray = ids.split(',').map((id) => id.trim());
+            const materialIds = Array.from(new Set(ids.split(',').map((id) => id.trim())));
             try {
-                let essays = [];
-                const materials = yield this.materialsRepository.findSelectedById(idArray);
-                for (let i = 0; i < materials.length; i++) {
-                    let essay = yield this.getEssaysByMaterial_Service.getEssaysByMaterial(materials[i]);
-                    essays.push(essay);
-                }
+                const materials = yield this.materialsRepository.findSelectedById(materialIds);
+                const essaysPromises = materials.map((material) => this.getEssaysByMaterial_Service.getEssaysByMaterial(material));
+                const essays = yield Promise.all(essaysPromises);
                 return { materials, essays };
             }
             catch (error) {
-                this.logger.error(`error on get material > [error]: ${error}`);
+                this.logger.error(`error on get materials and essays by id > [error]: ${error}`);
                 throw error;
             }
         });

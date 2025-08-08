@@ -77,24 +77,22 @@ export class MaterialsService {
     }
   }
 
-  async getSelectedMaterialsById(ids: string): Promise<any> {
-    const idArray = ids.split(',').map((id) => id.trim());
+  /**
+   * Busca materiais selecionados pelo id e seus respectivos ensaios.
+   * @param ids Ids dos materiais separados por vírgula.
+   * @returns Um objeto com os materiais encontrados e seus respectivos ensaios.
+   */
+  async getSelectedMaterialsById(ids: string): Promise<{ materials: Material[]; essays: any[] }> {
+    const materialIds = Array.from(new Set(ids.split(',').map((id) => id.trim())));
+
     try {
-      let essays = [];
+      const materials = await this.materialsRepository.findSelectedById(materialIds);
+      const essaysPromises = materials.map((material) => this.getEssaysByMaterial_Service.getEssaysByMaterial(material));
+      const essays = await Promise.all(essaysPromises);
 
-      // busca um material com o id passado no banco de dados
-      const materials = await this.materialsRepository.findSelectedById(idArray);
-
-      // Buscar os ensaios com esse material;
-      for (let i = 0; i < materials.length; i++) {
-        let essay = await this.getEssaysByMaterial_Service.getEssaysByMaterial(materials[i]);
-        essays.push(essay);
-      }
-
-      // retorna o material encontrado
       return { materials, essays };
     } catch (error) {
-      this.logger.error(`error on get material > [error]: ${error}`);
+      this.logger.error(`error on get materials and essays by id > [error]: ${error}`);
 
       throw error;
     }

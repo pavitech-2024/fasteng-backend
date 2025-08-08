@@ -226,13 +226,13 @@ export class GranulometryEssay_Superpave_Service {
     try {
       this.logger.log('save superpave materials results on material-selection.superpave.service.ts > [body]', { body });
 
-      const { name } = body.granulometryEssayResults;
+      const { name } = body.granulometryResultsData;
 
       const superpaveExists: any = await this.superpave_repository.findOne(name, userId);
 
-      const { name: materialName, ...materialDataWithoutName } = body.granulometryEssayResults;
+      const { name: materialName, ...materialDataWithoutName } = body.granulometryResultsData;
 
-      const superpaveWithMaterials = { ...superpaveExists._doc, granulometryEssayResults: materialDataWithoutName };
+      const superpaveWithMaterials = { ...superpaveExists._doc, granulometryResultsData: materialDataWithoutName };
 
       await this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithMaterials);
 

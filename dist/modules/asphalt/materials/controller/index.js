@@ -128,7 +128,7 @@ __decorate([
 ], MaterialsController.prototype, "getMaterialById", null);
 __decorate([
     (0, common_1.Get)('selected/:id'),
-    (0, swagger_1.ApiOperation)({ summary: 'Retorna um material do banco de dados.' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Retorna um material do banco de dados que corresponda ao id passado nos parametros.' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Material encontrado com sucesso!' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Material não encontrado!' }),
     __param(0, (0, common_1.Param)('id')),

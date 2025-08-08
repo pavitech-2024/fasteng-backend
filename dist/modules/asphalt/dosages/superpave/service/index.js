@@ -903,7 +903,7 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
                 return { data: gmm, success: true };
             }
             catch (error) {
-                this.logger.error(`error on getting the step 5 rice test data > [error]: ${error}`);
+                this.logger.error(`error on calculating rice test on second compression step > [error]: ${error}`);
                 const { status, name, message } = error;
                 return { data: null, success: false, error: { status, message, name } };
             }

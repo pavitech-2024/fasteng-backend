@@ -17,7 +17,10 @@ export declare class MaterialsService {
     constructor(materialsRepository: MaterialsRepository, getEssaysByMaterial_Service: GetEssaysByMaterial_Service, fwdRepository: FwdRepository, iggRepository: IggRepository, rtcdRepository: RtcdRepository, dduiRepository: DduiRepository);
     createMaterial(material: CreateAsphaltMaterialDto, userId: string): Promise<Material>;
     getMaterial(materialId: string): Promise<any>;
-    getSelectedMaterialsById(ids: string): Promise<any>;
+    getSelectedMaterialsById(ids: string): Promise<{
+        materials: Material[];
+        essays: any[];
+    }>;
     getAllMaterialsList(userId: string): Promise<any>;
     getAllMaterials(userId: string): Promise<Material[]>;
     updateMaterial(material: Material): Promise<Material>;

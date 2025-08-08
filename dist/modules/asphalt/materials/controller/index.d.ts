@@ -9,7 +9,10 @@ export declare class MaterialsController {
     getAllByUserIdList(userId: string): Promise<any[]>;
     getAllByUserId(userId: string): Promise<Material[]>;
     getMaterialById(materialId: string): Promise<any>;
-    getSelectedMaterialsById(ids: string): Promise<any>;
+    getSelectedMaterialsById(ids: string): Promise<{
+        materials: Material[];
+        essays: any[];
+    }>;
     updateMaterialById(materialId: string, material: Material): Promise<Material>;
     deleteMaterialById(materialId: string): Promise<Material>;
 }
