@@ -33,7 +33,7 @@ const chosen_curves_percentages_service_1 = require("./chosen-curves-percentages
 const second_compression_superpave_service_1 = require("./second-compression.superpave.service");
 const second_compression_parameters_service_1 = require("./second-compression-parameters.service");
 const resume_dosage_service_1 = require("./resume-dosage.service");
-const granulometryEssay_service_1 = require("./granulometryEssay.service");
+const granulometry_essay_service_1 = require("./granulometry-essay.service");
 const service_1 = require("../../../essays/granulometry/service");
 const viscosityRotational_service_1 = require("../../../essays/viscosityRotational/service/viscosityRotational.service");
 const interfaces_1 = require("../../../../../utils/interfaces");
@@ -1058,7 +1058,7 @@ exports.SuperpaveService = SuperpaveService = SuperpaveService_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [index_1.SuperpaveRepository,
         general_data_superpave_service_1.GeneralData_Superpave_Service,
-        granulometryEssay_service_1.GranulometryEssay_Superpave_Service,
+        granulometry_essay_service_1.GranulometryEssay_Superpave_Service,
         material_selection_superpave_service_1.MaterialSelection_Superpave_Service,
         granulometry_composition_superpave_service_1.GranulometryComposition_Superpave_Service,
         repository_1.AsphaltGranulometryRepository,

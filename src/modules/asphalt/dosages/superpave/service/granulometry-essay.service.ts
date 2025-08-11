@@ -224,7 +224,7 @@ export class GranulometryEssay_Superpave_Service {
 
   async saveGranulometryEssayResults(body: any, userId: string) {
     try {
-      this.logger.log('save superpave materials results on material-selection.superpave.service.ts > [body]', { body });
+      this.logger.log('save superpave granulometry essays results on granulometry-essay-results.superpave.service.ts > [body]', { body });
 
       const { name } = body.granulometryResultsData;
 

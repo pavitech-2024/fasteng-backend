@@ -12,7 +12,7 @@ import { ChosenCurvePercentages_Superpave_Service } from './chosen-curves-percen
 import { SecondCompression_Superpave_Service } from './second-compression.superpave.service';
 import { SecondCompressionParameters_Superpave_Service } from './second-compression-parameters.service';
 import { ResumeDosage_Superpave_Service } from './resume-dosage.service';
-import { GranulometryEssay_Superpave_Service } from './granulometryEssay.service';
+import { GranulometryEssay_Superpave_Service } from './granulometry-essay.service';
 import { AsphaltGranulometryService } from 'modules/asphalt/essays/granulometry/service';
 import { ViscosityRotationalService } from 'modules/asphalt/essays/viscosityRotational/service/viscosityRotational.service';
 import { ConfirmCompaction_Superpave_Service } from './confirm-compaction.service';

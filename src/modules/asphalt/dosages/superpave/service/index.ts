@@ -4,7 +4,6 @@ import { GeneralData_Superpave_Service } from './general-data.superpave.service'
 import { MaterialSelection_Superpave_Service } from './material-selection.superpave.service';
 import { Superpave } from '../schemas';
 import { SuperpaveRepository } from '../repository/index';
-import { SuperpaveStep3Dto } from '../dto/step-3-superpave.dto';
 import { GranulometryComposition_Superpave_Service } from './granulometry-composition.superpave.service';
 import { AsphaltGranulometryRepository } from 'modules/asphalt/essays/granulometry/repository';
 import { InitialBinder_Superpave_Service } from './initial-binder.superpave.service';
@@ -14,8 +13,7 @@ import { ChosenCurvePercentages_Superpave_Service } from './chosen-curves-percen
 import { SecondCompression_Superpave_Service } from './second-compression.superpave.service';
 import { SecondCompressionParameters_Superpave_Service } from './second-compression-parameters.service';
 import { ResumeDosage_Superpave_Service } from './resume-dosage.service';
-import { GranulometryEssay_Superpave_Service } from './granulometryEssay.service';
-import { Calc_Superpave_GranulometyEssay_Dto } from '../dto/granulometry-essay.dto';
+import { GranulometryEssay_Superpave_Service } from './granulometry-essay.service';
 import { AsphaltGranulometryService } from 'modules/asphalt/essays/granulometry/service';
 import { Calc_AsphaltGranulometry_Dto } from 'modules/asphalt/essays/granulometry/dto/asphalt.calc.granulometry.dto';
 import { ViscosityRotationalService } from 'modules/asphalt/essays/viscosityRotational/service/viscosityRotational.service';
@@ -171,17 +169,6 @@ export class SuperpaveService {
       return { materials: [], success: false, error: { status, message, name } };
     }
   }
-
-  // async saveMaterialSelectionStep(body: any, userId: string) {
-  //   try {
-  //     const result = await this.materialSelection_Service.saveMaterials(body, userId);
-  //     return result;
-  //   } catch (error) {
-  //     this.logger.error(`Error saving material selection step: ${error.message}`);
-  //     const { status, name, message } = error;
-  //     return { success: false, error: { status, message, name } };
-  //   }
-  // }
 
   async getGranulometricCompositionData(body: any) {
     try {
