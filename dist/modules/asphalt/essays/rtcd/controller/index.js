@@ -62,6 +62,17 @@ let RtcdController = RtcdController_1 = class RtcdController {
             return response.status(200).json(rtcd);
         });
     }
+    deleteEssay(response, param) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.log('delete rtcd > [body]');
+            const rtcd = yield this.rtcdService.deleteEssay(param.id);
+            if (rtcd.success)
+                this.logger.log('delete rtcd > [success]');
+            else
+                this.logger.error('delete rtcd > [error]');
+            return response.status(200).json(rtcd);
+        });
+    }
 };
 exports.RtcdController = RtcdController;
 __decorate([
@@ -122,6 +133,21 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], RtcdController.prototype, "saveEssay", null);
+__decorate([
+    (0, common_1.Delete)('delete-essay/:id'),
+    (0, swagger_1.ApiOperation)({ summary: 'Se possível, deleta os dados do ensaio rtcd no banco de dados.' }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'Ensaio de rtcd deletado com sucesso.',
+        content: { 'application/json': { schema: { example: { success: true, data: 'essay data' } } } },
+    }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Erro ao deletar o ensaio rtcd no banco de dados.' }),
+    __param(0, (0, common_1.Res)()),
+    __param(1, (0, common_1.Param)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], RtcdController.prototype, "deleteEssay", null);
 exports.RtcdController = RtcdController = RtcdController_1 = __decorate([
     (0, swagger_1.ApiTags)('rtcd'),
     (0, common_1.Controller)('asphalt/essays/rtcd'),

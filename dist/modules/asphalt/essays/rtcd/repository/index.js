@@ -51,6 +51,11 @@ let RtcdRepository = class RtcdRepository {
             return createdRtcd.save();
         });
     }
+    deleteOne(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.rtcdModel.findByIdAndDelete(id);
+        });
+    }
 };
 exports.RtcdRepository = RtcdRepository;
 exports.RtcdRepository = RtcdRepository = __decorate([

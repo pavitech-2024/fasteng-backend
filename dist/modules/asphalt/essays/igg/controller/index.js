@@ -62,6 +62,17 @@ let IggController = IggController_1 = class IggController {
             return response.status(200).json(igg);
         });
     }
+    deleteEssay(response, id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.log('delete igg > [body]');
+            const igg = yield this.iggService.deleteEssay(id);
+            if (igg.success)
+                this.logger.log('delete igg > [success]');
+            else
+                this.logger.error('delete igg > [error]');
+            return response.status(200).json(igg);
+        });
+    }
 };
 exports.IggController = IggController;
 __decorate([
@@ -111,6 +122,21 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], IggController.prototype, "saveEssay", null);
+__decorate([
+    (0, common_1.Delete)('delete-essay/:id'),
+    (0, swagger_1.ApiOperation)({ summary: 'Se possível, deleta os dados do ensaio igg no banco de dados.' }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'Ensaio de igg deletado com sucesso.',
+        content: { 'application/json': { schema: { example: { success: true, data: 'essay data' } } } },
+    }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Erro ao deletar o ensaio igg no banco de dados.' }),
+    __param(0, (0, common_1.Res)()),
+    __param(1, (0, common_1.Param)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", Promise)
+], IggController.prototype, "deleteEssay", null);
 exports.IggController = IggController = IggController_1 = __decorate([
     (0, swagger_1.ApiTags)('igg'),
     (0, common_1.Controller)('asphalt/essays/igg'),

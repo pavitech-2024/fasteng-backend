@@ -73,6 +73,21 @@ let FwdService = class FwdService {
             }
         });
     }
+    deleteEssay(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const fwd = yield this.fwd_Repository.findOne({ _id: id });
+                if (fwd) {
+                    yield this.fwd_Repository.deleteOne(id);
+                }
+                return { success: true, data: fwd };
+            }
+            catch (error) {
+                const { status, name, message } = error;
+                return { success: false, error: { status, message, name } };
+            }
+        });
+    }
 };
 exports.FwdService = FwdService;
 exports.FwdService = FwdService = __decorate([
