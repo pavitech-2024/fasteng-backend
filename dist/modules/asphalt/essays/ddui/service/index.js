@@ -73,6 +73,21 @@ let DduiService = class DduiService {
             }
         });
     }
+    deleteEssay(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const ddui = yield this.ddui_Repository.findOne({ _id: id });
+                if (ddui) {
+                    yield this.ddui_Repository.deleteOne(id);
+                }
+                return { success: true, data: ddui };
+            }
+            catch (error) {
+                const { status, name, message } = error;
+                return { success: false, error: { status, message, name } };
+            }
+        });
+    }
 };
 exports.DduiService = DduiService;
 exports.DduiService = DduiService = __decorate([

@@ -42,13 +42,18 @@ let FwdRepository = class FwdRepository {
     }
     findAllByUserId(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.fwdModel.find({ "generalData.userId": id });
+            return this.fwdModel.find({ 'generalData.userId': id });
         });
     }
     create(fwd) {
         return __awaiter(this, void 0, void 0, function* () {
             const createdFwd = new this.fwdModel(fwd);
             return createdFwd.save();
+        });
+    }
+    deleteOne(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.fwdModel.findByIdAndDelete(id);
         });
     }
 };

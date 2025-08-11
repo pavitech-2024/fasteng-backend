@@ -15,12 +15,16 @@ export class FwdRepository {
   }
 
   async findAllByUserId(id: string): Promise<Fwd[]> {
-    return this.fwdModel.find({"generalData.userId": id});
+    return this.fwdModel.find({ 'generalData.userId': id });
   }
 
   async create(fwd: any): Promise<Fwd> {
     const createdFwd = new this.fwdModel(fwd);
 
     return createdFwd.save();
+  }
+
+  async deleteOne(id: string): Promise<Fwd> {
+    return this.fwdModel.findByIdAndDelete(id);
   }
 }

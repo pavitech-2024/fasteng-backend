@@ -94,14 +94,13 @@ export class VolumetricParameters_Marshall_Service {
           case 'plusHalf':
             usedMaxSpecifyGravity = maxSpecificGravity.results.plusHalf;
             asphaltContentResult = binderTrial + 0.5;
-
             break;
           case 'plusOne':
             usedMaxSpecifyGravity = maxSpecificGravity.results.plusOne;
             asphaltContentResult = binderTrial + 1;
             break;
           default:
-          // O que fazer se asphaltContent não corresponder a nenhum caso
+          throw new Error('Invalid asphalt content');
         }
 
         for (let j = 0; j < newArray[i][asphaltContent].length; j++) {
@@ -199,7 +198,6 @@ export class VolumetricParameters_Marshall_Service {
       const voidsFilledAsphalt = apparentBulkSpecificGravity * asphaltContent / 102.7;
       const aggregateVolumeVoids = volumeVoids + voidsFilledAsphalt;
       const ratioBitumenVoid = voidsFilledAsphalt / aggregateVolumeVoids;
-
 
       volumetricParameters.push({
         asphaltContent,

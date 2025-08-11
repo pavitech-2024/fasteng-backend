@@ -63,4 +63,20 @@ export class DduiService {
       return { success: false, error: { status, message, name } };
     }
   }
+
+    async deleteEssay(id: string) {
+    try {
+      const ddui = await this.ddui_Repository.findOne({ _id: id });
+
+      if (ddui) {
+        await this.ddui_Repository.deleteOne(id);
+      }
+
+      return { success: true, data: ddui };
+    } catch (error) {
+      const { status, name, message } = error;
+
+      return { success: false, error: { status, message, name } };
+    }
+  }
 }

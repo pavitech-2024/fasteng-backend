@@ -1,4 +1,4 @@
-import { Body, Controller, Logger, Post, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Logger, Param, Post, Res } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { RtcdService } from '../service/rtcd.service';
 import { RtcdInitDto } from '../dto/init-rtcd.dto'; // ver se precisa trocar o parametro any Body do verifyInitRtcd
@@ -76,6 +76,25 @@ export class RtcdController {
 
     if (rtcd.success) this.logger.log('save rtcd > [success]');
     else this.logger.error('save rtcd > [error]');
+
+    return response.status(200).json(rtcd);
+  }
+
+  @Delete('delete-essay/:id')
+  @ApiOperation({ summary: 'Se possível, deleta os dados do ensaio rtcd no banco de dados.' })
+  @ApiResponse({
+    status: 200,
+    description: 'Ensaio de rtcd deletado com sucesso.',
+    content: { 'application/json': { schema: { example: { success: true, data: 'essay data' } } } },
+  })
+  @ApiResponse({ status: 400, description: 'Erro ao deletar o ensaio rtcd no banco de dados.' })
+  async deleteEssay(@Res() response: Response, @Param() param: {id: string}) {
+    this.logger.log('delete rtcd > [body]');
+
+    const rtcd = await this.rtcdService.deleteEssay(param.id);
+
+    if (rtcd.success) this.logger.log('delete rtcd > [success]');
+    else this.logger.error('delete rtcd > [error]');
 
     return response.status(200).json(rtcd);
   }

@@ -48,7 +48,12 @@ let DduiRepository = class DduiRepository {
     }
     findAllByUserId(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.dduiModel.find({ "generalData.userId": id });
+            return this.dduiModel.find({ 'generalData.userId': id });
+        });
+    }
+    deleteOne(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.dduiModel.findByIdAndDelete(id);
         });
     }
 };

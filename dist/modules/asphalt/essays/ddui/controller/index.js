@@ -61,6 +61,17 @@ let DduiController = DduiController_1 = class DduiController {
             return response.status(200).json(ddui);
         });
     }
+    deleteEssay(response, id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.log('delete ddui > [body]');
+            const ddui = yield this.dduiService.deleteEssay(id);
+            if (ddui.success)
+                this.logger.log('delete ddui > [success]');
+            else
+                this.logger.error('delete ddui > [error]');
+            return response.status(200).json(ddui);
+        });
+    }
 };
 exports.DduiController = DduiController;
 __decorate([
@@ -76,11 +87,16 @@ __decorate([
         description: 'Não é possível criar um ensaio ddui com os dados enviados.',
         content: {
             'application/json': {
-                schema: { example: { success: false, error: { message: 'Material Not Found.', status: 400, name: 'NotFound' } } },
+                schema: {
+                    example: { success: false, error: { message: 'Material Not Found.', status: 400, name: 'NotFound' } },
+                },
             },
         },
     }),
-    (0, swagger_1.ApiResponse)({ status: 400, description: 'Erro ao verificar se é possível criar um ensaio ddui com os dados enviados.' }),
+    (0, swagger_1.ApiResponse)({
+        status: 400,
+        description: 'Erro ao verificar se é possível criar um ensaio ddui com os dados enviados.',
+    }),
     __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -116,6 +132,21 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], DduiController.prototype, "saveEssay", null);
+__decorate([
+    (0, common_1.Delete)('delete-essay/:id'),
+    (0, swagger_1.ApiOperation)({ summary: 'Se possível, deleta os dados do ensaio ddui no banco de dados.' }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'Ensaio de ddui deletado com sucesso.',
+        content: { 'application/json': { schema: { example: { success: true, data: 'essay data' } } } },
+    }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Erro ao deletar o ensaio ddui no banco de dados.' }),
+    __param(0, (0, common_1.Res)()),
+    __param(1, (0, common_1.Param)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", Promise)
+], DduiController.prototype, "deleteEssay", null);
 exports.DduiController = DduiController = DduiController_1 = __decorate([
     (0, swagger_1.ApiTags)('ddui'),
     (0, common_1.Controller)('asphalt/essays/ddui'),

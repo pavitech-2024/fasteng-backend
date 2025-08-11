@@ -1,4 +1,4 @@
-import { Body, Controller, Logger, Post, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Logger, Param, Post, Res } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { FwdService } from '../services';
 import { FwdInitDto } from '../dto/init-fwd.dto';
@@ -64,6 +64,25 @@ export class FwdController {
 
     if (fwd.success) this.logger.log('save fwd > [success]');
     else this.logger.error('save fwd > [error]');
+
+    return response.status(200).json(fwd);
+  }
+
+  @Delete('delete-essay/:id')
+  @ApiOperation({ summary: 'Se possível, deleta os dados do ensaio fwd no banco de dados.' })
+  @ApiResponse({
+    status: 200,
+    description: 'Ensaio de fwd deletado com sucesso.',
+    content: { 'application/json': { schema: { example: { success: true, data: 'essay data' } } } },
+  })
+  @ApiResponse({ status: 400, description: 'Erro ao deletar o ensaio fwd no banco de dados.' })
+  async deleteEssay(@Res() response: Response, @Param() id: string) {
+    this.logger.log('delete fwd > [body]');
+
+    const fwd = await this.fwdService.deleteEssay(id);
+
+    if (fwd.success) this.logger.log('delete fwd > [success]');
+    else this.logger.error('delete fwd > [error]');
 
     return response.status(200).json(fwd);
   }
