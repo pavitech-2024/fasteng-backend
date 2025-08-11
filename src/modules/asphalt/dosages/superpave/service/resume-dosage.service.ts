@@ -34,6 +34,7 @@ export class ResumeDosage_Superpave_Service {
     return gmmValue;
   }
 
+
   calculateDosageResumeEquation(body) {
     const {
       samplesData,
@@ -182,7 +183,7 @@ export class ResumeDosage_Superpave_Service {
 
   async saveStep11Data(body: any, userId: string) {
     try {
-      this.logger.log('save superpave vonfirm compression step on resume-dosage.superpave.service.ts > [body]', {
+      this.logger.log('save superpave confirm compression step on resume-dosage.superpave.service.ts > [body]', {
         body,
       });
 
@@ -223,8 +224,8 @@ export class ResumeDosage_Superpave_Service {
 
       await this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithResumeDosage);
 
-      if (superpaveExists._doc.generalData.step < 10) {
-        await this.superpave_repository.saveStep(superpaveExists, 10);
+      if (superpaveExists._doc.generalData.step < 11) {
+        await this.superpave_repository.saveStep(superpaveExists, 11);
       }
 
       return true;

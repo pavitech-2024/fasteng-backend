@@ -91,20 +91,6 @@ export class SuperpaveController {
     return response.status(200).json(status);
   }
 
-  @Get('material-selection/:id')
-  @ApiOperation({
-    summary: 'Retorna todos os materiais do banco de dados de um usuário, que possuam os ensaios para a dosagem.',
-  })
-  @ApiResponse({ status: 200, description: 'Materiais encontrados com sucesso!' })
-  @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
-  async getMaterialsByUserId(@Res() response: Response, @Param('id') userId: string) {
-    this.logger.log(`get all materials, by user id, with the necessary dosage essays > [id]: ${userId}`);
-
-    const status = await this.superpaveService.getUserMaterials(userId);
-
-    return response.status(200).json(status);
-  }
-
   @Get(':id')
   @ApiOperation({ summary: 'Retorna uma dosagem do banco de dados com o id informado.' })
   @ApiResponse({ status: 200, description: 'Dosagem encontrada com sucesso!' })
@@ -114,15 +100,6 @@ export class SuperpaveController {
     this.logger.log(`get a dosage by dosage id > [id]: ${dosageId}`);
 
     const status = await this.superpaveService.getDosageById(dosageId);
-
-    return response.status(200).json(status);
-  }
-
-  @Post('save-material-selection-step/:id')
-  async saveMaterialSelectionStep(@Res() response: Response, @Body() body: any, @Param('id') userId: string) {
-    this.logger.log(`save materials selection step in user superpave dosage > [body]: ${body}`);
-
-    const status = await this.superpaveService.saveMaterialSelectionStep(body, userId);
 
     return response.status(200).json(status);
   }
@@ -156,9 +133,9 @@ export class SuperpaveController {
 
   @Post('save-granulometry-composition-step/:userId')
   async saveGranulometryCompositionStep(@Res() response: Response, @Param('userId') userId: string, @Body() body: any) {
-    this.logger.log(`save step 4 data > [body]: ${body}`);
+    this.logger.log(`save granulometry composition data > [body]: ${body}`);
 
-    const status = await this.superpaveService.saveStep4Data(body, userId);
+    const status = await this.superpaveService.saveGranulometryCompositionData(body, userId);
 
     return response.status(200).json(status);
   }
@@ -205,20 +182,11 @@ export class SuperpaveController {
     return response.status(200).json(status);
   }
 
-  @Post('calculate-gmm')
-  async calculateRiceTest(@Res() response: Response, @Body() body: any) {
-    this.logger.log(`calculate rice test data > [body]: ${body}`);
+  @Post('calculate-gmm-rice-test')
+  async calculateGmm_RiceTest(@Res() response: Response, @Body() body: any) {
+    this.logger.log(`calculate gmm by rice test data > [body]: ${body}`);
 
-    const status = await this.superpaveService.calculateGmm(body);
-
-    return response.status(200).json(status);
-  }
-
-  @Post('save-first-compression-step/:userId')
-  async saveFirstCompressionData(@Res() response: Response, @Param('userId') userId: string, @Body() body: any) {
-    this.logger.log(`save first compression data > [body]: ${body}`);
-
-    const status = await this.superpaveService.saveFirstCompressionData(body, userId);
+    const status = await this.superpaveService.calculateGmm_RiceTest(body);
 
     return response.status(200).json(status);
   }
@@ -240,11 +208,20 @@ export class SuperpaveController {
     return response.status(200).json(status);
   }
 
-  @Post('save-percents-of-chosen-curve-step/:userId')
-  async saveStep6Data(@Res() response: Response, @Param('userId') userId: string, @Body() body: any) {
+  @Post('save-first-compression-step/:userId')
+  async saveFirstCompressionData(@Res() response: Response, @Param('userId') userId: string, @Body() body: any) {
+    this.logger.log(`save first compression data > [body]: ${body}`);
+
+    const status = await this.superpaveService.saveFirstCompressionData(body, userId);
+
+    return response.status(200).json(status);
+  }
+
+  @Post('save-first-compression-params/:userId')
+  async saveFirstCompressionParamsData(@Res() response: Response, @Param('userId') userId: string, @Body() body: any) {
     this.logger.log(`save percents of chosen curve data > [body]: ${body}`);
 
-    const status = await this.superpaveService.savePercentsOfChosenCurveData(body, userId);
+    const status = await this.superpaveService.saveFirstCompressionParamsData(body, userId);
 
     return response.status(200).json(status);
   }
@@ -258,28 +235,29 @@ export class SuperpaveController {
     description: 'Dados carregados com sucesso!',
     content: { 'application/json': { schema: { example: { data: {}, success: true } } } },
   })
-  async getStep7Parameters(@Res() response: Response, @Body() body: any) {
-    this.logger.log(`get step 7 data > [body]: ${body}`);
+  async getChosenCurvePercentsData(@Res() response: Response, @Body() body: any) {
+    this.logger.log(`get chosen curve percents data > [body]: ${body}`);
 
-    const status = await this.superpaveService.getStep7Parameters(body);
+    const status = await this.superpaveService.getChosenCurvePercentsData(body);
 
     return response.status(200).json(status);
   }
+
 
   @Post('save-chosen-curve-percentage-step/:userId')
-  async saveStep7Data(@Res() response: Response, @Param('userId') userId: string, @Body() body: any) {
-    this.logger.log(`save step 7 data > [body]: ${body}`);
+  async savePercentsOfChosenCurveData(@Res() response: Response, @Param('userId') userId: string, @Body() body: any) {
+    this.logger.log(`save percents of chose curve data > [body]: ${body}`);
 
-    const status = await this.superpaveService.saveStep7Data(body, userId);
+    const status = await this.superpaveService.savePercentsOfChosenCurveData(body, userId);
 
     return response.status(200).json(status);
   }
 
-  @Post('calculate-step-7-rice-test')
-  async calculateStep7RiceTest(@Res() response: Response, @Body() body: any) {
-    this.logger.log(`calculate step 5 rice test data > [body]: ${body}`);
+  @Post('calculate-second-compression-rice-test')
+  async calculateSecondCompressionRiceTest(@Res() response: Response, @Body() body: any) {
+    this.logger.log(`calculate second compression rice test data > [body]: ${body}`);
 
-    const status = await this.superpaveService.calculateStep7RiceTest(body);
+    const status = await this.superpaveService.calculateSecondCompressionRiceTest(body);
 
     return response.status(200).json(status);
   }

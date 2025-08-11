@@ -160,7 +160,7 @@ export type FirstCompressionData = {
   }[];
 };
 
-export type FirstCurvePercentagesData = {
+export type FirstCompressionParamsData = {
   table1: {
     expectedPorcentageGmmInitialN: number;
     expectedPorcentageGmmMaxN: number;
@@ -449,7 +449,7 @@ export class Superpave {
 
   @IsNotEmpty()
   @Prop({ type: Object })
-  firstCurvePercentagesData: FirstCurvePercentagesData;
+  firstCompressionParamsData: FirstCompressionParamsData;
 
   @IsNotEmpty()
   @Prop({ type: Object })

@@ -67,7 +67,7 @@ export class MaterialsController {
   }
 
   @Get('selected/:id')
-  @ApiOperation({ summary: 'Retorna um material do banco de dados.' })
+  @ApiOperation({ summary: 'Retorna um material do banco de dados que corresponda ao id passado nos parametros.' })
   @ApiResponse({ status: 200, description: 'Material encontrado com sucesso!' })
   @ApiResponse({ status: 400, description: 'Material não encontrado!' })
   async getSelectedMaterialsById(@Param('id') ids: string) {

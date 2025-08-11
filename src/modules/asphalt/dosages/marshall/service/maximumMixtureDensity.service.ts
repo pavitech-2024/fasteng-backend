@@ -34,10 +34,10 @@ export class MaximumMixtureDensity_Marshall_Service {
 
         const withoutExperimentSpecificGravity = materialsData
           .map((material) => {
-            return { 
+            return {
               value: material.results.bulk_specify_mass,
               _id: material._id.toString(),
-              name: material.generalData.material.name
+              name: material.generalData.material.name,
             };
           })
           .filter((index) => index !== null);
@@ -178,24 +178,17 @@ export class MaximumMixtureDensity_Marshall_Service {
         }
       };
 
-      let gmm = [];
+      const gmm = Array.from({ length: 5 }, (_, i) => {
+        const gmmItem = valuesOfGmm.find(gmm => gmm.id - 1 === i);
+        return gmmItem || null;
+      });
 
-      for (let i = 0; i < 5; i++) {
-        const gmmAtual = valuesOfGmm.find((gmm) => gmm.id - 1 === i);
-        if (gmmAtual) gmm.push(gmmAtual);
-        else gmm.push(null);
-      }
-
-      const content = gmm.map((gmm) => {
-        if (gmm !== null) {
-          if (gmm.insert) return gmm.value;
-          else
-            return (
-              (gmm.massOfDrySample /
-                (gmm.massOfDrySample - (gmm.massOfContainer_Water_Sample - gmm.massOfContainer_Water))) *
-              temperatureOfWaterGmm
-            );
-        } else return null;
+      const content = gmm.map(gmmItem => {
+        if (gmmItem && !gmmItem.value) {
+          const denominator = gmmItem.massOfContainer_Water_Sample - gmmItem.massOfContainer_Water;
+          return (gmmItem.massOfDrySample / (gmmItem.massOfDrySample - denominator)) * temperatureOfWaterGmm;
+        }
+        return gmmItem?.value || null;
       });
 
       const maxSpecificGravity = {
@@ -218,10 +211,8 @@ export class MaximumMixtureDensity_Marshall_Service {
   }
 
   async calculateRiceTest(body): Promise<any> {
+    this.logger.log('calculate rice test > [body]', { body });
     try {
-      // console.log(gmm);
-      // if (gmm.insert) return gmm.value;
-
       const maxSpecificGravity = body.map((item) => {
         return {
           id: item.id,
@@ -238,11 +229,14 @@ export class MaximumMixtureDensity_Marshall_Service {
     }
   }
 
-  async saveStep5Data(body: any, userId: string) {
+  async saveMistureMaximumDensityData(body: any, userId: string) {
     try {
-      this.logger.log('save marshall binder trial step on maximum-mixture-density.marshall.service.ts > [body]', {
-        body,
-      });
+      this.logger.log(
+        'save marshall maximum misxture density data on maximum-mixture-density.marshall.service.ts > [body]',
+        {
+          body,
+        },
+      );
 
       const { name } = body.maximumMixtureDensityData;
 

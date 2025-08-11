@@ -179,7 +179,7 @@ export class MarshallController {
 
   @Post('calculate-step-5-rice-test')
   async calculateRiceTest(@Res() response: Response, @Body() body: any) {
-    this.logger.log(`calculate step 5 rice test > [body]: ${body}`);
+    this.logger.log(`calculate maximum mixture density step rice test > [body]: ${body}`);
 
     
     const status = await this.marshallService.calculateRiceTest(body.riceTest);
@@ -193,9 +193,9 @@ export class MarshallController {
     @Param('userId') userId: string,
     @Body() body: any
   ) {
-    this.logger.log(`save step 5 data > [body]: ${body}`);
+    this.logger.log(`save maximum mixture density data > [body]: ${body}`);
 
-    const status = await this.marshallService.saveStep5Data(body, userId);
+    const status = await this.marshallService.saveMistureMaximumDensityData(body, userId);
 
     return response.status(200).json(status);
   }
@@ -217,9 +217,9 @@ export class MarshallController {
     @Param('userId') userId: string,
     @Body() body: any
   ) {
-    this.logger.log(`save step 6 data > [body]: ${body}`);
+    this.logger.log(`save volumetric parameters data > [body]: ${body}`);
     
-    const status = await this.marshallService.saveStep6Data(body, userId);
+    const status = await this.marshallService.saveVolumetricParametersData(body, userId);
 
     return response.status(200).json(status);
   }

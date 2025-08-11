@@ -85,23 +85,23 @@ let VolumetricParameters_Marshall_Service = VolumetricParameters_Marshall_Servic
                     asphaltContent = Object.keys(newArray[i])[0];
                     switch (asphaltContent) {
                         case 'lessOne':
-                            usedMaxSpecifyGravity = maxSpecificGravity.result.lessOne;
+                            usedMaxSpecifyGravity = maxSpecificGravity.results.lessOne;
                             asphaltContentResult = binderTrial - 1;
                             break;
                         case 'lessHalf':
-                            usedMaxSpecifyGravity = maxSpecificGravity.result.lessHalf;
+                            usedMaxSpecifyGravity = maxSpecificGravity.results.lessHalf;
                             asphaltContentResult = binderTrial - 0.5;
                             break;
                         case 'normal':
-                            usedMaxSpecifyGravity = maxSpecificGravity.result.normal;
+                            usedMaxSpecifyGravity = maxSpecificGravity.results.normal;
                             asphaltContentResult = binderTrial;
                             break;
                         case 'plusHalf':
-                            usedMaxSpecifyGravity = maxSpecificGravity.result.plusHalf;
+                            usedMaxSpecifyGravity = maxSpecificGravity.results.plusHalf;
                             asphaltContentResult = binderTrial + 0.5;
                             break;
                         case 'plusOne':
-                            usedMaxSpecifyGravity = maxSpecificGravity.result.plusOne;
+                            usedMaxSpecifyGravity = maxSpecificGravity.results.plusOne;
                             asphaltContentResult = binderTrial + 1;
                             break;
                         default:
@@ -298,7 +298,7 @@ let VolumetricParameters_Marshall_Service = VolumetricParameters_Marshall_Servic
         };
         return list[name];
     }
-    saveStep6Data(body, userId) {
+    saveVolumetricParametersData(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('save marshall volumetric parameters step on volumetric-parameters.marshall.service.ts > [body]', {

@@ -125,15 +125,15 @@ let MarshallController = MarshallController_1 = class MarshallController {
     }
     calculateRiceTest(response, body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`calculate step 5 rice test > [body]: ${body}`);
+            this.logger.log(`calculate maximum mixture density step rice test > [body]: ${body}`);
             const status = yield this.marshallService.calculateRiceTest(body.riceTest);
             return response.status(200).json(status);
         });
     }
     saveMaximumMixtureDensityData(response, userId, body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`save step 5 data > [body]: ${body}`);
-            const status = yield this.marshallService.saveStep5Data(body, userId);
+            this.logger.log(`save maximum mixture density data > [body]: ${body}`);
+            const status = yield this.marshallService.saveMistureMaximumDensityData(body, userId);
             return response.status(200).json(status);
         });
     }
@@ -146,8 +146,8 @@ let MarshallController = MarshallController_1 = class MarshallController {
     }
     saveVolumetricParametersData(response, userId, body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`save step 6 data > [body]: ${body}`);
-            const status = yield this.marshallService.saveStep6Data(body, userId);
+            this.logger.log(`save volumetric parameters data > [body]: ${body}`);
+            const status = yield this.marshallService.saveVolumetricParametersData(body, userId);
             return response.status(200).json(status);
         });
     }

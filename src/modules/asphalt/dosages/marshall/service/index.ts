@@ -420,9 +420,9 @@ export class MarshallService {
     }
   }
 
-  async saveStep5Data(body: any, userId: string) {
+  async saveMistureMaximumDensityData(body: any, userId: string) {
     try {
-      const success = await this.maximumMixtureDensity_Service.saveStep5Data(body, userId);
+      const success = await this.maximumMixtureDensity_Service.saveMistureMaximumDensityData(body, userId);
 
       return { success }
     } catch (error) {
@@ -451,9 +451,9 @@ export class MarshallService {
     }
   }
 
-  async saveStep6Data(body: any, userId: string) {
+  async saveVolumetricParametersData(body: any, userId: string) {
     try {
-      const success = await this.volumetricParameters_Service.saveStep6Data(body, userId);
+      const success = await this.volumetricParameters_Service.saveVolumetricParametersData(body, userId);
 
       return { success }
     } catch (error) {

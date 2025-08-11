@@ -33,13 +33,13 @@ const chosen_curves_percentages_service_1 = require("./chosen-curves-percentages
 const second_compression_superpave_service_1 = require("./second-compression.superpave.service");
 const second_compression_parameters_service_1 = require("./second-compression-parameters.service");
 const resume_dosage_service_1 = require("./resume-dosage.service");
-const granulometryEssay_service_1 = require("./granulometryEssay.service");
+const granulometry_essay_service_1 = require("./granulometry-essay.service");
 const service_1 = require("../../../essays/granulometry/service");
 const viscosityRotational_service_1 = require("../../../essays/viscosityRotational/service/viscosityRotational.service");
 const interfaces_1 = require("../../../../../utils/interfaces");
 const confirm_compaction_service_1 = require("./confirm-compaction.service");
 let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
-    constructor(superpave_repository, generalData_Service, granulometryEssay_Service, materialSelection_Service, granulometryComposition_Service, granulometryRepository, initialBinder_Service, firstCompression_Service, firstCurvePercentages_Service, chosenCurvePercentages_Service, secondCompression_Service, secondCompressionParameters_Service, confirmCompaction_Service, resumeDosageEquation_Service, asphaltGranulometry_Service, rotationalViscosity_Service) {
+    constructor(superpave_repository, generalData_Service, granulometryEssay_Service, materialSelection_Service, granulometryComposition_Service, granulometryRepository, initialBinder_Service, firstCompression_Service, firstCompressionParams_Service, chosenCurvePercentages_Service, secondCompression_Service, secondCompressionParameters_Service, confirmCompaction_Service, resumeDosageEquation_Service, asphaltGranulometry_Service, rotationalViscosity_Service) {
         this.superpave_repository = superpave_repository;
         this.generalData_Service = generalData_Service;
         this.granulometryEssay_Service = granulometryEssay_Service;
@@ -48,7 +48,7 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
         this.granulometryRepository = granulometryRepository;
         this.initialBinder_Service = initialBinder_Service;
         this.firstCompression_Service = firstCompression_Service;
-        this.firstCurvePercentages_Service = firstCurvePercentages_Service;
+        this.firstCompressionParams_Service = firstCompressionParams_Service;
         this.chosenCurvePercentages_Service = chosenCurvePercentages_Service;
         this.secondCompression_Service = secondCompression_Service;
         this.secondCompressionParameters_Service = secondCompressionParameters_Service;
@@ -145,20 +145,6 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
             }
         });
     }
-    getUserMaterials(userId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const materials = yield this.materialSelection_Service.getMaterials(userId);
-                this.logger.log(`materials returned > [materials]`);
-                return { materials, success: true };
-            }
-            catch (error) {
-                this.logger.error(`error on getting all materials by user id > [error]: ${error}`);
-                const { status, name, message } = error;
-                return { materials: [], success: false, error: { status, message, name } };
-            }
-        });
-    }
     getDosageById(dosageId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -170,19 +156,6 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
                 this.logger.error(`error on getting dosage by id > [error]: ${error}`);
                 const { status, name, message } = error;
                 return { materials: [], success: false, error: { status, message, name } };
-            }
-        });
-    }
-    saveMaterialSelectionStep(body, userId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const result = yield this.materialSelection_Service.saveMaterials(body, userId);
-                return result;
-            }
-            catch (error) {
-                this.logger.error(`Error saving material selection step: ${error.message}`);
-                const { status, name, message } = error;
-                return { success: false, error: { status, message, name } };
             }
         });
     }
@@ -782,7 +755,7 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
     saveStep3Data(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const success = yield this.granulometryComposition_Service.saveStep4Data(body, userId);
+                const success = yield this.granulometryComposition_Service.saveGranulometryCompositionData(body, userId);
                 return { success };
             }
             catch (error) {
@@ -805,10 +778,10 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
             }
         });
     }
-    saveStep4Data(body, userId) {
+    saveGranulometryCompositionData(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const success = yield this.granulometryComposition_Service.saveStep4Data(body, userId);
+                const success = yield this.granulometryComposition_Service.saveGranulometryCompositionData(body, userId);
                 return { success };
             }
             catch (error) {
@@ -831,10 +804,10 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
             }
         });
     }
-    calculateGmm(body) {
+    calculateGmm_RiceTest(body) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const gmm = yield this.firstCompression_Service.calculateGmm(body);
+                const gmm = yield this.firstCompression_Service.calculateGmm_RiceTest(body);
                 return { data: gmm, success: true };
             }
             catch (error) {
@@ -873,7 +846,7 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
     getFirstCompressionParametersData(body) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const data = yield this.firstCurvePercentages_Service.getFirstCompressionParametersData(body);
+                const data = yield this.firstCompressionParams_Service.getFirstCompressionParametersData(body);
                 return { data, success: true };
             }
             catch (error) {
@@ -883,10 +856,10 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
             }
         });
     }
-    savePercentsOfChosenCurveData(body, userId) {
+    saveFirstCompressionParamsData(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const success = yield this.firstCurvePercentages_Service.savePercentsOfChosenCurveData(body, userId);
+                const success = yield this.firstCompressionParams_Service.saveFirstCompressionParamsData(body, userId);
                 return { success };
             }
             catch (error) {
@@ -896,10 +869,23 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
             }
         });
     }
-    getStep7Parameters(body) {
+    savePercentsOfChosenCurveData(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const data = yield this.chosenCurvePercentages_Service.getStep7Parameters(body);
+                const success = yield this.chosenCurvePercentages_Service.savePercentsOfChosenCurveData(body, userId);
+                return { success };
+            }
+            catch (error) {
+                this.logger.error(`error on save percents of chosen curve data superpave > [error]: ${error}`);
+                const { status, name, message } = error;
+                return { success: false, error: { status, message, name } };
+            }
+        });
+    }
+    getChosenCurvePercentsData(body) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const data = yield this.chosenCurvePercentages_Service.getChosenCurvePercentsData(body);
                 return { data, success: true };
             }
             catch (error) {
@@ -909,28 +895,15 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
             }
         });
     }
-    saveStep7Data(body, userId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const success = yield this.chosenCurvePercentages_Service.saveStep7Data(body, userId);
-                return { success };
-            }
-            catch (error) {
-                this.logger.error(`error on save step 7 data superpave > [error]: ${error}`);
-                const { status, name, message } = error;
-                return { success: false, error: { status, message, name } };
-            }
-        });
-    }
-    calculateStep7RiceTest(body) {
+    calculateSecondCompressionRiceTest(body) {
         return __awaiter(this, void 0, void 0, function* () {
             const { sampleAirDryMass, containerMassWaterSample, containerWaterMass, waterTemperatureCorrection } = body;
             try {
-                const gmm = yield this.secondCompression_Service.calculateStep7RiceTest(sampleAirDryMass, containerMassWaterSample, containerWaterMass, waterTemperatureCorrection);
+                const gmm = yield this.secondCompression_Service.calculateSecondCompressionRiceTest(sampleAirDryMass, containerMassWaterSample, containerWaterMass, waterTemperatureCorrection);
                 return { data: gmm, success: true };
             }
             catch (error) {
-                this.logger.error(`error on getting the step 5 rice test data > [error]: ${error}`);
+                this.logger.error(`error on calculating rice test on second compression step > [error]: ${error}`);
                 const { status, name, message } = error;
                 return { data: null, success: false, error: { status, message, name } };
             }
@@ -1085,7 +1058,7 @@ exports.SuperpaveService = SuperpaveService = SuperpaveService_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [index_1.SuperpaveRepository,
         general_data_superpave_service_1.GeneralData_Superpave_Service,
-        granulometryEssay_service_1.GranulometryEssay_Superpave_Service,
+        granulometry_essay_service_1.GranulometryEssay_Superpave_Service,
         material_selection_superpave_service_1.MaterialSelection_Superpave_Service,
         granulometry_composition_superpave_service_1.GranulometryComposition_Superpave_Service,
         repository_1.AsphaltGranulometryRepository,

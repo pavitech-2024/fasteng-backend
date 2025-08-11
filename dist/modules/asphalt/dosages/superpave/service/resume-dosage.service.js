@@ -160,7 +160,7 @@ let ResumeDosage_Superpave_Service = ResumeDosage_Superpave_Service_1 = class Re
     saveStep11Data(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                this.logger.log('save superpave vonfirm compression step on resume-dosage.superpave.service.ts > [body]', {
+                this.logger.log('save superpave confirm compression step on resume-dosage.superpave.service.ts > [body]', {
                     body,
                 });
                 const { name } = body.confirmationCompressionData;
@@ -187,8 +187,8 @@ let ResumeDosage_Superpave_Service = ResumeDosage_Superpave_Service_1 = class Re
                 const _a = body.dosageResume, { name: materialName } = _a, superpaveDosageWithoutName = __rest(_a, ["name"]);
                 const superpaveWithResumeDosage = Object.assign(Object.assign({}, superpaveExists._doc), { dosageResume: superpaveDosageWithoutName });
                 yield this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithResumeDosage);
-                if (superpaveExists._doc.generalData.step < 10) {
-                    yield this.superpave_repository.saveStep(superpaveExists, 10);
+                if (superpaveExists._doc.generalData.step < 11) {
+                    yield this.superpave_repository.saveStep(superpaveExists, 11);
                 }
                 return true;
             }

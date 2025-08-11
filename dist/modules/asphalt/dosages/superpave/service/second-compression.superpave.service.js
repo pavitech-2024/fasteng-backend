@@ -46,16 +46,14 @@ let SecondCompression_Superpave_Service = SecondCompression_Superpave_Service_1 
         this.superpaveRepository = superpaveRepository;
         this.logger = new common_1.Logger(SecondCompression_Superpave_Service_1.name);
     }
-    calculateStep7RiceTest(sampleAirDryMass, containerMassWaterSample, containerWaterMass, waterTemperatureCorrection) {
-        try {
-            this.logger.log({}, 'start calculateStep7RiceTest > SecondCompression_Superpave_Service');
-            const gmm = (sampleAirDryMass / (sampleAirDryMass + containerWaterMass - containerMassWaterSample)) *
-                waterTemperatureCorrection;
-            return gmm;
+    calculateSecondCompressionRiceTest(drySampleMass, containerSampleWaterMass, containerWaterMass, temperatureCorrection) {
+        const numerator = drySampleMass;
+        const denominator = drySampleMass + containerWaterMass - containerSampleWaterMass;
+        if (Math.abs(denominator) < 1e-6) {
+            throw new Error('Denominator is too close to zero');
         }
-        catch (error) {
-            throw error;
-        }
+        const gmm = (numerator / denominator) * temperatureCorrection;
+        return gmm;
     }
     calculateStep7Gmm(gmm) {
         try {
@@ -66,7 +64,7 @@ let SecondCompression_Superpave_Service = SecondCompression_Superpave_Service_1 
                     gmmValue.push(gmm[i].insertedGmm);
                 }
                 else {
-                    const value = this.calculateStep7RiceTest(gmm.massOfDrySample, gmm.massOfContainer_Water_Sample, gmm.massOfContainer_Water, gmm.waterTemperatureCorrection);
+                    const value = this.calculateSecondCompressionRiceTest(gmm.massOfDrySample, gmm.massOfContainer_Water_Sample, gmm.massOfContainer_Water, gmm.waterTemperatureCorrection);
                     gmmValue.push(value);
                 }
             }
@@ -344,10 +342,6 @@ let SecondCompression_Superpave_Service = SecondCompression_Superpave_Service_1 
     calculateGmbCP(data) {
         for (let i = 0; i < data.length; i++) {
             const denominator = data[i].drySurfaceSaturatedMass - data[i].submergedMass;
-            if (Math.abs(denominator) < 1e-6) {
-                data[i].gmb = 0;
-                continue;
-            }
             const gmb = (Math.round((data[i].dryMass / denominator) * 1e3) / 1e3) * data[i].waterTemperatureCorrection;
             data[i].gmb = gmb;
         }
