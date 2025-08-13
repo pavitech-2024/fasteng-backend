@@ -6,11 +6,7 @@ export declare class MaterialsRepository {
     create(material: any): Promise<Material>;
     find(ids?: any): Promise<Material[]>;
     findOne(materialsFilterQuery: FilterQuery<Material>): Promise<Material>;
-    findByType(types: any, userId: string): Promise<(import("mongoose").Document<unknown, {}, import("mongoose").Document<unknown, {}, Material> & Material & Required<{
-        _id: string;
-    }>> & import("mongoose").Document<unknown, {}, Material> & Material & Required<{
-        _id: string;
-    }>)[]>;
+    findByType(types: any, userId: string): Promise<Material[]>;
     findById(materialId: string): Promise<Material>;
     findSelectedById(ids: string[]): Promise<Material[]>;
     findByUserId(materialsFilterQuery: FilterQuery<Material>): Promise<Material[]>;
