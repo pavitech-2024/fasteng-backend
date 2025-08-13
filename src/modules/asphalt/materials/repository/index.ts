@@ -22,7 +22,7 @@ export class MaterialsRepository {
     return material;
   }
 
-  async findByType(types: any, userId: string) {
+  async findByType(types: any, userId: string): Promise<Material[]> {
     const materials = await this.materialModel.find({
       "userId": userId,
       "type": types

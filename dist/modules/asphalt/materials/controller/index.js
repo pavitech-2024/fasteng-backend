@@ -50,7 +50,9 @@ let MaterialsController = MaterialsController_1 = class MaterialsController {
             if (!Array.isArray(materials)) {
                 return [materials].filter(Boolean);
             }
-            return materials;
+            else {
+                return materials;
+            }
         });
     }
     getAllByUserId(userId) {
