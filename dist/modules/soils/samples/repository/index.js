@@ -38,7 +38,7 @@ let SamplesRepository = class SamplesRepository {
     }
     find() {
         return __awaiter(this, void 0, void 0, function* () {
-            const samples = yield this.sampleModel.find();
+            const samples = yield this.sampleModel.find().sort({ createdAt: -1 });
             return samples;
         });
     }

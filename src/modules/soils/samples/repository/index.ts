@@ -12,7 +12,7 @@ export class SamplesRepository {
   }
 
   async find(): Promise<Sample[]> {
-    const samples = await this.sampleModel.find();
+    const samples = await this.sampleModel.find().sort({ createdAt: -1 });
     return samples;
   }
 
