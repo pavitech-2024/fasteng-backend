@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { IsNotEmpty } from 'class-validator';
-import { Material } from '../../../../../modules/asphalt/materials/schemas';
 import { HydratedDocument } from 'mongoose';
 import { Calc_Rtcd_Out } from '../dto/calc-rtcd.dto';
 
