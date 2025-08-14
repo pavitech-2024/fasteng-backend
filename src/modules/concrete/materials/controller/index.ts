@@ -16,10 +16,10 @@ export class MaterialsController {
   @ApiOperation({ summary: 'Cria um material no banco de dados.' })
   @ApiResponse({ status: 201, description: 'Material criado com sucesso!' })
   @ApiResponse({ status: 400, description: 'Erro ao criar material!' })
-  async createMaterial(@Body() material: CreateConcreteMaterialDto, @User('userId') userId: string) {
+  async createMaterial(@Body() material: CreateConcreteMaterialDto) {
     this.logger.log('create material > [body]');
 
-    const createdMaterial = await this.materialsService.createMaterial(material, userId);
+    const createdMaterial = await this.materialsService.createMaterial(material);
 
     if (createdMaterial) this.logger.log(`material created > [id]: ${createdMaterial._id}`);
 
@@ -33,9 +33,13 @@ export class MaterialsController {
   async getAllByUserId(@Param('id') userId: string) {
     this.logger.log(`get all materials by user id > [id]: ${userId}`);
 
-    return this.materialsService.getAllMaterials(userId).then(materials => ([{
-      materials: materials,
-    }]));
+    const materials = await this.materialsService.getAllMaterials(userId).then((materials) => [
+      {
+        materials: materials,
+      },
+    ]);
+
+    return materials;
   }
 
   @Get(':id')

@@ -27,17 +27,16 @@ const common_1 = require("@nestjs/common");
 const service_1 = require("../service");
 const swagger_1 = require("@nestjs/swagger");
 const create_concrete_material_dto_1 = require("../dto/create-concrete-material.dto");
-const user_decorator_1 = require("../../../../config/decorators/user.decorator");
 const schemas_1 = require("../schemas");
 let MaterialsController = MaterialsController_1 = class MaterialsController {
     constructor(materialsService) {
         this.materialsService = materialsService;
         this.logger = new common_1.Logger(MaterialsController_1.name);
     }
-    createMaterial(material, userId) {
+    createMaterial(material) {
         return __awaiter(this, void 0, void 0, function* () {
             this.logger.log('create material > [body]');
-            const createdMaterial = yield this.materialsService.createMaterial(material, userId);
+            const createdMaterial = yield this.materialsService.createMaterial(material);
             if (createdMaterial)
                 this.logger.log(`material created > [id]: ${createdMaterial._id}`);
             return createdMaterial;
@@ -46,9 +45,12 @@ let MaterialsController = MaterialsController_1 = class MaterialsController {
     getAllByUserId(userId) {
         return __awaiter(this, void 0, void 0, function* () {
             this.logger.log(`get all materials by user id > [id]: ${userId}`);
-            return this.materialsService.getAllMaterials(userId).then(materials => ([{
+            const materials = yield this.materialsService.getAllMaterials(userId).then((materials) => [
+                {
                     materials: materials,
-                }]));
+                },
+            ]);
+            return materials;
         });
     }
     getMaterialById(materialId) {
@@ -77,9 +79,8 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Material criado com sucesso!' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Erro ao criar material!' }),
     __param(0, (0, common_1.Body)()),
-    __param(1, (0, user_decorator_1.User)('userId')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_concrete_material_dto_1.CreateConcreteMaterialDto, String]),
+    __metadata("design:paramtypes", [create_concrete_material_dto_1.CreateConcreteMaterialDto]),
     __metadata("design:returntype", Promise)
 ], MaterialsController.prototype, "createMaterial", null);
 __decorate([

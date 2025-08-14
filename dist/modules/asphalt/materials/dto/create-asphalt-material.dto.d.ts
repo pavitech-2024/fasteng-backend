@@ -1,6 +1,7 @@
 import { Sieve } from '../../../../utils/interfaces';
 export declare class CreateAsphaltMaterialDto {
     name: string;
+    userId: string;
     type: 'coarseAggregate' | 'fineAggregate' | 'filler' | 'asphaltBinder' | 'CAP' | 'other';
     description?: {
         source?: string;

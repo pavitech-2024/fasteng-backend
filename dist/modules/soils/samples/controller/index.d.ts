@@ -5,7 +5,7 @@ export declare class SamplesController {
     private readonly samplesService;
     private logger;
     constructor(samplesService: SamplesService);
-    createSample(sample: CreateSampleDto, userId: string): Promise<Sample>;
+    createSample(sample: CreateSampleDto): Promise<Sample>;
     getAllByUserId(userId: string): Promise<{
         materials: Sample[];
     }[]>;

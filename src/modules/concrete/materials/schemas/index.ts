@@ -5,7 +5,7 @@ import { Sieve } from '../../../../utils/interfaces';
 
 export type MaterialDocument = HydratedDocument<Material>;
 
-@Schema({ collection: 'materials' })
+@Schema({ collection: 'materials', timestamps: true })
 export class Material {
   _id: string;
 
@@ -20,10 +20,6 @@ export class Material {
   @IsNotEmpty()
   @Prop()
   userId: string;
-
-  @IsNotEmpty()
-  @Prop()
-  createdAt: Date;
 
   @Prop({ type: Object })
   description?: {

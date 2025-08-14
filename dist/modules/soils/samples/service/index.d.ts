@@ -7,7 +7,7 @@ export declare class SamplesService {
     private readonly getEssaysBySample_Service;
     private logger;
     constructor(samplesRepository: SamplesRepository, getEssaysBySample_Service: GetEssaysBySample_Service);
-    createSample(sample: CreateSampleDto, userId: string): Promise<Sample>;
+    createSample(sample: CreateSampleDto): Promise<Sample>;
     getSample(sampleId: string): Promise<any>;
     getAllSamples(userId: string): Promise<Sample[]>;
     updateSample(sample: Sample): Promise<Sample>;

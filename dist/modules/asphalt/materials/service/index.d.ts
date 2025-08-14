@@ -26,7 +26,7 @@ export declare class MaterialsService {
     private readonly dduiRepository;
     private logger;
     constructor(materialsRepository: MaterialsRepository, getEssaysByMaterial_Service: GetEssaysByMaterial_Service, fwdRepository: FwdRepository, iggRepository: IggRepository, rtcdRepository: RtcdRepository, dduiRepository: DduiRepository);
-    createMaterial(material: CreateAsphaltMaterialDto, userId: string): Promise<Material>;
+    createMaterial(material: CreateAsphaltMaterialDto): Promise<Material>;
     getMaterial(materialId: string): Promise<any>;
     getSelectedMaterialsById(ids: string): Promise<{
         materials: Material[];

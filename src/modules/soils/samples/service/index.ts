@@ -14,18 +14,16 @@ export class SamplesService {
     private readonly getEssaysBySample_Service: GetEssaysBySample_Service
   ) {}
 
-  async createSample(sample: CreateSampleDto, userId: string): Promise<Sample> {
+  async createSample(sample: CreateSampleDto): Promise<Sample> {
     try {
+      const { name, userId } = sample;
+      const sampleFound = await this.samplesRepository.findOne({ name, userId });
       // verifica se existe uma sample com mesmo nome e userId no banco de dados
-      if (await this.samplesRepository.findOne({ name: sample.name, userId }))
-        throw new AlreadyExists(`Sample with name "${sample.name}"`);
+      if (sampleFound) throw new AlreadyExists(`Sample with name "${sample.name}"`);
 
-      // cria uma amostra no banco de dados
-      return this.samplesRepository.create({
-        ...sample,
-        createdAt: new Date(),
-        userId,
-      });
+      const createdSample = await this.samplesRepository.create(sample);
+
+      return createdSample;
     } catch (error) {
       this.logger.error(`error on create sample > [error]: ${error}`);
 

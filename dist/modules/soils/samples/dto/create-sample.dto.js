@@ -16,6 +16,12 @@ class CreateSampleDto {
 exports.CreateSampleDto = CreateSampleDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], CreateSampleDto.prototype, "name", void 0);
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateSampleDto.prototype, "userId", void 0);
 //# sourceMappingURL=create-sample.dto.js.map
