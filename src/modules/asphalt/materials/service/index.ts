@@ -34,9 +34,11 @@ export class MaterialsService {
     private readonly dduiRepository: DduiRepository,
   ) {}
 
-  async createMaterial(material: CreateAsphaltMaterialDto, userId: string) {
-    // Remove o try-catch aqui!
-    if (await this.materialsRepository.findOne({ name: material.name, userId }))
+  async createMaterial(material: CreateAsphaltMaterialDto) {
+    this.logger.log('create material > [body]');
+    const { name, userId } = material;
+    const materialExists = await this.materialsRepository.findOne({ name, userId });
+    if (materialExists)
       throw new AlreadyExists(`Material with name "${material.name}"`);
 
     const createdMaterial = await this.materialsRepository.create({

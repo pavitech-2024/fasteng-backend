@@ -4,6 +4,7 @@ exports.User = void 0;
 const common_1 = require("@nestjs/common");
 exports.User = (0, common_1.createParamDecorator)((data, ctx) => {
     const request = ctx.switchToHttp().getRequest();
+    console.log("🚀 ~ request:", request);
     const user = request.user;
     return data ? user === null || user === void 0 ? void 0 : user[data] : user;
 });

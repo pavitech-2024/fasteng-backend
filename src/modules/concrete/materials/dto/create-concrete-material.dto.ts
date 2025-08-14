@@ -1,9 +1,14 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 import { Sieve } from '../../../../utils/interfaces';
 
 export class CreateConcreteMaterialDto {
   @IsNotEmpty()
+  @IsString()
   name: string;
+
+  @IsNotEmpty()
+  @IsString()
+  userId: string;
 
   type: 'coarseAggregate' | 'fineAggregate' | 'filler' | 'asphaltBinder' | 'CAP' | 'other';
   description?: {

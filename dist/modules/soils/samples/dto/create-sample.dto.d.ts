@@ -1,5 +1,6 @@
 export declare class CreateSampleDto {
     name: string;
+    userId: string;
     type: 'inorganicSoil' | 'organicSoil' | 'pavementLayer';
     construction?: string;
     snippet?: string;

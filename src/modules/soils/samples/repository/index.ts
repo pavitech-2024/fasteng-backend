@@ -12,11 +12,13 @@ export class SamplesRepository {
   }
 
   async find(): Promise<Sample[]> {
-    return this.sampleModel.find();
+    const samples = await this.sampleModel.find();
+    return samples;
   }
 
   async findOne(samplesFilterQuery: FilterQuery<Sample>): Promise<Sample> {
-    return this.sampleModel.findOne(samplesFilterQuery);
+    const sample = await this.sampleModel.findOne(samplesFilterQuery);
+    return sample;
   }
 
   async findOneAndUpdate(samplesFilterQuery: FilterQuery<Sample>, sample: Partial<Sample>): Promise<Sample> {

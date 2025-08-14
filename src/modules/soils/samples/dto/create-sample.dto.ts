@@ -1,8 +1,13 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateSampleDto {
   @IsNotEmpty()
+  @IsString()
   name: string;
+
+  @IsNotEmpty()
+  @IsString()
+  userId: string;
 
   type: 'inorganicSoil' | 'organicSoil' | 'pavementLayer';
   construction?: string;

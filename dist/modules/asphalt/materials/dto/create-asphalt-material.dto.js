@@ -16,6 +16,12 @@ class CreateAsphaltMaterialDto {
 exports.CreateAsphaltMaterialDto = CreateAsphaltMaterialDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], CreateAsphaltMaterialDto.prototype, "name", void 0);
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateAsphaltMaterialDto.prototype, "userId", void 0);
 //# sourceMappingURL=create-asphalt-material.dto.js.map
