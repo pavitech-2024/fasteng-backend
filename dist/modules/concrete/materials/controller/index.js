@@ -45,11 +45,7 @@ let MaterialsController = MaterialsController_1 = class MaterialsController {
     getAllByUserId(userId) {
         return __awaiter(this, void 0, void 0, function* () {
             this.logger.log(`get all materials by user id > [id]: ${userId}`);
-            const materials = yield this.materialsService.getAllMaterials(userId).then((materials) => [
-                {
-                    materials: materials,
-                },
-            ]);
+            const materials = yield this.materialsService.getAllMaterials(userId);
             return materials;
         });
     }
