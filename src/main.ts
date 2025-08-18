@@ -84,6 +84,8 @@ import { UsersModule } from './modules/users/users.module';
 import { SamplesModule } from './modules/soils/samples/samples.module';
 import { AllExceptionsFilter } from './config/filters/http-exception.filter'; // Ajuste o caminho conforme
 
+
+
 async function bootstrap() {
   // Criar a app com logs detalhados
   const app = await NestFactory.create(AppModule, {
