@@ -58,7 +58,7 @@ export class CreateSampleDto {
   @ApiProperty({ description: 'Descrição da amostra', example: 'Solo argiloso coletado próximo à estrada', required: false })
   @IsOptional()
   @IsString()
-  description?: string;
+  description?: string; 
 }
 
 
