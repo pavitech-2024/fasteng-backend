@@ -26,9 +26,9 @@ exports.SamplesController = void 0;
 const common_1 = require("@nestjs/common");
 const service_1 = require("../service");
 const swagger_1 = require("@nestjs/swagger");
-const create_sample_dto_1 = require("../dto/create-sample.dto");
 const schemas_1 = require("../schemas");
 const user_decorator_1 = require("../../../../config/decorators/user.decorator");
+const create_sample_dto_1 = require("../dto/create-sample.dto");
 let SamplesController = SamplesController_1 = class SamplesController {
     constructor(samplesService) {
         this.samplesService = samplesService;
@@ -76,6 +76,7 @@ __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'Cria uma amostra no banco de dados.' }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Amostra criada com sucesso!' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Erro ao criar amostra!' }),
+    (0, swagger_1.ApiBody)({ type: create_sample_dto_1.CreateSampleDto }),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, user_decorator_1.User)('userId')),
     __metadata("design:type", Function),
@@ -107,6 +108,7 @@ __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'Atualiza uma amostra do banco de dados.' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Amostra atualizada com sucesso!' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Amostra não encontrada!' }),
+    (0, swagger_1.ApiBody)({ type: create_sample_dto_1.CreateSampleDto }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),

@@ -1,6 +1,6 @@
 import { SamplesService } from '../service';
-import { CreateSampleDto } from '../dto/create-sample.dto';
 import { Sample } from '../schemas';
+import { CreateSampleDto } from '../dto/create-sample.dto';
 export declare class SamplesController {
     private readonly samplesService;
     private logger;
