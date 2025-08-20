@@ -56,10 +56,9 @@ let DduiService = class DduiService {
     saveEssay(body) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { name, material: { _id: materialId }, userId, } = body.generalData;
+                const { name, userId, } = body.generalData;
                 const alreadyExists = yield this.ddui_Repository.findOne({
                     'generalData.name': name,
-                    'generalData.material._id': materialId,
                     'generalData.userId': userId,
                 });
                 if (alreadyExists)

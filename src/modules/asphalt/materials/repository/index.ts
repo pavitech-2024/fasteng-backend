@@ -18,7 +18,7 @@ export class MaterialsRepository {
   }
 
   async findOne(materialsFilterQuery: FilterQuery<Material>): Promise<Material> {
-    const material = this.materialModel.findOne(materialsFilterQuery);
+    const material = await this.materialModel.findOne(materialsFilterQuery);
     return material;
   }
 

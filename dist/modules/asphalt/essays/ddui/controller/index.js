@@ -142,7 +142,7 @@ __decorate([
     }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Erro ao deletar o ensaio ddui no banco de dados.' }),
     __param(0, (0, common_1.Res)()),
-    __param(1, (0, common_1.Param)()),
+    __param(1, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)

@@ -124,7 +124,7 @@ __decorate([
 ], FwdController.prototype, "saveEssay", null);
 __decorate([
     (0, common_1.Delete)('delete-essay/:id'),
-    (0, swagger_1.ApiOperation)({ summary: 'Se possível, deleta os dados do ensaio fwd no banco de dados.' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Deleta os dados do ensaio fwd no banco de dados.' }),
     (0, swagger_1.ApiResponse)({
         status: 200,
         description: 'Ensaio de fwd deletado com sucesso.',
@@ -132,7 +132,7 @@ __decorate([
     }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Erro ao deletar o ensaio fwd no banco de dados.' }),
     __param(0, (0, common_1.Res)()),
-    __param(1, (0, common_1.Param)()),
+    __param(1, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)
