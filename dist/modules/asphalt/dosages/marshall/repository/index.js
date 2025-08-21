@@ -43,30 +43,29 @@ let MarshallRepository = class MarshallRepository {
     }
     findOne(name, userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const dosage = yield this.marshallModel.findOne({
+            return this.marshallModel.findOne({
                 "generalData.name": name,
                 "generalData.userId": userId
             });
-            return dosage;
         });
     }
     findOneAndUpdate(marshallFilterQuery, marshall) {
         return __awaiter(this, void 0, void 0, function* () {
             return this.marshallModel.findOneAndUpdate(marshallFilterQuery, marshall, {
-                new: true,
+                new: true
             });
         });
     }
     findById(dosageId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.marshallModel.findById(dosageId);
+            return this.marshallModel.findById(dosageId).exec();
         });
     }
-    createPartialMarshall(marshall, userId) {
+    createPartialMarshall(generalData, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const createdPartialMarshall = yield this.marshallModel.create({
-                    generalData: Object.assign(Object.assign({}, marshall), { userId }),
+                    generalData: Object.assign(Object.assign({}, generalData), { userId })
                 });
                 return createdPartialMarshall;
             }
@@ -76,10 +75,10 @@ let MarshallRepository = class MarshallRepository {
             }
         });
     }
-    saveStep(marshall, step) {
+    saveStep(marshallId, step) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield this.marshallModel.updateOne({ _id: marshall._id }, { $set: { "generalData.step": step } });
+                yield this.marshallModel.updateOne({ _id: marshallId }, { $set: { step } });
             }
             catch (error) {
                 console.error("Erro ao salvar o passo:", error);

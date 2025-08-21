@@ -1,25 +1,31 @@
 import { Response } from 'express';
 import { MarshallService } from '../service';
-import { MarshallInitDto } from '../dto/marshall-init.dto';
+import { MarshallGeneralDataDTO } from '../dto/marshal-general-data.dto';
+import { SaveMarshallDosageDTO } from '../dto/binder-trial-data.dto';
+import { CalculateDmtDataDTO } from '../dto/calculate-dmt-data.dto';
+import { CalculateGmmDataDTO } from '../dto/calculate-gmm-data.dto';
+import { GetIndexesOfMissesSpecificGravityDTO } from '../dto/get-indexes-of-misses-specific-gravity.dto';
+import { CalculateRiceTestDTO as CalculateRiceTestDTONew } from '../dto/calculate-rice-test.dto';
+import { SaveMaximumMixtureDensityDataDTO } from '../dto/save-maximum-mixture-density-data.dto';
 export declare class MarshallController {
     private readonly marshallService;
     private logger;
     constructor(marshallService: MarshallService);
     getAllByUserId(userId: string): Promise<import("../schemas").Marshall[]>;
-    verifyInitMarshall(response: Response, body: MarshallInitDto, userId: string): Promise<Response<any, Record<string, any>>>;
-    getMaterialsByUserId(response: Response, userId: string): Promise<Response<any, Record<string, any>>>;
     getDosageById(response: Response, dosageId: string): Promise<Response<any, Record<string, any>>>;
-    saveMaterialSelectionStep(response: Response, body: any, userId: string): Promise<Response<any, Record<string, any>>>;
+    verifyInitMarshall(response: Response, body: MarshallGeneralDataDTO, userId: string): Promise<Response<any, Record<string, any>>>;
+    getIndexesOfMissesSpecificGravity(response: Response, aggregates: GetIndexesOfMissesSpecificGravityDTO): Promise<Response<any, Record<string, any>>>;
+    calculateDmtData(response: Response, body: CalculateDmtDataDTO): Promise<Response<any, Record<string, any>>>;
+    calculateGmmData(response: Response, body: CalculateGmmDataDTO): Promise<Response<any, Record<string, any>>>;
+    calculateRiceTest(response: Response, body: CalculateRiceTestDTONew): Promise<Response<any, Record<string, any>>>;
+    saveMarshallDosage(response: Response, userId: string, body: SaveMarshallDosageDTO): Promise<Response<any, Record<string, any>>>;
+    deleteMarshallDosage(response: Response, id: string): Promise<Response<any, Record<string, any>>>;
     getStep3Data(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
     calculateStep3Data(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
     saveGranulometryCompositionStep(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
     calculateStep4Data(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
     saveBinderTrialStep(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
-    getIndexesOfMissesSpecificGravity(response: Response, aggregates: any): Promise<Response<any, Record<string, any>>>;
-    calculateDmtData(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
-    calculateGmmData(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
-    calculateRiceTest(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
-    saveMaximumMixtureDensityData(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
+    saveMaximumMixtureDensityData(response: Response, userId: string, body: SaveMaximumMixtureDensityDataDTO): Promise<Response<any, Record<string, any>>>;
     setVolumetricParameters(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
     saveVolumetricParametersData(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
     setOptimumBinderContentData(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
@@ -29,6 +35,4 @@ export declare class MarshallController {
     confirmSpecificGravity(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
     confirmVolumetricParameters(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
     saveConfirmationCompressionData(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
-    saveMarshallDosage(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
-    deleteMarshallDosage(response: Response, id: string): Promise<Response<any, Record<string, any>>>;
 }

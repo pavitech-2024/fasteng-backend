@@ -20,17 +20,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __rest = (this && this.__rest) || function (s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                t[p[i]] = s[p[i]];
-        }
-    return t;
-};
 var ConfirmCompression_Marshall_Service_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ConfirmCompression_Marshall_Service = void 0;
@@ -41,70 +30,60 @@ const mongoose_2 = require("mongoose");
 const repository_1 = require("../repository");
 const schemas_1 = require("../schemas");
 let ConfirmCompression_Marshall_Service = ConfirmCompression_Marshall_Service_1 = class ConfirmCompression_Marshall_Service {
-    constructor(marshallModel, marshallRepository) {
-        this.marshallModel = marshallModel;
+    constructor(marshallRepository, marshallModel) {
         this.marshallRepository = marshallRepository;
+        this.marshallModel = marshallModel;
         this.logger = new common_1.Logger(ConfirmCompression_Marshall_Service_1.name);
     }
     confirmSpecificGravity(body) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                this.logger.log('confirming specific gravity on confirm-compression.marshall.service.ts > [body]', { body });
-                const { method, listOfSpecificGravities, percentsOfDosage, confirmedPercentsOfDosage, optimumContent, gmm, valuesOfSpecificGravity } = body;
-                let confirmedSpecificGravity;
-                let GMM;
-                let formattedPercentsOfDosage = [];
-                const ids1 = new Set();
-                Object.keys(percentsOfDosage[0]).forEach(key => {
+                this.logger.log('Confirming specific gravity', { body });
+                const { method, listOfSpecificGravities, percentsOfDosage, confirmedPercentsOfDosage, optimumContent, gmm, valuesOfSpecificGravity, } = body;
+                const formattedPercentsOfDosage = [];
+                const ids = new Set();
+                Object.keys(percentsOfDosage[0]).forEach((key) => {
                     const id = key.split('_')[1];
-                    ids1.add(id);
+                    ids.add(id);
                     const value = percentsOfDosage[0][key];
-                    const index = Array.from(ids1).indexOf(id);
+                    const index = Array.from(ids).indexOf(id);
                     formattedPercentsOfDosage[index] = value;
                 });
                 if (method === 'DMT') {
-                    const denominador = formattedPercentsOfDosage.reduce((acc, percent, i) => (acc += confirmedPercentsOfDosage[i] / listOfSpecificGravities[i]), 0);
+                    const denominador = formattedPercentsOfDosage.reduce((acc, percent, i) => acc + confirmedPercentsOfDosage[i] / listOfSpecificGravities[i], 0);
                     const DMT = 100 / (denominador + optimumContent / 1.03);
-                    confirmedSpecificGravity = {
-                        result: DMT,
-                        type: 'DMT',
-                    };
-                    return confirmedSpecificGravity;
+                    return { result: DMT, type: 'DMT' };
                 }
-                else if (method === 'GMM') {
-                    if (gmm)
-                        GMM = gmm;
-                    else
-                        GMM = valuesOfSpecificGravity.massOfDrySample / (valuesOfSpecificGravity.massOfDrySample - valuesOfSpecificGravity.massOfContainerWaterSample + valuesOfSpecificGravity.massOfContainerWater);
-                    confirmedSpecificGravity = {
-                        result: GMM,
-                        type: "GMM"
-                    };
-                    return confirmedSpecificGravity;
+                else {
+                    const GMM = gmm !== null && gmm !== void 0 ? gmm : valuesOfSpecificGravity.massOfDrySample /
+                        (valuesOfSpecificGravity.massOfDrySample -
+                            valuesOfSpecificGravity.massOfContainerWaterSample +
+                            valuesOfSpecificGravity.massOfContainerWater);
+                    return { result: GMM, type: 'GMM' };
                 }
             }
             catch (error) {
+                this.logger.error('Error confirming specific gravity', error);
                 throw error;
             }
         });
     }
-    saveStep8Data(body, userId) {
+    saveStep8Data(confirmationCompressionData, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                this.logger.log('save marshall confirmation compression step on confirmation-compression.marshall.service.ts > [body]', {
-                    body,
-                });
-                const { name } = body.confirmationCompressionData;
-                const marshallExists = yield this.marshallRepository.findOne(name, userId);
-                const _a = body.confirmationCompressionData, { name: materialName } = _a, confirmationCompressionWithoutName = __rest(_a, ["name"]);
-                const marshallWithConfirmationCompression = Object.assign(Object.assign({}, marshallExists._doc), { confirmationCompressionData: confirmationCompressionWithoutName });
-                yield this.marshallModel.updateOne({ _id: marshallExists._doc._id }, marshallWithConfirmationCompression);
-                if (marshallExists._doc.generalData.step < 8) {
-                    yield this.marshallRepository.saveStep(marshallExists, 8);
+                this.logger.log('Saving step 8 confirmation compression', { confirmationCompressionData });
+                const marshallExists = yield this.marshallRepository.findOne(confirmationCompressionData.name, userId);
+                if (!marshallExists)
+                    throw new Error('Marshall not found');
+                marshallExists.confirmationCompressionData = confirmationCompressionData;
+                yield marshallExists.save();
+                if (marshallExists.step < 8) {
+                    yield this.marshallRepository.saveStep(marshallExists._id, 8);
                 }
                 return true;
             }
             catch (error) {
+                this.logger.error('Error saving step 8 data', error);
                 throw error;
             }
         });
@@ -113,8 +92,8 @@ let ConfirmCompression_Marshall_Service = ConfirmCompression_Marshall_Service_1 
 exports.ConfirmCompression_Marshall_Service = ConfirmCompression_Marshall_Service;
 exports.ConfirmCompression_Marshall_Service = ConfirmCompression_Marshall_Service = ConfirmCompression_Marshall_Service_1 = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, mongoose_1.InjectModel)(schemas_1.Marshall.name, database_config_1.DATABASE_CONNECTION.ASPHALT)),
-    __metadata("design:paramtypes", [mongoose_2.Model,
-        repository_1.MarshallRepository])
+    __param(1, (0, mongoose_1.InjectModel)(schemas_1.Marshall.name, database_config_1.DATABASE_CONNECTION.ASPHALT)),
+    __metadata("design:paramtypes", [repository_1.MarshallRepository,
+        mongoose_2.Model])
 ], ConfirmCompression_Marshall_Service);
 //# sourceMappingURL=confirm-compression.marshall.service.js.map

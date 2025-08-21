@@ -1,8 +1,7 @@
-import { MarshallInitDto } from "../dto/marshall-init.dto";
 import { GeneralData_Marshall_Service } from "./general-data.marshall.service";
-import { MaterialSelection_Marshall_Service } from "./material-selection.marshall.service";
 import { Marshall } from "../schemas";
 import { MarshallRepository } from '../repository/index';
+import { MarshallGeneralDataDTO } from "../dto/marshal-general-data.dto";
 import { MarshallStep3Dto } from "../dto/step-3-marshall.dto";
 import { GranulometryComposition_Marshall_Service } from "./granulometry-composition.marshall.service";
 import { SetBinderTrial_Marshall_Service } from "./initial-binder-trial.service";
@@ -10,10 +9,17 @@ import { MaximumMixtureDensity_Marshall_Service } from "./maximumMixtureDensity.
 import { VolumetricParameters_Marshall_Service } from "./volumetric-parameters.service";
 import { OptimumBinderContent_Marshall_Service } from "./optimum-binder.marshall.service";
 import { ConfirmCompression_Marshall_Service } from "./confirm-compression.marshall.service";
+import { GetIndexesOfMissesSpecificGravityDTO } from "../dto/get-indexes-of-misses-specific-gravity.dto";
+import { CalculateDmtDataDTO } from "../dto/calculate-dmt-data.dto";
+import { CalculateGmmDataDTO } from "../dto/calculate-gmm-data.dto";
+import { CalculateRiceTestDTO } from "../dto/calculate-rice-test.dto";
+import { SaveMaximumMixtureDensityDataDTO } from "../dto/save-maximum-mixture-density-data.dto";
+import { BaseMarshallService } from "./base.marshall.service";
+import { SaveStep3DTO, SaveStep4DTO, SaveStep7DTO, SaveStep8DTO, SaveStepDTO } from "../dto/save-step.dto";
 export declare class MarshallService {
     private readonly marshall_repository;
     private readonly generalData_Service;
-    private readonly materialSelection_Service;
+    private readonly baseMarshallService;
     private readonly granulometryComposition_Service;
     private readonly setBinderTrial_Service;
     private readonly maximumMixtureDensity_Service;
@@ -21,25 +27,16 @@ export declare class MarshallService {
     private readonly optimumBinder_Service;
     private readonly confirmCompression_Service;
     private logger;
-    constructor(marshall_repository: MarshallRepository, generalData_Service: GeneralData_Marshall_Service, materialSelection_Service: MaterialSelection_Marshall_Service, granulometryComposition_Service: GranulometryComposition_Marshall_Service, setBinderTrial_Service: SetBinderTrial_Marshall_Service, maximumMixtureDensity_Service: MaximumMixtureDensity_Marshall_Service, volumetricParameters_Service: VolumetricParameters_Marshall_Service, optimumBinder_Service: OptimumBinderContent_Marshall_Service, confirmCompression_Service: ConfirmCompression_Marshall_Service);
-    getAllDosages(userId: string): Promise<Marshall[]>;
-    verifyInitMarshall(body: MarshallInitDto, userId: string): Promise<{
+    constructor(marshall_repository: MarshallRepository, generalData_Service: GeneralData_Marshall_Service, baseMarshallService: BaseMarshallService, granulometryComposition_Service: GranulometryComposition_Marshall_Service, setBinderTrial_Service: SetBinderTrial_Marshall_Service, maximumMixtureDensity_Service: MaximumMixtureDensity_Marshall_Service, volumetricParameters_Service: VolumetricParameters_Marshall_Service, optimumBinder_Service: OptimumBinderContent_Marshall_Service, confirmCompression_Service: ConfirmCompression_Marshall_Service);
+    saveStepData(body: SaveStepDTO): Promise<{
         success: boolean;
-        dosage: any;
-    } | {
-        success: boolean;
-        error: {
-            status: any;
-            message: any;
-            name: any;
-        };
+        error?: any;
     }>;
-    getUserMaterials(userId: string): Promise<{
-        materials: import("../../../materials/schemas").Material[];
+    getAllDosages(userId: string): Promise<Marshall[]>;
+    verifyInitMarshall(body: MarshallGeneralDataDTO, userId: string): Promise<{
         success: boolean;
-        error?: undefined;
+        dosage: Marshall;
     } | {
-        materials: any[];
         success: boolean;
         error: {
             status: any;
@@ -48,7 +45,9 @@ export declare class MarshallService {
         };
     }>;
     getDosageById(dosageId: string): Promise<{
-        dosage: Marshall;
+        dosage: import("mongoose").Document<unknown, {}, Marshall> & Marshall & Required<{
+            _id: string;
+        }>;
         success: boolean;
         materials?: undefined;
         error?: undefined;
@@ -61,17 +60,6 @@ export declare class MarshallService {
             name: any;
         };
         dosage?: undefined;
-    }>;
-    saveMaterialSelectionStep(body: any, userId: string): Promise<{
-        success: boolean;
-        error?: undefined;
-    } | {
-        success: boolean;
-        error: {
-            status: any;
-            message: any;
-            name: any;
-        };
     }>;
     getStep3Data(body: MarshallStep3Dto): Promise<{
         data: {
@@ -120,22 +108,15 @@ export declare class MarshallService {
             name: any;
         };
     }>;
-    saveStep3Data(body: any, userId: string): Promise<{
+    saveStep3Data(body: SaveStep3DTO, userId: string): Promise<{
         success: boolean;
-        error?: undefined;
-    } | {
-        success: boolean;
-        error: {
-            status: any;
-            message: any;
-            name: any;
-        };
+        error?: any;
     }>;
     calculateStep4Data(body: any): Promise<{
         data: {
-            percentsOfDosage: any[];
-            bandsOfTemperatures: any;
-            newPercentOfDosage: any[];
+            percentsOfDosage: import("../types/marshall.types").TrialItem[][];
+            bandsOfTemperatures: import("../dto/binder-trial-data.dto").BandsOfTemperaturesDTO;
+            newPercentOfDosage: number[][];
         };
         success: boolean;
         error?: undefined;
@@ -148,102 +129,33 @@ export declare class MarshallService {
             name: any;
         };
     }>;
-    saveStep4Data(body: any, userId: string): Promise<{
+    saveStep4Data(body: SaveStep4DTO, userId: string): Promise<{
         success: boolean;
-        error?: undefined;
-    } | {
-        success: boolean;
-        error: {
-            status: any;
-            message: any;
-            name: any;
-        };
+        error?: any;
     }>;
-    getIndexesOfMissesSpecificGravity(aggregates: any): Promise<{
-        data: {
-            missesSpecificGravity: {
-                value: any;
-                _id: any;
-                name: any;
-            }[];
-        };
-        success: boolean;
-        error?: undefined;
-    } | {
-        success: boolean;
-        error: {
-            status: any;
-            message: any;
-            name: any;
-        };
-        data?: undefined;
-    }>;
-    calculateDmtData(body: any): Promise<{
-        data: {
-            maxSpecificGravity: any;
-            method: any;
-            listOfSpecificGravities: any;
-        };
-        success: boolean;
-        error?: undefined;
-    } | {
+    getIndexesOfMissesSpecificGravity(dto: GetIndexesOfMissesSpecificGravityDTO): Promise<{
         data: any;
         success: boolean;
-        error: {
-            status: any;
-            message: any;
-            name: any;
-        };
+        error?: any;
     }>;
-    calculateGmmData(body: any): Promise<{
-        data: {
-            maxSpecificGravity: {
-                lessOne: any;
-                lessHalf: any;
-                normal: any;
-                plusHalf: any;
-                plusOne: any;
-            };
-            method: string;
-            listOfSpecificGravities: any;
-        };
-        success: boolean;
-        error?: undefined;
-    } | {
+    calculateDmtData(dto: CalculateDmtDataDTO): Promise<{
         data: any;
         success: boolean;
-        error: {
-            status: any;
-            message: any;
-            name: any;
-        };
+        error?: any;
     }>;
-    calculateRiceTest(body: any): Promise<{
-        data: {
-            maxSpecificGravity: any;
-            method: string;
-        };
-        success: boolean;
-        error?: undefined;
-    } | {
+    calculateGmmData(dto: CalculateGmmDataDTO): Promise<{
         data: any;
         success: boolean;
-        error: {
-            status: any;
-            message: any;
-            name: any;
-        };
+        error?: any;
     }>;
-    saveMistureMaximumDensityData(body: any, userId: string): Promise<{
+    calculateRiceTest(dto: CalculateRiceTestDTO): Promise<{
+        data: any;
         success: boolean;
-        error?: undefined;
-    } | {
+        error?: any;
+    }>;
+    saveMistureMaximumDensityData(dto: SaveMaximumMixtureDensityDataDTO, userId: string): Promise<{
         success: boolean;
-        error: {
-            status: any;
-            message: any;
-            name: any;
-        };
+        error?: any;
     }>;
     setVolumetricParameters(body: any): Promise<{
         data: {
@@ -345,20 +257,16 @@ export declare class MarshallService {
             name: any;
         };
     }>;
-    saveStep7Data(body: any, userId: string): Promise<{
+    saveStep7Data(body: SaveStep7DTO, userId: string): Promise<{
         success: boolean;
-        error?: undefined;
-    } | {
-        success: boolean;
-        error: {
-            status: any;
-            message: any;
-            name: any;
-        };
+        error?: any;
     }>;
     confirmSpecificGravity(body: any): Promise<{
         data: {
-            confirmedSpecificGravity: any;
+            confirmedSpecificGravity: {
+                result: number;
+                type: "DMT" | "GMM";
+            };
         };
         success: boolean;
         error?: undefined;
@@ -400,16 +308,9 @@ export declare class MarshallService {
             name: any;
         };
     }>;
-    saveStep8Data(body: any, userId: string): Promise<{
+    saveStep8Data(body: SaveStep8DTO, userId: string): Promise<{
         success: boolean;
-        error?: undefined;
-    } | {
-        success: boolean;
-        error: {
-            status: any;
-            message: any;
-            name: any;
-        };
+        error?: any;
     }>;
     saveMarshallDosage(body: any, userId: string): Promise<{
         success: boolean;

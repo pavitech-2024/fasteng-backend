@@ -3,6 +3,11 @@ import { MarshallRepository } from '../repository';
 import { Model } from 'mongoose';
 import { MaterialsRepository } from '../../../materials/repository';
 import { SpecifyMassRepository } from '../../../essays/specifyMass/repository';
+import { GetIndexesOfMissesSpecificGravityDTO } from '../dto/get-indexes-of-misses-specific-gravity.dto';
+import { CalculateDmtDataDTO } from '../dto/calculate-dmt-data.dto';
+import { CalculateGmmDataDTO } from '../dto/calculate-gmm-data.dto';
+import { CalculateRiceTestDTO } from '../dto/calculate-rice-test.dto';
+import { SaveMaximumMixtureDensityDataDTO } from '../dto/save-maximum-mixture-density-data.dto';
 export declare class MaximumMixtureDensity_Marshall_Service {
     private marshallModel;
     private readonly marshallRepository;
@@ -10,27 +15,27 @@ export declare class MaximumMixtureDensity_Marshall_Service {
     private readonly specificMassRepository;
     private logger;
     constructor(marshallModel: Model<MarshallDocument>, marshallRepository: MarshallRepository, materialsRepository: MaterialsRepository, specificMassRepository: SpecifyMassRepository);
-    getIndexesOfMissesSpecificGravity(aggregates: any): Promise<{
+    getIndexesOfMissesSpecificGravity(dto: GetIndexesOfMissesSpecificGravityDTO): Promise<{
         missesSpecificGravity: {
-            value: any;
-            _id: any;
-            name: any;
+            value: number;
+            _id: string;
+            name: string;
         }[];
     }>;
-    calculateDmtData(body: any): Promise<any>;
-    calculateGmmData(body: any): Promise<{
+    calculateDmtData(dto: CalculateDmtDataDTO): Promise<any>;
+    calculateGmmData(dto: CalculateGmmDataDTO): Promise<{
         maxSpecificGravity: {
             result: {
-                lessOne: any;
-                lessHalf: any;
-                normal: any;
-                plusHalf: any;
-                plusOne: any;
+                lessOne: number;
+                lessHalf: number;
+                normal: number;
+                plusHalf: number;
+                plusOne: number;
             };
             method: string;
         };
         listOfSpecificGravities: any;
     }>;
-    calculateRiceTest(body: any): Promise<any>;
-    saveMistureMaximumDensityData(body: any, userId: string): Promise<boolean>;
+    calculateRiceTest(dto: CalculateRiceTestDTO): Promise<any>;
+    saveMistureMaximumDensityData(dto: SaveMaximumMixtureDensityDataDTO, userId: string): Promise<boolean>;
 }

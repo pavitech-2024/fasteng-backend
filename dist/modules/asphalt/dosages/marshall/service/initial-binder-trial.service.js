@@ -41,6 +41,27 @@ const mongoose_2 = require("mongoose");
 const repository_1 = require("../repository");
 const schemas_1 = require("../schemas");
 const repository_2 = require("../../../essays/viscosityRotational/repository");
+function isViscosityPayload(x) {
+    if (typeof x !== 'object' || x === null)
+        return false;
+    const obj = x;
+    const mt = obj['machiningTemperatureRange'];
+    const ct = obj['compressionTemperatureRange'];
+    return (typeof (mt === null || mt === void 0 ? void 0 : mt.higher) === 'number' &&
+        typeof (mt === null || mt === void 0 ? void 0 : mt.lower) === 'number' &&
+        typeof (ct === null || ct === void 0 ? void 0 : ct.higher) === 'number' &&
+        typeof (ct === null || ct === void 0 ? void 0 : ct.lower) === 'number');
+}
+function extractViscosityPayload(res) {
+    if (typeof res === 'object' && res !== null) {
+        const r = res;
+        if ('results' in r && isViscosityPayload(r.results))
+            return r.results;
+        if ('data' in r && isViscosityPayload(r.data))
+            return r.data;
+    }
+    throw new Error('Formato inesperado do retorno do ViscosityRotationalRepository.');
+}
 let SetBinderTrial_Marshall_Service = SetBinderTrial_Marshall_Service_1 = class SetBinderTrial_Marshall_Service {
     constructor(marshallModel, viscosityRepository, marshallRepository) {
         this.marshallModel = marshallModel;
@@ -48,11 +69,13 @@ let SetBinderTrial_Marshall_Service = SetBinderTrial_Marshall_Service_1 = class 
         this.marshallRepository = marshallRepository;
         this.logger = new common_1.Logger(SetBinderTrial_Marshall_Service_1.name);
     }
-    calculateInitlaBinderTrial(body) {
+    calculateInitialBinderTrial(body) {
         return __awaiter(this, void 0, void 0, function* () {
+            var _a;
             try {
-                this.logger.log('calculate marshall set initial binder trial step on initial-binder-trial.marshall.service.ts > [body]', { body });
-                const { trial, percentsOfDosages, binder } = body;
+                this.logger.log('Calculating Marshall initial binder trial', { body });
+                const { trial, binder } = body;
+                const percentsList = 'percentsOfDosages' in body ? body.percentsOfDosages : body.percentsOfDosage;
                 const newPercent = 100 - trial;
                 const halfPlus = [];
                 const halfLess = [];
@@ -62,104 +85,94 @@ let SetBinderTrial_Marshall_Service = SetBinderTrial_Marshall_Service_1 = class 
                 const percentOfDosageToReturn = [];
                 const newPercentOfDosage = [];
                 const modifiedPercentsOfDosages = [];
-                const ids1 = new Set();
-                Object.keys(percentsOfDosages[0]).forEach((key) => {
+                const ids = new Set();
+                const first = (_a = percentsList[0]) !== null && _a !== void 0 ? _a : {};
+                Object.keys(first).forEach((key) => {
+                    var _a;
                     const id = key.split('_')[1];
-                    ids1.add(id);
-                    const value = percentsOfDosages[0][key];
-                    const index = Array.from(ids1).indexOf(id);
+                    if (!id)
+                        return;
+                    ids.add(id);
+                    const value = Number((_a = first[key]) !== null && _a !== void 0 ? _a : 0);
+                    const index = Array.from(ids).indexOf(id);
                     modifiedPercentsOfDosages[index] = { _id: id, value };
                 });
                 for (let i = 0; i < modifiedPercentsOfDosages.length; i++) {
-                    halfPlus.push({
-                        material: modifiedPercentsOfDosages[i]._id,
-                        value: ((newPercent - 0.5) * modifiedPercentsOfDosages[i].value) / 100,
-                        trial: 'halfPlus',
-                    });
-                    halfLess.push({
-                        material: modifiedPercentsOfDosages[i]._id,
-                        value: ((newPercent + 0.5) * modifiedPercentsOfDosages[i].value) / 100,
-                        trial: 'halfLess',
-                    });
-                    onePlus.push({
-                        material: modifiedPercentsOfDosages[i]._id,
-                        value: ((newPercent - 1) * modifiedPercentsOfDosages[i].value) / 100,
-                        trial: 'onePlus',
-                    });
-                    oneLess.push({
-                        material: modifiedPercentsOfDosages[i]._id,
-                        value: ((newPercent + 1) * modifiedPercentsOfDosages[i].value) / 100,
-                        trial: 'oneLess',
-                    });
-                    percentOfDosage.push({
-                        material: modifiedPercentsOfDosages[i]._id,
-                        value: (newPercent * modifiedPercentsOfDosages[i].value) / 100,
-                        trial: 'normal'
-                    });
-                    newPercentOfDosage.push([onePlus[i].value, halfPlus[i].value, percentOfDosage[i].value, halfLess[i].value, oneLess[i].value]);
-                    percentOfDosageToReturn.push([oneLess[i], halfLess[i], percentOfDosage[i], halfPlus[i], onePlus[i]]);
+                    const item = modifiedPercentsOfDosages[i];
+                    onePlus.push({ material: item._id, value: ((newPercent - 1) * item.value) / 100, trial: 'onePlus' });
+                    halfPlus.push({ material: item._id, value: ((newPercent - 0.5) * item.value) / 100, trial: 'halfPlus' });
+                    const normal = { material: item._id, value: (newPercent * item.value) / 100, trial: 'normal' };
+                    halfLess.push({ material: item._id, value: ((newPercent + 0.5) * item.value) / 100, trial: 'halfLess' });
+                    oneLess.push({ material: item._id, value: ((newPercent + 1) * item.value) / 100, trial: 'oneLess' });
+                    percentOfDosage.push(normal);
+                    newPercentOfDosage.push([
+                        onePlus[i].value,
+                        halfPlus[i].value,
+                        normal.value,
+                        halfLess[i].value,
+                        oneLess[i].value,
+                    ]);
+                    percentOfDosageToReturn.push([oneLess[i], halfLess[i], normal, halfPlus[i], onePlus[i]]);
                 }
                 percentOfDosageToReturn.push([
-                    { trial: 'oneLess', value: trial - 1 },
-                    { value: trial - 0.5, trial: 'halfLess' },
-                    { value: trial, trial: 'normal' },
-                    { value: trial + 0.5, trial: 'halfPlus' },
-                    { value: trial + 1, trial: 'onePlus' },
+                    { trial: 'oneLess', value: trial - 1, material: 'binder' },
+                    { trial: 'halfLess', value: trial - 0.5, material: 'binder' },
+                    { trial: 'normal', value: trial, material: 'binder' },
+                    { trial: 'halfPlus', value: trial + 0.5, material: 'binder' },
+                    { trial: 'onePlus', value: trial + 1, material: 'binder' },
                 ]);
                 const bandsOfTemperatures = yield this.getBandsOfTemperatures(binder);
-                console.log(bandsOfTemperatures);
-                const result = {
-                    bandsOfTemperatures,
-                    percentsOfDosage: percentOfDosageToReturn,
-                    newPercentOfDosage,
+                return {
+                    result: {
+                        bandsOfTemperatures,
+                        percentsOfDosage: percentOfDosageToReturn,
+                        newPercentOfDosage,
+                    },
                 };
-                return { result };
             }
             catch (error) {
+                this.logger.error('Error calculating initial binder trial', error);
                 throw error;
             }
         });
     }
-    getBandsOfTemperatures(binder) {
+    getBandsOfTemperatures(binderId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const resultRotational = yield this.viscosityRepository.findOne({
-                    'generalData.material._id': binder,
+                    'generalData.material._id': binderId,
                 });
                 if (!resultRotational) {
-                    throw new common_1.NotFoundException(`O ligante selecionado não passou por nenhum ensaio de viscosidade ainda.`);
+                    throw new common_1.NotFoundException('O ligante selecionado não passou por nenhum ensaio de viscosidade ainda.');
                 }
+                const payload = extractViscosityPayload(resultRotational);
                 const machiningTemperatureRange = {
-                    higher: resultRotational.results.machiningTemperatureRange.higher,
-                    average: (resultRotational.results.machiningTemperatureRange.higher +
-                        resultRotational.results.machiningTemperatureRange.lower) /
-                        2,
-                    lower: resultRotational.results.machiningTemperatureRange.lower,
+                    higher: payload.machiningTemperatureRange.higher,
+                    average: (payload.machiningTemperatureRange.higher + payload.machiningTemperatureRange.lower) / 2,
+                    lower: payload.machiningTemperatureRange.lower,
                 };
                 const compressionTemperatureRange = {
-                    higher: resultRotational.results.compressionTemperatureRange.higher,
-                    average: (resultRotational.results.compressionTemperatureRange.higher +
-                        resultRotational.results.compressionTemperatureRange.lower) /
+                    higher: payload.compressionTemperatureRange.higher,
+                    average: (payload.compressionTemperatureRange.higher + payload.compressionTemperatureRange.lower) /
                         2,
-                    lower: resultRotational.results.compressionTemperatureRange.lower,
+                    lower: payload.compressionTemperatureRange.lower,
                 };
-                let higherAggregateTemperature, lowerAggregateTemperature;
-                if (resultRotational.results.machiningTemperatureRange.higher + 15 > 177)
-                    higherAggregateTemperature = 177;
-                else
-                    higherAggregateTemperature = resultRotational.results.machiningTemperatureRange.higher + 15;
-                if (resultRotational.results.machiningTemperatureRange.lower + 15 > 177)
-                    lowerAggregateTemperature = 177;
-                else
-                    lowerAggregateTemperature = resultRotational.results.machiningTemperatureRange.lower + 15;
-                const aggregateTemperatureRange = {
+                const higherAggregateTemperature = Math.min(payload.machiningTemperatureRange.higher + 15, 177);
+                const lowerAggregateTemperature = Math.min(payload.machiningTemperatureRange.lower + 15, 177);
+                const AggregateTemperatureRange = {
                     higher: higherAggregateTemperature,
                     average: (higherAggregateTemperature + lowerAggregateTemperature) / 2,
                     lower: lowerAggregateTemperature,
                 };
-                return { machiningTemperatureRange, compressionTemperatureRange, aggregateTemperatureRange };
+                const bands = {
+                    machiningTemperatureRange,
+                    compressionTemperatureRange,
+                    AggregateTemperatureRange,
+                };
+                return bands;
             }
             catch (error) {
+                this.logger.error('Error fetching bands of temperatures', error);
                 throw error;
             }
         });
@@ -167,18 +180,20 @@ let SetBinderTrial_Marshall_Service = SetBinderTrial_Marshall_Service_1 = class 
     saveStep4Data(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                this.logger.log('save marshall binder trial step on binder-trial.marshall.service.ts > [body]', { body });
-                const { name } = body.binderTrialData;
+                this.logger.log('Saving Marshall binder trial step 4', { body, userId });
+                const _a = body.binderTrialData, { name } = _a, binderTrialWithoutName = __rest(_a, ["name"]);
                 const marshallExists = yield this.marshallRepository.findOne(name, userId);
-                const _a = body.binderTrialData, { name: materialName } = _a, binderTrialWithoutName = __rest(_a, ["name"]);
-                const marshallWithBinderTrial = Object.assign(Object.assign({}, marshallExists._doc), { binderTrialData: binderTrialWithoutName });
-                yield this.marshallModel.updateOne({ _id: marshallExists._doc._id }, marshallWithBinderTrial);
-                if (marshallExists._doc.generalData.step < 4) {
-                    yield this.marshallRepository.saveStep(marshallExists, 4);
+                if (!marshallExists)
+                    throw new common_1.NotFoundException('Marshall not found');
+                marshallExists.set({ binderTrialData: binderTrialWithoutName });
+                yield marshallExists.save();
+                if (marshallExists.step < 4) {
+                    yield this.marshallRepository.saveStep(marshallExists._id, 4);
                 }
                 return true;
             }
             catch (error) {
+                this.logger.error('Error saving step 4 binder trial data', error);
                 throw error;
             }
         });

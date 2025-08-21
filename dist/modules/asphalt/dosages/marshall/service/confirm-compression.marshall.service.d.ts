@@ -1,11 +1,31 @@
 import { Model } from 'mongoose';
 import { MarshallRepository } from '../repository';
 import { MarshallDocument } from '../schemas';
-export declare class ConfirmCompression_Marshall_Service {
-    private marshallModel;
-    private readonly marshallRepository;
-    private logger;
-    constructor(marshallModel: Model<MarshallDocument>, marshallRepository: MarshallRepository);
-    confirmSpecificGravity(body: any): Promise<any>;
-    saveStep8Data(body: any, userId: string): Promise<boolean>;
+import { ConfirmationCompressionDataDTO } from '../dto/confirmation-compresion-data.dto';
+interface ConfirmSpecificGravityBody {
+    method: 'DMT' | 'GMM';
+    listOfSpecificGravities: number[];
+    percentsOfDosage: {
+        [key: string]: number;
+    }[];
+    confirmedPercentsOfDosage: number[];
+    optimumContent: number;
+    gmm?: number;
+    valuesOfSpecificGravity?: {
+        massOfDrySample: number;
+        massOfContainerWaterSample: number;
+        massOfContainerWater: number;
+    };
 }
+export declare class ConfirmCompression_Marshall_Service {
+    private readonly marshallRepository;
+    private readonly marshallModel;
+    private logger;
+    constructor(marshallRepository: MarshallRepository, marshallModel: Model<MarshallDocument>);
+    confirmSpecificGravity(body: ConfirmSpecificGravityBody): Promise<{
+        result: number;
+        type: 'DMT' | 'GMM';
+    }>;
+    saveStep8Data(confirmationCompressionData: ConfirmationCompressionDataDTO, userId: string): Promise<boolean>;
+}
+export {};

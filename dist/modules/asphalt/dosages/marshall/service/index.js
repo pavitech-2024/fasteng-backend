@@ -22,7 +22,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MarshallService = void 0;
 const common_1 = require("@nestjs/common");
 const general_data_marshall_service_1 = require("./general-data.marshall.service");
-const material_selection_marshall_service_1 = require("./material-selection.marshall.service");
 const index_1 = require("../repository/index");
 const granulometry_composition_marshall_service_1 = require("./granulometry-composition.marshall.service");
 const initial_binder_trial_service_1 = require("./initial-binder-trial.service");
@@ -30,11 +29,12 @@ const maximumMixtureDensity_service_1 = require("./maximumMixtureDensity.service
 const volumetric_parameters_service_1 = require("./volumetric-parameters.service");
 const optimum_binder_marshall_service_1 = require("./optimum-binder.marshall.service");
 const confirm_compression_marshall_service_1 = require("./confirm-compression.marshall.service");
+const base_marshall_service_1 = require("./base.marshall.service");
 let MarshallService = MarshallService_1 = class MarshallService {
-    constructor(marshall_repository, generalData_Service, materialSelection_Service, granulometryComposition_Service, setBinderTrial_Service, maximumMixtureDensity_Service, volumetricParameters_Service, optimumBinder_Service, confirmCompression_Service) {
+    constructor(marshall_repository, generalData_Service, baseMarshallService, granulometryComposition_Service, setBinderTrial_Service, maximumMixtureDensity_Service, volumetricParameters_Service, optimumBinder_Service, confirmCompression_Service) {
         this.marshall_repository = marshall_repository;
         this.generalData_Service = generalData_Service;
-        this.materialSelection_Service = materialSelection_Service;
+        this.baseMarshallService = baseMarshallService;
         this.granulometryComposition_Service = granulometryComposition_Service;
         this.setBinderTrial_Service = setBinderTrial_Service;
         this.maximumMixtureDensity_Service = maximumMixtureDensity_Service;
@@ -42,6 +42,24 @@ let MarshallService = MarshallService_1 = class MarshallService {
         this.optimumBinder_Service = optimumBinder_Service;
         this.confirmCompression_Service = confirmCompression_Service;
         this.logger = new common_1.Logger(MarshallService_1.name);
+    }
+    saveStepData(body) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { dosageId, step, data, userId } = body;
+                if (!dosageId || !step) {
+                    throw new Error('dosageId and step are required');
+                }
+                const validStep = step;
+                const success = yield this.baseMarshallService.saveStepData(dosageId, validStep, data, userId);
+                return { success };
+            }
+            catch (error) {
+                this.logger.error(`error saving step data > [error]: ${error}`);
+                const { status, name, message } = error;
+                return { success: false, error: { status, message, name } };
+            }
+        });
     }
     getAllDosages(userId) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -69,20 +87,6 @@ let MarshallService = MarshallService_1 = class MarshallService {
             }
         });
     }
-    getUserMaterials(userId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const materials = yield this.materialSelection_Service.getMaterials(userId);
-                this.logger.log(`materials returned > [materials]`);
-                return { materials, success: true };
-            }
-            catch (error) {
-                this.logger.error(`error on getting all materials by user id > [error]: ${error}`);
-                const { status, name, message } = error;
-                return { materials: [], success: false, error: { status, message, name } };
-            }
-        });
-    }
     getDosageById(dosageId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -94,19 +98,6 @@ let MarshallService = MarshallService_1 = class MarshallService {
                 this.logger.error(`error on getting dosage by id > [error]: ${error}`);
                 const { status, name, message } = error;
                 return { materials: [], success: false, error: { status, message, name } };
-            }
-        });
-    }
-    saveMaterialSelectionStep(body, userId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const success = yield this.materialSelection_Service.saveMaterials(body, userId);
-                return { success };
-            }
-            catch (error) {
-                this.logger.error(`error on save materials data marshall step > [error]: ${error}`);
-                const { status, name, message } = error;
-                return { success: false, error: { status, message, name } };
             }
         });
     }
@@ -315,21 +306,18 @@ let MarshallService = MarshallService_1 = class MarshallService {
     }
     saveStep3Data(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const success = yield this.granulometryComposition_Service.saveStep3Data(body, userId);
-                return { success };
-            }
-            catch (error) {
-                this.logger.error(`error on save materials data abcp step > [error]: ${error}`);
-                const { status, name, message } = error;
-                return { success: false, error: { status, message, name } };
-            }
+            return this.saveStepData({
+                dosageId: body.dosageId,
+                step: 'granulometryComposition',
+                data: body.data,
+                userId
+            });
         });
     }
     calculateStep4Data(body) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const binderTrial = yield this.setBinderTrial_Service.calculateInitlaBinderTrial(body);
+                const binderTrial = yield this.setBinderTrial_Service.calculateInitialBinderTrial(body);
                 const data = {
                     percentsOfDosage: binderTrial.result.percentsOfDosage,
                     bandsOfTemperatures: binderTrial.result.bandsOfTemperatures,
@@ -349,34 +337,35 @@ let MarshallService = MarshallService_1 = class MarshallService {
     }
     saveStep4Data(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const success = yield this.setBinderTrial_Service.saveStep4Data(body, userId);
-                return { success };
-            }
-            catch (error) {
-                this.logger.error(`error on save step data of marshall dosage > [error]: ${error}`);
-                const { status, name, message } = error;
-                return { success: false, error: { status, message, name } };
-            }
+            return this.saveStepData({
+                dosageId: body.dosageId,
+                step: 'binderTrial',
+                data: body.data,
+                userId
+            });
         });
     }
-    getIndexesOfMissesSpecificGravity(aggregates) {
+    getIndexesOfMissesSpecificGravity(dto) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const data = yield this.maximumMixtureDensity_Service.getIndexesOfMissesSpecificGravity(aggregates);
+                const data = yield this.maximumMixtureDensity_Service.getIndexesOfMissesSpecificGravity(dto);
                 return { data, success: true };
             }
             catch (error) {
-                this.logger.error(`error on save step data of marshall dosage > [error]: ${error}`);
+                this.logger.error(`Error getting indexes of misses specific gravity: ${error.message}`, error.stack);
                 const { status, name, message } = error;
-                return { success: false, error: { status, message, name } };
+                return {
+                    data: null,
+                    success: false,
+                    error: { status, message, name }
+                };
             }
         });
     }
-    calculateDmtData(body) {
+    calculateDmtData(dto) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const dmt = yield this.maximumMixtureDensity_Service.calculateDmtData(body);
+                const dmt = yield this.maximumMixtureDensity_Service.calculateDmtData(dto);
                 const data = {
                     maxSpecificGravity: dmt.maxSpecificGravity.result,
                     method: dmt.maxSpecificGravity.method,
@@ -388,16 +377,20 @@ let MarshallService = MarshallService_1 = class MarshallService {
                 };
             }
             catch (error) {
-                this.logger.error(`error on getting the step 5 dmt data > [error]: ${error}`);
+                this.logger.error(`Error calculating DMT data: ${error.message}`, error.stack);
                 const { status, name, message } = error;
-                return { data: null, success: false, error: { status, message, name } };
+                return {
+                    data: null,
+                    success: false,
+                    error: { status, message, name }
+                };
             }
         });
     }
-    calculateGmmData(body) {
+    calculateGmmData(dto) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const gmm = yield this.maximumMixtureDensity_Service.calculateGmmData(body);
+                const gmm = yield this.maximumMixtureDensity_Service.calculateGmmData(dto);
                 const data = {
                     maxSpecificGravity: gmm.maxSpecificGravity.result,
                     method: gmm.maxSpecificGravity.method,
@@ -409,16 +402,20 @@ let MarshallService = MarshallService_1 = class MarshallService {
                 };
             }
             catch (error) {
-                this.logger.error(`error on getting the step 5 dmt data > [error]: ${error}`);
+                this.logger.error(`Error calculating GMM data: ${error.message}`, error.stack);
                 const { status, name, message } = error;
-                return { data: null, success: false, error: { status, message, name } };
+                return {
+                    data: null,
+                    success: false,
+                    error: { status, message, name }
+                };
             }
         });
     }
-    calculateRiceTest(body) {
+    calculateRiceTest(dto) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const riceTest = yield this.maximumMixtureDensity_Service.calculateRiceTest(body);
+                const riceTest = yield this.maximumMixtureDensity_Service.calculateRiceTest(dto);
                 const data = {
                     maxSpecificGravity: riceTest,
                     method: 'GMM'
@@ -429,22 +426,29 @@ let MarshallService = MarshallService_1 = class MarshallService {
                 };
             }
             catch (error) {
-                this.logger.error(`error on getting the step 5 dmt data > [error]: ${error}`);
+                this.logger.error(`Error calculating rice test: ${error.message}`, error.stack);
                 const { status, name, message } = error;
-                return { data: null, success: false, error: { status, message, name } };
+                return {
+                    data: null,
+                    success: false,
+                    error: { status, message, name }
+                };
             }
         });
     }
-    saveMistureMaximumDensityData(body, userId) {
+    saveMistureMaximumDensityData(dto, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const success = yield this.maximumMixtureDensity_Service.saveMistureMaximumDensityData(body, userId);
+                const success = yield this.maximumMixtureDensity_Service.saveMistureMaximumDensityData(dto, userId);
                 return { success };
             }
             catch (error) {
-                this.logger.error(`error on save step data of marshall dosage > [error]: ${error}`);
+                this.logger.error(`Error saving maximum mixture density data: ${error.message}`, error.stack);
                 const { status, name, message } = error;
-                return { success: false, error: { status, message, name } };
+                return {
+                    success: false,
+                    error: { status, message, name }
+                };
             }
         });
     }
@@ -540,15 +544,12 @@ let MarshallService = MarshallService_1 = class MarshallService {
     }
     saveStep7Data(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const success = yield this.optimumBinder_Service.saveStep7Data(body, userId);
-                return { success };
-            }
-            catch (error) {
-                this.logger.error(`error on save step 7 data of marshall dosage > [error]: ${error}`);
-                const { status, name, message } = error;
-                return { success: false, error: { status, message, name } };
-            }
+            return this.saveStepData({
+                dosageId: body.dosageId,
+                step: 'optimumBinderContent',
+                data: body.data,
+                userId
+            });
         });
     }
     confirmSpecificGravity(body) {
@@ -591,15 +592,12 @@ let MarshallService = MarshallService_1 = class MarshallService {
     }
     saveStep8Data(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const success = yield this.confirmCompression_Service.saveStep8Data(body, userId);
-                return { success };
-            }
-            catch (error) {
-                this.logger.error(`error on save step 8 data of marshall dosage > [error]: ${error}`);
-                const { status, name, message } = error;
-                return { success: false, error: { status, message, name } };
-            }
+            return this.saveStepData({
+                dosageId: body.dosageId,
+                step: 'confirmationCompression',
+                data: body.data,
+                userId
+            });
         });
     }
     saveMarshallDosage(body, userId) {
@@ -634,7 +632,7 @@ exports.MarshallService = MarshallService = MarshallService_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [index_1.MarshallRepository,
         general_data_marshall_service_1.GeneralData_Marshall_Service,
-        material_selection_marshall_service_1.MaterialSelection_Marshall_Service,
+        base_marshall_service_1.BaseMarshallService,
         granulometry_composition_marshall_service_1.GranulometryComposition_Marshall_Service,
         initial_binder_trial_service_1.SetBinderTrial_Marshall_Service,
         maximumMixtureDensity_service_1.MaximumMixtureDensity_Marshall_Service,

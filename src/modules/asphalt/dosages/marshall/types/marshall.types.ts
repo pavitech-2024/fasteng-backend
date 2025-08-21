@@ -28,3 +28,13 @@ export type ViscosityPayload = {
   compressionTemperatureRange: ViscosityTempRange;
 };
 export type ViscosityResultShape = { results: ViscosityPayload } | { data: ViscosityPayload };
+
+export type MarshallStep = 
+  | 'generalData'
+  | 'materialSelection'
+  | 'granulometryComposition'
+  | 'binderTrial'
+  | 'maximumMixtureDensity'
+  | 'volumetricParameters'
+  | 'optimumBinderContent'
+  | 'confirmationCompression';
