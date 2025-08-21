@@ -1,3 +1,4 @@
+//Refatorado pra usar inteiramente o schema, ja que ele faz apena assinaturas brutas ao banco.
 import { InjectModel } from "@nestjs/mongoose";
 import { DATABASE_CONNECTION } from "../../../../../infra/mongoose/database.config";
 import { FilterQuery, Model } from "mongoose";

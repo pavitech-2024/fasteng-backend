@@ -2,7 +2,8 @@ import { Body, Controller, Delete, Get, Logger, Param, Post, Res } from '@nestjs
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { MarshallService } from '../service';
-import { MarshallInitDto } from '../dto/marshall-init.dto';
+//import { MarshallInitDto } from '../dto/marshall-init.dto';
+import { MarshallGeneralDataDTO } from '../dto/marshal-general-data.dto'; //adicionado pra substituir o MarshalInitDto.
 
 @ApiTags('marshall')
 @Controller('asphalt/dosages/marshall')
@@ -37,8 +38,9 @@ export class MarshallController {
       },
     },
   })
+  //Alterado p Usar MarshalGeneralDataDTO no body;
   @ApiResponse({ status: 400, description: 'Erro ao verificar se é possível criar uma Marshall com os dados enviados.' })
-  async verifyInitMarshall(@Res() response: Response, @Body() body: MarshallInitDto, @Param('id') userId: string) {
+  async verifyInitMarshall(@Res() response: Response, @Body() body: MarshallGeneralDataDTO, @Param('id') userId: string) {
     this.logger.log('verify init Marshall > [body]');
 
     const status = await this.marshallService.verifyInitMarshall(body, userId);

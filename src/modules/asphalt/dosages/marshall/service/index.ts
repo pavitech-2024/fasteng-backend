@@ -4,6 +4,7 @@ import { GeneralData_Marshall_Service } from "./general-data.marshall.service";
 //import { MaterialSelection_Marshall_Service } from "./material-selection.marshall.service";
 import { Marshall } from "../schemas";
 import { MarshallRepository } from '../repository/index';
+import { MarshallGeneralDataDTO } from "../dto/marshal-general-data.dto";
 import { NotFound } from "../../../../../utils/exceptions";
 import { MarshallStep3Dto } from "../dto/step-3-marshall.dto";
 import { GranulometryComposition_Marshall_Service } from "./granulometry-composition.marshall.service";
@@ -44,8 +45,8 @@ export class MarshallService {
       throw error;
     }
   }
-
-  async verifyInitMarshall(body: MarshallInitDto, userId: string) {
+//Corrigido pra MarshallGeneralDataDTO
+  async verifyInitMarshall(body: MarshallGeneralDataDTO, userId: string) {
     try {
       const dosage = await this.generalData_Service.verifyInitMarshall(body, userId);
 
@@ -317,7 +318,7 @@ export class MarshallService {
 
   async calculateStep4Data(body: any) {
     try {
-      const binderTrial = await this.setBinderTrial_Service.calculateInitlaBinderTrial(body);
+      const binderTrial = await this.setBinderTrial_Service.calculateInitialBinderTrial(body);
 
       const data = {
         percentsOfDosage: binderTrial.result.percentsOfDosage,

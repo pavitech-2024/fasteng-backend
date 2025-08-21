@@ -17,7 +17,7 @@ export class GeneralData_Marshall_Service {
     private readonly marshallRepository: MarshallRepository,
   ) {}
 
-  // Verifica se já existe ensaio, cria parcial se não existir
+  // Verifica se já existe ensaio, cria parcial q é parecido com optional do sequelize se não existir
   async verifyInitMarshall(marshall: MarshallGeneralDataDTO, userId: string) {
     try {
       this.logger.log('Verify init Marshall');
