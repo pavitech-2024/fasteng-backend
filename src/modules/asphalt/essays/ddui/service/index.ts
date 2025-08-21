@@ -39,14 +39,14 @@ export class DduiService {
     try {
       const {
         name,
-        material: { _id: materialId },
+        // material: { _id: materialId },
         userId,
       } = body.generalData;
 
       // verifica se existe uma ddui com mesmo nome , materialId e userId no banco de dados
       const alreadyExists = await this.ddui_Repository.findOne({
         'generalData.name': name,
-        'generalData.material._id': materialId,
+        // 'generalData.material._id': materialId,
         'generalData.userId': userId,
       });
 

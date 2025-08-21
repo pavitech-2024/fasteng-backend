@@ -33,11 +33,7 @@ export class MaterialsController {
   async getAllByUserId(@Param('id') userId: string) {
     this.logger.log(`get all materials by user id > [id]: ${userId}`);
 
-    const materials = await this.materialsService.getAllMaterials(userId).then((materials) => [
-      {
-        materials: materials,
-      },
-    ]);
+    const materials = await this.materialsService.getAllMaterials(userId);
 
     return materials;
   }
