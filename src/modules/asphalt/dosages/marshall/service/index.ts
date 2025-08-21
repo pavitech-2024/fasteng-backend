@@ -1,7 +1,7 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { MarshallInitDto } from "../dto/marshall-init.dto";
 import { GeneralData_Marshall_Service } from "./general-data.marshall.service";
-import { MaterialSelection_Marshall_Service } from "./material-selection.marshall.service";
+//import { MaterialSelection_Marshall_Service } from "./material-selection.marshall.service";
 import { Marshall } from "../schemas";
 import { MarshallRepository } from '../repository/index';
 import { NotFound } from "../../../../../utils/exceptions";
@@ -20,7 +20,7 @@ export class MarshallService {
   constructor(
     private readonly marshall_repository: MarshallRepository,
     private readonly generalData_Service: GeneralData_Marshall_Service,
-    private readonly materialSelection_Service: MaterialSelection_Marshall_Service,
+    //private readonly materialSelection_Service: MaterialSelection_Marshall_Service,
     private readonly granulometryComposition_Service: GranulometryComposition_Marshall_Service,
     private readonly setBinderTrial_Service: SetBinderTrial_Marshall_Service,
     private readonly maximumMixtureDensity_Service: MaximumMixtureDensity_Marshall_Service,
@@ -57,6 +57,7 @@ export class MarshallService {
     }
   }
 
+  /*
   async getUserMaterials(userId: string) {
     try {
       const materials = await this.materialSelection_Service.getMaterials(userId);
@@ -69,7 +70,7 @@ export class MarshallService {
       const { status, name, message } = error;
       return { materials: [], success: false, error: { status, message, name } };
     }
-  }
+  }*/
 
   async getDosageById(dosageId: string) {
     try {
@@ -85,6 +86,7 @@ export class MarshallService {
     }
   }
 
+  /*
   async saveMaterialSelectionStep(body: any, userId: string) {
     try {
       const success = await this.materialSelection_Service.saveMaterials(body, userId);
@@ -96,7 +98,7 @@ export class MarshallService {
       return { success: false, error: { status, message, name } };
     }
   }
-
+*/
   async getStep3Data(body: MarshallStep3Dto) {
     try {
       const { dnitBand, aggregates } = body;

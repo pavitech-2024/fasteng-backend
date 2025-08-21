@@ -4,101 +4,112 @@ import { DATABASE_CONNECTION } from '../../../../../infra/mongoose/database.conf
 import { Model } from 'mongoose';
 import { MarshallRepository } from '../repository';
 import { Marshall, MarshallDocument } from '../schemas';
+import { ConfirmationCompressionDataDTO } from '../dto/confirmation-compresion-data.dto';
+
+interface ConfirmSpecificGravityBody {
+  method: 'DMT' | 'GMM';
+  listOfSpecificGravities: number[];
+  percentsOfDosage: { [key: string]: number }[];
+  confirmedPercentsOfDosage: number[];
+  optimumContent: number;
+  gmm?: number;
+  valuesOfSpecificGravity?: {
+    massOfDrySample: number;
+    massOfContainerWaterSample: number;
+    massOfContainerWater: number;
+  };
+}
 
 @Injectable()
 export class ConfirmCompression_Marshall_Service {
   private logger = new Logger(ConfirmCompression_Marshall_Service.name);
 
   constructor(
-    @InjectModel(Marshall.name, DATABASE_CONNECTION.ASPHALT)
-    private marshallModel: Model<MarshallDocument>,
     private readonly marshallRepository: MarshallRepository,
+    @InjectModel(Marshall.name, DATABASE_CONNECTION.ASPHALT)
+    private readonly marshallModel: Model<MarshallDocument>,
   ) {}
 
-  async confirmSpecificGravity(body: any) {
+  async confirmSpecificGravity(body: ConfirmSpecificGravityBody): Promise<{ result: number; type: 'DMT' | 'GMM' }> {
     try {
-      this.logger.log('confirming specific gravity on confirm-compression.marshall.service.ts > [body]', { body });
-      
+      this.logger.log('Confirming specific gravity', { body });
 
-      const { 
-        method, 
-        listOfSpecificGravities, 
-        percentsOfDosage, 
-        confirmedPercentsOfDosage, 
+      const {
+        method,
+        listOfSpecificGravities,
+        percentsOfDosage,
+        confirmedPercentsOfDosage,
         optimumContent,
         gmm,
-        valuesOfSpecificGravity
+        valuesOfSpecificGravity,
       } = body;
 
-      let confirmedSpecificGravity;
-      let GMM;
+      const formattedPercentsOfDosage: number[] = [];
+      const ids = new Set<string>();
 
-      let formattedPercentsOfDosage = [];
-
-      const ids1 = new Set();
-
-      Object.keys(percentsOfDosage[0]).forEach(key => {
+      Object.keys(percentsOfDosage[0]).forEach((key) => {
         const id = key.split('_')[1];
-        ids1.add(id);
+        ids.add(id);
         const value = percentsOfDosage[0][key];
-        const index = Array.from(ids1).indexOf(id);
+        const index = Array.from(ids).indexOf(id);
         formattedPercentsOfDosage[index] = value;
       });
 
       if (method === 'DMT') {
         const denominador = formattedPercentsOfDosage.reduce(
-          (acc, percent, i) => (acc += confirmedPercentsOfDosage[i] / listOfSpecificGravities[i]),
+          (acc, percent, i) => acc + confirmedPercentsOfDosage[i] / listOfSpecificGravities[i],
           0,
         );
         const DMT = 100 / (denominador + optimumContent / 1.03);
-        confirmedSpecificGravity = {
-          result: DMT,
-          type: 'DMT',
-        };
-        return confirmedSpecificGravity;
-      } else if (method === 'GMM') {
-        if (gmm) GMM = gmm;
-        else GMM = valuesOfSpecificGravity.massOfDrySample / (valuesOfSpecificGravity.massOfDrySample - valuesOfSpecificGravity.massOfContainerWaterSample + valuesOfSpecificGravity.massOfContainerWater);
-        confirmedSpecificGravity = {
-            result: GMM,
-            type: "GMM"
-        }
-        return confirmedSpecificGravity;
+        return { result: DMT, type: 'DMT' };
+      } else {
+        const GMM =
+          gmm ??
+          valuesOfSpecificGravity.massOfDrySample /
+            (valuesOfSpecificGravity.massOfDrySample -
+              valuesOfSpecificGravity.massOfContainerWaterSample +
+              valuesOfSpecificGravity.massOfContainerWater);
+
+        return { result: GMM, type: 'GMM' };
       }
     } catch (error) {
+      this.logger.error('Error confirming specific gravity', error);
       throw error;
     }
   }
 
-  async saveStep8Data(body: any, userId: string) {
-    try {
-      this.logger.log(
-        'save marshall confirmation compression step on confirmation-compression.marshall.service.ts > [body]',
-        {
-          body,
-        },
-      );
+ async saveStep8Data(
+  confirmationCompressionData: ConfirmationCompressionDataDTO,
+  userId: string,
+): Promise<boolean> {
+  try {
+    this.logger.log('Saving step 8 confirmation compression', { confirmationCompressionData });
 
-      const { name } = body.confirmationCompressionData;
+    // Busca o documento pelo nome do ensaio (precisa existir 'name' no DTO)
+    const marshallExists = await this.marshallRepository.findOne(
+      confirmationCompressionData.name,
+      userId,
+    );
 
-      const marshallExists: any = await this.marshallRepository.findOne(name, userId);
+    if (!marshallExists) throw new Error('Marshall not found');
 
-      const { name: materialName, ...confirmationCompressionWithoutName } = body.confirmationCompressionData;
+    // Atualiza apenas a parte de confirmationCompressionData
+    marshallExists.confirmationCompressionData = confirmationCompressionData;
 
-      const marshallWithConfirmationCompression = {
-        ...marshallExists._doc,
-        confirmationCompressionData: confirmationCompressionWithoutName,
-      };
+    // Salva o documento no banco
+    await marshallExists.save();
 
-      await this.marshallModel.updateOne({ _id: marshallExists._doc._id }, marshallWithConfirmationCompression);
-
-      if (marshallExists._doc.generalData.step < 8) {
-        await this.marshallRepository.saveStep(marshallExists, 8);
-      }
-
-      return true;
-    } catch (error) {
-      throw error;
+    // Atualiza o step no documento raiz se necessário
+    if (marshallExists.step < 8) {
+      await this.marshallRepository.saveStep(marshallExists._id, 8);
     }
+
+    return true;
+  } catch (error) {
+    this.logger.error('Error saving step 8 data', error);
+    throw error;
   }
+}
+
+
 }

@@ -45,7 +45,7 @@ export class MarshallController {
 
     return response.status(200).json(status);
   }
-
+/*
   @Get('material-selection/:id')
   @ApiOperation({ summary: 'Retorna todos os materiais do banco de dados de um usuário, que possuam os ensaios para a dosagem.' })
   @ApiResponse({ status: 200, description: 'Materiais encontrados com sucesso!' })
@@ -58,7 +58,7 @@ export class MarshallController {
 
     return response.status(200).json(status);
   }
-
+*/
   @Get(':id')
   @ApiOperation({ summary: 'Retorna uma dosagem do banco de dados com o id informado.' })
   @ApiResponse({ status: 200, description: 'Dosagem encontrada com sucesso!' })
@@ -72,7 +72,7 @@ export class MarshallController {
     return response.status(200).json(status);
   }
 
-  @Post('save-material-selection-step/:id')
+  /*@Post('save-material-selection-step/:id')
   async saveMaterialSelectionStep(
     @Res() response: Response,
     @Body() body: any,
@@ -85,7 +85,7 @@ export class MarshallController {
 
     return response.status(200).json(status);
   }
-
+*/
   @Post('step-3-data')
   @ApiOperation({ summary: 'Retorna os dados iniciais necessários para a terceira tela (composição granulométrica) da dosagem' })
   @ApiResponse({
