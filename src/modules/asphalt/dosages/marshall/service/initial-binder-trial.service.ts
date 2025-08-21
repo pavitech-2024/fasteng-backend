@@ -1,3 +1,4 @@
+//Codigo puramente refatorado pra remover any dos bodytyps, juntamente com responses adequados
 import { TemperatureRangeDTO, BandsOfTemperaturesDTO, BinderTrialDataDTO } from './../dto/binder-trial-data.dto';
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';

@@ -1,5 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsNumber } from 'class-validator';
+import { ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
+import { ApiPropertyOptional } from '@nestjs/swagger';
+import { IsOptional } from 'class-validator';
+import { IsBoolean } from 'class-validator';
 
 export class TemperatureRangeDTO {
   @ApiProperty({ example: 150 })
@@ -23,6 +28,8 @@ export class BandsOfTemperaturesDTO {
   AggregateTemperatureRange: TemperatureRangeDTO;
 }
 
+
+
 export class BinderTrialDataDTO {
   @ApiProperty({ example: 1 })
   @IsNumber()
@@ -38,4 +45,16 @@ export class BinderTrialDataDTO {
 
   @ApiProperty({ type: BandsOfTemperaturesDTO })
   bandsOfTemperatures: BandsOfTemperaturesDTO;
+}
+
+export class SaveMarshallDosageDTO {
+  @ApiProperty({ type: BinderTrialDataDTO })
+  @ValidateNested()
+  @Type(() => BinderTrialDataDTO)
+  data: BinderTrialDataDTO;
+
+  @ApiPropertyOptional({ description: 'Indica se é apenas uma consulta' })
+  @IsOptional()
+  @IsBoolean()
+  isConsult?: boolean;
 }

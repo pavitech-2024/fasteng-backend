@@ -1,3 +1,4 @@
+//aqui existem tpos como "indexesOfMissesSpecificGravity" e "missingSpecificGravity" que não existem no schema
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Marshall, MarshallDocument } from '../schemas';
