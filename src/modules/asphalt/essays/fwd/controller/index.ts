@@ -69,14 +69,14 @@ export class FwdController {
   }
 
   @Delete('delete-essay/:id')
-  @ApiOperation({ summary: 'Se possível, deleta os dados do ensaio fwd no banco de dados.' })
+  @ApiOperation({ summary: 'Deleta os dados do ensaio fwd no banco de dados.' })
   @ApiResponse({
     status: 200,
     description: 'Ensaio de fwd deletado com sucesso.',
     content: { 'application/json': { schema: { example: { success: true, data: 'essay data' } } } },
   })
   @ApiResponse({ status: 400, description: 'Erro ao deletar o ensaio fwd no banco de dados.' })
-  async deleteEssay(@Res() response: Response, @Param() id: string) {
+  async deleteEssay(@Res() response: Response, @Param('id') id: string) {
     this.logger.log('delete fwd > [body]');
 
     const fwd = await this.fwdService.deleteEssay(id);

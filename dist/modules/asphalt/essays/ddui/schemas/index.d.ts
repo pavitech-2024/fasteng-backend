@@ -1,11 +1,9 @@
-import { Material } from "../../../../../modules/asphalt/materials/schemas";
 import { HydratedDocument } from "mongoose";
 import { Calc_Ddui_Out } from "../dto/calc-ddui.dto";
 export type DduiDocument = HydratedDocument<Ddui>;
 export type DduiGeneralData = {
     userId: string;
     name: string;
-    material: Material;
 };
 export type Ddui_Step2 = {
     dnitRange: string;
@@ -28,7 +26,7 @@ export type Ddui_Step3 = {
     }[];
 };
 export declare class Ddui {
-    _id: string;
+    _id?: string;
     generalData: DduiGeneralData;
     dduiStep2: Ddui_Step2;
     dduiStep3: Ddui_Step3;

@@ -61,7 +61,7 @@ let SamplesService = SamplesService_1 = class SamplesService {
             }
         });
     }
-    getAllSamples(userId) {
+    getAllSamplesByUserId(userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const samples = yield this.samplesRepository.find();

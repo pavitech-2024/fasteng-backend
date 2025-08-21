@@ -88,7 +88,7 @@ export class DduiController {
     content: { 'application/json': { schema: { example: { success: true, data: 'essay data' } } } },
   })
   @ApiResponse({ status: 400, description: 'Erro ao deletar o ensaio ddui no banco de dados.' })
-  async deleteEssay(@Res() response: Response, @Param() id: string) {
+  async deleteEssay(@Res() response: Response, @Param('id') id: string) {
     this.logger.log('delete ddui > [body]');
 
     const ddui = await this.dduiService.deleteEssay(id);
