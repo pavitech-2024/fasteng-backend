@@ -7,7 +7,8 @@ export class FwdRepository {
   constructor(@InjectModel(Fwd.name, DATABASE_CONNECTION.ASPHALT) private fwdModel: Model<FwdDocument>) {}
 
   async findOne(fwdFilterQuery: FilterQuery<Fwd>): Promise<Fwd> {
-    return this.fwdModel.findOne(fwdFilterQuery);
+    const essay = await this.fwdModel.findOne(fwdFilterQuery)
+    return essay;
   }
 
   async findAll(): Promise<Fwd[]> {

@@ -32,7 +32,8 @@ let FwdRepository = class FwdRepository {
     }
     findOne(fwdFilterQuery) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.fwdModel.findOne(fwdFilterQuery);
+            const essay = yield this.fwdModel.findOne(fwdFilterQuery);
+            return essay;
         });
     }
     findAll() {

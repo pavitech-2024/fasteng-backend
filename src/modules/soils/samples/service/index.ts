@@ -50,7 +50,7 @@ export class SamplesService {
     }
   }
 
-  async getAllSamples(userId: string): Promise<Sample[]> {
+  async getAllSamplesByUserId(userId: string): Promise<Sample[]> {
     try {
       // busca todas as amostras no banco de dados
       const samples = await this.samplesRepository.find();

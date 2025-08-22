@@ -45,9 +45,8 @@ let SamplesController = SamplesController_1 = class SamplesController {
     getAllByUserId(userId) {
         return __awaiter(this, void 0, void 0, function* () {
             this.logger.log(`get all samples by user id > [id]: ${userId}`);
-            return this.samplesService.getAllSamples(userId).then(samples => ([{
-                    materials: samples,
-                }]));
+            const samples = yield this.samplesService.getAllSamplesByUserId(userId);
+            return samples;
         });
     }
     getSampleById(sampleId) {
