@@ -15,7 +15,12 @@ class MarshallInitDto {
 }
 exports.MarshallInitDto = MarshallInitDto;
 __decorate([
-    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], MarshallInitDto.prototype, "name", void 0);
+], MarshallInitDto.prototype, "_id", void 0);
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", Object)
+], MarshallInitDto.prototype, "generalData", void 0);
 //# sourceMappingURL=marshall-init.dto.js.map

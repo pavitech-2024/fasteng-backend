@@ -51,9 +51,9 @@ let GeneralData_Marshall_Service = GeneralData_Marshall_Service_1 = class Genera
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('verify init Marshall on general-data.marshall.service.ts > [body]');
-                const { name } = marshall;
+                const { generalData: { name }, _id } = marshall;
                 const MarshallExists = yield this.marshallRepository.findOne(name, userId);
-                if (MarshallExists)
+                if (MarshallExists && !_id)
                     throw new exceptions_1.AlreadyExists('name');
                 const createdPartialMarshall = yield this.marshallRepository.createPartialMarshall(marshall, userId);
                 yield this.marshallRepository.saveStep(createdPartialMarshall._doc, 1);
