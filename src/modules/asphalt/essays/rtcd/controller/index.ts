@@ -1,5 +1,5 @@
 import { Body, Controller, Logger, Post, Res } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { RtcdService } from '../service/rtcd.service';
 import { RtcdInitDto } from '../dto/init-rtcd.dto'; // ver se precisa trocar o parametro any Body do verifyInitRtcd
 import { Calc_Rtcd_Dto, Calc_Rtcd_Out } from '../dto/calc-rtcd.dto';

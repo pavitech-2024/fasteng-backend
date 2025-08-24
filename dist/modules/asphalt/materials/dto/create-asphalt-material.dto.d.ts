@@ -15,4 +15,6 @@ export declare class CreateAsphaltMaterialDto {
         classification_AMP?: 'AMP 50/65' | 'AMP 55/75' | 'AMP 60/85' | 'AMP 65/90';
         observation?: string;
     };
+    _id: unknown;
+    userId: any;
 }

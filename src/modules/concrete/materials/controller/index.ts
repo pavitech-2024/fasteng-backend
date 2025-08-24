@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Logger, Param, Post, Put } from '@nestjs/common';
 import { MaterialsService } from '../service';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateConcreteMaterialDto } from '../dto/create-concrete-material.dto';
 import { User } from '../../../../config/decorators/user.decorator';
 import { Material } from '../schemas';
@@ -16,6 +16,7 @@ export class MaterialsController {
   @ApiOperation({ summary: 'Cria um material no banco de dados.' })
   @ApiResponse({ status: 201, description: 'Material criado com sucesso!' })
   @ApiResponse({ status: 400, description: 'Erro ao criar material!' })
+  @ApiBody({ type: CreateConcreteMaterialDto })
   async createMaterial(@Body() material: CreateConcreteMaterialDto, @User('userId') userId: string) {
     this.logger.log('create material > [body]');
 
@@ -52,6 +53,7 @@ export class MaterialsController {
   @ApiOperation({ summary: 'Atualiza um material do banco de dados.' })
   @ApiResponse({ status: 200, description: 'Material atualizado com sucesso!' })
   @ApiResponse({ status: 400, description: 'Material não encontrado!' })
+  @ApiBody({ type: CreateConcreteMaterialDto })
   async updateMaterialById(@Param('id') materialId: string, @Body() material: Material) {
     this.logger.log(`update material by id > [id]: ${materialId}`);
 
