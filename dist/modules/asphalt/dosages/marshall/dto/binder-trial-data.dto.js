@@ -11,12 +11,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SaveMarshallDosageDTO = exports.BinderTrialDataDTO = exports.BandsOfTemperaturesDTO = exports.TemperatureRangeDTO = void 0;
 const swagger_1 = require("@nestjs/swagger");
-const class_validator_1 = require("class-validator");
-const class_validator_2 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
 const swagger_2 = require("@nestjs/swagger");
-const class_validator_3 = require("class-validator");
-const class_validator_4 = require("class-validator");
+const class_validator_1 = require("class-validator");
 class TemperatureRangeDTO {
 }
 exports.TemperatureRangeDTO = TemperatureRangeDTO;
@@ -69,19 +66,25 @@ __decorate([
     (0, swagger_1.ApiProperty)({ type: BandsOfTemperaturesDTO }),
     __metadata("design:type", BandsOfTemperaturesDTO)
 ], BinderTrialDataDTO.prototype, "bandsOfTemperatures", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ description: 'Binder usado' }),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], BinderTrialDataDTO.prototype, "binder", void 0);
 class SaveMarshallDosageDTO {
 }
 exports.SaveMarshallDosageDTO = SaveMarshallDosageDTO;
 __decorate([
     (0, swagger_1.ApiProperty)({ type: BinderTrialDataDTO }),
-    (0, class_validator_2.ValidateNested)(),
+    (0, class_validator_1.ValidateNested)(),
     (0, class_transformer_1.Type)(() => BinderTrialDataDTO),
     __metadata("design:type", BinderTrialDataDTO)
 ], SaveMarshallDosageDTO.prototype, "data", void 0);
 __decorate([
     (0, swagger_2.ApiPropertyOptional)({ description: 'Indica se é apenas uma consulta' }),
-    (0, class_validator_3.IsOptional)(),
-    (0, class_validator_4.IsBoolean)(),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsBoolean)(),
     __metadata("design:type", Boolean)
 ], SaveMarshallDosageDTO.prototype, "isConsult", void 0);
 //# sourceMappingURL=binder-trial-data.dto.js.map

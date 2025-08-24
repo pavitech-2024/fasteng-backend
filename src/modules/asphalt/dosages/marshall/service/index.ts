@@ -23,6 +23,13 @@ import { StepData } from '../types/step-data.type';
 import { SaveStep3DTO, SaveStep4DTO, SaveStep5DTO, SaveStep6DTO, SaveStep7DTO, SaveStep8DTO, SaveStepDTO } from "../dto/save-step.dto";
 import { GranulometryCompositionDataDTO } from "../dto/granulometry-composition-data-dto";
 import { MarshallStep } from "../types/marshall.types";
+import { Step3Result,  } from "../types/step-data.type";
+import { Step3Data } from "../types/step-data.type";
+import { SaveMarshallDosageDTO } from "../dto/binder-trial-data.dto";
+//teste
+  import { Types } from 'mongoose';
+  import { CalculateStep3DTO } from "../dto/calculate-step-5.dto";
+
 
 @Injectable()
 export class MarshallService {
@@ -137,6 +144,8 @@ export class MarshallService {
     }
   }
 */
+
+//Aqui tem um erro: dnitBand / dnitBands??
   async getStep3Data(body: MarshallStep3Dto) {
     try {
       const { dnitBand, aggregates } = body;
@@ -301,45 +310,42 @@ export class MarshallService {
     }
   }
 
-  async calculateStep3Data(body: any) {
-    try {
-      const { dnitBands } = body;
+  async calculateStep3Data(body: CalculateStep3DTO): Promise<Step3Result> {
+  try {
+    const { dnitBands } = body;
 
-      const granulometry = await this.granulometryComposition_Service.calculateGranulometry(body);
+    const granulometry = await this.granulometryComposition_Service.calculateGranulometry(body);
 
-      let higherBand;
-      let lowerBand;
+    let higherBand: (number | null)[];
+    let lowerBand: (number | null)[];
 
-      if (dnitBands === "A") {
-          higherBand = [null, null, 100, 100, null, 100, 90, null, 65, null, 50, null, 40, null, null, 30, null, 20, null, 8];
-          lowerBand = [null, null, 100, 95, null, 75, 60, null, 35, null, 25, null, 20, null, null, 10, null, 5, null, 1];
-      } else if (dnitBands === "B") {
-          higherBand = [null, null, null, 100, null, 100, 100, null, 80, null, 60, null, 45, null, null, 32, null, 20, null, 8];
-          lowerBand = [null, null, null, 100, null, 95, 80, null, 45, null, 28, null, 20, null, null, 10, null, 8, null, 3];
-      } else if (dnitBands === "C") {
-          higherBand = [null, null, null, null, null, null, null, 100, 90, null, 72, null, 50, null, null, 26, null, 16, null, 10];
-          lowerBand = [null, null, null, null, null, null, null, 80, 70, null, 44, null, 22, null, null, 8, null, 4, null, 2];
-      }
-
-      const data = {
-        percentsOfMaterials: granulometry.percentsOfMaterials,
-        sumOfPercents: granulometry.sumOfPercents,
-        pointsOfCurve: granulometry.pointsOfCurve,
-        table_data: granulometry.table_data,
-        projections: granulometry.projections,
-        bands: {
-          higherBand,
-          lowerBand
-        }
-      };
-
-      return { data, success: true };
-    } catch (error) {
-      this.logger.error(`error on getting the step 3 data > [error]: ${error}`);
-      const { status, name, message } = error;
-      return { data: null, success: false, error: { status, message, name } };
+    if (dnitBands === 'A') {
+      higherBand = [null, null, 100, 100, null, 100, 90, null, 65, null, 50, null, 40, null, null, 30, null, 20, null, 8];
+      lowerBand = [null, null, 100, 95, null, 75, 60, null, 35, null, 25, null, 20, null, null, 10, null, 5, null, 1];
+    } else if (dnitBands === 'B') {
+      higherBand = [null, null, null, 100, null, 100, 100, null, 80, null, 60, null, 45, null, null, 32, null, 20, null, 8];
+      lowerBand = [null, null, null, 100, null, 95, 80, null, 45, null, 28, null, 20, null, null, 10, null, 8, null, 3];
+    } else {
+      higherBand = [null, null, null, null, null, null, null, 100, 90, null, 72, null, 50, null, null, 26, null, 16, null, 10];
+      lowerBand = [null, null, null, null, null, null, null, 80, 70, null, 44, null, 22, null, null, 8, null, 4, null, 2];
     }
+
+    const data: Step3Data = {
+      percentsOfMaterials: granulometry.percentsOfMaterials,
+      sumOfPercents: granulometry.sumOfPercents,
+      pointsOfCurve: granulometry.pointsOfCurve,
+      table_data: granulometry.table_data,
+      projections: granulometry.projections,
+      bands: { higherBand, lowerBand }
+    };
+
+    return { data, success: true };
+  } catch (error) {
+    this.logger.error(`error on getting the step 3 data > [error]: ${error}`);
+    const { status, name, message } = error;
+    return { data: null, success: false, error: { status, name, message } };
   }
+}
 
    
 async saveStep3Data(body: SaveStep3DTO, userId: string): Promise<{ success: boolean; error?: any }> {
@@ -631,7 +637,8 @@ async saveStep8Data(body: SaveStep8DTO, userId: string): Promise<{ success: bool
   });
 }
 
-  async saveMarshallDosage(body: any, userId: string) {
+//Pronto pra teste
+  async saveMarshallDosage(body: SaveMarshallDosageDTO, userId: string) {
     try {
       const success = await this.generalData_Service.saveMarshallDosage(body, userId);
 
@@ -642,7 +649,35 @@ async saveStep8Data(body: SaveStep8DTO, userId: string): Promise<{ success: bool
       return { success: false, error: { status, message, name } };
     }
   }
+//test
+/*
+  async  createFakeDosage(marshallService: MarshallService) {
+  // 1️⃣ Cria um userId fake
+  const fakeUserId = new Types.ObjectId().toHexString();
 
+  // 2️⃣ Define os dados da dosagem
+  const dosageBody = {
+    generalData: {
+      name: 'Dosagem Teste Fake',
+      objective: 'teste',
+      dnitBand: 'B',
+      description: 'Dosagem criada para teste'
+    },
+    // adicione outros campos necessários aqui
+  };
+
+  // 3️⃣ Chama o service
+  const result = await marshallService.saveMarshallDosage(dosageBody, fakeUserId);
+
+  console.log('Dosagem criada:', result);
+
+  // 4️⃣ Retorna o userId e a resposta para usar nos testes
+  return {
+    userId: fakeUserId,
+    dosage: result
+  };
+}
+*/
   async deleteMarshallDosage(id: string) {
     try {
       const success = await this.generalData_Service.deleteMarshallDosage(id);

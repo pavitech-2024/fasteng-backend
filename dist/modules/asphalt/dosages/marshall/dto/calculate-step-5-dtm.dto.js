@@ -9,25 +9,25 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MarshallStep3Dto = void 0;
+exports.CalculateStep3DTO = void 0;
 const class_validator_1 = require("class-validator");
-class MarshallStep3Dto {
+const swagger_1 = require("@nestjs/swagger");
+class CalculateStep3DTO {
 }
-exports.MarshallStep3Dto = MarshallStep3Dto;
+exports.CalculateStep3DTO = CalculateStep3DTO;
 __decorate([
+    (0, swagger_1.ApiProperty)({ description: 'Banda DNIT', enum: ['A', 'B', 'C'] }),
+    (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
-], MarshallStep3Dto.prototype, "dnitBand", void 0);
+], CalculateStep3DTO.prototype, "dnitBands", void 0);
 __decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Lista de agregados',
+        type: [Object]
+    }),
+    (0, class_validator_1.IsArray)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Array)
-], MarshallStep3Dto.prototype, "percentageInputs", void 0);
-__decorate([
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", Array)
-], MarshallStep3Dto.prototype, "aggregates", void 0);
-__decorate([
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", Array)
-], MarshallStep3Dto.prototype, "tableRows", void 0);
-//# sourceMappingURL=step-3-marshall.dto.js.map
+], CalculateStep3DTO.prototype, "aggregates", void 0);
+//# sourceMappingURL=calculate-step-5-dtm.dto.js.map

@@ -1,4 +1,5 @@
 import { MarshallStep } from '../types/marshall.types';
+import { BandsOfTemperaturesDTO } from './binder-trial-data.dto';
 export declare class SaveStepDTO {
     dosageId: string;
     step: MarshallStep;
@@ -22,8 +23,9 @@ export declare class SaveStep3DTO {
 export declare class SaveStep4DTO {
     dosageId: string;
     data: {
+        trial: string;
         percentsOfDosage: any[];
-        bandsOfTemperatures: any[];
+        bandsOfTemperatures: BandsOfTemperaturesDTO[];
         newPercentOfDosage: any[];
     };
 }

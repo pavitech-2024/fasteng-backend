@@ -8,11 +8,23 @@ import { CalculateDmtDataDTO } from '../dto/calculate-dmt-data.dto';
 import { CalculateGmmDataDTO } from '../dto/calculate-gmm-data.dto';
 import { RiceTestDTO } from '../dto/confirmation-compresion-data.dto';
 import { AggregateDTO } from '../dto/marshal-material-data.dto';
+import { SaveStepDTO } from '../dto/save-step.dto';
 import { GetIndexesOfMissesSpecificGravityDTO } from '../dto/get-indexes-of-misses-specific-gravity.dto';
-
+import {
+  SaveStep3DTO,
+  SaveStep4DTO, 
+  SaveStep5DTO,
+  SaveStep6DTO,
+  SaveStep7DTO,
+  SaveStep8DTO
+} from '../dto/save-step.dto';
+import { MarshallStep3Dto } from '../dto/step-3-marshall.dto';
+import { CalculateStep3DTO } from '../dto/calculate-step-5.dto';
+import { Step3Result } from '../types/step-data.type';
 import { CalculateRiceTestDTO as CalculateRiceTestDTONew } from '../dto/calculate-rice-test.dto';
-
 import { SaveMaximumMixtureDensityDataDTO } from '../dto/save-maximum-mixture-density-data.dto';
+//test
+//import { Types } from 'mongoose';
 
 @ApiTags('marshall')
 @Controller('asphalt/dosages/marshall')
@@ -62,7 +74,7 @@ export class MarshallController {
   @ApiResponse({ status: 200, description: 'Índices calculados com sucesso.' })
   async getIndexesOfMissesSpecificGravity(
     @Res() response: Response,
-    @Body() aggregates: GetIndexesOfMissesSpecificGravityDTO // DTO atualizado
+    @Body() aggregates: GetIndexesOfMissesSpecificGravityDTO 
   ) {
     this.logger.log(`get specific mass indexes > [body]: ${JSON.stringify(aggregates)}`);
     const status = await this.marshallService.getIndexesOfMissesSpecificGravity(aggregates);
@@ -128,34 +140,42 @@ export class MarshallController {
     return response.status(200).json(status);
   }
 
-  // --- Rotas restantes continuam com any até refatorarmos ---
-  // --- Rotas restantes com any ---
+  
+  
+  // --- Rotas restantes com any, ainda falta bastnt
 
-  @Post('step-3-data')
+  @Post('step-3-data')//Essa em especifico, testar
   @ApiOperation({ summary: 'Retorna os dados iniciais da terceira tela (composição granulométrica).' })
   @ApiResponse({ status: 200, description: 'Dados carregados com sucesso.' })
   @ApiResponse({ status: 400, description: 'Dados não encontrados.' })
-  async getStep3Data(@Res() response: Response, @Body() body: any) {
+  async getStep3Data(@Res() response: Response, @Body() body: MarshallStep3Dto) {
     this.logger.log(`get step 3 data > [body]: ${JSON.stringify(body)}`);
     const status = await this.marshallService.getStep3Data(body);
     return response.status(200).json(status);
   }
 
-  @Post('calculate-step-3-data')
-  @ApiOperation({ summary: 'Calcula dados da terceira tela (composição granulométrica).' })
-  async calculateStep3Data(@Res() response: Response, @Body() body: any) {
-    this.logger.log(`calculate step 3 data > [body]: ${JSON.stringify(body)}`);
-    const status = await this.marshallService.calculateStep3Data(body);
-    return response.status(200).json(status);
-  }
+ @Post('calculate-step-3-data')
+@ApiOperation({ summary: 'Calcula dados da terceira tela (composição granulométrica).' })
+async calculateStep3Data(
+  @Res() response: Response,
+  @Body() body: CalculateStep3DTO, 
+): Promise<Response<Step3Result>> {  
+  this.logger.log(`calculate step 3 data > [body]: ${JSON.stringify(body)}`);
+  const status: Step3Result = await this.marshallService.calculateStep3Data(body);
+  return response.status(200).json(status);
+}
 
-  @Post('save-granulometry-composition-step/:userId')
-  @ApiOperation({ summary: 'Salva dados da composição granulométrica (step 3).' })
-  async saveGranulometryCompositionStep(@Res() response: Response, @Param('userId') userId: string, @Body() body: any) {
-    this.logger.log(`save step 3 data > [body]: ${JSON.stringify(body)}`);
-    const status = await this.marshallService.saveStep3Data(body, userId);
-    return response.status(200).json(status);
-  }
+ @Post('save-granulometry-composition-step/:userId')
+@ApiOperation({ summary: 'Salva dados da composição granulométrica (step 3).' })
+async saveGranulometryCompositionStep(
+  @Res() response: Response, 
+  @Param('userId') userId: string, 
+  @Body() body: SaveStep3DTO // DTO específico
+) {
+  this.logger.log(`save step 3 data > [body]: ${JSON.stringify(body)}`);
+  const status = await this.marshallService.saveStep3Data(body, userId);
+  return response.status(200).json(status);
+}
 
   @Post('calculate-step-4-data')
   @ApiOperation({ summary: 'Calcula dados do step 4 (binder trial).' })
@@ -165,13 +185,17 @@ export class MarshallController {
     return response.status(200).json(status);
   }
 
-  @Post('save-binder-trial-step/:userId')
-  @ApiOperation({ summary: 'Salva dados do binder trial (step 4).' })
-  async saveBinderTrialStep(@Res() response: Response, @Param('userId') userId: string, @Body() body: any) {
-    this.logger.log(`save step 4 data > [body]: ${JSON.stringify(body)}`);
-    const status = await this.marshallService.saveStep4Data(body, userId);
-    return response.status(200).json(status);
-  }
+ @Post('save-binder-trial-step/:userId')
+@ApiOperation({ summary: 'Salva dados do binder trial (step 4).' })
+async saveBinderTrialStep(
+  @Res() response: Response, 
+  @Param('userId') userId: string, 
+  @Body() body: SaveStep4DTO
+) {
+  this.logger.log(`save step 4 data > [body]: ${JSON.stringify(body)}`);
+  const status = await this.marshallService.saveStep4Data(body, userId);
+  return response.status(200).json(status);
+}
 
   @Post('save-maximum-mixture-density-step/:userId')
   @ApiOperation({ summary: 'Salva dados do máximo de densidade da mistura (step 5).' })
@@ -226,13 +250,17 @@ export class MarshallController {
     return response.status(200).json(status);
   }
 
-  @Post('save-optimum-binder-content-step/:userId')
-  @ApiOperation({ summary: 'Salva conteúdo ótimo de ligante (step 7).' })
-  async saveOptimumBinderContentData(@Res() response: Response, @Param('userId') userId: string, @Body() body: any) {
-    this.logger.log(`save step 7 data > [body]: ${JSON.stringify(body)}`);
-    const status = await this.marshallService.saveStep7Data(body, userId);
-    return response.status(200).json(status);
-  }
+ @Post('save-optimum-binder-content-step/:userId')
+@ApiOperation({ summary: 'Salva conteúdo ótimo de ligante (step 7).' })
+async saveOptimumBinderContentData(
+  @Res() response: Response, 
+  @Param('userId') userId: string, 
+  @Body() body: SaveStep7DTO // DTO específico
+) {
+  this.logger.log(`save step 7 data > [body]: ${JSON.stringify(body)}`);
+  const status = await this.marshallService.saveStep7Data(body, userId);
+  return response.status(200).json(status);
+}
 
   @Post('confirm-specific-gravity')
   @ApiOperation({ summary: 'Confirma gravidade específica (step 8).' })
@@ -250,11 +278,77 @@ export class MarshallController {
     return response.status(200).json(status);
   }
 
-  @Post('save-confirmation-compression-data-step/:userId')
-  @ApiOperation({ summary: 'Salva dados de compressão confirmada (step 8).' })
-  async saveConfirmationCompressionData(@Res() response: Response, @Param('userId') userId: string, @Body() body: any) {
-    this.logger.log(`save step 8 data > [body]: ${JSON.stringify(body)}`);
-    const status = await this.marshallService.saveStep8Data(body, userId);
-    return response.status(200).json(status);
+@Post('save-confirmation-compression-data-step/:userId')
+@ApiOperation({ summary: 'Salva dados de compressão confirmada (step 8).' })
+async saveConfirmationCompressionData(
+  @Res() response: Response, 
+  @Param('userId') userId: string, 
+  @Body() body: SaveStep8DTO 
+) {
+  this.logger.log(`save step 8 data > [body]: ${JSON.stringify(body)}`);
+  const status = await this.marshallService.saveStep8Data(body, userId);
+  return response.status(200).json(status);
+}
+
+
+//Rota teste p função generica;
+@Post('save-step')
+@ApiOperation({ summary: 'Salva dados de qualquer step (genérico).' })
+async saveStepData(
+  @Res() response: Response,
+  @Body() body: SaveStepDTO
+) {
+  this.logger.log(`save step data > [body]: ${JSON.stringify(body)}`);
+  const status = await this.marshallService.saveStepData(body);
+  return response.status(200).json(status);
+}
+
+/*
+  @Post('create-test-dosage')
+  async createTestDosage(@Res() response: Response) {
+    try {
+      // 1️⃣ Cria um userId fake
+      const fakeUserId = new Types.ObjectId().toHexString();
+
+      // 2️⃣ Gera um ObjectId para a dosagem fake
+      const dosageId = new Types.ObjectId().toHexString();
+
+      // 3️⃣ Define os dados da dosagem
+      const dosageBody = {
+        _id: dosageId,
+        generalData: {
+          name: 'Dosagem Teste Fake',
+          objective: 'teste',
+          dnitBand: 'B',
+          description: 'Dosagem criada para teste'
+        },
+        // Adicione outros campos necessários aqui
+      };
+
+      // 4️⃣ Salva a dosagem pelo service
+      const saveResult = await this.marshallService.saveMarshallDosage(dosageBody, fakeUserId);
+
+      if (!saveResult.success) {
+        return response.status(500).json(saveResult);
+      }
+
+      // 5️⃣ Retorna os IDs para testes
+      return response.status(200).json({
+        success: true,
+        dosageId,
+        userId: fakeUserId
+      });
+    } catch (error) {
+      this.logger.error(`Error creating test dosage > ${error}`);
+      return response.status(500).json({
+        success: false,
+        error: {
+          message: error.message,
+          name: error.name
+        }
+      });
+    }
   }
+*/
+
 }

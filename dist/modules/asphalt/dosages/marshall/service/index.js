@@ -272,15 +272,15 @@ let MarshallService = MarshallService_1 = class MarshallService {
                 const granulometry = yield this.granulometryComposition_Service.calculateGranulometry(body);
                 let higherBand;
                 let lowerBand;
-                if (dnitBands === "A") {
+                if (dnitBands === 'A') {
                     higherBand = [null, null, 100, 100, null, 100, 90, null, 65, null, 50, null, 40, null, null, 30, null, 20, null, 8];
                     lowerBand = [null, null, 100, 95, null, 75, 60, null, 35, null, 25, null, 20, null, null, 10, null, 5, null, 1];
                 }
-                else if (dnitBands === "B") {
+                else if (dnitBands === 'B') {
                     higherBand = [null, null, null, 100, null, 100, 100, null, 80, null, 60, null, 45, null, null, 32, null, 20, null, 8];
                     lowerBand = [null, null, null, 100, null, 95, 80, null, 45, null, 28, null, 20, null, null, 10, null, 8, null, 3];
                 }
-                else if (dnitBands === "C") {
+                else {
                     higherBand = [null, null, null, null, null, null, null, 100, 90, null, 72, null, 50, null, null, 26, null, 16, null, 10];
                     lowerBand = [null, null, null, null, null, null, null, 80, 70, null, 44, null, 22, null, null, 8, null, 4, null, 2];
                 }
@@ -290,17 +290,14 @@ let MarshallService = MarshallService_1 = class MarshallService {
                     pointsOfCurve: granulometry.pointsOfCurve,
                     table_data: granulometry.table_data,
                     projections: granulometry.projections,
-                    bands: {
-                        higherBand,
-                        lowerBand
-                    }
+                    bands: { higherBand, lowerBand }
                 };
                 return { data, success: true };
             }
             catch (error) {
                 this.logger.error(`error on getting the step 3 data > [error]: ${error}`);
                 const { status, name, message } = error;
-                return { data: null, success: false, error: { status, message, name } };
+                return { data: null, success: false, error: { status, name, message } };
             }
         });
     }

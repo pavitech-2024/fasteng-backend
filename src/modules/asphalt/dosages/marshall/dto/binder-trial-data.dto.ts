@@ -1,10 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsNumber } from 'class-validator';
-import { ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsOptional } from 'class-validator';
-import { IsBoolean } from 'class-validator';
+import { IsString, IsNotEmpty,IsBoolean, IsOptional, ValidateNested, IsNumber, IsArray} from 'class-validator';
 
 export class TemperatureRangeDTO {
   @ApiProperty({ example: 150 })
@@ -27,9 +24,6 @@ export class BandsOfTemperaturesDTO {
   @ApiProperty({ type: TemperatureRangeDTO })
   AggregateTemperatureRange: TemperatureRangeDTO;
 }
-
-
-
 export class BinderTrialDataDTO {
   @ApiProperty({ example: 1 })
   @IsNumber()
@@ -44,8 +38,14 @@ export class BinderTrialDataDTO {
   newPercentOfDosage: any[];
 
   @ApiProperty({ type: BandsOfTemperaturesDTO })
-  bandsOfTemperatures: BandsOfTemperaturesDTO;
+  bandsOfTemperatures: BandsOfTemperaturesDTO; 
+
+  @ApiProperty({ description: 'Binder usado' })
+  @IsString()
+  @IsNotEmpty()
+  binder: string;
 }
+
 
 export class SaveMarshallDosageDTO {
   @ApiProperty({ type: BinderTrialDataDTO })

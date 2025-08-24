@@ -16,3 +16,24 @@ export type StepData =
   | VolumetricParametersDataDTO
   | OptimumBinderContentDataDTO
   | ConfirmationCompressionDataDTO;
+
+
+  export type Step3Data = {
+  percentsOfMaterials: any[];
+  sumOfPercents: any[];
+  pointsOfCurve: any[];
+  table_data: any[];
+  projections: any[];
+  bands: Step3Bands;
+};
+
+  export type Step3Result = {
+  data: Step3Data | null;
+  success: boolean;
+  error?: { status?: number; name?: string; message?: string };
+};
+
+export type Step3Bands = {
+  higherBand: (number | null)[];
+  lowerBand: (number | null)[];
+};

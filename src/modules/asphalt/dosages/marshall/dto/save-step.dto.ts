@@ -3,6 +3,7 @@ import { IsString, IsNotEmpty, IsObject, IsOptional, IsIn } from 'class-validato
 import { ApiProperty } from '@nestjs/swagger';
 import { StepData } from '../types/step-data.type';
 import { MarshallStep } from '../types/marshall.types';
+import { BandsOfTemperaturesDTO } from './binder-trial-data.dto';
 
 
 export class SaveStepDTO {
@@ -64,11 +65,13 @@ export class SaveStep4DTO {
   @IsObject()
   @IsNotEmpty()
   data: {
+    trial: string; // ou o tipo correto do trial
     percentsOfDosage: any[];
-    bandsOfTemperatures: any[];
+    bandsOfTemperatures: BandsOfTemperaturesDTO[];
     newPercentOfDosage: any[];
   };
 }
+
 
 export class SaveStep5DTO {
   @ApiProperty({ description: 'ID da dosagem' })

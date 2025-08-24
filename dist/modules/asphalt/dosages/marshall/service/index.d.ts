@@ -16,6 +16,9 @@ import { CalculateRiceTestDTO } from "../dto/calculate-rice-test.dto";
 import { SaveMaximumMixtureDensityDataDTO } from "../dto/save-maximum-mixture-density-data.dto";
 import { BaseMarshallService } from "./base.marshall.service";
 import { SaveStep3DTO, SaveStep4DTO, SaveStep7DTO, SaveStep8DTO, SaveStepDTO } from "../dto/save-step.dto";
+import { Step3Result } from "../types/step-data.type";
+import { SaveMarshallDosageDTO } from "../dto/binder-trial-data.dto";
+import { CalculateStep3DTO } from "../dto/calculate-step-5.dto";
 export declare class MarshallService {
     private readonly marshall_repository;
     private readonly generalData_Service;
@@ -85,29 +88,7 @@ export declare class MarshallService {
             name: any;
         };
     }>;
-    calculateStep3Data(body: any): Promise<{
-        data: {
-            percentsOfMaterials: any[];
-            sumOfPercents: any[];
-            pointsOfCurve: any[];
-            table_data: any;
-            projections: any[];
-            bands: {
-                higherBand: any;
-                lowerBand: any;
-            };
-        };
-        success: boolean;
-        error?: undefined;
-    } | {
-        data: any;
-        success: boolean;
-        error: {
-            status: any;
-            message: any;
-            name: any;
-        };
-    }>;
+    calculateStep3Data(body: CalculateStep3DTO): Promise<Step3Result>;
     saveStep3Data(body: SaveStep3DTO, userId: string): Promise<{
         success: boolean;
         error?: any;
@@ -312,7 +293,7 @@ export declare class MarshallService {
         success: boolean;
         error?: any;
     }>;
-    saveMarshallDosage(body: any, userId: string): Promise<{
+    saveMarshallDosage(body: SaveMarshallDosageDTO, userId: string): Promise<{
         success: boolean;
         error?: undefined;
     } | {

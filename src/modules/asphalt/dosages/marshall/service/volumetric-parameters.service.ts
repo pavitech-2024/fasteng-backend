@@ -1,21 +1,13 @@
+import { SampleData } from './../interfaces/sample-data.interface';
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Marshall, MarshallDocument } from '../schemas';
 import { DATABASE_CONNECTION } from '../../../../../infra/mongoose/database.config';
 import { Model } from 'mongoose';
 import { MarshallRepository } from '../repository';
+ 
 
-interface SampleData {
-  asphaltContent: number;
-  sumOfSaturatedMass: number;
-  sumOfDryMass: number;
-  sumOfSubmergedMass: number;
-  stability: number;
-  fluency: number;
-  diametricalCompressionStrength: number;
-  temperatureOfWater: number;
-  maxSpecificGravity: number;
-}
+
 
 @Injectable()
 export class VolumetricParameters_Marshall_Service {

@@ -13,6 +13,7 @@ export declare class BinderTrialDataDTO {
     percentsOfDosage: any[];
     newPercentOfDosage: any[];
     bandsOfTemperatures: BandsOfTemperaturesDTO;
+    binder: string;
 }
 export declare class SaveMarshallDosageDTO {
     data: BinderTrialDataDTO;

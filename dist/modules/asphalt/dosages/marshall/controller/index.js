@@ -30,7 +30,11 @@ const marshal_general_data_dto_1 = require("../dto/marshal-general-data.dto");
 const binder_trial_data_dto_1 = require("../dto/binder-trial-data.dto");
 const calculate_dmt_data_dto_1 = require("../dto/calculate-dmt-data.dto");
 const calculate_gmm_data_dto_1 = require("../dto/calculate-gmm-data.dto");
+const save_step_dto_1 = require("../dto/save-step.dto");
 const get_indexes_of_misses_specific_gravity_dto_1 = require("../dto/get-indexes-of-misses-specific-gravity.dto");
+const save_step_dto_2 = require("../dto/save-step.dto");
+const step_3_marshall_dto_1 = require("../dto/step-3-marshall.dto");
+const calculate_step_5_dto_1 = require("../dto/calculate-step-5.dto");
 const calculate_rice_test_dto_1 = require("../dto/calculate-rice-test.dto");
 const save_maximum_mixture_density_data_dto_1 = require("../dto/save-maximum-mixture-density-data.dto");
 let MarshallController = MarshallController_1 = class MarshallController {
@@ -205,6 +209,13 @@ let MarshallController = MarshallController_1 = class MarshallController {
             return response.status(200).json(status);
         });
     }
+    saveStepData(response, body) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.log(`save step data > [body]: ${JSON.stringify(body)}`);
+            const status = yield this.marshallService.saveStepData(body);
+            return response.status(200).json(status);
+        });
+    }
 };
 exports.MarshallController = MarshallController;
 __decorate([
@@ -311,7 +322,7 @@ __decorate([
     __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [Object, step_3_marshall_dto_1.MarshallStep3Dto]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "getStep3Data", null);
 __decorate([
@@ -320,7 +331,7 @@ __decorate([
     __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [Object, calculate_step_5_dto_1.CalculateStep3DTO]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "calculateStep3Data", null);
 __decorate([
@@ -330,7 +341,7 @@ __decorate([
     __param(1, (0, common_1.Param)('userId')),
     __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, String, Object]),
+    __metadata("design:paramtypes", [Object, String, save_step_dto_2.SaveStep3DTO]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "saveGranulometryCompositionStep", null);
 __decorate([
@@ -349,7 +360,7 @@ __decorate([
     __param(1, (0, common_1.Param)('userId')),
     __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, String, Object]),
+    __metadata("design:paramtypes", [Object, String, save_step_dto_2.SaveStep4DTO]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "saveBinderTrialStep", null);
 __decorate([
@@ -416,7 +427,7 @@ __decorate([
     __param(1, (0, common_1.Param)('userId')),
     __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, String, Object]),
+    __metadata("design:paramtypes", [Object, String, save_step_dto_2.SaveStep7DTO]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "saveOptimumBinderContentData", null);
 __decorate([
@@ -444,9 +455,18 @@ __decorate([
     __param(1, (0, common_1.Param)('userId')),
     __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, String, Object]),
+    __metadata("design:paramtypes", [Object, String, save_step_dto_2.SaveStep8DTO]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "saveConfirmationCompressionData", null);
+__decorate([
+    (0, common_1.Post)('save-step'),
+    (0, swagger_1.ApiOperation)({ summary: 'Salva dados de qualquer step (genérico).' }),
+    __param(0, (0, common_1.Res)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, save_step_dto_1.SaveStepDTO]),
+    __metadata("design:returntype", Promise)
+], MarshallController.prototype, "saveStepData", null);
 exports.MarshallController = MarshallController = MarshallController_1 = __decorate([
     (0, swagger_1.ApiTags)('marshall'),
     (0, common_1.Controller)('asphalt/dosages/marshall'),

@@ -19,6 +19,7 @@ const maximumMixtureDensity_service_1 = require("./service/maximumMixtureDensity
 const volumetric_parameters_service_1 = require("./service/volumetric-parameters.service");
 const optimum_binder_marshall_service_1 = require("./service/optimum-binder.marshall.service");
 const confirm_compression_marshall_service_1 = require("./service/confirm-compression.marshall.service");
+const base_marshall_service_1 = require("./service/base.marshall.service");
 const services = [
     service_1.MarshallService,
     general_data_marshall_service_1.GeneralData_Marshall_Service,
@@ -28,7 +29,8 @@ const services = [
     maximumMixtureDensity_service_1.MaximumMixtureDensity_Marshall_Service,
     volumetric_parameters_service_1.VolumetricParameters_Marshall_Service,
     optimum_binder_marshall_service_1.OptimumBinderContent_Marshall_Service,
-    confirm_compression_marshall_service_1.ConfirmCompression_Marshall_Service
+    confirm_compression_marshall_service_1.ConfirmCompression_Marshall_Service,
+    base_marshall_service_1.BaseMarshallService
 ];
 let MarshallModule = class MarshallModule {
 };

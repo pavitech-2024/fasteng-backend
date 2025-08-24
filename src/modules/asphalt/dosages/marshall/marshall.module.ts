@@ -10,6 +10,7 @@ import { MaximumMixtureDensity_Marshall_Service } from './service/maximumMixture
 import { VolumetricParameters_Marshall_Service } from './service/volumetric-parameters.service';
 import { OptimumBinderContent_Marshall_Service } from './service/optimum-binder.marshall.service';
 import { ConfirmCompression_Marshall_Service } from './service/confirm-compression.marshall.service';
+import { BaseMarshallService } from './service/base.marshall.service';
 
 const services = [ 
   MarshallService, 
@@ -20,7 +21,8 @@ const services = [
   MaximumMixtureDensity_Marshall_Service,
   VolumetricParameters_Marshall_Service,
   OptimumBinderContent_Marshall_Service,
-  ConfirmCompression_Marshall_Service
+  ConfirmCompression_Marshall_Service,
+  BaseMarshallService
 ];
 @Module({
     imports: [],

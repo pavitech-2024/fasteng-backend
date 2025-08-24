@@ -1,17 +1,7 @@
+import { SampleData } from './../interfaces/sample-data.interface';
 import { MarshallDocument } from '../schemas';
 import { Model } from 'mongoose';
 import { MarshallRepository } from '../repository';
-interface SampleData {
-    asphaltContent: number;
-    sumOfSaturatedMass: number;
-    sumOfDryMass: number;
-    sumOfSubmergedMass: number;
-    stability: number;
-    fluency: number;
-    diametricalCompressionStrength: number;
-    temperatureOfWater: number;
-    maxSpecificGravity: number;
-}
 export declare class VolumetricParameters_Marshall_Service {
     private readonly marshallModel;
     private readonly marshallRepository;
@@ -45,4 +35,3 @@ export declare class VolumetricParameters_Marshall_Service {
     temperaturesOfWater(name: string): number | undefined;
     saveVolumetricParametersData(body: any, userId: string): Promise<boolean>;
 }
-export {};
