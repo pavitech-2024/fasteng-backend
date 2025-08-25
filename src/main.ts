@@ -131,7 +131,8 @@ async function bootstrap() {
 
   const swagger_concrete = new DocumentBuilder()
     .setTitle('FastEng API')
-    .setDescription(`The FastEng [ Soils ] API description`)
+    //.setDescription(`The FastEng [ Soils ] API description`)
+    .setDescription(`The FastEng [ Concrete ] API description`)
     .setVersion('1.0')
     .build();
   SwaggerModule.setup('docs/concrete', app, SwaggerModule.createDocument(app, swagger_concrete));

@@ -46,7 +46,7 @@ function bootstrap() {
         }));
         const swagger_concrete = new swagger_1.DocumentBuilder()
             .setTitle('FastEng API')
-            .setDescription(`The FastEng [ Soils ] API description`)
+            .setDescription(`The FastEng [ Concrete ] API description`)
             .setVersion('1.0')
             .build();
         swagger_1.SwaggerModule.setup('docs/concrete', app, swagger_1.SwaggerModule.createDocument(app, swagger_concrete));
