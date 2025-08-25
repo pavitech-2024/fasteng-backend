@@ -6,7 +6,6 @@ export declare class Material {
     name: string;
     type: 'coarseAggregate' | 'fineAggregate' | 'cement';
     userId: string;
-    createdAt: Date;
     description?: {
         source?: string;
         responsible?: string;

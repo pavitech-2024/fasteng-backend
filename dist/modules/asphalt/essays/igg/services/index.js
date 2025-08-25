@@ -73,6 +73,21 @@ let IggService = class IggService {
             }
         });
     }
+    deleteEssay(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const igg = yield this.igg_Repository.findOne({ _id: id });
+                if (igg) {
+                    yield this.igg_Repository.deleteOne(id);
+                }
+                return { success: true, data: igg };
+            }
+            catch (error) {
+                const { status, name, message } = error;
+                return { success: false, error: { status, message, name } };
+            }
+        });
+    }
 };
 exports.IggService = IggService;
 exports.IggService = IggService = __decorate([

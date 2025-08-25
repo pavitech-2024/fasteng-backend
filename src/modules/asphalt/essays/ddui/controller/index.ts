@@ -1,10 +1,9 @@
-import { Controller, Logger, Post, Res, Body } from "@nestjs/common";
-import { ApiTags, ApiOperation, ApiResponse } from "@nestjs/swagger";
-import { Calc_Ddui_Dto, Calc_Ddui_Out } from "../dto/calc-ddui.dto";
-import { DduiInitDto } from "../dto/init-ddui.dto";
+import { Controller, Logger, Post, Res, Body, Param, Delete } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { Calc_Ddui_Dto, Calc_Ddui_Out } from '../dto/calc-ddui.dto';
+import { DduiInitDto } from '../dto/init-ddui.dto';
 import { Response } from 'express';
-import { DduiService } from "../service";
-
+import { DduiService } from '../service';
 
 @ApiTags('ddui')
 @Controller('asphalt/essays/ddui')
@@ -25,11 +24,16 @@ export class DduiController {
     description: 'Não é possível criar um ensaio ddui com os dados enviados.',
     content: {
       'application/json': {
-        schema: { example: { success: false, error: { message: 'Material Not Found.', status: 400, name: 'NotFound' } } },
+        schema: {
+          example: { success: false, error: { message: 'Material Not Found.', status: 400, name: 'NotFound' } },
+        },
       },
     },
   })
-  @ApiResponse({ status: 400, description: 'Erro ao verificar se é possível criar um ensaio ddui com os dados enviados.' })
+  @ApiResponse({
+    status: 400,
+    description: 'Erro ao verificar se é possível criar um ensaio ddui com os dados enviados.',
+  })
   async verifyInitDdui(@Res() response: Response, @Body() body: DduiInitDto) {
     this.logger.log('verify init ddui > [body]');
 
@@ -72,6 +76,25 @@ export class DduiController {
 
     if (ddui.success) this.logger.log('save ddui > [success]');
     else this.logger.error('save ddui > [error]');
+
+    return response.status(200).json(ddui);
+  }
+
+  @Delete('delete-essay/:id')
+  @ApiOperation({ summary: 'Se possível, deleta os dados do ensaio ddui no banco de dados.' })
+  @ApiResponse({
+    status: 200,
+    description: 'Ensaio de ddui deletado com sucesso.',
+    content: { 'application/json': { schema: { example: { success: true, data: 'essay data' } } } },
+  })
+  @ApiResponse({ status: 400, description: 'Erro ao deletar o ensaio ddui no banco de dados.' })
+  async deleteEssay(@Res() response: Response, @Param('id') id: string) {
+    this.logger.log('delete ddui > [body]');
+
+    const ddui = await this.dduiService.deleteEssay(id);
+
+    if (ddui.success) this.logger.log('delete ddui > [success]');
+    else this.logger.error('delete ddui > [error]');
 
     return response.status(200).json(ddui);
   }

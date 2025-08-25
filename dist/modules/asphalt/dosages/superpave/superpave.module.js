@@ -21,12 +21,13 @@ const chosen_curves_percentages_service_1 = require("./service/chosen-curves-per
 const second_compression_superpave_service_1 = require("./service/second-compression.superpave.service");
 const second_compression_parameters_service_1 = require("./service/second-compression-parameters.service");
 const resume_dosage_service_1 = require("./service/resume-dosage.service");
-const granulometryEssay_service_1 = require("./service/granulometryEssay.service");
+const granulometry_essay_service_1 = require("./service/granulometry-essay.service");
+const confirm_compaction_service_1 = require("./service/confirm-compaction.service");
 const services = [
     service_1.SuperpaveService,
     general_data_superpave_service_1.GeneralData_Superpave_Service,
     material_selection_superpave_service_1.MaterialSelection_Superpave_Service,
-    granulometryEssay_service_1.GranulometryEssay_Superpave_Service,
+    granulometry_essay_service_1.GranulometryEssay_Superpave_Service,
     granulometry_composition_superpave_service_1.GranulometryComposition_Superpave_Service,
     initial_binder_superpave_service_1.InitialBinder_Superpave_Service,
     first_compression_service_1.FirstCompression_Superpave_Service,
@@ -34,6 +35,7 @@ const services = [
     chosen_curves_percentages_service_1.ChosenCurvePercentages_Superpave_Service,
     second_compression_superpave_service_1.SecondCompression_Superpave_Service,
     second_compression_parameters_service_1.SecondCompressionParameters_Superpave_Service,
+    confirm_compaction_service_1.ConfirmCompaction_Superpave_Service,
     resume_dosage_service_1.ResumeDosage_Superpave_Service
 ];
 let SuperpaveModule = class SuperpaveModule {

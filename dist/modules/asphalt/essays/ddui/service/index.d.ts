@@ -43,4 +43,17 @@ export declare class DduiService {
         };
         data?: undefined;
     }>;
+    deleteEssay(id: string): Promise<{
+        success: boolean;
+        data: import("../schemas").Ddui;
+        error?: undefined;
+    } | {
+        success: boolean;
+        error: {
+            status: any;
+            message: any;
+            name: any;
+        };
+        data?: undefined;
+    }>;
 }

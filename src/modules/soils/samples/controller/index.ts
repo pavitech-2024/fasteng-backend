@@ -20,7 +20,7 @@ export class SamplesController {
   @ApiBody({ type: CreateSampleDto })
   async createSample(@Body() sample: CreateSampleDto, @User('userId') userId: string) {
     this.logger.log('create sample > [body]');
-    const createdSample = await this.samplesService.createSample(sample, userId);
+    const createdSample = await this.samplesService.createSample(sample);
 
     if (createdSample) this.logger.log(`sample created > [id]: ${createdSample._id}`);
 
@@ -34,10 +34,11 @@ export class SamplesController {
   async getAllByUserId(@Param('id') userId: string) {
     this.logger.log(`get all samples by user id > [id]: ${userId}`);
 
-    return this.samplesService.getAllSamples(userId).then(samples => ([{
-      materials: samples,
-    }]));
+    const samples = await this.samplesService.getAllSamplesByUserId(userId);
+
+    return samples
   }
+  
   
   @Get(':id')
   @ApiOperation({ summary: 'Retorna uma amostra do banco de dados.' })

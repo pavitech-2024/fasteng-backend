@@ -77,5 +77,5 @@ export declare class FirstCurvePercentages_Service {
     calculateMassMedia(data: any): number[];
     calculateVv2(curve: any): number;
     calculateGraphData(data: any): any[];
-    savePercentsOfChosenCurveData(body: any, userId: string): Promise<boolean>;
+    saveFirstCompressionParamsData(body: any, userId: string): Promise<boolean>;
 }

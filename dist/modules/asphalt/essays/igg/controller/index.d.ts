@@ -19,4 +19,5 @@ export declare class IggController {
         };
     }>;
     saveEssay(response: Response, body: Calc_Igg_Dto & Calc_Igg_Out): Promise<Response<any, Record<string, any>>>;
+    deleteEssay(response: Response, id: string): Promise<Response<any, Record<string, any>>>;
 }

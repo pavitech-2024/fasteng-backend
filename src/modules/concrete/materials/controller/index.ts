@@ -20,7 +20,7 @@ export class MaterialsController {
   async createMaterial(@Body() material: CreateConcreteMaterialDto, @User('userId') userId: string) {
     this.logger.log('create material > [body]');
 
-    const createdMaterial = await this.materialsService.createMaterial(material, userId);
+    const createdMaterial = await this.materialsService.createMaterial(material);
 
     if (createdMaterial) this.logger.log(`material created > [id]: ${createdMaterial._id}`);
 
@@ -34,9 +34,9 @@ export class MaterialsController {
   async getAllByUserId(@Param('id') userId: string) {
     this.logger.log(`get all materials by user id > [id]: ${userId}`);
 
-    return this.materialsService.getAllMaterials(userId).then(materials => ([{
-      materials: materials,
-    }]));
+    const materials = await this.materialsService.getAllMaterials(userId);
+
+    return materials;
   }
 
   @Get(':id')

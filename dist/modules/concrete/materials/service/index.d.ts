@@ -7,7 +7,7 @@ export declare class MaterialsService {
     private readonly getEssaysByMaterial_Service;
     private logger;
     constructor(materialsRepository: MaterialsRepository, getEssaysByMaterial_Service: GetEssaysByMaterial_Service);
-    createMaterial(material: CreateConcreteMaterialDto, userId: string): Promise<Material>;
+    createMaterial(material: CreateConcreteMaterialDto): Promise<Material>;
     getMaterial(materialId: string): Promise<any>;
     getAllMaterials(userId: string): Promise<Material[]>;
     updateMaterial(material: Material): Promise<Material>;

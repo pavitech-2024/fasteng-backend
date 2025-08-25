@@ -6,6 +6,7 @@ export class CreateSampleDto {
   @IsNotEmpty()
   @IsString()
   name: string;
+  userId: string;
 
   @ApiProperty({
     description: 'Tipo da amostra',
@@ -67,7 +68,12 @@ export class CreateSampleDto {
 
 export class CreateSampleDto {
   @IsNotEmpty()
+  @IsString()
   name: string;
+
+  @IsNotEmpty()
+  @IsString()
+  userId: string;
 
   type: 'inorganicSoil' | 'organicSoil' | 'pavementLayer';
   construction?: string;

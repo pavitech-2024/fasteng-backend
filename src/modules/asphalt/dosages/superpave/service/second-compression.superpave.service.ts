@@ -15,23 +15,39 @@ export class SecondCompression_Superpave_Service {
     private readonly superpaveRepository: SuperpaveRepository,
   ) {}
 
-  calculateStep7RiceTest(
-    sampleAirDryMass: number,
-    containerMassWaterSample: number,
+  /**
+   * Calculates the second compression rice test value, which is the
+   * theoretical maximum specific gravity of the asphalt mixture, adjusted
+   * for temperature.
+   *
+   * @param drySampleMass - The mass of the dry sample.
+   * @param containerSampleWaterMass - The mass of the container with the
+   * water sample.
+   * @param containerWaterMass - The mass of the container with water.
+   * @param temperatureCorrection - The correction factor for water
+   * temperature.
+   * @returns The calculated theoretical maximum specific gravity (Gmm).
+   * @throws Will throw an error if the denominator is too close to zero,
+   * indicating a potential division by zero.
+   */
+  calculateSecondCompressionRiceTest(
+    drySampleMass: number,
+    containerSampleWaterMass: number,
     containerWaterMass: number,
-    waterTemperatureCorrection: number,
-  ) {
-    try {
-      this.logger.log({}, 'start calculateStep7RiceTest > SecondCompression_Superpave_Service');
+    temperatureCorrection: number,
+  ): number {
+    const numerator = drySampleMass;
+    const denominator = drySampleMass + containerWaterMass - containerSampleWaterMass;
 
-      const gmm =
-        (sampleAirDryMass / (sampleAirDryMass + containerWaterMass - containerMassWaterSample)) *
-        waterTemperatureCorrection;
-
-      return gmm as any;
-    } catch (error) {
-      throw error;
+    // Verify if the denominator is too close to zero to avoid division by zero
+    // This is necessary because the values used in the calculation may be very close to zero,
+    // but not exactly zero, which would cause the calculation to fail.
+    if (Math.abs(denominator) < 1e-6) {
+      throw new Error('Denominator is too close to zero');
     }
+
+    const gmm = (numerator / denominator) * temperatureCorrection;
+    return gmm;
   }
 
   calculateStep7Gmm(gmm: any) {
@@ -44,7 +60,7 @@ export class SecondCompression_Superpave_Service {
         if (gmm[i].insertedGmm) {
           gmmValue.push(gmm[i].insertedGmm);
         } else {
-          const value = this.calculateStep7RiceTest(
+          const value = this.calculateSecondCompressionRiceTest(
             gmm.massOfDrySample,
             gmm.massOfContainer_Water_Sample,
             gmm.massOfContainer_Water,
@@ -63,10 +79,7 @@ export class SecondCompression_Superpave_Service {
 
   async calculateSecondCompressionData(body: any) {
     try {
-      this.logger.log(
-        { body },
-        'start calculating the second compression data > SecondCompression_Superpave_Service',
-      );
+      this.logger.log({ body }, 'start calculating the second compression data > SecondCompression_Superpave_Service');
 
       const {
         composition,
@@ -329,11 +342,11 @@ export class SecondCompression_Superpave_Service {
 
       for (let i = 0; i < choosenGranulometryComposition.composition.halfLess.projectN.samplesData.length; i++) {
         if (
-          choosenGranulometryComposition.composition.halfLess.projectN.samplesData[i].diametralTractionResistance  !==
+          choosenGranulometryComposition.composition.halfLess.projectN.samplesData[i].diametralTractionResistance !==
           undefined
         ) {
           sumIndirectTensileStrength +=
-            choosenGranulometryComposition.composition.halfLess.projectN.samplesData[i].diametralTractionResistance ;
+            choosenGranulometryComposition.composition.halfLess.projectN.samplesData[i].diametralTractionResistance;
           nIndirectTensileStrength++;
         }
       }
@@ -347,11 +360,11 @@ export class SecondCompression_Superpave_Service {
 
       for (let i = 0; i < choosenGranulometryComposition.composition.normal.projectN.samplesData.length; i++) {
         if (
-          choosenGranulometryComposition.composition.normal.projectN.samplesData[i].indirectTensileStrength !==
+          choosenGranulometryComposition.composition.normal.projectN.samplesData[i].diametralTractionResistance !==
           undefined
         ) {
           sumIndirectTensileStrength +=
-            choosenGranulometryComposition.composition.normal.projectN.samplesData[i].indirectTensileStrength;
+            choosenGranulometryComposition.composition.normal.projectN.samplesData[i].diametralTractionResistance;
           nIndirectTensileStrength++;
         }
       }
@@ -365,11 +378,11 @@ export class SecondCompression_Superpave_Service {
 
       for (let i = 0; i < choosenGranulometryComposition.composition.halfPlus.projectN.samplesData.length; i++) {
         if (
-          choosenGranulometryComposition.composition.halfPlus.projectN.samplesData[i].indirectTensileStrength !==
+          choosenGranulometryComposition.composition.halfPlus.projectN.samplesData[i].diametralTractionResistance !==
           undefined
         ) {
           sumIndirectTensileStrength +=
-            choosenGranulometryComposition.composition.halfPlus.projectN.samplesData[i].indirectTensileStrength;
+            choosenGranulometryComposition.composition.halfPlus.projectN.samplesData[i].diametralTractionResistance;
           nIndirectTensileStrength++;
         }
       }
@@ -383,11 +396,11 @@ export class SecondCompression_Superpave_Service {
 
       for (let i = 0; i < choosenGranulometryComposition.composition.onePlus.projectN.samplesData.length; i++) {
         if (
-          choosenGranulometryComposition.composition.onePlus.projectN.samplesData[i].indirectTensileStrength !==
+          choosenGranulometryComposition.composition.onePlus.projectN.samplesData[i].diametralTractionResistance !==
           undefined
         ) {
           sumIndirectTensileStrength +=
-            choosenGranulometryComposition.composition.onePlus.projectN.samplesData[i].indirectTensileStrength;
+            choosenGranulometryComposition.composition.onePlus.projectN.samplesData[i].diametralTractionResistance;
           nIndirectTensileStrength++;
         }
       }
@@ -434,11 +447,14 @@ export class SecondCompression_Superpave_Service {
     return Gmb;
   }
 
+  // Densidade relativa aparente da mistura asfática (Gmb)
   calculateGmbCP(data) {
     for (let i = 0; i < data.length; i++) {
-      data[i].gmb =
-        (Math.round((data[i].dryMass / (data[i].drySurfaceSaturatedMass - data[i].submergedMass)) * 1e3) / 1e3) *
-        data[i].waterTemperatureCorrection;
+      const denominator = data[i].drySurfaceSaturatedMass - data[i].submergedMass;
+
+      const gmb = (Math.round((data[i].dryMass / denominator) * 1e3) / 1e3) * data[i].waterTemperatureCorrection;
+
+      data[i].gmb = gmb;
     }
     return data;
   }
@@ -459,10 +475,20 @@ export class SecondCompression_Superpave_Service {
   }
 
   percentageWaterAbsorbed(data) {
-    // a porcentagem de água absorvida que é = 100(sss-mse)/(sss-msu);
-
     const [averageDryMass, averageSubmergedMass, averageSaturedMass] = this.calculateMassMedia(data);
-    const percentWaterAbs = (100 * (averageSaturedMass - averageDryMass)) / (averageSaturedMass - averageSubmergedMass);
+
+    // Verifica se todos os valores são números válidos
+    const isValid = [averageDryMass, averageSubmergedMass, averageSaturedMass].every(
+      (val) => typeof val === 'number' && !isNaN(val),
+    );
+
+    const denominator = averageSaturedMass - averageSubmergedMass;
+
+    if (!isValid || Math.abs(denominator) < 1e-6) {
+      return 0;
+    }
+
+    const percentWaterAbs = (100 * (averageSaturedMass - averageDryMass)) / denominator;
     return percentWaterAbs;
   }
 
@@ -485,12 +511,16 @@ export class SecondCompression_Superpave_Service {
   }
 
   calculateVv(curve) {
-    return (1 - curve.projectN.gmb / curve.gmm) * 100;
+    const vv = (1 - curve.projectN.gmb / curve.gmm) * 100;
+    return vv;
   }
 
-  async saveStep9Data(body: any, userId: string) {
+  async saveSecondCompressionData(body: any, userId: string) {
     try {
-      this.logger.log('save superpave second compression data step on second-compression-data.superpave.service.ts > [body]', { body });
+      this.logger.log(
+        'save superpave second compression data step on second-compression-data.superpave.service.ts > [body]',
+        { body },
+      );
 
       const { name } = body.secondCompressionData;
 
@@ -498,20 +528,20 @@ export class SecondCompression_Superpave_Service {
 
       const { name: materialName, ...secondCompressionWithoutName } = body.secondCompressionData;
 
-      const superpaveWithSecondCompression = { ...superpaveExists._doc, secondCompressionData: secondCompressionWithoutName };
+      const superpaveWithSecondCompression = {
+        ...superpaveExists._doc,
+        secondCompressionData: secondCompressionWithoutName,
+      };
 
-      await this.superpaveModel.updateOne(
-        { _id: superpaveExists._doc._id },
-        superpaveWithSecondCompression
-      );
+      await this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithSecondCompression);
 
-      if (superpaveExists._doc.generalData.step < 9) {
-        await this.superpaveRepository.saveStep(superpaveExists, 9);
+      if (superpaveExists._doc.generalData.step < 8) {
+        await this.superpaveRepository.saveStep(superpaveExists, 8);
       }
 
       return true;
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 }

@@ -18,5 +18,5 @@ export declare class SecondCompressionParameters_Superpave_Service {
             graphRT: any[][];
         };
     }>;
-    saveStep10Data(body: any, userId: string): Promise<boolean>;
+    saveSecondCompressionParams(body: any, userId: string): Promise<boolean>;
 }

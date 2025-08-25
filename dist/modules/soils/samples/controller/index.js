@@ -37,7 +37,7 @@ let SamplesController = SamplesController_1 = class SamplesController {
     createSample(sample, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             this.logger.log('create sample > [body]');
-            const createdSample = yield this.samplesService.createSample(sample, userId);
+            const createdSample = yield this.samplesService.createSample(sample);
             if (createdSample)
                 this.logger.log(`sample created > [id]: ${createdSample._id}`);
             return createdSample;
@@ -46,9 +46,8 @@ let SamplesController = SamplesController_1 = class SamplesController {
     getAllByUserId(userId) {
         return __awaiter(this, void 0, void 0, function* () {
             this.logger.log(`get all samples by user id > [id]: ${userId}`);
-            return this.samplesService.getAllSamples(userId).then(samples => ([{
-                    materials: samples,
-                }]));
+            const samples = yield this.samplesService.getAllSamplesByUserId(userId);
+            return samples;
         });
     }
     getSampleById(sampleId) {

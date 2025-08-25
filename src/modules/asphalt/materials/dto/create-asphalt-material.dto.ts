@@ -9,6 +9,7 @@ export class CreateAsphaltMaterialDto {
   })
   @IsNotEmpty()
   name: string;
+  //userId: any;
 
   @ApiProperty({
     description: 'Tipo do material',
@@ -56,7 +57,12 @@ import { Sieve } from '../../../../utils/interfaces';
 
 export class CreateAsphaltMaterialDto {
   @IsNotEmpty()
+  @IsString()
   name: string;
+
+  @IsNotEmpty()
+  @IsString()
+  userId: string;
 
   type: 'coarseAggregate' | 'fineAggregate' | 'filler' | 'asphaltBinder' | 'CAP' | 'other';
   description?: {

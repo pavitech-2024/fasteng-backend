@@ -234,7 +234,7 @@ export declare class MarshallService {
             name: any;
         };
     }>;
-    saveStep5Data(body: any, userId: string): Promise<{
+    saveMistureMaximumDensityData(body: any, userId: string): Promise<{
         success: boolean;
         error?: undefined;
     } | {
@@ -264,7 +264,7 @@ export declare class MarshallService {
             name: any;
         };
     }>;
-    saveStep6Data(body: any, userId: string): Promise<{
+    saveVolumetricParametersData(body: any, userId: string): Promise<{
         success: boolean;
         error?: undefined;
     } | {

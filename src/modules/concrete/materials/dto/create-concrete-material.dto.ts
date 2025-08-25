@@ -9,6 +9,7 @@ export class CreateConcreteMaterialDto {
   })
   @IsNotEmpty()
   name: string;
+  userId: string;
 
   @ApiProperty({
     example: 'coarseAggregate',
@@ -71,7 +72,12 @@ import { Sieve } from '../../../../utils/interfaces';
 
 export class CreateConcreteMaterialDto {
   @IsNotEmpty()
+  @IsString()
   name: string;
+
+  @IsNotEmpty()
+  @IsString()
+  userId: string;
 
   type: 'coarseAggregate' | 'fineAggregate' | 'filler' | 'asphaltBinder' | 'CAP' | 'other';
   description?: {

@@ -1,7 +1,7 @@
-import { InjectModel } from "@nestjs/mongoose";
-import { DATABASE_CONNECTION } from "../../../../../infra/mongoose/database.config";
-import { Model } from "mongoose";
-import { Ddui, DduiDocument } from "../schemas";
+import { InjectModel } from '@nestjs/mongoose';
+import { DATABASE_CONNECTION } from '../../../../../infra/mongoose/database.config';
+import { Model } from 'mongoose';
+import { Ddui, DduiDocument } from '../schemas';
 
 export class DduiRepository {
   constructor(@InjectModel(Ddui.name, DATABASE_CONNECTION.ASPHALT) private dduiModel: Model<DduiDocument>) {}
@@ -21,6 +21,10 @@ export class DduiRepository {
   }
 
   async findAllByUserId(id: string): Promise<Ddui[]> {
-      return this.dduiModel.find({"generalData.userId": id});
-    }
+    return this.dduiModel.find({ 'generalData.userId': id });
+  }
+
+  async deleteOne(id: string): Promise<Ddui> {
+    return this.dduiModel.findByIdAndDelete(id);
+  }
 }

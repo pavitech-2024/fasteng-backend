@@ -37,7 +37,7 @@ let MaterialsController = MaterialsController_1 = class MaterialsController {
     createMaterial(material, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             this.logger.log('create material > [body]');
-            const createdMaterial = yield this.materialsService.createMaterial(material, userId);
+            const createdMaterial = yield this.materialsService.createMaterial(material);
             if (createdMaterial)
                 this.logger.log(`material created > [id]: ${createdMaterial._id}`);
             return createdMaterial;
@@ -46,9 +46,8 @@ let MaterialsController = MaterialsController_1 = class MaterialsController {
     getAllByUserId(userId) {
         return __awaiter(this, void 0, void 0, function* () {
             this.logger.log(`get all materials by user id > [id]: ${userId}`);
-            return this.materialsService.getAllMaterials(userId).then(materials => ([{
-                    materials: materials,
-                }]));
+            const materials = yield this.materialsService.getAllMaterials(userId);
+            return materials;
         });
     }
     getMaterialById(materialId) {
