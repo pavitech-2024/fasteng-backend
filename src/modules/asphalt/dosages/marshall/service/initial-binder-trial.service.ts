@@ -8,6 +8,7 @@ import { MarshallRepository } from '../repository';
 import { Marshall, MarshallDocument } from '../schemas';
 import { ViscosityRotationalRepository } from '../../../essays/viscosityRotational/repository';
 import { CalculateBinderTrialInput, PercentsMap, SaveStep4Body, TrialItem, ViscosityPayload } from '../types/marshall.types';
+import { handleError } from 'utils/error-handler';
 
 
 function isViscosityPayload(x: unknown): x is ViscosityPayload {
@@ -126,8 +127,8 @@ export class SetBinderTrial_Marshall_Service {
         },
       };
     } catch (error) {
-      this.logger.error('Error calculating initial binder trial', error);
-      throw error;
+       handleError(error, 'Failed to calculating initial binder trial');
+        throw error;
     }
   }
 
@@ -186,8 +187,8 @@ export class SetBinderTrial_Marshall_Service {
 
       return bands;
     } catch (error) {
-      this.logger.error('Error fetching bands of temperatures', error);
-      throw error;
+       handleError(error, 'Error fetching bands of temperatures');
+        throw error;
     }
   }
 
@@ -211,8 +212,8 @@ export class SetBinderTrial_Marshall_Service {
 
       return true;
     } catch (error) {
-      this.logger.error('Error saving step 4 binder trial data', error);
-      throw error;
+       handleError(error, 'Error saving step 4 binder trial data');
+        throw error;
     }
   }
 }

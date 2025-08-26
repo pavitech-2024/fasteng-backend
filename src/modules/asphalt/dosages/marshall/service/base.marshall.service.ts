@@ -2,6 +2,7 @@ import { Injectable, NotFoundException, ForbiddenException, BadRequestException 
 import { MarshallRepository } from '../repository';
 import { Marshall } from '../schemas';
 import { CreateMarshallDTO } from '../dto/create-marshal-dto';
+import { handleError } from 'utils/error-handler';
 
 @Injectable()
 export class BaseMarshallService {
@@ -50,7 +51,8 @@ export class BaseMarshallService {
 
       return true;
     } catch (error) {
-      throw error;
+    handleError(error, "Failed to saveStepData", true);
+    throw error;
     }
   }
 
@@ -73,6 +75,7 @@ export class BaseMarshallService {
 
       return dosage[propertyName] || null;
     } catch (error) {
+       handleError(error, "Failed to getStepData");
       throw error;
     }
   }

@@ -41,6 +41,7 @@ const mongoose_2 = require("mongoose");
 const repository_1 = require("../repository");
 const schemas_1 = require("../schemas");
 const repository_2 = require("../../../essays/viscosityRotational/repository");
+const error_handler_1 = require("../../../../../utils/error-handler");
 function isViscosityPayload(x) {
     if (typeof x !== 'object' || x === null)
         return false;
@@ -131,7 +132,7 @@ let SetBinderTrial_Marshall_Service = SetBinderTrial_Marshall_Service_1 = class 
                 };
             }
             catch (error) {
-                this.logger.error('Error calculating initial binder trial', error);
+                (0, error_handler_1.handleError)(error, 'Failed to calculating initial binder trial');
                 throw error;
             }
         });
@@ -172,7 +173,7 @@ let SetBinderTrial_Marshall_Service = SetBinderTrial_Marshall_Service_1 = class 
                 return bands;
             }
             catch (error) {
-                this.logger.error('Error fetching bands of temperatures', error);
+                (0, error_handler_1.handleError)(error, 'Error fetching bands of temperatures');
                 throw error;
             }
         });
@@ -193,7 +194,7 @@ let SetBinderTrial_Marshall_Service = SetBinderTrial_Marshall_Service_1 = class 
                 return true;
             }
             catch (error) {
-                this.logger.error('Error saving step 4 binder trial data', error);
+                (0, error_handler_1.handleError)(error, 'Error saving step 4 binder trial data');
                 throw error;
             }
         });

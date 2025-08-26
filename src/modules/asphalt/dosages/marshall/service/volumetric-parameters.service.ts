@@ -5,6 +5,7 @@ import { Marshall, MarshallDocument } from '../schemas';
 import { DATABASE_CONNECTION } from '../../../../../infra/mongoose/database.config';
 import { Model } from 'mongoose';
 import { MarshallRepository } from '../repository';
+import { handleError } from 'utils/error-handler';
  
 
 
@@ -162,7 +163,9 @@ export class VolumetricParameters_Marshall_Service {
 
       return { volumetricParameters, pointsOfCurveDosageRBV, pointsOfCurveDosageVv };
     } catch (error) {
-      throw new Error('Failed to set volumetric parameters.');
+       handleError(error, 'Failed to set volumetric parameters.');
+       throw error;
+      
     }
   }
 
@@ -215,7 +218,8 @@ export class VolumetricParameters_Marshall_Service {
         volumetricParameters,
       };
     } catch (error) {
-      throw new Error(`Failed to set volumetric parameters: ${error}`);
+        handleError(error,'Failed to set volumetric parameters')
+        throw error;
     }
   }
 
@@ -303,7 +307,9 @@ export class VolumetricParameters_Marshall_Service {
 
       return confirmedVolumetricParameters;
     } catch (error) {
-      throw new Error(`Failed to confirm volumetric parameters: ${error}`);
+      
+       handleError(error,'Failed to confirm volumetric parameters')
+       throw error;
     }
   }
 
@@ -358,7 +364,8 @@ export class VolumetricParameters_Marshall_Service {
 
       return true;
     } catch (error) {
-      throw error;
+     handleError(error, 'failed to saveVolumetricParametersData');
+     throw error;
     }
   }
 }

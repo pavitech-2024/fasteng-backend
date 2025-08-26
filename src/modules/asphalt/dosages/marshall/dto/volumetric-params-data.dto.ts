@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-
+import { IsNotEmpty, IsObject} from 'class-validator';
 export class PointDTO {
   @ApiProperty({ example: 0.5 })
   x: number;
@@ -38,6 +38,11 @@ export class VolumetricValuesDTO {
 }
 
 export class VolumetricParameterDTO {
+  @ApiPropertyOptional({ example: 'Mixture Name' })
+  @IsOptional()
+  @IsString()
+  name?: string;
+  
   @ApiProperty({ example: 5.5 })
   asphaltContent: number;
 
@@ -54,4 +59,23 @@ export class VolumetricParametersDataDTO {
 
   @ApiProperty({ type: [VolumetricParameterDTO] })
   volumetricParameters: VolumetricParameterDTO[];
+}
+
+export class SaveVolumetricParametersResponseDTO {
+  @ApiProperty({ example: true })
+  success: boolean;
+
+  @ApiProperty({ example: 'Volumetric parameters saved successfully' })
+  message: string;
+
+  @ApiProperty({ example: 6 })
+  step: number;
+}
+
+
+export class SaveVolumetricParametersRequestDTO {
+  @ApiProperty({ type: VolumetricParametersDataDTO })
+  @IsNotEmpty()
+  @IsObject()
+  volumetricParametersData: VolumetricParametersDataDTO;
 }

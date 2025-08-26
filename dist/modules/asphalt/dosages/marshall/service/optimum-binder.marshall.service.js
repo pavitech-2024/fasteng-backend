@@ -40,6 +40,7 @@ const schemas_1 = require("../schemas");
 const database_config_1 = require("../../../../../infra/mongoose/database.config");
 const mongoose_2 = require("mongoose");
 const repository_1 = require("../repository");
+const error_handler_1 = require("../../../../../utils/error-handler");
 let OptimumBinderContent_Marshall_Service = class OptimumBinderContent_Marshall_Service {
     constructor(marshallModel, marshallRepository) {
         this.marshallModel = marshallModel;
@@ -73,7 +74,8 @@ let OptimumBinderContent_Marshall_Service = class OptimumBinderContent_Marshall_
                 return graphics;
             }
             catch (error) {
-                throw new Error('Failed to set optimum binder content graphs.');
+                (0, error_handler_1.handleError)(error, 'Failed to set optimum binder content graphs.');
+                throw error;
             }
         });
     }
@@ -125,7 +127,8 @@ let OptimumBinderContent_Marshall_Service = class OptimumBinderContent_Marshall_
                 };
             }
             catch (error) {
-                throw new Error('Failed to set optimum binder dosage graph.');
+                (0, error_handler_1.handleError)(error, 'Failed to set optimum binder dosage graph.');
+                throw error;
             }
         });
     }
@@ -194,7 +197,8 @@ let OptimumBinderContent_Marshall_Service = class OptimumBinderContent_Marshall_
                 return { Vv, RBV, Vam, Gmb, newMaxSpecificGravity };
             }
             catch (error) {
-                throw new Error('Failed to set optimum binder expected parameters.');
+                (0, error_handler_1.handleError)(error, 'Failed to set optimum binder expected parameters.');
+                throw error;
             }
         });
     }
@@ -279,6 +283,7 @@ let OptimumBinderContent_Marshall_Service = class OptimumBinderContent_Marshall_
                 return true;
             }
             catch (error) {
+                (0, error_handler_1.handleError)(error, 'saveStep7Data');
                 throw error;
             }
         });

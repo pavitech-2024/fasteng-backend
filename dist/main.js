@@ -18,13 +18,33 @@ const auth_module_1 = require("./modules/auth/auth.module");
 const users_module_1 = require("./modules/users/users.module");
 const samples_module_1 = require("./modules/soils/samples/samples.module");
 const http_exception_filter_1 = require("./config/filters/http-exception.filter");
+const error_handler_1 = require("./utils/error-handler");
+const common_2 = require("@nestjs/common");
 function bootstrap() {
     return __awaiter(this, void 0, void 0, function* () {
         const app = yield core_1.NestFactory.create(app_module_1.AppModule, {
             logger: ['error', 'warn', 'debug', 'log'],
         });
         app.enableCors();
-        app.useGlobalPipes(new common_1.ValidationPipe());
+        app.useGlobalPipes(new common_1.ValidationPipe({
+            transform: true,
+            whitelist: true,
+            forbidNonWhitelisted: true,
+            exceptionFactory: (errors) => {
+                const formattedErrors = errors.map(err => ({
+                    property: err.property,
+                    constraints: err.constraints,
+                }));
+                const customError = new common_2.BadRequestException({
+                    status: 400,
+                    message: 'Erro de validação',
+                    name: 'ValidationError',
+                    errorDetails: formattedErrors,
+                });
+                (0, error_handler_1.handleError)(customError, 'ValidationPipe');
+                return customError;
+            },
+        }));
         app.useGlobalFilters(new http_exception_filter_1.AllExceptionsFilter());
         app.use(bodyParser.json({ limit: '10mb' }));
         app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));

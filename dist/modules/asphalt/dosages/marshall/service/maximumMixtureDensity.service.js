@@ -42,6 +42,7 @@ const repository_1 = require("../repository");
 const mongoose_2 = require("mongoose");
 const repository_2 = require("../../../materials/repository");
 const repository_3 = require("../../../essays/specifyMass/repository");
+const error_handler_1 = require("../../../../../utils/error-handler");
 let MaximumMixtureDensity_Marshall_Service = MaximumMixtureDensity_Marshall_Service_1 = class MaximumMixtureDensity_Marshall_Service {
     constructor(marshallModel, marshallRepository, materialsRepository, specificMassRepository) {
         this.marshallModel = marshallModel;
@@ -75,7 +76,8 @@ let MaximumMixtureDensity_Marshall_Service = MaximumMixtureDensity_Marshall_Serv
                 return yield getIndexesOfMissesSpecificGravity();
             }
             catch (error) {
-                throw new Error('Failed to calculate max specific gravity.');
+                (0, error_handler_1.handleError)(error, 'Failed to calculate max specific gravity.');
+                throw error;
             }
         });
     }
@@ -141,14 +143,16 @@ let MaximumMixtureDensity_Marshall_Service = MaximumMixtureDensity_Marshall_Serv
                         return { maxSpecificGravity, listOfSpecificGravities };
                     }
                     catch (error) {
-                        throw new Error('Failed to calculate max specific gravity.');
+                        (0, error_handler_1.handleError)(error, 'Failed to calculate max specific gravity.');
+                        throw error;
                     }
                 });
                 const result = yield calculate();
                 return result;
             }
             catch (error) {
-                throw new Error('Failed to calculate max specific gravity.');
+                (0, error_handler_1.handleError)(error, 'Failed to calculate max specific gravity.');
+                throw error;
             }
         });
     }
@@ -177,7 +181,8 @@ let MaximumMixtureDensity_Marshall_Service = MaximumMixtureDensity_Marshall_Serv
                         return listOfSpecificGravities;
                     }
                     catch (error) {
-                        throw new Error('Failed to calculate max specific gravity.');
+                        (0, error_handler_1.handleError)(error, 'Failed to calculate max specific gravity.');
+                        throw error;
                     }
                 });
                 const gmm = Array.from({ length: 5 }, (_, i) => {
@@ -205,7 +210,8 @@ let MaximumMixtureDensity_Marshall_Service = MaximumMixtureDensity_Marshall_Serv
                 return { maxSpecificGravity, listOfSpecificGravities };
             }
             catch (error) {
-                throw new Error('Failed to calculate max specific gravity GMM.');
+                (0, error_handler_1.handleError)(error, 'Failed to calculate max specific gravity GMM.');
+                throw error;
             }
         });
     }
@@ -224,7 +230,8 @@ let MaximumMixtureDensity_Marshall_Service = MaximumMixtureDensity_Marshall_Serv
                 return maxSpecificGravity;
             }
             catch (error) {
-                throw new Error('Failed to calculate rice test.');
+                (0, error_handler_1.handleError)(error, 'Failed to calculate rice test.');
+                throw error;
             }
         });
     }
@@ -243,6 +250,7 @@ let MaximumMixtureDensity_Marshall_Service = MaximumMixtureDensity_Marshall_Serv
                 return true;
             }
             catch (error) {
+                (0, error_handler_1.handleError)(error, 'Failed to saveMistureMaximumDensityData');
                 throw error;
             }
         });

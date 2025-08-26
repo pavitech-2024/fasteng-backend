@@ -40,6 +40,7 @@ const schemas_1 = require("../schemas");
 const database_config_1 = require("../../../../../infra/mongoose/database.config");
 const mongoose_2 = require("mongoose");
 const repository_1 = require("../repository");
+const error_handler_1 = require("../../../../../utils/error-handler");
 let VolumetricParameters_Marshall_Service = VolumetricParameters_Marshall_Service_1 = class VolumetricParameters_Marshall_Service {
     constructor(marshallModel, marshallRepository) {
         this.marshallModel = marshallModel;
@@ -156,7 +157,8 @@ let VolumetricParameters_Marshall_Service = VolumetricParameters_Marshall_Servic
                 return { volumetricParameters, pointsOfCurveDosageRBV, pointsOfCurveDosageVv };
             }
             catch (error) {
-                throw new Error('Failed to set volumetric parameters.');
+                (0, error_handler_1.handleError)(error, 'Failed to set volumetric parameters.');
+                throw error;
             }
         });
     }
@@ -196,7 +198,8 @@ let VolumetricParameters_Marshall_Service = VolumetricParameters_Marshall_Servic
                 };
             }
             catch (error) {
-                throw new Error(`Failed to set volumetric parameters: ${error}`);
+                (0, error_handler_1.handleError)(error, 'Failed to set volumetric parameters');
+                throw error;
             }
         });
     }
@@ -274,7 +277,8 @@ let VolumetricParameters_Marshall_Service = VolumetricParameters_Marshall_Servic
                 return confirmedVolumetricParameters;
             }
             catch (error) {
-                throw new Error(`Failed to confirm volumetric parameters: ${error}`);
+                (0, error_handler_1.handleError)(error, 'Failed to confirm volumetric parameters');
+                throw error;
             }
         });
     }
@@ -316,6 +320,7 @@ let VolumetricParameters_Marshall_Service = VolumetricParameters_Marshall_Servic
                 return true;
             }
             catch (error) {
+                (0, error_handler_1.handleError)(error, 'failed to saveVolumetricParametersData');
                 throw error;
             }
         });

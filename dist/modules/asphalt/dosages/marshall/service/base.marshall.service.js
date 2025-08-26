@@ -21,6 +21,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.BaseMarshallService = void 0;
 const common_1 = require("@nestjs/common");
 const repository_1 = require("../repository");
+const error_handler_1 = require("../../../../../utils/error-handler");
 let BaseMarshallService = class BaseMarshallService {
     constructor(marshall_repository) {
         this.marshall_repository = marshall_repository;
@@ -57,6 +58,7 @@ let BaseMarshallService = class BaseMarshallService {
                 return true;
             }
             catch (error) {
+                (0, error_handler_1.handleError)(error, "Failed to saveStepData", true);
                 throw error;
             }
         });
@@ -78,6 +80,7 @@ let BaseMarshallService = class BaseMarshallService {
                 return dosage[propertyName] || null;
             }
             catch (error) {
+                (0, error_handler_1.handleError)(error, "Failed to getStepData");
                 throw error;
             }
         });

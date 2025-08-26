@@ -29,6 +29,7 @@ const database_config_1 = require("../../../../../infra/mongoose/database.config
 const mongoose_2 = require("mongoose");
 const repository_1 = require("../repository");
 const schemas_1 = require("../schemas");
+const error_handler_1 = require("../../../../../utils/error-handler");
 let ConfirmCompression_Marshall_Service = ConfirmCompression_Marshall_Service_1 = class ConfirmCompression_Marshall_Service {
     constructor(marshallRepository, marshallModel) {
         this.marshallRepository = marshallRepository;
@@ -83,7 +84,7 @@ let ConfirmCompression_Marshall_Service = ConfirmCompression_Marshall_Service_1 
                 return true;
             }
             catch (error) {
-                this.logger.error('Error saving step 8 data', error);
+                (0, error_handler_1.handleError)(error, 'Error saving step 8 data', true);
                 throw error;
             }
         });

@@ -41,6 +41,7 @@ const mongoose_1 = require("@nestjs/mongoose");
 const database_config_1 = require("../../../../../infra/mongoose/database.config");
 const mongoose_2 = require("mongoose");
 const schemas_1 = require("../schemas");
+const error_handler_1 = require("../../../../../utils/error-handler");
 let GeneralData_Marshall_Service = GeneralData_Marshall_Service_1 = class GeneralData_Marshall_Service {
     constructor(marshallModel, marshallRepository) {
         this.marshallModel = marshallModel;
@@ -102,7 +103,7 @@ let GeneralData_Marshall_Service = GeneralData_Marshall_Service_1 = class Genera
                 return true;
             }
             catch (error) {
-                this.logger.error('Error saving marshall dosage', error);
+                (0, error_handler_1.handleError)(error, "Error saving marshall dosage", true);
                 throw error;
             }
         });
@@ -117,6 +118,7 @@ let GeneralData_Marshall_Service = GeneralData_Marshall_Service_1 = class Genera
                 return true;
             }
             catch (error) {
+                (0, error_handler_1.handleError)(error, "Failed on deleteMarshallDosage", true);
                 throw error;
             }
         });

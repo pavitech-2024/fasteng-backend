@@ -44,6 +44,7 @@ const mongoose_2 = require("@nestjs/mongoose");
 const database_config_1 = require("../../../../../infra/mongoose/database.config");
 const repository_4 = require("../../../essays/viscosityRotational/repository");
 const index_1 = require("../../../essays/specifyMass/repository/index");
+const error_handler_1 = require("../../../../../utils/error-handler");
 let MaterialSelection_Marshall_Service = MaterialSelection_Marshall_Service_1 = class MaterialSelection_Marshall_Service {
     constructor(marshallModel, material_repository, granulometry_repository, marshallRepository, rotationalViscosity_repository, specificMass_repository) {
         this.marshallModel = marshallModel;
@@ -88,6 +89,7 @@ let MaterialSelection_Marshall_Service = MaterialSelection_Marshall_Service_1 = 
                 return filteredMaterials;
             }
             catch (error) {
+                (0, error_handler_1.handleError)(error, 'Failed to getMaterials');
                 throw error;
             }
         });
@@ -107,6 +109,7 @@ let MaterialSelection_Marshall_Service = MaterialSelection_Marshall_Service_1 = 
                 return true;
             }
             catch (error) {
+                (0, error_handler_1.handleError)(error, 'Failed to saveMaterials');
                 throw error;
             }
         });

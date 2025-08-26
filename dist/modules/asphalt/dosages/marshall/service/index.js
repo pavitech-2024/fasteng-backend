@@ -30,6 +30,7 @@ const volumetric_parameters_service_1 = require("./volumetric-parameters.service
 const optimum_binder_marshall_service_1 = require("./optimum-binder.marshall.service");
 const confirm_compression_marshall_service_1 = require("./confirm-compression.marshall.service");
 const base_marshall_service_1 = require("./base.marshall.service");
+const error_handler_1 = require("../../../../../utils/error-handler");
 let MarshallService = MarshallService_1 = class MarshallService {
     constructor(marshall_repository, generalData_Service, baseMarshallService, granulometryComposition_Service, setBinderTrial_Service, maximumMixtureDensity_Service, volumetricParameters_Service, optimumBinder_Service, confirmCompression_Service) {
         this.marshall_repository = marshall_repository;
@@ -55,7 +56,7 @@ let MarshallService = MarshallService_1 = class MarshallService {
                 return { success };
             }
             catch (error) {
-                this.logger.error(`error saving step data > [error]: ${error}`);
+                (0, error_handler_1.handleError)(error, "error saving step data");
                 const { status, name, message } = error;
                 return { success: false, error: { status, message, name } };
             }
@@ -69,7 +70,7 @@ let MarshallService = MarshallService_1 = class MarshallService {
                 return userDosages;
             }
             catch (error) {
-                this.logger.error(`error on get all dosages > [error]: ${error}`);
+                (0, error_handler_1.handleError)(error, "error on get all dosages");
                 throw error;
             }
         });
@@ -81,7 +82,7 @@ let MarshallService = MarshallService_1 = class MarshallService {
                 return dosage;
             }
             catch (error) {
-                this.logger.error(`error on verify init > [error]: ${error}`);
+                (0, error_handler_1.handleError)(error, "error on verify init");
                 const { status, name, message } = error;
                 return { success: false, error: { status, message, name } };
             }
@@ -95,7 +96,7 @@ let MarshallService = MarshallService_1 = class MarshallService {
                 return { dosage, success: true };
             }
             catch (error) {
-                this.logger.error(`error on getting dosage by id > [error]: ${error}`);
+                (0, error_handler_1.handleError)(error, "error on getting dosage by id");
                 const { status, name, message } = error;
                 return { materials: [], success: false, error: { status, message, name } };
             }
@@ -259,7 +260,7 @@ let MarshallService = MarshallService_1 = class MarshallService {
                 };
             }
             catch (error) {
-                this.logger.error(`error on getting the step 3 data > [error]: ${error}`);
+                (0, error_handler_1.handleError)(error, "error on getting the step 3 data");
                 const { status, name, message } = error;
                 return { data: null, success: false, error: { status, message, name } };
             }
@@ -295,7 +296,7 @@ let MarshallService = MarshallService_1 = class MarshallService {
                 return { data, success: true };
             }
             catch (error) {
-                this.logger.error(`error on getting the step 3 data > [error]: ${error}`);
+                (0, error_handler_1.handleError)(error, "error on getting the step 3 data");
                 const { status, name, message } = error;
                 return { data: null, success: false, error: { status, name, message } };
             }
@@ -326,7 +327,7 @@ let MarshallService = MarshallService_1 = class MarshallService {
                 };
             }
             catch (error) {
-                this.logger.error(`error on getting the step 3 data > [error]: ${error}`);
+                (0, error_handler_1.handleError)(error, "error on getting the step 3 data");
                 const { status, name, message } = error;
                 return { data: null, success: false, error: { status, message, name } };
             }
@@ -349,7 +350,7 @@ let MarshallService = MarshallService_1 = class MarshallService {
                 return { data, success: true };
             }
             catch (error) {
-                this.logger.error(`Error getting indexes of misses specific gravity: ${error.message}`, error.stack);
+                (0, error_handler_1.handleError)(error, "Error getting indexes of misses specific gravity");
                 const { status, name, message } = error;
                 return {
                     data: null,
@@ -374,7 +375,7 @@ let MarshallService = MarshallService_1 = class MarshallService {
                 };
             }
             catch (error) {
-                this.logger.error(`Error calculating DMT data: ${error.message}`, error.stack);
+                (0, error_handler_1.handleError)(error, "Error calculating DMT data");
                 const { status, name, message } = error;
                 return {
                     data: null,
@@ -399,7 +400,7 @@ let MarshallService = MarshallService_1 = class MarshallService {
                 };
             }
             catch (error) {
-                this.logger.error(`Error calculating GMM data: ${error.message}`, error.stack);
+                (0, error_handler_1.handleError)(error, "Error calculating GMM data");
                 const { status, name, message } = error;
                 return {
                     data: null,
@@ -423,7 +424,7 @@ let MarshallService = MarshallService_1 = class MarshallService {
                 };
             }
             catch (error) {
-                this.logger.error(`Error calculating rice test: ${error.message}`, error.stack);
+                (0, error_handler_1.handleError)(error, "Error calculating rice test");
                 const { status, name, message } = error;
                 return {
                     data: null,
@@ -440,7 +441,7 @@ let MarshallService = MarshallService_1 = class MarshallService {
                 return { success };
             }
             catch (error) {
-                this.logger.error(`Error saving maximum mixture density data: ${error.message}`, error.stack);
+                (0, error_handler_1.handleError)(error, 'Error saving maximum mixture density data');
                 const { status, name, message } = error;
                 return {
                     success: false,
@@ -462,7 +463,7 @@ let MarshallService = MarshallService_1 = class MarshallService {
                 };
             }
             catch (error) {
-                this.logger.error(`error on setting step 6 volumetric parameters data > [error]: ${error}`);
+                (0, error_handler_1.handleError)(error, 'error on setting step 6 volumetric parameters data');
                 const { status, name, message } = error;
                 return { data: null, success: false, error: { status, message, name } };
             }
@@ -475,7 +476,7 @@ let MarshallService = MarshallService_1 = class MarshallService {
                 return { success };
             }
             catch (error) {
-                this.logger.error(`error on save step 6 data of marshall dosage > [error]: ${error}`);
+                (0, error_handler_1.handleError)(error, 'error on save step 6 data of marshall dosage');
                 const { status, name, message } = error;
                 return { success: false, error: { status, message, name } };
             }
@@ -494,7 +495,7 @@ let MarshallService = MarshallService_1 = class MarshallService {
                 };
             }
             catch (error) {
-                this.logger.error(`error on setting step 7 optimum binder data > [error]: ${error}`);
+                (0, error_handler_1.handleError)(error, 'error on setting step 7 optimum binder data');
                 const { status, name, message } = error;
                 return { data: null, success: false, error: { status, message, name } };
             }
@@ -514,7 +515,7 @@ let MarshallService = MarshallService_1 = class MarshallService {
                 };
             }
             catch (error) {
-                this.logger.error(`error on setting step 7 optimum binder dosage graph data > [error]: ${error}`);
+                (0, error_handler_1.handleError)(error, 'error on setting step 7 optimum binder dosage graph data');
                 const { status, name, message } = error;
                 return { data: null, success: false, error: { status, message, name } };
             }
@@ -533,7 +534,7 @@ let MarshallService = MarshallService_1 = class MarshallService {
                 };
             }
             catch (error) {
-                this.logger.error(`error on setting step 7 optimum binder dosage graph data > [error]: ${error}`);
+                (0, error_handler_1.handleError)(error, 'error on setting step 7 optimum binder dosage graph data');
                 const { status, name, message } = error;
                 return { data: null, success: false, error: { status, message, name } };
             }
@@ -562,7 +563,7 @@ let MarshallService = MarshallService_1 = class MarshallService {
                 };
             }
             catch (error) {
-                this.logger.error(`error on confirming step 8 specific gravity > [error]: ${error}`);
+                (0, error_handler_1.handleError)(error, 'error on confirming step 8 specific gravity');
                 const { status, name, message } = error;
                 return { data: null, success: false, error: { status, message, name } };
             }
@@ -581,7 +582,7 @@ let MarshallService = MarshallService_1 = class MarshallService {
                 };
             }
             catch (error) {
-                this.logger.error(`error on confirming step 8 specific gravity > [error]: ${error}`);
+                (0, error_handler_1.handleError)(error, 'error on confirming step 8 specific gravity');
                 const { status, name, message } = error;
                 return { data: null, success: false, error: { status, message, name } };
             }
@@ -604,7 +605,7 @@ let MarshallService = MarshallService_1 = class MarshallService {
                 return { success };
             }
             catch (error) {
-                this.logger.error(`error on save step 8 data of marshall dosage > [error]: ${error}`);
+                (0, error_handler_1.handleError)(error, 'error on save step 8 data of marshall dosage');
                 const { status, name, message } = error;
                 return { success: false, error: { status, message, name } };
             }
@@ -617,7 +618,7 @@ let MarshallService = MarshallService_1 = class MarshallService {
                 return { success };
             }
             catch (error) {
-                this.logger.error(`error on delete marshall dosage > [error]: ${error}`);
+                (0, error_handler_1.handleError)(error, 'error on delete marshall dosage');
                 const { status, name, message } = error;
                 return { success: false, error: { status, message, name } };
             }

@@ -26,6 +26,7 @@ import { MarshallStep } from "../types/marshall.types";
 import { Step3Result,  } from "../types/step-data.type";
 import { Step3Data } from "../types/step-data.type";
 import { SaveMarshallDosageDTO } from "../dto/binder-trial-data.dto";
+import { handleError } from "utils/error-handler";
 //teste
   import { Types } from 'mongoose';
   import { CalculateStep3DTO } from "../dto/calculate-step-5.dto";
@@ -68,7 +69,7 @@ export class MarshallService {
     
     return { success };
   } catch (error) {
-    this.logger.error(`error saving step data > [error]: ${error}`);
+    handleError(error, "error saving step data");
     const { status, name, message } = error;
     return { success: false, error: { status, message, name } };
   }
@@ -84,8 +85,7 @@ export class MarshallService {
       // retorna as dosagens encontradas que pertencem ao usuário
       return userDosages;
     } catch (error) {
-      this.logger.error(`error on get all dosages > [error]: ${error}`);
-
+      handleError(error, "error on get all dosages");
       throw error;
     }
   }
@@ -96,7 +96,7 @@ export class MarshallService {
 
       return dosage;
     } catch (error) {
-      this.logger.error(`error on verify init > [error]: ${error}`);
+      handleError(error, "error on verify init");
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
     }
@@ -125,7 +125,7 @@ export class MarshallService {
 
       return { dosage, success: true };
     } catch (error) {
-      this.logger.error(`error on getting dosage by id > [error]: ${error}`);
+       handleError(error, "error on getting dosage by id");
       const { status, name, message } = error;
       return { materials: [], success: false, error: { status, message, name } };
     }
@@ -304,7 +304,7 @@ export class MarshallService {
         success: true,
       }
     } catch (error) {
-      this.logger.error(`error on getting the step 3 data > [error]: ${error}`);
+       handleError(error, "error on getting the step 3 data");
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
     }
@@ -341,7 +341,7 @@ export class MarshallService {
 
     return { data, success: true };
   } catch (error) {
-    this.logger.error(`error on getting the step 3 data > [error]: ${error}`);
+     handleError(error, "error on getting the step 3 data" );
     const { status, name, message } = error;
     return { data: null, success: false, error: { status, name, message } };
   }
@@ -372,7 +372,7 @@ async saveStep3Data(body: SaveStep3DTO, userId: string): Promise<{ success: bool
         success: true 
       };
     } catch (error) {
-      this.logger.error(`error on getting the step 3 data > [error]: ${error}`);
+       handleError(error, "error on getting the step 3 data");
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
     }
@@ -392,7 +392,7 @@ async saveStep4Data(body: SaveStep4DTO, userId: string): Promise<{ success: bool
       const data = await this.maximumMixtureDensity_Service.getIndexesOfMissesSpecificGravity(dto);
       return { data, success: true };
     } catch (error) {
-      this.logger.error(`Error getting indexes of misses specific gravity: ${error.message}`, error.stack);
+       handleError(error, "Error getting indexes of misses specific gravity");
       const { status, name, message } = error;
       return { 
         data: null, 
@@ -417,7 +417,7 @@ async saveStep4Data(body: SaveStep4DTO, userId: string): Promise<{ success: bool
         success: true 
       };
     } catch (error) {
-      this.logger.error(`Error calculating DMT data: ${error.message}`, error.stack);
+       handleError(error, "Error calculating DMT data");
       const { status, name, message } = error;
       return { 
         data: null, 
@@ -443,7 +443,7 @@ async saveStep4Data(body: SaveStep4DTO, userId: string): Promise<{ success: bool
         success: true 
       };
     } catch (error) {
-      this.logger.error(`Error calculating GMM data: ${error.message}`, error.stack);
+       handleError(error, "Error calculating GMM data");
       const { status, name, message } = error;
       return { 
         data: null, 
@@ -467,7 +467,7 @@ async saveStep4Data(body: SaveStep4DTO, userId: string): Promise<{ success: bool
         success: true 
       };
     } catch (error) {
-      this.logger.error(`Error calculating rice test: ${error.message}`, error.stack);
+       handleError(error, "Error calculating rice test");
       const { status, name, message } = error;
       return { 
         data: null, 
@@ -482,7 +482,7 @@ async saveMistureMaximumDensityData(dto: SaveMaximumMixtureDensityDataDTO, userI
       const success = await this.maximumMixtureDensity_Service.saveMistureMaximumDensityData(dto, userId);
       return { success };
     } catch (error) {
-      this.logger.error(`Error saving maximum mixture density data: ${error.message}`, error.stack);
+       handleError(error, 'Error saving maximum mixture density data');
       const { status, name, message } = error;
       return { 
         success: false, 
@@ -504,7 +504,7 @@ async saveMistureMaximumDensityData(dto: SaveMaximumMixtureDensityDataDTO, userI
         success: true 
       };
     } catch (error) {
-      this.logger.error(`error on setting step 6 volumetric parameters data > [error]: ${error}`);
+       handleError(error, 'error on setting step 6 volumetric parameters data');
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
     }
@@ -516,7 +516,7 @@ async saveMistureMaximumDensityData(dto: SaveMaximumMixtureDensityDataDTO, userI
 
       return { success }
     } catch (error) {
-      this.logger.error(`error on save step 6 data of marshall dosage > [error]: ${error}`);
+       handleError(error, 'error on save step 6 data of marshall dosage' );
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
     }
@@ -535,7 +535,7 @@ async saveMistureMaximumDensityData(dto: SaveMaximumMixtureDensityDataDTO, userI
         success: true 
       };
     } catch (error) {
-      this.logger.error(`error on setting step 7 optimum binder data > [error]: ${error}`);
+       handleError(error, 'error on setting step 7 optimum binder data');
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
     }
@@ -555,7 +555,7 @@ async saveMistureMaximumDensityData(dto: SaveMaximumMixtureDensityDataDTO, userI
         success: true 
       };
     } catch (error) {
-      this.logger.error(`error on setting step 7 optimum binder dosage graph data > [error]: ${error}`);
+       handleError(error, 'error on setting step 7 optimum binder dosage graph data');
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
     }
@@ -574,7 +574,7 @@ async saveMistureMaximumDensityData(dto: SaveMaximumMixtureDensityDataDTO, userI
         success: true 
       };
     } catch (error) {
-      this.logger.error(`error on setting step 7 optimum binder dosage graph data > [error]: ${error}`);
+       handleError(error, 'error on setting step 7 optimum binder dosage graph data');
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
     }
@@ -602,7 +602,7 @@ async saveMistureMaximumDensityData(dto: SaveMaximumMixtureDensityDataDTO, userI
         success: true 
       };
     } catch (error) {
-      this.logger.error(`error on confirming step 8 specific gravity > [error]: ${error}`);
+       handleError(error, 'error on confirming step 8 specific gravity');
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
     }
@@ -622,7 +622,7 @@ async saveMistureMaximumDensityData(dto: SaveMaximumMixtureDensityDataDTO, userI
         success: true 
       };
     } catch (error) {
-      this.logger.error(`error on confirming step 8 specific gravity > [error]: ${error}`);
+       handleError(error, 'error on confirming step 8 specific gravity');
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
     }
@@ -644,7 +644,7 @@ async saveStep8Data(body: SaveStep8DTO, userId: string): Promise<{ success: bool
 
       return { success }
     } catch (error) {
-      this.logger.error(`error on save step 8 data of marshall dosage > [error]: ${error}`);
+      handleError(error, 'error on save step 8 data of marshall dosage')
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
     }
@@ -684,7 +684,7 @@ async saveStep8Data(body: SaveStep8DTO, userId: string): Promise<{ success: bool
 
       return { success }
     } catch (error) {
-      this.logger.error(`error on delete marshall dosage > [error]: ${error}`);
+      handleError(error, 'error on delete marshall dosage')
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
     }

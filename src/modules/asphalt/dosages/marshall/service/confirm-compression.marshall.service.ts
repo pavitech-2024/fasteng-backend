@@ -6,6 +6,7 @@ import { Model } from 'mongoose';
 import { MarshallRepository } from '../repository';
 import { Marshall, MarshallDocument } from '../schemas';
 import { ConfirmationCompressionDataDTO } from '../dto/confirmation-compresion-data.dto';
+import { handleError } from 'utils/error-handler';
 
 interface ConfirmSpecificGravityBody {
   method: 'DMT' | 'GMM';
@@ -74,43 +75,35 @@ export class ConfirmCompression_Marshall_Service {
         return { result: GMM, type: 'GMM' };
       }
     } catch (error) {
-      this.logger.error('Error confirming specific gravity', error);
-      throw error;
+       this.logger.error('Error confirming specific gravity', error);
+      throw error;  // Propaga o erro para quem chamou tratar
     }
   }
 
- async saveStep8Data(
-  confirmationCompressionData: ConfirmationCompressionDataDTO,
-  userId: string,
-): Promise<boolean> {
-  try {
-    this.logger.log('Saving step 8 confirmation compression', { confirmationCompressionData });
+  async saveStep8Data(confirmationCompressionData: ConfirmationCompressionDataDTO, userId: string): Promise<boolean> {
+    try {
+      this.logger.log('Saving step 8 confirmation compression', { confirmationCompressionData });
 
-    // Busca o documento pelo nome do ensaio (precisa existir 'name' no DTO)
-    const marshallExists = await this.marshallRepository.findOne(
-      confirmationCompressionData.name,
-      userId,
-    );
+      // Busca o documento pelo nome do ensaio (precisa existir 'name' no DTO)
+      const marshallExists = await this.marshallRepository.findOne(confirmationCompressionData.name, userId);
 
-    if (!marshallExists) throw new Error('Marshall not found');
+      if (!marshallExists) throw new Error('Marshall not found');
 
-    // Atualiza apenas a parte de confirmationCompressionData
-    marshallExists.confirmationCompressionData = confirmationCompressionData;
+      // Atualiza apenas a parte de confirmationCompressionData
+      marshallExists.confirmationCompressionData = confirmationCompressionData;
 
-    // Salva o documento no banco
-    await marshallExists.save();
+      // Salva o documento no banco
+      await marshallExists.save();
 
-    // Atualiza o step no documento raiz se necessário
-    if (marshallExists.step < 8) {
-      await this.marshallRepository.saveStep(marshallExists._id, 8);
+      // Atualiza o step no documento raiz se necessário
+      if (marshallExists.step < 8) {
+        await this.marshallRepository.saveStep(marshallExists._id, 8);
+      }
+
+      return true;
+    } catch (error) {
+      handleError(error, 'Error saving step 8 data', true);
+       throw error;
     }
-
-    return true;
-  } catch (error) {
-    this.logger.error('Error saving step 8 data', error);
-    throw error;
   }
-}
-
-
 }

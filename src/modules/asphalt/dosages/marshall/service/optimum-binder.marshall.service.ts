@@ -5,6 +5,7 @@ import { Marshall, MarshallDocument } from '../schemas';
 import { DATABASE_CONNECTION } from '../../../../../infra/mongoose/database.config';
 import { Model } from 'mongoose';
 import { MarshallRepository } from '../repository';
+import { handleError } from 'utils/error-handler';
 
 @Injectable()
 export class OptimumBinderContent_Marshall_Service {
@@ -44,7 +45,8 @@ export class OptimumBinderContent_Marshall_Service {
 
       return graphics;
     } catch (error) {
-      throw new Error('Failed to set optimum binder content graphs.');
+       handleError(error, 'Failed to set optimum binder content graphs.');
+        throw error;
     }
   }
 
@@ -112,7 +114,8 @@ export class OptimumBinderContent_Marshall_Service {
         curveVv
       };
     } catch (error) {
-      throw new Error('Failed to set optimum binder dosage graph.');
+       handleError(error, 'Failed to set optimum binder dosage graph.');
+      throw error;
     }
   }
 
@@ -202,7 +205,8 @@ export class OptimumBinderContent_Marshall_Service {
   
       return { Vv, RBV, Vam, Gmb, newMaxSpecificGravity };
     } catch (error) {
-      throw new Error('Failed to set optimum binder expected parameters.');
+       handleError(error, 'Failed to set optimum binder expected parameters.');
+     throw error;
     }
   }
 
@@ -319,7 +323,9 @@ export class OptimumBinderContent_Marshall_Service {
 
       return true;
     } catch (error) {
-      throw error;
+       handleError(error, 'saveStep7Data');
+       throw error;
+      
     }
   }
 }

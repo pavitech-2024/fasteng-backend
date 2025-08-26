@@ -9,6 +9,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { DATABASE_CONNECTION } from '../../../../../infra/mongoose/database.config';
 import { ViscosityRotationalRepository } from '../../../essays/viscosityRotational/repository';
 import { SpecifyMassRepository } from '../../../essays/specifyMass/repository/index';
+import { handleError } from 'utils/error-handler';
+ 
 
 
 @Injectable()
@@ -63,7 +65,8 @@ export class MaterialSelection_Marshall_Service {
 
       return filteredMaterials;
     } catch (error) {
-      throw error;
+       handleError(error, 'Failed to getMaterials');
+        throw error;
     }
   }
 
@@ -87,7 +90,8 @@ export class MaterialSelection_Marshall_Service {
 
       return true;
     } catch (error) {
-      throw error;
+       handleError(error, 'Failed to saveMaterials');
+        throw error;
     }
   }
 }

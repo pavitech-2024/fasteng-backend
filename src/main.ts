@@ -83,6 +83,8 @@ import { UsersModule } from './modules/users/users.module';
 //Soils Modules
 import { SamplesModule } from './modules/soils/samples/samples.module';
 import { AllExceptionsFilter } from './config/filters/http-exception.filter'; // Ajuste o caminho conforme
+import { handleError } from 'utils/error-handler';  
+import { BadRequestException } from '@nestjs/common';
 
 async function bootstrap() {
   // Criar a app com logs detalhados
@@ -91,8 +93,33 @@ async function bootstrap() {
   });
 
   app.enableCors();
+//Modificação no ValidationPipe agora pra capturar melhor os erros do classValidator
+  app.useGlobalPipes(
+  new ValidationPipe({
+    transform: true,
+    whitelist: true,
+    forbidNonWhitelisted: true,
+    exceptionFactory: (errors) => {
+      const formattedErrors = errors.map(err => ({
+        property: err.property,
+        constraints: err.constraints,
+      }));
 
-  app.useGlobalPipes(new ValidationPipe());
+      const customError = new BadRequestException({
+        status: 400,
+        message: 'Erro de validação',
+        name: 'ValidationError',
+        errorDetails: formattedErrors,
+      });
+
+      // Aqui é onde sua padronização entra em ação
+      handleError(customError, 'ValidationPipe');
+
+      return customError;
+    },
+  }),
+);
+
 
   // Filtro global que já loga erros
   app.useGlobalFilters(new AllExceptionsFilter());

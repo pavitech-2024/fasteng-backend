@@ -7,6 +7,7 @@ import { DATABASE_CONNECTION } from "../../../../../infra/mongoose/database.conf
 import { Model } from "mongoose";
 import { Marshall, MarshallDocument } from "../schemas";
 import { MarshallGeneralDataDTO } from "../dto/marshal-general-data.dto";
+import { handleError } from "utils/error-handler";
 
 @Injectable()
 export class GeneralData_Marshall_Service {
@@ -93,7 +94,7 @@ async saveMarshallDosage(
 
     return true;
   } catch (error) {
-    this.logger.error('Error saving marshall dosage', error);
+    handleError(error,"Error saving marshall dosage", true )
     throw error;
   }
 }
@@ -112,7 +113,8 @@ async saveMarshallDosage(
 
       return true;
     } catch (error) {
-      throw error;
+       handleError(error, "Failed on deleteMarshallDosage", true)
+       throw error;
     }
   }
 }

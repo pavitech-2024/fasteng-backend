@@ -12,6 +12,7 @@ import { CalculateDmtDataDTO } from '../dto/calculate-dmt-data.dto';
 import { CalculateGmmDataDTO } from '../dto/calculate-gmm-data.dto';
   import { CalculateRiceTestDTO } from '../dto/calculate-rice-test.dto';
 import { SaveMaximumMixtureDensityDataDTO } from '../dto/save-maximum-mixture-density-data.dto';
+import { handleError } from 'utils/error-handler';
 
 @Injectable()
 export class MaximumMixtureDensity_Marshall_Service {
@@ -56,7 +57,9 @@ export class MaximumMixtureDensity_Marshall_Service {
 
       return await getIndexesOfMissesSpecificGravity();
     } catch (error) {
-      throw new Error('Failed to calculate max specific gravity.');
+      handleError(error, 'Failed to calculate max specific gravity.');
+       throw error;
+      
     }
   }
 
@@ -133,14 +136,18 @@ export class MaximumMixtureDensity_Marshall_Service {
 
           return { maxSpecificGravity, listOfSpecificGravities };
         } catch (error) {
-          throw new Error('Failed to calculate max specific gravity.');
+           handleError(error, 'Failed to calculate max specific gravity.');
+            throw error;
+          
         }
       };
 
       const result = await calculate();
       return result;
     } catch (error) {
-      throw new Error('Failed to calculate max specific gravity.');
+       handleError(error, 'Failed to calculate max specific gravity.');
+        throw error;
+      
     }
   }
 
@@ -181,7 +188,9 @@ export class MaximumMixtureDensity_Marshall_Service {
 
           return listOfSpecificGravities;
         } catch (error) {
-          throw new Error('Failed to calculate max specific gravity.');
+           handleError(error,'Failed to calculate max specific gravity.' );
+            throw error;
+          
         }
       };
 
@@ -213,7 +222,8 @@ export class MaximumMixtureDensity_Marshall_Service {
 
       return { maxSpecificGravity, listOfSpecificGravities };
     } catch (error) {
-      throw new Error('Failed to calculate max specific gravity GMM.');
+       handleError(error, 'Failed to calculate max specific gravity GMM.');
+        throw error;
     }
   }
 
@@ -232,7 +242,9 @@ export class MaximumMixtureDensity_Marshall_Service {
 
       return maxSpecificGravity;
     } catch (error) {
-      throw new Error('Failed to calculate rice test.');
+       handleError(error, 'Failed to calculate rice test.');
+        throw error;
+      
     }
   }
 
@@ -259,7 +271,8 @@ export class MaximumMixtureDensity_Marshall_Service {
 
       return true;
     } catch (error) {
-      throw error;
+       handleError(error, 'Failed to saveMistureMaximumDensityData');
+        throw error;
     }
   }
 }
