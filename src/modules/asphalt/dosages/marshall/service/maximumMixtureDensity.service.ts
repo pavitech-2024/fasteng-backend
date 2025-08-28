@@ -55,7 +55,7 @@ export class MaximumMixtureDensity_Marshall_Service {
 
   async calculateDmtData(body: any): Promise<any> {
     try {
-      const { indexesOfMissesSpecificGravity, missingSpecificGravity, percentsOfDosage, aggregates, trial } = body;
+      const { indexesOfMissesSpecificGravity, missingSpecificGravity, percentsOfDosage, aggregates, trial, listOfSpecificGravities: inputDmtValues } = body;
 
       let denominadorLessOne = 0;
       let denominadorLessHalf = 0;
@@ -64,6 +64,7 @@ export class MaximumMixtureDensity_Marshall_Service {
       let denominadorPlusOne = 0;
 
       const materials = aggregates.map((element) => element._id);
+      const MissingGravitiesArray = []
 
       const calculate = async (): Promise<any> => {
         try {
@@ -98,10 +99,7 @@ export class MaximumMixtureDensity_Marshall_Service {
               }
             } else {
               // to-do: Fazer vir do front como array de números;
-              const MissingGravitiesArray = [
-                Number(missingSpecificGravity.material_1),
-                Number(missingSpecificGravity.material_2),
-              ];
+              MissingGravitiesArray.push(inputDmtValues[i])
               listOfSpecificGravities[i] = MissingGravitiesArray[cont];
               denominadorLessOne += percentsOfDosage[i][4] / listOfSpecificGravities[i];
               denominadorLessHalf += percentsOfDosage[i][3] / listOfSpecificGravities[i];

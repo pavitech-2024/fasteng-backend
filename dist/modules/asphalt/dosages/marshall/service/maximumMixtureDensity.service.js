@@ -81,13 +81,14 @@ let MaximumMixtureDensity_Marshall_Service = MaximumMixtureDensity_Marshall_Serv
     calculateDmtData(body) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { indexesOfMissesSpecificGravity, missingSpecificGravity, percentsOfDosage, aggregates, trial } = body;
+                const { indexesOfMissesSpecificGravity, missingSpecificGravity, percentsOfDosage, aggregates, trial, listOfSpecificGravities: inputDmtValues } = body;
                 let denominadorLessOne = 0;
                 let denominadorLessHalf = 0;
                 let denominador = 0;
                 let denominadorPlusHalf = 0;
                 let denominadorPlusOne = 0;
                 const materials = aggregates.map((element) => element._id);
+                const MissingGravitiesArray = [];
                 const calculate = () => __awaiter(this, void 0, void 0, function* () {
                     try {
                         const listOfMaterials = yield Promise.all(materials.map((materialId) => this.specificMassRepository.findOne({
@@ -112,10 +113,7 @@ let MaximumMixtureDensity_Marshall_Service = MaximumMixtureDensity_Marshall_Serv
                                 }
                             }
                             else {
-                                const MissingGravitiesArray = [
-                                    Number(missingSpecificGravity.material_1),
-                                    Number(missingSpecificGravity.material_2),
-                                ];
+                                MissingGravitiesArray.push(inputDmtValues[i]);
                                 listOfSpecificGravities[i] = MissingGravitiesArray[cont];
                                 denominadorLessOne += percentsOfDosage[i][4] / listOfSpecificGravities[i];
                                 denominadorLessHalf += percentsOfDosage[i][3] / listOfSpecificGravities[i];
