@@ -13,6 +13,7 @@ export class Calc_AsphaltGranulometry_Dto {
   isSuperpave?: boolean;
 }
 
+
 export interface Calc_AsphaltGranulometry_Out {
   accumulated_retained: [string, number][];
   graph_data: [number, number][];
