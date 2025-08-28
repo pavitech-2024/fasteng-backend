@@ -34,11 +34,13 @@ export class MaximumMixtureDensity_Marshall_Service {
 
         const withoutExperimentSpecificGravity = materialsData
           .map((material) => {
-            return {
-              value: material.results.bulk_specify_mass,
-              _id: material._id.toString(),
-              name: material.generalData.material.name,
-            };
+            if (material) {
+              return {
+                value: material.results.bulk_specify_mass,
+                _id: material._id.toString(),
+                name: material.generalData.material.name,
+              };
+            }
           })
           .filter((index) => index !== null);
 
@@ -179,11 +181,11 @@ export class MaximumMixtureDensity_Marshall_Service {
       };
 
       const gmm = Array.from({ length: 5 }, (_, i) => {
-        const gmmItem = valuesOfGmm.find(gmm => gmm.id - 1 === i);
+        const gmmItem = valuesOfGmm.find((gmm) => gmm.id - 1 === i);
         return gmmItem || null;
       });
 
-      const content = gmm.map(gmmItem => {
+      const content = gmm.map((gmmItem) => {
         if (gmmItem && !gmmItem.value) {
           const denominator = gmmItem.massOfContainer_Water_Sample - gmmItem.massOfContainer_Water;
           return (gmmItem.massOfDrySample / (gmmItem.massOfDrySample - denominator)) * temperatureOfWaterGmm;

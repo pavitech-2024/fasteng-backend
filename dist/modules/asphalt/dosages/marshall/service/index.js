@@ -274,7 +274,7 @@ let MarshallService = MarshallService_1 = class MarshallService {
             }
         });
     }
-    calculateStep3Data(body) {
+    calculateGranulometry(body) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { dnitBands } = body;

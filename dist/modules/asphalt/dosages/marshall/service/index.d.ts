@@ -97,7 +97,7 @@ export declare class MarshallService {
             name: any;
         };
     }>;
-    calculateStep3Data(body: any): Promise<{
+    calculateGranulometry(body: any): Promise<{
         data: {
             percentsOfMaterials: any[];
             sumOfPercents: any[];
