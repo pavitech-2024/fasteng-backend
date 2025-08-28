@@ -1,5 +1,6 @@
 # compiled output
-# /dist
+#Dist ajustado pra não subir pro repositorio 
+/dist
 /node_modules
 
 # Logs
@@ -34,9 +35,9 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
-# env
-
-# .env
+# envs ajustados p nao subir pro repo, lembrar q as configs de testes sao as mesmas do env em produção;
+.env
+.env.testing
 
 # bash
 
