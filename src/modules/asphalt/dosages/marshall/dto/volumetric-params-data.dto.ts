@@ -1,5 +1,6 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsObject} from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsNotEmpty, IsNumber, IsArray, ValidateNested, IsOptional, IsObject, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
 export class PointDTO {
   @ApiProperty({ example: 0.5 })
   x: number;
@@ -38,11 +39,6 @@ export class VolumetricValuesDTO {
 }
 
 export class VolumetricParameterDTO {
-  @ApiPropertyOptional({ example: 'Mixture Name' })
-  @IsOptional()
-  @IsString()
-  name?: string;
-  
   @ApiProperty({ example: 5.5 })
   asphaltContent: number;
 
@@ -51,6 +47,11 @@ export class VolumetricParameterDTO {
 }
 
 export class VolumetricParametersDataDTO {
+  @ApiPropertyOptional({ example: 'Mixture Name' })
+  @IsOptional()
+  @IsString()
+  name?: string;
+
   @ApiProperty({ type: [PointDTO] })
   pointsOfCurveDosageRBV: PointDTO[];
 
@@ -72,10 +73,10 @@ export class SaveVolumetricParametersResponseDTO {
   step: number;
 }
 
-
 export class SaveVolumetricParametersRequestDTO {
   @ApiProperty({ type: VolumetricParametersDataDTO })
   @IsNotEmpty()
   @IsObject()
   volumetricParametersData: VolumetricParametersDataDTO;
+  
 }

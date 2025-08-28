@@ -9,8 +9,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.VolumetricParametersDataDTO = exports.VolumetricParameterDTO = exports.VolumetricValuesDTO = exports.PointDTO = void 0;
+exports.SaveVolumetricParametersRequestDTO = exports.SaveVolumetricParametersResponseDTO = exports.VolumetricParametersDataDTO = exports.VolumetricParameterDTO = exports.VolumetricValuesDTO = exports.PointDTO = void 0;
 const swagger_1 = require("@nestjs/swagger");
+const class_validator_1 = require("class-validator");
 class PointDTO {
 }
 exports.PointDTO = PointDTO;
@@ -76,6 +77,12 @@ class VolumetricParametersDataDTO {
 }
 exports.VolumetricParametersDataDTO = VolumetricParametersDataDTO;
 __decorate([
+    (0, swagger_1.ApiPropertyOptional)({ example: 'Mixture Name' }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], VolumetricParametersDataDTO.prototype, "name", void 0);
+__decorate([
     (0, swagger_1.ApiProperty)({ type: [PointDTO] }),
     __metadata("design:type", Array)
 ], VolumetricParametersDataDTO.prototype, "pointsOfCurveDosageRBV", void 0);
@@ -87,4 +94,28 @@ __decorate([
     (0, swagger_1.ApiProperty)({ type: [VolumetricParameterDTO] }),
     __metadata("design:type", Array)
 ], VolumetricParametersDataDTO.prototype, "volumetricParameters", void 0);
+class SaveVolumetricParametersResponseDTO {
+}
+exports.SaveVolumetricParametersResponseDTO = SaveVolumetricParametersResponseDTO;
+__decorate([
+    (0, swagger_1.ApiProperty)({ example: true }),
+    __metadata("design:type", Boolean)
+], SaveVolumetricParametersResponseDTO.prototype, "success", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ example: 'Volumetric parameters saved successfully' }),
+    __metadata("design:type", String)
+], SaveVolumetricParametersResponseDTO.prototype, "message", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ example: 6 }),
+    __metadata("design:type", Number)
+], SaveVolumetricParametersResponseDTO.prototype, "step", void 0);
+class SaveVolumetricParametersRequestDTO {
+}
+exports.SaveVolumetricParametersRequestDTO = SaveVolumetricParametersRequestDTO;
+__decorate([
+    (0, swagger_1.ApiProperty)({ type: VolumetricParametersDataDTO }),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsObject)(),
+    __metadata("design:type", VolumetricParametersDataDTO)
+], SaveVolumetricParametersRequestDTO.prototype, "volumetricParametersData", void 0);
 //# sourceMappingURL=volumetric-params-data.dto.js.map

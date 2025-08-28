@@ -472,13 +472,16 @@ let MarshallService = MarshallService_1 = class MarshallService {
     saveVolumetricParametersData(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const success = yield this.volumetricParameters_Service.saveVolumetricParametersData(body, userId);
-                return { success };
+                const result = yield this.volumetricParameters_Service.saveVolumetricParametersData(body, userId);
+                return { success: result.success };
             }
             catch (error) {
                 (0, error_handler_1.handleError)(error, 'error on save step 6 data of marshall dosage');
                 const { status, name, message } = error;
-                return { success: false, error: { status, message, name } };
+                return {
+                    success: false,
+                    error: { status, message, name }
+                };
             }
         });
     }

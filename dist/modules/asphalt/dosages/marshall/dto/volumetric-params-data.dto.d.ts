@@ -18,7 +18,16 @@ export declare class VolumetricParameterDTO {
     values: VolumetricValuesDTO;
 }
 export declare class VolumetricParametersDataDTO {
+    name?: string;
     pointsOfCurveDosageRBV: PointDTO[];
     pointsOfCurveDosageVv: PointDTO[];
     volumetricParameters: VolumetricParameterDTO[];
+}
+export declare class SaveVolumetricParametersResponseDTO {
+    success: boolean;
+    message: string;
+    step: number;
+}
+export declare class SaveVolumetricParametersRequestDTO {
+    volumetricParametersData: VolumetricParametersDataDTO;
 }

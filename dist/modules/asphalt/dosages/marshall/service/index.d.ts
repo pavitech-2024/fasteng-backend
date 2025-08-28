@@ -18,6 +18,7 @@ import { BaseMarshallService } from "./base.marshall.service";
 import { SaveStep3DTO, SaveStep4DTO, SaveStep7DTO, SaveStep8DTO, SaveStepDTO } from "../dto/save-step.dto";
 import { Step3Result } from "../types/step-data.type";
 import { SaveMarshallDosageDTO } from "../dto/binder-trial-data.dto";
+import { SaveVolumetricParametersRequestDTO } from "../dto/volumetric-params-data.dto";
 import { CalculateStep3DTO } from "../dto/calculate-step-5.dto";
 export declare class MarshallService {
     private readonly marshall_repository;
@@ -157,15 +158,12 @@ export declare class MarshallService {
             name: any;
         };
     }>;
-    saveVolumetricParametersData(body: any, userId: string): Promise<{
+    saveVolumetricParametersData(body: SaveVolumetricParametersRequestDTO, userId: string): Promise<{
         success: boolean;
-        error?: undefined;
-    } | {
-        success: boolean;
-        error: {
-            status: any;
-            message: any;
-            name: any;
+        error?: {
+            status: number;
+            name: string;
+            message: string;
         };
     }>;
     setOptimumBinderContentData(body: any): Promise<{

@@ -6,7 +6,7 @@ import { DATABASE_CONNECTION } from '../../../../../infra/mongoose/database.conf
 import { Model } from 'mongoose';
 import { MarshallRepository } from '../repository';
 import { handleError } from 'utils/error-handler';
- 
+import { SaveVolumetricParametersRequestDTO, SaveVolumetricParametersResponseDTO } from '../dto/volumetric-params-data.dto';
 
 
 
@@ -336,36 +336,48 @@ export class VolumetricParameters_Marshall_Service {
     return list[name];
   }
 
-  async saveVolumetricParametersData(body: any, userId: string) {
-    try {
-      this.logger.log(
-        'save marshall volumetric parameters step on volumetric-parameters.marshall.service.ts > [body]',
-        {
-          body,
-        },
-      );
+  /*Mesmo tipado, o codigo ainda contem incongruencias. Deveria ser generalName.name, nao? e nao volumetricPaD.name, 
+  Talvez por isso step6 quebra.
+  */
+async saveVolumetricParametersData(
+  body: SaveVolumetricParametersRequestDTO, 
+  userId: string
+): Promise<SaveVolumetricParametersResponseDTO> {
+  try {
+    this.logger.log('Saving marshall volumetric parameters', { body });
 
-      const { name } = body.volumetricParametersData;
+    // Use type assertion para acessar _doc se necessário
+    const marshallExists = await this.marshallRepository.findOne(
+      body.volumetricParametersData.name || '', 
+      userId
+    ) as any; // Use 'as any' temporariamente
 
-      const marshallExists: any = await this.marshallRepository.findOne(name, userId);
-
-      const { name: materialName, ...volumetricParametersWithoutName } = body.volumetricParametersData;
-
-      const marshallWithVolumetricParameters = {
-        ...marshallExists._doc,
-        volumetricParametersData: volumetricParametersWithoutName,
-      };
-
-      await this.marshallModel.updateOne({ _id: marshallExists._doc._id }, marshallWithVolumetricParameters);
-
-      if (marshallExists._doc.generalData.step < 6) {
-        await this.marshallRepository.saveStep(marshallExists, 6);
-      }
-
-      return true;
-    } catch (error) {
-     handleError(error, 'failed to saveVolumetricParametersData');
-     throw error;
+    if (!marshallExists) {
+      throw new Error('Marshall not found');
     }
+
+    const { name: materialName, ...volumetricParametersWithoutName } = body.volumetricParametersData;
+
+    // Use _id diretamente em vez de _doc._id
+    await this.marshallModel.updateOne(
+      { _id: marshallExists._id }, 
+      { $set: { volumetricParametersData: volumetricParametersWithoutName } }
+    );
+
+    // Acesse o step através de generalData
+    const currentStep = marshallExists.generalData?.step || 0;
+    if (currentStep < 6) {
+      await this.marshallRepository.saveStep(marshallExists._id.toString(), 6);
+    }
+
+    return {
+      success: true,
+      message: 'Volumetric parameters saved successfully',
+      step: currentStep < 6 ? 6 : currentStep
+    };
+  } catch (error) {
+    handleError(error, 'Failed to save volumetric parameters')
+    throw error;
   }
+}
 }

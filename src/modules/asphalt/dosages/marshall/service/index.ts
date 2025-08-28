@@ -27,6 +27,7 @@ import { Step3Result,  } from "../types/step-data.type";
 import { Step3Data } from "../types/step-data.type";
 import { SaveMarshallDosageDTO } from "../dto/binder-trial-data.dto";
 import { handleError } from "utils/error-handler";
+import { SaveVolumetricParametersRequestDTO, SaveVolumetricParametersResponseDTO } from "../dto/volumetric-params-data.dto";
 //teste
   import { Types } from 'mongoose';
   import { CalculateStep3DTO } from "../dto/calculate-step-5.dto";
@@ -510,17 +511,28 @@ async saveMistureMaximumDensityData(dto: SaveMaximumMixtureDensityDataDTO, userI
     }
   }
 
-  async saveVolumetricParametersData(body: any, userId: string) {
+ async saveVolumetricParametersData(
+    body: SaveVolumetricParametersRequestDTO, 
+    userId: string
+  ): Promise<{ success: boolean; error?: { status: number; name: string; message: string } }> {
     try {
-      const success = await this.volumetricParameters_Service.saveVolumetricParametersData(body, userId);
+      // Chama o primeiro service (que já está tipado)
+      const result: SaveVolumetricParametersResponseDTO = 
+        await this.volumetricParameters_Service.saveVolumetricParametersData(body, userId);
 
-      return { success }
+      return { success: result.success };
     } catch (error) {
-       handleError(error, 'error on save step 6 data of marshall dosage' );
+      // Mantém seu handleError original
+      handleError(error, 'error on save step 6 data of marshall dosage');
+          
       const { status, name, message } = error;
-      return { success: false, error: { status, message, name } };
+      return { 
+        success: false, 
+        error: { status, message, name } 
+      };
     }
   }
+
 
   async setOptimumBinderContentData(body: any) {
     try {

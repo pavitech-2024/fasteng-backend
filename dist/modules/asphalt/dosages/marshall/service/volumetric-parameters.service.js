@@ -305,22 +305,27 @@ let VolumetricParameters_Marshall_Service = VolumetricParameters_Marshall_Servic
     }
     saveVolumetricParametersData(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
+            var _a;
             try {
-                this.logger.log('save marshall volumetric parameters step on volumetric-parameters.marshall.service.ts > [body]', {
-                    body,
-                });
-                const { name } = body.volumetricParametersData;
-                const marshallExists = yield this.marshallRepository.findOne(name, userId);
-                const _a = body.volumetricParametersData, { name: materialName } = _a, volumetricParametersWithoutName = __rest(_a, ["name"]);
-                const marshallWithVolumetricParameters = Object.assign(Object.assign({}, marshallExists._doc), { volumetricParametersData: volumetricParametersWithoutName });
-                yield this.marshallModel.updateOne({ _id: marshallExists._doc._id }, marshallWithVolumetricParameters);
-                if (marshallExists._doc.generalData.step < 6) {
-                    yield this.marshallRepository.saveStep(marshallExists, 6);
+                this.logger.log('Saving marshall volumetric parameters', { body });
+                const marshallExists = yield this.marshallRepository.findOne(body.volumetricParametersData.name || '', userId);
+                if (!marshallExists) {
+                    throw new Error('Marshall not found');
                 }
-                return true;
+                const _b = body.volumetricParametersData, { name: materialName } = _b, volumetricParametersWithoutName = __rest(_b, ["name"]);
+                yield this.marshallModel.updateOne({ _id: marshallExists._id }, { $set: { volumetricParametersData: volumetricParametersWithoutName } });
+                const currentStep = ((_a = marshallExists.generalData) === null || _a === void 0 ? void 0 : _a.step) || 0;
+                if (currentStep < 6) {
+                    yield this.marshallRepository.saveStep(marshallExists._id.toString(), 6);
+                }
+                return {
+                    success: true,
+                    message: 'Volumetric parameters saved successfully',
+                    step: currentStep < 6 ? 6 : currentStep
+                };
             }
             catch (error) {
-                (0, error_handler_1.handleError)(error, 'failed to saveVolumetricParametersData');
+                (0, error_handler_1.handleError)(error, 'Failed to save volumetric parameters');
                 throw error;
             }
         });
