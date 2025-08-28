@@ -3,7 +3,6 @@ import { MaterialsRepository } from '../../../materials/repository';
 import { getSieveValue } from '../../../../../modules/soils/util/sieves';
 import { Calc_AsphaltGranulometry_Dto, Calc_AsphaltGranulometry_Out } from '../dto/asphalt.calc.granulometry.dto';
 import { AsphaltGranulometryRepository } from '../repository';
-import { AllSievesSuperpaveUpdatedAstm } from 'utils/interfaces';
 
 type limit = { value: number; index: number };
 
