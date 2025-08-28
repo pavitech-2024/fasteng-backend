@@ -89,11 +89,11 @@ let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = clas
                 for (let i = 0; i < table_data.length; i++) {
                     const label = table_data[i].sieve_label;
                     const value = table_data[i].sieve_value;
-                    passant_porcentage.push([table_data[i].sieve_label, table_data[i].passant]);
+                    const passant_porcentage = table_data[i].passant;
                     const retained = table_data[i].retained;
                     total_retained += retained;
                     passant.push([label, Math.round(100 * (material_mass - total_retained)) / 100]);
-                    accumulated_retained.push([label, Math.round(100 * (100 - passant_porcentage[i][1])) / 100]);
+                    accumulated_retained.push([label, Math.round(100 * (100 - passant_porcentage)) / 100]);
                     if (i === 0) {
                         retained_porcentage.push(accumulated_retained[i]);
                     }
@@ -104,27 +104,21 @@ let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = clas
                         ]);
                     }
                     fineness_module += accumulated_retained[i][1];
-                    if (total_retained >= 5 && nominal_size_flag) {
+                    if (nominal_size_flag && accumulated_retained[i][1] >= 5) {
                         nominal_size_flag = false;
-                        if (total_retained === 5)
-                            nominal_size = (0, sieves_1.getSieveValue)(label, isSuperpave);
+                        if (i === 0) {
+                            nominal_size = (0, sieves_1.getSieveValue)(label);
+                        }
                         else {
-                            if (i === 0)
-                                nominal_size = (0, sieves_1.getSieveValue)(label, isSuperpave);
-                            else
-                                nominal_size = (0, sieves_1.getSieveValue)(table_data[i - 1].sieve_label, isSuperpave);
+                            const previous_retained = accumulated_retained[i - 1][1];
+                            nominal_size = previous_retained <= 5 ? (0, sieves_1.getSieveValue)(table_data[i - 1].sieve_label) : (0, sieves_1.getSieveValue)(label);
                         }
                     }
                     if (total_retained > 10 && nominal_diameter_flag) {
                         nominal_diameter_flag = false;
-                        if (i === 1)
-                            nominal_diameter = (0, sieves_1.getSieveValue)(label, isSuperpave);
-                        else if (i === 0)
-                            nominal_diameter = value;
-                        else
-                            nominal_diameter = (0, sieves_1.getSieveValue)(table_data[i - 1].sieve_label, isSuperpave);
+                        nominal_diameter = (0, sieves_1.getSieveValue)(table_data[i].sieve_label);
                     }
-                    graph_data.push([value, passant_porcentage[i][1]]);
+                    graph_data.push([value, passant_porcentage]);
                 }
                 fineness_module = Math.round((100 * fineness_module) / 100) / 100;
                 total_retained = Math.round(100 * total_retained) / 100;

@@ -3,7 +3,6 @@ import { MaterialsRepository } from '../../../materials/repository';
 import { getSieveValue } from '../../../../../modules/soils/util/sieves';
 import { Calc_AsphaltGranulometry_Dto, Calc_AsphaltGranulometry_Out } from '../dto/asphalt.calc.granulometry.dto';
 import { AsphaltGranulometryRepository } from '../repository';
-import { AllSievesSuperpaveUpdatedAstm } from 'utils/interfaces';
 
 type limit = { value: number; index: number };
 
@@ -62,17 +61,61 @@ export class Calc_AsphaltGranulometry_Service {
       // loop na tabela de dados para calcular a granulometria
       // criando arrays para plotar o gráfico e calcular o módulo de finura
       // e o diâmetro nominal
+      // for (let i = 0; i < table_data.length; i++) {
+      //   const label = table_data[i].sieve_label;
+      //   const value = table_data[i].sieve_value;
+      //   passant_porcentage.push([table_data[i].sieve_label, table_data[i].passant]);
+      //   const retained = table_data[i].retained;
+
+      //   total_retained += retained;
+
+      //   passant.push([label, Math.round(100 * (material_mass - total_retained)) / 100]);
+
+      //   accumulated_retained.push([label, Math.round(100 * (100 - passant_porcentage[i][1])) / 100]);
+
+      //   if (i === 0) {
+      //     retained_porcentage.push(accumulated_retained[i]);
+      //   } else {
+      //     retained_porcentage.push([
+      //       label,
+      //       Math.round(100 * (accumulated_retained[i][1] - accumulated_retained[i - 1][1])) / 100,
+      //     ]);
+      //   }
+
+      //   fineness_module += accumulated_retained[i][1];
+
+      //   // verifica se o total de retido é maior ou igual a 5 e seta o diâmetro nominal
+      //   if (total_retained >= 5 && nominal_size_flag) {
+      //     nominal_size_flag = false;
+      //     if (total_retained === 5) nominal_size = getSieveValue(label, isSuperpave);
+      //     else {
+      //       if (i === 0) nominal_size = getSieveValue(label, isSuperpave);
+      //       else nominal_size = getSieveValue(table_data[i - 1].sieve_label, isSuperpave);
+      //     }
+      //   }
+
+      //   // verifica se o total de retido é maior ou igual a 10 e seta o diâmetro nominal
+      //   if (total_retained > 10 && nominal_diameter_flag) {
+      //     nominal_diameter_flag = false;
+      //     if (i === 1) nominal_diameter = getSieveValue(label, isSuperpave);
+      //     else if (i === 0) nominal_diameter = value;
+      //     else nominal_diameter = getSieveValue(table_data[i - 1].sieve_label, isSuperpave);
+      //   }
+
+      //   graph_data.push([value, passant_porcentage[i][1]]);
+      // }
+
       for (let i = 0; i < table_data.length; i++) {
         const label = table_data[i].sieve_label;
         const value = table_data[i].sieve_value;
-        passant_porcentage.push([table_data[i].sieve_label, table_data[i].passant]);
+        const passant_porcentage = table_data[i].passant;
         const retained = table_data[i].retained;
 
         total_retained += retained;
 
         passant.push([label, Math.round(100 * (material_mass - total_retained)) / 100]);
 
-        accumulated_retained.push([label, Math.round(100 * (100 - passant_porcentage[i][1])) / 100]);
+        accumulated_retained.push([label, Math.round(100 * (100 - passant_porcentage)) / 100]);
 
         if (i === 0) {
           retained_porcentage.push(accumulated_retained[i]);
@@ -85,31 +128,29 @@ export class Calc_AsphaltGranulometry_Service {
 
         fineness_module += accumulated_retained[i][1];
 
-        // verifica se o total de retido é maior ou igual a 5 e seta o diâmetro nominal
-        if (total_retained >= 5 && nominal_size_flag) {
+        if (nominal_size_flag && accumulated_retained[i][1] >= 5) {
           nominal_size_flag = false;
-          if (total_retained === 5) nominal_size = getSieveValue(label, isSuperpave);
-          else {
-            if (i === 0) nominal_size = getSieveValue(label, isSuperpave);
-            else nominal_size = getSieveValue(table_data[i - 1].sieve_label, isSuperpave);
+          if (i === 0) {
+            nominal_size = getSieveValue(label);
+          } else {
+            const previous_retained = accumulated_retained[i - 1][1];
+            nominal_size = previous_retained <= 5 ? getSieveValue(table_data[i - 1].sieve_label) : getSieveValue(label);
           }
         }
 
-        // verifica se o total de retido é maior ou igual a 10 e seta o diâmetro nominal
         if (total_retained > 10 && nominal_diameter_flag) {
           nominal_diameter_flag = false;
-          if (i === 1) nominal_diameter = getSieveValue(label, isSuperpave);
-          else if (i === 0) nominal_diameter = value;
-          else nominal_diameter = getSieveValue(table_data[i - 1].sieve_label, isSuperpave);
+          nominal_diameter = getSieveValue(table_data[i].sieve_label);
         }
 
-        graph_data.push([value, passant_porcentage[i][1]]);
+        graph_data.push([value, passant_porcentage]);
       }
 
       fineness_module = Math.round((100 * fineness_module) / 100) / 100;
 
       total_retained = Math.round(100 * total_retained) / 100;
 
+      // const error = Math.round((100 * (material_mass - total_retained - bottom) * 100) / material_mass) / 100;
       const error = Math.round((100 * (material_mass - total_retained - bottom) * 100) / material_mass) / 100;
 
       const limit_10 = this.getPercentage(10, table_data);
