@@ -75,7 +75,6 @@ let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = clas
             try {
                 this.logger.log(`calculate asphalt granulometry on calc.granulometry.service.ts > [${isSuperpave ? 'Superpave' : 'Granulometry'}] [${step2Data}]`);
                 const { table_data, material_mass, bottom } = step2Data;
-                const length = table_data.length;
                 const accumulated_retained = [];
                 const passant = [];
                 const retained_porcentage = [];
@@ -87,7 +86,7 @@ let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = clas
                 let fineness_module = 0;
                 let nominal_size_flag = true;
                 let nominal_diameter_flag = true;
-                for (let i = 0; i < length; i++) {
+                for (let i = 0; i < table_data.length; i++) {
                     const label = table_data[i].sieve_label;
                     const value = table_data[i].sieve_value;
                     passant_porcentage.push([table_data[i].sieve_label, table_data[i].passant]);
