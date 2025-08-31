@@ -83,6 +83,8 @@ import { UsersModule } from './modules/users/users.module';
 //Soils Modules
 import { SamplesModule } from './modules/soils/samples/samples.module';
 import { AllExceptionsFilter } from './config/filters/http-exception.filter'; // Ajuste o caminho conforme
+import { Material } from 'modules/asphalt/materials/schemas';
+import { MaterialsModule } from 'modules/asphalt/materials/materials.module';
 
 
 

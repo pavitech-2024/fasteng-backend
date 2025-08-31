@@ -5,6 +5,7 @@ import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Sample } from '../schemas';
 import { User } from '../../../../config/decorators/user.decorator';
 import { CreateSampleDto } from '../dto/create-sample.dto';
+import { SampleResponseDto } from '../dto/create-sample-response.dto';
 
 @ApiTags('samples')
 @Controller('soils/samples')
@@ -15,7 +16,7 @@ export class SamplesController {
 
   @Post()
   @ApiOperation({ summary: 'Cria uma amostra no banco de dados.' })
-  @ApiResponse({ status: 201, description: 'Amostra criada com sucesso!' })
+  @ApiResponse({ status: 201, description: 'Amostra criada com sucesso!', type: SampleResponseDto })
   @ApiResponse({ status: 400, description: 'Erro ao criar amostra!' })
   @ApiBody({ type: CreateSampleDto })
   async createSample(@Body() sample: CreateSampleDto, @User('userId') userId: string) {
@@ -29,7 +30,7 @@ export class SamplesController {
 
   @Get('all/:id')
   @ApiOperation({ summary: 'Retorna todas as amostras do banco de dados de um usuário.' })
-  @ApiResponse({ status: 200, description: 'Amostras encontradas com sucesso!' })
+  @ApiResponse({ status: 200, description: 'Amostras encontradas com sucesso!', type: SampleResponseDto })
   @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
   async getAllByUserId(@Param('id') userId: string) {
     this.logger.log(`get all samples by user id > [id]: ${userId}`);
@@ -41,7 +42,7 @@ export class SamplesController {
   
   @Get(':id')
   @ApiOperation({ summary: 'Retorna uma amostra do banco de dados.' })
-  @ApiResponse({ status: 200, description: 'Amostra encontrada com sucesso!' })
+  @ApiResponse({ status: 200, description: 'Amostra encontrada com sucesso!', type: SampleResponseDto })
   @ApiResponse({ status: 400, description: 'Amostra não encontrada!' })
   async getSampleById(@Param('id') sampleId: string) {
     this.logger.log(`get sample by id > [id]: ${sampleId}`);
@@ -51,7 +52,7 @@ export class SamplesController {
 
   @Put(':id')
   @ApiOperation({ summary: 'Atualiza uma amostra do banco de dados.' })
-  @ApiResponse({ status: 200, description: 'Amostra atualizada com sucesso!' })
+  @ApiResponse({ status: 200, description: 'Amostra atualizada com sucesso!', type: SampleResponseDto })
   @ApiResponse({ status: 400, description: 'Amostra não encontrada!' })
   @ApiBody({ type: CreateSampleDto })
   async updateSampleById(@Param('id') sampleId: string, @Body() sample: Sample) {
@@ -62,7 +63,7 @@ export class SamplesController {
 
   @Delete(':id')
   @ApiOperation({ summary: 'Deleta uma amostra do banco de dados.' })
-  @ApiResponse({ status: 200, description: 'Amostra deletada com sucesso!' })
+  @ApiResponse({ status: 200, description: 'Amostra deletada com sucesso!', type: SampleResponseDto })
   @ApiResponse({ status: 400, description: 'Amostra não encontrada!' })
   async deleteSampleById(@Param('id') sampleId: string) {
     this.logger.log(`delete sample by id > [id]: ${sampleId}`);
