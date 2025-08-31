@@ -119,7 +119,7 @@ let MaterialsService = MaterialsService_1 = class MaterialsService {
                 const materialToUpdate = yield this.materialsRepository.findOne({ _id: material._id });
                 if (!materialToUpdate)
                     throw new exceptions_1.NotFound('Material');
-                return this.materialsRepository.findOneAndUpdate({ _id: material._id }, material);
+                return this.materialsRepository.findOneAndUpdate({ _id: material._id }, material, { new: true });
             }
             catch (error) {
                 this.logger.error(`error on update material > [error]: ${error}`);

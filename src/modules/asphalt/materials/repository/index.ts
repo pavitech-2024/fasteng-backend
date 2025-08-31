@@ -44,7 +44,7 @@ export class MaterialsRepository {
     return materials;
   }
 
-  async findOneAndUpdate(materialsFilterQuery: FilterQuery<Material>, material: Partial<Material>): Promise<Material> {
+  async findOneAndUpdate(materialsFilterQuery: FilterQuery<Material>, material: Partial<Material>, p0: { new: boolean; }): Promise<Material> {
     return this.materialModel.findOneAndUpdate(materialsFilterQuery, material, {
       new: true,
     });

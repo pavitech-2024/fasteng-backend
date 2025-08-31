@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { MaterialsRepository } from '../repository';
 import { CreateAsphaltMaterialDto } from '../dto/create-asphalt-material.dto';
 import { AlreadyExists, NotFound } from '../../../../utils/exceptions';
@@ -8,6 +8,7 @@ import { FwdRepository } from 'modules/asphalt/essays/fwd/repository';
 import { IggRepository } from 'modules/asphalt/essays/igg/repository';
 import { RtcdRepository } from 'modules/asphalt/essays/rtcd/repository';
 import { DduiRepository } from 'modules/asphalt/essays/ddui/repository';
+import { UpdateAsphaltMaterialDto } from '../dto/update-asphalt-materialDto';
 
 @Injectable()
 export class MaterialsService {
@@ -152,7 +153,8 @@ export class MaterialsService {
       if (!materialToUpdate) throw new NotFound('Material');
 
       // atualiza o material no banco de dados
-      return this.materialsRepository.findOneAndUpdate({ _id: material._id }, material);
+      //return this.materialsRepository.findOneAndUpdate({ _id: material._id }, material);
+      return this.materialsRepository.findOneAndUpdate({ _id: material._id }, material, { new: true });
     } catch (error) {
       this.logger.error(`error on update material > [error]: ${error}`);
 
