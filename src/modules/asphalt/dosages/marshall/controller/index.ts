@@ -63,6 +63,11 @@ async getDosageById(@Param('id') dosageId: string) {
 }
 
   //testado com dado mockado, check in!
+  @ApiParam({ 
+  name: 'id', 
+  type: String, 
+  description: 'ID do usuário' 
+})
 @Post('verify-init/:id')
 @ApiOperation({ summary: 'Verifica se é possível criar uma dosagem Marshall.' })
 @ApiResponse({
@@ -195,6 +200,11 @@ async calculateStep3Data(
 
 
 @Post('save-granulometry-composition-step/:userId')
+@ApiParam({ 
+  name: 'userId', 
+  type: String, 
+  description: 'ID do usuário' 
+})
 @ApiOperation({ summary: 'Salva dados da composição granulométrica (step 3).' })
 async saveGranulometryCompositionStep(
   @Param('userId') userId: string,
@@ -217,7 +227,14 @@ async calculateStep4Data(@Body() body: any) {
 }
 
 
+
+
 @Post('save-binder-trial-step/:userId')
+@ApiParam({ 
+  name: 'userId', 
+  type: String, 
+  description: 'ID do usuário' 
+})
 @ApiOperation({ summary: 'Salva dados do binder trial (step 4).' })
 async saveBinderTrialStep(
   @Param('userId') userId: string,
@@ -231,6 +248,11 @@ async saveBinderTrialStep(
 
 
 @Post('save-maximum-mixture-density-step/:userId')
+@ApiParam({ 
+  name: 'userId', 
+  type: String, 
+  description: 'ID do usuário' 
+})
 @ApiOperation({ summary: 'Salva dados do máximo de densidade da mistura (step 5).' })
 @ApiResponse({ status: 200, description: 'Dados salvos com sucesso.' })
 async saveMaximumMixtureDensityData(
@@ -256,6 +278,11 @@ async setVolumetricParameters(@Body() body: any) {
   
 //Sem tipagem muito explicita p deixar o typescript inferir no que deve.
 @Post('save-volumetric-parameters-step/:userId')
+@ApiParam({ 
+  name: 'userId', 
+  type: String, 
+  description: 'ID do usuário' 
+})
 @ApiOperation({ summary: 'Salva parâmetros volumétricos (step 6).' })
 async saveVolumetricParametersData(
   @Param('userId') userId: string,
@@ -295,6 +322,11 @@ async getOptimumBinderExpectedParameters(@Body() body: any) {
 }
 
 @Post('save-optimum-binder-content-step/:userId')
+@ApiParam({ 
+  name: 'userId', 
+  type: String, 
+  description: 'ID do usuário' 
+})
 @ApiOperation({ summary: 'Salva conteúdo ótimo de ligante (step 7).' })
 async saveOptimumBinderContentData(
   @Param('userId') userId: string,
@@ -324,6 +356,11 @@ async confirmVolumetricParameters(@Body() body: any) {
 }
 
 @Post('save-confirmation-compression-data-step/:userId')
+@ApiParam({ 
+  name: 'userId', 
+  type: String, 
+  description: 'ID do usuário' 
+})
 @ApiOperation({ summary: 'Salva dados de compressão confirmada (step 8).' })
 async saveConfirmationCompressionData(
   @Param('userId') userId: string,

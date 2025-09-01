@@ -31,7 +31,7 @@ export function handleError(error: any, context?: string, returnOnlyBoolean?: fa
 export function handleError(
   error: any,
   context = 'Unknown',               // Se não informarem o contexto, usamos "Unknown" como padrão
-  returnOnlyBoolean = false          // Se não informarem se querem só booleano, assumimos que não
+  returnOnlyBoolean = false          // Se não informarem se querem só booleano, assumimos que não, então é flag
 ): false | {
   success: false;
   error: {
