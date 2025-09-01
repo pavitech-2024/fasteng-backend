@@ -285,7 +285,7 @@ let GranulometryComposition_Superpave_Service = GranulometryComposition_Superpav
         }
         return { sumOfPercents, percentsOfMaterials };
     }
-    saveStep4Data(body, userId) {
+    saveGranulometryCompositionData(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('save superpave granulometry composition step on granulometry-composition.superpave.service.ts > [body]', { body });

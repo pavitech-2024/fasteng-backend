@@ -1,7 +1,7 @@
-import { Calc_Ddui_Dto, Calc_Ddui_Out } from "../dto/calc-ddui.dto";
-import { DduiInitDto } from "../dto/init-ddui.dto";
+import { Calc_Ddui_Dto, Calc_Ddui_Out } from '../dto/calc-ddui.dto';
+import { DduiInitDto } from '../dto/init-ddui.dto';
 import { Response } from 'express';
-import { DduiService } from "../service";
+import { DduiService } from '../service';
 export declare class DduiController {
     private readonly dduiService;
     private logger;
@@ -19,4 +19,5 @@ export declare class DduiController {
         };
     }>;
     saveEssay(response: Response, body: Calc_Ddui_Dto & Calc_Ddui_Out): Promise<Response<any, Record<string, any>>>;
+    deleteEssay(response: Response, id: string): Promise<Response<any, Record<string, any>>>;
 }

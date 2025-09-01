@@ -48,7 +48,8 @@ let MaterialsRepository = class MaterialsRepository {
     }
     find() {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.materialModel.find();
+            const materials = yield this.materialModel.find().sort({ createdAt: -1 });
+            return materials;
         });
     }
     findById(id) {

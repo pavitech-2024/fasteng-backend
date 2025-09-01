@@ -62,6 +62,17 @@ let FwdController = FwdController_1 = class FwdController {
             return response.status(200).json(fwd);
         });
     }
+    deleteEssay(response, id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.log('delete fwd > [body]');
+            const fwd = yield this.fwdService.deleteEssay(id);
+            if (fwd.success)
+                this.logger.log('delete fwd > [success]');
+            else
+                this.logger.error('delete fwd > [error]');
+            return response.status(200).json(fwd);
+        });
+    }
 };
 exports.FwdController = FwdController;
 __decorate([
@@ -111,6 +122,21 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], FwdController.prototype, "saveEssay", null);
+__decorate([
+    (0, common_1.Delete)('delete-essay/:id'),
+    (0, swagger_1.ApiOperation)({ summary: 'Deleta os dados do ensaio fwd no banco de dados.' }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'Ensaio de fwd deletado com sucesso.',
+        content: { 'application/json': { schema: { example: { success: true, data: 'essay data' } } } },
+    }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Erro ao deletar o ensaio fwd no banco de dados.' }),
+    __param(0, (0, common_1.Res)()),
+    __param(1, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", Promise)
+], FwdController.prototype, "deleteEssay", null);
 exports.FwdController = FwdController = FwdController_1 = __decorate([
     (0, swagger_1.ApiTags)('fwd'),
     (0, common_1.Controller)('asphalt/essays/fwd'),

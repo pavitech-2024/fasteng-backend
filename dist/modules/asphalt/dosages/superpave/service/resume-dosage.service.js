@@ -47,10 +47,8 @@ let ResumeDosage_Superpave_Service = ResumeDosage_Superpave_Service_1 = class Re
         this.logger = new common_1.Logger(ResumeDosage_Superpave_Service_1.name);
     }
     riceTest(massOfDrySample, containerSampleWaterMass, containerWaterMass, temperatureOfWater = 1.0) {
-        return (massOfDrySample /
-            (massOfDrySample + containerWaterMass - containerSampleWaterMass)) * temperatureOfWater;
+        return (massOfDrySample / (massOfDrySample + containerWaterMass - containerSampleWaterMass)) * temperatureOfWater;
     }
-    ;
     calculateStep9RiceTest(body) {
         const { gmm, riceTest } = body;
         let gmmValue;
@@ -60,14 +58,14 @@ let ResumeDosage_Superpave_Service = ResumeDosage_Superpave_Service_1 = class Re
             gmmValue = this.riceTest(riceTest.sampleAirDryMass, riceTest.containerSampleWaterMass, riceTest.containerWaterMass);
         return gmmValue;
     }
-    calculateVolumetricParametersOfConfirmGranulometryComposition(body) {
-        const { samplesData, optimumContent, choosenGranulometryComposition, binderSpecificGravity, listOfSpecificGravities, porcentagesPassantsN200, gmm: gmmValue } = body;
+    calculateDosageResumeEquation(body) {
+        const { samplesData, optimumContent, choosenGranulometryComposition, binderSpecificGravity, listOfSpecificGravities, porcentagesPassantsN200, gmm: gmmValue, } = body;
         const confirmGranulometryComposition = {
             ponderatedPercentsOfDosage: null,
             samplesData,
             Gmb: null,
             Vv: null,
-            Gmm: Number(gmmValue),
+            Gmm: parseFloat(gmmValue.replace(',', '.')),
             percentWaterAbs: null,
             specifiesMass: null,
             Vam: null,
@@ -76,7 +74,9 @@ let ResumeDosage_Superpave_Service = ResumeDosage_Superpave_Service_1 = class Re
             diametralTractionResistance: null,
             ratioDustAsphalt: null,
         };
-        const ponderatedPercentsOfDosage = choosenGranulometryComposition.percentsOfDosage.map((percent) => ((100 - optimumContent) * percent) / 100);
+        const isNumber = !isNaN(Number(optimumContent));
+        const optimumContentFormatted = isNumber ? optimumContent : 0;
+        const ponderatedPercentsOfDosage = choosenGranulometryComposition.percentsOfDosage.map((percent) => ((100 - optimumContentFormatted) * percent) / 100);
         confirmGranulometryComposition.ponderatedPercentsOfDosage = ponderatedPercentsOfDosage;
         confirmGranulometryComposition.samplesData = samplesData;
         confirmGranulometryComposition.Gmb = this.calculateGmb3(samplesData);
@@ -101,7 +101,8 @@ let ResumeDosage_Superpave_Service = ResumeDosage_Superpave_Service_1 = class Re
             }
         }
         if (ndiametralTractionResistance !== 0) {
-            confirmGranulometryComposition.diametralTractionResistance = sumdiametralTractionResistance / ndiametralTractionResistance;
+            confirmGranulometryComposition.diametralTractionResistance =
+                sumdiametralTractionResistance / ndiametralTractionResistance;
         }
         let passantN200 = 0;
         for (let i = 0; i < porcentagesPassantsN200.length; i++) {
@@ -159,7 +160,9 @@ let ResumeDosage_Superpave_Service = ResumeDosage_Superpave_Service_1 = class Re
     saveStep11Data(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                this.logger.log('save superpave vonfirm compression step on resume-dosage.superpave.service.ts > [body]', { body });
+                this.logger.log('save superpave confirm compression step on resume-dosage.superpave.service.ts > [body]', {
+                    body,
+                });
                 const { name } = body.confirmationCompressionData;
                 const superpaveExists = yield this.superpave_repository.findOne(name, userId);
                 const _a = body.confirmationCompressionData, { name: materialName } = _a, confirmationCompressionDataWithoutName = __rest(_a, ["name"]);
@@ -184,8 +187,8 @@ let ResumeDosage_Superpave_Service = ResumeDosage_Superpave_Service_1 = class Re
                 const _a = body.dosageResume, { name: materialName } = _a, superpaveDosageWithoutName = __rest(_a, ["name"]);
                 const superpaveWithResumeDosage = Object.assign(Object.assign({}, superpaveExists._doc), { dosageResume: superpaveDosageWithoutName });
                 yield this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithResumeDosage);
-                if (superpaveExists._doc.generalData.step < 10) {
-                    yield this.superpave_repository.saveStep(superpaveExists, 10);
+                if (superpaveExists._doc.generalData.step < 11) {
+                    yield this.superpave_repository.saveStep(superpaveExists, 11);
                 }
                 return true;
             }

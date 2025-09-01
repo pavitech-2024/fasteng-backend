@@ -1,11 +1,12 @@
 import { Sieve } from '../../../../utils/interfaces';
 export declare class CreateConcreteMaterialDto {
     name: string;
+    userId: string;
     type: 'coarseAggregate' | 'fineAggregate' | 'filler' | 'asphaltBinder' | 'CAP' | 'other';
     description?: {
         source?: string;
         responsible?: string;
-        maxDiammeter?: Sieve;
+        maxDiameter?: Sieve;
         aggregateNature?: string;
         boughtDate?: string;
         recieveDate?: string;

@@ -8,7 +8,7 @@ export declare class ResumeDosage_Superpave_Service {
     constructor(superpaveModel: Model<SuperpaveDocument>, superpave_repository: SuperpaveRepository);
     riceTest(massOfDrySample: any, containerSampleWaterMass: any, containerWaterMass: any, temperatureOfWater?: number): number;
     calculateStep9RiceTest(body: any): any;
-    calculateVolumetricParametersOfConfirmGranulometryComposition(body: any): {
+    calculateDosageResumeEquation(body: any): {
         ponderatedPercentsOfDosage: any;
         samplesData: any;
         Gmb: any;

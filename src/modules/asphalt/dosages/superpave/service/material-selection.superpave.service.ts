@@ -23,67 +23,67 @@ export class MaterialSelection_Superpave_Service {
     private readonly rotationalViscosity_repository: ViscosityRotationalRepository
   ) {}
 
-  async getMaterials(userId: string) {
-    try {
-      const materials = await this.material_repository.findByUserId({
-        userId: userId,
-      });
+  // async getMaterials(userId: string) {
+  //   try {
+  //     const materials = await this.material_repository.findByUserId({
+  //       userId: userId,
+  //     });
 
-      const granulometrys = await this.granulometry_repository.findAll();
-      const specifyMasses = await this.specifyMass_repository.findAll();
-      const viscosities = await this.rotationalViscosity_repository.findAll();
+  //     const granulometrys = await this.granulometry_repository.findAll();
+  //     const specifyMasses = await this.specifyMass_repository.findAll();
+  //     const viscosities = await this.rotationalViscosity_repository.findAll();
 
-      const binders = materials.filter(({ _id }) => {
-        const viscosity = viscosities.some(({ generalData }) => {
-          const { material } = generalData;
-          return _id.toString() === material._id.toString();
-        })
-        return viscosity
-      });
+  //     const binders = materials.filter(({ _id }) => {
+  //       const viscosity = viscosities.some(({ generalData }) => {
+  //         const { material } = generalData;
+  //         return _id.toString() === material._id.toString();
+  //       })
+  //       return viscosity
+  //     });
 
-      const aggregates = materials.filter(({ _id, type }) => {
-        if (type === 'CAP' || type === 'asphaltBinder') return false;
-        const granulometry = granulometrys.some(({ generalData }) => {
-          const { material } = generalData;
-          return _id.toString() === material._id.toString();
-        });
-        const specifyMass = specifyMasses.some(({ generalData }) => {
-          const { material } = generalData;
-          return _id.toString() === material._id.toString();
-        });
-        return granulometry; //&& specifyMass;
-      });
+  //     const aggregates = materials.filter(({ _id, type }) => {
+  //       if (type === 'CAP' || type === 'asphaltBinder') return false;
+  //       const granulometry = granulometrys.some(({ generalData }) => {
+  //         const { material } = generalData;
+  //         return _id.toString() === material._id.toString();
+  //       });
+  //       const specifyMass = specifyMasses.some(({ generalData }) => {
+  //         const { material } = generalData;
+  //         return _id.toString() === material._id.toString();
+  //       });
+  //       return granulometry; //&& specifyMass;
+  //     });
 
-      const filteredMaterials = binders.concat(aggregates);
+  //     const filteredMaterials = binders.concat(aggregates);
 
-      return filteredMaterials;
-    } catch (error) {
-      throw error;
-    }
-  }
+  //     return filteredMaterials;
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // }
 
-  async saveMaterials(body: any, userId: string) {
-    console.log("Teste")
-    try {
-      this.logger.log('save superpave materials step on material-selection.superpave.service.ts > [body]', { body });
+  // async saveMaterials(body: any, userId: string) {
+  //   console.log("Teste")
+  //   try {
+  //     this.logger.log('save superpave materials step on material-selection.superpave.service.ts > [body]', { body });
 
-      const { name } = body.materialSelectionData;
+  //     const { name } = body.materialSelectionData;
 
-      const superpaveExists: any = await this.superpaveRepository.findOne(name, userId);
+  //     const superpaveExists: any = await this.superpaveRepository.findOne(name, userId);
 
-      const { name: materialName, ...materialDataWithoutName } = body.materialSelectionData;
+  //     const { name: materialName, ...materialDataWithoutName } = body.materialSelectionData;
 
-      const superpaveWithMaterials = { ...superpaveExists._doc, materialSelectionData: materialDataWithoutName };
+  //     const superpaveWithMaterials = { ...superpaveExists._doc, materialSelectionData: materialDataWithoutName };
 
-      await this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithMaterials);
+  //     await this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithMaterials);
 
-      if (superpaveExists._doc.generalData.step < 2) {
-        await this.superpaveRepository.saveStep(superpaveExists, 2);
-      }
+  //     if (superpaveExists._doc.generalData.step < 2) {
+  //       await this.superpaveRepository.saveStep(superpaveExists, 2);
+  //     }
 
-      return true;
-    } catch (error) {
-      throw error;
-    }
-  }
+  //     return true;
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // }
 }

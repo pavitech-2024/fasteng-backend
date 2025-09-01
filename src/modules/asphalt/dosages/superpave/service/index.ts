@@ -4,7 +4,6 @@ import { GeneralData_Superpave_Service } from './general-data.superpave.service'
 import { MaterialSelection_Superpave_Service } from './material-selection.superpave.service';
 import { Superpave } from '../schemas';
 import { SuperpaveRepository } from '../repository/index';
-import { SuperpaveStep3Dto } from '../dto/step-3-superpave.dto';
 import { GranulometryComposition_Superpave_Service } from './granulometry-composition.superpave.service';
 import { AsphaltGranulometryRepository } from 'modules/asphalt/essays/granulometry/repository';
 import { InitialBinder_Superpave_Service } from './initial-binder.superpave.service';
@@ -14,12 +13,12 @@ import { ChosenCurvePercentages_Superpave_Service } from './chosen-curves-percen
 import { SecondCompression_Superpave_Service } from './second-compression.superpave.service';
 import { SecondCompressionParameters_Superpave_Service } from './second-compression-parameters.service';
 import { ResumeDosage_Superpave_Service } from './resume-dosage.service';
-import { GranulometryEssay_Superpave_Service } from './granulometryEssay.service';
-import { Calc_Superpave_GranulometyEssay_Dto } from '../dto/granulometry-essay.dto';
+import { GranulometryEssay_Superpave_Service } from './granulometry-essay.service';
 import { AsphaltGranulometryService } from 'modules/asphalt/essays/granulometry/service';
 import { Calc_AsphaltGranulometry_Dto } from 'modules/asphalt/essays/granulometry/dto/asphalt.calc.granulometry.dto';
 import { ViscosityRotationalService } from 'modules/asphalt/essays/viscosityRotational/service/viscosityRotational.service';
 import { AllSievesSuperpaveUpdatedAstm } from 'utils/interfaces';
+import { ConfirmCompaction_Superpave_Service } from './confirm-compaction.service';
 
 @Injectable()
 export class SuperpaveService {
@@ -34,10 +33,11 @@ export class SuperpaveService {
     private readonly granulometryRepository: AsphaltGranulometryRepository,
     private readonly initialBinder_Service: InitialBinder_Superpave_Service,
     private readonly firstCompression_Service: FirstCompression_Superpave_Service,
-    private readonly firstCurvePercentages_Service: FirstCurvePercentages_Service,
+    private readonly firstCompressionParams_Service: FirstCurvePercentages_Service,
     private readonly chosenCurvePercentages_Service: ChosenCurvePercentages_Superpave_Service,
     private readonly secondCompression_Service: SecondCompression_Superpave_Service,
     private readonly secondCompressionParameters_Service: SecondCompressionParameters_Superpave_Service,
+    private readonly confirmCompaction_Service: ConfirmCompaction_Superpave_Service,
     private readonly resumeDosageEquation_Service: ResumeDosage_Superpave_Service,
     private readonly asphaltGranulometry_Service: AsphaltGranulometryService,
     private readonly rotationalViscosity_Service: ViscosityRotationalService,
@@ -120,30 +120,41 @@ export class SuperpaveService {
     }
   }
 
-  async saveGranulometryEssayStep(body: any, userId: string) {
+  async saveGranulometryEssayData(body: any, userId: string) {
     try {
-      const result = await this.granulometryEssay_Service.saveGranulometryEssay(body, userId);
+      const result = await this.granulometryEssay_Service.saveGranulometryEssayData(body, userId);
       return result;
     } catch (error) {
-      this.logger.error(`Error saving granulometry essay step: ${error.message}`);
+      this.logger.error(`Error saving granulometry essay data: ${error.message}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
     }
   }
 
-  async getUserMaterials(userId: string) {
+  async saveGranulometryEssayResults(body: any, userId: string) {
     try {
-      const materials = await this.materialSelection_Service.getMaterials(userId);
-
-      this.logger.log(`materials returned > [materials]`);
-
-      return { materials, success: true };
+      const result = await this.granulometryEssay_Service.saveGranulometryEssayResults(body, userId);
+      return result;
     } catch (error) {
-      this.logger.error(`error on getting all materials by user id > [error]: ${error}`);
+      this.logger.error(`Error saving granulometry essay results: ${error.message}`);
       const { status, name, message } = error;
-      return { materials: [], success: false, error: { status, message, name } };
+      return { success: false, error: { status, message, name } };
     }
   }
+
+  // async getUserMaterials(userId: string) {
+  //   try {
+  //     const materials = await this.materialSelection_Service.getMaterials(userId);
+
+  //     this.logger.log(`materials returned > [materials]`);
+
+  //     return { materials, success: true };
+  //   } catch (error) {
+  //     this.logger.error(`error on getting all materials by user id > [error]: ${error}`);
+  //     const { status, name, message } = error;
+  //     return { materials: [], success: false, error: { status, message, name } };
+  //   }
+  // }
 
   async getDosageById(dosageId: string) {
     try {
@@ -156,17 +167,6 @@ export class SuperpaveService {
       this.logger.error(`error on getting dosage by id > [error]: ${error}`);
       const { status, name, message } = error;
       return { materials: [], success: false, error: { status, message, name } };
-    }
-  }
-
-  async saveMaterialSelectionStep(body: any, userId: string) {
-    try {
-      const result = await this.materialSelection_Service.saveMaterials(body, userId);
-      return result;
-    } catch (error) {
-      this.logger.error(`Error saving material selection step: ${error.message}`);
-      const { status, name, message } = error;
-      return { success: false, error: { status, message, name } };
     }
   }
 
@@ -822,7 +822,7 @@ export class SuperpaveService {
 
   async saveStep3Data(body: any, userId: string) {
     try {
-      const success = await this.granulometryComposition_Service.saveStep4Data(body, userId);
+      const success = await this.granulometryComposition_Service.saveGranulometryCompositionData(body, userId);
 
       return { success };
     } catch (error) {
@@ -844,9 +844,9 @@ export class SuperpaveService {
     }
   }
 
-  async saveStep4Data(body: any, userId: string) {
+  async saveGranulometryCompositionData(body: any, userId: string) {
     try {
-      const success = await this.granulometryComposition_Service.saveStep4Data(body, userId);
+      const success = await this.granulometryComposition_Service.saveGranulometryCompositionData(body, userId);
 
       return { success };
     } catch (error) {
@@ -868,9 +868,9 @@ export class SuperpaveService {
     }
   }
 
-  async calculateGmm(body: any) {
+  async calculateGmm_RiceTest(body: any) {
     try {
-      const gmm = await this.firstCompression_Service.calculateGmm(body);
+      const gmm = await this.firstCompression_Service.calculateGmm_RiceTest(body);
 
       return { data: gmm, success: true };
     } catch (error) {
@@ -880,7 +880,7 @@ export class SuperpaveService {
     }
   }
 
-    async saveInitialBinderStep(body: any, userId: string) {
+  async saveInitialBinderStep(body: any, userId: string) {
     try {
       const success = await this.initialBinder_Service.saveInitialBinderStep(body, userId);
 
@@ -906,7 +906,7 @@ export class SuperpaveService {
 
   async getFirstCompressionParametersData(body: any) {
     try {
-      const data = await this.firstCurvePercentages_Service.getFirstCompressionParametersData(body);
+      const data = await this.firstCompressionParams_Service.getFirstCompressionParametersData(body);
 
       return { data, success: true };
     } catch (error) {
@@ -916,9 +916,9 @@ export class SuperpaveService {
     }
   }
 
-  async savePercentsOfChosenCurveData(body: any, userId: string) {
+  async saveFirstCompressionParamsData(body: any, userId: string) {
     try {
-      const success = await this.firstCurvePercentages_Service.savePercentsOfChosenCurveData(body, userId);
+      const success = await this.firstCompressionParams_Service.saveFirstCompressionParamsData(body, userId);
 
       return { success };
     } catch (error) {
@@ -928,9 +928,21 @@ export class SuperpaveService {
     }
   }
 
-  async getStep7Parameters(body: any) {
+  async savePercentsOfChosenCurveData(body: any, userId: string) {
     try {
-      const data = await this.chosenCurvePercentages_Service.getStep7Parameters(body);
+      const success = await this.chosenCurvePercentages_Service.savePercentsOfChosenCurveData(body, userId);
+
+      return { success };
+    } catch (error) {
+      this.logger.error(`error on save percents of chosen curve data superpave > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { success: false, error: { status, message, name } };
+    }
+  }
+
+  async getChosenCurvePercentsData(body: any) {
+    try {
+      const data = await this.chosenCurvePercentages_Service.getChosenCurvePercentsData(body);
 
       return { data, success: true };
     } catch (error) {
@@ -940,22 +952,10 @@ export class SuperpaveService {
     }
   }
 
-  async saveStep7Data(body: any, userId: string) {
-    try {
-      const success = await this.chosenCurvePercentages_Service.saveStep7Data(body, userId);
-
-      return { success };
-    } catch (error) {
-      this.logger.error(`error on save step 7 data superpave > [error]: ${error}`);
-      const { status, name, message } = error;
-      return { success: false, error: { status, message, name } };
-    }
-  }
-
-  async calculateStep7RiceTest(body: any) {
+  async calculateSecondCompressionRiceTest(body: any) {
     const { sampleAirDryMass, containerMassWaterSample, containerWaterMass, waterTemperatureCorrection } = body;
     try {
-      const gmm = await this.secondCompression_Service.calculateStep7RiceTest(
+      const gmm = await this.secondCompression_Service.calculateSecondCompressionRiceTest(
         sampleAirDryMass,
         containerMassWaterSample,
         containerWaterMass,
@@ -964,7 +964,7 @@ export class SuperpaveService {
 
       return { data: gmm, success: true };
     } catch (error) {
-      this.logger.error(`error on getting the step 5 rice test data > [error]: ${error}`);
+      this.logger.error(`error on calculating rice test on second compression step > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
     }
@@ -984,27 +984,23 @@ export class SuperpaveService {
 
   async calculateSecondCompressionData(body: any) {
     try {
-      const gmm = await this.secondCompression_Service.calculateSecondCompressionData(
-        body,
-      );
+      const gmm = await this.secondCompression_Service.calculateSecondCompressionData(body);
 
       return { data: gmm, success: true };
     } catch (error) {
-      this.logger.error(
-        `error on calculating the second compression data > [error]: ${error}`,
-      );
+      this.logger.error(`error on calculating the second compression data > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
     }
   }
 
-  async saveStep9Data(body: any, userId: string) {
+  async saveSecondCompressionData(body: any, userId: string) {
     try {
-      const success = await this.secondCompression_Service.saveStep9Data(body, userId);
+      const success = await this.secondCompression_Service.saveSecondCompressionData(body, userId);
 
       return { success };
     } catch (error) {
-      this.logger.error(`error on save step 8 data superpave > [error]: ${error}`);
+      this.logger.error(`error on save second compression data superpave > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
     }
@@ -1022,13 +1018,25 @@ export class SuperpaveService {
     }
   }
 
-  async saveStep10Data(body: any, userId: string) {
+  async saveSecondCompressionParams(body: any, userId: string) {
     try {
-      const success = await this.secondCompressionParameters_Service.saveStep10Data(body, userId);
+      const success = await this.secondCompressionParameters_Service.saveSecondCompressionParams(body, userId);
 
       return { success };
     } catch (error) {
       this.logger.error(`error on save step 9 data superpave > [error]: ${error}`);
+      const { status, name, message } = error;
+      return { success: false, error: { status, message, name } };
+    }
+  }
+
+  async saveConfirmattionCompressionData(body: any, userId: string) {
+    try {
+      const success = await this.confirmCompaction_Service.saveConfirmattionCompressionData(body, userId);
+
+      return { success };
+    } catch (error) {
+      this.logger.error(`error on save confirm compaction step data superpave > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
     }
@@ -1046,10 +1054,9 @@ export class SuperpaveService {
     }
   }
 
-  async calculateVolumetricParametersOfConfirmGranulometryComposition(body: any) {
+  async calculateDosageResumeEquation(body: any) {
     try {
-      const data =
-        await this.resumeDosageEquation_Service.calculateVolumetricParametersOfConfirmGranulometryComposition(body);
+      const data = await this.resumeDosageEquation_Service.calculateDosageResumeEquation(body);
 
       return { data, success: true };
     } catch (error) {

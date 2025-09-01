@@ -30,10 +30,12 @@ let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = clas
         this.materialsRepository = materialsRepository;
         this.logger = new common_1.Logger(Calc_AsphaltGranulometry_Service_1.name);
         this.getDiameter = (table_data, percentage, limits) => {
-            if (limits.upperLimit.value === percentage)
+            if (limits.upperLimit.value === percentage) {
                 return table_data[limits.upperLimit.index].passant;
-            if (limits.inferiorLimit.value === percentage)
+            }
+            if (limits.inferiorLimit.value === percentage) {
                 return table_data[limits.inferiorLimit.index].passant;
+            }
             const coefficientA = (limits.upperLimit.value - limits.inferiorLimit.value) /
                 (table_data[limits.upperLimit.index].passant - table_data[limits.inferiorLimit.index].passant);
             const coefficientB = limits.upperLimit.value / (coefficientA * table_data[limits.upperLimit.index].passant);
@@ -41,16 +43,15 @@ let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = clas
         };
         this.getPercentage = (percentage, table_data) => {
             return table_data.reduce((accumulate, sieve, index) => {
-                const { upperLimit, inferiorLimit } = accumulate;
                 if (sieve.passant >= percentage) {
-                    if (upperLimit.value === 0 || sieve.passant < upperLimit.value)
+                    if (accumulate.upperLimit.value === 0 || sieve.passant < accumulate.upperLimit.value)
                         accumulate.upperLimit = {
                             value: sieve.passant,
                             index: index,
                         };
                 }
                 else {
-                    if (inferiorLimit.value === 0 || sieve.passant > inferiorLimit.value)
+                    if (accumulate.inferiorLimit.value === 0 || sieve.passant > accumulate.inferiorLimit.value)
                         accumulate.inferiorLimit = {
                             value: sieve.passant,
                             index: index,
@@ -72,9 +73,8 @@ let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = clas
     calculateGranulometry(_a) {
         return __awaiter(this, arguments, void 0, function* ({ step2Data, isSuperpave = true, }) {
             try {
-                this.logger.log('calculate asphalt granulometry on calc.granulometry.service.ts > [body]');
+                this.logger.log(`calculate asphalt granulometry on calc.granulometry.service.ts > [${isSuperpave ? 'Superpave' : 'Granulometry'}] [${step2Data}]`);
                 const { table_data, material_mass, bottom } = step2Data;
-                const length = table_data.length;
                 const accumulated_retained = [];
                 const passant = [];
                 const retained_porcentage = [];
@@ -86,14 +86,14 @@ let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = clas
                 let fineness_module = 0;
                 let nominal_size_flag = true;
                 let nominal_diameter_flag = true;
-                for (let i = 0; i < length; i++) {
+                for (let i = 0; i < table_data.length; i++) {
                     const label = table_data[i].sieve_label;
                     const value = table_data[i].sieve_value;
-                    passant_porcentage.push([table_data[i].sieve_label, table_data[i].passant]);
+                    const passant_porcentage = table_data[i].passant;
                     const retained = table_data[i].retained;
                     total_retained += retained;
                     passant.push([label, Math.round(100 * (material_mass - total_retained)) / 100]);
-                    accumulated_retained.push([label, Math.round(100 * (100 - passant_porcentage[i][1])) / 100]);
+                    accumulated_retained.push([label, Math.round(100 * (100 - passant_porcentage)) / 100]);
                     if (i === 0) {
                         retained_porcentage.push(accumulated_retained[i]);
                     }
@@ -104,27 +104,21 @@ let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = clas
                         ]);
                     }
                     fineness_module += accumulated_retained[i][1];
-                    if (total_retained >= 5 && nominal_size_flag) {
+                    if (nominal_size_flag && accumulated_retained[i][1] >= 5) {
                         nominal_size_flag = false;
-                        if (total_retained === 5)
-                            nominal_size = (0, sieves_1.getSieveValue)(label, isSuperpave);
+                        if (i === 0) {
+                            nominal_size = (0, sieves_1.getSieveValue)(label);
+                        }
                         else {
-                            if (i === 0)
-                                nominal_size = (0, sieves_1.getSieveValue)(label, isSuperpave);
-                            else
-                                nominal_size = (0, sieves_1.getSieveValue)(table_data[i - 1].sieve_label, isSuperpave);
+                            const previous_retained = accumulated_retained[i - 1][1];
+                            nominal_size = previous_retained <= 5 ? (0, sieves_1.getSieveValue)(table_data[i - 1].sieve_label) : (0, sieves_1.getSieveValue)(label);
                         }
                     }
                     if (total_retained > 10 && nominal_diameter_flag) {
                         nominal_diameter_flag = false;
-                        if (i === 1)
-                            nominal_diameter = (0, sieves_1.getSieveValue)(label, isSuperpave);
-                        else if (i === 0)
-                            nominal_diameter = value;
-                        else
-                            nominal_diameter = (0, sieves_1.getSieveValue)(table_data[i - 1].sieve_label, isSuperpave);
+                        nominal_diameter = (0, sieves_1.getSieveValue)(table_data[i].sieve_label);
                     }
-                    graph_data.push([value, passant_porcentage[i][1]]);
+                    graph_data.push([value, passant_porcentage]);
                 }
                 fineness_module = Math.round((100 * fineness_module) / 100) / 100;
                 total_retained = Math.round(100 * total_retained) / 100;

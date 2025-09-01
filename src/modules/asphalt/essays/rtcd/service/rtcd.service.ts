@@ -37,10 +37,7 @@ export class RtcdService {
 
   async saveEssay(body: Calc_Rtcd_Dto & Calc_Rtcd_Out) {
     try {
-      const {
-        name,
-        userId,
-      } = body.generalData;
+      const { name, userId } = body.generalData;
 
       // verifica se existe uma rtcd com mesmo nome , materialId e userId no banco de dados
       const alreadyExists = await this.rtcd_Repository.findOne({
@@ -53,6 +50,22 @@ export class RtcdService {
 
       // se não existir, salva no banco de dados
       const rtcd = await this.rtcd_Repository.create(body);
+
+      return { success: true, data: rtcd };
+    } catch (error) {
+      const { status, name, message } = error;
+
+      return { success: false, error: { status, message, name } };
+    }
+  }
+
+  async deleteEssay(id: string) {
+    try {
+      const rtcd = await this.rtcd_Repository.findOne({ _id: id });
+
+      if (rtcd) {
+        await this.rtcd_Repository.deleteOne(id);
+      }
 
       return { success: true, data: rtcd };
     } catch (error) {

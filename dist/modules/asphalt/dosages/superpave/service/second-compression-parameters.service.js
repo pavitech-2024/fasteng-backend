@@ -170,7 +170,7 @@ let SecondCompressionParameters_Superpave_Service = SecondCompressionParameters_
             }
         });
     }
-    saveStep10Data(body, userId) {
+    saveSecondCompressionParams(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('save superpave second compression percentages step on second-compression-percentages.superpave.service.ts > [body]', { body });

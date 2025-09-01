@@ -52,17 +52,17 @@ let SuperpaveController = SuperpaveController_1 = class SuperpaveController {
             return response.status(200).json(status);
         });
     }
-    saveGranulometryEssayStep(response, body, userId) {
+    saveGranulometryEssayData(response, body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`save granulometry essay data step in user superpave dosage > [body]: ${body}`);
-            const status = yield this.superpaveService.saveGranulometryEssayStep(body, userId);
+            this.logger.log(`save granulometry essay data in user superpave dosage > [body]: ${body}`);
+            const status = yield this.superpaveService.saveGranulometryEssayData(body, userId);
             return response.status(200).json(status);
         });
     }
-    getMaterialsByUserId(response, userId) {
+    saveGranulometryEssayResults(response, body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`get all materials, by user id, with the necessary dosage essays > [id]: ${userId}`);
-            const status = yield this.superpaveService.getUserMaterials(userId);
+            this.logger.log(`save granulometry essay results in user superpave dosage > [body]: ${body}`);
+            const status = yield this.superpaveService.saveGranulometryEssayResults(body, userId);
             return response.status(200).json(status);
         });
     }
@@ -71,13 +71,6 @@ let SuperpaveController = SuperpaveController_1 = class SuperpaveController {
             this.logger.log(`get all materials, by user id, with the necessary dosage essays > [id]: ${dosageId}`);
             this.logger.log(`get a dosage by dosage id > [id]: ${dosageId}`);
             const status = yield this.superpaveService.getDosageById(dosageId);
-            return response.status(200).json(status);
-        });
-    }
-    saveMaterialSelectionStep(response, body, userId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`save materials selection step in user superpave dosage > [body]: ${body}`);
-            const status = yield this.superpaveService.saveMaterialSelectionStep(body, userId);
             return response.status(200).json(status);
         });
     }
@@ -97,8 +90,8 @@ let SuperpaveController = SuperpaveController_1 = class SuperpaveController {
     }
     saveGranulometryCompositionStep(response, userId, body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`save step 4 data > [body]: ${body}`);
-            const status = yield this.superpaveService.saveStep4Data(body, userId);
+            this.logger.log(`save granulometry composition data > [body]: ${body}`);
+            const status = yield this.superpaveService.saveGranulometryCompositionData(body, userId);
             return response.status(200).json(status);
         });
     }
@@ -123,17 +116,10 @@ let SuperpaveController = SuperpaveController_1 = class SuperpaveController {
             return response.status(200).json(status);
         });
     }
-    calculateRiceTest(response, body) {
+    calculateGmm_RiceTest(response, body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`calculate rice test data > [body]: ${body}`);
-            const status = yield this.superpaveService.calculateGmm(body);
-            return response.status(200).json(status);
-        });
-    }
-    saveFirstCompressionData(response, userId, body) {
-        return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`save first compression data > [body]: ${body}`);
-            const status = yield this.superpaveService.saveFirstCompressionData(body, userId);
+            this.logger.log(`calculate gmm by rice test data > [body]: ${body}`);
+            const status = yield this.superpaveService.calculateGmm_RiceTest(body);
             return response.status(200).json(status);
         });
     }
@@ -144,31 +130,38 @@ let SuperpaveController = SuperpaveController_1 = class SuperpaveController {
             return response.status(200).json(status);
         });
     }
-    saveStep6Data(response, userId, body) {
+    saveFirstCompressionData(response, userId, body) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.log(`save first compression data > [body]: ${body}`);
+            const status = yield this.superpaveService.saveFirstCompressionData(body, userId);
+            return response.status(200).json(status);
+        });
+    }
+    saveFirstCompressionParamsData(response, userId, body) {
         return __awaiter(this, void 0, void 0, function* () {
             this.logger.log(`save percents of chosen curve data > [body]: ${body}`);
+            const status = yield this.superpaveService.saveFirstCompressionParamsData(body, userId);
+            return response.status(200).json(status);
+        });
+    }
+    getChosenCurvePercentsData(response, body) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.log(`get chosen curve percents data > [body]: ${body}`);
+            const status = yield this.superpaveService.getChosenCurvePercentsData(body);
+            return response.status(200).json(status);
+        });
+    }
+    savePercentsOfChosenCurveData(response, userId, body) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.log(`save percents of chose curve data > [body]: ${body}`);
             const status = yield this.superpaveService.savePercentsOfChosenCurveData(body, userId);
             return response.status(200).json(status);
         });
     }
-    getStep7Parameters(response, body) {
+    calculateSecondCompressionRiceTest(response, body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`get step 7 data > [body]: ${body}`);
-            const status = yield this.superpaveService.getStep7Parameters(body);
-            return response.status(200).json(status);
-        });
-    }
-    saveStep7Data(response, userId, body) {
-        return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`save step 7 data > [body]: ${body}`);
-            const status = yield this.superpaveService.saveStep7Data(body, userId);
-            return response.status(200).json(status);
-        });
-    }
-    calculateStep7RiceTest(response, body) {
-        return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`calculate step 5 rice test data > [body]: ${body}`);
-            const status = yield this.superpaveService.calculateStep7RiceTest(body);
+            this.logger.log(`calculate second compression rice test data > [body]: ${body}`);
+            const status = yield this.superpaveService.calculateSecondCompressionRiceTest(body);
             return response.status(200).json(status);
         });
     }
@@ -186,9 +179,10 @@ let SuperpaveController = SuperpaveController_1 = class SuperpaveController {
             return response.status(200).json(status);
         });
     }
-    saveStep8Data(response, userId, body) {
+    saveSecondCompressionData(response, userId, body) {
         return __awaiter(this, void 0, void 0, function* () {
             this.logger.log(`save step 8 data > [body]: ${body}`);
+            const status = yield this.superpaveService.saveSecondCompressionData(body, userId);
             return response.status(200).json(status);
         });
     }
@@ -199,10 +193,10 @@ let SuperpaveController = SuperpaveController_1 = class SuperpaveController {
             return response.status(200).json(status);
         });
     }
-    saveStep9Data(response, userId, body) {
+    saveSecondCompressionParams(response, userId, body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`save step 9 data > [body]: ${body}`);
-            const status = yield this.superpaveService.saveStep9Data(body, userId);
+            this.logger.log(`save second compression data > [body]: ${body}`);
+            const status = yield this.superpaveService.saveSecondCompressionParams(body, userId);
             return response.status(200).json(status);
         });
     }
@@ -213,17 +207,17 @@ let SuperpaveController = SuperpaveController_1 = class SuperpaveController {
             return response.status(200).json(status);
         });
     }
-    calculateVolumetricParametersOfConfirmGranulometryComposition(response, body) {
+    calculateDosageResumeEquation(response, body) {
         return __awaiter(this, void 0, void 0, function* () {
             this.logger.log(`calculate dosage equation > [body]: ${body}`);
-            const status = yield this.superpaveService.calculateVolumetricParametersOfConfirmGranulometryComposition(body);
+            const status = yield this.superpaveService.calculateDosageResumeEquation(body);
             return response.status(200).json(status);
         });
     }
-    saveStep10Data(response, userId, body) {
+    saveConfirmattionCompressionData(response, userId, body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`save step 10 data > [body]: ${body}`);
-            const status = yield this.superpaveService.saveStep10Data(body, userId);
+            this.logger.log(`save confirmattion compression data > [body]: ${body}`);
+            const status = yield this.superpaveService.saveConfirmattionCompressionData(body, userId);
             return response.status(200).json(status);
         });
     }
@@ -305,27 +299,23 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], SuperpaveController.prototype, "calculateGranulometryEssaysData", null);
 __decorate([
-    (0, common_1.Post)('save-granulometry-essay-step/:id'),
+    (0, common_1.Post)('save-granulometry-essay-data/:id'),
     __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Body)()),
     __param(2, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object, String]),
     __metadata("design:returntype", Promise)
-], SuperpaveController.prototype, "saveGranulometryEssayStep", null);
+], SuperpaveController.prototype, "saveGranulometryEssayData", null);
 __decorate([
-    (0, common_1.Get)('material-selection/:id'),
-    (0, swagger_1.ApiOperation)({
-        summary: 'Retorna todos os materiais do banco de dados de um usuário, que possuam os ensaios para a dosagem.',
-    }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Materiais encontrados com sucesso!' }),
-    (0, swagger_1.ApiResponse)({ status: 400, description: 'Usuário não encontrado!' }),
+    (0, common_1.Post)('save-granulometry-essay-results/:id'),
     __param(0, (0, common_1.Res)()),
-    __param(1, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:paramtypes", [Object, Object, String]),
     __metadata("design:returntype", Promise)
-], SuperpaveController.prototype, "getMaterialsByUserId", null);
+], SuperpaveController.prototype, "saveGranulometryEssayResults", null);
 __decorate([
     (0, common_1.Get)(':id'),
     (0, swagger_1.ApiOperation)({ summary: 'Retorna uma dosagem do banco de dados com o id informado.' }),
@@ -337,15 +327,6 @@ __decorate([
     __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)
 ], SuperpaveController.prototype, "getDosageById", null);
-__decorate([
-    (0, common_1.Post)('save-material-selection-step/:id'),
-    __param(0, (0, common_1.Res)()),
-    __param(1, (0, common_1.Body)()),
-    __param(2, (0, common_1.Param)('id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object, String]),
-    __metadata("design:returntype", Promise)
-], SuperpaveController.prototype, "saveMaterialSelectionStep", null);
 __decorate([
     (0, common_1.Post)('get-granulometric-composition-data'),
     (0, swagger_1.ApiOperation)({
@@ -421,22 +402,13 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], SuperpaveController.prototype, "saveInitialBinderStep", null);
 __decorate([
-    (0, common_1.Post)('calculate-gmm'),
+    (0, common_1.Post)('calculate-gmm-rice-test'),
     __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
-], SuperpaveController.prototype, "calculateRiceTest", null);
-__decorate([
-    (0, common_1.Post)('save-first-compression-step/:userId'),
-    __param(0, (0, common_1.Res)()),
-    __param(1, (0, common_1.Param)('userId')),
-    __param(2, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, String, Object]),
-    __metadata("design:returntype", Promise)
-], SuperpaveController.prototype, "saveFirstCompressionData", null);
+], SuperpaveController.prototype, "calculateGmm_RiceTest", null);
 __decorate([
     (0, common_1.Post)('get-first-compression-parameters'),
     (0, swagger_1.ApiOperation)({
@@ -454,18 +426,27 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], SuperpaveController.prototype, "getFirstCompressionParametersData", null);
 __decorate([
-    (0, common_1.Post)('save-percents-of-chosen-curve-step/:userId'),
+    (0, common_1.Post)('save-first-compression-step/:userId'),
     __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Param)('userId')),
     __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String, Object]),
     __metadata("design:returntype", Promise)
-], SuperpaveController.prototype, "saveStep6Data", null);
+], SuperpaveController.prototype, "saveFirstCompressionData", null);
 __decorate([
-    (0, common_1.Post)('step-7-parameters'),
+    (0, common_1.Post)('save-first-compression-params/:userId'),
+    __param(0, (0, common_1.Res)()),
+    __param(1, (0, common_1.Param)('userId')),
+    __param(2, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String, Object]),
+    __metadata("design:returntype", Promise)
+], SuperpaveController.prototype, "saveFirstCompressionParamsData", null);
+__decorate([
+    (0, common_1.Post)('calculate-chosen-curve-percentages'),
     (0, swagger_1.ApiOperation)({
-        summary: 'Retorna os dados iniciais necessários para a sétima tela (porcentagens da curva escolhida) da dosagem',
+        summary: 'Calcula os dados da sétima tela (porcentagens da curva escolhida) da dosagem',
     }),
     (0, swagger_1.ApiResponse)({
         status: 200,
@@ -477,7 +458,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
-], SuperpaveController.prototype, "getStep7Parameters", null);
+], SuperpaveController.prototype, "getChosenCurvePercentsData", null);
 __decorate([
     (0, common_1.Post)('save-chosen-curve-percentage-step/:userId'),
     __param(0, (0, common_1.Res)()),
@@ -486,15 +467,15 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String, Object]),
     __metadata("design:returntype", Promise)
-], SuperpaveController.prototype, "saveStep7Data", null);
+], SuperpaveController.prototype, "savePercentsOfChosenCurveData", null);
 __decorate([
-    (0, common_1.Post)('calculate-step-7-rice-test'),
+    (0, common_1.Post)('calculate-second-compression-rice-test'),
     __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
-], SuperpaveController.prototype, "calculateStep7RiceTest", null);
+], SuperpaveController.prototype, "calculateSecondCompressionRiceTest", null);
 __decorate([
     (0, common_1.Post)('calculate-step-7-gmm'),
     __param(0, (0, common_1.Res)()),
@@ -519,7 +500,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String, Object]),
     __metadata("design:returntype", Promise)
-], SuperpaveController.prototype, "saveStep8Data", null);
+], SuperpaveController.prototype, "saveSecondCompressionData", null);
 __decorate([
     (0, common_1.Post)('get-second-compression-percentage-data'),
     (0, swagger_1.ApiOperation)({
@@ -544,7 +525,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String, Object]),
     __metadata("design:returntype", Promise)
-], SuperpaveController.prototype, "saveStep9Data", null);
+], SuperpaveController.prototype, "saveSecondCompressionParams", null);
 __decorate([
     (0, common_1.Post)('calculate-step-9-rice-test'),
     __param(0, (0, common_1.Res)()),
@@ -560,7 +541,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
-], SuperpaveController.prototype, "calculateVolumetricParametersOfConfirmGranulometryComposition", null);
+], SuperpaveController.prototype, "calculateDosageResumeEquation", null);
 __decorate([
     (0, common_1.Post)('save-confirmattion-compression-step/:userId'),
     __param(0, (0, common_1.Res)()),
@@ -569,7 +550,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String, Object]),
     __metadata("design:returntype", Promise)
-], SuperpaveController.prototype, "saveStep10Data", null);
+], SuperpaveController.prototype, "saveConfirmattionCompressionData", null);
 __decorate([
     (0, common_1.Post)('save-superpave-dosage/:userId'),
     __param(0, (0, common_1.Res)()),

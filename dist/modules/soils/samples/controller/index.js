@@ -27,18 +27,15 @@ const common_1 = require("@nestjs/common");
 const service_1 = require("../service");
 const swagger_1 = require("@nestjs/swagger");
 const schemas_1 = require("../schemas");
-const user_decorator_1 = require("../../../../config/decorators/user.decorator");
-const create_sample_dto_1 = require("../dto/create-sample.dto");
-const create_sample_response_dto_1 = require("../dto/create-sample-response.dto");
 let SamplesController = SamplesController_1 = class SamplesController {
     constructor(samplesService) {
         this.samplesService = samplesService;
         this.logger = new common_1.Logger(SamplesController_1.name);
     }
-    createSample(sample, userId) {
+    createSample(sample) {
         return __awaiter(this, void 0, void 0, function* () {
             this.logger.log('create sample > [body]');
-            const createdSample = yield this.samplesService.createSample(sample, userId);
+            const createdSample = yield this.samplesService.createSample(sample);
             if (createdSample)
                 this.logger.log(`sample created > [id]: ${createdSample._id}`);
             return createdSample;
@@ -47,9 +44,8 @@ let SamplesController = SamplesController_1 = class SamplesController {
     getAllByUserId(userId) {
         return __awaiter(this, void 0, void 0, function* () {
             this.logger.log(`get all samples by user id > [id]: ${userId}`);
-            return this.samplesService.getAllSamples(userId).then(samples => ([{
-                    materials: samples,
-                }]));
+            const samples = yield this.samplesService.getAllSamplesByUserId(userId);
+            return samples;
         });
     }
     getSampleById(sampleId) {
@@ -79,9 +75,8 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Erro ao criar amostra!' }),
     (0, swagger_1.ApiBody)({ type: create_sample_dto_1.CreateSampleDto }),
     __param(0, (0, common_1.Body)()),
-    __param(1, (0, user_decorator_1.User)('userId')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_sample_dto_1.CreateSampleDto, String]),
+    __metadata("design:paramtypes", [create_sample_dto_1.CreateSampleDto]),
     __metadata("design:returntype", Promise)
 ], SamplesController.prototype, "createSample", null);
 __decorate([

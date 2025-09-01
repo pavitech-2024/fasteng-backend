@@ -2,6 +2,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { DATABASE_CONNECTION } from "../../../../../infra/mongoose/database.config";
 import { FilterQuery, Model } from "mongoose";
 import { Marshall, MarshallDocument } from "../schemas";
+import { MarshallInitDto } from "../dto/marshall-init.dto";
 
 export class MarshallRepository {
   constructor(@InjectModel(Marshall.name, DATABASE_CONNECTION.ASPHALT) private marshallModel: Model<MarshallDocument>) { }
@@ -34,10 +35,10 @@ export class MarshallRepository {
     return this.marshallModel.findById(dosageId);
   }
 
-  async createPartialMarshall(marshall: any, userId: string): Promise<any> {
+  async createPartialMarshall(marshall: MarshallInitDto, userId: string): Promise<any> {
     try {
       const createdPartialMarshall = await this.marshallModel.create({
-        generalData: {...marshall, userId},
+        generalData: {...marshall.generalData, userId},
       });
 
       return createdPartialMarshall;

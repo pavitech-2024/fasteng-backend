@@ -9,7 +9,7 @@ export type DduiDocument = HydratedDocument<Ddui>;
 export type DduiGeneralData = {
   userId: string;
   name: string;
-  material: Material;
+  // material: Material;
 };
 
 export type Ddui_Step2 = {
@@ -36,7 +36,7 @@ export type Ddui_Step3 = {
 
 @Schema({ collection: 'ddui', timestamps: true })
 export class Ddui {
-  _id: string;
+  _id?: string;
 
   @IsNotEmpty()
   @Prop({ type: Object })

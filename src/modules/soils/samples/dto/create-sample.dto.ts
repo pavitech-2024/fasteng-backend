@@ -67,7 +67,12 @@ export class CreateSampleDto {
 
 export class CreateSampleDto {
   @IsNotEmpty()
+  @IsString()
   name: string;
+
+  @IsNotEmpty()
+  @IsString()
+  userId: string;
 
   type: 'inorganicSoil' | 'organicSoil' | 'pavementLayer';
   construction?: string;
