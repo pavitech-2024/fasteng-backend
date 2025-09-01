@@ -261,7 +261,7 @@ export class MarshallService {
     }
   }
 
-  async calculateStep3Data(body: any) {
+  async calculateGranulometry(body: any) {
     try {
       const { dnitBands } = body;
 
