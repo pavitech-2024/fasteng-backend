@@ -50,7 +50,7 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log({ body }, 'start calculate first compression parameters data > [service]');
-                const { granulometryComposition, trafficVolume, nominalSize, turnNumber, chosenCurves, porcentagesPassantsN200, binderSpecificGravity: binderSpecificGravityValue, riceTest, maximumDensity, binderCompositions, percentageInputs, } = body;
+                const { granulometryComposition, trafficVolume, nominalSize, turnNumber, chosenCurves, porcentagesPassantsN200, binderSpecificGravity: binderSpecificGravityValue, riceTest, binderCompositions, percentageInputs, } = body;
                 let binderSpecificGravity = binderSpecificGravityValue;
                 if (!binderSpecificGravityValue)
                     binderSpecificGravity = 0;
@@ -187,7 +187,7 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
                 let passantN200lower = 0;
                 if (chosenCurves.includes('lower')) {
                     updatedGranulometryComposition = Object.assign(Object.assign({}, updatedGranulometryComposition), { lower: {
-                            gmm: riceTest.length > 0 ? riceTest.find((e) => e.curve === 'lower').gmm : 0,
+                            gmm: riceTest.find((e) => e.curve === 'lower').gmm ? riceTest.find((e) => e.curve === 'lower').gmm : 0,
                             pli: binderCompositions[0].pli,
                             data: [],
                             percentWaterAbs: null,
@@ -254,7 +254,7 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
                 let passantN200average = 0;
                 if (chosenCurves.includes('average')) {
                     updatedGranulometryComposition = Object.assign(Object.assign({}, updatedGranulometryComposition), { average: {
-                            gmm: riceTest.length ? riceTest.find((e) => e.curve === 'average').gmm : 0,
+                            gmm: riceTest.find((e) => e.curve === 'average').gmm ? riceTest.find((e) => e.curve === 'average').gmm : 0,
                             pli: binderCompositions[0].pli,
                             data: [],
                             percentWaterAbs: null,
@@ -321,7 +321,7 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
                 let passantN200higher = 0;
                 if (chosenCurves.includes('higher')) {
                     updatedGranulometryComposition = Object.assign(Object.assign({}, updatedGranulometryComposition), { higher: {
-                            gmm: riceTest.length ? riceTest.find((e) => e.curve === 'higher').gmm : 0,
+                            gmm: riceTest.find((e) => e.curve === 'higher').gmm ? riceTest.find((e) => e.curve === 'higher').gmm : 0,
                             pli: binderCompositions[0].pli,
                             data: [],
                             percentWaterAbs: null,
@@ -385,6 +385,9 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
                                 (binderCompositions[0].gse * binderCompositions[0].combinedGsb) +
                                 updatedGranulometryComposition.higher.pli);
                 }
+                else {
+                    delete updatedGranulometryComposition.higher;
+                }
                 let table2Lower = {
                     percentageGmmInitialN: {},
                     percentageGmmProjectN: {},
@@ -437,6 +440,9 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
                     table4Lower = {
                         data: graphData,
                     };
+                }
+                else {
+                    delete updatedGranulometryComposition.lower;
                 }
                 let table2Average = {
                     percentageGmmInitialN: {},
@@ -491,6 +497,9 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
                         data: graphData,
                     };
                 }
+                else {
+                    delete updatedGranulometryComposition.average;
+                }
                 let table2Higher = {
                     percentageGmmInitialN: {},
                     percentageGmmProjectN: {},
@@ -544,6 +553,11 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
                         data: graphData,
                     };
                 }
+                else {
+                    table2Higher = null;
+                    table3Higher = null;
+                    table4Higher = null;
+                }
                 const returnScreen6 = {
                     table1: {
                         trafficVolume,
@@ -571,6 +585,20 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
                         table4Higher,
                     },
                 };
+                const suffixMap = {
+                    lower: 'Lower',
+                    average: 'Average',
+                    higher: 'Higher',
+                };
+                const allowedSuffixes = chosenCurves.map((l) => suffixMap[l]);
+                ['table2', 'table3', 'table4'].forEach((tableKey) => {
+                    Object.keys(returnScreen6[tableKey]).forEach((key) => {
+                        const keep = allowedSuffixes.some((suffix) => key.endsWith(suffix));
+                        if (!keep) {
+                            delete returnScreen6[tableKey][key];
+                        }
+                    });
+                });
                 return returnScreen6;
             }
             catch (error) {
@@ -591,9 +619,13 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
         let updatedData = data;
         for (let i = 0; i < data.length; i++) {
             updatedData[i].Gmb = null;
-            updatedData[i].Gmb =
-                (Math.round((data[i].dryMass / (data[i].drySurfaceSaturatedMass - data[i].submergedMass)) * 1e3) / 1e3) *
-                    data[i].waterTemperatureCorrection;
+            const numerator = data[i].dryMass;
+            const denominator = data[i].drySurfaceSaturatedMass - data[i].submergedMass;
+            if (denominator === 0) {
+                updatedData[i].Gmb = 0;
+                continue;
+            }
+            updatedData[i].Gmb = (Math.round((numerator / denominator) * 1e3) / 1e3) * data[i].waterTemperatureCorrection;
         }
         return updatedData;
     }
@@ -748,15 +780,15 @@ let FirstCurvePercentages_Service = FirstCurvePercentages_Service_1 = class Firs
         }
         return graphData;
     }
-    savePercentsOfChosenCurveData(body, userId) {
+    saveFirstCompressionParamsData(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                this.logger.log('save superpave first curve percentages step on first-curve-percentages.superpave.service.ts > [body]', { body });
-                const { name } = body.firstCurvePercentagesData;
+                this.logger.log('save superpave first compression parameters data on first-curve-percentages.superpave.service.ts > [body]', { body });
+                const { name } = body.firstCompressionParamsData;
                 const superpaveExists = yield this.superpave_repository.findOne(name, userId);
-                const _a = body.firstCurvePercentagesData, { name: materialName } = _a, firstCurvePercentagesWithoutName = __rest(_a, ["name"]);
-                const superpaveWithFirstCurvePercentages = Object.assign(Object.assign({}, superpaveExists._doc), { firstCurvePercentagesData: firstCurvePercentagesWithoutName });
-                yield this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithFirstCurvePercentages);
+                const _a = body.firstCompressionParamsData, { name: materialName } = _a, firstCompressionParamsWithoutName = __rest(_a, ["name"]);
+                const superpaveWithFistrCompressionParamsData = Object.assign(Object.assign({}, superpaveExists._doc), { firstCompressionParamsData: firstCompressionParamsWithoutName });
+                yield this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithFistrCompressionParamsData);
                 if (superpaveExists._doc.generalData.step < 8) {
                     yield this.superpave_repository.saveStep(superpaveExists, 8);
                 }

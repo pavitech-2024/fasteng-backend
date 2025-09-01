@@ -19,4 +19,5 @@ export declare class FwdController {
         };
     }>;
     saveEssay(response: Response, body: Calc_Fwd_Dto & Calc_Fwd_Out): Promise<Response<any, Record<string, any>>>;
+    deleteEssay(response: Response, id: string): Promise<Response<any, Record<string, any>>>;
 }

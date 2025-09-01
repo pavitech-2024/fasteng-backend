@@ -1,4 +1,4 @@
-import { Body, Controller, Logger, Post, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Logger, Param, Post, Res } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { IggService } from '../services';
 import { IggInitDto } from '../dto/init-igg.dto';
@@ -65,6 +65,25 @@ export class IggController {
 
     if (igg.success) this.logger.log('save igg > [success]');
     else this.logger.error('save igg > [error]');
+
+    return response.status(200).json(igg);
+  }
+
+  @Delete('delete-essay/:id')
+  @ApiOperation({ summary: 'Se possível, deleta os dados do ensaio igg no banco de dados.' })
+  @ApiResponse({
+    status: 200,
+    description: 'Ensaio de igg deletado com sucesso.',
+    content: { 'application/json': { schema: { example: { success: true, data: 'essay data' } } } },
+  })
+  @ApiResponse({ status: 400, description: 'Erro ao deletar o ensaio igg no banco de dados.' })
+  async deleteEssay(@Res() response: Response, @Param() id: string) {
+    this.logger.log('delete igg > [body]');
+
+    const igg = await this.iggService.deleteEssay(id);
+
+    if (igg.success) this.logger.log('delete igg > [success]');
+    else this.logger.error('delete igg > [error]');
 
     return response.status(200).json(igg);
   }

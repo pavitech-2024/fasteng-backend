@@ -42,13 +42,18 @@ let IggRepository = class IggRepository {
     }
     findAllByUserId(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.iggModel.find({ "generalData.userId": id });
+            return this.iggModel.find({ 'generalData.userId': id });
         });
     }
     create(igg) {
         return __awaiter(this, void 0, void 0, function* () {
             const createdIgg = new this.iggModel(igg);
             return createdIgg.save();
+        });
+    }
+    deleteOne(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.iggModel.findByIdAndDelete(id);
         });
     }
 };

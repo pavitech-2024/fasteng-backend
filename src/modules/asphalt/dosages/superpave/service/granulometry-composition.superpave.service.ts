@@ -316,7 +316,7 @@ export class GranulometryComposition_Superpave_Service {
     return { sumOfPercents, percentsOfMaterials };
   }
 
-  async saveStep4Data(body: any, userId: string) {
+  async saveGranulometryCompositionData(body: any, userId: string) {
     try {
       this.logger.log(
         'save superpave granulometry composition step on granulometry-composition.superpave.service.ts > [body]',

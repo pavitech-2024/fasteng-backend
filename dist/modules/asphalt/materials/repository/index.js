@@ -43,7 +43,7 @@ let MaterialsRepository = class MaterialsRepository {
     }
     findOne(materialsFilterQuery) {
         return __awaiter(this, void 0, void 0, function* () {
-            const material = this.materialModel.findOne(materialsFilterQuery);
+            const material = yield this.materialModel.findOne(materialsFilterQuery);
             return material;
         });
     }

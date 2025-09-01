@@ -43,4 +43,17 @@ export declare class IggService {
         };
         data?: undefined;
     }>;
+    deleteEssay(id: string): Promise<{
+        success: boolean;
+        data: import("../schemas").Igg;
+        error?: undefined;
+    } | {
+        success: boolean;
+        error: {
+            status: any;
+            message: any;
+            name: any;
+        };
+        data?: undefined;
+    }>;
 }

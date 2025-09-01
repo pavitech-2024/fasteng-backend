@@ -7,7 +7,8 @@ export class FwdRepository {
   constructor(@InjectModel(Fwd.name, DATABASE_CONNECTION.ASPHALT) private fwdModel: Model<FwdDocument>) {}
 
   async findOne(fwdFilterQuery: FilterQuery<Fwd>): Promise<Fwd> {
-    return this.fwdModel.findOne(fwdFilterQuery);
+    const essay = await this.fwdModel.findOne(fwdFilterQuery)
+    return essay;
   }
 
   async findAll(): Promise<Fwd[]> {
@@ -15,12 +16,16 @@ export class FwdRepository {
   }
 
   async findAllByUserId(id: string): Promise<Fwd[]> {
-    return this.fwdModel.find({"generalData.userId": id});
+    return this.fwdModel.find({ 'generalData.userId': id });
   }
 
   async create(fwd: any): Promise<Fwd> {
     const createdFwd = new this.fwdModel(fwd);
 
     return createdFwd.save();
+  }
+
+  async deleteOne(id: string): Promise<Fwd> {
+    return this.fwdModel.findByIdAndDelete(id);
   }
 }

@@ -31,16 +31,11 @@ __decorate([
     __metadata("design:type", String)
 ], Material.prototype, "userId", void 0);
 __decorate([
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, mongoose_1.Prop)(),
-    __metadata("design:type", Date)
-], Material.prototype, "createdAt", void 0);
-__decorate([
     (0, mongoose_1.Prop)({ type: Object }),
     __metadata("design:type", Object)
 ], Material.prototype, "description", void 0);
 exports.Material = Material = __decorate([
-    (0, mongoose_1.Schema)({ collection: 'materials' })
+    (0, mongoose_1.Schema)({ collection: 'materials', timestamps: true })
 ], Material);
 exports.MaterialSchema = mongoose_1.SchemaFactory.createForClass(Material);
 //# sourceMappingURL=index.js.map

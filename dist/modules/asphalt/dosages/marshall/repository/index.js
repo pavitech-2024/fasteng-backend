@@ -66,7 +66,7 @@ let MarshallRepository = class MarshallRepository {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const createdPartialMarshall = yield this.marshallModel.create({
-                    generalData: Object.assign(Object.assign({}, marshall), { userId }),
+                    generalData: Object.assign(Object.assign({}, marshall.generalData), { userId }),
                 });
                 return createdPartialMarshall;
             }

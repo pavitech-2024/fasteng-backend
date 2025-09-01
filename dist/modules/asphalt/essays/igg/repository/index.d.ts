@@ -7,4 +7,5 @@ export declare class IggRepository {
     findAll(): Promise<Igg[]>;
     findAllByUserId(id: string): Promise<Igg[]>;
     create(igg: any): Promise<Igg>;
+    deleteOne(id: string): Promise<Igg>;
 }

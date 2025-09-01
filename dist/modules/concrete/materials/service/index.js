@@ -30,13 +30,15 @@ let MaterialsService = MaterialsService_1 = class MaterialsService {
         this.getEssaysByMaterial_Service = getEssaysByMaterial_Service;
         this.logger = new common_1.Logger(MaterialsService_1.name);
     }
-    createMaterial(material, userId) {
+    createMaterial(material) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                if (yield this.materialsRepository.findOne({ name: material.name, userId }))
+                const { name, userId } = material;
+                const materialExists = yield this.materialsRepository.findOne({ name, userId });
+                if (materialExists)
                     throw new exceptions_1.AlreadyExists(`Material with name "${material.name}"`);
-                this.logger.log(userId);
-                return this.materialsRepository.create(Object.assign(Object.assign({}, material), { createdAt: new Date(), userId }));
+                const createdMaterial = yield this.materialsRepository.create(material);
+                return createdMaterial;
             }
             catch (error) {
                 this.logger.error(`error on create material > [error]: ${error}`);

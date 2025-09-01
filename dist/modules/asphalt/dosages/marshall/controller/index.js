@@ -55,7 +55,6 @@ let MarshallController = MarshallController_1 = class MarshallController {
     getDosageById(response, dosageId) {
         return __awaiter(this, void 0, void 0, function* () {
             this.logger.log(`get all materials, by user id, with the necessary dosage essays > [id]: ${dosageId}`);
-            this.logger.log(`get a dosage by dosage id > [id]: ${dosageId}`);
             const status = yield this.marshallService.getDosageById(dosageId);
             return response.status(200).json(status);
         });
@@ -74,10 +73,10 @@ let MarshallController = MarshallController_1 = class MarshallController {
             return response.status(200).json(status);
         });
     }
-    calculateStep3Data(response, body) {
+    calculateGranulometry(response, body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`calculate step 3 data > [body]: ${body}`);
-            const status = yield this.marshallService.calculateStep3Data(body);
+            this.logger.log(`calculate granulometry data > [body]: ${body}`);
+            const status = yield this.marshallService.calculateGranulometry(body);
             return response.status(200).json(status);
         });
     }
@@ -125,15 +124,15 @@ let MarshallController = MarshallController_1 = class MarshallController {
     }
     calculateRiceTest(response, body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`calculate step 5 rice test > [body]: ${body}`);
+            this.logger.log(`calculate maximum mixture density step rice test > [body]: ${body}`);
             const status = yield this.marshallService.calculateRiceTest(body.riceTest);
             return response.status(200).json(status);
         });
     }
     saveMaximumMixtureDensityData(response, userId, body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`save step 5 data > [body]: ${body}`);
-            const status = yield this.marshallService.saveStep5Data(body, userId);
+            this.logger.log(`save maximum mixture density data > [body]: ${body}`);
+            const status = yield this.marshallService.saveMistureMaximumDensityData(body, userId);
             return response.status(200).json(status);
         });
     }
@@ -146,8 +145,8 @@ let MarshallController = MarshallController_1 = class MarshallController {
     }
     saveVolumetricParametersData(response, userId, body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`save step 6 data > [body]: ${body}`);
-            const status = yield this.marshallService.saveStep6Data(body, userId);
+            this.logger.log(`save volumetric parameters data > [body]: ${body}`);
+            const status = yield this.marshallService.saveVolumetricParametersData(body, userId);
             return response.status(200).json(status);
         });
     }
@@ -298,13 +297,13 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "getStep3Data", null);
 __decorate([
-    (0, common_1.Post)('calculate-step-3-data'),
+    (0, common_1.Post)('calculate-granulometry'),
     __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
-], MarshallController.prototype, "calculateStep3Data", null);
+], MarshallController.prototype, "calculateGranulometry", null);
 __decorate([
     (0, common_1.Post)('save-granulometry-composition-step/:userId'),
     __param(0, (0, common_1.Res)()),

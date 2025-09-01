@@ -24,19 +24,24 @@ export class SecondCompressionParameters_Superpave_Service {
       const PolynomialRegression = require('ml-regression-polynomial');
       const { quadSolver } = require('quadratic-solver');
       const Pli = expectedPli;
+
+      // Volume de vazios da mistura para cada teor
       const dataVv = [
         composition.halfLess.Vv,
         composition.normal.Vv,
         composition.halfPlus.Vv,
         composition.onePlus.Vv,
       ];
+    
       const dataPli = [Pli - 0.5, Pli, Pli + 0.5, Pli + 1];
       const regression = new PolynomialRegression(dataPli, dataVv, 2);
+      
       const optimumContent = quadSolver(
         regression.coefficients[2],
         regression.coefficients[1],
         regression.coefficients[0] - 4,
       )[1];
+
       const graphVv = [
         ['Teor', 'Vv'],
         [
@@ -97,10 +102,12 @@ export class SecondCompressionParameters_Superpave_Service {
         [Pli + 0.5, composition.halfPlus.ratioDustAsphalt],
         [Pli + 1, composition.onePlus.ratioDustAsphalt],
       ];
+
       let halfLessPointOfRT;
       let normalPointOfRT;
       let halfPlusPointOfRT;
       let onePlusPointOfRT;
+      
       if (composition.halfLess.indirectTensileStrength !== undefined) {
         halfLessPointOfRT = composition.halfLess.indirectTensileStrength;
       } else halfLessPointOfRT = null;
@@ -136,7 +143,7 @@ export class SecondCompressionParameters_Superpave_Service {
     }
   }
   
-  async saveStep10Data(body: any, userId: string) {
+  async saveSecondCompressionParams(body: any, userId: string) {
     try {
       this.logger.log('save superpave second compression percentages step on second-compression-percentages.superpave.service.ts > [body]', { body });
 

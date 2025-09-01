@@ -17,11 +17,21 @@ export type SuperpaveGeneralData = {
   step: number;
 };
 
-export type SuperpaveGranulometryEssayData =  {
+export type GranulometryEssayResults = {
+  material: SuperpaveGeneralData;
+  result: any;
+};
+
+export type SuperpaveGranulometryEssayData = {
   material_mass: number;
-  table_data: { sieve_label: string; sieve_value: number, passant: number, retained: number }[];
+  table_data: { sieve_label: string; sieve_value: number; passant: number; retained: number }[];
   bottom: number;
-}
+};
+
+export type SuperpaveGranulometryEssayResults = {
+  granulometrys: GranulometryEssayResults[];
+  viscosity: GranulometryEssayResults;
+};
 
 export type SuperpaveMaterialData = {
   aggregates: {
@@ -150,7 +160,7 @@ export type FirstCompressionData = {
   }[];
 };
 
-export type FirstCurvePercentagesData = {
+export type FirstCompressionParamsData = {
   table1: {
     expectedPorcentageGmmInitialN: number;
     expectedPorcentageGmmMaxN: number;
@@ -391,18 +401,18 @@ interface ConfirmationCompressionData {
 }
 
 interface DosageResume {
-  Gmb: number,
-  Gmm: number,
-  RBV: number,
-  Vam: number,
-  Vv: number,
-  diametralTractionResistance: number,
-  gmm: number,
-  percentWaterAbs: number,
-  ponderatedPercentsOfDosage: number[],
-  quantitative: number[],
-  ratioDustAsphalt: number,
-  specifiesMass: number
+  Gmb: number;
+  Gmm: number;
+  RBV: number;
+  Vam: number;
+  Vv: number;
+  diametralTractionResistance: number;
+  gmm: number;
+  percentWaterAbs: number;
+  ponderatedPercentsOfDosage: number[];
+  quantitative: number[];
+  ratioDustAsphalt: number;
+  specifiesMass: number;
 }
 
 @Schema({ collection: 'superpaves' })
@@ -416,7 +426,10 @@ export class Superpave {
 
   @IsNotEmpty()
   @Prop({ type: Object })
-  granulometryEssayData: SuperpaveGranulometryEssayData
+  granulometryEssayData: SuperpaveGranulometryEssayData;
+
+  @Prop({ type: Object })
+  granulometryEssayResults: SuperpaveGranulometryEssayResults;
 
   @IsNotEmpty()
   @Prop({ type: Object })
@@ -436,7 +449,7 @@ export class Superpave {
 
   @IsNotEmpty()
   @Prop({ type: Object })
-  firstCurvePercentagesData: FirstCurvePercentagesData;
+  firstCompressionParamsData: FirstCompressionParamsData;
 
   @IsNotEmpty()
   @Prop({ type: Object })

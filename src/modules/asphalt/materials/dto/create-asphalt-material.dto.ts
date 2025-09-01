@@ -59,13 +59,18 @@ import { Sieve } from '../../../../utils/interfaces';
 
 export class CreateAsphaltMaterialDto {
   @IsNotEmpty()
+  @IsString()
   name: string;
+
+  @IsNotEmpty()
+  @IsString()
+  userId: string;
 
   type: 'coarseAggregate' | 'fineAggregate' | 'filler' | 'asphaltBinder' | 'CAP' | 'other';
   description?: {
     source?: string;
     responsible?: string;
-    maxDiammeter?: Sieve;
+    maxDiameter?: Sieve;
     aggregateNature?: string;
     boughtDate?: string;
     recieveDate?: string;

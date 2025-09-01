@@ -56,7 +56,7 @@ let RtcdService = class RtcdService {
     saveEssay(body) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { name, userId, } = body.generalData;
+                const { name, userId } = body.generalData;
                 const alreadyExists = yield this.rtcd_Repository.findOne({
                     'generalData.name': name,
                     'generalData.userId': userId,
@@ -64,6 +64,21 @@ let RtcdService = class RtcdService {
                 if (alreadyExists)
                     throw new exceptions_1.AlreadyExists(`Rtcd with name "${name}" from user "${userId}"`);
                 const rtcd = yield this.rtcd_Repository.create(body);
+                return { success: true, data: rtcd };
+            }
+            catch (error) {
+                const { status, name, message } = error;
+                return { success: false, error: { status, message, name } };
+            }
+        });
+    }
+    deleteEssay(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const rtcd = yield this.rtcd_Repository.findOne({ _id: id });
+                if (rtcd) {
+                    yield this.rtcd_Repository.deleteOne(id);
+                }
                 return { success: true, data: rtcd };
             }
             catch (error) {

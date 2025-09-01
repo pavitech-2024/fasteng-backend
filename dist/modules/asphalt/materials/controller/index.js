@@ -28,17 +28,15 @@ const service_1 = require("../service");
 const swagger_1 = require("@nestjs/swagger");
 const create_asphalt_material_dto_1 = require("../dto/create-asphalt-material.dto");
 const schemas_1 = require("../schemas");
-const user_decorator_1 = require("../../../../config/decorators/user.decorator");
-const create_asphalt_response_dto_1 = require("../dto/create-asphalt-response.dto");
 let MaterialsController = MaterialsController_1 = class MaterialsController {
     constructor(materialsService) {
         this.materialsService = materialsService;
         this.logger = new common_1.Logger(MaterialsController_1.name);
     }
-    createMaterial(material, userId) {
+    createMaterial(material) {
         return __awaiter(this, void 0, void 0, function* () {
             this.logger.log('create material > [body]');
-            const createdMaterial = yield this.materialsService.createMaterial(material, userId);
+            const createdMaterial = yield this.materialsService.createMaterial(material);
             if (createdMaterial)
                 this.logger.log(`material created > [id]: ${createdMaterial._id}`);
             return createdMaterial;
@@ -51,7 +49,9 @@ let MaterialsController = MaterialsController_1 = class MaterialsController {
             if (!Array.isArray(materials)) {
                 return [materials].filter(Boolean);
             }
-            return materials;
+            else {
+                return materials;
+            }
         });
     }
     getAllByUserId(userId) {
@@ -92,9 +92,8 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Material criado com sucesso!', type: create_asphalt_response_dto_1.ResponseAsphaltMaterialDto }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Erro ao criar material!' }),
     __param(0, (0, common_1.Body)()),
-    __param(1, (0, user_decorator_1.User)('userId')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_asphalt_material_dto_1.CreateAsphaltMaterialDto, String]),
+    __metadata("design:paramtypes", [create_asphalt_material_dto_1.CreateAsphaltMaterialDto]),
     __metadata("design:returntype", Promise)
 ], MaterialsController.prototype, "createMaterial", null);
 __decorate([
@@ -143,8 +142,8 @@ __decorate([
 ], MaterialsController.prototype, "getMaterialById", null);
 __decorate([
     (0, common_1.Get)('selected/:id'),
-    (0, swagger_1.ApiOperation)({ summary: 'Retorna um material do banco de dados.' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Material encontrado com sucesso!', type: create_asphalt_response_dto_1.ResponseAsphaltMaterialDto }),
+    (0, swagger_1.ApiOperation)({ summary: 'Retorna um material do banco de dados que corresponda ao id passado nos parametros.' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Material encontrado com sucesso!' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Material não encontrado!' }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),

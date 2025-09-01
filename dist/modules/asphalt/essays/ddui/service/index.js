@@ -56,15 +56,29 @@ let DduiService = class DduiService {
     saveEssay(body) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { name, material: { _id: materialId }, userId, } = body.generalData;
+                const { name, userId, } = body.generalData;
                 const alreadyExists = yield this.ddui_Repository.findOne({
                     'generalData.name': name,
-                    'generalData.material._id': materialId,
                     'generalData.userId': userId,
                 });
                 if (alreadyExists)
                     throw new exceptions_1.AlreadyExists(`Ddui with name "${name}" from user "${userId}"`);
                 const ddui = yield this.ddui_Repository.create(body);
+                return { success: true, data: ddui };
+            }
+            catch (error) {
+                const { status, name, message } = error;
+                return { success: false, error: { status, message, name } };
+            }
+        });
+    }
+    deleteEssay(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const ddui = yield this.ddui_Repository.findOne({ _id: id });
+                if (ddui) {
+                    yield this.ddui_Repository.deleteOne(id);
+                }
                 return { success: true, data: ddui };
             }
             catch (error) {

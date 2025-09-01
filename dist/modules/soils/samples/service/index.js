@@ -30,12 +30,15 @@ let SamplesService = SamplesService_1 = class SamplesService {
         this.getEssaysBySample_Service = getEssaysBySample_Service;
         this.logger = new common_1.Logger(SamplesService_1.name);
     }
-    createSample(sample, userId) {
+    createSample(sample) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                if (yield this.samplesRepository.findOne({ name: sample.name, userId }))
+                const { name, userId } = sample;
+                const sampleFound = yield this.samplesRepository.findOne({ name, userId });
+                if (sampleFound)
                     throw new exceptions_1.AlreadyExists(`Sample with name "${sample.name}"`);
-                return this.samplesRepository.create(Object.assign(Object.assign({}, sample), { createdAt: new Date(), userId }));
+                const createdSample = yield this.samplesRepository.create(sample);
+                return createdSample;
             }
             catch (error) {
                 this.logger.error(`error on create sample > [error]: ${error}`);
@@ -58,7 +61,7 @@ let SamplesService = SamplesService_1 = class SamplesService {
             }
         });
     }
-    getAllSamples(userId) {
+    getAllSamplesByUserId(userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const samples = yield this.samplesRepository.find();

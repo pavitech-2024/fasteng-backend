@@ -7,4 +7,5 @@ export declare class RtcdRepository {
     findAll(): Promise<Rtcd[]>;
     findAllByUserId(id: string): Promise<Rtcd[]>;
     create(rtcd: any): Promise<Rtcd>;
+    deleteOne(id: string): Promise<Rtcd>;
 }

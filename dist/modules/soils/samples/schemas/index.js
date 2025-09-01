@@ -31,16 +31,11 @@ __decorate([
     __metadata("design:type", String)
 ], Sample.prototype, "userId", void 0);
 __decorate([
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, mongoose_1.Prop)(),
-    __metadata("design:type", Date)
-], Sample.prototype, "createdAt", void 0);
-__decorate([
     (0, mongoose_1.Prop)({ type: Object }),
     __metadata("design:type", Object)
 ], Sample.prototype, "description", void 0);
 exports.Sample = Sample = __decorate([
-    (0, mongoose_1.Schema)({ collection: 'samples' })
+    (0, mongoose_1.Schema)({ collection: 'samples', timestamps: true })
 ], Sample);
 exports.SampleSchema = mongoose_1.SchemaFactory.createForClass(Sample);
 //# sourceMappingURL=index.js.map

@@ -19,10 +19,10 @@ export class MaterialsController {
   @ApiOperation({ summary: 'Cria um material no banco de dados.' })
   @ApiResponse({ status: 201, description: 'Material criado com sucesso!', type: ResponseAsphaltMaterialDto })
   @ApiResponse({ status: 400, description: 'Erro ao criar material!' })
-  async createMaterial(@Body() material: CreateAsphaltMaterialDto, @User('userId') userId: string) {
+  async createMaterial(@Body() material: CreateAsphaltMaterialDto) {
     this.logger.log('create material > [body]');
 
-    const createdMaterial = await this.materialsService.createMaterial(material, userId);
+    const createdMaterial = await this.materialsService.createMaterial(material);
 
     if (createdMaterial) this.logger.log(`material created > [id]: ${createdMaterial._id}`);
 
@@ -39,21 +39,20 @@ export class MaterialsController {
     isArray: true,
   })
   @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
-  async getAllByUserIdList(@Param('id') userId: string) { //Antigo método getAllByUserId
+  async getAllByUserIdList(@Param('id') userId: string): Promise<AsphaltMaterialsList[]> {
     this.logger.log(`get all materials by user id > [id]: ${userId}`);
 
     const materials = await this.materialsService.getAllMaterialsList(userId);
-  
+
     // Garante que sempre retornará um array
     if (!Array.isArray(materials)) {
       return [materials].filter(Boolean); // Converte para array e remove valores nulos
+    } else {
+      return materials;
     }
-    
-    return materials;
-
   }
 
-   @Get('all/:id')
+  @Get('all/:id')
   @ApiOperation({ summary: 'Retorna todos os materiais do banco de dados de um usuário.' })
   //@ApiResponse({ status: 200, description: 'Materiais encontrados com sucesso!' })
    @ApiResponse({
@@ -65,12 +64,10 @@ export class MaterialsController {
   @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
   async getAllByUserId(@Param('id') userId: string) {
     this.logger.log(`get all materials by user id > [id]: ${userId}`);
-    
 
     return this.materialsService.getAllMaterials(userId);
   }
 
-  
   @Get(':id')
   @ApiOperation({ summary: 'Retorna um material do banco de dados.' })
   //@ApiResponse({ status: 200, description: 'Material encontrado com sucesso!' })
@@ -110,7 +107,6 @@ export class MaterialsController {
 
     return this.materialsService.updateMaterial(material);
   }
-  
 
   @Delete(':id')
   @ApiOperation({ summary: 'Deleta um material do banco de dados.' })

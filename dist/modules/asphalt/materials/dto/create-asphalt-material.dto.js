@@ -65,18 +65,12 @@ exports.CreateAsphaltMaterialDto = CreateAsphaltMaterialDto;
 __decorate([
     (0, swagger_1.ApiProperty)({ example: 'Brita 1', description: 'Nome do material' }),
     (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], CreateAsphaltMaterialDto.prototype, "name", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({
-        enum: ['coarseAggregate', 'fineAggregate', 'filler', 'asphaltBinder', 'CAP', 'other'],
-        description: 'Tipo do material',
-        example: 'coarseAggregate',
-    }),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], CreateAsphaltMaterialDto.prototype, "type", void 0);
-__decorate([
-    (0, swagger_1.ApiPropertyOptional)({ type: () => DescriptionDto, description: 'Informações adicionais do material' }),
-    __metadata("design:type", DescriptionDto)
-], CreateAsphaltMaterialDto.prototype, "description", void 0);
+], CreateAsphaltMaterialDto.prototype, "userId", void 0);
 //# sourceMappingURL=create-asphalt-material.dto.js.map
