@@ -45,7 +45,7 @@ export class MarshallRepository {
   async createPartialMarshall(
     generalData: Partial<CreateMarshallDTO["generalData"]>,
     userId: string
-  ): Promise<Marshall> {
+  ):Promise<MarshallDocument> {
     try {
       const createdPartialMarshall = await this.marshallModel.create({
         generalData: { ...generalData, userId }

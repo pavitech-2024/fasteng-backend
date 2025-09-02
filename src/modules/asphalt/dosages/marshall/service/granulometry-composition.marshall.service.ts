@@ -6,6 +6,14 @@ import { DATABASE_CONNECTION } from '../../../../../infra/mongoose/database.conf
 import { Model } from 'mongoose';
 import { Marshall, MarshallDocument } from '../schemas';
 import { MarshallRepository } from '../repository';
+import { 
+  CurveInterpolationUtil,
+  DataTransformationUtil,
+  CalculationUtil,
+  DNIT_BANDS,
+  axisX
+} from '../../../../../utils/services';
+
 
 @Injectable()
 export class GranulometryComposition_Marshall_Service {
@@ -20,67 +28,13 @@ export class GranulometryComposition_Marshall_Service {
 
   async getGranulometryData(aggregates: { _id: string; name: string }[]) {
     try {
-      const granulometry_data: {
-        _id: string;
-        passants: {};
-      }[] = [];
-
       const granulometrys = await this.granulometry_repository.findAll();
+      
+      const granulometry_data = DataTransformationUtil.transformGranulometryData(granulometrys, aggregates);
+      const table_data = DataTransformationUtil.generateTableStructure(granulometry_data);
 
-      aggregates.forEach((aggregate) => {
-        const granulometry: any = granulometrys.find(({ generalData }) => {
-          const { material } = generalData;
-          return aggregate._id.toString() === material._id.toString();
-        });
-
-        const { passant } = granulometry.step2Data;
-
-        let passants = {};
-
-        passant.forEach((p) => {
-          passants[p.sieve_label] = p.passant;
-        });
-
-        granulometry_data.push({
-          _id: aggregate._id,
-          passants: passants,
-        });
-      });
-
-      const table_column_headers: string[] = [];
-      const table_rows = [];
-
-      table_column_headers.push('sieve_label');
-
-      AllSieves.forEach((sieve) => {
-        const contains = granulometry_data.some((aggregate) => sieve.label in aggregate.passants);
-
-        if (contains) {
-          const aggregates_data = {};
-          granulometry_data.forEach((aggregate) => {
-            const { _id, passants } = aggregate;
-
-            aggregates_data['total_passant_'.concat(_id)] = passants[sieve.label];
-            aggregates_data['passant_'.concat(_id)] = null;
-
-            // adicionando as colunas à tabela
-            if (!table_column_headers.some((header) => header.includes(_id))) {
-              table_column_headers.push('total_passant_'.concat(_id));
-              table_column_headers.push('passant_'.concat(_id));
-            }
-          });
-          table_rows.push({ sieve_label: sieve.label, ...aggregates_data });
-        }
-      });
-
-      this.logger.log(table_rows);
-      this.logger.log(table_column_headers);
-
-      const table_data = {
-        table_column_headers,
-        table_rows,
-      };
-      //
+      this.logger.log(table_data.tableRows);
+      this.logger.log(table_data.tableColumnHeaders);
 
       return table_data;
     } catch (error) {
@@ -88,13 +42,12 @@ export class GranulometryComposition_Marshall_Service {
     }
   }
 
-  async calculateGranulometry(body: any) {
+   async calculateGranulometry(body: any) {
     try {
       const { dnitBands, percentageInputs, tableRows } = body;
 
-      //Materiais
+      // Processamento dos percentuais de dosagem
       let percentsOfDosage = [];
-
       const ids1 = new Set();
 
       Object.keys(percentageInputs[0]).forEach((key) => {
@@ -105,8 +58,8 @@ export class GranulometryComposition_Marshall_Service {
         percentsOfDosage[index] = { [id]: value };
       });
 
+      // Inicialização dos materiais
       const ids2 = new Set();
-
       let percentsOfMaterials = [];
 
       for (let i = 0; i < percentsOfDosage.length; i++) {
@@ -115,10 +68,9 @@ export class GranulometryComposition_Marshall_Service {
         percentsOfMaterials.push(Array(20).fill({ [key]: null }));
       }
 
-      // let percentsOfMaterials = [Array(20).fill(null), Array(20).fill(null)];
-
       let newTableRows = tableRows;
 
+      // Processamento dos dados da tabela
       tableRows.forEach((element) => {
         Object.keys(element).forEach((key) => {
           if (key === 'sieve_label') {
@@ -144,67 +96,17 @@ export class GranulometryComposition_Marshall_Service {
         });
       });
 
-      const axisX = [
-        76, 64, 50, 38, 32, 25, 19, 12.5, 9.5, 6.3, 4.8, 2.4, 2, 1.2, 0.85, 0.6, 0.43, 0.3, 0.25, 0.18, 0.15, 0.106,
-        0.075,
-      ];
-      let higherBandA = this.insertBlankPointsOnCurve(
-        [null, null, 100, 100, null, 100, 90, null, 65, null, 50, null, 40, null, null, 30, null, 20, null, 8],
-        axisX,
-      );
-      let lowerBandA = this.insertBlankPointsOnCurve(
-        [null, null, 100, 95, null, 75, 60, null, 35, null, 25, null, 20, null, null, 10, null, 5, null, 1],
-        axisX,
-      );
-      let higherBandB = this.insertBlankPointsOnCurve(
-        [null, null, null, 100, null, 100, 100, null, 80, null, 60, null, 45, null, null, 32, null, 20, null, 8],
-        axisX,
-      );
-      let lowerBandB = this.insertBlankPointsOnCurve(
-        [null, null, null, 100, null, 95, 80, null, 45, null, 28, null, 20, null, null, 10, null, 8, null, 3],
-        axisX,
-      );
-      let higherBandC = this.insertBlankPointsOnCurve(
-        [null, null, null, null, null, null, 100, 100, 90, null, 72, null, 50, null, null, 26, null, 16, null, 10],
-        axisX,
-      );
-      let lowerBandC = this.insertBlankPointsOnCurve(
-        [null, null, null, null, null, null, 100, 80, 70, null, 44, null, 22, null, null, 8, null, 4, null, 2],
-        axisX,
-      );
+    
+      // Obtenção das bandas DNIT com interpolação
+      const bandData = DNIT_BANDS[dnitBands];
+      const band = {
+        higher: CurveInterpolationUtil.insertBlankPointsOnCurve([...bandData.higher], axisX),
+        lower: CurveInterpolationUtil.insertBlankPointsOnCurve([...bandData.lower], axisX)
+      };
 
-      let band = { higher: [], lower: [] };
+      let sumOfPercents = Array(24).fill(null);
 
-      if (dnitBands === 'A') band = { higher: higherBandA, lower: lowerBandA };
-      else if (dnitBands === 'B') band = { higher: higherBandB, lower: lowerBandB };
-      else if (dnitBands === 'C') band = { higher: higherBandC, lower: lowerBandC };
-      let sumOfPercents = [
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-      ];
-
+      // Cálculo dos percentuais
       for (let i = 0; i < percentsOfMaterials.length; i++) {
         for (let j = 0; j < 20; j++) {
           let materialValue = Object.values(percentsOfMaterials[i][j])[0] as number;
@@ -212,126 +114,76 @@ export class GranulometryComposition_Marshall_Service {
 
           if (materialValue !== null) {
             let dosageObject = percentsOfDosage.find((e) => e.hasOwnProperty(materialKey));
-            let dosageValue = null;
+            let dosageValue = dosageObject ? dosageObject[materialKey] : null;
 
-            // Verifica se o objeto foi encontrado e, se sim, obtém o valor
-            if (dosageObject) {
-              dosageValue = dosageObject[materialKey];
-            }
-
-            if (materialValue !== null) {
+            if (materialValue !== null && dosageValue !== null) {
               let value = (materialValue * dosageValue) / 100;
               percentsOfMaterials[i][j] = { [materialKey]: value };
-              sumOfPercents[j] += percentsOfMaterials[i][j][materialKey];
+              sumOfPercents[j] = (sumOfPercents[j] || 0) + value;
             }
-          } else percentsOfMaterials[i][j] = null;
+          } else {
+            percentsOfMaterials[i][j] = null;
+          }
         }
       }
 
-      tableRows.forEach((element) => {
+      // Atualização da tabela
+      tableRows.forEach((element, index) => {
         Object.keys(element).forEach((keys) => {
           const stringIndex = keys.indexOf('_');
           const label = keys.substring(0, stringIndex);
           const id = keys.substring(stringIndex + 1);
 
-          // Remove null values from the percentsOfMaterials array
-          const newArray = percentsOfMaterials.map((innerArray) =>
-            innerArray.filter((value) => value !== null)
-          );
-
-          const index = tableRows.indexOf(element);
-
           if (label === 'passant') {
-            // Find the key in the current element that matches the pattern 'passant_${id}'
+            const newArray = percentsOfMaterials.map(innerArray => 
+              innerArray.filter(value => value !== null)
+            );
+
             const key = Object.keys(tableRows[index]).find((k) => k === `passant_${id}`);
-
-            // If the key exists, find the corresponding value in the newArray
+            
             if (key) {
-              // Find the index in the newArray that contains the id
               let newArrIndex = newArray.findIndex((e) => e[0] && e[0].hasOwnProperty(id));
-
-              // If the index is not -1 and the value exists, insert the value into the newTableRows array
+              
               if (newArrIndex !== -1 && newArray[newArrIndex][index] && newArray[newArrIndex][index][id]) {
                 newTableRows[index][key] = newArray[newArrIndex][index][id];
               } else {
-                // If the index is -1 or the value does not exist, add 'total_passant_${id}' with '---' to the object
-                if (!newTableRows[index]) newTableRows[index] = {}; // Make sure the object exists
+                if (!newTableRows[index]) newTableRows[index] = {};
                 newTableRows[index][`total_passant_${id}`] = '---';
-                console.log(`The id "${id}" was not found in the index ${index} of the newArray.`);
               }
             } else {
-              // If the key does not exist in the current element, add 'total_passant_${id}' with '---' to the object
-              if (!newTableRows[index]) newTableRows[index] = {}; // Make sure the object exists
+              if (!newTableRows[index]) newTableRows[index] = {};
               newTableRows[index][`total_passant_${id}`] = '---';
-              console.log(`The key "passant_${id}" was not found in the object at index ${index}.`);
             }
           }
         });
       });
-      
-      const projections = [];
 
-      sumOfPercents.map((e, idx) => {
+      // Projeções
+      const projections = [];
+      sumOfPercents.forEach((e, idx) => {
         if (e !== null) {
-          const index = idx;
-          const sieve = AllSieves[index];
+          const sieve = AllSieves[idx];
           projections.push({ label: sieve.label, value: e.toFixed(2) });
         }
       });
 
-      sumOfPercents = this.insertBlankPointsOnCurve(sumOfPercents, axisX);
+      // Interpolação da curva principal
+      sumOfPercents = CurveInterpolationUtil.insertBlankPointsOnCurve(sumOfPercents, axisX);
 
-      const higherTolerance = [];
-      const lowerTolerance = [];
+      // Cálculo de tolerâncias
+      const { higherTolerance, lowerTolerance } = 
+        CalculationUtil.calculateTolerances(sumOfPercents, band, axisX);
 
-      for (let i = 0; i < sumOfPercents.length; i++) {
-        if (sumOfPercents[i] === null) {
-          higherTolerance.push(null);
-          lowerTolerance.push(null);
-        } else {
-          let upperLimit = band.higher[i];
-          let lowerLimit = band.lower[i];
+      // Geração dos pontos da curva
+      const pointsOfCurve = CalculationUtil.generatePointsOfCurve(
+        sumOfPercents, band, axisX, higherTolerance, lowerTolerance
+      );
 
-          if (i < 9) {
-            upperLimit = Math.min(band.higher[i], sumOfPercents[i] + 7);
-            lowerLimit = Math.max(band.lower[i], sumOfPercents[i] - 7);
-          } else if (i > 8 && i < 16) {
-            upperLimit = Math.min(band.higher[i], sumOfPercents[i] + 5);
-            lowerLimit = Math.max(band.lower[i], sumOfPercents[i] - 5);
-          } else if (i > 15 && i < 19) {
-            upperLimit = Math.min(band.higher[i], sumOfPercents[i] + 3);
-            lowerLimit = Math.max(band.lower[i], sumOfPercents[i] - 3);
-          } else if (i === 19) {
-            upperLimit = Math.min(band.higher[i], sumOfPercents[i] + 2);
-            lowerLimit = Math.max(band.lower[i], sumOfPercents[i] - 2);
-          }
-
-          higherTolerance.push(upperLimit);
-          lowerTolerance.push(lowerLimit);
-        }
-      }
-
-      const pointsOfCurve = [];
-      for (let i = 0; i < sumOfPercents.length; i++) {
-        pointsOfCurve.push([
-          axisX[i],
-          band.higher[i],
-          higherTolerance[i],
-          sumOfPercents[i],
-          lowerTolerance[i],
-          band.lower[i],
-        ]);
-      }
-
-
-      newTableRows.map((row) => {
-        Object.values(row).some((value) => {
-          if (value === null) {
-            Object.keys(row).forEach((key) => {
-              if (row[key] === null) {
-                row[key] = '---';
-              }
-            });
+      // Limpeza dos valores nulos na tabela
+      newTableRows.forEach((row) => {
+        Object.keys(row).forEach((key) => {
+          if (row[key] === null) {
+            row[key] = '---';
           }
         });
       });
@@ -358,7 +210,6 @@ export class GranulometryComposition_Marshall_Service {
       );
 
       const { name } = body.granulometryCompositionData;
-
       const marshallExists: any = await this.marshallRepository.findOne(name, userId);
 
       const { name: materialName, ...granulometryCompositionWithoutName } = body.granulometryCompositionData;
@@ -379,6 +230,8 @@ export class GranulometryComposition_Marshall_Service {
       throw error;
     }
   }
+
+  
 
   insertBlankPointsOnCurve(curve: number[], axisX: number[]): number[] {
     for (let k = 0; k < curve.length; k++) {

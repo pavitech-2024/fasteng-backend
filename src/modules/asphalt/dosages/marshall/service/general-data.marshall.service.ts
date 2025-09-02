@@ -20,7 +20,7 @@ export class GeneralData_Marshall_Service {
   ) {}
 
   // Verifica se já existe ensaio, cria parcial q é parecido com optional do sequelize se não existir
-  async verifyInitMarshall(marshall: MarshallGeneralDataDTO, userId: string) {
+  async verifyInitMarshall(marshall: MarshallGeneralDataDTO, userId: string):Promise<{ success: boolean; dosage: MarshallDocument }> {
     try {
       this.logger.log('Verify init Marshall');
 
