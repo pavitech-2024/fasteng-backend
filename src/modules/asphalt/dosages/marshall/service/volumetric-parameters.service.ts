@@ -32,6 +32,7 @@ export class VolumetricParameters_Marshall_Service {
       this.logger.log('set volumetric parameters data on volumetric-parameters.marshall.service.ts > [body]', {
         body,
       });
+      
 
       const { volumetricParametersData } = body;
       const {
@@ -80,23 +81,23 @@ export class VolumetricParameters_Marshall_Service {
         // Busca a massa específica de acordo com o teor
         switch (asphaltContent) {
           case 'lessOne':
-            usedMaxSpecifyGravity = maxSpecificGravity.result.lessOne;
+            usedMaxSpecifyGravity = maxSpecificGravity.results.lessOne;
             asphaltContentResult = binderTrial - 1;
             break;
           case 'lessHalf':
-            usedMaxSpecifyGravity = maxSpecificGravity.result.lessHalf;
+            usedMaxSpecifyGravity = maxSpecificGravity.results.lessHalf;
             asphaltContentResult = binderTrial - 0.5;
             break;
           case 'normal':
-            usedMaxSpecifyGravity = maxSpecificGravity.result.normal;
+            usedMaxSpecifyGravity = maxSpecificGravity.results.normal;
             asphaltContentResult = binderTrial;
             break;
           case 'plusHalf':
-            usedMaxSpecifyGravity = maxSpecificGravity.result.plusHalf;
+            usedMaxSpecifyGravity = maxSpecificGravity.results.plusHalf;
             asphaltContentResult = binderTrial + 0.5;
             break;
           case 'plusOne':
-            usedMaxSpecifyGravity = maxSpecificGravity.result.plusOne;
+            usedMaxSpecifyGravity = maxSpecificGravity.results.plusOne;
             asphaltContentResult = binderTrial + 1;
             break;
           default:
