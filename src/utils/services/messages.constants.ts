@@ -1,4 +1,3 @@
-// utils/messages.constants.ts
 export const BINDER_TRIAL_MESSAGES = {
   VISCOSITY_NOT_FOUND: 'O ligante selecionado não passou por nenhum ensaio de viscosidade ainda.',
   UNEXPECTED_VISCOSITY_FORMAT: 'Formato inesperado do retorno do ViscosityRotationalRepository.',
