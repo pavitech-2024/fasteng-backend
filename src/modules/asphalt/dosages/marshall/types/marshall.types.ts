@@ -1,5 +1,7 @@
 import { BinderTrialDataDTO } from "../dto/binder-trial-data.dto";
+import { BandsOfTemperaturesDTO } from "../dto/binder-trial-data.dto";
 export type TrialLabel = 'oneLess' | 'halfLess' | 'normal' | 'halfPlus' | 'onePlus';
+
 
 export type TrialItem = {
   material: string;
@@ -18,9 +20,23 @@ export type CalculateBinderTrialInput = BinderTrialDataDTO &
   };
 
 export type SaveStep4Body = {
-  // no seu código original, o "name" vem DENTRO de binderTrialData
+ 
   binderTrialData: BinderTrialDataDTO & { name: string };
 };
+
+export type  CalculateStep4DataOutput = {
+  data: {
+    percentsOfDosage: TrialItem[][];
+    bandsOfTemperatures: BandsOfTemperaturesDTO;
+    newPercentOfDosage: number[][];
+  } | null;
+  success: boolean;
+  error?: {
+    status?: number;
+    message?: string;
+    name?: string;
+  };
+}
 
 export type ViscosityTempRange = { higher: number; lower: number };
 export type ViscosityPayload = {

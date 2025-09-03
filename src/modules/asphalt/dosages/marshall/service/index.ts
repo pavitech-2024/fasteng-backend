@@ -30,6 +30,9 @@ import { handleError } from "utils/error-handler";
 import { SaveVolumetricParametersRequestDTO, SaveVolumetricParametersResponseDTO } from "../dto/volumetric-params-data.dto";
 import { getMarshallBandsByDnit } from "utils/services/marshall-bands.util";
 import { getBandsByType } from 'utils/services/marshall-bands.util';
+import { CalculateBinderTrialInput } from "../types/marshall.types";
+import { TrialItem } from "../types/marshall.types";
+import { BandsOfTemperaturesDTO } from "../dto/binder-trial-data.dto";
 
 //teste
   import { Types } from 'mongoose';
@@ -211,26 +214,46 @@ async saveStep3Data(body: SaveStep3DTO, userId: string): Promise<{ success: bool
   });
 }
 
-  async calculateStep4Data(body: any) {
-    try {
-      const binderTrial = await this.setBinderTrial_Service.calculateInitialBinderTrial(body);
 
-      const data = {
-        percentsOfDosage: binderTrial.result.percentsOfDosage,
-        bandsOfTemperatures: binderTrial.result.bandsOfTemperatures,
-        newPercentOfDosage: binderTrial.result.newPercentOfDosage
-      };
+ async calculateStep4Data(
+  body: CalculateBinderTrialInput
+): Promise<{
+  data: {
+    percentsOfDosage: TrialItem[][];
+    bandsOfTemperatures: BandsOfTemperaturesDTO;
+    newPercentOfDosage: number[][];
+  } | null;
+  success: boolean;
+  error?: {
+    status?: number;
+    message?: string;
+    name?: string;
+  };
+}> {
+  try {
+    const binderTrial = await this.setBinderTrial_Service.calculateInitialBinderTrial(body);
 
-      return { 
-        data, 
-        success: true 
-      };
-    } catch (error) {
-       handleError(error, "error on getting the step 3 data");
-      const { status, name, message } = error;
-      return { data: null, success: false, error: { status, message, name } };
-    }
+    const data = {
+      percentsOfDosage: binderTrial.result.percentsOfDosage,
+      bandsOfTemperatures: binderTrial.result.bandsOfTemperatures,
+      newPercentOfDosage: binderTrial.result.newPercentOfDosage,
+    };
+
+    return { 
+      data, 
+      success: true 
+    };
+  } catch (error) {
+    handleError(error, "error on getting the step 3 data");
+    const { status, name, message } = error;
+    return { 
+      data: null, 
+      success: false, 
+      error: { status, message, name } 
+    };
   }
+}
+
 
 async saveStep4Data(body: SaveStep4DTO, userId: string): Promise<{ success: boolean; error?: any }> {
   return this.saveStepData({
@@ -445,14 +468,19 @@ async saveMistureMaximumDensityData(dto: SaveMaximumMixtureDensityDataDTO, userI
     }
   }
 
- async saveStep7Data(body: SaveStep7DTO, userId: string): Promise<{ success: boolean; error?: any }> {
-  return this.saveStepData({
+  //Refact para salvr step7
+async saveStep7Data(body: SaveStep7DTO, userId: string): Promise<{ success: boolean; error?: any }> {
+  const stepData: SaveStepDTO = {
     dosageId: body.dosageId,
-    step: 'optimumBinderContent',
+    step: 'optimumBinderContent', // Este valor é válido como um valor da união MarshallStep
     data: body.data,
     userId
-  });
+  };
+
+  return this.saveStepData(stepData);
 }
+
+
 
   async confirmSpecificGravity(body: any) {
     try {

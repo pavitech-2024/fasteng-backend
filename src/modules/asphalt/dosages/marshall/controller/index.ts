@@ -26,6 +26,8 @@ import { Step3Result } from '../types/step-data.type';
 import { CalculateRiceTestDTO as CalculateRiceTestDTONew } from '../dto/calculate-rice-test.dto';
 import { SaveMaximumMixtureDensityDataDTO } from '../dto/save-maximum-mixture-density-data.dto';
 import { SaveVolumetricParametersRequestDTO,SaveVolumetricParametersResponseDTO } from '../dto/volumetric-params-data.dto';
+import { CalculateBinderTrialInput } from '../types/marshall.types';
+import { CalculateStep4DataOutput } from '../types/marshall.types';
 
 //test
 //import { Types } from 'mongoose';
@@ -216,15 +218,18 @@ async saveGranulometryCompositionStep(
   return result; 
 }
 
-// --- Rotas restantes com any, ainda falta bastnt
+// tiptd
 @Post('calculate-step-4-data')
 @ApiOperation({ summary: 'Calcula dados do step 4 (binder trial).' })
-async calculateStep4Data(@Body() body: any) {
+async calculateStep4Data(
+  @Body() body: CalculateBinderTrialInput,
+): Promise<CalculateStep4DataOutput> {
   this.logger.log(`calculate step 4 data > [body]: ${JSON.stringify(body)}`);
 
   const result = await this.marshallService.calculateStep4Data(body);
   return result; // Nest cuida da resposta HTTP (status 200 + JSON)
 }
+
 
 
 

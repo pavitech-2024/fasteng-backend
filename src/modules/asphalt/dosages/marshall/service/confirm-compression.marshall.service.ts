@@ -7,20 +7,9 @@ import { MarshallRepository } from '../repository';
 import { Marshall, MarshallDocument } from '../schemas';
 import { ConfirmationCompressionDataDTO } from '../dto/confirmation-compresion-data.dto';
 import { handleError } from 'utils/error-handler';
+import { ConfirmSpecificGravityBody } from '../interfaces/confirm-specific-gravityBody.interface';
 
-interface ConfirmSpecificGravityBody {
-  method: 'DMT' | 'GMM';
-  listOfSpecificGravities: number[];
-  percentsOfDosage: { [key: string]: number }[];
-  confirmedPercentsOfDosage: number[];
-  optimumContent: number;
-  gmm?: number;
-  valuesOfSpecificGravity?: {
-    massOfDrySample: number;
-    massOfContainerWaterSample: number;
-    massOfContainerWater: number;
-  };
-}
+
 
 @Injectable()
 export class ConfirmCompression_Marshall_Service {

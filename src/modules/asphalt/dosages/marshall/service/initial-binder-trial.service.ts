@@ -1,5 +1,3 @@
-//Codigo puramente refatorado pra remover any dos bodytyps, juntamente com responses adequados
-import { TemperatureRangeDTO, BandsOfTemperaturesDTO, BinderTrialDataDTO } from './../dto/binder-trial-data.dto';
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { DATABASE_CONNECTION } from '../../../../../infra/mongoose/database.config';
@@ -7,31 +5,15 @@ import { Model } from 'mongoose';
 import { MarshallRepository } from '../repository';
 import { Marshall, MarshallDocument } from '../schemas';
 import { ViscosityRotationalRepository } from '../../../essays/viscosityRotational/repository';
-import { CalculateBinderTrialInput, PercentsMap, SaveStep4Body, TrialItem, ViscosityPayload } from '../types/marshall.types';
+import { CalculateBinderTrialInput, SaveStep4Body } from '../types/marshall.types';
 import { handleError } from 'utils/error-handler';
-
-
-function isViscosityPayload(x: unknown): x is ViscosityPayload {
-  if (typeof x !== 'object' || x === null) return false;
-  const obj = x as Record<string, unknown>;
-  const mt = obj['machiningTemperatureRange'] as Record<string, unknown>;
-  const ct = obj['compressionTemperatureRange'] as Record<string, unknown>;
-  return (
-    typeof mt?.higher === 'number' &&
-    typeof mt?.lower === 'number' &&
-    typeof ct?.higher === 'number' &&
-    typeof ct?.lower === 'number'
-  );
-}
-
-function extractViscosityPayload(res: unknown): ViscosityPayload {
-  if (typeof res === 'object' && res !== null) {
-    const r = res as Record<string, unknown>;
-    if ('results' in r && isViscosityPayload((r as any).results)) return (r as any).results;
-    if ('data' in r && isViscosityPayload((r as any).data)) return (r as any).data;
-  }
-  throw new Error('Formato inesperado do retorno do ViscosityRotationalRepository.');
-}
+import { BandsOfTemperaturesDTO } from '../dto/binder-trial-data.dto';
+import { TypeGuardsUtil } from '../../../../../utils/services/type-guards.util';
+import { TemperatureCalculationsUtil } from '../../../../../utils/services/temperature-calculations.util';
+import { BinderTrialUtil } from '../../../../../utils/services/binder-trial.util';
+import { TrialItem } from '../types/marshall.types';
+import { PercentsMap } from '../types/marshall.types';
+import { BINDER_TRIAL_MESSAGES } from '../../../../../utils/services/messages.constants';
 
 @Injectable()
 export class SetBinderTrial_Marshall_Service {
@@ -54,68 +36,15 @@ export class SetBinderTrial_Marshall_Service {
     };
   }> {
     try {
-      this.logger.log('Calculating Marshall initial binder trial', { body });
+      this.logger.log(BINDER_TRIAL_MESSAGES.CALCULATING_BINDER_TRIAL, { body });
 
       const { trial, binder } = body;
-
-      // aceitar tanto percentsOfDosages quanto percentsOfDosage
-      const percentsList: PercentsMap[] =
-        'percentsOfDosages' in body ? body.percentsOfDosages : body.percentsOfDosage;
-
+      const percentsList: PercentsMap[] = 'percentsOfDosages' in body ? body.percentsOfDosages : body.percentsOfDosage;
       const newPercent = 100 - trial;
 
-      const halfPlus: TrialItem[] = [];
-      const halfLess: TrialItem[] = [];
-      const onePlus: TrialItem[] = [];
-      const oneLess: TrialItem[] = [];
-      const percentOfDosage: TrialItem[] = [];
-      const percentOfDosageToReturn: TrialItem[][] = [];
-      const newPercentOfDosage: number[][] = [];
-
-      const modifiedPercentsOfDosages: { _id: string; value: number }[] = [];
-      const ids = new Set<string>();
-
-      // normaliza o primeiro objeto do array em pares {_id, value}
-      const first = percentsList[0] ?? {};
-      Object.keys(first).forEach((key) => {
-        const id = key.split('_')[1];
-        if (!id) return;
-        ids.add(id);
-        const value = Number(first[key] ?? 0);
-        const index = Array.from(ids).indexOf(id);
-        modifiedPercentsOfDosages[index] = { _id: id, value };
-      });
-
-      for (let i = 0; i < modifiedPercentsOfDosages.length; i++) {
-        const item = modifiedPercentsOfDosages[i];
-        onePlus.push({ material: item._id, value: ((newPercent - 1) * item.value) / 100, trial: 'onePlus' });
-        halfPlus.push({ material: item._id, value: ((newPercent - 0.5) * item.value) / 100, trial: 'halfPlus' });
-        const normal = { material: item._id, value: (newPercent * item.value) / 100, trial: 'normal' } as const;
-        halfLess.push({ material: item._id, value: ((newPercent + 0.5) * item.value) / 100, trial: 'halfLess' });
-        oneLess.push({ material: item._id, value: ((newPercent + 1) * item.value) / 100, trial: 'oneLess' });
-
-        percentOfDosage.push(normal as TrialItem);
-
-        newPercentOfDosage.push([
-          onePlus[i].value,
-          halfPlus[i].value,
-          normal.value,
-          halfLess[i].value,
-          oneLess[i].value,
-        ]);
-
-        // ordem de retorno: oneLess, halfLess, normal, halfPlus, onePlus
-        percentOfDosageToReturn.push([oneLess[i], halfLess[i], normal as TrialItem, halfPlus[i], onePlus[i]]);
-      }
-
-      // linha extra com o teor de ligante para cada trial
-      percentOfDosageToReturn.push([
-        { trial: 'oneLess', value: trial - 1, material: 'binder' },
-        { trial: 'halfLess', value: trial - 0.5, material: 'binder' },
-        { trial: 'normal', value: trial, material: 'binder' },
-        { trial: 'halfPlus', value: trial + 0.5, material: 'binder' },
-        { trial: 'onePlus', value: trial + 1, material: 'binder' },
-      ]);
+      const modifiedPercents = BinderTrialUtil.normalizePercents(percentsList);
+      const { percentOfDosageToReturn, newPercentOfDosage } = 
+        BinderTrialUtil.calculateTrialValues(modifiedPercents, newPercent, trial);
 
       const bandsOfTemperatures = await this.getBandsOfTemperatures(binder);
 
@@ -127,8 +56,8 @@ export class SetBinderTrial_Marshall_Service {
         },
       };
     } catch (error) {
-       handleError(error, 'Failed to calculating initial binder trial');
-        throw error;
+      handleError(error, 'Failed to calculating initial binder trial');
+      throw error;
     }
   }
 
@@ -139,81 +68,57 @@ export class SetBinderTrial_Marshall_Service {
       });
 
       if (!resultRotational) {
-        throw new NotFoundException(
-          'O ligante selecionado não passou por nenhum ensaio de viscosidade ainda.',
-        );
+        throw new NotFoundException(BINDER_TRIAL_MESSAGES.VISCOSITY_NOT_FOUND);
       }
 
-      // aceita tanto {results: {...}} quanto {data: {...}}
-      const payload = extractViscosityPayload(resultRotational);
+      const payload = TypeGuardsUtil.extractViscosityPayload(resultRotational);
 
-      const machiningTemperatureRange: TemperatureRangeDTO = {
-        higher: payload.machiningTemperatureRange.higher,
-        average:
-          (payload.machiningTemperatureRange.higher + payload.machiningTemperatureRange.lower) / 2,
-        lower: payload.machiningTemperatureRange.lower,
-      };
-
-      const compressionTemperatureRange: TemperatureRangeDTO = {
-        higher: payload.compressionTemperatureRange.higher,
-        average:
-          (payload.compressionTemperatureRange.higher + payload.compressionTemperatureRange.lower) /
-          2,
-        lower: payload.compressionTemperatureRange.lower,
-      };
-
-      // Agregado = (faixa de usinagem + 15°C), limitado a 177°C
-      const higherAggregateTemperature = Math.min(
-        payload.machiningTemperatureRange.higher + 15,
-        177,
-      );
-      const lowerAggregateTemperature = Math.min(
-        payload.machiningTemperatureRange.lower + 15,
-        177,
+      const machiningTemperatureRange = TemperatureCalculationsUtil.calculateTemperatureRange(
+        payload.machiningTemperatureRange.higher,
+        payload.machiningTemperatureRange.lower
       );
 
-      const AggregateTemperatureRange: TemperatureRangeDTO = {
-        higher: higherAggregateTemperature,
-        average: (higherAggregateTemperature + lowerAggregateTemperature) / 2,
-        lower: lowerAggregateTemperature,
-      };
+      const compressionTemperatureRange = TemperatureCalculationsUtil.calculateTemperatureRange(
+        payload.compressionTemperatureRange.higher,
+        payload.compressionTemperatureRange.lower
+      );
 
-      // IMPORTANTE: usar "AggregateTemperatureRange" com A maiúsculo
-      const bands: BandsOfTemperaturesDTO = {
+      const AggregateTemperatureRange = TemperatureCalculationsUtil.calculateAggregateTemperatureRange(
+        payload.machiningTemperatureRange.higher,
+        payload.machiningTemperatureRange.lower
+      );
+
+      return {
         machiningTemperatureRange,
         compressionTemperatureRange,
         AggregateTemperatureRange,
       };
-
-      return bands;
     } catch (error) {
-       handleError(error, 'Error fetching bands of temperatures');
-        throw error;
+      handleError(error, BINDER_TRIAL_MESSAGES.FETCHING_TEMPERATURES);
+      throw error;
     }
   }
 
   async saveStep4Data(body: SaveStep4Body, userId: string): Promise<boolean> {
     try {
-      this.logger.log('Saving Marshall binder trial step 4', { body, userId });
+      this.logger.log(BINDER_TRIAL_MESSAGES.SAVING_STEP_4, { body, userId });
 
       const { name, ...binderTrialWithoutName } = body.binderTrialData;
-
       const marshallExists = await this.marshallRepository.findOne(name, userId);
-      if (!marshallExists) throw new NotFoundException('Marshall not found');
+      
+      if (!marshallExists) throw new NotFoundException(BINDER_TRIAL_MESSAGES.MARSHALL_NOT_FOUND);
 
-      // Atualiza só a parte do binderTrialData
       marshallExists.set({ binderTrialData: binderTrialWithoutName });
       await marshallExists.save();
 
-      // step é na RAIZ do documento
       if (marshallExists.step < 4) {
         await this.marshallRepository.saveStep(marshallExists._id, 4);
       }
 
       return true;
     } catch (error) {
-       handleError(error, 'Error saving step 4 binder trial data');
-        throw error;
+      handleError(error, 'Error saving step 4 binder trial data');
+      throw error;
     }
   }
 }

@@ -249,30 +249,41 @@ export class MaximumMixtureDensity_Marshall_Service {
   }
 
   async saveMistureMaximumDensityData(dto: SaveMaximumMixtureDensityDataDTO, userId: string) {
-    try {
-      this.logger.log('save marshall maximum mixture density data', { dto });
+  try {
+    this.logger.log('save marshall maximum mixture density data', { dto });
 
-      const { name } = dto;
+    const { name } = dto;
 
-      const marshallExists: any = await this.marshallRepository.findOne(name, userId);
+    // Busca no banco de dados para verificar se o marshall já existe
+    const marshallExists: any = await this.marshallRepository.findOne(name, userId);
 
-      const { name: materialName, ...maximumMixtureDensityWithoutName } = dto;
-
-      const marshallWithMaximumMixtureDensity = {
-        ...marshallExists._doc,
-        maximumMixtureDensityData: maximumMixtureDensityWithoutName,
-      };
-
-      await this.marshallModel.updateOne({ _id: marshallExists._doc._id }, marshallWithMaximumMixtureDensity);
-
-      if (marshallExists._doc.generalData.step < 5) {
-        await this.marshallRepository.saveStep(marshallExists, 5);
-      }
-
-      return true;
-    } catch (error) {
-       handleError(error, 'Failed to saveMistureMaximumDensityData');
-        throw error;
+    // Verifica se o documento foi encontrado
+    if (!marshallExists) {
+      this.logger.error(`Marshall com nome ${name} não encontrado para o usuário ${userId}`);
+      throw new Error(`Marshall com nome ${name} não encontrado`);
     }
+
+    const { name: materialName, ...maximumMixtureDensityWithoutName } = dto;
+
+    // Acesso seguro ao _doc
+    const marshallWithMaximumMixtureDensity = {
+      ...marshallExists._doc,
+      maximumMixtureDensityData: maximumMixtureDensityWithoutName,
+    };
+
+    // Atualização do documento
+    await this.marshallModel.updateOne({ _id: marshallExists._doc._id }, marshallWithMaximumMixtureDensity);
+
+    // Verifica se o passo de dados gerais está abaixo de 5
+    if (marshallExists._doc.generalData.step < 5) {
+      await this.marshallRepository.saveStep(marshallExists, 5);
+    }
+
+    return true;
+  } catch (error) {
+    handleError(error, 'Failed to saveMistureMaximumDensityData');
+    throw error;
   }
+}
+
 }

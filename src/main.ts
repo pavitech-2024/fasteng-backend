@@ -104,6 +104,7 @@ async function bootstrap() {
         property: err.property,
         constraints: err.constraints,
       }));
+       console.log('Formatted Validation Errors:', formattedErrors)
 
       const customError = new BadRequestException({
         status: 400,
