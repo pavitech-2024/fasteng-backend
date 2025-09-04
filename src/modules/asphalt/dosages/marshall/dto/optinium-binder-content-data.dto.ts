@@ -9,7 +9,7 @@ export class CurveDTO {
 }
 
 export class OptimumBinderDTO {
-  @ApiProperty({ type: [Number] })
+  @ApiProperty({ type: [Number], example: [15, 20, 25] })
   confirmedPercentsOfDosage: number[];
 
   @ApiProperty({ type: CurveDTO })
@@ -21,8 +21,8 @@ export class OptimumBinderDTO {
   @ApiProperty({ example: 5.3 })
   optimumContent: number;
 
-  @ApiProperty({ type: [Object] })
-  pointsOfCurveDosage: any[];
+  @ApiProperty({ type: [[Number]], example: [[4.5, 2.34], [5.0, 2.45]] })
+  pointsOfCurveDosage: number[][];
 }
 
 export class ExpectedParametersDTO {
@@ -42,20 +42,48 @@ export class ExpectedParametersDTO {
   newMaxSpecificGravity: number;
 }
 
+export class GraphicsDTO {
+  @ApiProperty({ type: [[Number]], example: [['Teor', 'Rbv'], [4.5, 65]] })
+  rbv: [string, string] | [number, number][];
+
+  @ApiProperty({ type: [[Number]], example: [['Teor', 'Vv'], [4.5, 12]] })
+  vv: [string, string] | [number, number][];
+
+  @ApiProperty({ type: [[Number]], example: [['Teor', 'SpecificGravity'], [4.5, 2.45]] })
+  sg: [string, string] | [number, number][];
+
+  @ApiProperty({ type: [[Number]], example: [['Teor', 'Gmb'], [4.5, 2.4]] })
+  gmb: [string, string] | [number, number][];
+
+  @ApiProperty({ type: [[Number]], example: [['Teor', 'Stability'], [4.5, 1200]] })
+  stability: [string, string] | [number, number][];
+
+  @ApiProperty({ type: [[Number]], example: [['Teor', 'Vam'], [4.5, 7]] })
+  vam: [string, string] | [number, number][];
+}
+
 export class OptimumBinderContentDataDTO {
   @ApiProperty({ type: OptimumBinderDTO })
   optimumBinder: OptimumBinderDTO;
 
-  @ApiProperty({ type: Object })
-  expectedParameters: { expectedParameters: ExpectedParametersDTO };
-
-  @ApiProperty({ type: Object })
-  graphics: {
-    rbv: any[];
-    vv: any[];
-    sg: any[];
-    gmb: any[];
-    stability: any[];
-    vam: any[];
+  @ApiProperty({
+    type: () => ({
+      expectedParameters: ExpectedParametersDTO,
+    }),
+    example: {
+      expectedParameters: {
+        Gmb: 2.4,
+        RBV: 65,
+        Vam: 7,
+        Vv: 12,
+        newMaxSpecificGravity: 2.45,
+      },
+    },
+  })
+  expectedParameters: {
+    expectedParameters: ExpectedParametersDTO;
   };
+
+  @ApiProperty({ type: GraphicsDTO })
+  graphics: GraphicsDTO;
 }

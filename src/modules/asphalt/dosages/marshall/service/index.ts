@@ -33,6 +33,7 @@ import { getBandsByType } from 'utils/services/marshall-bands.util';
 import { CalculateBinderTrialInput } from "../types/marshall.types";
 import { TrialItem } from "../types/marshall.types";
 import { BandsOfTemperaturesDTO } from "../dto/binder-trial-data.dto";
+import { GraphicsData } from "../types";
 
 //teste
   import { Types } from 'mongoose';
@@ -410,24 +411,27 @@ async saveMistureMaximumDensityData(dto: SaveMaximumMixtureDensityDataDTO, userI
   }
 
 
-  async setOptimumBinderContentData(body: any) {
-    try {
-      const optimumBinder = await this.optimumBinder_Service.setOptimumBinderContentData(body);
+ async setOptimumBinderContentData(
+  body: SaveVolumetricParametersRequestDTO
+): Promise<
+  | { data: { optimumBinder: GraphicsData }; success: true }
+  | { data: null; success: false; error: { status?: number; message: string; name: string } }
+> {
+  try {
+    const optimumBinder = await this.optimumBinder_Service.setOptimumBinderContentData(body);
 
-      const data = {
-        optimumBinder
-      };
+    const data = { optimumBinder };
 
-      return { 
-        data, 
-        success: true 
-      };
-    } catch (error) {
-       handleError(error, 'error on setting step 7 optimum binder data');
-      const { status, name, message } = error;
-      return { data: null, success: false, error: { status, message, name } };
-    }
+    return { data, success: true };
+  } catch (error: any) {
+    handleError(error, 'error on setting step 7 optimum binder data');
+
+    const { status, name, message } = error;
+
+    return { data: null, success: false, error: { status, message, name } };
   }
+}
+
 
   async setOptimumBinderContentDosageGraph(body: any) {
     try {

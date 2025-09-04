@@ -1,11 +1,20 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { MarshallService } from '.';
 import { InjectModel } from '@nestjs/mongoose';
-import { Marshall, MarshallDocument } from '../schemas';
-import { DATABASE_CONNECTION } from '../../../../../infra/mongoose/database.config';
 import { Model } from 'mongoose';
+
+import { MarshallService } from '.';
+import { Marshall, MarshallDocument } from '../schemas';
 import { MarshallRepository } from '../repository';
+import { DATABASE_CONNECTION } from '../../../../../infra/mongoose/database.config';
 import { handleError } from 'utils/error-handler';
+import { GraphicsUtil } from 'utils/services/graphics.util';
+import { DNIT_BANDS_VOLUMETRIC } from 'utils/services/dnit-bands.constants';
+import { CurveEquationsUtil } from 'utils/services/curve-equations.util';
+import { MathCalculationsUtil } from 'utils/services/math-calculations.util';
+import { DosageCalculationsUtil } from 'utils/services/dosage-calculations.util';
+import { SaveVolumetricParametersRequestDTO } from '../dto/volumetric-params-data.dto';
+import { GraphicsData } from '../types';
+
 
 @Injectable()
 export class OptimumBinderContent_Marshall_Service {
@@ -17,128 +26,73 @@ export class OptimumBinderContent_Marshall_Service {
     private readonly marshallRepository: MarshallRepository
   ) {}
 
-  async setOptimumBinderContentData(body) {
-    this.logger.log('set graphs on optimum-binder.marshall.service.ts > [body]', {
-      body,
-    });
-    try {
-      const { volumetricParametersData } = body;
-      const { volumetricParameters } = volumetricParametersData;
+ async setOptimumBinderContentData(
+  body: SaveVolumetricParametersRequestDTO
+): Promise<GraphicsData> {
+  try {
+    this.logger.log('set graphs on optimum-binder.marshall.service.ts', { body });
 
-      const graphics = {
-        rbv: [['Teor', 'Rbv']],
-        vv: [['Teor', 'Vv']],
-        sg: [['Teor', 'SpecificGravity']],
-        gmb: [['Teor', 'Gmb']],
-        stability: [['Teor', 'Stability']],
-        vam: [['Teor', 'Vam']],
-      };
+    const { volumetricParametersData } = body;
+    const { volumetricParameters } = volumetricParametersData;
 
-      volumetricParameters.forEach(({ asphaltContent, values }) => {
-        graphics.rbv.push([asphaltContent, values.ratioBitumenVoid * 100]);
-        graphics.vv.push([asphaltContent, values.volumeVoids * 100]);
-        graphics.sg.push([asphaltContent, values.maxSpecificGravity]);
-        graphics.gmb.push([asphaltContent, values.apparentBulkSpecificGravity]);
-        graphics.stability.push([asphaltContent, values.stability]);
-        graphics.vam.push([asphaltContent, values.aggregateVolumeVoids * 100]);
-      });
+    const graphics = GraphicsUtil.createGraphicsStructure();
+    GraphicsUtil.populateGraphicsData(graphics, volumetricParameters);
 
-      return graphics;
-    } catch (error) {
-       handleError(error, 'Failed to set optimum binder content graphs.');
-        throw error;
-    }
+    return graphics;
+  } catch (error) {
+    handleError(error, 'Failed to set optimum binder content graphs.');
+    throw error;
   }
+}
 
-  async plotDosageGraph(dnitBands: string, volumetricParameters: any, binderTrial: any, percentsOfDosage: number[]) {
+
+
+  async plotDosageGraph(dnitBands: string, volumetricParameters: any, binderTrial: number, percentsOfDosage: any[]) {
     try {
-      this.logger.log('set dosage graph on optimum-binder.marshall.service.ts > [body]', {
-        dnitBands,
-        volumetricParameters,
-        binderTrial,
-      });
+      this.logger.log('set dosage graph', { dnitBands, binderTrial });
 
       const { pointsOfCurveDosageRBV, pointsOfCurveDosageVv } = volumetricParameters;
-      const trialAsphaltContent = binderTrial;
+      const band = DNIT_BANDS_VOLUMETRIC[dnitBands];
+
+      const curveRBV = CurveEquationsUtil.calculateEquationRBV(pointsOfCurveDosageRBV);
+      const curveVv = CurveEquationsUtil.calculateEquationVv(pointsOfCurveDosageVv);
 
       const pointsOfCurveDosage = [];
-      let minBandVv;
-      let maxBandVv;
-      let minBandRBV;
-      let maxBandRBV;
-
-      if (dnitBands === 'A') {
-        minBandVv = 0.04;
-        maxBandVv = 0.6;
-        minBandRBV = 0.65;
-        maxBandRBV = 0.72;
-      } else if (dnitBands === 'B' || dnitBands === 'C') {
-        minBandVv = 0.03;
-        maxBandVv = 0.5;
-        minBandRBV = 0.75;
-        maxBandRBV = 0.82;
-      }
-
-      const curveRBV = this.calculateEquationRBV(pointsOfCurveDosageRBV);
-      const curveVv = this.calculateEquationVv(pointsOfCurveDosageVv);
-
       const pushData = (asphaltContent: number) => {
         pointsOfCurveDosage.push([
           asphaltContent,
-          this.calculateVv(asphaltContent, curveVv) * 100,
-          this.calculateRBV(asphaltContent, curveRBV) * 100,
+          CurveEquationsUtil.calculateVv(asphaltContent, curveVv) * 100,
+          CurveEquationsUtil.calculateRBV(asphaltContent, curveRBV) * 100,
         ]);
       };
 
-      [-1, -0.5, 0, 0.5, 1].forEach((increment) => pushData(trialAsphaltContent + increment));
+      [-1, -0.5, 0, 0.5, 1].forEach((increment) => pushData(binderTrial + increment));
 
-      const optimumContent = this.calculateVv4(
-        trialAsphaltContent - 1,
-        this.calculateVv(trialAsphaltContent - 1, curveVv),
-        trialAsphaltContent - 0.5,
-        this.calculateVv(trialAsphaltContent - 0.5, curveVv),
+      const optimumContent = MathCalculationsUtil.calculateVv4(
+        binderTrial - 1,
+        CurveEquationsUtil.calculateVv(binderTrial - 1, curveVv),
+        binderTrial - 0.5,
+        CurveEquationsUtil.calculateVv(binderTrial - 0.5, curveVv)
       );
 
-      const confirmedPercentsOfDosage = await this.confirmPercentsOfDosage(percentsOfDosage, optimumContent)
+      const confirmedPercentsOfDosage = DosageCalculationsUtil.confirmPercentsOfDosage(percentsOfDosage, optimumContent);
 
       return {
         pointsOfCurveDosage,
-        optimumContent: this.calculateVv4(
-          trialAsphaltContent - 1,
-          this.calculateVv(trialAsphaltContent - 1, curveVv),
-          trialAsphaltContent - 0.5,
-          this.calculateVv(trialAsphaltContent - 0.5, curveVv),
-        ),
+        optimumContent,
         confirmedPercentsOfDosage,
         curveRBV,
-        curveVv
+        curveVv,
       };
     } catch (error) {
-       handleError(error, 'Failed to set optimum binder dosage graph.');
+      handleError(error, 'Failed to set optimum binder dosage graph.');
       throw error;
     }
   }
 
-  async confirmPercentsOfDosage(percentageInputs: any[], optimumContent: number): Promise<any> {
-    const ids1 = new Set();
-    const percentsOfDosage = []
-
-    Object.keys(percentageInputs[0]).forEach(key => {
-      const id = key.split('_')[1];
-      ids1.add(id);
-      const value = percentageInputs[0][key];
-      const index = Array.from(ids1).indexOf(id);
-      percentsOfDosage[index] = value;
-    });
-    
-    const confirmedPercentsOfDosage = percentsOfDosage.map(percent => (100 - optimumContent) * (percent / 100));
-
-    return confirmedPercentsOfDosage
-  }
-
   async getExpectedParameters(body: any) {
     try {
-      const { 
+      const {
         percentsOfDosage,
         optimumContent,
         maxSpecificGravity,
@@ -146,163 +100,55 @@ export class OptimumBinderContent_Marshall_Service {
         trial: trialAsphaltContent,
         confirmedPercentsOfDosage,
         curveVv,
-        curveRBV
+        curveRBV,
       } = body;
 
-      let newMaxSpecificGravity;
-
-      let formattedPercentsOfDosage = [];
-
+      const formattedPercentsOfDosage: number[] = [];
       const ids1 = new Set();
 
-      Object.keys(percentsOfDosage[0]).forEach(key => {
+      Object.keys(percentsOfDosage[0]).forEach((key) => {
         const id = key.split('_')[1];
         ids1.add(id);
         const value = percentsOfDosage[0][key];
         const index = Array.from(ids1).indexOf(id);
         formattedPercentsOfDosage[index] = value;
       });
-  
+
+      let newMaxSpecificGravity: number;
+
       if (maxSpecificGravity.method === 'GMM') {
-  
-        const GMMs = [
-          maxSpecificGravity.results.lessOne,
-          maxSpecificGravity.results.lessHalf,
-          maxSpecificGravity.results.normal,
-          maxSpecificGravity.results.plusHalf,
-          maxSpecificGravity.results.plusOne,
-        ];
-  
-        const Contents = [
-          trialAsphaltContent - 1,
-          trialAsphaltContent - 0.5,
+        newMaxSpecificGravity = DosageCalculationsUtil.calculateMaxSpecificGravityGMM(
+          maxSpecificGravity,
           trialAsphaltContent,
-          trialAsphaltContent + 0.5,
-          trialAsphaltContent + 1,
-        ];
-  
-        const data = GMMs.map((gmm, i) => {
-          if (gmm) return { x: Contents[i], y: gmm };
-          else return;
-        });
-  
-        const coefficients = this.calculateEquation(data);
-  
-        newMaxSpecificGravity = coefficients.a * optimumContent + coefficients.b;
-      } else {
-        const denominator = formattedPercentsOfDosage.reduce(
-          (acc, percent, i) => (acc += confirmedPercentsOfDosage[i] / listOfSpecificGravities[i]),
-          0,
+          optimumContent
         );
-        newMaxSpecificGravity = 100 / (denominator + (optimumContent / 1.03));
+      } else {
+        newMaxSpecificGravity = DosageCalculationsUtil.calculateMaxSpecificGravityTraditional(
+          formattedPercentsOfDosage,
+          confirmedPercentsOfDosage,
+          listOfSpecificGravities,
+          optimumContent
+        );
       }
-  
-      const Vv = this.calculateVv(optimumContent, curveVv);
+
+      const Vv = CurveEquationsUtil.calculateVv(optimumContent, curveVv);
       const Gmb = newMaxSpecificGravity * (1 - Vv);
-      let Vcb = (Gmb * optimumContent) / 1.027;
-      const RBV = this.calculateRBV(optimumContent, curveRBV);
+      const Vcb = (Gmb * optimumContent) / 1.027;
+      const RBV = CurveEquationsUtil.calculateRBV(optimumContent, curveRBV);
       const Vam = (Vv * 100 + Vcb) / 100;
-  
+
       return { Vv, RBV, Vam, Gmb, newMaxSpecificGravity };
     } catch (error) {
-       handleError(error, 'Failed to set optimum binder expected parameters.');
-     throw error;
+      handleError(error, 'Failed to set optimum binder expected parameters.');
+      throw error;
     }
-  }
-
-  calculateContentVv(y: number, curveVv) {
-    return (y - curveVv.b) / curveVv.a;
-  }
-
-  calculateContentRBV(y: number, curveRBV) {
-    return (y - curveRBV.b) / curveRBV.a;
-  }
-
-  calculateVv(x: number, curveVv) {
-    return curveVv.a * x + curveVv.b;
-  }
-
-  calculateRBV(x: number, curveRBV) {
-    return curveRBV.a * x + curveRBV.b;
-  }
-
-  calculateEquationVv(data: any[]) {
-    let curveVv = { a: null, b: null };
-
-    curveVv.a =
-      (data.length * this.sumXY(data) - this.sumX(data) * this.sumY(data)) /
-      (data.length * this.sumPow2X(data) - this.Pow2SumX(data));
-    curveVv.b = this.yBar(data) - curveVv.a * this.xBar(data);
-
-    return curveVv;
-  }
-
-  calculateEquationRBV(data: any[]) {
-
-    let curveRBV = { a: null, b: null };
-
-    curveRBV.a =
-      (data.length * this.sumXY(data) - this.sumX(data) * this.sumY(data)) /
-      (data.length * this.sumPow2X(data) - this.Pow2SumX(data));
-    curveRBV.b = this.yBar(data) - curveRBV.a * this.xBar(data);
-
-    return curveRBV;
-  }
-
-  calculateEquation(data: any[]) {
-    const a =
-      (data.length * this.sumXY(data) - this.sumX(data) * this.sumY(data)) /
-      (data.length * this.sumPow2X(data) - this.Pow2SumX(data));
-    const b = this.yBar(data) - a * this.xBar(data);
-    return { a, b };
-  }
-
-  calculateVv4(x1: number, y1: number, x2: number, y2: number) {
-    const m = (y2 - y1) / (x2 - x1);
-    return ((0.04 - y1) / m) + x1;
-  }
-
-  private sumXY(data: { x: number; y: number }[]) {
-    return data.reduce((acc, obj) => {
-      return acc + obj.x * obj.y;
-    }, 0);
-  }  
-
-  private sumX(data: { x: number; y: number }[]) {
-    return data.reduce((acc, obj) => acc + obj.x, 0);
-  }
-  
-  private sumY(data: { x: number; y: number }[]) {
-    return data.reduce((acc, obj) => acc + obj.y, 0);
-  }
-  
-  private sumPow2X(data: { x: number; y: number }[]) {
-    return data.reduce((acc, obj) => acc + Math.pow(obj.x, 2), 0);
-  }
-  
-  private Pow2SumX(data: { x: number; y: number }[]) {
-    const sumX = this.sumX(data);
-    return Math.pow(sumX, 2);
-  }
-  
-  private yBar(data: { x: number; y: number }[]) {
-    const sumY = this.sumY(data);
-    return sumY / data.length;
-  }
-  
-  private xBar(data: { x: number; y: number }[]) {
-    const sumX = this.sumX(data);
-    return sumX / data.length;
   }
 
   async saveStep7Data(body: any, userId: string) {
     try {
-      this.logger.log(
-        'save marshall optimum binder content step on optimum-binder.marshall.service.ts > [body]',
-        {
-          body,
-        },
-      );
+      this.logger.log('save marshall optimum binder content step on optimum-binder.marshall.service.ts > [body]', {
+        body,
+      });
 
       const { name } = body.optimumBinderContentData;
 
@@ -323,9 +169,8 @@ export class OptimumBinderContent_Marshall_Service {
 
       return true;
     } catch (error) {
-       handleError(error, 'saveStep7Data');
-       throw error;
-      
+      handleError(error, 'saveStep7Data');
+      throw error;
     }
   }
 }

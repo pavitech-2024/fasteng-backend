@@ -6,12 +6,14 @@ import { DATABASE_CONNECTION } from '../../../../../infra/mongoose/database.conf
 import { Model } from 'mongoose';
 import { MarshallRepository } from '../repository';
 import { handleError } from 'utils/error-handler';
-import { SaveVolumetricParametersRequestDTO, SaveVolumetricParametersResponseDTO } from '../dto/volumetric-params-data.dto';
+import {
+  SaveVolumetricParametersRequestDTO,
+  SaveVolumetricParametersResponseDTO,
+} from '../dto/volumetric-params-data.dto';
 import { WATER_TEMPERATURE_DENSITY } from '../../../../../utils/services/temperature.constants';
 import { VolumetricCalculationsUtil } from '../../../../../utils/services/volumetric-calculations.util';
 import { DataProcessingUtil } from '../../../../../utils/services/data-processing.util';
 import { AsphaltContentUtil } from '../../../../../utils/services/asphalt-content.util';
-
 
 @Injectable()
 export class VolumetricParameters_Marshall_Service {
@@ -42,14 +44,19 @@ export class VolumetricParameters_Marshall_Service {
 
         // Calcula médias
         const averages = DataProcessingUtil.calculateAverages(samples, [
-          'dryMass', 'drySurfaceSaturatedMass', 'submergedMass', 'stability', 'fluency', 'diametricalCompressionStrength'
+          'dryMass',
+          'drySurfaceSaturatedMass',
+          'submergedMass',
+          'stability',
+          'fluency',
+          'diametricalCompressionStrength',
         ]);
 
         // Obtém valores do teor de asfalto
         const { asphaltContent } = AsphaltContentUtil.getAsphaltContentValues(asphaltContentKey, binderTrial);
         const usedMaxSpecifyGravity = AsphaltContentUtil.getMaxSpecificGravity(maxSpecificGravity, asphaltContentKey);
 
-        const sampleData = {
+        const sampleData: SampleData = {
           asphaltContent,
           sumOfDryMass: averages.dryMass * samples.length,
           sumOfSaturatedMass: averages.drySurfaceSaturatedMass * samples.length,
@@ -74,7 +81,7 @@ export class VolumetricParameters_Marshall_Service {
     }
   }
 
-   async calculateVolumetricParameters(samplesData: SampleData) {
+  async calculateVolumetricParameters(samplesData: SampleData) {
     try {
       const {
         asphaltContent,
@@ -90,27 +97,43 @@ export class VolumetricParameters_Marshall_Service {
 
       const sampleVolumes = VolumetricCalculationsUtil.calculateSampleVolumes(sumOfSaturatedMass, sumOfSubmergedMass);
       const apparentBulkSpecificGravity = VolumetricCalculationsUtil.calculateApparentBulkSpecificGravity(
-        sumOfDryMass, sampleVolumes, temperatureOfWater
+        sumOfDryMass,
+        sampleVolumes,
+        temperatureOfWater,
       );
-      const volumeVoids = VolumetricCalculationsUtil.calculateVolumeVoids(maxSpecificGravity, apparentBulkSpecificGravity);
-      const voidsFilledAsphalt = VolumetricCalculationsUtil.calculateVoidsFilledAsphalt(apparentBulkSpecificGravity, asphaltContent);
-      const aggregateVolumeVoids = VolumetricCalculationsUtil.calculateAggregateVolumeVoids(volumeVoids, voidsFilledAsphalt);
-      const ratioBitumenVoid = VolumetricCalculationsUtil.calculateRatioBitumenVoid(voidsFilledAsphalt, aggregateVolumeVoids);
-
-      const volumetricParameters = [{
+      const volumeVoids = VolumetricCalculationsUtil.calculateVolumeVoids(
+        maxSpecificGravity,
+        apparentBulkSpecificGravity,
+      );
+      const voidsFilledAsphalt = VolumetricCalculationsUtil.calculateVoidsFilledAsphalt(
+        apparentBulkSpecificGravity,
         asphaltContent,
-        values: {
-          volumeVoids,
-          apparentBulkSpecificGravity,
-          voidsFilledAsphalt,
-          aggregateVolumeVoids,
-          ratioBitumenVoid,
-          fluency,
-          stability,
-          diametricalCompressionStrength,
-          maxSpecificGravity,
+      );
+      const aggregateVolumeVoids = VolumetricCalculationsUtil.calculateAggregateVolumeVoids(
+        volumeVoids,
+        voidsFilledAsphalt,
+      );
+      const ratioBitumenVoid = VolumetricCalculationsUtil.calculateRatioBitumenVoid(
+        voidsFilledAsphalt,
+        aggregateVolumeVoids,
+      );
+
+      const volumetricParameters = [
+        {
+          asphaltContent,
+          values: {
+            volumeVoids,
+            apparentBulkSpecificGravity,
+            voidsFilledAsphalt,
+            aggregateVolumeVoids,
+            ratioBitumenVoid,
+            fluency,
+            stability,
+            diametricalCompressionStrength,
+            maxSpecificGravity,
+          },
         },
-      }];
+      ];
 
       const pointsOfCurveDosageVv = [{ x: asphaltContent, y: volumeVoids }];
       const pointsOfCurveDosageRBV = [{ x: asphaltContent, y: ratioBitumenVoid }];
@@ -122,7 +145,7 @@ export class VolumetricParameters_Marshall_Service {
     }
   }
 
-   async confirmVolumetricParameters(body: any) {
+  async confirmVolumetricParameters(body: any) {
     try {
       const {
         valuesOfVolumetricParameters,
@@ -135,24 +158,46 @@ export class VolumetricParameters_Marshall_Service {
 
       // Calcula médias
       const averages = DataProcessingUtil.calculateAverages(valuesOfVolumetricParameters, [
-        'dryMass', 'submergedMass', 'drySurfaceSaturatedMass', 'stability', 'fluency', 'diametricalCompressionStrength'
+        'dryMass',
+        'submergedMass',
+        'drySurfaceSaturatedMass',
+        'stability',
+        'fluency',
+        'diametricalCompressionStrength',
       ]);
 
       const sampleVolumes = VolumetricCalculationsUtil.calculateSampleVolumes(
-        averages.drySurfaceSaturatedMass, averages.submergedMass
+        averages.drySurfaceSaturatedMass,
+        averages.submergedMass,
       );
-      
+
       const apparentBulkSpecificGravity = VolumetricCalculationsUtil.calculateApparentBulkSpecificGravity(
-        averages.dryMass, sampleVolumes, temperatureOfWater
+        averages.dryMass,
+        sampleVolumes,
+        temperatureOfWater,
       );
-      
-      const volumeVoids = VolumetricCalculationsUtil.calculateVolumeVoids(confirmedSpecificGravity, apparentBulkSpecificGravity);
-      const voidsFilledAsphalt = VolumetricCalculationsUtil.calculateVoidsFilledAsphalt(apparentBulkSpecificGravity, optimumContent);
-      const aggregateVolumeVoids = VolumetricCalculationsUtil.calculateAggregateVolumeVoids(volumeVoids, voidsFilledAsphalt);
-      const ratioBitumenVoid = VolumetricCalculationsUtil.calculateRatioBitumenVoid(voidsFilledAsphalt, aggregateVolumeVoids);
-      
+
+      const volumeVoids = VolumetricCalculationsUtil.calculateVolumeVoids(
+        confirmedSpecificGravity,
+        apparentBulkSpecificGravity,
+      );
+      const voidsFilledAsphalt = VolumetricCalculationsUtil.calculateVoidsFilledAsphalt(
+        apparentBulkSpecificGravity,
+        optimumContent,
+      );
+      const aggregateVolumeVoids = VolumetricCalculationsUtil.calculateAggregateVolumeVoids(
+        volumeVoids,
+        voidsFilledAsphalt,
+      );
+      const ratioBitumenVoid = VolumetricCalculationsUtil.calculateRatioBitumenVoid(
+        voidsFilledAsphalt,
+        aggregateVolumeVoids,
+      );
+
       const quantitative = VolumetricCalculationsUtil.calculateQuantitative(
-        confirmedSpecificGravity, confirmedPercentsOfDosage, listOfSpecificGravities
+        confirmedSpecificGravity,
+        confirmedPercentsOfDosage,
+        listOfSpecificGravities,
       );
 
       quantitative.unshift(optimumContent * 10 * confirmedSpecificGravity);
@@ -178,7 +223,7 @@ export class VolumetricParameters_Marshall_Service {
     }
   }
 
-   temperaturesOfWater(name: string): number | undefined {
+  temperaturesOfWater(name: string): number | undefined {
     return WATER_TEMPERATURE_DENSITY[name];
   }
 
@@ -186,16 +231,16 @@ export class VolumetricParameters_Marshall_Service {
   Talvez por isso step6 quebra.
   */
   async saveVolumetricParametersData(
-    body: SaveVolumetricParametersRequestDTO, 
-    userId: string
+    body: SaveVolumetricParametersRequestDTO,
+    userId: string,
   ): Promise<SaveVolumetricParametersResponseDTO> {
     try {
       this.logger.log('Saving marshall volumetric parameters', { body });
 
-      const marshallExists = await this.marshallRepository.findOne(
-        body.volumetricParametersData.name || '', 
-        userId
-      ) as any;
+      const marshallExists = (await this.marshallRepository.findOne(
+        body.volumetricParametersData.name || '',
+        userId,
+      )) as any;
 
       if (!marshallExists) {
         throw new Error('Marshall not found');
@@ -204,8 +249,8 @@ export class VolumetricParameters_Marshall_Service {
       const { name: materialName, ...volumetricParametersWithoutName } = body.volumetricParametersData;
 
       await this.marshallModel.updateOne(
-        { _id: marshallExists._id }, 
-        { $set: { volumetricParametersData: volumetricParametersWithoutName } }
+        { _id: marshallExists._id },
+        { $set: { volumetricParametersData: volumetricParametersWithoutName } },
       );
 
       const currentStep = marshallExists.generalData?.step || 0;
@@ -216,7 +261,7 @@ export class VolumetricParameters_Marshall_Service {
       return {
         success: true,
         message: 'Volumetric parameters saved successfully',
-        step: currentStep < 6 ? 6 : currentStep
+        step: currentStep < 6 ? 6 : currentStep,
       };
     } catch (error) {
       handleError(error, 'Failed to save volumetric parameters');
@@ -224,4 +269,3 @@ export class VolumetricParameters_Marshall_Service {
     }
   }
 }
-

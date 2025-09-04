@@ -1,26 +1,38 @@
+export type Curve = {
+  a: number;
+  b: number;
+};
+
+export type OptimumBinder = {
+  confirmedPercentsOfDosage: number[];
+  curveRBV: Curve;
+  curveVv: Curve;
+  optimumContent: number;
+  pointsOfCurveDosage: number[][];
+};
+
+export type ExpectedParameters = {
+  Gmb: number;
+  RBV: number;
+  Vam: number;
+  Vv: number;
+  newMaxSpecificGravity: number;
+};
+
+export type GraphicsData = {
+  rbv: [[string, string], ...[number, number][]];
+  vv: [[string, string], ...[number, number][]];
+  sg: [[string, string], ...[number, number][]];
+  gmb: [[string, string], ...[number, number][]];
+  stability: [[string, string], ...[number, number][]];
+  vam: [[string, string], ...[number, number][]];
+};
+
+
 export type OptimumBinderContentData = {
-  optimumBinder: {
-    confirmedPercentsOfDosage: number[];
-    curveRBV: { a: number; b: number };
-    curveVv: { a: number; b: number };
-    optimumContent: number;
-    pointsOfCurveDosage: any[];
-  };
+  optimumBinder: OptimumBinder;
   expectedParameters: {
-    expectedParameters: {
-      Gmb: number;
-      RBV: number;
-      Vam: number;
-      Vv: number;
-      newMaxSpecificGravity: number;
-    };
+    expectedParameters: ExpectedParameters;
   };
-  graphics: {
-    rbv: any[];
-    vv: any[];
-    sg: any[];
-    gmb: any[];
-    stability: any[];
-    vam: any[];
-  };
+  graphics: GraphicsData;
 };

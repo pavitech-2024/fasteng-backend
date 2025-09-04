@@ -28,6 +28,7 @@ import { SaveMaximumMixtureDensityDataDTO } from '../dto/save-maximum-mixture-de
 import { SaveVolumetricParametersRequestDTO,SaveVolumetricParametersResponseDTO } from '../dto/volumetric-params-data.dto';
 import { CalculateBinderTrialInput } from '../types/marshall.types';
 import { CalculateStep4DataOutput } from '../types/marshall.types';
+import { GraphicsData } from '../types';
 
 //test
 //import { Types } from 'mongoose';
@@ -298,15 +299,21 @@ async saveVolumetricParametersData(
   const result = await this.marshallService.saveVolumetricParametersData(body, userId);
   return result; 
 }
+//refact, dps testar
+  @Post('set-step-7-optimum-binder')
+  @ApiOperation({ summary: 'Define conteúdo ótimo de ligante (step 7).' })
+  async setOptimumBinderContentData(
+    @Body() body: SaveVolumetricParametersRequestDTO
+  ): Promise<
+    | { data: { optimumBinder: GraphicsData }; success: true }
+    | { data: null; success: false; error: { status?: number; message: string; name: string } }
+  > {
+    this.logger.log(`set step 7 optimum binder content > [body]: ${JSON.stringify(body)}`);
 
-@Post('set-step-7-optimum-binder')
-@ApiOperation({ summary: 'Define conteúdo ótimo de ligante (step 7).' })
-async setOptimumBinderContentData(@Body() body: any) {
-  this.logger.log(`set step 7 optimum binder content > [body]: ${JSON.stringify(body)}`);
+    const result = await this.marshallService.setOptimumBinderContentData(body);
+    return result;
+  }
 
-  const result = await this.marshallService.setOptimumBinderContentData(body);
-  return result; 
-}
 
 @Post('step-7-plot-dosage-graph')
 @ApiOperation({ summary: 'Gera gráfico da dosagem do ligante ótimo (step 7).' })
