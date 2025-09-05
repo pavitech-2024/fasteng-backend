@@ -81,23 +81,23 @@ export class VolumetricParameters_Marshall_Service {
         // Busca a massa específica de acordo com o teor
         switch (asphaltContent) {
           case 'lessOne':
-            usedMaxSpecifyGravity = maxSpecificGravity.results.lessOne;
+            usedMaxSpecifyGravity = maxSpecificGravity.result.lessOne;
             asphaltContentResult = binderTrial - 1;
             break;
           case 'lessHalf':
-            usedMaxSpecifyGravity = maxSpecificGravity.results.lessHalf;
+            usedMaxSpecifyGravity = maxSpecificGravity.result.lessHalf;
             asphaltContentResult = binderTrial - 0.5;
             break;
           case 'normal':
-            usedMaxSpecifyGravity = maxSpecificGravity.results.normal;
+            usedMaxSpecifyGravity = maxSpecificGravity.result.normal;
             asphaltContentResult = binderTrial;
             break;
           case 'plusHalf':
-            usedMaxSpecifyGravity = maxSpecificGravity.results.plusHalf;
+            usedMaxSpecifyGravity = maxSpecificGravity.result.plusHalf;
             asphaltContentResult = binderTrial + 0.5;
             break;
           case 'plusOne':
-            usedMaxSpecifyGravity = maxSpecificGravity.results.plusOne;
+            usedMaxSpecifyGravity = maxSpecificGravity.result.plusOne;
             asphaltContentResult = binderTrial + 1;
             break;
           default:
