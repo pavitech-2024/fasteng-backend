@@ -26,7 +26,7 @@ export class ConfirmCompression_Marshall_Service {
         percentsOfDosage, 
         confirmedPercentsOfDosage, 
         optimumContent,
-        gmm,
+        gmm: gmmInput,
         valuesOfSpecificGravity
       } = body;
 
@@ -57,7 +57,7 @@ export class ConfirmCompression_Marshall_Service {
         };
         return confirmedSpecificGravity;
       } else if (method === 'GMM') {
-        if (gmm) GMM = gmm;
+        if (gmmInput && gmmInput > 0) GMM = parseFloat(gmmInput);
         else GMM = valuesOfSpecificGravity.massOfDrySample / (valuesOfSpecificGravity.massOfDrySample - valuesOfSpecificGravity.massOfContainerWaterSample + valuesOfSpecificGravity.massOfContainerWater);
         confirmedSpecificGravity = {
             result: GMM,
