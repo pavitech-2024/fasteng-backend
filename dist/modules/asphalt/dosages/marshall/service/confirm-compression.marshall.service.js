@@ -50,7 +50,7 @@ let ConfirmCompression_Marshall_Service = ConfirmCompression_Marshall_Service_1 
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('confirming specific gravity on confirm-compression.marshall.service.ts > [body]', { body });
-                const { method, listOfSpecificGravities, percentsOfDosage, confirmedPercentsOfDosage, optimumContent, gmm, valuesOfSpecificGravity } = body;
+                const { method, listOfSpecificGravities, percentsOfDosage, confirmedPercentsOfDosage, optimumContent, gmm: gmmInput, valuesOfSpecificGravity } = body;
                 let confirmedSpecificGravity;
                 let GMM;
                 let formattedPercentsOfDosage = [];
@@ -72,8 +72,8 @@ let ConfirmCompression_Marshall_Service = ConfirmCompression_Marshall_Service_1 
                     return confirmedSpecificGravity;
                 }
                 else if (method === 'GMM') {
-                    if (gmm)
-                        GMM = gmm;
+                    if (gmmInput && gmmInput > 0)
+                        GMM = parseFloat(gmmInput);
                     else
                         GMM = valuesOfSpecificGravity.massOfDrySample / (valuesOfSpecificGravity.massOfDrySample - valuesOfSpecificGravity.massOfContainerWaterSample + valuesOfSpecificGravity.massOfContainerWater);
                     confirmedSpecificGravity = {
