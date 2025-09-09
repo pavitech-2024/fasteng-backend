@@ -27,12 +27,15 @@ const common_1 = require("@nestjs/common");
 const service_1 = require("../service");
 const swagger_1 = require("@nestjs/swagger");
 const schemas_1 = require("../schemas");
+const user_decorator_1 = require("../../../../config/decorators/user.decorator");
+const create_sample_dto_1 = require("../dto/create-sample.dto");
+const create_sample_response_dto_1 = require("../dto/create-sample-response.dto");
 let SamplesController = SamplesController_1 = class SamplesController {
     constructor(samplesService) {
         this.samplesService = samplesService;
         this.logger = new common_1.Logger(SamplesController_1.name);
     }
-    createSample(sample) {
+    createSample(sample, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             this.logger.log('create sample > [body]');
             const createdSample = yield this.samplesService.createSample(sample);
@@ -75,15 +78,22 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Erro ao criar amostra!' }),
     (0, swagger_1.ApiBody)({ type: create_sample_dto_1.CreateSampleDto }),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, user_decorator_1.User)('userId')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_sample_dto_1.CreateSampleDto]),
+    __metadata("design:paramtypes", [create_sample_dto_1.CreateSampleDto, String]),
     __metadata("design:returntype", Promise)
 ], SamplesController.prototype, "createSample", null);
 __decorate([
     (0, common_1.Get)('all/:id'),
     (0, swagger_1.ApiOperation)({ summary: 'Retorna todas as amostras do banco de dados de um usuário.' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Amostras encontradas com sucesso!', type: create_sample_response_dto_1.SampleResponseDto }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Amostras encontradas com sucesso!', type: create_sample_response_dto_1.SampleResponseDto, isArray: true, }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Usuário não encontrado!' }),
+    (0, swagger_1.ApiParam)({
+        name: 'id',
+        description: 'ID do usuário dono das amostras',
+        example: 'user-12345',
+        type: String,
+    }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -94,6 +104,12 @@ __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'Retorna uma amostra do banco de dados.' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Amostra encontrada com sucesso!', type: create_sample_response_dto_1.SampleResponseDto }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Amostra não encontrada!' }),
+    (0, swagger_1.ApiParam)({
+        name: 'id',
+        description: 'ID da amostra que deseja buscar',
+        example: 'sample-12345',
+        type: String,
+    }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -105,6 +121,12 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Amostra atualizada com sucesso!', type: create_sample_response_dto_1.SampleResponseDto }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Amostra não encontrada!' }),
     (0, swagger_1.ApiBody)({ type: create_sample_dto_1.CreateSampleDto }),
+    (0, swagger_1.ApiParam)({
+        name: 'id',
+        description: 'ID da amostra que deseja atualizar',
+        example: 'sample-12345',
+        type: String,
+    }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -116,6 +138,12 @@ __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'Deleta uma amostra do banco de dados.' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Amostra deletada com sucesso!', type: create_sample_response_dto_1.SampleResponseDto }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Amostra não encontrada!' }),
+    (0, swagger_1.ApiParam)({
+        name: 'id',
+        description: 'ID da amostra que deseja deletar',
+        example: 'sample-12345',
+        type: String,
+    }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
