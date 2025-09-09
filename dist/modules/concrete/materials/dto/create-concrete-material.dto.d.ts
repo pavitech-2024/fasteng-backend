@@ -5,7 +5,7 @@ export declare class CreateConcreteMaterialDto {
     description?: {
         source?: string;
         responsible?: string;
-        maxDiameter?: Sieve;
+        maxDiammeter?: Sieve;
         aggregateNature?: string;
         boughtDate?: string;
         recieveDate?: string;
