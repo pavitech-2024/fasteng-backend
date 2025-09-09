@@ -1,6 +1,6 @@
 import { Body, Controller, Logger, Post, Get, Param, Delete, Put } from '@nestjs/common';
 import { MaterialsService } from '../service';
-import { ApiOperation, ApiProperty, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiProperty, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateAsphaltMaterialDto, DescriptionDto } from '../dto/create-asphalt-material.dto';
 import { Material } from '../schemas';
 import { User } from '../../../../config/decorators/user.decorator';
@@ -39,7 +39,13 @@ export class MaterialsController {
     isArray: true,
   })
   @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
-  async getAllByUserIdList(@Param('id') userId: string): Promise<AsphaltMaterialsList[]> {
+  @ApiParam({
+  name: 'id',
+  description: 'ID do usuário dono dos materiais',
+  example: 'user-12345', // exemplo de ID válido de usuário
+  type: String,
+})
+  async getAllByUserIdList(@Param('id') userId: string): Promise<any[]> { //AsphaltMaterialsList
     this.logger.log(`get all materials by user id > [id]: ${userId}`);
 
     const materials = await this.materialsService.getAllMaterialsList(userId);
@@ -62,6 +68,12 @@ export class MaterialsController {
     isArray: true,
   })
   @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
+  @ApiParam({
+  name: 'id',
+  description: 'ID do usuário dono dos materiais',
+  example: 'user-12345', // exemplo de ID válido de usuário
+  type: String,
+})
   async getAllByUserId(@Param('id') userId: string) {
     this.logger.log(`get all materials by user id > [id]: ${userId}`);
 
@@ -77,6 +89,12 @@ export class MaterialsController {
     type: ResponseAsphaltMaterialDto,
   })
   @ApiResponse({ status: 400, description: 'Material não encontrado!' })
+  @ApiParam({
+  name: 'id',
+  description: 'ID do material que deseja buscar',
+  example: '64f9b3c8a12e4b7f9a2c1e55',
+  type: String,
+})
   async getMaterialById(@Param('id') materialId: string) {
     this.logger.log(`get material by id > [id]: ${materialId}`);
 
@@ -87,6 +105,12 @@ export class MaterialsController {
   @ApiOperation({ summary: 'Retorna um material do banco de dados.' })
   @ApiResponse({ status: 200, description: 'Material encontrado com sucesso!', type: ResponseAsphaltMaterialDto})
   @ApiResponse({ status: 400, description: 'Material não encontrado!' })
+  @ApiParam({
+  name: 'id',
+  description: 'ID do material que deseja buscar',
+  example: '123',
+  type: String,
+})
   async getSelectedMaterialsById(@Param('id') ids: string) {
     this.logger.log(`get material by id > [id]: ${typeof ids}`);
 
@@ -102,6 +126,12 @@ export class MaterialsController {
     type: ResponseAsphaltMaterialDto,
   })
   @ApiResponse({ status: 400, description: 'Material não encontrado!' })
+  @ApiParam({
+  name: 'id',
+  description: 'ID do material que deseja atualizar',
+  example: '64f9b3c8a12e4b7f9a2c1e55', 
+  type: String,
+})
   async updateMaterialById(@Param('id') materialId: string, @Body() material: Material) {
     this.logger.log(`update material by id > [id]: ${materialId}`);
 
@@ -117,6 +147,12 @@ export class MaterialsController {
     type: ResponseAsphaltMaterialDto,
   })
   @ApiResponse({ status: 400, description: 'Material não encontrado!' })
+  @ApiParam({
+  name: 'id',
+  description: 'ID do material que deseja deletar',
+  example: '64f9b3c8a12e4b7f9a2c1e55', // exemplo de ID válido
+  type: String,
+})
   async deleteMaterialById(@Param('id') materialId: string) {
     this.logger.log(`delete material by id > [id]: ${materialId}`);
 

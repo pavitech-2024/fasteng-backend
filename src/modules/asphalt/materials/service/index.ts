@@ -36,15 +36,15 @@ export class MaterialsService {
 
   async createMaterial(material: CreateAsphaltMaterialDto) {
     this.logger.log('create material > [body]');
-    const { name, userId } = material;
-    const materialExists = await this.materialsRepository.findOne({ name, userId });
+    const { name} = material;
+    const materialExists = await this.materialsRepository.findOne({ name /*userId*/ });
     if (materialExists)
       throw new AlreadyExists(`Material with name "${material.name}"`);
 
     const createdMaterial = await this.materialsRepository.create({
       ...material,
       createdAt: new Date(),
-      userId,
+      //userId,
     });
 
     return createdMaterial;
