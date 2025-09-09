@@ -69,7 +69,7 @@ export class ConfirmationCompressionDataDTO {
   dmt: number;
   @ApiProperty({ example: 'normal' })
   name: string;
-
+//aaa
   @ApiProperty({ example: 2.45 })
   gmm: number;
 

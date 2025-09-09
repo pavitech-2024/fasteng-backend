@@ -8,7 +8,6 @@ export class PointDTO {
   @ApiProperty({ example: 0.65 })
   y: number;
 }
-
 export class VolumetricValuesDTO {
   @ApiProperty({ example: 12.5 })
   aggregateVolumeVoids: number;
@@ -37,6 +36,8 @@ export class VolumetricValuesDTO {
   @ApiProperty({ example: 8 })
   volumeVoids: number;
 }
+
+
 
 export class VolumetricParameterDTO {
   @ApiProperty({ example: 5.5 })
@@ -79,4 +80,59 @@ export class SaveVolumetricParametersRequestDTO {
   @IsObject()
   volumetricParametersData: VolumetricParametersDataDTO;
   
+}
+
+class VolumetricRawInputDTO {
+  @ApiProperty({ example: 200 })
+  dryMass: number;
+
+  @ApiProperty({ example: 180 })
+  submergedMass: number;
+
+  @ApiProperty({ example: 205 })
+  drySurfaceSaturatedMass: number;
+
+  @ApiProperty({ example: 60 })
+  stability: number;
+
+  @ApiProperty({ example: 30 })
+  fluency: number;
+
+  @ApiProperty({ example: 350 })
+  diametricalCompressionStrength: number;
+}
+
+export class ConfirmVolumetricParametersDTO {
+  @ApiProperty({ type: [VolumetricRawInputDTO] })
+  @ValidateNested({ each: true })
+  @Type(() => VolumetricRawInputDTO)
+  valuesOfVolumetricParameters: VolumetricRawInputDTO[];
+
+  @ApiProperty({ example: 2.45 })
+  confirmedSpecificGravity: number;
+
+  @ApiProperty({ example: 5.3 })
+  optimumContent: number;
+
+  @ApiProperty({ type: [Number], example: [15, 20, 25] })
+  confirmedPercentsOfDosage: number[];
+
+  @ApiProperty({ type: [Number], example: [2.6, 2.7, 2.8] })
+  listOfSpecificGravities: number[];
+
+  @ApiProperty({ example: 1 })
+  temperatureOfWater: number;
+}
+export class ConfirmedVolumetricResultDTO {
+  @ApiProperty({ type: [VolumetricRawInputDTO] }) // CORRETO: os dados crus
+  valuesOfVolumetricParameters: VolumetricRawInputDTO[];
+
+  @ApiProperty()
+  asphaltContent: number;
+
+  @ApiProperty({ type: [Number] })
+  quantitative: number[];
+
+  @ApiProperty({ type: VolumetricValuesDTO })
+  values: VolumetricValuesDTO;
 }

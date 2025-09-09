@@ -14,6 +14,7 @@ import { MathCalculationsUtil } from 'utils/services/math-calculations.util';
 import { DosageCalculationsUtil } from 'utils/services/dosage-calculations.util';
 import { SaveVolumetricParametersRequestDTO } from '../dto/volumetric-params-data.dto';
 import { GraphicsData } from '../types';
+import { OptimumBinderDTO, GetExpectedParametersDTO,ExpectedParametersDTO } from '../dto/optinium-binder-content-data.dto';
 
 
 @Injectable()
@@ -23,39 +24,41 @@ export class OptimumBinderContent_Marshall_Service {
   constructor(
     @InjectModel(Marshall.name, DATABASE_CONNECTION.ASPHALT)
     private marshallModel: Model<MarshallDocument>,
-    private readonly marshallRepository: MarshallRepository
+    private readonly marshallRepository: MarshallRepository,
   ) {}
 
- async setOptimumBinderContentData(
-  body: SaveVolumetricParametersRequestDTO
-): Promise<GraphicsData> {
-  try {
-    this.logger.log('set graphs on optimum-binder.marshall.service.ts', { body });
+  async setOptimumBinderContentData(body: SaveVolumetricParametersRequestDTO): Promise<GraphicsData> {
+    try {
+      this.logger.log('set graphs on optimum-binder.marshall.service.ts', { body });
 
-    const { volumetricParametersData } = body;
-    const { volumetricParameters } = volumetricParametersData;
+      const { volumetricParametersData } = body;
+      const { volumetricParameters } = volumetricParametersData;
 
-    const graphics = GraphicsUtil.createGraphicsStructure();
-    GraphicsUtil.populateGraphicsData(graphics, volumetricParameters);
+      const graphics = GraphicsUtil.createGraphicsStructure();
+      GraphicsUtil.populateGraphicsData(graphics, volumetricParameters);
 
-    return graphics;
-  } catch (error) {
-    handleError(error, 'Failed to set optimum binder content graphs.');
-    throw error;
+      return graphics;
+    } catch (error) {
+      handleError(error, 'Failed to set optimum binder content graphs.');
+      throw error;
+    }
   }
-}
 
-
-
-  async plotDosageGraph(dnitBands: string, volumetricParameters: any, binderTrial: number, percentsOfDosage: any[]) {
+  async plotDosageGraph(
+    dnitBands: string,
+    volumetricParameters: { pointsOfCurveDosageRBV: number[][]; pointsOfCurveDosageVv: number[][] },
+    binderTrial: number,
+    percentsOfDosage: number[],
+  ): Promise<OptimumBinderDTO> {
     try {
       this.logger.log('set dosage graph', { dnitBands, binderTrial });
 
       const { pointsOfCurveDosageRBV, pointsOfCurveDosageVv } = volumetricParameters;
       const band = DNIT_BANDS_VOLUMETRIC[dnitBands];
 
-      const curveRBV = CurveEquationsUtil.calculateEquationRBV(pointsOfCurveDosageRBV);
-      const curveVv = CurveEquationsUtil.calculateEquationVv(pointsOfCurveDosageVv);
+      const curveRBV = CurveEquationsUtil.calculateEquationRBV(pointsOfCurveDosageRBV.map(([x, y]) => ({ x, y })));
+
+      const curveVv = CurveEquationsUtil.calculateEquationVv(pointsOfCurveDosageVv.map(([x, y]) => ({ x, y })));
 
       const pointsOfCurveDosage = [];
       const pushData = (asphaltContent: number) => {
@@ -72,10 +75,13 @@ export class OptimumBinderContent_Marshall_Service {
         binderTrial - 1,
         CurveEquationsUtil.calculateVv(binderTrial - 1, curveVv),
         binderTrial - 0.5,
-        CurveEquationsUtil.calculateVv(binderTrial - 0.5, curveVv)
+        CurveEquationsUtil.calculateVv(binderTrial - 0.5, curveVv),
       );
 
-      const confirmedPercentsOfDosage = DosageCalculationsUtil.confirmPercentsOfDosage(percentsOfDosage, optimumContent);
+      const confirmedPercentsOfDosage = DosageCalculationsUtil.confirmPercentsOfDosage(
+        percentsOfDosage,
+        optimumContent,
+      );
 
       return {
         pointsOfCurveDosage,
@@ -90,7 +96,9 @@ export class OptimumBinderContent_Marshall_Service {
     }
   }
 
-  async getExpectedParameters(body: any) {
+  async getExpectedParameters(
+  body: GetExpectedParametersDTO,
+): Promise<ExpectedParametersDTO> {
     try {
       const {
         percentsOfDosage,
@@ -120,14 +128,14 @@ export class OptimumBinderContent_Marshall_Service {
         newMaxSpecificGravity = DosageCalculationsUtil.calculateMaxSpecificGravityGMM(
           maxSpecificGravity,
           trialAsphaltContent,
-          optimumContent
+          optimumContent,
         );
       } else {
         newMaxSpecificGravity = DosageCalculationsUtil.calculateMaxSpecificGravityTraditional(
           formattedPercentsOfDosage,
           confirmedPercentsOfDosage,
           listOfSpecificGravities,
-          optimumContent
+          optimumContent,
         );
       }
 

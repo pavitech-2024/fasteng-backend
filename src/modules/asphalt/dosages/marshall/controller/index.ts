@@ -1,13 +1,10 @@
 import { Body, Controller, Delete, Get, Logger, Param, Post, Res } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags, ApiParam } from '@nestjs/swagger';
-import { Response } from 'express';
 import { MarshallService } from '../service';
 import { MarshallGeneralDataDTO } from '../dto/marshal-general-data.dto';
 import { SaveMarshallDosageDTO } from '../dto/binder-trial-data.dto';
 import { CalculateDmtDataDTO } from '../dto/calculate-dmt-data.dto';
 import { CalculateGmmDataDTO } from '../dto/calculate-gmm-data.dto';
-import { RiceTestDTO } from '../dto/confirmation-compresion-data.dto';
-import { AggregateDTO } from '../dto/marshal-material-data.dto';
 import { SaveStepDTO } from '../dto/save-step.dto';
 import { GetIndexesOfMissesSpecificGravityDTO } from '../dto/get-indexes-of-misses-specific-gravity.dto';
 import { NotFoundException } from '@nestjs/common';
@@ -15,8 +12,6 @@ import { BadRequestException } from '@nestjs/common';
 import {
   SaveStep3DTO,
   SaveStep4DTO, 
-  SaveStep5DTO,
-  SaveStep6DTO,
   SaveStep7DTO,
   SaveStep8DTO
 } from '../dto/save-step.dto';
@@ -25,13 +20,15 @@ import { CalculateStep3DTO } from '../dto/calculate-step-5.dto';
 import { Step3Result } from '../types/step-data.type';
 import { CalculateRiceTestDTO as CalculateRiceTestDTONew } from '../dto/calculate-rice-test.dto';
 import { SaveMaximumMixtureDensityDataDTO } from '../dto/save-maximum-mixture-density-data.dto';
-import { SaveVolumetricParametersRequestDTO,SaveVolumetricParametersResponseDTO } from '../dto/volumetric-params-data.dto';
+import { ConfirmVolumetricParametersDTO, SaveVolumetricParametersRequestDTO,SaveVolumetricParametersResponseDTO } from '../dto/volumetric-params-data.dto';
 import { CalculateBinderTrialInput } from '../types/marshall.types';
 import { CalculateStep4DataOutput } from '../types/marshall.types';
 import { GraphicsData } from '../types';
+import { PlotDosageGraphInputDTO } from '../dto/optinium-binder-content-data.dto';
+import { GetExpectedParametersDTO, ExpectedParametersDTO } from '../dto/optinium-binder-content-data.dto';
+import { ConfirmSpecificGravityDTO } from '../dto/confirm-specific-gravity.dto';
+import { ConfirmedSpecificGravityDTO } from '../dto/confirmation-compresion-data.dto';
 
-//test
-//import { Types } from 'mongoose';
 
 @ApiTags('marshall')
 @Controller('asphalt/dosages/marshall')
@@ -315,23 +312,35 @@ async saveVolumetricParametersData(
   }
 
 
-@Post('step-7-plot-dosage-graph')
-@ApiOperation({ summary: 'Gera gráfico da dosagem do ligante ótimo (step 7).' })
-async setOptimumBinderContentDosageGraph(@Body() body: any) {
-  this.logger.log(`step 7 dosage graph > [body]: ${JSON.stringify(body)}`);
+  @Post('step-7-plot-dosage-graph')
+  @ApiOperation({ summary: 'Gera gráfico da dosagem do ligante ótimo (step 7).' })
+  async setOptimumBinderContentDosageGraph(
+    @Body() body: PlotDosageGraphInputDTO,
+  ) {
+    this.logger.log(`step 7 dosage graph > [body]: ${JSON.stringify(body)}`);
 
-  const result = await this.marshallService.setOptimumBinderContentDosageGraph(body);
-  return result; 
-}
+    const result = await this.marshallService.setOptimumBinderContentDosageGraph(body);
+    return result;
+  }
 
-@Post('step-7-get-expected-parameters')
-@ApiOperation({ summary: 'Retorna parâmetros esperados do ligante ótimo (step 7).' })
-async getOptimumBinderExpectedParameters(@Body() body: any) {
-  this.logger.log(`get step 7 optimum binder expected parameters > [body]: ${JSON.stringify(body)}`);
 
-  const result = await this.marshallService.getOptimumBinderExpectedParameters(body);
-  return result; 
-}
+  @Post('step-7-get-expected-parameters')
+  @ApiOperation({ summary: 'Retorna parâmetros esperados do ligante ótimo (step 7).' })
+  //@ApiBody({ type: GetExpectedParametersDTO })
+  async getOptimumBinderExpectedParameters(
+    @Body() body: GetExpectedParametersDTO,
+  ): Promise<{
+    data: { expectedParameters: ExpectedParametersDTO } | null;
+    success: boolean;
+    error?: { status: number; name: string; message: string };
+  }> {
+    this.logger.log(
+      `get step 7 optimum binder expected parameters > [body]: ${JSON.stringify(body)}`,
+    );
+
+    const result = await this.marshallService.getOptimumBinderExpectedParameters(body);
+    return result;
+  }
 
 @Post('save-optimum-binder-content-step/:userId')
 @ApiParam({ 
@@ -352,20 +361,28 @@ async saveOptimumBinderContentData(
 
 @Post('confirm-specific-gravity')
 @ApiOperation({ summary: 'Confirma gravidade específica (step 8).' })
-async confirmSpecificGravity(@Body() body: any) {
+@ApiResponse({
+  status: 200,
+  description: 'Resultado da confirmação da gravidade específica',
+  type: ConfirmedSpecificGravityDTO,  
+})
+async confirmSpecificGravity(
+  @Body() body: ConfirmSpecificGravityDTO,  
+) {
   this.logger.log(`confirm step 8 specific gravity > [body]: ${JSON.stringify(body)}`);
 
   const result = await this.marshallService.confirmSpecificGravity(body);
   return result; 
 }
+
 @Post('confirm-volumetric-parameters')
 @ApiOperation({ summary: 'Confirma parâmetros volumétricos (step 8).' })
-async confirmVolumetricParameters(@Body() body: any) {
+async confirmVolumetricParameters(@Body() body: ConfirmVolumetricParametersDTO) {
   this.logger.log(`confirm step 8 volumetric parameters > [body]: ${JSON.stringify(body)}`);
 
-  const result = await this.marshallService.confirmVolumetricParameters(body);
-  return result;
+  return this.marshallService.confirmVolumetricParameters(body);
 }
+
 
 @Post('save-confirmation-compression-data-step/:userId')
 @ApiParam({ 

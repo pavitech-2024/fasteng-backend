@@ -7,6 +7,8 @@ import { Model } from 'mongoose';
 import { MarshallRepository } from '../repository';
 import { handleError } from 'utils/error-handler';
 import {
+  ConfirmedVolumetricResultDTO,
+  ConfirmVolumetricParametersDTO,
   SaveVolumetricParametersRequestDTO,
   SaveVolumetricParametersResponseDTO,
 } from '../dto/volumetric-params-data.dto';
@@ -145,7 +147,7 @@ export class VolumetricParameters_Marshall_Service {
     }
   }
 
-  async confirmVolumetricParameters(body: any) {
+  async confirmVolumetricParameters(body: ConfirmVolumetricParametersDTO): Promise<ConfirmedVolumetricResultDTO> {
     try {
       const {
         valuesOfVolumetricParameters,
@@ -214,7 +216,8 @@ export class VolumetricParameters_Marshall_Service {
           ratioBitumenVoid,
           stability: averages.stability,
           fluency: averages.fluency,
-          indirectTensileStrength: averages.diametricalCompressionStrength,
+          diametricalCompressionStrength: averages.diametricalCompressionStrength,
+          maxSpecificGravity: confirmedSpecificGravity, // ou outra variável certa
         },
       };
     } catch (error) {

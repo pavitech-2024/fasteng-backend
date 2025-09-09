@@ -19,25 +19,26 @@ import { CalculateGmmDataDTO } from "../dto/calculate-gmm-data.dto";
 import { CalculateRiceTestDTO } from "../dto/calculate-rice-test.dto";
 import { SaveMaximumMixtureDensityDataDTO } from "../dto/save-maximum-mixture-density-data.dto";
 import { BaseMarshallService } from "./base.marshall.service";
-import { StepData } from '../types/step-data.type';
+//import { StepData } from '../types/step-data.type';
 import { SaveStep3DTO, SaveStep4DTO, SaveStep5DTO, SaveStep6DTO, SaveStep7DTO, SaveStep8DTO, SaveStepDTO } from "../dto/save-step.dto";
-import { GranulometryCompositionDataDTO } from "../dto/granulometry-composition-data-dto";
+//import { GranulometryCompositionDataDTO } from "../dto/granulometry-composition-data-dto";
 import { MarshallStep } from "../types/marshall.types";
 import { Step3Result,  } from "../types/step-data.type";
 import { Step3Data } from "../types/step-data.type";
 import { SaveMarshallDosageDTO } from "../dto/binder-trial-data.dto";
 import { handleError } from "utils/error-handler";
-import { SaveVolumetricParametersRequestDTO, SaveVolumetricParametersResponseDTO } from "../dto/volumetric-params-data.dto";
+import { ConfirmedSpecificGravityDTO } from "../dto/confirmation-compresion-data.dto";
+import { ConfirmedVolumetricResultDTO, ConfirmVolumetricParametersDTO, SaveVolumetricParametersRequestDTO, SaveVolumetricParametersResponseDTO } from "../dto/volumetric-params-data.dto";
 import { getMarshallBandsByDnit } from "utils/services/marshall-bands.util";
 import { getBandsByType } from 'utils/services/marshall-bands.util';
 import { CalculateBinderTrialInput } from "../types/marshall.types";
 import { TrialItem } from "../types/marshall.types";
 import { BandsOfTemperaturesDTO } from "../dto/binder-trial-data.dto";
 import { GraphicsData } from "../types";
-
-//teste
-  import { Types } from 'mongoose';
-  import { CalculateStep3DTO } from "../dto/calculate-step-5.dto";
+import { PlotDosageGraphInputDTO } from "../dto/optinium-binder-content-data.dto";
+import { OptimumBinderDTO, GetExpectedParametersDTO, ExpectedParametersDTO } from "../dto/optinium-binder-content-data.dto";
+import { CalculateStep3DTO } from "../dto/calculate-step-5.dto";
+import { ConfirmSpecificGravityDTO } from "../dto/confirm-specific-gravity.dto";
 
 
 @Injectable()
@@ -433,44 +434,65 @@ async saveMistureMaximumDensityData(dto: SaveMaximumMixtureDensityDataDTO, userI
 }
 
 
-  async setOptimumBinderContentDosageGraph(body: any) {
-    try {
-      const { dnitBand, volumetricParameters, trial, percentsOfDosage } = body;
-      const optimumBinderDosageGraph = await this.optimumBinder_Service.plotDosageGraph(dnitBand, volumetricParameters, trial, percentsOfDosage);
+ async setOptimumBinderContentDosageGraph(
+  body: PlotDosageGraphInputDTO
+): Promise<{
+  data: { optimumBinderDosageGraph: OptimumBinderDTO } | null;
+  success: boolean;
+  error?: { status: number; message: string; name: string };
+}> {
+  try {
+    const { dnitBand, volumetricParameters, trial, percentsOfDosage } = body;
 
-      const data = {
-        optimumBinderDosageGraph
-      };
+    const optimumBinderDosageGraph = await this.optimumBinder_Service.plotDosageGraph(
+      dnitBand,
+      volumetricParameters,
+      trial,
+      percentsOfDosage
+    );
 
-      return { 
-        data, 
-        success: true 
-      };
-    } catch (error) {
-       handleError(error, 'error on setting step 7 optimum binder dosage graph data');
-      const { status, name, message } = error;
-      return { data: null, success: false, error: { status, message, name } };
-    }
+    return {
+      data: { optimumBinderDosageGraph },
+      success: true
+    };
+  } catch (error) {
+    handleError(error, 'error on setting step 7 optimum binder dosage graph data');
+
+    const { status, name, message } = error;
+
+    return {
+      data: null,
+      success: false,
+      error: { status, message, name }
+    };
   }
+}
 
-  async getOptimumBinderExpectedParameters(body: any) {
-    try {
-      const expectedParameters = await this.optimumBinder_Service.getExpectedParameters(body);
 
-      const data = {
-        expectedParameters
-      };
+  async getOptimumBinderExpectedParameters(
+  body: GetExpectedParametersDTO,
+): Promise<{
+  data: { expectedParameters: ExpectedParametersDTO } | null;
+  success: boolean;
+  error?: { status: number; name: string; message: string };
+}> {
+  try {
+    const expectedParameters = await this.optimumBinder_Service.getExpectedParameters(body);
 
-      return { 
-        data, 
-        success: true 
-      };
-    } catch (error) {
-       handleError(error, 'error on setting step 7 optimum binder dosage graph data');
-      const { status, name, message } = error;
-      return { data: null, success: false, error: { status, message, name } };
-    }
+    return { 
+      data: { expectedParameters },
+      success: true,
+    };
+  } catch (error) {
+    handleError(error, 'error on setting step 7 optimum binder dosage graph data');
+    const { status, name, message } = error;
+    return { 
+      data: null,
+      success: false,
+      error: { status, message, name },
+    };
   }
+}
 
   //Refact para salvr step7
 async saveStep7Data(body: SaveStep7DTO, userId: string): Promise<{ success: boolean; error?: any }> {
@@ -486,44 +508,45 @@ async saveStep7Data(body: SaveStep7DTO, userId: string): Promise<{ success: bool
 
 
 
-  async confirmSpecificGravity(body: any) {
-    try {
-      const confirmedSpecificGravity = await this.confirmCompression_Service.confirmSpecificGravity(body);
+  async confirmSpecificGravity(body: ConfirmSpecificGravityDTO): Promise<{ data: { confirmedSpecificGravity: ConfirmedSpecificGravityDTO }, success: true } | { data: null, success: false, error: any }> {
+  try {
+    const confirmedSpecificGravity = await this.confirmCompression_Service.confirmSpecificGravity(body);
 
-      const data = {
-        confirmedSpecificGravity
-      };
+    const data = {
+      confirmedSpecificGravity,
+    };
 
-      return { 
-        data, 
-        success: true 
-      };
-    } catch (error) {
-       handleError(error, 'error on confirming step 8 specific gravity');
-      const { status, name, message } = error;
-      return { data: null, success: false, error: { status, message, name } };
-    }
+    return {
+      data,
+      success: true,
+    };
+  } catch (error) {
+    handleError(error, 'error on confirming step 8 specific gravity');
+    const { status, name, message } = error;
+    return {
+      data: null,
+      success: false,
+      error: { status, message, name },
+    };
   }
+}
 
-  async confirmVolumetricParameters(body: any) {
-    try {
+async confirmVolumetricParameters(
+  body: ConfirmVolumetricParametersDTO
+): Promise<{ data: ConfirmedVolumetricResultDTO | null; success: boolean; error?: any }> {
+  try {
+    const confirmedVolumetricParameters = await this.volumetricParameters_Service.confirmVolumetricParameters(body);
 
-      const confirmedVolumetricParameters = await this.volumetricParameters_Service.confirmVolumetricParameters(body);
+    return { data: confirmedVolumetricParameters, success: true };
 
-      const data = {
-        confirmedVolumetricParameters
-      };
-
-      return { 
-        data, 
-        success: true 
-      };
-    } catch (error) {
-       handleError(error, 'error on confirming step 8 specific gravity');
-      const { status, name, message } = error;
-      return { data: null, success: false, error: { status, message, name } };
-    }
+  } catch (error) {
+    handleError(error, 'error on confirming step 8 specific gravity');
+    const { status, name, message } = error;
+    return { data: null, success: false, error: { status, message, name } };
   }
+}
+
+
 
 async saveStep8Data(body: SaveStep8DTO, userId: string): Promise<{ success: boolean; error?: any }> {
   return this.saveStepData({

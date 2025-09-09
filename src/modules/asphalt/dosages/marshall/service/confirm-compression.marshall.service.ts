@@ -7,7 +7,7 @@ import { MarshallRepository } from '../repository';
 import { Marshall, MarshallDocument } from '../schemas';
 import { ConfirmationCompressionDataDTO } from '../dto/confirmation-compresion-data.dto';
 import { handleError } from 'utils/error-handler';
-import { ConfirmSpecificGravityBody } from '../interfaces/confirm-specific-gravityBody.interface';
+import { ConfirmSpecificGravityDTO } from '../dto/confirm-specific-gravity.dto';
 
 
 
@@ -21,7 +21,7 @@ export class ConfirmCompression_Marshall_Service {
     private readonly marshallModel: Model<MarshallDocument>,
   ) {}
 
-  async confirmSpecificGravity(body: ConfirmSpecificGravityBody): Promise<{ result: number; type: 'DMT' | 'GMM' }> {
+  async confirmSpecificGravity(body: ConfirmSpecificGravityDTO): Promise<{ result: number; type: 'DMT' | 'GMM' }> {
     try {
       this.logger.log('Confirming specific gravity', { body });
 

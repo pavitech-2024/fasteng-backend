@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { MaxSpecificGravityDTO } from './maximum-mixture-density-data.dto';
 
 export class CurveDTO {
   @ApiProperty({ example: 0.5 })
@@ -21,7 +22,7 @@ export class OptimumBinderDTO {
   @ApiProperty({ example: 5.3 })
   optimumContent: number;
 
-  @ApiProperty({ type: [[Number]], example: [[4.5, 2.34], [5.0, 2.45]] })
+  @ApiProperty({ type: [[Number]], example: [[4.5, 4.8, 65], [5.0, 4.5, 67]] })
   pointsOfCurveDosage: number[][];
 }
 
@@ -44,46 +45,86 @@ export class ExpectedParametersDTO {
 
 export class GraphicsDTO {
   @ApiProperty({ type: [[Number]], example: [['Teor', 'Rbv'], [4.5, 65]] })
-  rbv: [string, string] | [number, number][];
+  rbv: (string | number)[][];
 
   @ApiProperty({ type: [[Number]], example: [['Teor', 'Vv'], [4.5, 12]] })
-  vv: [string, string] | [number, number][];
+  vv: (string | number)[][];
 
   @ApiProperty({ type: [[Number]], example: [['Teor', 'SpecificGravity'], [4.5, 2.45]] })
-  sg: [string, string] | [number, number][];
+  sg: (string | number)[][];
 
   @ApiProperty({ type: [[Number]], example: [['Teor', 'Gmb'], [4.5, 2.4]] })
-  gmb: [string, string] | [number, number][];
+  gmb: (string | number)[][];
 
   @ApiProperty({ type: [[Number]], example: [['Teor', 'Stability'], [4.5, 1200]] })
-  stability: [string, string] | [number, number][];
+  stability: (string | number)[][];
 
   @ApiProperty({ type: [[Number]], example: [['Teor', 'Vam'], [4.5, 7]] })
-  vam: [string, string] | [number, number][];
+  vam: (string | number)[][];
 }
 
 export class OptimumBinderContentDataDTO {
   @ApiProperty({ type: OptimumBinderDTO })
   optimumBinder: OptimumBinderDTO;
 
-  @ApiProperty({
-    type: () => ({
-      expectedParameters: ExpectedParametersDTO,
-    }),
-    example: {
-      expectedParameters: {
-        Gmb: 2.4,
-        RBV: 65,
-        Vam: 7,
-        Vv: 12,
-        newMaxSpecificGravity: 2.45,
-      },
-    },
-  })
-  expectedParameters: {
-    expectedParameters: ExpectedParametersDTO;
-  };
+  @ApiProperty({ type: ExpectedParametersDTO })
+  expectedParameters: ExpectedParametersDTO;
 
   @ApiProperty({ type: GraphicsDTO })
   graphics: GraphicsDTO;
+}
+
+export class VolumetricParametersDTO {
+  @ApiProperty({ type: [[Number]], example: [[4.5, 65], [5.0, 67]] })
+  pointsOfCurveDosageRBV: [number, number][];
+
+  @ApiProperty({ type: [[Number]], example: [[4.5, 12], [5.0, 11]] })
+  pointsOfCurveDosageVv: [number, number][];
+}
+
+export class PlotDosageGraphInputDTO {
+  @ApiProperty({ example: 'A' })
+  dnitBand: string;
+
+  @ApiProperty({ type: VolumetricParametersDTO })
+  volumetricParameters: VolumetricParametersDTO;
+
+  @ApiProperty({ example: 5.0 })
+  trial: number;
+
+  @ApiProperty({ type: [Number], example: [15, 20, 25] })
+  percentsOfDosage: number[];
+}
+
+
+
+
+
+export class GetExpectedParametersDTO {
+  @ApiProperty({
+    type: [Object],
+    example: [{ percent_1: 5.2, percent_2: 4.8 }],
+  })
+  percentsOfDosage: Record<string, number>[];
+
+  @ApiProperty({ example: 5.0 })
+  optimumContent: number;
+
+  @ApiProperty({ type: MaxSpecificGravityDTO })
+  maxSpecificGravity: MaxSpecificGravityDTO;
+
+  @ApiProperty({ type: [Number], example: [2.45, 2.44, 2.43] })
+  listOfSpecificGravities: number[];
+
+  @ApiProperty({ example: 4.5 })
+  trial: number;
+
+  @ApiProperty({ type: [Number], example: [15, 20, 25] })
+  confirmedPercentsOfDosage: number[];
+
+  @ApiProperty({ type: CurveDTO })
+  curveVv: CurveDTO;
+
+  @ApiProperty({ type: CurveDTO })
+  curveRBV: CurveDTO;
 }
