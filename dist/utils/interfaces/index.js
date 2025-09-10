@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AllSieves = void 0;
+exports.AllSievesSuperpaveUpdatedAstm = exports.AllSieves = void 0;
 exports.AllSieves = [
     {
         label: '3 pol - 75 mm',
@@ -73,6 +73,60 @@ exports.AllSieves = [
     {
         label: 'Nº80 - 0,18mm',
         value: 0.18,
+    },
+    {
+        label: 'Nº100 - 0,15mm',
+        value: 0.15,
+    },
+    {
+        label: 'Nº200 - 0,075mm',
+        value: 0.075,
+    },
+];
+exports.AllSievesSuperpaveUpdatedAstm = [
+    {
+        label: '1 1/2 pol - 38,1mm',
+        value: 38.1,
+    },
+    {
+        label: '1 pol - 25,4mm',
+        value: 25.4,
+    },
+    {
+        label: '3/4 pol - 19,1mm',
+        value: 19.1,
+    },
+    {
+        label: '1/2 pol - 12,7mm',
+        value: 12.7,
+    },
+    {
+        label: '3/8 pol - 9,5mm',
+        value: 9.5,
+    },
+    {
+        label: '1/4 pol - 6,3mm',
+        value: 6.3,
+    },
+    {
+        label: 'Nº4 - 4,8mm',
+        value: 4.8,
+    },
+    {
+        label: 'Nº8 - 2,36mm',
+        value: 2.36,
+    },
+    {
+        label: 'Nº16 - 1,18mm',
+        value: 1.18,
+    },
+    {
+        label: 'Nº30 - 0,6mm',
+        value: 0.6,
+    },
+    {
+        label: 'Nº50 - 0,3mm',
+        value: 0.3,
     },
     {
         label: 'Nº100 - 0,15mm',

@@ -274,7 +274,7 @@ let MarshallService = MarshallService_1 = class MarshallService {
             }
         });
     }
-    calculateStep3Data(body) {
+    calculateGranulometry(body) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { dnitBands } = body;
@@ -435,10 +435,10 @@ let MarshallService = MarshallService_1 = class MarshallService {
             }
         });
     }
-    saveStep5Data(body, userId) {
+    saveMistureMaximumDensityData(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const success = yield this.maximumMixtureDensity_Service.saveStep5Data(body, userId);
+                const success = yield this.maximumMixtureDensity_Service.saveMistureMaximumDensityData(body, userId);
                 return { success };
             }
             catch (error) {
@@ -467,10 +467,10 @@ let MarshallService = MarshallService_1 = class MarshallService {
             }
         });
     }
-    saveStep6Data(body, userId) {
+    saveVolumetricParametersData(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const success = yield this.volumetricParameters_Service.saveStep6Data(body, userId);
+                const success = yield this.volumetricParameters_Service.saveVolumetricParametersData(body, userId);
                 return { success };
             }
             catch (error) {

@@ -1,3 +1,5 @@
+import { Marshall } from "../schemas";
 export declare class MarshallInitDto {
-    name: string;
+    _id?: string;
+    generalData: Marshall['generalData'];
 }

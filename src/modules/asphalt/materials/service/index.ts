@@ -8,6 +8,18 @@ import { FwdRepository } from 'modules/asphalt/essays/fwd/repository';
 import { IggRepository } from 'modules/asphalt/essays/igg/repository';
 import { RtcdRepository } from 'modules/asphalt/essays/rtcd/repository';
 import { DduiRepository } from 'modules/asphalt/essays/ddui/repository';
+import { Igg } from 'modules/asphalt/essays/igg/schemas';
+import { Fwd } from 'modules/asphalt/essays/fwd/schema';
+import { Ddui } from 'modules/asphalt/essays/ddui/schemas';
+import { Rtcd } from 'modules/asphalt/essays/rtcd/schemas';
+
+export interface AsphaltMaterialsList {
+  materials: Material[],
+  iggEssays: Igg[],
+  fwdEssays: Fwd[],
+  dduiEssays: Ddui[],
+  rtcdEssays: Rtcd[]
+}
 
 @Injectable()
 export class MaterialsService {
@@ -22,30 +34,11 @@ export class MaterialsService {
     private readonly dduiRepository: DduiRepository,
   ) {}
 
-  // async createMaterial(material: CreateAsphaltMaterialDto, userId: string) {
-  //   try {
-  //     // verifica se já existe um material com o mesmo nome no banco de dados
-  //     if (await this.materialsRepository.findOne({ name: material.name, userId }))
-  //       throw new AlreadyExists(`Material with name "${material.name}"`);
-
-  //     this.logger.log(userId);
-
-  //     const createdMaterial = await this.materialsRepository.create({
-  //       ...material,
-  //       createdAt: new Date(),
-  //       userId,
-  //     });
-
-  //     // cria um material no banco de dados
-  //     return createdMaterial;
-  //   } catch (error) {
-  //     this.logger.error(`error on create material > [error]: ${error}`);
-  //     throw error;
-  //   }
-  // }
-  async createMaterial(material: CreateAsphaltMaterialDto, userId: string) {
-    // Remove o try-catch aqui!
-    if (await this.materialsRepository.findOne({ name: material.name, userId }))
+  async createMaterial(material: CreateAsphaltMaterialDto) {
+    this.logger.log('create material > [body]');
+    const { name, userId } = material;
+    const materialExists = await this.materialsRepository.findOne({ name, userId });
+    if (materialExists)
       throw new AlreadyExists(`Material with name "${material.name}"`);
 
     const createdMaterial = await this.materialsRepository.create({
@@ -77,30 +70,28 @@ export class MaterialsService {
     }
   }
 
-  async getSelectedMaterialsById(ids: string): Promise<any> {
-    const idArray = ids.split(',').map((id) => id.trim());
+  /**
+   * Busca materiais selecionados pelo id e seus respectivos ensaios.
+   * @param ids Ids dos materiais separados por vírgula.
+   * @returns Um objeto com os materiais encontrados e seus respectivos ensaios.
+   */
+  async getSelectedMaterialsById(ids: string): Promise<{ materials: Material[]; essays: any[] }> {
+    const materialIds = Array.from(new Set(ids.split(',').map((id) => id.trim())));
+
     try {
-      let essays = [];
+      const materials = await this.materialsRepository.findSelectedById(materialIds);
+      const essaysPromises = materials.map((material) => this.getEssaysByMaterial_Service.getEssaysByMaterial(material));
+      const essays = await Promise.all(essaysPromises);
 
-      // busca um material com o id passado no banco de dados
-      const materials = await this.materialsRepository.findSelectedById(idArray);
-
-      // Buscar os ensaios com esse material;
-      for (let i = 0; i < materials.length; i++) {
-        let essay = await this.getEssaysByMaterial_Service.getEssaysByMaterial(materials[i]);
-        essays.push(essay);
-      }
-
-      // retorna o material encontrado
       return { materials, essays };
     } catch (error) {
-      this.logger.error(`error on get material > [error]: ${error}`);
+      this.logger.error(`error on get materials and essays by id > [error]: ${error}`);
 
       throw error;
     }
   }
 
-  async getAllMaterialsList(userId: string): Promise<any> { //Antigo método getAllMaterials
+  async getAllMaterialsList(userId: string): Promise<AsphaltMaterialsList> {
     try {
       // busca todos os materiais no banco de dados
       const materials = await this.materialsRepository.findByType(

@@ -16,6 +16,12 @@ class CreateConcreteMaterialDto {
 exports.CreateConcreteMaterialDto = CreateConcreteMaterialDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], CreateConcreteMaterialDto.prototype, "name", void 0);
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateConcreteMaterialDto.prototype, "userId", void 0);
 //# sourceMappingURL=create-concrete-material.dto.js.map

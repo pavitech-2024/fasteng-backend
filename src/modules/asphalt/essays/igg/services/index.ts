@@ -59,4 +59,20 @@ export class IggService {
       return { success: false, error: { status, message, name } };
     }
   }
+
+  async deleteEssay(id: string) {
+    try {
+      const igg = await this.igg_Repository.findOne({ _id: id });
+
+      if (igg) {
+        await this.igg_Repository.deleteOne(id);
+      }
+
+      return { success: true, data: igg };
+    } catch (error) {
+      const { status, name, message } = error;
+
+      return { success: false, error: { status, message, name } };
+    }
+  }
 }

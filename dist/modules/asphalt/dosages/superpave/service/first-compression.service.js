@@ -46,62 +46,33 @@ let FirstCompression_Superpave_Service = FirstCompression_Superpave_Service_1 = 
         this.superpaveRepository = superpaveRepository;
         this.logger = new common_1.Logger(FirstCompression_Superpave_Service_1.name);
     }
-    calculateGmm(body) {
+    calculateGmm_RiceTest(body) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log({ body }, 'start calculate step 5 gmm data > [service]');
                 const { riceTest } = body;
-                let result = {
-                    lower: {
-                        gmm: 0,
-                    },
-                    average: {
-                        gmm: 0,
-                    },
-                    higher: {
-                        gmm: 0,
-                    },
-                };
-                for (let i = 0; i < riceTest.length; i++) {
-                    if (riceTest[i].gmm !== 0) {
-                        result[riceTest[i].curve].gmm = riceTest[i].gmm;
-                    }
-                    else {
-                        const gmm = yield this.claculateRiceTest(riceTest[i]);
-                        result[riceTest[i].curve].gmm = gmm;
-                    }
-                }
-                return result;
+                const { drySampleMass, waterSampleContainerMass, waterSampleMass, temperatureOfWater } = riceTest;
+                const riceTestValue = (drySampleMass / (drySampleMass + waterSampleMass - waterSampleContainerMass)) * temperatureOfWater;
+                return riceTestValue;
             }
             catch (error) {
                 throw error;
             }
         });
     }
-    claculateRiceTest(body) {
+    saveFirstCompressionData(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                this.logger.log({ body }, 'start calculate rice test > [service]');
-                const { drySampleMass, waterSampleContainerMass, waterSampleMass, temperatureOfWater } = body;
-                const riceTest = (drySampleMass / (drySampleMass + waterSampleMass - waterSampleContainerMass)) * temperatureOfWater;
-                return riceTest;
-            }
-            catch (error) {
-                throw error;
-            }
-        });
-    }
-    saveStep5Data(body, userId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                this.logger.log('save superpave first compression step on first-compression.superpave.service.ts > [body]', { body });
+                this.logger.log('save superpave first compression step on first-compression.superpave.service.ts > [body]', {
+                    body,
+                });
                 const { name } = body.firstCompressionData;
                 const superpaveExists = yield this.superpaveRepository.findOne(name, userId);
                 const _a = body.firstCompressionData, { name: materialName } = _a, firstCompressionWithoutName = __rest(_a, ["name"]);
                 const superpaveWithFirstCompression = Object.assign(Object.assign({}, superpaveExists._doc), { firstCompressionData: firstCompressionWithoutName });
                 yield this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithFirstCompression);
-                if (superpaveExists._doc.generalData.step < 5) {
-                    yield this.superpaveRepository.saveStep(superpaveExists, 5);
+                if (superpaveExists._doc.generalData.step < 6) {
+                    yield this.superpaveRepository.saveStep(superpaveExists, 6);
                 }
                 return true;
             }

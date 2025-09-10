@@ -3,7 +3,6 @@ import { SamplesService } from '../service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateSampleDto } from '../dto/create-sample.dto';
 import { Sample } from '../schemas';
-import { User } from '../../../../config/decorators/user.decorator';
 
 @ApiTags('samples')
 @Controller('soils/samples')
@@ -16,9 +15,9 @@ export class SamplesController {
   @ApiOperation({ summary: 'Cria uma amostra no banco de dados.' })
   @ApiResponse({ status: 201, description: 'Amostra criada com sucesso!' })
   @ApiResponse({ status: 400, description: 'Erro ao criar amostra!' })
-  async createSample(@Body() sample: CreateSampleDto, @User('userId') userId: string) {
+  async createSample(@Body() sample: CreateSampleDto) {
     this.logger.log('create sample > [body]');
-    const createdSample = await this.samplesService.createSample(sample, userId);
+    const createdSample = await this.samplesService.createSample(sample);
 
     if (createdSample) this.logger.log(`sample created > [id]: ${createdSample._id}`);
 
@@ -32,10 +31,11 @@ export class SamplesController {
   async getAllByUserId(@Param('id') userId: string) {
     this.logger.log(`get all samples by user id > [id]: ${userId}`);
 
-    return this.samplesService.getAllSamples(userId).then(samples => ([{
-      materials: samples,
-    }]));
+    const samples = await this.samplesService.getAllSamplesByUserId(userId);
+
+    return samples
   }
+  
   
   @Get(':id')
   @ApiOperation({ summary: 'Retorna uma amostra do banco de dados.' })

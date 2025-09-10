@@ -40,7 +40,7 @@ export type Results = {
   };
 };
 
-@Schema({ collection: 'igg' })
+@Schema({ collection: 'igg', timestamps: true })
 export class Igg {
   _id: string;
 

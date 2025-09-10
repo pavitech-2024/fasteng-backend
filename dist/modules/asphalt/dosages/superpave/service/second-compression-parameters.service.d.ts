@@ -6,7 +6,7 @@ export declare class SecondCompressionParameters_Superpave_Service {
     private readonly superpave_repository;
     private logger;
     constructor(superpaveModel: Model<SuperpaveDocument>, superpave_repository: SuperpaveRepository);
-    getStep9Data(body: any): Promise<{
+    getSecondCompressionPercentageData(body: any): Promise<{
         optimumContent: any;
         graphs: {
             graphVv: any[][];
@@ -18,5 +18,5 @@ export declare class SecondCompressionParameters_Superpave_Service {
             graphRT: any[][];
         };
     }>;
-    saveStep9Data(body: any, userId: string): Promise<boolean>;
+    saveSecondCompressionParams(body: any, userId: string): Promise<boolean>;
 }

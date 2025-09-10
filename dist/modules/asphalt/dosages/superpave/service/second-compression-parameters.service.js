@@ -46,11 +46,10 @@ let SecondCompressionParameters_Superpave_Service = SecondCompressionParameters_
         this.superpave_repository = superpave_repository;
         this.logger = new common_1.Logger(SecondCompressionParameters_Superpave_Service_1.name);
     }
-    getStep9Data(body) {
+    getSecondCompressionPercentageData(body) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                this;
-                this.logger.log({}, 'start get step 8 Data > SecondCompressionPercentage_Superpave_Service');
+                this.logger.log({}, 'start get second compression percentage data > SecondCompressionPercentage_Superpave_Service');
                 const { expectedPli, composition } = body;
                 const PolynomialRegression = require('ml-regression-polynomial');
                 const { quadSolver } = require('quadratic-solver');
@@ -171,7 +170,7 @@ let SecondCompressionParameters_Superpave_Service = SecondCompressionParameters_
             }
         });
     }
-    saveStep9Data(body, userId) {
+    saveSecondCompressionParams(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('save superpave second compression percentages step on second-compression-percentages.superpave.service.ts > [body]', { body });
@@ -180,8 +179,8 @@ let SecondCompressionParameters_Superpave_Service = SecondCompressionParameters_
                 const _a = body.secondCompressionParams, { name: materialName } = _a, secondCompressionParamsWithoutName = __rest(_a, ["name"]);
                 const superpaveWithSecondCompressionParams = Object.assign(Object.assign({}, superpaveExists._doc), { secondCompressionParams: secondCompressionParamsWithoutName });
                 yield this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithSecondCompressionParams);
-                if (superpaveExists._doc.generalData.step < 9) {
-                    yield this.superpave_repository.saveStep(superpaveExists, 9);
+                if (superpaveExists._doc.generalData.step < 10) {
+                    yield this.superpave_repository.saveStep(superpaveExists, 10);
                 }
                 return true;
             }

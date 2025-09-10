@@ -5,6 +5,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { DATABASE_CONNECTION } from "../../../../../infra/mongoose/database.config";
 import { Model } from "mongoose";
 import { Marshall, MarshallDocument } from "../schemas";
+import { MarshallInitDto } from "../dto/marshall-init.dto";
 
 @Injectable()
 export class GeneralData_Marshall_Service {
@@ -16,15 +17,15 @@ export class GeneralData_Marshall_Service {
     private readonly marshallRepository: MarshallRepository,
   ) { }
 
-  async verifyInitMarshall(marshall: any, userId: string) {
+  async verifyInitMarshall(marshall: MarshallInitDto, userId: string) {
     try {
       this.logger.log('verify init Marshall on general-data.marshall.service.ts > [body]');
 
-      const { name } = marshall;
+      const { generalData: { name }, _id } = marshall;
 
       const MarshallExists = await this.marshallRepository.findOne(name, userId)
 
-      if (MarshallExists) throw new AlreadyExists('name');
+      if (MarshallExists && !_id) throw new AlreadyExists('name');
 
       const createdPartialMarshall = await this.marshallRepository.createPartialMarshall(marshall, userId);
 

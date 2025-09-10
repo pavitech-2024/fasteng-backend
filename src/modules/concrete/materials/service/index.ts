@@ -14,18 +14,16 @@ export class MaterialsService {
     private readonly getEssaysByMaterial_Service: GetEssaysByMaterial_Service
   ) {}
 
-  async createMaterial(material: CreateConcreteMaterialDto, userId: string) {
+  async createMaterial(material: CreateConcreteMaterialDto) {
     try {
-      if (await this.materialsRepository.findOne({ name: material.name, userId }))
+      const { name, userId } = material;
+      const materialExists = await this.materialsRepository.findOne({ name, userId });
+      if (materialExists)
         throw new AlreadyExists(`Material with name "${material.name}"`);
 
-      this.logger.log(userId);
+      const createdMaterial = await this.materialsRepository.create(material);
 
-      return this.materialsRepository.create({
-        ...material,
-        createdAt: new Date(),
-        userId,
-      });
+      return createdMaterial;
     } catch (error) {
       this.logger.error(`error on create material > [error]: ${error}`);
 

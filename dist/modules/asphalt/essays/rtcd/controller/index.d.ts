@@ -19,4 +19,7 @@ export declare class RtcdController {
         };
     }>;
     saveEssay(response: Response, body: Calc_Rtcd_Dto & Calc_Rtcd_Out): Promise<Response<any, Record<string, any>>>;
+    deleteEssay(response: Response, param: {
+        id: string;
+    }): Promise<Response<any, Record<string, any>>>;
 }

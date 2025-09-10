@@ -23,4 +23,8 @@ export class RtcdRepository {
 
     return createdRtcd.save();
   }
+
+  async deleteOne(id: string): Promise<Rtcd> {
+    return this.rtcdModel.findByIdAndDelete(id);
+  }
 }

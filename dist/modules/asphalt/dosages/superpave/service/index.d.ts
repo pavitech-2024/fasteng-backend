@@ -3,7 +3,6 @@ import { GeneralData_Superpave_Service } from './general-data.superpave.service'
 import { MaterialSelection_Superpave_Service } from './material-selection.superpave.service';
 import { Superpave } from '../schemas';
 import { SuperpaveRepository } from '../repository/index';
-import { SuperpaveStep3Dto } from '../dto/step-3-superpave.dto';
 import { GranulometryComposition_Superpave_Service } from './granulometry-composition.superpave.service';
 import { AsphaltGranulometryRepository } from 'modules/asphalt/essays/granulometry/repository';
 import { InitialBinder_Superpave_Service } from './initial-binder.superpave.service';
@@ -13,21 +12,29 @@ import { ChosenCurvePercentages_Superpave_Service } from './chosen-curves-percen
 import { SecondCompression_Superpave_Service } from './second-compression.superpave.service';
 import { SecondCompressionParameters_Superpave_Service } from './second-compression-parameters.service';
 import { ResumeDosage_Superpave_Service } from './resume-dosage.service';
+import { GranulometryEssay_Superpave_Service } from './granulometry-essay.service';
+import { AsphaltGranulometryService } from 'modules/asphalt/essays/granulometry/service';
+import { ViscosityRotationalService } from 'modules/asphalt/essays/viscosityRotational/service/viscosityRotational.service';
+import { ConfirmCompaction_Superpave_Service } from './confirm-compaction.service';
 export declare class SuperpaveService {
     private readonly superpave_repository;
     private readonly generalData_Service;
+    private readonly granulometryEssay_Service;
     private readonly materialSelection_Service;
     private readonly granulometryComposition_Service;
     private readonly granulometryRepository;
     private readonly initialBinder_Service;
     private readonly firstCompression_Service;
-    private readonly firstCurvePercentages_Service;
+    private readonly firstCompressionParams_Service;
     private readonly chosenCurvePercentages_Service;
     private readonly secondCompression_Service;
     private readonly secondCompressionParameters_Service;
+    private readonly confirmCompaction_Service;
     private readonly resumeDosageEquation_Service;
+    private readonly asphaltGranulometry_Service;
+    private readonly rotationalViscosity_Service;
     private logger;
-    constructor(superpave_repository: SuperpaveRepository, generalData_Service: GeneralData_Superpave_Service, materialSelection_Service: MaterialSelection_Superpave_Service, granulometryComposition_Service: GranulometryComposition_Superpave_Service, granulometryRepository: AsphaltGranulometryRepository, initialBinder_Service: InitialBinder_Superpave_Service, firstCompression_Service: FirstCompression_Superpave_Service, firstCurvePercentages_Service: FirstCurvePercentages_Service, chosenCurvePercentages_Service: ChosenCurvePercentages_Superpave_Service, secondCompression_Service: SecondCompression_Superpave_Service, secondCompressionParameters_Service: SecondCompressionParameters_Superpave_Service, resumeDosageEquation_Service: ResumeDosage_Superpave_Service);
+    constructor(superpave_repository: SuperpaveRepository, generalData_Service: GeneralData_Superpave_Service, granulometryEssay_Service: GranulometryEssay_Superpave_Service, materialSelection_Service: MaterialSelection_Superpave_Service, granulometryComposition_Service: GranulometryComposition_Superpave_Service, granulometryRepository: AsphaltGranulometryRepository, initialBinder_Service: InitialBinder_Superpave_Service, firstCompression_Service: FirstCompression_Superpave_Service, firstCompressionParams_Service: FirstCurvePercentages_Service, chosenCurvePercentages_Service: ChosenCurvePercentages_Superpave_Service, secondCompression_Service: SecondCompression_Superpave_Service, secondCompressionParameters_Service: SecondCompressionParameters_Superpave_Service, confirmCompaction_Service: ConfirmCompaction_Superpave_Service, resumeDosageEquation_Service: ResumeDosage_Superpave_Service, asphaltGranulometry_Service: AsphaltGranulometryService, rotationalViscosity_Service: ViscosityRotationalService);
     verifyInitSuperpave(body: SuperpaveInitDto, userId: string): Promise<{
         success: boolean;
         dosage: any;
@@ -40,12 +47,57 @@ export declare class SuperpaveService {
         };
     }>;
     getAllDosages(userId: string): Promise<Superpave[]>;
-    getUserMaterials(userId: string): Promise<{
-        materials: import("../../../materials/schemas").Material[];
+    calculateGranulometryEssayData(body: any): Promise<{
+        granulometry: ({
+            material: any;
+            success: boolean;
+            result: import("modules/asphalt/essays/granulometry/dto/asphalt.calc.granulometry.dto").Calc_AsphaltGranulometry_Out;
+        } | {
+            material: any;
+            success: boolean;
+            error: {
+                status: any;
+                message: any;
+                name: any;
+            };
+        })[];
+        viscosity: {
+            material: any;
+            result: {
+                success: boolean;
+                result: import("../../../essays/viscosityRotational/dto/calc-viscosityRotational.dto").Calc_ViscosityRotational_Out;
+            } | {
+                success: boolean;
+                error: {
+                    status: any;
+                    message: any;
+                    name: any;
+                };
+            };
+        };
         success: boolean;
+        materials?: undefined;
         error?: undefined;
     } | {
         materials: any[];
+        success: boolean;
+        error: {
+            status: any;
+            message: any;
+            name: any;
+        };
+        granulometry?: undefined;
+        viscosity?: undefined;
+    }>;
+    saveGranulometryEssayData(body: any, userId: string): Promise<boolean | {
+        success: boolean;
+        error: {
+            status: any;
+            message: any;
+            name: any;
+        };
+    }>;
+    saveGranulometryEssayResults(body: any, userId: string): Promise<boolean | {
         success: boolean;
         error: {
             status: any;
@@ -68,15 +120,7 @@ export declare class SuperpaveService {
         };
         dosage?: undefined;
     }>;
-    saveMaterialSelectionStep(body: any, userId: string): Promise<boolean | {
-        success: boolean;
-        error: {
-            status: any;
-            message: any;
-            name: any;
-        };
-    }>;
-    getStep3Data(body: SuperpaveStep3Dto): Promise<{
+    getGranulometricCompositionData(body: any): Promise<{
         data: {
             nominalSize: {
                 controlPoints: {
@@ -93,7 +137,7 @@ export declare class SuperpaveService {
             percentsToList: any[];
             porcentagesPassantsN200: any[];
             bands: {
-                letter: string;
+                letter: any;
                 higher: any[];
                 lower: any[];
             };
@@ -111,7 +155,7 @@ export declare class SuperpaveService {
     }>;
     insertBlankPointsOnCurve(curve: any, axisX: any): Promise<any[]>;
     findEquationOfCurve(curve: any, axisX: any, y2: any, y1: any, x2: any, x1: any, i: any): Promise<any>;
-    calculateStep3Data(body: any): Promise<{
+    calculateGranulometricCompositionData(body: any): Promise<{
         data: {
             lowerComposition: {
                 sumOfPercents: any[];
@@ -151,7 +195,7 @@ export declare class SuperpaveService {
             name: any;
         };
     }>;
-    getStep4SpecificMasses(body: any): Promise<{
+    getFirstCompressionSpecificMasses(body: any): Promise<{
         data: {
             specificMasses: any[];
         };
@@ -166,7 +210,18 @@ export declare class SuperpaveService {
         };
         data?: undefined;
     }>;
-    getStep4Data(body: any): Promise<{
+    saveGranulometryCompositionData(body: any, userId: string): Promise<{
+        success: boolean;
+        error?: undefined;
+    } | {
+        success: boolean;
+        error: {
+            status: any;
+            message: any;
+            name: any;
+        };
+    }>;
+    calculateStep5Data(body: any): Promise<{
         data: {
             granulometryComposition: {
                 combinedGsb: number;
@@ -178,6 +233,7 @@ export declare class SuperpaveService {
                 mag: number;
                 pli: number;
                 percentsOfDosageWithBinder: number[];
+                curve: string;
             }[];
             turnNumber: {
                 initialN: number;
@@ -197,18 +253,7 @@ export declare class SuperpaveService {
         };
         data?: undefined;
     }>;
-    saveStep4Data(body: any, userId: string): Promise<{
-        success: boolean;
-        error?: undefined;
-    } | {
-        success: boolean;
-        error: {
-            status: any;
-            message: any;
-            name: any;
-        };
-    }>;
-    calculateGmm(body: any): Promise<{
+    calculateGmm_RiceTest(body: any): Promise<{
         data: any;
         success: boolean;
         error?: undefined;
@@ -221,7 +266,7 @@ export declare class SuperpaveService {
             name: any;
         };
     }>;
-    saveStep5Data(body: any, userId: string): Promise<{
+    saveInitialBinderStep(body: any, userId: string): Promise<{
         success: boolean;
         error?: undefined;
     } | {
@@ -232,7 +277,18 @@ export declare class SuperpaveService {
             name: any;
         };
     }>;
-    getStep6Parameters(body: any): Promise<{
+    saveFirstCompressionData(body: any, userId: string): Promise<{
+        success: boolean;
+        error?: undefined;
+    } | {
+        success: boolean;
+        error: {
+            status: any;
+            message: any;
+            name: any;
+        };
+    }>;
+    getFirstCompressionParametersData(body: any): Promise<{
         data: {
             table1: {
                 trafficVolume: any;
@@ -298,7 +354,7 @@ export declare class SuperpaveService {
         };
         data?: undefined;
     }>;
-    saveStep6Data(body: any, userId: string): Promise<{
+    saveFirstCompressionParamsData(body: any, userId: string): Promise<{
         success: boolean;
         error?: undefined;
     } | {
@@ -309,7 +365,18 @@ export declare class SuperpaveService {
             name: any;
         };
     }>;
-    getStep7Parameters(body: any): Promise<{
+    savePercentsOfChosenCurveData(body: any, userId: string): Promise<{
+        success: boolean;
+        error?: undefined;
+    } | {
+        success: boolean;
+        error: {
+            status: any;
+            message: any;
+            name: any;
+        };
+    }>;
+    getChosenCurvePercentsData(body: any): Promise<{
         data: {};
         success: boolean;
         error?: undefined;
@@ -322,19 +389,8 @@ export declare class SuperpaveService {
         };
         data?: undefined;
     }>;
-    saveStep7Data(body: any, userId: string): Promise<{
-        success: boolean;
-        error?: undefined;
-    } | {
-        success: boolean;
-        error: {
-            status: any;
-            message: any;
-            name: any;
-        };
-    }>;
-    calculateStep7RiceTest(body: any): Promise<{
-        data: any;
+    calculateSecondCompressionRiceTest(body: any): Promise<{
+        data: number;
         success: boolean;
         error?: undefined;
     } | {
@@ -359,7 +415,7 @@ export declare class SuperpaveService {
             name: any;
         };
     }>;
-    calculateVolumetricParametersOfChoosenGranulometryComposition(body: any): Promise<{
+    calculateSecondCompressionData(body: any): Promise<{
         data: {
             composition: {
                 halfLess: {
@@ -441,7 +497,7 @@ export declare class SuperpaveService {
             name: any;
         };
     }>;
-    saveStep8Data(body: any, userId: string): Promise<{
+    saveSecondCompressionData(body: any, userId: string): Promise<{
         success: boolean;
         error?: undefined;
     } | {
@@ -452,7 +508,7 @@ export declare class SuperpaveService {
             name: any;
         };
     }>;
-    getStep9Data(body: any): Promise<{
+    getSecondCompressionPercentageData(body: any): Promise<{
         data: {
             optimumContent: any;
             graphs: {
@@ -476,7 +532,18 @@ export declare class SuperpaveService {
         };
         data?: undefined;
     }>;
-    saveStep9Data(body: any, userId: string): Promise<{
+    saveSecondCompressionParams(body: any, userId: string): Promise<{
+        success: boolean;
+        error?: undefined;
+    } | {
+        success: boolean;
+        error: {
+            status: any;
+            message: any;
+            name: any;
+        };
+    }>;
+    saveConfirmattionCompressionData(body: any, userId: string): Promise<{
         success: boolean;
         error?: undefined;
     } | {
@@ -500,7 +567,7 @@ export declare class SuperpaveService {
         };
         data?: undefined;
     }>;
-    calculateVolumetricParametersOfConfirmGranulometryComposition(body: any): Promise<{
+    calculateDosageResumeEquation(body: any): Promise<{
         data: {
             ponderatedPercentsOfDosage: any;
             samplesData: any;
@@ -526,7 +593,7 @@ export declare class SuperpaveService {
         };
         data?: undefined;
     }>;
-    saveStep10Data(body: any, userId: string): Promise<{
+    saveStep11Data(body: any, userId: string): Promise<{
         success: boolean;
         error?: undefined;
     } | {
