@@ -12,6 +12,24 @@ export type SuperpaveGeneralData = {
     description?: string;
     step: number;
 };
+export type GranulometryEssayResults = {
+    material: SuperpaveGeneralData;
+    result: any;
+};
+export type SuperpaveGranulometryEssayData = {
+    material_mass: number;
+    table_data: {
+        sieve_label: string;
+        sieve_value: number;
+        passant: number;
+        retained: number;
+    }[];
+    bottom: number;
+};
+export type SuperpaveGranulometryEssayResults = {
+    granulometrys: GranulometryEssayResults[];
+    viscosity: GranulometryEssayResults;
+};
 export type SuperpaveMaterialData = {
     aggregates: {
         name: string;
@@ -135,7 +153,7 @@ export type FirstCompressionData = {
         temperatureOfWater: number;
     }[];
 };
-export type FirstCurvePercentagesData = {
+export type FirstCompressionParamsData = {
     table1: {
         expectedPorcentageGmmInitialN: number;
         expectedPorcentageGmmMaxN: number;
@@ -388,11 +406,13 @@ export declare class Superpave {
     _id: string;
     step: number;
     generalData: SuperpaveGeneralData;
+    granulometryEssayData: SuperpaveGranulometryEssayData;
+    granulometryEssayResults: SuperpaveGranulometryEssayResults;
     materialSelectionData: SuperpaveMaterialData;
     granulometryCompositionData: GranulometryCompositionData;
     initialBinderData: InitialBinderData;
     firstCompressionData: FirstCompressionData;
-    firstCurvePercentagesData: FirstCurvePercentagesData;
+    firstCompressionParamsData: FirstCompressionParamsData;
     chosenCurvePercentagesData: ChosenCurvePercentagesData;
     secondCompressionData: SecondCompressionData;
     secondCompressionParams: SecondCompressionParams;

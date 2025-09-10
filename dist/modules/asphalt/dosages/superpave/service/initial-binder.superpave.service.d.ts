@@ -1,22 +1,17 @@
-import { SuperpaveRepository } from '../repository';
-import { GeneralData_Superpave_Service } from './general-data.superpave.service';
-import { GranulometryComposition_Superpave_Service } from './granulometry-composition.superpave.service';
-import { MaterialSelection_Superpave_Service } from './material-selection.superpave.service';
-import { MaterialsRepository } from 'modules/asphalt/materials/repository';
 import { SpecifyMassRepository } from 'modules/asphalt/essays/specifyMass/repository';
+import { SuperpaveRepository } from '../repository';
+import { Model } from 'mongoose';
+import { SuperpaveDocument } from '../schemas';
 export declare class InitialBinder_Superpave_Service {
-    private readonly superpave_repository;
-    private readonly generalData_Service;
-    private readonly materialSelection_Service;
-    private readonly granulometryComposition_Service;
-    private readonly asphaltMaterialRepository;
+    private superpaveModel;
     private readonly specificMassRepository;
+    private readonly superpave_repository;
     private logger;
-    constructor(superpave_repository: SuperpaveRepository, generalData_Service: GeneralData_Superpave_Service, materialSelection_Service: MaterialSelection_Superpave_Service, granulometryComposition_Service: GranulometryComposition_Superpave_Service, asphaltMaterialRepository: MaterialsRepository, specificMassRepository: SpecifyMassRepository);
-    getStep4SpecificMasses(body: any): Promise<{
+    constructor(superpaveModel: Model<SuperpaveDocument>, specificMassRepository: SpecifyMassRepository, superpave_repository: SuperpaveRepository);
+    getFirstCompressionSpecificMasses(body: any): Promise<{
         specificMasses: any[];
     }>;
-    getStep4Data(body: any): Promise<{
+    calculateStep5Data(body: any): Promise<{
         granulometryComposition: {
             combinedGsb: number;
             combinedGsa: number;
@@ -27,6 +22,7 @@ export declare class InitialBinder_Superpave_Service {
             mag: number;
             pli: number;
             percentsOfDosageWithBinder: number[];
+            curve: string;
         }[];
         turnNumber: {
             initialN: number;
@@ -35,8 +31,12 @@ export declare class InitialBinder_Superpave_Service {
             tex: string;
         };
     }>;
-    calculateDenominatorGsa_Gsb(listOfSpecificMasses: any, percentsOfDosage: any): {
+    calculateDenominatorGsa_Gsb(listOfSpecificMasses: {
+        bulk: string;
+        apparent: string;
+    }[], percentsOfDosage: Record<string, string>[]): {
         denominatorGsb: number;
         denominatorGsa: number;
     };
+    saveInitialBinderStep(body: any, userId: string): Promise<boolean>;
 }

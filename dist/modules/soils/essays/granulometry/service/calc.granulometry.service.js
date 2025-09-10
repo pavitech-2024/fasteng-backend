@@ -48,31 +48,31 @@ let Calc_GRANULOMETRY_Service = Calc_GRANULOMETRY_Service_1 = class Calc_GRANULO
                     if (upperLimit.value === 0 || sieve.passant < upperLimit.value)
                         accumulate.upperLimit = {
                             value: sieve.passant,
-                            index: index
+                            index: index,
                         };
                 }
                 else {
                     if (inferiorLimit.value === 0 || sieve.passant > inferiorLimit.value)
                         accumulate.inferiorLimit = {
                             value: sieve.passant,
-                            index: index
+                            index: index,
                         };
                 }
                 return accumulate;
             }, {
                 upperLimit: {
                     value: 0,
-                    index: 0
+                    index: 0,
                 },
                 inferiorLimit: {
                     value: 0,
-                    index: 0
-                }
+                    index: 0,
+                },
             });
         };
     }
     calculateGranulometry(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ step2Data }) {
+        return __awaiter(this, arguments, void 0, function* ({ step2Data, }) {
             try {
                 this.logger.log('calculate granulometry on calc.granulometry.service.ts > [body]');
                 const { table_data, sample_mass, bottom } = step2Data;
@@ -119,11 +119,11 @@ let Calc_GRANULOMETRY_Service = Calc_GRANULOMETRY_Service_1 = class Calc_GRANULO
                         else
                             nominal_diameter = (0, sieves_1.getSieveValue)(table_data[i - 1].sieve);
                     }
-                    graph_data.push(([(0, sieves_1.getSieveValue)(label), passant_porcentage]));
+                    graph_data.push([(0, sieves_1.getSieveValue)(label), passant_porcentage]);
                 }
-                fineness_module = Math.round(100 * fineness_module / 100) / 100;
+                fineness_module = Math.round((100 * fineness_module) / 100) / 100;
                 total_retained = Math.round(100 * total_retained) / 100;
-                const error = Math.round(100 * (sample_mass - total_retained - bottom) * 100 / sample_mass) / 100;
+                const error = Math.round((100 * (sample_mass - total_retained - bottom) * 100) / sample_mass) / 100;
                 const limit_10 = this.getPercentage(10, table_data);
                 const limit_30 = this.getPercentage(30, table_data);
                 const limit_60 = this.getPercentage(60, table_data);
@@ -136,8 +136,8 @@ let Calc_GRANULOMETRY_Service = Calc_GRANULOMETRY_Service_1 = class Calc_GRANULO
                 console.log(diameter10);
                 console.log(diameter30);
                 console.log(diameter60);
-                const cnu = Math.round(100 * diameter60 / diameter10) / 100;
-                const cc = Math.round(100 * Math.pow(diameter30, 2) / (diameter60 * diameter10)) / 100;
+                const cnu = Math.round((100 * diameter60) / diameter10) / 100;
+                const cc = Math.round((100 * Math.pow(diameter30, 2)) / (diameter60 * diameter10)) / 100;
                 return {
                     success: true,
                     result: {
@@ -152,13 +152,13 @@ let Calc_GRANULOMETRY_Service = Calc_GRANULOMETRY_Service_1 = class Calc_GRANULO
                         cc,
                         cnu,
                         error,
-                    }
+                    },
                 };
             }
             catch (error) {
                 return {
                     success: false,
-                    result: null
+                    result: null,
                 };
             }
         });
@@ -167,6 +167,7 @@ let Calc_GRANULOMETRY_Service = Calc_GRANULOMETRY_Service_1 = class Calc_GRANULO
 exports.Calc_GRANULOMETRY_Service = Calc_GRANULOMETRY_Service;
 exports.Calc_GRANULOMETRY_Service = Calc_GRANULOMETRY_Service = Calc_GRANULOMETRY_Service_1 = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [repository_1.GranulometryRepository, repository_2.SamplesRepository])
+    __metadata("design:paramtypes", [repository_1.GranulometryRepository,
+        repository_2.SamplesRepository])
 ], Calc_GRANULOMETRY_Service);
 //# sourceMappingURL=calc.granulometry.service.js.map

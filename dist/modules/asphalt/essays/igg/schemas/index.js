@@ -41,7 +41,7 @@ __decorate([
     __metadata("design:type", Object)
 ], Igg.prototype, "results", void 0);
 exports.Igg = Igg = __decorate([
-    (0, mongoose_1.Schema)({ collection: 'igg' })
+    (0, mongoose_1.Schema)({ collection: 'igg', timestamps: true })
 ], Igg);
 exports.IggSchema = mongoose_1.SchemaFactory.createForClass(Igg);
 //# sourceMappingURL=index.js.map

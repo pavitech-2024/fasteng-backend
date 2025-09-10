@@ -58,4 +58,20 @@ export class FwdService {
       return { success: false, error: { status, message, name } };
     }
   }
+
+  async deleteEssay(id: string) {
+    try {
+      const fwd = await this.fwd_Repository.findOne({ _id: id });
+
+      if (fwd) {
+        await this.fwd_Repository.deleteOne(id);
+      }
+
+      return { success: true, data: fwd };
+    } catch (error) {
+      const { status, name, message } = error;
+
+      return { success: false, error: { status, message, name } };
+    }
+  }
 }

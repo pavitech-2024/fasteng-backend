@@ -7,4 +7,5 @@ export declare class FwdRepository {
     findAll(): Promise<Fwd[]>;
     findAllByUserId(id: string): Promise<Fwd[]>;
     create(fwd: any): Promise<Fwd>;
+    deleteOne(id: string): Promise<Fwd>;
 }

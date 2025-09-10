@@ -38,12 +38,14 @@ let SamplesRepository = class SamplesRepository {
     }
     find() {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.sampleModel.find();
+            const samples = yield this.sampleModel.find().sort({ createdAt: -1 });
+            return samples;
         });
     }
     findOne(samplesFilterQuery) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.sampleModel.findOne(samplesFilterQuery);
+            const sample = yield this.sampleModel.findOne(samplesFilterQuery);
+            return sample;
         });
     }
     findOneAndUpdate(samplesFilterQuery, sample) {

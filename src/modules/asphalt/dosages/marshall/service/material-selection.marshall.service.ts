@@ -36,8 +36,6 @@ export class MaterialSelection_Marshall_Service {
 
       const rotationalViscosities = await this.rotationalViscosity_repository.findAll();
 
-      const specificMasses = await this.specificMass_repository.findAll();
-
       const filteredMaterials = materials.filter((material) => {
         const { _id, type } = material;
 
@@ -52,11 +50,7 @@ export class MaterialSelection_Marshall_Service {
             return _id.toString() === granulometryMaterial._id.toString();
           });
 
-          const specificMassesEssays = specificMasses.some(({ generalData }) => {
-            const { material: specificMassMaterial } = generalData;
-            return _id.toString() === specificMassMaterial._id.toString();
-          })
-          return granulometriesEssays && specificMassesEssays;
+          return granulometriesEssays;
         };
       });
 

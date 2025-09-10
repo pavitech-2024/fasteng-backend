@@ -1,5 +1,5 @@
-import { Model } from "mongoose";
-import { Ddui, DduiDocument } from "../schemas";
+import { Model } from 'mongoose';
+import { Ddui, DduiDocument } from '../schemas';
 export declare class DduiRepository {
     private dduiModel;
     constructor(dduiModel: Model<DduiDocument>);
@@ -7,4 +7,5 @@ export declare class DduiRepository {
     findAll(): Promise<Ddui[]>;
     create(ddui: any): Promise<Ddui>;
     findAllByUserId(id: string): Promise<Ddui[]>;
+    deleteOne(id: string): Promise<Ddui>;
 }

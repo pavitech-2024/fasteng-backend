@@ -36,7 +36,7 @@ __decorate([
     __metadata("design:type", Object)
 ], Fwd.prototype, "results", void 0);
 exports.Fwd = Fwd = __decorate([
-    (0, mongoose_1.Schema)({ collection: 'fwd' })
+    (0, mongoose_1.Schema)({ collection: 'fwd', timestamps: true })
 ], Fwd);
 exports.FwdSchema = mongoose_1.SchemaFactory.createForClass(Fwd);
 //# sourceMappingURL=index.js.map

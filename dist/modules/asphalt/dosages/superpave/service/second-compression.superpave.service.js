@@ -46,16 +46,14 @@ let SecondCompression_Superpave_Service = SecondCompression_Superpave_Service_1 
         this.superpaveRepository = superpaveRepository;
         this.logger = new common_1.Logger(SecondCompression_Superpave_Service_1.name);
     }
-    calculateStep7RiceTest(sampleAirDryMass, containerMassWaterSample, containerWaterMass, waterTemperatureCorrection) {
-        try {
-            this.logger.log({}, 'start calculateStep7RiceTest > SecondCompression_Superpave_Service');
-            const gmm = (sampleAirDryMass / (sampleAirDryMass + containerWaterMass - containerMassWaterSample)) *
-                waterTemperatureCorrection;
-            return gmm;
+    calculateSecondCompressionRiceTest(drySampleMass, containerSampleWaterMass, containerWaterMass, temperatureCorrection) {
+        const numerator = drySampleMass;
+        const denominator = drySampleMass + containerWaterMass - containerSampleWaterMass;
+        if (Math.abs(denominator) < 1e-6) {
+            throw new Error('Denominator is too close to zero');
         }
-        catch (error) {
-            throw error;
-        }
+        const gmm = (numerator / denominator) * temperatureCorrection;
+        return gmm;
     }
     calculateStep7Gmm(gmm) {
         try {
@@ -66,7 +64,7 @@ let SecondCompression_Superpave_Service = SecondCompression_Superpave_Service_1 
                     gmmValue.push(gmm[i].insertedGmm);
                 }
                 else {
-                    const value = this.calculateStep7RiceTest(gmm.massOfDrySample, gmm.massOfContainer_Water_Sample, gmm.massOfContainer_Water, gmm.waterTemperatureCorrection);
+                    const value = this.calculateSecondCompressionRiceTest(gmm.massOfDrySample, gmm.massOfContainer_Water_Sample, gmm.massOfContainer_Water, gmm.waterTemperatureCorrection);
                     gmmValue.push(value);
                 }
             }
@@ -76,10 +74,10 @@ let SecondCompression_Superpave_Service = SecondCompression_Superpave_Service_1 
             throw error;
         }
     }
-    calculateVolumetricParametersOfChoosenGranulometryComposition(body) {
+    calculateSecondCompressionData(body) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                this.logger.log({ body }, 'start step 7 volumetric parameters of choosen granulometry composition > SecondCompression_Superpave_Service');
+                this.logger.log({ body }, 'start calculating the second compression data > SecondCompression_Superpave_Service');
                 const { composition, binderSpecificGravity, porcentagesPassantsN200, maximumDensities: gmm, expectedPli, combinedGsb, percentsOfDosage, Gse, } = body;
                 const choosenGranulometryComposition = {
                     composition: {
@@ -279,10 +277,10 @@ let SecondCompression_Superpave_Service = SecondCompression_Superpave_Service_1 
                 sumIndirectTensileStrength = 0;
                 nIndirectTensileStrength = 0;
                 for (let i = 0; i < choosenGranulometryComposition.composition.normal.projectN.samplesData.length; i++) {
-                    if (choosenGranulometryComposition.composition.normal.projectN.samplesData[i].indirectTensileStrength !==
+                    if (choosenGranulometryComposition.composition.normal.projectN.samplesData[i].diametralTractionResistance !==
                         undefined) {
                         sumIndirectTensileStrength +=
-                            choosenGranulometryComposition.composition.normal.projectN.samplesData[i].indirectTensileStrength;
+                            choosenGranulometryComposition.composition.normal.projectN.samplesData[i].diametralTractionResistance;
                         nIndirectTensileStrength++;
                     }
                 }
@@ -292,10 +290,10 @@ let SecondCompression_Superpave_Service = SecondCompression_Superpave_Service_1 
                 sumIndirectTensileStrength = 0;
                 nIndirectTensileStrength = 0;
                 for (let i = 0; i < choosenGranulometryComposition.composition.halfPlus.projectN.samplesData.length; i++) {
-                    if (choosenGranulometryComposition.composition.halfPlus.projectN.samplesData[i].indirectTensileStrength !==
+                    if (choosenGranulometryComposition.composition.halfPlus.projectN.samplesData[i].diametralTractionResistance !==
                         undefined) {
                         sumIndirectTensileStrength +=
-                            choosenGranulometryComposition.composition.halfPlus.projectN.samplesData[i].indirectTensileStrength;
+                            choosenGranulometryComposition.composition.halfPlus.projectN.samplesData[i].diametralTractionResistance;
                         nIndirectTensileStrength++;
                     }
                 }
@@ -305,10 +303,10 @@ let SecondCompression_Superpave_Service = SecondCompression_Superpave_Service_1 
                 sumIndirectTensileStrength = 0;
                 nIndirectTensileStrength = 0;
                 for (let i = 0; i < choosenGranulometryComposition.composition.onePlus.projectN.samplesData.length; i++) {
-                    if (choosenGranulometryComposition.composition.onePlus.projectN.samplesData[i].indirectTensileStrength !==
+                    if (choosenGranulometryComposition.composition.onePlus.projectN.samplesData[i].diametralTractionResistance !==
                         undefined) {
                         sumIndirectTensileStrength +=
-                            choosenGranulometryComposition.composition.onePlus.projectN.samplesData[i].indirectTensileStrength;
+                            choosenGranulometryComposition.composition.onePlus.projectN.samplesData[i].diametralTractionResistance;
                         nIndirectTensileStrength++;
                     }
                 }
@@ -343,9 +341,9 @@ let SecondCompression_Superpave_Service = SecondCompression_Superpave_Service_1 
     }
     calculateGmbCP(data) {
         for (let i = 0; i < data.length; i++) {
-            data[i].gmb =
-                (Math.round((data[i].dryMass / (data[i].drySurfaceSaturatedMass - data[i].submergedMass)) * 1e3) / 1e3) *
-                    data[i].waterTemperatureCorrection;
+            const denominator = data[i].drySurfaceSaturatedMass - data[i].submergedMass;
+            const gmb = (Math.round((data[i].dryMass / denominator) * 1e3) / 1e3) * data[i].waterTemperatureCorrection;
+            data[i].gmb = gmb;
         }
         return data;
     }
@@ -362,7 +360,12 @@ let SecondCompression_Superpave_Service = SecondCompression_Superpave_Service_1 
     }
     percentageWaterAbsorbed(data) {
         const [averageDryMass, averageSubmergedMass, averageSaturedMass] = this.calculateMassMedia(data);
-        const percentWaterAbs = (100 * (averageSaturedMass - averageDryMass)) / (averageSaturedMass - averageSubmergedMass);
+        const isValid = [averageDryMass, averageSubmergedMass, averageSaturedMass].every((val) => typeof val === 'number' && !isNaN(val));
+        const denominator = averageSaturedMass - averageSubmergedMass;
+        if (!isValid || Math.abs(denominator) < 1e-6) {
+            return 0;
+        }
+        const percentWaterAbs = (100 * (averageSaturedMass - averageDryMass)) / denominator;
         return percentWaterAbs;
     }
     calculateMassMedia(data) {
@@ -380,9 +383,10 @@ let SecondCompression_Superpave_Service = SecondCompression_Superpave_Service_1 
         return [averageDryMass, averageSubmergedMass, averageSaturedMass];
     }
     calculateVv(curve) {
-        return (1 - curve.projectN.gmb / curve.gmm) * 100;
+        const vv = (1 - curve.projectN.gmb / curve.gmm) * 100;
+        return vv;
     }
-    saveStep8Data(body, userId) {
+    saveSecondCompressionData(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('save superpave second compression data step on second-compression-data.superpave.service.ts > [body]', { body });

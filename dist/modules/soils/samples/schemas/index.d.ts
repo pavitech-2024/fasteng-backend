@@ -5,7 +5,6 @@ export declare class Sample {
     name: string;
     type: 'inorganicSoil' | 'organicSoil' | 'pavimentLayer';
     userId: string;
-    createdAt: Date;
     description: {
         construction?: string;
         provenance?: string;

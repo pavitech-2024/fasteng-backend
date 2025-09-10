@@ -163,11 +163,11 @@ export class OptimumBinderContent_Marshall_Service {
       if (maxSpecificGravity.method === 'GMM') {
   
         const GMMs = [
-          maxSpecificGravity.results.lessOne,
-          maxSpecificGravity.results.lessHalf,
-          maxSpecificGravity.results.normal,
-          maxSpecificGravity.results.plusHalf,
-          maxSpecificGravity.results.plusOne,
+          maxSpecificGravity.result.lessOne,
+          maxSpecificGravity.result.lessHalf,
+          maxSpecificGravity.result.normal,
+          maxSpecificGravity.result.plusHalf,
+          maxSpecificGravity.result.plusOne,
         ];
   
         const Contents = [
