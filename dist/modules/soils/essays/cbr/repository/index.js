@@ -47,9 +47,9 @@ let CbrRepository = class CbrRepository {
         });
     }
 };
-exports.CbrRepository = CbrRepository;
-exports.CbrRepository = CbrRepository = __decorate([
+CbrRepository = __decorate([
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.Cbr.name, database_config_1.DATABASE_CONNECTION.SOILS)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], CbrRepository);
+exports.CbrRepository = CbrRepository;
 //# sourceMappingURL=index.js.map

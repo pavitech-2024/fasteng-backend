@@ -30,8 +30,8 @@ let GeneralData_Abrasion_Service = GeneralData_Abrasion_Service_1 = class Genera
         this.materialRepository = materialRepository;
         this.logger = new common_1.Logger(GeneralData_Abrasion_Service_1.name);
     }
-    verifyInitAbrasion(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ name, material }) {
+    verifyInitAbrasion({ name, material }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('verify init abrasion on general-data.abrasion.service.ts > [body]');
                 const materialExists = yield this.materialRepository.findOne({ _id: material._id });
@@ -48,9 +48,9 @@ let GeneralData_Abrasion_Service = GeneralData_Abrasion_Service_1 = class Genera
         });
     }
 };
-exports.GeneralData_Abrasion_Service = GeneralData_Abrasion_Service;
-exports.GeneralData_Abrasion_Service = GeneralData_Abrasion_Service = GeneralData_Abrasion_Service_1 = __decorate([
+GeneralData_Abrasion_Service = GeneralData_Abrasion_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_2.AbrasionRepository, repository_1.MaterialsRepository])
 ], GeneralData_Abrasion_Service);
+exports.GeneralData_Abrasion_Service = GeneralData_Abrasion_Service;
 //# sourceMappingURL=general-data.abrasion.service.js.map

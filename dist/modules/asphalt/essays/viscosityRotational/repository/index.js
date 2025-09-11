@@ -52,9 +52,9 @@ let ViscosityRotationalRepository = class ViscosityRotationalRepository {
         });
     }
 };
-exports.ViscosityRotationalRepository = ViscosityRotationalRepository;
-exports.ViscosityRotationalRepository = ViscosityRotationalRepository = __decorate([
+ViscosityRotationalRepository = __decorate([
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.ViscosityRotational.name, database_config_1.DATABASE_CONNECTION.ASPHALT)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], ViscosityRotationalRepository);
+exports.ViscosityRotationalRepository = ViscosityRotationalRepository;
 //# sourceMappingURL=index.js.map

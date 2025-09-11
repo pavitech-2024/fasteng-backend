@@ -28,8 +28,8 @@ let GeneralData_Ddui_Service = GeneralData_Ddui_Service_1 = class GeneralData_Dd
         this.dduiRepository = dduiRepository;
         this.logger = new common_1.Logger(GeneralData_Ddui_Service_1.name);
     }
-    verifyInitDdui(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ name }) {
+    verifyInitDdui({ name }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('verify init ddui on general-data.ddui.service.ts > [body]');
                 const dduiExists = yield this.dduiRepository.findOne({ "generalData.name": name });
@@ -43,9 +43,9 @@ let GeneralData_Ddui_Service = GeneralData_Ddui_Service_1 = class GeneralData_Dd
         });
     }
 };
-exports.GeneralData_Ddui_Service = GeneralData_Ddui_Service;
-exports.GeneralData_Ddui_Service = GeneralData_Ddui_Service = GeneralData_Ddui_Service_1 = __decorate([
+GeneralData_Ddui_Service = GeneralData_Ddui_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_1.DduiRepository])
 ], GeneralData_Ddui_Service);
+exports.GeneralData_Ddui_Service = GeneralData_Ddui_Service;
 //# sourceMappingURL=general-data.ddui.service.js.map

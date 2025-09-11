@@ -13,7 +13,6 @@ exports.OutputLoginUserDto = exports.InputLoginUserDto = void 0;
 const class_validator_1 = require("class-validator");
 class InputLoginUserDto {
 }
-exports.InputLoginUserDto = InputLoginUserDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsEmail)(),
@@ -23,6 +22,7 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], InputLoginUserDto.prototype, "password", void 0);
+exports.InputLoginUserDto = InputLoginUserDto;
 class OutputLoginUserDto {
 }
 exports.OutputLoginUserDto = OutputLoginUserDto;

@@ -18,8 +18,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Result_UnitMass_Service = void 0;
 const common_1 = require("@nestjs/common");
 let Result_UnitMass_Service = class Result_UnitMass_Service {
-    calculateUnitMass(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ step2Data }) {
+    calculateUnitMass({ step2Data }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 const result = (step2Data.containerWeight + step2Data.sampleContainerWeight) / step2Data.containerVolume;
                 return {
@@ -35,8 +35,8 @@ let Result_UnitMass_Service = class Result_UnitMass_Service {
         });
     }
 };
-exports.Result_UnitMass_Service = Result_UnitMass_Service;
-exports.Result_UnitMass_Service = Result_UnitMass_Service = __decorate([
+Result_UnitMass_Service = __decorate([
     (0, common_1.Injectable)()
 ], Result_UnitMass_Service);
+exports.Result_UnitMass_Service = Result_UnitMass_Service;
 //# sourceMappingURL=result.unitMass.service.js.map

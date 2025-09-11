@@ -16,11 +16,11 @@ const Models = [{ name: schemas_1.StabilizedLayers_Sample.name, schema: schemas_
 const Modules = [stabilized_layers_samples_module_1.StabilizedLayersSamplesModule];
 let StabilizedLayersModule = class StabilizedLayersModule {
 };
-exports.StabilizedLayersModule = StabilizedLayersModule;
-exports.StabilizedLayersModule = StabilizedLayersModule = __decorate([
+StabilizedLayersModule = __decorate([
     (0, common_1.Module)({
         imports: [mongoose_1.MongooseModule.forFeature(Models, database_config_1.DATABASE_CONNECTION.PROMEDINA), ...Modules],
         exports: [mongoose_1.MongooseModule, ...Modules],
     })
 ], StabilizedLayersModule);
+exports.StabilizedLayersModule = StabilizedLayersModule;
 //# sourceMappingURL=stabilized-layers.module.js.map

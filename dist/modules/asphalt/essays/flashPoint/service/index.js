@@ -76,11 +76,11 @@ let FlashPointService = FlashPointService_1 = class FlashPointService {
         });
     }
 };
-exports.FlashPointService = FlashPointService;
-exports.FlashPointService = FlashPointService = FlashPointService_1 = __decorate([
+FlashPointService = FlashPointService_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [general_data_flashPoint_service_1.GeneralData_FLASHPOINT_Service,
         calc_flashPoint_service_1.Calc_FLASHPOINT_Service,
         repository_1.FlashPointRepository])
 ], FlashPointService);
+exports.FlashPointService = FlashPointService;
 //# sourceMappingURL=index.js.map

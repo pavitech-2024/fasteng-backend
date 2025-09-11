@@ -1,1 +1,1 @@
-{"version":3,"file":"calc.sucs.dto.js","sourceRoot":"","sources":["../../../../../../src/modules/soils/essays/sucs/dto/calc.sucs.dto.ts"],"names":[],"mappings":";;;;;;;;;;;;AAAA,qDAA6C;AAG7C,MAAa,aAAa;CAMzB;AAND,sCAMC;AAJC;IADC,IAAA,4BAAU,GAAE;;kDACoB;AAGjC;IADC,IAAA,4BAAU,GAAE;;gDACgB"}
+{"version":3,"file":"calc.sucs.dto.js","sourceRoot":"","sources":["../../../../../../src/modules/soils/essays/sucs/dto/calc.sucs.dto.ts"],"names":[],"mappings":";;;;;;;;;;;;AAAA,qDAA6C;AAG7C,MAAa,aAAa;CAMzB;AALC;IAAC,IAAA,4BAAU,GAAE;;kDACoB;AAEjC;IAAC,IAAA,4BAAU,GAAE;;gDACgB;AAL/B,sCAMC"}

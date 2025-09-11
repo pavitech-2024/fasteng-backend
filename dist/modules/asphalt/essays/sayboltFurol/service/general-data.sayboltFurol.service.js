@@ -30,8 +30,8 @@ let GeneralData_SayboltFurol_Service = GeneralData_SayboltFurol_Service_1 = clas
         this.materialsRepository = materialsRepository;
         this.logger = new common_1.Logger(GeneralData_SayboltFurol_Service_1.name);
     }
-    verifyInitSayboltFurol(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ name, material }) {
+    verifyInitSayboltFurol({ name, material }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('verify init saybolt-furol on general-data.sayboltFurol.service.ts > [body]');
                 const materialExists = yield this.materialsRepository.findOne({ _id: material._id });
@@ -50,10 +50,10 @@ let GeneralData_SayboltFurol_Service = GeneralData_SayboltFurol_Service_1 = clas
         });
     }
 };
-exports.GeneralData_SayboltFurol_Service = GeneralData_SayboltFurol_Service;
-exports.GeneralData_SayboltFurol_Service = GeneralData_SayboltFurol_Service = GeneralData_SayboltFurol_Service_1 = __decorate([
+GeneralData_SayboltFurol_Service = GeneralData_SayboltFurol_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_2.SayboltFurolRepository,
         repository_1.MaterialsRepository])
 ], GeneralData_SayboltFurol_Service);
+exports.GeneralData_SayboltFurol_Service = GeneralData_SayboltFurol_Service;
 //# sourceMappingURL=general-data.sayboltFurol.service.js.map

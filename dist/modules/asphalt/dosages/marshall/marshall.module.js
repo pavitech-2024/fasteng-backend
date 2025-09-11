@@ -32,8 +32,7 @@ const services = [
 ];
 let MarshallModule = class MarshallModule {
 };
-exports.MarshallModule = MarshallModule;
-exports.MarshallModule = MarshallModule = __decorate([
+MarshallModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [controller_1.MarshallController],
@@ -41,4 +40,5 @@ exports.MarshallModule = MarshallModule = __decorate([
         exports: [service_1.MarshallService, repository_1.MarshallRepository],
     })
 ], MarshallModule);
+exports.MarshallModule = MarshallModule;
 //# sourceMappingURL=marshall.module.js.map

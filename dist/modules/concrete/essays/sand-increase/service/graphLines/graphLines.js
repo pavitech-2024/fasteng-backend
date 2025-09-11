@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.graphLines = graphLines;
+exports.graphLines = void 0;
 const leastSquaresRegression_1 = require("../../../../../../utils/leastSquaresRegression");
 function graphLines(listaDeX, listaDeY) {
     console.log('Lista X>', listaDeX, 'Lista Y>', listaDeY);
@@ -71,4 +71,5 @@ function graphLines(listaDeX, listaDeY) {
     };
     return graphLinesResult;
 }
+exports.graphLines = graphLines;
 //# sourceMappingURL=graphLines.js.map

@@ -19,16 +19,23 @@ const stabilized_layers_module_1 = require("./stabilized-layers/stabilized-layer
 const binder_asphalt_concrete_module_1 = require("./binder-asphalt-concrete/binder-asphalt-concrete.module");
 const schemas_3 = require("./binder-asphalt-concrete/samples/schemas");
 const binder_asphalt_concrete_samples_module_1 = require("./binder-asphalt-concrete/samples/binder-asphalt-concrete-samples.module");
+const fwd_analysis_schema_1 = require("./fwd/schemas/fwd-analysis.schema");
+const fwd_analysis_module_1 = require("./fwd//fwd-analysis.module");
 const Models = [
     { name: schemas_1.GranularLayers_Sample.name, schema: schemas_1.GranularLayers_SampleSchema },
     { name: schemas_2.StabilizedLayers_Sample.name, schema: schemas_2.StabilizedLayers_SampleSchema },
     { name: schemas_3.BinderAsphaltConcrete_Sample.name, schema: schemas_3.BinderAsphaltConcrete_SampleSchema },
+    { name: fwd_analysis_schema_1.FwdAnalysis.name, schema: fwd_analysis_schema_1.FwdAnalysisSchema },
 ];
-const Modules = [granular_layers_samples_module_1.GranularLayersSamplesModule, stabilized_layers_samples_module_1.StabilizedLayersSamplesModule, binder_asphalt_concrete_samples_module_1.BinderAsphaltConcreteSamplesModule];
+const Modules = [
+    granular_layers_samples_module_1.GranularLayersSamplesModule,
+    stabilized_layers_samples_module_1.StabilizedLayersSamplesModule,
+    binder_asphalt_concrete_samples_module_1.BinderAsphaltConcreteSamplesModule,
+    fwd_analysis_module_1.FwdModule,
+];
 let ProMedinaModule = class ProMedinaModule {
 };
-exports.ProMedinaModule = ProMedinaModule;
-exports.ProMedinaModule = ProMedinaModule = __decorate([
+ProMedinaModule = __decorate([
     (0, common_1.Global)(),
     (0, common_1.Module)({
         imports: [
@@ -37,8 +44,10 @@ exports.ProMedinaModule = ProMedinaModule = __decorate([
             granular_layers_module_1.GranularLayersModule,
             stabilized_layers_module_1.StabilizedLayersModule,
             binder_asphalt_concrete_module_1.BinderAsphaltConcreteModule,
+            fwd_analysis_module_1.FwdModule,
         ],
         exports: [mongoose_1.MongooseModule, ...Modules],
     })
 ], ProMedinaModule);
+exports.ProMedinaModule = ProMedinaModule;
 //# sourceMappingURL=pro-medina.module.js.map

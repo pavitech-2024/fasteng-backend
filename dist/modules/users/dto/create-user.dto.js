@@ -17,7 +17,6 @@ class CreateUserDto {
 exports.CreateUserDto = CreateUserDto;
 class InputCreateUserDto {
 }
-exports.InputCreateUserDto = InputCreateUserDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
@@ -31,4 +30,5 @@ __decorate([
     (0, class_transformer_1.Type)(() => Number),
     __metadata("design:type", Number)
 ], InputCreateUserDto.prototype, "connections", void 0);
+exports.InputCreateUserDto = InputCreateUserDto;
 //# sourceMappingURL=create-user.dto.js.map

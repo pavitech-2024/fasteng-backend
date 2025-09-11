@@ -30,8 +30,8 @@ let GeneralData_UnitMass_Service = GeneralData_UnitMass_Service_1 = class Genera
         this.materialsRepository = materialsRepository;
         this.logger = new common_1.Logger(GeneralData_UnitMass_Service_1.name);
     }
-    verifyInitUnitMass(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ experimentName, method, material }) {
+    verifyInitUnitMass({ experimentName, method, material }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('verify init unitMass on general-data.unitMass.service.ts > [body]');
                 this.logger.log('verify if material exists> [body]');
@@ -52,10 +52,10 @@ let GeneralData_UnitMass_Service = GeneralData_UnitMass_Service_1 = class Genera
         });
     }
 };
-exports.GeneralData_UnitMass_Service = GeneralData_UnitMass_Service;
-exports.GeneralData_UnitMass_Service = GeneralData_UnitMass_Service = GeneralData_UnitMass_Service_1 = __decorate([
+GeneralData_UnitMass_Service = GeneralData_UnitMass_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_2.UnitMassRepository,
         repository_1.MaterialsRepository])
 ], GeneralData_UnitMass_Service);
+exports.GeneralData_UnitMass_Service = GeneralData_UnitMass_Service;
 //# sourceMappingURL=general-data.unitMass.service.js.map

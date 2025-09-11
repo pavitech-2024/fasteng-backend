@@ -14,7 +14,6 @@ const mongoose_1 = require("@nestjs/mongoose");
 const class_validator_1 = require("class-validator");
 let ABCP = class ABCP {
 };
-exports.ABCP = ABCP;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, mongoose_1.Prop)({ type: Object }),
@@ -40,9 +39,10 @@ __decorate([
     (0, mongoose_1.Prop)({ type: Object }),
     __metadata("design:type", Object)
 ], ABCP.prototype, "results", void 0);
-exports.ABCP = ABCP = __decorate([
+ABCP = __decorate([
     (0, mongoose_1.Schema)({ collection: 'abcps' })
 ], ABCP);
+exports.ABCP = ABCP;
 const ABCPSchema = mongoose_1.SchemaFactory.createForClass(ABCP);
 exports.ABCPSchema = ABCPSchema;
 ABCPSchema.set('timestamps', true);

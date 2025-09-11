@@ -63,7 +63,6 @@ let ConcreteRcController = ConcreteRcController_1 = class ConcreteRcController {
         });
     }
 };
-exports.ConcreteRcController = ConcreteRcController;
 __decorate([
     (0, common_1.Post)('verify-init'),
     (0, swagger_1.ApiOperation)({
@@ -142,9 +141,10 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], ConcreteRcController.prototype, "saveConcreteEssay", null);
-exports.ConcreteRcController = ConcreteRcController = ConcreteRcController_1 = __decorate([
+ConcreteRcController = ConcreteRcController_1 = __decorate([
     (0, swagger_1.ApiTags)('concreteRc'),
     (0, common_1.Controller)('concrete/essays/concreteRc'),
     __metadata("design:paramtypes", [service_1.ConcreteRcService])
 ], ConcreteRcController);
+exports.ConcreteRcController = ConcreteRcController;
 //# sourceMappingURL=index.js.map

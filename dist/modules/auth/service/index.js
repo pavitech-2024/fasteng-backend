@@ -122,9 +122,9 @@ let AuthService = AuthService_1 = class AuthService {
         });
     }
 };
-exports.AuthService = AuthService;
-exports.AuthService = AuthService = AuthService_1 = __decorate([
+AuthService = AuthService_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_1.UsersRepository])
 ], AuthService);
+exports.AuthService = AuthService;
 //# sourceMappingURL=index.js.map

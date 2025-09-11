@@ -61,9 +61,9 @@ let SamplesRepository = class SamplesRepository {
         });
     }
 };
-exports.SamplesRepository = SamplesRepository;
-exports.SamplesRepository = SamplesRepository = __decorate([
+SamplesRepository = __decorate([
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.Sample.name, database_config_1.DATABASE_CONNECTION.SOILS)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], SamplesRepository);
+exports.SamplesRepository = SamplesRepository;
 //# sourceMappingURL=index.js.map

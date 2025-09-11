@@ -69,8 +69,8 @@ let Calc_CONCRETEGRANULOMETRY_Service = Calc_CONCRETEGRANULOMETRY_Service_1 = cl
             });
         };
     }
-    calculateGranulometry(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ step2Data, }) {
+    calculateGranulometry({ step2Data, }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('calculate granulometry on calc.granulometry.service.ts > [body]');
                 const { table_data, material_mass, bottom } = step2Data;
@@ -156,10 +156,10 @@ let Calc_CONCRETEGRANULOMETRY_Service = Calc_CONCRETEGRANULOMETRY_Service_1 = cl
         });
     }
 };
-exports.Calc_CONCRETEGRANULOMETRY_Service = Calc_CONCRETEGRANULOMETRY_Service;
-exports.Calc_CONCRETEGRANULOMETRY_Service = Calc_CONCRETEGRANULOMETRY_Service = Calc_CONCRETEGRANULOMETRY_Service_1 = __decorate([
+Calc_CONCRETEGRANULOMETRY_Service = Calc_CONCRETEGRANULOMETRY_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_1.ConcreteGranulometryRepository,
         repository_2.MaterialsRepository])
 ], Calc_CONCRETEGRANULOMETRY_Service);
+exports.Calc_CONCRETEGRANULOMETRY_Service = Calc_CONCRETEGRANULOMETRY_Service;
 //# sourceMappingURL=calc.granulometry.service.js.map

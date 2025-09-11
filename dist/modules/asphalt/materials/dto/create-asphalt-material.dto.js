@@ -13,7 +13,6 @@ exports.CreateAsphaltMaterialDto = void 0;
 const class_validator_1 = require("class-validator");
 class CreateAsphaltMaterialDto {
 }
-exports.CreateAsphaltMaterialDto = CreateAsphaltMaterialDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
@@ -24,4 +23,5 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], CreateAsphaltMaterialDto.prototype, "userId", void 0);
+exports.CreateAsphaltMaterialDto = CreateAsphaltMaterialDto;
 //# sourceMappingURL=create-asphalt-material.dto.js.map

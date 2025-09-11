@@ -103,8 +103,7 @@ let SandIncreaseService = SandIncreaseService_1 = class SandIncreaseService {
         });
     }
 };
-exports.SandIncreaseService = SandIncreaseService;
-exports.SandIncreaseService = SandIncreaseService = SandIncreaseService_1 = __decorate([
+SandIncreaseService = SandIncreaseService_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [general_data_sand_increase_service_1.GeneralData_SandIncrease_Service,
         calc_unitMass_service_1.Calc_UnitMass_Service,
@@ -112,4 +111,5 @@ exports.SandIncreaseService = SandIncreaseService = SandIncreaseService_1 = __de
         calc_sand_increase_service_1.Calc_SandIncrease_Service,
         repository_1.SandIncreaseRepository])
 ], SandIncreaseService);
+exports.SandIncreaseService = SandIncreaseService;
 //# sourceMappingURL=index.js.map

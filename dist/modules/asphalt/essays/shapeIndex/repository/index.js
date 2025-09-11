@@ -20,7 +20,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var ShapeIndexRepository_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ShapeIndexRepository = void 0;
 const mongoose_1 = require("@nestjs/mongoose");
@@ -28,10 +27,10 @@ const schemas_1 = require("../schemas");
 const database_config_1 = require("../../../../../infra/mongoose/database.config");
 const mongoose_2 = require("mongoose");
 const common_1 = require("@nestjs/common");
-let ShapeIndexRepository = ShapeIndexRepository_1 = class ShapeIndexRepository {
+let ShapeIndexRepository = class ShapeIndexRepository {
     constructor(shapeIndexModel) {
         this.shapeIndexModel = shapeIndexModel;
-        this.logger = new common_1.Logger(ShapeIndexRepository_1.name);
+        this.logger = new common_1.Logger(ShapeIndexRepository.name);
     }
     findOne(shapeIndexFilterQuery) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -50,9 +49,9 @@ let ShapeIndexRepository = ShapeIndexRepository_1 = class ShapeIndexRepository {
         });
     }
 };
-exports.ShapeIndexRepository = ShapeIndexRepository;
-exports.ShapeIndexRepository = ShapeIndexRepository = ShapeIndexRepository_1 = __decorate([
+ShapeIndexRepository = __decorate([
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.ShapeIndex.name, database_config_1.DATABASE_CONNECTION.ASPHALT)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], ShapeIndexRepository);
+exports.ShapeIndexRepository = ShapeIndexRepository;
 //# sourceMappingURL=index.js.map

@@ -13,7 +13,6 @@ exports.Calc_ElasticRecovery_Dto = void 0;
 const class_validator_1 = require("class-validator");
 class Calc_ElasticRecovery_Dto {
 }
-exports.Calc_ElasticRecovery_Dto = Calc_ElasticRecovery_Dto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
@@ -22,4 +21,5 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
 ], Calc_ElasticRecovery_Dto.prototype, "elasticRecoveryCalc", void 0);
+exports.Calc_ElasticRecovery_Dto = Calc_ElasticRecovery_Dto;
 //# sourceMappingURL=calc-elasticRecovery.dto.js.map

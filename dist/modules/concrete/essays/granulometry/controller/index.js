@@ -63,7 +63,6 @@ let ConcreteGranulometryController = ConcreteGranulometryController_1 = class Co
         });
     }
 };
-exports.ConcreteGranulometryController = ConcreteGranulometryController;
 __decorate([
     (0, common_1.Post)('verify-init'),
     (0, swagger_1.ApiOperation)({ summary: 'Verifica se é possível criar uma granulometria de ensaio de concreto com os dados enviados.' }),
@@ -131,9 +130,10 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], ConcreteGranulometryController.prototype, "saveConcreteEssay", null);
-exports.ConcreteGranulometryController = ConcreteGranulometryController = ConcreteGranulometryController_1 = __decorate([
+ConcreteGranulometryController = ConcreteGranulometryController_1 = __decorate([
     (0, swagger_1.ApiTags)('concrete-granulometry'),
     (0, common_1.Controller)('concrete/essays/granulometry'),
     __metadata("design:paramtypes", [service_1.ConcreteGranulometryService])
 ], ConcreteGranulometryController);
+exports.ConcreteGranulometryController = ConcreteGranulometryController;
 //# sourceMappingURL=index.js.map

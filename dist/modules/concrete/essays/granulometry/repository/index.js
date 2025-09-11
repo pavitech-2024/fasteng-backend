@@ -81,9 +81,9 @@ let ConcreteGranulometryRepository = class ConcreteGranulometryRepository {
         });
     }
 };
-exports.ConcreteGranulometryRepository = ConcreteGranulometryRepository;
-exports.ConcreteGranulometryRepository = ConcreteGranulometryRepository = __decorate([
+ConcreteGranulometryRepository = __decorate([
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.Granulometry.name, database_config_1.DATABASE_CONNECTION.CONCRETE)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], ConcreteGranulometryRepository);
+exports.ConcreteGranulometryRepository = ConcreteGranulometryRepository;
 //# sourceMappingURL=index.js.map

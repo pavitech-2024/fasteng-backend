@@ -35,8 +35,7 @@ let MaterialSelection_Superpave_Service = MaterialSelection_Superpave_Service_1 
         this.logger = new common_1.Logger(MaterialSelection_Superpave_Service_1.name);
     }
 };
-exports.MaterialSelection_Superpave_Service = MaterialSelection_Superpave_Service;
-exports.MaterialSelection_Superpave_Service = MaterialSelection_Superpave_Service = MaterialSelection_Superpave_Service_1 = __decorate([
+MaterialSelection_Superpave_Service = MaterialSelection_Superpave_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.Superpave.name, database_config_1.DATABASE_CONNECTION.ASPHALT)),
     __metadata("design:paramtypes", [mongoose_2.Model,
@@ -46,4 +45,5 @@ exports.MaterialSelection_Superpave_Service = MaterialSelection_Superpave_Servic
         repository_4.SuperpaveRepository,
         repository_5.ViscosityRotationalRepository])
 ], MaterialSelection_Superpave_Service);
+exports.MaterialSelection_Superpave_Service = MaterialSelection_Superpave_Service;
 //# sourceMappingURL=material-selection.superpave.service.js.map

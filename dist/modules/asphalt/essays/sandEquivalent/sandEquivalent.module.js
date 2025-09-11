@@ -16,8 +16,7 @@ const service_1 = require("./service");
 const services = [service_1.SandEquivalentService, general_data_sandEquivalent_service_1.GeneralData_SandEquivalent_Service, calc_sandEquivalent_service_1.Calc_SandEquivalent_Service];
 let SandEquivalentModule = class SandEquivalentModule {
 };
-exports.SandEquivalentModule = SandEquivalentModule;
-exports.SandEquivalentModule = SandEquivalentModule = __decorate([
+SandEquivalentModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [controller_1.SandEquivalentController],
@@ -25,4 +24,5 @@ exports.SandEquivalentModule = SandEquivalentModule = __decorate([
         exports: [service_1.SandEquivalentService, repository_1.SandEquivalentRepository],
     })
 ], SandEquivalentModule);
+exports.SandEquivalentModule = SandEquivalentModule;
 //# sourceMappingURL=sandEquivalent.module.js.map

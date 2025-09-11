@@ -30,8 +30,8 @@ let GeneralData_Rtcd_Service = GeneralData_Rtcd_Service_1 = class GeneralData_Rt
         this.materialsRepository = materialsRepository;
         this.logger = new common_1.Logger(GeneralData_Rtcd_Service_1.name);
     }
-    verifyInitRtcd(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ name }) {
+    verifyInitRtcd({ name }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('verify init rtcd on general-data.rtcd.service.ts > [body]');
                 const rtcdExists = yield this.rtcdRepository.findOne({ "generalData.name": name });
@@ -45,10 +45,10 @@ let GeneralData_Rtcd_Service = GeneralData_Rtcd_Service_1 = class GeneralData_Rt
         });
     }
 };
-exports.GeneralData_Rtcd_Service = GeneralData_Rtcd_Service;
-exports.GeneralData_Rtcd_Service = GeneralData_Rtcd_Service = GeneralData_Rtcd_Service_1 = __decorate([
+GeneralData_Rtcd_Service = GeneralData_Rtcd_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_2.RtcdRepository,
         repository_1.MaterialsRepository])
 ], GeneralData_Rtcd_Service);
+exports.GeneralData_Rtcd_Service = GeneralData_Rtcd_Service;
 //# sourceMappingURL=general-data.rtcd.service.js.map

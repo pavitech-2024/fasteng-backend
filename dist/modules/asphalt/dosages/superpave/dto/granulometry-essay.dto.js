@@ -13,7 +13,6 @@ exports.Calc_Superpave_GranulometyEssay_Dto = void 0;
 const class_validator_1 = require("class-validator");
 class Calc_Superpave_GranulometyEssay_Dto {
 }
-exports.Calc_Superpave_GranulometyEssay_Dto = Calc_Superpave_GranulometyEssay_Dto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsNumber)(),
@@ -29,4 +28,5 @@ __decorate([
     (0, class_validator_1.IsNumber)(),
     __metadata("design:type", Number)
 ], Calc_Superpave_GranulometyEssay_Dto.prototype, "bottom", void 0);
+exports.Calc_Superpave_GranulometyEssay_Dto = Calc_Superpave_GranulometyEssay_Dto;
 //# sourceMappingURL=granulometry-essay.dto.js.map

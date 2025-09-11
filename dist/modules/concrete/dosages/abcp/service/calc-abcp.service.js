@@ -31,8 +31,8 @@ let Calculate_ABCP_Results_Service = Calculate_ABCP_Results_Service_1 = class Ca
         this.unit_mass_repository = unit_mass_repository;
         this.logger = new common_1.Logger(Calculate_ABCP_Results_Service_1.name);
     }
-    calculateAbcpDosage(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ materialSelectionData, essaySelectionData, insertParamsData }) {
+    calculateAbcpDosage({ materialSelectionData, essaySelectionData, insertParamsData }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('calculate abcp on calc.abcp.service.ts > [body]');
                 const { fck, condition, reduction } = insertParamsData;
@@ -261,11 +261,11 @@ let Calculate_ABCP_Results_Service = Calculate_ABCP_Results_Service_1 = class Ca
         return Vareia * SPAreia;
     }
 };
-exports.Calculate_ABCP_Results_Service = Calculate_ABCP_Results_Service;
-exports.Calculate_ABCP_Results_Service = Calculate_ABCP_Results_Service = Calculate_ABCP_Results_Service_1 = __decorate([
+Calculate_ABCP_Results_Service = Calculate_ABCP_Results_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_1.MaterialsRepository,
         repository_2.ConcreteGranulometryRepository,
         repository_3.UnitMassRepository])
 ], Calculate_ABCP_Results_Service);
+exports.Calculate_ABCP_Results_Service = Calculate_ABCP_Results_Service;
 //# sourceMappingURL=calc-abcp.service.js.map

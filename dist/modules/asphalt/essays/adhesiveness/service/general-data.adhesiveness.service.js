@@ -30,8 +30,8 @@ let GeneralData_Adhesiveness_Service = GeneralData_Adhesiveness_Service_1 = clas
         this.materialsRepository = materialsRepository;
         this.logger = new common_1.Logger(GeneralData_Adhesiveness_Service_1.name);
     }
-    verifyInitAdhesiveness(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ name, material }) {
+    verifyInitAdhesiveness({ name, material }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('verify init adhesiveness on general-data.adhesiveness.service.ts > [body]');
                 const materialExists = yield this.materialsRepository.findOne({ _id: material._id });
@@ -50,10 +50,10 @@ let GeneralData_Adhesiveness_Service = GeneralData_Adhesiveness_Service_1 = clas
         });
     }
 };
-exports.GeneralData_Adhesiveness_Service = GeneralData_Adhesiveness_Service;
-exports.GeneralData_Adhesiveness_Service = GeneralData_Adhesiveness_Service = GeneralData_Adhesiveness_Service_1 = __decorate([
+GeneralData_Adhesiveness_Service = GeneralData_Adhesiveness_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_2.AdhesivenessRepository,
         repository_1.MaterialsRepository])
 ], GeneralData_Adhesiveness_Service);
+exports.GeneralData_Adhesiveness_Service = GeneralData_Adhesiveness_Service;
 //# sourceMappingURL=general-data.adhesiveness.service.js.map

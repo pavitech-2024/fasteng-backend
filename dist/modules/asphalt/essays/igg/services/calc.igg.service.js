@@ -27,8 +27,8 @@ let Calc_Igg_Service = Calc_Igg_Service_1 = class Calc_Igg_Service {
         this.iggRepository = iggRepository;
         this.logger = new common_1.Logger(Calc_Igg_Service_1.name);
     }
-    calculateIgg(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ iggStep3, iggStep4 }) {
+    calculateIgg({ iggStep3, iggStep4 }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { stakes } = iggStep3;
                 const sections = iggStep4.sections;
@@ -198,9 +198,9 @@ let Calc_Igg_Service = Calc_Igg_Service_1 = class Calc_Igg_Service {
         });
     }
 };
-exports.Calc_Igg_Service = Calc_Igg_Service;
-exports.Calc_Igg_Service = Calc_Igg_Service = Calc_Igg_Service_1 = __decorate([
+Calc_Igg_Service = Calc_Igg_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_1.IggRepository])
 ], Calc_Igg_Service);
+exports.Calc_Igg_Service = Calc_Igg_Service;
 //# sourceMappingURL=calc.igg.service.js.map

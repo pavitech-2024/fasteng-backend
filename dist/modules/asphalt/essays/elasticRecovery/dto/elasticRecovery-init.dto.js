@@ -14,7 +14,6 @@ const class_validator_1 = require("class-validator");
 const schemas_1 = require("../../../../../modules/asphalt/materials/schemas");
 class ElasticRecoveryInitDto {
 }
-exports.ElasticRecoveryInitDto = ElasticRecoveryInitDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
@@ -23,4 +22,5 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", schemas_1.Material)
 ], ElasticRecoveryInitDto.prototype, "material", void 0);
+exports.ElasticRecoveryInitDto = ElasticRecoveryInitDto;
 //# sourceMappingURL=elasticRecovery-init.dto.js.map

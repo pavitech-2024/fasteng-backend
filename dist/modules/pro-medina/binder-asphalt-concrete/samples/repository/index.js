@@ -135,9 +135,9 @@ let BinderAsphaltConcrete_SamplesRepository = class BinderAsphaltConcrete_Sample
         });
     }
 };
-exports.BinderAsphaltConcrete_SamplesRepository = BinderAsphaltConcrete_SamplesRepository;
-exports.BinderAsphaltConcrete_SamplesRepository = BinderAsphaltConcrete_SamplesRepository = __decorate([
+BinderAsphaltConcrete_SamplesRepository = __decorate([
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.BinderAsphaltConcrete_Sample.name, database_config_1.DATABASE_CONNECTION.PROMEDINA)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], BinderAsphaltConcrete_SamplesRepository);
+exports.BinderAsphaltConcrete_SamplesRepository = BinderAsphaltConcrete_SamplesRepository;
 //# sourceMappingURL=index.js.map

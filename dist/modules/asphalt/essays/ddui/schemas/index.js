@@ -14,7 +14,6 @@ const mongoose_1 = require("@nestjs/mongoose");
 const class_validator_1 = require("class-validator");
 let Ddui = class Ddui {
 };
-exports.Ddui = Ddui;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, mongoose_1.Prop)({ type: Object }),
@@ -35,8 +34,9 @@ __decorate([
     (0, mongoose_1.Prop)({ type: Object }),
     __metadata("design:type", Object)
 ], Ddui.prototype, "results", void 0);
-exports.Ddui = Ddui = __decorate([
+Ddui = __decorate([
     (0, mongoose_1.Schema)({ collection: 'ddui', timestamps: true })
 ], Ddui);
+exports.Ddui = Ddui;
 exports.DduiSchema = mongoose_1.SchemaFactory.createForClass(Ddui);
 //# sourceMappingURL=index.js.map

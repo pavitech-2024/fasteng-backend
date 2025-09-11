@@ -81,9 +81,9 @@ let ConcreteRtRepository = class ConcreteRtRepository {
         });
     }
 };
-exports.ConcreteRtRepository = ConcreteRtRepository;
-exports.ConcreteRtRepository = ConcreteRtRepository = __decorate([
+ConcreteRtRepository = __decorate([
     __param(0, (0, dist_1.InjectModel)(schemas_1.RT.name, database_config_1.DATABASE_CONNECTION.CONCRETE)),
     __metadata("design:paramtypes", [mongoose_1.Model])
 ], ConcreteRtRepository);
+exports.ConcreteRtRepository = ConcreteRtRepository;
 //# sourceMappingURL=index.js.map

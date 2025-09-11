@@ -22,8 +22,8 @@ let Calc_SayboltFurol_Service = Calc_SayboltFurol_Service_1 = class Calc_Saybolt
     constructor() {
         this.logger = new common_1.Logger(Calc_SayboltFurol_Service_1.name);
     }
-    calculateSayboltFurol(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ sayboltFurol, generalData }) {
+    calculateSayboltFurol({ sayboltFurol, generalData }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('calculate saybolt-furol on calc.sayboltFurol.service.ts > [body]');
                 const { dataPoints } = sayboltFurol;
@@ -179,8 +179,8 @@ let Calc_SayboltFurol_Service = Calc_SayboltFurol_Service_1 = class Calc_Saybolt
         return points;
     }
 };
-exports.Calc_SayboltFurol_Service = Calc_SayboltFurol_Service;
-exports.Calc_SayboltFurol_Service = Calc_SayboltFurol_Service = Calc_SayboltFurol_Service_1 = __decorate([
+Calc_SayboltFurol_Service = Calc_SayboltFurol_Service_1 = __decorate([
     (0, common_1.Injectable)()
 ], Calc_SayboltFurol_Service);
+exports.Calc_SayboltFurol_Service = Calc_SayboltFurol_Service;
 //# sourceMappingURL=calc.sayboltFurol.service.js.map

@@ -117,9 +117,9 @@ let BinderAsphaltConcreteSamplesService = BinderAsphaltConcreteSamplesService_1 
         });
     }
 };
-exports.BinderAsphaltConcreteSamplesService = BinderAsphaltConcreteSamplesService;
-exports.BinderAsphaltConcreteSamplesService = BinderAsphaltConcreteSamplesService = BinderAsphaltConcreteSamplesService_1 = __decorate([
+BinderAsphaltConcreteSamplesService = BinderAsphaltConcreteSamplesService_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_1.BinderAsphaltConcrete_SamplesRepository])
 ], BinderAsphaltConcreteSamplesService);
+exports.BinderAsphaltConcreteSamplesService = BinderAsphaltConcreteSamplesService;
 //# sourceMappingURL=binder-asphalt-concrete-samples.service.js.map

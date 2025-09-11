@@ -76,11 +76,11 @@ let ElasticRecoveryService = ElasticRecoveryService_1 = class ElasticRecoverySer
         });
     }
 };
-exports.ElasticRecoveryService = ElasticRecoveryService;
-exports.ElasticRecoveryService = ElasticRecoveryService = ElasticRecoveryService_1 = __decorate([
+ElasticRecoveryService = ElasticRecoveryService_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [general_data_elasticRecovery_service_1.GeneralData_ElasticRecovery_Service,
         calc_elasticRecovery_service_1.Calc_ElasticRecovery_Service,
         repository_1.ElasticRecoveryRepository])
 ], ElasticRecoveryService);
+exports.ElasticRecoveryService = ElasticRecoveryService;
 //# sourceMappingURL=index.js.map

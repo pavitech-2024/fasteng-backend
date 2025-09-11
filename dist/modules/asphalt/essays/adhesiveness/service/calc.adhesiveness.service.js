@@ -22,8 +22,8 @@ let Calc_Adhesiveness_Service = Calc_Adhesiveness_Service_1 = class Calc_Adhesiv
     constructor() {
         this.logger = new common_1.Logger(Calc_Adhesiveness_Service_1.name);
     }
-    calculateAdhesiveness(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ adhesiveness }) {
+    calculateAdhesiveness({ adhesiveness }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('calculate adhesiveness on calc.adhesiveness.service.ts > [body]');
                 const result = {
@@ -40,8 +40,8 @@ let Calc_Adhesiveness_Service = Calc_Adhesiveness_Service_1 = class Calc_Adhesiv
         });
     }
 };
-exports.Calc_Adhesiveness_Service = Calc_Adhesiveness_Service;
-exports.Calc_Adhesiveness_Service = Calc_Adhesiveness_Service = Calc_Adhesiveness_Service_1 = __decorate([
+Calc_Adhesiveness_Service = Calc_Adhesiveness_Service_1 = __decorate([
     (0, common_1.Injectable)()
 ], Calc_Adhesiveness_Service);
+exports.Calc_Adhesiveness_Service = Calc_Adhesiveness_Service;
 //# sourceMappingURL=calc.adhesiveness.service.js.map

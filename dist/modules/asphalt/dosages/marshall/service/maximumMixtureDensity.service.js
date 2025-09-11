@@ -249,8 +249,7 @@ let MaximumMixtureDensity_Marshall_Service = MaximumMixtureDensity_Marshall_Serv
         });
     }
 };
-exports.MaximumMixtureDensity_Marshall_Service = MaximumMixtureDensity_Marshall_Service;
-exports.MaximumMixtureDensity_Marshall_Service = MaximumMixtureDensity_Marshall_Service = MaximumMixtureDensity_Marshall_Service_1 = __decorate([
+MaximumMixtureDensity_Marshall_Service = MaximumMixtureDensity_Marshall_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.Marshall.name, database_config_1.DATABASE_CONNECTION.ASPHALT)),
     __metadata("design:paramtypes", [mongoose_2.Model,
@@ -258,4 +257,5 @@ exports.MaximumMixtureDensity_Marshall_Service = MaximumMixtureDensity_Marshall_
         repository_2.MaterialsRepository,
         repository_3.SpecifyMassRepository])
 ], MaximumMixtureDensity_Marshall_Service);
+exports.MaximumMixtureDensity_Marshall_Service = MaximumMixtureDensity_Marshall_Service;
 //# sourceMappingURL=maximumMixtureDensity.service.js.map

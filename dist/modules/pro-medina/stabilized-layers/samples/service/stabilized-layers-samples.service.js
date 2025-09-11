@@ -117,9 +117,9 @@ let StabilizedLayersSamplesService = StabilizedLayersSamplesService_1 = class St
         });
     }
 };
-exports.StabilizedLayersSamplesService = StabilizedLayersSamplesService;
-exports.StabilizedLayersSamplesService = StabilizedLayersSamplesService = StabilizedLayersSamplesService_1 = __decorate([
+StabilizedLayersSamplesService = StabilizedLayersSamplesService_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_1.StabilizedLayers_SamplesRepository])
 ], StabilizedLayersSamplesService);
+exports.StabilizedLayersSamplesService = StabilizedLayersSamplesService;
 //# sourceMappingURL=stabilized-layers-samples.service.js.map

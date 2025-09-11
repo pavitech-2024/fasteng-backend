@@ -47,9 +47,9 @@ let PenetrationRepository = class PenetrationRepository {
         });
     }
 };
-exports.PenetrationRepository = PenetrationRepository;
-exports.PenetrationRepository = PenetrationRepository = __decorate([
+PenetrationRepository = __decorate([
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.Penetration.name, database_config_1.DATABASE_CONNECTION.ASPHALT)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], PenetrationRepository);
+exports.PenetrationRepository = PenetrationRepository;
 //# sourceMappingURL=index.js.map

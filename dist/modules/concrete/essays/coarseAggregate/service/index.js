@@ -62,10 +62,10 @@ let CoarseAggregateService = class CoarseAggregateService {
         });
     }
 };
-exports.CoarseAggregateService = CoarseAggregateService;
-exports.CoarseAggregateService = CoarseAggregateService = __decorate([
+CoarseAggregateService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [general_data_coarseAggregate_service_1.GeneralData_CoarseAggregate_Service,
         repository_1.CoarseAggregateSpecificMassRepository])
 ], CoarseAggregateService);
+exports.CoarseAggregateService = CoarseAggregateService;
 //# sourceMappingURL=index.js.map

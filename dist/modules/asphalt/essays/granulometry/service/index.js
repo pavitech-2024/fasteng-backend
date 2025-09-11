@@ -76,11 +76,11 @@ let AsphaltGranulometryService = AsphaltGranulometryService_1 = class AsphaltGra
         });
     }
 };
-exports.AsphaltGranulometryService = AsphaltGranulometryService;
-exports.AsphaltGranulometryService = AsphaltGranulometryService = AsphaltGranulometryService_1 = __decorate([
+AsphaltGranulometryService = AsphaltGranulometryService_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [general_data_granulometry_service_1.GeneralData_AsphaltGranulometry_Service,
         calc_granulometry_service_1.Calc_AsphaltGranulometry_Service,
         repository_1.AsphaltGranulometryRepository])
 ], AsphaltGranulometryService);
+exports.AsphaltGranulometryService = AsphaltGranulometryService;
 //# sourceMappingURL=index.js.map

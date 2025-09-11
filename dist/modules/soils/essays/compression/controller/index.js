@@ -63,7 +63,6 @@ let CompressionController = CompressionController_1 = class CompressionControlle
         });
     }
 };
-exports.CompressionController = CompressionController;
 __decorate([
     (0, common_1.Post)('verify-init'),
     (0, swagger_1.ApiOperation)({ summary: 'Verifica se é possível criar um ensaio de compactação com os dados enviados.' }),
@@ -141,9 +140,10 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], CompressionController.prototype, "saveEssay", null);
-exports.CompressionController = CompressionController = CompressionController_1 = __decorate([
+CompressionController = CompressionController_1 = __decorate([
     (0, swagger_1.ApiTags)('compression'),
     (0, common_1.Controller)('soils/essays/compression'),
     __metadata("design:paramtypes", [service_1.CompressionService])
 ], CompressionController);
+exports.CompressionController = CompressionController;
 //# sourceMappingURL=index.js.map

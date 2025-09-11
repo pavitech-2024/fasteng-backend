@@ -102,10 +102,10 @@ let SamplesService = SamplesService_1 = class SamplesService {
         });
     }
 };
-exports.SamplesService = SamplesService;
-exports.SamplesService = SamplesService = SamplesService_1 = __decorate([
+SamplesService = SamplesService_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_1.SamplesRepository,
         get_essays_by_sample_service_1.GetEssaysBySample_Service])
 ], SamplesService);
+exports.SamplesService = SamplesService;
 //# sourceMappingURL=index.js.map

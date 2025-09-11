@@ -13,7 +13,6 @@ exports.Calc_SandEquivalent_Dto = void 0;
 const class_validator_1 = require("class-validator");
 class Calc_SandEquivalent_Dto {
 }
-exports.Calc_SandEquivalent_Dto = Calc_SandEquivalent_Dto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
@@ -22,4 +21,5 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
 ], Calc_SandEquivalent_Dto.prototype, "sandEquivalent", void 0);
+exports.Calc_SandEquivalent_Dto = Calc_SandEquivalent_Dto;
 //# sourceMappingURL=calc-sandEquivalent.dto.js.map

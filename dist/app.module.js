@@ -32,8 +32,7 @@ let AppModule = class AppModule {
             .forRoutes('*');
     }
 };
-exports.AppModule = AppModule;
-exports.AppModule = AppModule = __decorate([
+AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
             config_1.ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
@@ -51,4 +50,5 @@ exports.AppModule = AppModule = __decorate([
         providers: [{ provide: core_1.APP_INTERCEPTOR, useClass: ErrorsInterceptor_1.ErrorsInterceptor }, app_service_1.AppService],
     })
 ], AppModule);
+exports.AppModule = AppModule;
 //# sourceMappingURL=app.module.js.map

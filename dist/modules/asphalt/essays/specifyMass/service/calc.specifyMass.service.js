@@ -41,8 +41,8 @@ let Calc_SPECIFYMASS_Service = Calc_SPECIFYMASS_Service_1 = class Calc_SPECIFYMA
                 / dry_mass) * 100);
         };
     }
-    calculateSpecifyMass(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ step2Data }) {
+    calculateSpecifyMass({ step2Data }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('calculate specifyMass on calc.specifyMass.service.ts > [body]');
                 const { dry_mass, submerged_mass, surface_saturated_mass } = step2Data;
@@ -70,9 +70,9 @@ let Calc_SPECIFYMASS_Service = Calc_SPECIFYMASS_Service_1 = class Calc_SPECIFYMA
         });
     }
 };
-exports.Calc_SPECIFYMASS_Service = Calc_SPECIFYMASS_Service;
-exports.Calc_SPECIFYMASS_Service = Calc_SPECIFYMASS_Service = Calc_SPECIFYMASS_Service_1 = __decorate([
+Calc_SPECIFYMASS_Service = Calc_SPECIFYMASS_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_1.SpecifyMassRepository, repository_2.MaterialsRepository])
 ], Calc_SPECIFYMASS_Service);
+exports.Calc_SPECIFYMASS_Service = Calc_SPECIFYMASS_Service;
 //# sourceMappingURL=calc.specifyMass.service.js.map

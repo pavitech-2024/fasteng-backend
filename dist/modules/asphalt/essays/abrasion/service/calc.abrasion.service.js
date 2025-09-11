@@ -65,9 +65,9 @@ let Calc_Abrasion_Service = Calc_Abrasion_Service_1 = class Calc_Abrasion_Servic
         return alerts;
     }
 };
-exports.Calc_Abrasion_Service = Calc_Abrasion_Service;
-exports.Calc_Abrasion_Service = Calc_Abrasion_Service = Calc_Abrasion_Service_1 = __decorate([
+Calc_Abrasion_Service = Calc_Abrasion_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_2.AbrasionRepository, repository_1.MaterialsRepository])
 ], Calc_Abrasion_Service);
+exports.Calc_Abrasion_Service = Calc_Abrasion_Service;
 //# sourceMappingURL=calc.abrasion.service.js.map

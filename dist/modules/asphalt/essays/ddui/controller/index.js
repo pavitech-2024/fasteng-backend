@@ -73,7 +73,6 @@ let DduiController = DduiController_1 = class DduiController {
         });
     }
 };
-exports.DduiController = DduiController;
 __decorate([
     (0, common_1.Post)('verify-init'),
     (0, swagger_1.ApiOperation)({ summary: 'Verifica se é possível criar um ensaio ddui com os dados enviados.' }),
@@ -147,9 +146,10 @@ __decorate([
     __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)
 ], DduiController.prototype, "deleteEssay", null);
-exports.DduiController = DduiController = DduiController_1 = __decorate([
+DduiController = DduiController_1 = __decorate([
     (0, swagger_1.ApiTags)('ddui'),
     (0, common_1.Controller)('asphalt/essays/ddui'),
     __metadata("design:paramtypes", [service_1.DduiService])
 ], DduiController);
+exports.DduiController = DduiController;
 //# sourceMappingURL=index.js.map

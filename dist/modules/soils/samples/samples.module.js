@@ -18,8 +18,7 @@ const services = [
 ];
 let SamplesModule = class SamplesModule {
 };
-exports.SamplesModule = SamplesModule;
-exports.SamplesModule = SamplesModule = __decorate([
+SamplesModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [controller_1.SamplesController],
@@ -27,4 +26,5 @@ exports.SamplesModule = SamplesModule = __decorate([
         exports: [service_1.SamplesService, repository_1.SamplesRepository],
     })
 ], SamplesModule);
+exports.SamplesModule = SamplesModule;
 //# sourceMappingURL=samples.module.js.map

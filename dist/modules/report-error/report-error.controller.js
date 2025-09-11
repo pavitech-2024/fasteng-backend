@@ -39,7 +39,6 @@ let ReportErrorController = ReportErrorController_1 = class ReportErrorControlle
         });
     }
 };
-exports.ReportErrorController = ReportErrorController;
 __decorate([
     (0, common_1.Post)(),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'E-mail enviado com sucesso' }),
@@ -49,8 +48,9 @@ __decorate([
     __metadata("design:paramtypes", [report_error_dto_1.ReportErrorDto]),
     __metadata("design:returntype", Promise)
 ], ReportErrorController.prototype, "sendEmail", null);
-exports.ReportErrorController = ReportErrorController = ReportErrorController_1 = __decorate([
+ReportErrorController = ReportErrorController_1 = __decorate([
     (0, common_1.Controller)('report-error'),
     __metadata("design:paramtypes", [report_error_service_1.ReportErrorService])
 ], ReportErrorController);
+exports.ReportErrorController = ReportErrorController;
 //# sourceMappingURL=report-error.controller.js.map

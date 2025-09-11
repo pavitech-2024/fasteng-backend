@@ -14,7 +14,6 @@ const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
 class Reference {
 }
-exports.Reference = Reference;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsNumber)(),
@@ -25,9 +24,9 @@ __decorate([
     (0, class_validator_1.IsNumber)(),
     __metadata("design:type", Number)
 ], Reference.prototype, "tolerance", void 0);
+exports.Reference = Reference;
 class ConcreteRtInterpolationDto {
 }
-exports.ConcreteRtInterpolationDto = ConcreteRtInterpolationDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_transformer_1.Type)(() => Reference),
@@ -48,4 +47,5 @@ __decorate([
     (0, class_validator_1.IsNumber)(),
     __metadata("design:type", Number)
 ], ConcreteRtInterpolationDto.prototype, "tolerance", void 0);
+exports.ConcreteRtInterpolationDto = ConcreteRtInterpolationDto;
 //# sourceMappingURL=concrete-rt-interpolation.dto.js.map

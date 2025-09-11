@@ -16,8 +16,7 @@ const calc_sucs_service_1 = require("./service/calc.sucs.service");
 const services = [index_1.SucsService, general_data_sucs_service_1.GeneralData_SUCS_Service, calc_sucs_service_1.Calc_SUCS_Service];
 let SucsModule = class SucsModule {
 };
-exports.SucsModule = SucsModule;
-exports.SucsModule = SucsModule = __decorate([
+SucsModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [controller_1.SucsController],
@@ -25,4 +24,5 @@ exports.SucsModule = SucsModule = __decorate([
         exports: [index_1.SucsService, repository_1.SucsRepository],
     })
 ], SucsModule);
+exports.SucsModule = SucsModule;
 //# sourceMappingURL=sucs.module.js.map

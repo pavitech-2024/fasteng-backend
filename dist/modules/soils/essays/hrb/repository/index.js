@@ -47,9 +47,9 @@ let HrbRepository = class HrbRepository {
         });
     }
 };
-exports.HrbRepository = HrbRepository;
-exports.HrbRepository = HrbRepository = __decorate([
+HrbRepository = __decorate([
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.Hrb.name, database_config_1.DATABASE_CONNECTION.SOILS)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], HrbRepository);
+exports.HrbRepository = HrbRepository;
 //# sourceMappingURL=index.js.map

@@ -30,8 +30,8 @@ let GeneralData_CBR_Service = GeneralData_CBR_Service_1 = class GeneralData_CBR_
         this.sampleRepository = sampleRepository;
         this.logger = new common_1.Logger(GeneralData_CBR_Service_1.name);
     }
-    verifyInitCbr(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ name, sample }) {
+    verifyInitCbr({ name, sample }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('verify init cbr on general-data.cbr.service.ts > [body]');
                 const sampleExists = yield this.sampleRepository.findOne({ _id: sample._id });
@@ -48,9 +48,9 @@ let GeneralData_CBR_Service = GeneralData_CBR_Service_1 = class GeneralData_CBR_
         });
     }
 };
-exports.GeneralData_CBR_Service = GeneralData_CBR_Service;
-exports.GeneralData_CBR_Service = GeneralData_CBR_Service = GeneralData_CBR_Service_1 = __decorate([
+GeneralData_CBR_Service = GeneralData_CBR_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_1.CbrRepository, repository_2.SamplesRepository])
 ], GeneralData_CBR_Service);
+exports.GeneralData_CBR_Service = GeneralData_CBR_Service;
 //# sourceMappingURL=general-data.cbr.service.js.map

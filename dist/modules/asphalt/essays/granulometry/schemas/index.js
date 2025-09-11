@@ -15,7 +15,6 @@ const class_validator_1 = require("class-validator");
 let AsphaltGranulometry = class AsphaltGranulometry {
     ;
 };
-exports.AsphaltGranulometry = AsphaltGranulometry;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, mongoose_1.Prop)({ type: Object }),
@@ -31,8 +30,9 @@ __decorate([
     (0, mongoose_1.Prop)({ type: Object }),
     __metadata("design:type", Object)
 ], AsphaltGranulometry.prototype, "results", void 0);
-exports.AsphaltGranulometry = AsphaltGranulometry = __decorate([
+AsphaltGranulometry = __decorate([
     (0, mongoose_1.Schema)({ collection: 'granulometrys' })
 ], AsphaltGranulometry);
+exports.AsphaltGranulometry = AsphaltGranulometry;
 exports.AsphaltGranulometrySchema = mongoose_1.SchemaFactory.createForClass(AsphaltGranulometry);
 //# sourceMappingURL=index.js.map

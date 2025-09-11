@@ -18,11 +18,11 @@ const Models = [
 const Modules = [binder_asphalt_concrete_samples_module_1.BinderAsphaltConcreteSamplesModule];
 let BinderAsphaltConcreteModule = class BinderAsphaltConcreteModule {
 };
-exports.BinderAsphaltConcreteModule = BinderAsphaltConcreteModule;
-exports.BinderAsphaltConcreteModule = BinderAsphaltConcreteModule = __decorate([
+BinderAsphaltConcreteModule = __decorate([
     (0, common_1.Module)({
         imports: [mongoose_1.MongooseModule.forFeature(Models, database_config_1.DATABASE_CONNECTION.PROMEDINA), ...Modules],
         exports: [mongoose_1.MongooseModule, ...Modules],
     })
 ], BinderAsphaltConcreteModule);
+exports.BinderAsphaltConcreteModule = BinderAsphaltConcreteModule;
 //# sourceMappingURL=binder-asphalt-concrete.module.js.map

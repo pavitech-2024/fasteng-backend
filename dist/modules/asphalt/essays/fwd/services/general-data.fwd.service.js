@@ -28,8 +28,8 @@ let GeneralData_Fwd_Service = GeneralData_Fwd_Service_1 = class GeneralData_Fwd_
         this.fwdRepository = fwdRepository;
         this.logger = new common_1.Logger(GeneralData_Fwd_Service_1.name);
     }
-    verifyInitFwd(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ name }) {
+    verifyInitFwd({ name }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('verify init fwd on general-data.fwd.service.ts > [body]');
                 const fwdExists = yield this.fwdRepository.findOne({
@@ -45,9 +45,9 @@ let GeneralData_Fwd_Service = GeneralData_Fwd_Service_1 = class GeneralData_Fwd_
         });
     }
 };
-exports.GeneralData_Fwd_Service = GeneralData_Fwd_Service;
-exports.GeneralData_Fwd_Service = GeneralData_Fwd_Service = GeneralData_Fwd_Service_1 = __decorate([
+GeneralData_Fwd_Service = GeneralData_Fwd_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_1.FwdRepository])
 ], GeneralData_Fwd_Service);
+exports.GeneralData_Fwd_Service = GeneralData_Fwd_Service;
 //# sourceMappingURL=general-data.fwd.service.js.map

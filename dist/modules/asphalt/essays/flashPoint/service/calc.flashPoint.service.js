@@ -29,8 +29,8 @@ let Calc_FLASHPOINT_Service = Calc_FLASHPOINT_Service_1 = class Calc_FLASHPOINT_
         this.materialRepository = materialRepository;
         this.logger = new common_1.Logger(Calc_FLASHPOINT_Service_1.name);
     }
-    calculateFlashPoint(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ step2Data }) {
+    calculateFlashPoint({ step2Data }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('calculate flashPoint on calc.flashPoint.service.ts > [body]');
                 const { ignition_temperature } = step2Data;
@@ -50,9 +50,9 @@ let Calc_FLASHPOINT_Service = Calc_FLASHPOINT_Service_1 = class Calc_FLASHPOINT_
         });
     }
 };
-exports.Calc_FLASHPOINT_Service = Calc_FLASHPOINT_Service;
-exports.Calc_FLASHPOINT_Service = Calc_FLASHPOINT_Service = Calc_FLASHPOINT_Service_1 = __decorate([
+Calc_FLASHPOINT_Service = Calc_FLASHPOINT_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_1.FlashPointRepository, repository_2.MaterialsRepository])
 ], Calc_FLASHPOINT_Service);
+exports.Calc_FLASHPOINT_Service = Calc_FLASHPOINT_Service;
 //# sourceMappingURL=calc.flashPoint.service.js.map

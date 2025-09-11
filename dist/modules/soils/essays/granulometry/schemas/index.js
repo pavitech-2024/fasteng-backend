@@ -14,7 +14,6 @@ const mongoose_1 = require("@nestjs/mongoose");
 const class_validator_1 = require("class-validator");
 let Granulometry = class Granulometry {
 };
-exports.Granulometry = Granulometry;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, mongoose_1.Prop)({ type: Object }),
@@ -30,8 +29,9 @@ __decorate([
     (0, mongoose_1.Prop)({ type: Object }),
     __metadata("design:type", Object)
 ], Granulometry.prototype, "results", void 0);
-exports.Granulometry = Granulometry = __decorate([
+Granulometry = __decorate([
     (0, mongoose_1.Schema)({ collection: 'granulometrys' })
 ], Granulometry);
+exports.Granulometry = Granulometry;
 exports.GranulometrySchema = mongoose_1.SchemaFactory.createForClass(Granulometry);
 //# sourceMappingURL=index.js.map

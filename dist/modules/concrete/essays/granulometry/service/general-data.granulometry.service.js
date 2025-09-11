@@ -30,8 +30,8 @@ let GeneralData_CONCRETEGRANULOMETRY_Service = GeneralData_CONCRETEGRANULOMETRY_
         this.materialRepository = materialRepository;
         this.logger = new common_1.Logger(GeneralData_CONCRETEGRANULOMETRY_Service_1.name);
     }
-    verifyInitGranulometry(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ name, material }) {
+    verifyInitGranulometry({ name, material }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('verify init granulometry on general-data.granulometry.service.ts > [body]');
                 const materialExists = yield this.materialRepository.findOne({ _id: material._id });
@@ -48,9 +48,9 @@ let GeneralData_CONCRETEGRANULOMETRY_Service = GeneralData_CONCRETEGRANULOMETRY_
         });
     }
 };
-exports.GeneralData_CONCRETEGRANULOMETRY_Service = GeneralData_CONCRETEGRANULOMETRY_Service;
-exports.GeneralData_CONCRETEGRANULOMETRY_Service = GeneralData_CONCRETEGRANULOMETRY_Service = GeneralData_CONCRETEGRANULOMETRY_Service_1 = __decorate([
+GeneralData_CONCRETEGRANULOMETRY_Service = GeneralData_CONCRETEGRANULOMETRY_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_1.ConcreteGranulometryRepository, repository_2.MaterialsRepository])
 ], GeneralData_CONCRETEGRANULOMETRY_Service);
+exports.GeneralData_CONCRETEGRANULOMETRY_Service = GeneralData_CONCRETEGRANULOMETRY_Service;
 //# sourceMappingURL=general-data.granulometry.service.js.map

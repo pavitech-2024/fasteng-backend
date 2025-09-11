@@ -47,9 +47,9 @@ let RtfoRepository = class RtfoRepository {
         });
     }
 };
-exports.RtfoRepository = RtfoRepository;
-exports.RtfoRepository = RtfoRepository = __decorate([
+RtfoRepository = __decorate([
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.Rtfo.name, database_config_1.DATABASE_CONNECTION.ASPHALT)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], RtfoRepository);
+exports.RtfoRepository = RtfoRepository;
 //# sourceMappingURL=index.js.map

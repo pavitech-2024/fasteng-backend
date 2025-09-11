@@ -74,11 +74,11 @@ let CompressionService = class CompressionService {
         });
     }
 };
-exports.CompressionService = CompressionService;
-exports.CompressionService = CompressionService = __decorate([
+CompressionService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [general_data_compression_service_1.GeneralData_Compression_Service,
         calc_compression_service_1.Calc_Compression_Service,
         repository_1.CompressionRepository])
 ], CompressionService);
+exports.CompressionService = CompressionService;
 //# sourceMappingURL=index.js.map

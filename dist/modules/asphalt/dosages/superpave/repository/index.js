@@ -90,9 +90,9 @@ let SuperpaveRepository = class SuperpaveRepository {
         });
     }
 };
-exports.SuperpaveRepository = SuperpaveRepository;
-exports.SuperpaveRepository = SuperpaveRepository = __decorate([
+SuperpaveRepository = __decorate([
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.Superpave.name, database_config_1.DATABASE_CONNECTION.ASPHALT)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], SuperpaveRepository);
+exports.SuperpaveRepository = SuperpaveRepository;
 //# sourceMappingURL=index.js.map

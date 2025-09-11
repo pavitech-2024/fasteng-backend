@@ -14,7 +14,6 @@ const mongoose_1 = require("@nestjs/mongoose");
 const class_validator_1 = require("class-validator");
 let ShapeIndex = class ShapeIndex {
 };
-exports.ShapeIndex = ShapeIndex;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, mongoose_1.Prop)({ type: Object }),
@@ -30,8 +29,9 @@ __decorate([
     (0, mongoose_1.Prop)({ type: Object }),
     __metadata("design:type", Object)
 ], ShapeIndex.prototype, "results", void 0);
-exports.ShapeIndex = ShapeIndex = __decorate([
+ShapeIndex = __decorate([
     (0, mongoose_1.Schema)({ collection: 'shapeIndexs' })
 ], ShapeIndex);
+exports.ShapeIndex = ShapeIndex;
 exports.ShapeIndexSchema = mongoose_1.SchemaFactory.createForClass(ShapeIndex);
 //# sourceMappingURL=index.js.map

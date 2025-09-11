@@ -1,1 +1,1 @@
-{"version":3,"file":"save-essay-selection.dto.js","sourceRoot":"","sources":["../../../../../../src/modules/concrete/dosages/abcp/dto/save-essay-selection.dto.ts"],"names":[],"mappings":";;;;;;;;;;;;AAAA,qDAA6C;AAG7C,MAAa,qBAAqB;CAGjC;AAHD,sDAGC;AADC;IADC,IAAA,4BAAU,GAAE;;iEACiC"}
+{"version":3,"file":"save-essay-selection.dto.js","sourceRoot":"","sources":["../../../../../../src/modules/concrete/dosages/abcp/dto/save-essay-selection.dto.ts"],"names":[],"mappings":";;;;;;;;;;;;AAAA,qDAA6C;AAG7C,MAAa,qBAAqB;CAGjC;AAFC;IAAC,IAAA,4BAAU,GAAE;;iEACiC;AAFhD,sDAGC"}

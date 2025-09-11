@@ -31,8 +31,8 @@ let GeneralData_GRANULOMETRY_Service = GeneralData_GRANULOMETRY_Service_1 = clas
         this.sampleRepository = sampleRepository;
         this.logger = new common_1.Logger(GeneralData_GRANULOMETRY_Service_1.name);
     }
-    verifyInitGranulometry(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ name, sample }) {
+    verifyInitGranulometry({ name, sample }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('verify init granulometry on general-data.granulometry.service.ts > [body]');
                 const sampleExists = yield this.sampleRepository.findOne({
@@ -54,9 +54,9 @@ let GeneralData_GRANULOMETRY_Service = GeneralData_GRANULOMETRY_Service_1 = clas
         });
     }
 };
-exports.GeneralData_GRANULOMETRY_Service = GeneralData_GRANULOMETRY_Service;
-exports.GeneralData_GRANULOMETRY_Service = GeneralData_GRANULOMETRY_Service = GeneralData_GRANULOMETRY_Service_1 = __decorate([
+GeneralData_GRANULOMETRY_Service = GeneralData_GRANULOMETRY_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_1.GranulometryRepository, repository_2.SamplesRepository])
 ], GeneralData_GRANULOMETRY_Service);
+exports.GeneralData_GRANULOMETRY_Service = GeneralData_GRANULOMETRY_Service;
 //# sourceMappingURL=general-data.granulometry.service.js.map

@@ -57,9 +57,9 @@ let Calc_ElasticRecovery_Service = Calc_ElasticRecovery_Service_1 = class Calc_E
         return Math.round(100 * (sum / lengths.length)) / 100;
     }
 };
-exports.Calc_ElasticRecovery_Service = Calc_ElasticRecovery_Service;
-exports.Calc_ElasticRecovery_Service = Calc_ElasticRecovery_Service = Calc_ElasticRecovery_Service_1 = __decorate([
+Calc_ElasticRecovery_Service = Calc_ElasticRecovery_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_2.ElasticRecoveryRepository, repository_1.MaterialsRepository])
 ], Calc_ElasticRecovery_Service);
+exports.Calc_ElasticRecovery_Service = Calc_ElasticRecovery_Service;
 //# sourceMappingURL=calc.elasticRecovery.service.js.map

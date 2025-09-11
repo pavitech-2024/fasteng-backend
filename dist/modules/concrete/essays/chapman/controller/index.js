@@ -63,7 +63,6 @@ let ChapmanController = ChapmanController_1 = class ChapmanController {
         });
     }
 };
-exports.ChapmanController = ChapmanController;
 __decorate([
     (0, common_1.Post)('verify-init'),
     (0, swagger_1.ApiOperation)({ summary: 'Verifica se é possível criar uma Chapman com os dados enviados.' }),
@@ -117,9 +116,10 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], ChapmanController.prototype, "saveEssay", null);
-exports.ChapmanController = ChapmanController = ChapmanController_1 = __decorate([
+ChapmanController = ChapmanController_1 = __decorate([
     (0, swagger_1.ApiTags)('chapman'),
     (0, common_1.Controller)('concrete/essays/chapman'),
     __metadata("design:paramtypes", [champan_service_1.ChapmanService])
 ], ChapmanController);
+exports.ChapmanController = ChapmanController;
 //# sourceMappingURL=index.js.map

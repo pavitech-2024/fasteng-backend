@@ -76,11 +76,11 @@ let SucsService = SucsService_1 = class SucsService {
         });
     }
 };
-exports.SucsService = SucsService;
-exports.SucsService = SucsService = SucsService_1 = __decorate([
+SucsService = SucsService_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [general_data_sucs_service_1.GeneralData_SUCS_Service,
         calc_sucs_service_1.Calc_SUCS_Service,
         repository_1.SucsRepository])
 ], SucsService);
+exports.SucsService = SucsService;
 //# sourceMappingURL=index.js.map
