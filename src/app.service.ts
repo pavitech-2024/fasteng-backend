@@ -4,7 +4,7 @@ import axios from 'axios';
 @Injectable()
 export class AppService {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  constructor() {}
+  constructor() {} 
 
   async healthCheck() {
     try {

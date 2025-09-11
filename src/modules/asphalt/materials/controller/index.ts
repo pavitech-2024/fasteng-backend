@@ -1,6 +1,6 @@
 import { Body, Controller, Logger, Post, Get, Param, Delete, Put } from '@nestjs/common';
 import { AsphaltMaterialsList, MaterialsService } from '../service';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateAsphaltMaterialDto } from '../dto/create-asphalt-material.dto';
 import { Material } from '../schemas';
 import { User } from '../../../../config/decorators/user.decorator';
@@ -77,6 +77,7 @@ export class MaterialsController {
   @ApiOperation({ summary: 'Atualiza um material do banco de dados.' })
   @ApiResponse({ status: 200, description: 'Material atualizado com sucesso!' })
   @ApiResponse({ status: 400, description: 'Material não encontrado!' })
+  @ApiBody({ type: CreateAsphaltMaterialDto })
   async updateMaterialById(@Param('id') materialId: string, @Body() material: Material) {
     this.logger.log(`update material by id > [id]: ${materialId}`);
 

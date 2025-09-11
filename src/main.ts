@@ -84,6 +84,8 @@ import { UsersModule } from './modules/users/users.module';
 import { SamplesModule } from './modules/soils/samples/samples.module';
 import { AllExceptionsFilter } from './config/filters/http-exception.filter'; // Ajuste o caminho conforme
 
+
+
 async function bootstrap() {
   // Criar a app com logs detalhados
   const app = await NestFactory.create(AppModule, {
@@ -129,7 +131,8 @@ async function bootstrap() {
 
   const swagger_concrete = new DocumentBuilder()
     .setTitle('FastEng API')
-    .setDescription(`The FastEng [ Soils ] API description`)
+    //.setDescription(`The FastEng [ Soils ] API description`)
+    .setDescription(`The FastEng [ Concrete ] API description`)
     .setVersion('1.0')
     .build();
   SwaggerModule.setup('docs/concrete', app, SwaggerModule.createDocument(app, swagger_concrete));

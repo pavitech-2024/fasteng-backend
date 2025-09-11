@@ -1,18 +1,19 @@
-import { IsNotEmpty } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Sieve } from '../../../../utils/interfaces';
 
-export class CreateConcreteMaterialDto {
-  @ApiProperty({
-    example: 'Brita 1',
-    description: 'Nome do material',
-  })
-  @IsNotEmpty()
+export class ConcreteMaterialResponseDto {
+  @ApiProperty({ description: 'ID do material no banco de dados', example: '64f8a2c3d5e6f123456789ab' })
+  id: string;
+
+  @ApiProperty({ description: 'Código único do material', example: 'CONC-001' })
+  code: string;
+
+  @ApiProperty({ description: 'Nome do material', example: 'Brita 1' })
   name: string;
 
   @ApiProperty({
-    example: 'coarseAggregate',
     description: 'Tipo do material',
+    example: 'coarseAggregate',
     enum: ['coarseAggregate', 'fineAggregate', 'filler', 'asphaltBinder', 'CAP', 'other'],
   })
   type:
@@ -63,45 +64,4 @@ export class CreateConcreteMaterialDto {
       | 'CP V-ARI RS';
     observation?: string;
   };
-  
 }
-
-
-
-/*import { IsNotEmpty } from 'class-validator';
-import { Sieve } from '../../../../utils/interfaces';
-
-export class CreateConcreteMaterialDto {
-  @IsNotEmpty()
-  @IsString()
-  name: string;
-
-  @IsNotEmpty()
-  @IsString()
-  userId: string;
-
-  type: 'coarseAggregate' | 'fineAggregate' | 'filler' | 'asphaltBinder' | 'CAP' | 'other';
-  description?: {
-    source?: string;
-    responsible?: string;
-    maxDiameter?: Sieve;
-    aggregateNature?: string;
-    boughtDate?: string;
-    recieveDate?: string;
-    extractionDate?: string;
-    collectionDate?: string;
-    classification_CAP?: 'CAP 30/45' | 'CAP 50/70' | 'CAP 85/100' | 'CAP 150/200'; // for CAP
-    classification_AMP?: 'AMP 50/65' | 'AMP 55/75' | 'AMP 60/85' | 'AMP 65/90'; // for AMP
-    cementType?:
-    | 'CP I'
-    | 'CP I-S'
-    | 'CP II-E'
-    | 'CP II-Z'
-    | 'CP II-F'
-    | 'CP III'
-    | 'CP IV'
-    | 'CP V-ARI'
-    | 'CP V-ARI RS'; // for cement
-    observation?: string;
-  };
-}*/
