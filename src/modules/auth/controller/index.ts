@@ -1,6 +1,6 @@
 import { Body, Controller, HttpCode, Logger, Post } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { InputLoginUserDto } from '../dto';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { InputLoginUserDto, OutputLoginUserDto } from '../dto';
 import { InputRefreshLoginDto } from '../dto/refresh-login-user.dto';
 import { AuthService } from '../service';
 
@@ -13,6 +13,9 @@ export class AuthController {
   @Post('login') // define a rota
   @HttpCode(200) // define o código de resposta
   @ApiOperation({ summary: 'Faz login no sistema' })
+  @ApiBody({ type: InputLoginUserDto })
+  @ApiResponse({ status: 200, description: 'Login realizado com sucesso', type: OutputLoginUserDto })
+  @ApiResponse({ status: 401, description: 'Credenciais inválidas' })
   async login(@Body() body: InputLoginUserDto) {
     this.logger.log(`logging user with params > [body]`);
     const data = await this.authService.login({
@@ -30,6 +33,10 @@ export class AuthController {
   @ApiOperation({
     summary: 'Faz login automático no sistema utilizando um possivel token válido',
   })
+
+  @ApiBody({ type: InputRefreshLoginDto })
+  @ApiResponse({ status: 200, description: 'Token renovado com sucesso', type: OutputLoginUserDto })
+  @ApiResponse({ status: 401, description: 'Token inválido ou expirado' })
   async refreshLogin(@Body() body: InputRefreshLoginDto) {
     this.logger.log(`logging user with params > [body]`);
     const data = await this.authService.refreshLogin(body);

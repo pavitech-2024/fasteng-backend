@@ -139,7 +139,7 @@ let Calc_Penetration_Service = Calc_Penetration_Service_1 = class Calc_Penetrati
                 if ((!material.description.classification_CAP && material.type === 'CAP') || material.type === 'other') {
                     const materialFinded = yield this.materialRepository.findById(material._id);
                     materialFinded.description.classification_CAP = type;
-                    yield this.materialRepository.findOneAndUpdate({ _id: materialFinded._id }, materialFinded);
+                    yield this.materialRepository.findOneAndUpdate({ _id: materialFinded._id }, materialFinded, { new: true });
                 }
                 else {
                     if (!material.description.classification_AMP && material.type === 'asphaltBinder') {

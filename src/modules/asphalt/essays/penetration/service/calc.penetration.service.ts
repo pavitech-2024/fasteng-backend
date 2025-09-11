@@ -160,7 +160,8 @@ export class Calc_Penetration_Service {
         // Buscar o material e mudar sua classificação
         const materialFinded = await this.materialRepository.findById(material._id);
         materialFinded.description.classification_CAP = type;
-        await this.materialRepository.findOneAndUpdate({ _id: materialFinded._id }, materialFinded);
+        //await this.materialRepository.findOneAndUpdate({ _id: materialFinded._id }, materialFinded);
+        await this.materialRepository.findOneAndUpdate({ _id: materialFinded._id }, materialFinded, { new: true });
       } else {
         if (!material.description.classification_AMP && material.type === 'asphaltBinder') {
           alert += this.ampAlert(penetration, material.description.classification_AMP);

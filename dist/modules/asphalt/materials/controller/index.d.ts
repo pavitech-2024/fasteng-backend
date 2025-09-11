@@ -1,4 +1,4 @@
-import { AsphaltMaterialsList, MaterialsService } from '../service';
+import { MaterialsService } from '../service';
 import { CreateAsphaltMaterialDto } from '../dto/create-asphalt-material.dto';
 import { Material } from '../schemas';
 export declare class MaterialsController {
@@ -6,7 +6,7 @@ export declare class MaterialsController {
     private logger;
     constructor(materialsService: MaterialsService);
     createMaterial(material: CreateAsphaltMaterialDto): Promise<Material>;
-    getAllByUserIdList(userId: string): Promise<AsphaltMaterialsList[]>;
+    getAllByUserIdList(userId: string): Promise<any[]>;
     getAllByUserId(userId: string): Promise<Material[]>;
     getMaterialById(materialId: string): Promise<any>;
     getSelectedMaterialsById(ids: string): Promise<{

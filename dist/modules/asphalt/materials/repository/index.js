@@ -72,7 +72,7 @@ let MaterialsRepository = class MaterialsRepository {
             return materials;
         });
     }
-    findOneAndUpdate(materialsFilterQuery, material) {
+    findOneAndUpdate(materialsFilterQuery, material, p0) {
         return __awaiter(this, void 0, void 0, function* () {
             return this.materialModel.findOneAndUpdate(materialsFilterQuery, material, {
                 new: true,

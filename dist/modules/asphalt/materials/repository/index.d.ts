@@ -10,6 +10,8 @@ export declare class MaterialsRepository {
     findById(materialId: string): Promise<Material>;
     findSelectedById(ids: string[]): Promise<Material[]>;
     findByUserId(materialsFilterQuery: FilterQuery<Material>): Promise<Material[]>;
-    findOneAndUpdate(materialsFilterQuery: FilterQuery<Material>, material: Partial<Material>): Promise<Material>;
+    findOneAndUpdate(materialsFilterQuery: FilterQuery<Material>, material: Partial<Material>, p0: {
+        new: boolean;
+    }): Promise<Material>;
     findOneAndDelete(materialsFilterQuery: FilterQuery<Material>): Promise<Material>;
 }

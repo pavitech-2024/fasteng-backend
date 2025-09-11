@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { MaterialsRepository } from '../repository';
 import { CreateAsphaltMaterialDto } from '../dto/create-asphalt-material.dto';
 import { AlreadyExists, NotFound } from '../../../../utils/exceptions';
@@ -36,15 +36,15 @@ export class MaterialsService {
 
   async createMaterial(material: CreateAsphaltMaterialDto) {
     this.logger.log('create material > [body]');
-    const { name, userId } = material;
-    const materialExists = await this.materialsRepository.findOne({ name, userId });
+    const { name} = material;
+    const materialExists = await this.materialsRepository.findOne({ name /*userId*/ });
     if (materialExists)
       throw new AlreadyExists(`Material with name "${material.name}"`);
 
     const createdMaterial = await this.materialsRepository.create({
       ...material,
       createdAt: new Date(),
-      userId,
+      //userId,
     });
 
     return createdMaterial;
@@ -143,7 +143,8 @@ export class MaterialsService {
       if (!materialToUpdate) throw new NotFound('Material');
 
       // atualiza o material no banco de dados
-      return this.materialsRepository.findOneAndUpdate({ _id: material._id }, material);
+      //return this.materialsRepository.findOneAndUpdate({ _id: material._id }, material);
+      return this.materialsRepository.findOneAndUpdate({ _id: material._id }, material, { new: true });
     } catch (error) {
       this.logger.error(`error on update material > [error]: ${error}`);
 

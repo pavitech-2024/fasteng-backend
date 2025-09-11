@@ -83,6 +83,9 @@ import { UsersModule } from './modules/users/users.module';
 //Soils Modules
 import { SamplesModule } from './modules/soils/samples/samples.module';
 import { AllExceptionsFilter } from './config/filters/http-exception.filter'; // Ajuste o caminho conforme
+import { MaterialsModule } from 'modules/asphalt/materials/materials.module';
+
+
 
 async function bootstrap() {
   // Criar a app com logs detalhados
@@ -110,7 +113,7 @@ async function bootstrap() {
     'docs/asphalt',
     app,
     SwaggerModule.createDocument(app, swagger_asphalt, {
-      include: [AuthModule, UsersModule],
+      include: [AuthModule, UsersModule, MaterialsModule],
     }),
   );
 

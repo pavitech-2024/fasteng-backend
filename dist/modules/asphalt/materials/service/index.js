@@ -41,11 +41,11 @@ let MaterialsService = MaterialsService_1 = class MaterialsService {
     createMaterial(material) {
         return __awaiter(this, void 0, void 0, function* () {
             this.logger.log('create material > [body]');
-            const { name, userId } = material;
-            const materialExists = yield this.materialsRepository.findOne({ name, userId });
+            const { name } = material;
+            const materialExists = yield this.materialsRepository.findOne({ name });
             if (materialExists)
                 throw new exceptions_1.AlreadyExists(`Material with name "${material.name}"`);
-            const createdMaterial = yield this.materialsRepository.create(Object.assign(Object.assign({}, material), { createdAt: new Date(), userId }));
+            const createdMaterial = yield this.materialsRepository.create(Object.assign(Object.assign({}, material), { createdAt: new Date() }));
             return createdMaterial;
         });
     }
@@ -119,7 +119,7 @@ let MaterialsService = MaterialsService_1 = class MaterialsService {
                 const materialToUpdate = yield this.materialsRepository.findOne({ _id: material._id });
                 if (!materialToUpdate)
                     throw new exceptions_1.NotFound('Material');
-                return this.materialsRepository.findOneAndUpdate({ _id: material._id }, material);
+                return this.materialsRepository.findOneAndUpdate({ _id: material._id }, material, { new: true });
             }
             catch (error) {
                 this.logger.error(`error on update material > [error]: ${error}`);
