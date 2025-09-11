@@ -1,4 +1,5 @@
-export declare class CreateSampleDto {
+export declare class SampleResponseDto {
+    code: string;
     name: string;
     type: 'inorganicSoil' | 'organicSoil' | 'pavementLayer';
     construction?: string;

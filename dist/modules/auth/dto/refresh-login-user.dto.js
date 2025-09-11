@@ -11,14 +11,23 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.InputRefreshLoginDto = void 0;
 const class_validator_1 = require("class-validator");
+const swagger_1 = require("@nestjs/swagger");
 class InputRefreshLoginDto {
 }
 exports.InputRefreshLoginDto = InputRefreshLoginDto;
 __decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Identificador único do usuário',
+        example: '64f2c1b4e7a1b2c3d4e5f6a7',
+    }),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], InputRefreshLoginDto.prototype, "_id", void 0);
 __decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Token JWT válido para renovação',
+        example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
+    }),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], InputRefreshLoginDto.prototype, "token", void 0);

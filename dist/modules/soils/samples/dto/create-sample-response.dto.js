@@ -9,79 +9,61 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateSampleDto = void 0;
-const class_validator_1 = require("class-validator");
+exports.SampleResponseDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
-class CreateSampleDto {
+class SampleResponseDto {
 }
-exports.CreateSampleDto = CreateSampleDto;
+exports.SampleResponseDto = SampleResponseDto;
+__decorate([
+    (0, swagger_1.ApiProperty)({ description: 'Código único da amostra', example: 'SMP-001' }),
+    __metadata("design:type", String)
+], SampleResponseDto.prototype, "code", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Nome da amostra', example: 'Solo argiloso' }),
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], CreateSampleDto.prototype, "name", void 0);
+], SampleResponseDto.prototype, "name", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Tipo da amostra',
         example: 'inorganicSoil',
         enum: ['inorganicSoil', 'organicSoil', 'pavementLayer'],
     }),
-    (0, class_validator_1.IsIn)(['inorganicSoil', 'organicSoil', 'pavementLayer']),
     __metadata("design:type", String)
-], CreateSampleDto.prototype, "type", void 0);
+], SampleResponseDto.prototype, "type", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Tipo de construção', example: 'Estrada', required: false }),
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], CreateSampleDto.prototype, "construction", void 0);
+], SampleResponseDto.prototype, "construction", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Trecho da amostra', example: 'Trecho 1', required: false }),
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], CreateSampleDto.prototype, "snippet", void 0);
+], SampleResponseDto.prototype, "snippet", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Proveniência da amostra', example: 'Local X', required: false }),
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], CreateSampleDto.prototype, "provenance", void 0);
+], SampleResponseDto.prototype, "provenance", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Estaca associada', example: 'E-23', required: false }),
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], CreateSampleDto.prototype, "stake", void 0);
+], SampleResponseDto.prototype, "stake", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Camada do solo', example: 'Camada superficial', required: false }),
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], CreateSampleDto.prototype, "layer", void 0);
+], SampleResponseDto.prototype, "layer", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Profundidade em cm', example: 30, required: false }),
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsNumber)(),
     __metadata("design:type", Number)
-], CreateSampleDto.prototype, "depth", void 0);
+], SampleResponseDto.prototype, "depth", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Exd da amostra', example: 'EXD123', required: false }),
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], CreateSampleDto.prototype, "exd", void 0);
+], SampleResponseDto.prototype, "exd", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Data da coleta', example: '2025-08-18' }),
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], CreateSampleDto.prototype, "collectionDate", void 0);
+], SampleResponseDto.prototype, "collectionDate", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Descrição da amostra', example: 'Solo argiloso coletado próximo à estrada', required: false }),
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], CreateSampleDto.prototype, "description", void 0);
-//# sourceMappingURL=create-sample.dto.js.map
+], SampleResponseDto.prototype, "description", void 0);
+//# sourceMappingURL=create-sample-response.dto.js.map
