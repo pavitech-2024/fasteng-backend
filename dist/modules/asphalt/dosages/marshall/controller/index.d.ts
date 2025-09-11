@@ -53,7 +53,7 @@ export declare class MarshallController {
             name: any;
         };
     }>;
-    calculateGranulometry(response: Response, body: any): Promise<any>;
+    calculateStep3Data(response: Response, body: any): Promise<any>;
     saveGranulometryCompositionStep(userId: string, body: any): Promise<{
         success: boolean;
         error?: undefined;
