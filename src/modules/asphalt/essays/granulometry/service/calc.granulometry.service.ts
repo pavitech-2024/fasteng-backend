@@ -45,11 +45,23 @@ export class Calc_AsphaltGranulometry_Service {
       );
 
       const { table_data, material_mass, bottom } = step2Data;
+<<<<<<< HEAD
       const accumulated_retained: [string, number][] = [];
       const passant: [string, number][] = [];
       const retained_porcentage: [string, number][] = [];
       const passant_porcentage: [string, number][] = [];
       const graph_data: [number, number][] = [];
+=======
+
+      const length = table_data.length;
+
+      const accumulated_retained: [string, number][] = []
+
+      const passant: [string, number][] = []
+      const retained_porcentage: [string, number][] = []
+
+      const graph_data: [number, number][] = []  
+>>>>>>> master
 
       let total_retained = 0;
       let nominal_diameter = 0;
@@ -137,11 +149,13 @@ export class Calc_AsphaltGranulometry_Service {
             nominal_size = previous_retained <= 5 ? getSieveValue(table_data[i - 1].sieve_label) : getSieveValue(label);
           }
         }
+        
 
         if (total_retained > 10 && nominal_diameter_flag) {
           nominal_diameter_flag = false;
           nominal_diameter = getSieveValue(table_data[i].sieve_label);
         }
+        
 
         graph_data.push([value, passant_porcentage]);
       }

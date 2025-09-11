@@ -1,54 +1,61 @@
-import { Body, Controller, Delete, Get, Logger, Param, Post, Res } from '@nestjs/common';
+import { 
+  Body, 
+  Controller, 
+  Delete, 
+  Get, 
+  Logger, 
+  Param, 
+  Post, 
+  NotFoundException, 
+  InternalServerErrorException 
+} from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Response } from 'express';
 import { MarshallService } from '../service';
 import { MarshallInitDto } from '../dto/marshall-init.dto';
 
 @ApiTags('marshall')
 @Controller('asphalt/dosages/marshall')
 export class MarshallController {
-  private logger = new Logger(MarshallController.name);
+  private readonly logger = new Logger(MarshallController.name);
 
-  constructor(private readonly marshallService: MarshallService) { }
+  constructor(private readonly marshallService: MarshallService) {}
 
   @Get('all/:id')
   @ApiOperation({ summary: 'Retorna todas as dosagens Marshall do banco de dados de um usuário.' })
   @ApiResponse({ status: 200, description: 'Dosagens encontradas com sucesso!' })
-  @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
+  @ApiResponse({ status: 404, description: 'Usuário não encontrado!' })
   async getAllByUserId(@Param('id') userId: string) {
-    this.logger.log(`get all dosages by user id > [id]: ${userId}`);
-
-    return this.marshallService.getAllDosages(userId);
+    this.logger.log(`Buscando todas dosagens para usuário id: ${userId}`);
+    try {
+      const dosages = await this.marshallService.getAllDosages(userId);
+      if (!dosages || dosages.length === 0) {
+        throw new NotFoundException('Nenhuma dosagem encontrada para este usuário.');
+      }
+      return dosages;
+    } catch (error) {
+      this.logger.error(`Erro ao buscar dosagens do usuário ${userId}`, error.stack);
+      throw new NotFoundException('Usuário não encontrado.');
+    }
   }
 
   @Post('verify-init/:id')
   @ApiOperation({ summary: 'Verifica se é possível criar uma dosagem Marshall com os dados enviados.' })
-  @ApiResponse({
-    status: 200,
-    description: 'É possível criar uma dosagem Marshall com os dados enviados.',
-    content: { 'application/json': { schema: { example: { success: true } } } },
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'Não é possível criar uma Marshall com os dados enviados.',
-    content: {
-      'application/json': {
-        schema: { example: { success: false, error: { message: 'Internal error.', status: 400, name: 'Error' } } },
-      },
-    },
-  })
-  @ApiResponse({ status: 400, description: 'Erro ao verificar se é possível criar uma Marshall com os dados enviados.' })
-  async verifyInitMarshall(@Res() response: Response, @Body() body: MarshallInitDto, @Param('id') userId: string) {
-    this.logger.log('verify init Marshall > [body]');
-
-    const status = await this.marshallService.verifyInitMarshall(body, userId);
-
-    return response.status(200).json(status);
+  @ApiResponse({ status: 200, description: 'Resultado da verificação da criação da dosagem.' })
+  @ApiResponse({ status: 400, description: 'Erro na verificação.' })
+  async verifyInitMarshall(@Body() body: MarshallInitDto, @Param('id') userId: string) {
+    this.logger.log(`Verificando criação de dosagem Marshall para usuário id: ${userId}`);
+    try {
+      return await this.marshallService.verifyInitMarshall(body, userId);
+    } catch (error) {
+      this.logger.error('Erro ao verificar criação de dosagem Marshall', error.stack);
+      throw new InternalServerErrorException('Erro interno ao verificar dosagem.');
+    }
   }
 
   @Get('material-selection/:id')
   @ApiOperation({ summary: 'Retorna todos os materiais do banco de dados de um usuário, que possuam os ensaios para a dosagem.' })
   @ApiResponse({ status: 200, description: 'Materiais encontrados com sucesso!' })
+<<<<<<< HEAD
   @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
   async getMaterialsByUserId(@Res() response: Response, @Param('id') userId: string) {
     this.logger.log(`get all materials, by user id, with the necessary dosage essays > [id]: ${userId}`);
@@ -56,11 +63,27 @@ export class MarshallController {
     const status = await this.marshallService.getUserMaterials(userId);
 
     return response.status(200).json(status);
+=======
+  @ApiResponse({ status: 404, description: 'Usuário não encontrado!' })
+  async getMaterialsByUserId(@Param('id') userId: string) {
+    this.logger.log(`Buscando materiais para usuário id: ${userId}`);
+    try {
+      const materials = await this.marshallService.getUserMaterials(userId);
+      if (!materials) {
+        throw new NotFoundException('Materiais não encontrados para este usuário.');
+      }
+      return materials;
+    } catch (error) {
+      this.logger.error(`Erro ao buscar materiais do usuário ${userId}`, error.stack);
+      throw new NotFoundException('Usuário não encontrado.');
+    }
+>>>>>>> master
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Retorna uma dosagem do banco de dados com o id informado.' })
   @ApiResponse({ status: 200, description: 'Dosagem encontrada com sucesso!' })
+<<<<<<< HEAD
   @ApiResponse({ status: 400, description: 'Dosagem não encontrada!' })
   async getDosageById(@Res() response: Response, @Param('id') dosageId: string) {
     this.logger.log(`get all materials, by user id, with the necessary dosage essays > [id]: ${dosageId}`);
@@ -68,38 +91,37 @@ export class MarshallController {
     const status = await this.marshallService.getDosageById(dosageId);
 
     return response.status(200).json(status);
+=======
+  @ApiResponse({ status: 404, description: 'Dosagem não encontrada!' })
+  async getDosageById(@Param('id') dosageId: string) {
+    this.logger.log(`Buscando dosagem por id: ${dosageId}`);
+    try {
+      const dosage = await this.marshallService.getDosageById(dosageId);
+      if (!dosage) {
+        throw new NotFoundException('Dosagem não encontrada.');
+      }
+      return dosage;
+    } catch (error) {
+      this.logger.error(`Erro ao buscar dosagem id ${dosageId}`, error.stack);
+      throw new NotFoundException('Dosagem não encontrada.');
+    }
+>>>>>>> master
   }
 
   @Post('save-material-selection-step/:id')
-  async saveMaterialSelectionStep(
-    @Res() response: Response,
-    @Body() body: any,
-    @Param('id') userId: string
-  ) {
-    this.logger.log(`save materials selection step in user marshall dosage > [body]: ${body}`);
-
-    const status = await this.marshallService.saveMaterialSelectionStep(body, userId);
-
-
-    return response.status(200).json(status);
+  async saveMaterialSelectionStep(@Body() body: any, @Param('id') userId: string) {
+    this.logger.log(`Salvando etapa seleção materiais para usuário id: ${userId}`);
+    return this.marshallService.saveMaterialSelectionStep(body, userId);
   }
 
   @Post('step-3-data')
   @ApiOperation({ summary: 'Retorna os dados iniciais necessários para a terceira tela (composição granulométrica) da dosagem' })
-  @ApiResponse({
-    status: 200,
-    description: 'Dados carregados com sucesso!',
-    content: { 'application/json': { schema: { example: { data: {}, success: true } } } },
-  })
-  @ApiResponse({ status: 400, description: 'Dados não encontrados!' })
-  async getStep3Data(@Res() response: Response, @Body() body: any) {
-    this.logger.log(`get step 3 data > [body]: ${body}`);
-
-    const status = await this.marshallService.getStep3Data(body);
-
-    return response.status(200).json(status);
+  async getStep3Data(@Body() body: any) {
+    this.logger.log(`Carregando dados da etapa 3`);
+    return this.marshallService.getStep3Data(body);
   }
 
+<<<<<<< HEAD
   @Post('calculate-granulometry')
   async calculateGranulometry(@Res() response: Response, @Body() body: any) {
     this.logger.log(`calculate granulometry data > [body]: ${body}`);
@@ -107,75 +129,52 @@ export class MarshallController {
     const status = await this.marshallService.calculateGranulometry(body);
 
     return response.status(200).json(status);
+=======
+  @Post('calculate-step-3-data')
+  async calculateStep3Data(@Body() body: any) {
+    this.logger.log(`Calculando dados da etapa 3`);
+    return this.marshallService.calculateStep3Data(body);
+>>>>>>> master
   }
 
   @Post('save-granulometry-composition-step/:userId')
-  async saveGranulometryCompositionStep(
-    @Res() response: Response,
-    @Param('userId') userId: string,
-    @Body() body: any
-  ) {
-    this.logger.log(`save step 3 data > [body]: ${body}`);
-
-    const status = await this.marshallService.saveStep3Data(body, userId);
-    
-
-    return response.status(200).json(status);
+  async saveGranulometryCompositionStep(@Param('userId') userId: string, @Body() body: any) {
+    this.logger.log(`Salvando dados da composição granulométrica para usuário id: ${userId}`);
+    return this.marshallService.saveStep3Data(body, userId);
   }
 
   @Post('calculate-step-4-data')
-  async calculateStep4Data(@Res() response: Response, @Body() body: any) {
-    this.logger.log(`calculate step 4 data > [body]: ${body}`);
-
-    const status = await this.marshallService.calculateStep4Data(body);
-
-    return response.status(200).json(status);
+  async calculateStep4Data(@Body() body: any) {
+    this.logger.log(`Calculando dados da etapa 4`);
+    return this.marshallService.calculateStep4Data(body);
   }
 
   @Post('save-binder-trial-step/:userId')
-  async saveBinderTrialStep(
-    @Res() response: Response,
-    @Param('userId') userId: string,
-    @Body() body: any
-  ) {
-    this.logger.log(`save step 4 data > [body]: ${body}`);
-
-    const status = await this.marshallService.saveStep4Data(body, userId);
-
-    return response.status(200).json(status);
+  async saveBinderTrialStep(@Param('userId') userId: string, @Body() body: any) {
+    this.logger.log(`Salvando dados da etapa 4 para usuário id: ${userId}`);
+    return this.marshallService.saveStep4Data(body, userId);
   }
 
   @Post('get-specific-mass-indexes')
-  async getIndexesOfMissesSpecificGravity(
-    @Res() response: Response,
-    @Body() aggregates: any
-    ) {
-    this.logger.log(`get specific mass indexes - step 5 > [body]: ${aggregates}`);
-
-    const status = await this.marshallService.getIndexesOfMissesSpecificGravity(aggregates);
-
-    return response.status(200).json(status);
+  async getIndexesOfMissesSpecificGravity(@Body() aggregates: any) {
+    this.logger.log(`Buscando índices de massa específica - etapa 5`);
+    return this.marshallService.getIndexesOfMissesSpecificGravity(aggregates);
   }
 
   @Post('calculate-step-5-dmt-data')
-  async calculateDmtData(@Res() response: Response, @Body() body: any) {
-    this.logger.log(`calculate step 5 dmt data > [body]: ${body}`);
-
-    const status = await this.marshallService.calculateDmtData(body);
-
-    return response.status(200).json(status);
+  async calculateDmtData(@Body() body: any) {
+    this.logger.log(`Calculando dados DMT - etapa 5`);
+    return this.marshallService.calculateDmtData(body);
   }
 
   @Post('calculate-step-5-gmm-data')
-  async calculateGmmData(@Res() response: Response, @Body() body: any) {
-    this.logger.log(`calculate step 5 gmm data > [body]: ${body}`);
-    
-    const status = await this.marshallService.calculateGmmData(body);
-
-    return response.status(200).json(status);
+  async calculateGmmData(@Body() body: any) {
+    this.logger.log(`Calculando dados GMM - etapa 5`);
+    return this.marshallService.calculateGmmData(body);
   }
 
   @Post('calculate-step-5-rice-test')
+<<<<<<< HEAD
   async calculateRiceTest(@Res() response: Response, @Body() body: any) {
     this.logger.log(`calculate maximum mixture density step rice test > [body]: ${body}`);
 
@@ -196,20 +195,27 @@ export class MarshallController {
     const status = await this.marshallService.saveMistureMaximumDensityData(body, userId);
 
     return response.status(200).json(status);
+=======
+  async calculateRiceTest(@Body() body: any) {
+    this.logger.log(`Calculando teste Rice - etapa 5`);
+    return this.marshallService.calculateRiceTest(body.riceTest);
+  }
+
+  @Post('save-maximum-mixture-density-step/:userId')
+  async saveMaximumMixtureDensityData(@Param('userId') userId: string, @Body() body: any) {
+    this.logger.log(`Salvando dados máxima densidade da mistura para usuário id: ${userId}`);
+    return this.marshallService.saveStep5Data(body, userId);
+>>>>>>> master
   }
 
   @Post('set-step-6-volumetric-parameters')
-  async setVolumetricParameters(@Res() response: Response, @Body() body: any) {
-    this.logger.log(`set step 6 volumetric parameters > [body]: ${body}`);
-
-    
-    const status = await this.marshallService.setVolumetricParameters(body);
-
-
-    return response.status(200).json(status);
+  async setVolumetricParameters(@Body() body: any) {
+    this.logger.log(`Definindo parâmetros volumétricos - etapa 6`);
+    return this.marshallService.setVolumetricParameters(body);
   }
 
   @Post('save-volumetric-parameters-step/:userId')
+<<<<<<< HEAD
   async saveVolumetricParametersData(
     @Res() response: Response,
     @Param('userId') userId: string,
@@ -220,109 +226,64 @@ export class MarshallController {
     const status = await this.marshallService.saveVolumetricParametersData(body, userId);
 
     return response.status(200).json(status);
+=======
+  async saveVolumetricParametersData(@Param('userId') userId: string, @Body() body: any) {
+    this.logger.log(`Salvando parâmetros volumétricos para usuário id: ${userId}`);
+    return this.marshallService.saveStep6Data(body, userId);
+>>>>>>> master
   }
 
   @Post('set-step-7-optimum-binder')
-  async setOptimumBinderContentData(@Res() response: Response, @Body() body: any) {
-    this.logger.log(`set step 7 optimum binder content > [body]: ${body}`);
-    
-    const status = await this.marshallService.setOptimumBinderContentData(body);
-
-    
-    return response.status(200).json(status);
+  async setOptimumBinderContentData(@Body() body: any) {
+    this.logger.log(`Definindo conteúdo ótimo do ligante - etapa 7`);
+    return this.marshallService.setOptimumBinderContentData(body);
   }
 
   @Post('step-7-plot-dosage-graph')
-  async setOptimumBinderContentDosageGraph(@Res() response: Response, @Body() body: any) {
-    this.logger.log(`set step 7 optimum binder content > [body]: ${body}`);
-    
-    const status = await this.marshallService.setOptimumBinderContentDosageGraph(body);
-
-    
-    return response.status(200).json(status);
+  async setOptimumBinderContentDosageGraph(@Body() body: any) {
+    this.logger.log(`Gerando gráfico da dosagem do ligante - etapa 7`);
+    return this.marshallService.setOptimumBinderContentDosageGraph(body);
   }
 
   @Post('step-7-get-expected-parameters')
-  async getOptimumBinderExpectedParameters(@Res() response: Response, @Body() body: any) {
-    this.logger.log(`set step 7 optimum binder expected parameters > [body]: ${body}`);
-    
-    const status = await this.marshallService.getOptimumBinderExpectedParameters(body);
-    
-    return response.status(200).json(status);
+  async getOptimumBinderExpectedParameters(@Body() body: any) {
+    this.logger.log(`Buscando parâmetros esperados do ligante - etapa 7`);
+    return this.marshallService.getOptimumBinderExpectedParameters(body);
   }
 
   @Post('save-optimum-binder-content-step/:userId')
-  async saveOptimumBinderContentData(
-    @Res() response: Response,
-    @Param('userId') userId: string,
-    @Body() body: any
-  ) {
-    this.logger.log(`save step 7 data > [body]: ${body}`);
-
-    const status = await this.marshallService.saveStep7Data(body, userId);
-
-    return response.status(200).json(status);
+  async saveOptimumBinderContentData(@Param('userId') userId: string, @Body() body: any) {
+    this.logger.log(`Salvando dados do ligante ótimo para usuário id: ${userId}`);
+    return this.marshallService.saveStep7Data(body, userId);
   }
 
   @Post('confirm-specific-gravity')
-  async confirmSpecificGravity(
-    @Res() response: Response,
-    @Body() body: any
-  ) {
-    this.logger.log(`confirm step 8 specific gravity > [body]: ${body}`);
-
-    const status = await this.marshallService.confirmSpecificGravity(body);
-
-    return response.status(200).json(status);
+  async confirmSpecificGravity(@Body() body: any) {
+    this.logger.log(`Confirmando gravidade específica - etapa 8`);
+    return this.marshallService.confirmSpecificGravity(body);
   }
 
   @Post('confirm-volumetric-parameters')
-  async confirmVolumetricParameters(
-    @Res() response: Response,
-    @Body() body: any
-  ) {
-    this.logger.log(`confirm step 8volumetric parameters > [body]: ${body}`);
-
-    const status = await this.marshallService.confirmVolumetricParameters(body);
-
-    return response.status(200).json(status);
+  async confirmVolumetricParameters(@Body() body: any) {
+    this.logger.log(`Confirmando parâmetros volumétricos - etapa 8`);
+    return this.marshallService.confirmVolumetricParameters(body);
   }
 
   @Post('save-confirmation-compression-data-step/:userId')
-  async saveConfirmationCompressionData(
-    @Res() response: Response,
-    @Param('userId') userId: string,
-    @Body() body: any
-  ) {
-    this.logger.log(`save step 7 data > [body]: ${body}`);
-
-    const status = await this.marshallService.saveStep8Data(body, userId);
-
-    return response.status(200).json(status);
+  async saveConfirmationCompressionData(@Param('userId') userId: string, @Body() body: any) {
+    this.logger.log(`Salvando dados de compressão confirmada para usuário id: ${userId}`);
+    return this.marshallService.saveStep8Data(body, userId);
   }
 
   @Post('save-marshall-dosage/:userId')
-  async saveMarshallDosage(
-    @Res() response: Response,
-    @Param('userId') userId: string,
-    @Body() body: any
-  ) {
-    this.logger.log(`save marshall dosage > [body]: ${body}`);
-
-    const status = await this.marshallService.saveMarshallDosage(body, userId);
-
-    return response.status(200).json(status);
+  async saveMarshallDosage(@Param('userId') userId: string, @Body() body: any) {
+    this.logger.log(`Salvando dosagem Marshall para usuário id: ${userId}`);
+    return this.marshallService.saveMarshallDosage(body, userId);
   }
 
   @Delete(':id')
-  async deleteMarshallDosage(
-    @Res() response: Response,
-    @Param('id') id: string
-  ) {
-    this.logger.log(`delete marshall dosage > [body]: ${id}`);
-
-    const status = await this.marshallService.deleteMarshallDosage(id);
-
-    return response.status(200).json(status);
+  async deleteMarshallDosage(@Param('id') id: string) {
+    this.logger.log(`Deletando dosagem Marshall id: ${id}`);
+    return this.marshallService.deleteMarshallDosage(id);
   }
 }

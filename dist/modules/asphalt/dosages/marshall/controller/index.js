@@ -34,15 +34,30 @@ let MarshallController = MarshallController_1 = class MarshallController {
     }
     getAllByUserId(userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`get all dosages by user id > [id]: ${userId}`);
-            return this.marshallService.getAllDosages(userId);
+            this.logger.log(`Buscando todas dosagens para usuário id: ${userId}`);
+            try {
+                const dosages = yield this.marshallService.getAllDosages(userId);
+                if (!dosages || dosages.length === 0) {
+                    throw new common_1.NotFoundException('Nenhuma dosagem encontrada para este usuário.');
+                }
+                return dosages;
+            }
+            catch (error) {
+                this.logger.error(`Erro ao buscar dosagens do usuário ${userId}`, error.stack);
+                throw new common_1.NotFoundException('Usuário não encontrado.');
+            }
         });
     }
-    verifyInitMarshall(response, body, userId) {
+    verifyInitMarshall(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log('verify init Marshall > [body]');
-            const status = yield this.marshallService.verifyInitMarshall(body, userId);
-            return response.status(200).json(status);
+            this.logger.log(`Verificando criação de dosagem Marshall para usuário id: ${userId}`);
+            try {
+                return yield this.marshallService.verifyInitMarshall(body, userId);
+            }
+            catch (error) {
+                this.logger.error('Erro ao verificar criação de dosagem Marshall', error.stack);
+                throw new common_1.InternalServerErrorException('Erro interno ao verificar dosagem.');
+            }
         });
     }
     getMaterialsByUserId(response, userId) {
@@ -59,18 +74,16 @@ let MarshallController = MarshallController_1 = class MarshallController {
             return response.status(200).json(status);
         });
     }
-    saveMaterialSelectionStep(response, body, userId) {
+    saveMaterialSelectionStep(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`save materials selection step in user marshall dosage > [body]: ${body}`);
-            const status = yield this.marshallService.saveMaterialSelectionStep(body, userId);
-            return response.status(200).json(status);
+            this.logger.log(`Salvando etapa seleção materiais para usuário id: ${userId}`);
+            return this.marshallService.saveMaterialSelectionStep(body, userId);
         });
     }
-    getStep3Data(response, body) {
+    getStep3Data(body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`get step 3 data > [body]: ${body}`);
-            const status = yield this.marshallService.getStep3Data(body);
-            return response.status(200).json(status);
+            this.logger.log(`Carregando dados da etapa 3`);
+            return this.marshallService.getStep3Data(body);
         });
     }
     calculateGranulometry(response, body) {
@@ -80,46 +93,40 @@ let MarshallController = MarshallController_1 = class MarshallController {
             return response.status(200).json(status);
         });
     }
-    saveGranulometryCompositionStep(response, userId, body) {
+    saveGranulometryCompositionStep(userId, body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`save step 3 data > [body]: ${body}`);
-            const status = yield this.marshallService.saveStep3Data(body, userId);
-            return response.status(200).json(status);
+            this.logger.log(`Salvando dados da composição granulométrica para usuário id: ${userId}`);
+            return this.marshallService.saveStep3Data(body, userId);
         });
     }
-    calculateStep4Data(response, body) {
+    calculateStep4Data(body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`calculate step 4 data > [body]: ${body}`);
-            const status = yield this.marshallService.calculateStep4Data(body);
-            return response.status(200).json(status);
+            this.logger.log(`Calculando dados da etapa 4`);
+            return this.marshallService.calculateStep4Data(body);
         });
     }
-    saveBinderTrialStep(response, userId, body) {
+    saveBinderTrialStep(userId, body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`save step 4 data > [body]: ${body}`);
-            const status = yield this.marshallService.saveStep4Data(body, userId);
-            return response.status(200).json(status);
+            this.logger.log(`Salvando dados da etapa 4 para usuário id: ${userId}`);
+            return this.marshallService.saveStep4Data(body, userId);
         });
     }
-    getIndexesOfMissesSpecificGravity(response, aggregates) {
+    getIndexesOfMissesSpecificGravity(aggregates) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`get specific mass indexes - step 5 > [body]: ${aggregates}`);
-            const status = yield this.marshallService.getIndexesOfMissesSpecificGravity(aggregates);
-            return response.status(200).json(status);
+            this.logger.log(`Buscando índices de massa específica - etapa 5`);
+            return this.marshallService.getIndexesOfMissesSpecificGravity(aggregates);
         });
     }
-    calculateDmtData(response, body) {
+    calculateDmtData(body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`calculate step 5 dmt data > [body]: ${body}`);
-            const status = yield this.marshallService.calculateDmtData(body);
-            return response.status(200).json(status);
+            this.logger.log(`Calculando dados DMT - etapa 5`);
+            return this.marshallService.calculateDmtData(body);
         });
     }
-    calculateGmmData(response, body) {
+    calculateGmmData(body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`calculate step 5 gmm data > [body]: ${body}`);
-            const status = yield this.marshallService.calculateGmmData(body);
-            return response.status(200).json(status);
+            this.logger.log(`Calculando dados GMM - etapa 5`);
+            return this.marshallService.calculateGmmData(body);
         });
     }
     calculateRiceTest(response, body) {
@@ -136,11 +143,10 @@ let MarshallController = MarshallController_1 = class MarshallController {
             return response.status(200).json(status);
         });
     }
-    setVolumetricParameters(response, body) {
+    setVolumetricParameters(body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`set step 6 volumetric parameters > [body]: ${body}`);
-            const status = yield this.marshallService.setVolumetricParameters(body);
-            return response.status(200).json(status);
+            this.logger.log(`Definindo parâmetros volumétricos - etapa 6`);
+            return this.marshallService.setVolumetricParameters(body);
         });
     }
     saveVolumetricParametersData(response, userId, body) {
@@ -150,67 +156,58 @@ let MarshallController = MarshallController_1 = class MarshallController {
             return response.status(200).json(status);
         });
     }
-    setOptimumBinderContentData(response, body) {
+    setOptimumBinderContentData(body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`set step 7 optimum binder content > [body]: ${body}`);
-            const status = yield this.marshallService.setOptimumBinderContentData(body);
-            return response.status(200).json(status);
+            this.logger.log(`Definindo conteúdo ótimo do ligante - etapa 7`);
+            return this.marshallService.setOptimumBinderContentData(body);
         });
     }
-    setOptimumBinderContentDosageGraph(response, body) {
+    setOptimumBinderContentDosageGraph(body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`set step 7 optimum binder content > [body]: ${body}`);
-            const status = yield this.marshallService.setOptimumBinderContentDosageGraph(body);
-            return response.status(200).json(status);
+            this.logger.log(`Gerando gráfico da dosagem do ligante - etapa 7`);
+            return this.marshallService.setOptimumBinderContentDosageGraph(body);
         });
     }
-    getOptimumBinderExpectedParameters(response, body) {
+    getOptimumBinderExpectedParameters(body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`set step 7 optimum binder expected parameters > [body]: ${body}`);
-            const status = yield this.marshallService.getOptimumBinderExpectedParameters(body);
-            return response.status(200).json(status);
+            this.logger.log(`Buscando parâmetros esperados do ligante - etapa 7`);
+            return this.marshallService.getOptimumBinderExpectedParameters(body);
         });
     }
-    saveOptimumBinderContentData(response, userId, body) {
+    saveOptimumBinderContentData(userId, body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`save step 7 data > [body]: ${body}`);
-            const status = yield this.marshallService.saveStep7Data(body, userId);
-            return response.status(200).json(status);
+            this.logger.log(`Salvando dados do ligante ótimo para usuário id: ${userId}`);
+            return this.marshallService.saveStep7Data(body, userId);
         });
     }
-    confirmSpecificGravity(response, body) {
+    confirmSpecificGravity(body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`confirm step 8 specific gravity > [body]: ${body}`);
-            const status = yield this.marshallService.confirmSpecificGravity(body);
-            return response.status(200).json(status);
+            this.logger.log(`Confirmando gravidade específica - etapa 8`);
+            return this.marshallService.confirmSpecificGravity(body);
         });
     }
-    confirmVolumetricParameters(response, body) {
+    confirmVolumetricParameters(body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`confirm step 8volumetric parameters > [body]: ${body}`);
-            const status = yield this.marshallService.confirmVolumetricParameters(body);
-            return response.status(200).json(status);
+            this.logger.log(`Confirmando parâmetros volumétricos - etapa 8`);
+            return this.marshallService.confirmVolumetricParameters(body);
         });
     }
-    saveConfirmationCompressionData(response, userId, body) {
+    saveConfirmationCompressionData(userId, body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`save step 7 data > [body]: ${body}`);
-            const status = yield this.marshallService.saveStep8Data(body, userId);
-            return response.status(200).json(status);
+            this.logger.log(`Salvando dados de compressão confirmada para usuário id: ${userId}`);
+            return this.marshallService.saveStep8Data(body, userId);
         });
     }
-    saveMarshallDosage(response, userId, body) {
+    saveMarshallDosage(userId, body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`save marshall dosage > [body]: ${body}`);
-            const status = yield this.marshallService.saveMarshallDosage(body, userId);
-            return response.status(200).json(status);
+            this.logger.log(`Salvando dosagem Marshall para usuário id: ${userId}`);
+            return this.marshallService.saveMarshallDosage(body, userId);
         });
     }
-    deleteMarshallDosage(response, id) {
+    deleteMarshallDosage(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`delete marshall dosage > [body]: ${id}`);
-            const status = yield this.marshallService.deleteMarshallDosage(id);
-            return response.status(200).json(status);
+            this.logger.log(`Deletando dosagem Marshall id: ${id}`);
+            return this.marshallService.deleteMarshallDosage(id);
         });
     }
 };
@@ -218,7 +215,7 @@ __decorate([
     (0, common_1.Get)('all/:id'),
     (0, swagger_1.ApiOperation)({ summary: 'Retorna todas as dosagens Marshall do banco de dados de um usuário.' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Dosagens encontradas com sucesso!' }),
-    (0, swagger_1.ApiResponse)({ status: 400, description: 'Usuário não encontrado!' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Usuário não encontrado!' }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -227,26 +224,12 @@ __decorate([
 __decorate([
     (0, common_1.Post)('verify-init/:id'),
     (0, swagger_1.ApiOperation)({ summary: 'Verifica se é possível criar uma dosagem Marshall com os dados enviados.' }),
-    (0, swagger_1.ApiResponse)({
-        status: 200,
-        description: 'É possível criar uma dosagem Marshall com os dados enviados.',
-        content: { 'application/json': { schema: { example: { success: true } } } },
-    }),
-    (0, swagger_1.ApiResponse)({
-        status: 200,
-        description: 'Não é possível criar uma Marshall com os dados enviados.',
-        content: {
-            'application/json': {
-                schema: { example: { success: false, error: { message: 'Internal error.', status: 400, name: 'Error' } } },
-            },
-        },
-    }),
-    (0, swagger_1.ApiResponse)({ status: 400, description: 'Erro ao verificar se é possível criar uma Marshall com os dados enviados.' }),
-    __param(0, (0, common_1.Res)()),
-    __param(1, (0, common_1.Body)()),
-    __param(2, (0, common_1.Param)('id')),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Resultado da verificação da criação da dosagem.' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Erro na verificação.' }),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, marshall_init_dto_1.MarshallInitDto, String]),
+    __metadata("design:paramtypes", [marshall_init_dto_1.MarshallInitDto, String]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "verifyInitMarshall", null);
 __decorate([
@@ -254,10 +237,10 @@ __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'Retorna todos os materiais do banco de dados de um usuário, que possuam os ensaios para a dosagem.' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Materiais encontrados com sucesso!' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Usuário não encontrado!' }),
-    __param(0, (0, common_1.Res)()),
+    __param(0, Res()),
     __param(1, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:paramtypes", [Response, String]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "getMaterialsByUserId", null);
 __decorate([
@@ -265,201 +248,177 @@ __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'Retorna uma dosagem do banco de dados com o id informado.' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Dosagem encontrada com sucesso!' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Dosagem não encontrada!' }),
-    __param(0, (0, common_1.Res)()),
+    __param(0, Res()),
     __param(1, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:paramtypes", [Response, String]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "getDosageById", null);
 __decorate([
     (0, common_1.Post)('save-material-selection-step/:id'),
-    __param(0, (0, common_1.Res)()),
-    __param(1, (0, common_1.Body)()),
-    __param(2, (0, common_1.Param)('id')),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object, String]),
+    __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "saveMaterialSelectionStep", null);
 __decorate([
     (0, common_1.Post)('step-3-data'),
     (0, swagger_1.ApiOperation)({ summary: 'Retorna os dados iniciais necessários para a terceira tela (composição granulométrica) da dosagem' }),
-    (0, swagger_1.ApiResponse)({
-        status: 200,
-        description: 'Dados carregados com sucesso!',
-        content: { 'application/json': { schema: { example: { data: {}, success: true } } } },
-    }),
-    (0, swagger_1.ApiResponse)({ status: 400, description: 'Dados não encontrados!' }),
-    __param(0, (0, common_1.Res)()),
-    __param(1, (0, common_1.Body)()),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "getStep3Data", null);
 __decorate([
     (0, common_1.Post)('calculate-granulometry'),
-    __param(0, (0, common_1.Res)()),
+    __param(0, Res()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [Response, Object]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "calculateGranulometry", null);
 __decorate([
     (0, common_1.Post)('save-granulometry-composition-step/:userId'),
-    __param(0, (0, common_1.Res)()),
-    __param(1, (0, common_1.Param)('userId')),
-    __param(2, (0, common_1.Body)()),
+    __param(0, (0, common_1.Param)('userId')),
+    __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, String, Object]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "saveGranulometryCompositionStep", null);
 __decorate([
     (0, common_1.Post)('calculate-step-4-data'),
-    __param(0, (0, common_1.Res)()),
-    __param(1, (0, common_1.Body)()),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "calculateStep4Data", null);
 __decorate([
     (0, common_1.Post)('save-binder-trial-step/:userId'),
-    __param(0, (0, common_1.Res)()),
-    __param(1, (0, common_1.Param)('userId')),
-    __param(2, (0, common_1.Body)()),
+    __param(0, (0, common_1.Param)('userId')),
+    __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, String, Object]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "saveBinderTrialStep", null);
 __decorate([
     (0, common_1.Post)('get-specific-mass-indexes'),
-    __param(0, (0, common_1.Res)()),
-    __param(1, (0, common_1.Body)()),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "getIndexesOfMissesSpecificGravity", null);
 __decorate([
     (0, common_1.Post)('calculate-step-5-dmt-data'),
-    __param(0, (0, common_1.Res)()),
-    __param(1, (0, common_1.Body)()),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "calculateDmtData", null);
 __decorate([
     (0, common_1.Post)('calculate-step-5-gmm-data'),
-    __param(0, (0, common_1.Res)()),
-    __param(1, (0, common_1.Body)()),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "calculateGmmData", null);
 __decorate([
     (0, common_1.Post)('calculate-step-5-rice-test'),
-    __param(0, (0, common_1.Res)()),
+    __param(0, Res()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [Response, Object]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "calculateRiceTest", null);
 __decorate([
     (0, common_1.Post)('save-maximum-mixture-density-step/:userId'),
-    __param(0, (0, common_1.Res)()),
+    __param(0, Res()),
     __param(1, (0, common_1.Param)('userId')),
     __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, String, Object]),
+    __metadata("design:paramtypes", [Response, String, Object]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "saveMaximumMixtureDensityData", null);
 __decorate([
     (0, common_1.Post)('set-step-6-volumetric-parameters'),
-    __param(0, (0, common_1.Res)()),
-    __param(1, (0, common_1.Body)()),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "setVolumetricParameters", null);
 __decorate([
     (0, common_1.Post)('save-volumetric-parameters-step/:userId'),
-    __param(0, (0, common_1.Res)()),
+    __param(0, Res()),
     __param(1, (0, common_1.Param)('userId')),
     __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, String, Object]),
+    __metadata("design:paramtypes", [Response, String, Object]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "saveVolumetricParametersData", null);
 __decorate([
     (0, common_1.Post)('set-step-7-optimum-binder'),
-    __param(0, (0, common_1.Res)()),
-    __param(1, (0, common_1.Body)()),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "setOptimumBinderContentData", null);
 __decorate([
     (0, common_1.Post)('step-7-plot-dosage-graph'),
-    __param(0, (0, common_1.Res)()),
-    __param(1, (0, common_1.Body)()),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "setOptimumBinderContentDosageGraph", null);
 __decorate([
     (0, common_1.Post)('step-7-get-expected-parameters'),
-    __param(0, (0, common_1.Res)()),
-    __param(1, (0, common_1.Body)()),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "getOptimumBinderExpectedParameters", null);
 __decorate([
     (0, common_1.Post)('save-optimum-binder-content-step/:userId'),
-    __param(0, (0, common_1.Res)()),
-    __param(1, (0, common_1.Param)('userId')),
-    __param(2, (0, common_1.Body)()),
+    __param(0, (0, common_1.Param)('userId')),
+    __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, String, Object]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "saveOptimumBinderContentData", null);
 __decorate([
     (0, common_1.Post)('confirm-specific-gravity'),
-    __param(0, (0, common_1.Res)()),
-    __param(1, (0, common_1.Body)()),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "confirmSpecificGravity", null);
 __decorate([
     (0, common_1.Post)('confirm-volumetric-parameters'),
-    __param(0, (0, common_1.Res)()),
-    __param(1, (0, common_1.Body)()),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "confirmVolumetricParameters", null);
 __decorate([
     (0, common_1.Post)('save-confirmation-compression-data-step/:userId'),
-    __param(0, (0, common_1.Res)()),
-    __param(1, (0, common_1.Param)('userId')),
-    __param(2, (0, common_1.Body)()),
+    __param(0, (0, common_1.Param)('userId')),
+    __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, String, Object]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "saveConfirmationCompressionData", null);
 __decorate([
     (0, common_1.Post)('save-marshall-dosage/:userId'),
-    __param(0, (0, common_1.Res)()),
-    __param(1, (0, common_1.Param)('userId')),
-    __param(2, (0, common_1.Body)()),
+    __param(0, (0, common_1.Param)('userId')),
+    __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, String, Object]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "saveMarshallDosage", null);
 __decorate([
     (0, common_1.Delete)(':id'),
-    __param(0, (0, common_1.Res)()),
-    __param(1, (0, common_1.Param)('id')),
+    __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "deleteMarshallDosage", null);
 MarshallController = MarshallController_1 = __decorate([
