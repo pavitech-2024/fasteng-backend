@@ -1,5 +1,6 @@
 import { MarshallService } from '../service';
 import { MarshallInitDto } from '../dto/marshall-init.dto';
+import { Response } from 'express';
 export declare class MarshallController {
     private readonly marshallService;
     private readonly logger;
@@ -16,8 +17,8 @@ export declare class MarshallController {
             name: any;
         };
     }>;
-    getMaterialsByUserId(response: Response, userId: string): Promise<any>;
-    getDosageById(response: Response, dosageId: string): Promise<any>;
+    getMaterialsByUserId(response: Response, userId: string): Promise<Response<any, Record<string, any>>>;
+    getDosageById(response: Response, dosageId: string): Promise<Response<any, Record<string, any>>>;
     saveMaterialSelectionStep(body: any, userId: string): Promise<{
         success: boolean;
         error?: undefined;
@@ -53,7 +54,6 @@ export declare class MarshallController {
             name: any;
         };
     }>;
-    calculateStep3Data(response: Response, body: any): Promise<any>;
     saveGranulometryCompositionStep(userId: string, body: any): Promise<{
         success: boolean;
         error?: undefined;
@@ -152,8 +152,8 @@ export declare class MarshallController {
             name: any;
         };
     }>;
-    calculateRiceTest(response: Response, body: any): Promise<any>;
-    saveMaximumMixtureDensityData(response: Response, userId: string, body: any): Promise<any>;
+    calculateRiceTest(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
+    saveMaximumMixtureDensityData(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
     setVolumetricParameters(body: any): Promise<{
         data: {
             volumetricParameters: {
@@ -173,7 +173,7 @@ export declare class MarshallController {
             name: any;
         };
     }>;
-    saveVolumetricParametersData(response: Response, userId: string, body: any): Promise<any>;
+    saveVolumetricParametersData(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
     setOptimumBinderContentData(body: any): Promise<{
         data: {
             optimumBinder: {

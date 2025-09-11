@@ -43,6 +43,6 @@ export declare class VolumetricParameters_Marshall_Service {
         };
     }>;
     temperaturesOfWater(name: string): number | undefined;
-    saveVolumetricParametersData(body: any, userId: string): Promise<boolean>;
+    saveStep6Data(body: any, userId: string): Promise<boolean>;
 }
 export {};

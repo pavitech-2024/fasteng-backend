@@ -105,7 +105,6 @@ let VolumetricParameters_Marshall_Service = VolumetricParameters_Marshall_Servic
                             asphaltContentResult = binderTrial + 1;
                             break;
                         default:
-                            throw new Error('Invalid asphalt content');
                     }
                     for (let j = 0; j < newArray[i][asphaltContent].length; j++) {
                         const { dryMass, drySurfaceSaturatedMass, submergedMass, stability, fluency, diametricalCompressionStrength, } = newArray[i][asphaltContent][j];
@@ -299,7 +298,7 @@ let VolumetricParameters_Marshall_Service = VolumetricParameters_Marshall_Servic
         };
         return list[name];
     }
-    saveVolumetricParametersData(body, userId) {
+    saveStep6Data(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('save marshall volumetric parameters step on volumetric-parameters.marshall.service.ts > [body]', {

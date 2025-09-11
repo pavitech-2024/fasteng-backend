@@ -45,23 +45,11 @@ export class Calc_AsphaltGranulometry_Service {
       );
 
       const { table_data, material_mass, bottom } = step2Data;
-<<<<<<< HEAD
       const accumulated_retained: [string, number][] = [];
       const passant: [string, number][] = [];
       const retained_porcentage: [string, number][] = [];
       const passant_porcentage: [string, number][] = [];
       const graph_data: [number, number][] = [];
-=======
-
-      const length = table_data.length;
-
-      const accumulated_retained: [string, number][] = []
-
-      const passant: [string, number][] = []
-      const retained_porcentage: [string, number][] = []
-
-      const graph_data: [number, number][] = []  
->>>>>>> master
 
       let total_retained = 0;
       let nominal_diameter = 0;

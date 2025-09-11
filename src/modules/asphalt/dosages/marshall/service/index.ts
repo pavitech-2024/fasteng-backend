@@ -261,7 +261,7 @@ export class MarshallService {
     }
   }
 
-  async calculateGranulometry(body: any) {
+  async calculateStep3Data(body: any) {
     try {
       const { dnitBands } = body;
 
@@ -420,9 +420,9 @@ export class MarshallService {
     }
   }
 
-  async saveMistureMaximumDensityData(body: any, userId: string) {
+  async saveStep5Data(body: any, userId: string) {
     try {
-      const success = await this.maximumMixtureDensity_Service.saveMistureMaximumDensityData(body, userId);
+      const success = await this.maximumMixtureDensity_Service.saveStep5Data(body, userId);
 
       return { success }
     } catch (error) {
@@ -451,9 +451,9 @@ export class MarshallService {
     }
   }
 
-  async saveVolumetricParametersData(body: any, userId: string) {
+  async saveStep6Data(body: any, userId: string) {
     try {
-      const success = await this.volumetricParameters_Service.saveVolumetricParametersData(body, userId);
+      const success = await this.volumetricParameters_Service.saveStep6Data(body, userId);
 
       return { success }
     } catch (error) {
@@ -572,7 +572,7 @@ export class MarshallService {
     }
   }
 
-  async saveStep8Data(body: any, userId: string) {  
+  async saveStep8Data(body: any, userId: string) {
     try {
       const success = await this.confirmCompression_Service.saveStep8Data(body, userId);
 

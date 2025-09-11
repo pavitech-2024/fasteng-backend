@@ -6,12 +6,14 @@ import {
   Logger, 
   Param, 
   Post, 
-  NotFoundException, 
-  InternalServerErrorException 
+  NotFoundException,
+  InternalServerErrorException, 
+  Res
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { MarshallService } from '../service';
 import { MarshallInitDto } from '../dto/marshall-init.dto';
+import { Response } from 'express';
 
 @ApiTags('marshall')
 @Controller('asphalt/dosages/marshall')
@@ -91,14 +93,7 @@ export class MarshallController {
     return this.marshallService.getStep3Data(body);
   }
 
-  @Post('calculate-step-3-data')
-  async calculateStep3Data(@Res() response: Response, @Body() body: any) {
-    this.logger.log(`calculate step 3 data > [body]: ${body}`);
-
-    const status = await this.marshallService.calculateStep3Data(body);
-
-    return response.status(200).json(status);
-  }
+ 
 
   @Post('save-granulometry-composition-step/:userId')
   async saveGranulometryCompositionStep(@Param('userId') userId: string, @Body() body: any) {

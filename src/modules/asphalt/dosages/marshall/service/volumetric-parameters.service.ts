@@ -32,7 +32,6 @@ export class VolumetricParameters_Marshall_Service {
       this.logger.log('set volumetric parameters data on volumetric-parameters.marshall.service.ts > [body]', {
         body,
       });
-      
 
       const { volumetricParametersData } = body;
       const {
@@ -48,7 +47,7 @@ export class VolumetricParameters_Marshall_Service {
 
       let newArray: any[] = [];
 
-      // Filtra apenas os teores que foram selecionados e tiveram seus campos preenchidos
+      // Verifricar se esse array está correto
       Object.entries(volumetricParametersData).forEach(([key, value]: [string, any[]]) => {
         const allNonNull = value.every((obj: any) => Object.values(obj).every((val: any) => val !== null));
         if (allNonNull) {
@@ -75,10 +74,9 @@ export class VolumetricParameters_Marshall_Service {
         let usedMaxSpecifyGravity;
         let asphaltContentResult;
 
-        // Extrai apenas o nome do teor
+        // Verificar se esse array está correto;
         asphaltContent = Object.keys(newArray[i])[0];
 
-        // Busca a massa específica de acordo com o teor
         switch (asphaltContent) {
           case 'lessOne':
             usedMaxSpecifyGravity = maxSpecificGravity.result.lessOne;
@@ -95,13 +93,14 @@ export class VolumetricParameters_Marshall_Service {
           case 'plusHalf':
             usedMaxSpecifyGravity = maxSpecificGravity.result.plusHalf;
             asphaltContentResult = binderTrial + 0.5;
+
             break;
           case 'plusOne':
             usedMaxSpecifyGravity = maxSpecificGravity.result.plusOne;
             asphaltContentResult = binderTrial + 1;
             break;
           default:
-          throw new Error('Invalid asphalt content');
+          // O que fazer se asphaltContent não corresponder a nenhum caso
         }
 
         for (let j = 0; j < newArray[i][asphaltContent].length; j++) {
@@ -200,6 +199,7 @@ export class VolumetricParameters_Marshall_Service {
       const aggregateVolumeVoids = volumeVoids + voidsFilledAsphalt;
       const ratioBitumenVoid = voidsFilledAsphalt / aggregateVolumeVoids;
 
+
       volumetricParameters.push({
         asphaltContent,
         values: {
@@ -238,7 +238,6 @@ export class VolumetricParameters_Marshall_Service {
         listOfSpecificGravities,
         temperatureOfWater,
       } = body;
-      
 
       let sumDryMass = 0;
       let sumSubmergedMass = 0;
@@ -340,7 +339,7 @@ export class VolumetricParameters_Marshall_Service {
     return list[name];
   }
 
-  async saveVolumetricParametersData(body: any, userId: string) {
+  async saveStep6Data(body: any, userId: string) {
     try {
       this.logger.log(
         'save marshall volumetric parameters step on volumetric-parameters.marshall.service.ts > [body]',

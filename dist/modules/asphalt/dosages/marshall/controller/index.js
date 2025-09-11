@@ -87,13 +87,6 @@ let MarshallController = MarshallController_1 = class MarshallController {
             return this.marshallService.getStep3Data(body);
         });
     }
-    calculateStep3Data(response, body) {
-        return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`calculate step 3 data > [body]: ${body}`);
-            const status = yield this.marshallService.calculateStep3Data(body);
-            return response.status(200).json(status);
-        });
-    }
     saveGranulometryCompositionStep(userId, body) {
         return __awaiter(this, void 0, void 0, function* () {
             this.logger.log(`Salvando dados da composição granulométrica para usuário id: ${userId}`);
@@ -238,10 +231,10 @@ __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'Retorna todos os materiais do banco de dados de um usuário, que possuam os ensaios para a dosagem.' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Materiais encontrados com sucesso!' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Usuário não encontrado!' }),
-    __param(0, Res()),
+    __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Response, String]),
+    __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "getMaterialsByUserId", null);
 __decorate([
@@ -249,10 +242,10 @@ __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'Retorna uma dosagem do banco de dados com o id informado.' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Dosagem encontrada com sucesso!' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Dosagem não encontrada!' }),
-    __param(0, Res()),
+    __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Response, String]),
+    __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "getDosageById", null);
 __decorate([
@@ -271,14 +264,6 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "getStep3Data", null);
-__decorate([
-    (0, common_1.Post)('calculate-step-3-data'),
-    __param(0, Res()),
-    __param(1, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Response, Object]),
-    __metadata("design:returntype", Promise)
-], MarshallController.prototype, "calculateStep3Data", null);
 __decorate([
     (0, common_1.Post)('save-granulometry-composition-step/:userId'),
     __param(0, (0, common_1.Param)('userId')),
@@ -325,19 +310,19 @@ __decorate([
 ], MarshallController.prototype, "calculateGmmData", null);
 __decorate([
     (0, common_1.Post)('calculate-step-5-rice-test'),
-    __param(0, Res()),
+    __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Response, Object]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "calculateRiceTest", null);
 __decorate([
     (0, common_1.Post)('save-maximum-mixture-density-step/:userId'),
-    __param(0, Res()),
+    __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Param)('userId')),
     __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Response, String, Object]),
+    __metadata("design:paramtypes", [Object, String, Object]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "saveMaximumMixtureDensityData", null);
 __decorate([
@@ -349,11 +334,11 @@ __decorate([
 ], MarshallController.prototype, "setVolumetricParameters", null);
 __decorate([
     (0, common_1.Post)('save-volumetric-parameters-step/:userId'),
-    __param(0, Res()),
+    __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Param)('userId')),
     __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Response, String, Object]),
+    __metadata("design:paramtypes", [Object, String, Object]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "saveVolumetricParametersData", null);
 __decorate([

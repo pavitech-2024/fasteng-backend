@@ -34,13 +34,11 @@ export class MaximumMixtureDensity_Marshall_Service {
 
         const withoutExperimentSpecificGravity = materialsData
           .map((material) => {
-            if (material) {
-              return {
-                value: material.results.bulk_specify_mass,
-                _id: material._id.toString(),
-                name: material.generalData.material.name,
-              };
-            }
+            return { 
+              value: material.results.bulk_specify_mass,
+              _id: material._id.toString(),
+              name: material.generalData.material.name
+            };
           })
           .filter((index) => index !== null);
 
@@ -55,7 +53,7 @@ export class MaximumMixtureDensity_Marshall_Service {
 
   async calculateDmtData(body: any): Promise<any> {
     try {
-      const { indexesOfMissesSpecificGravity, missingSpecificGravity, percentsOfDosage, aggregates, trial, listOfSpecificGravities: inputDmtValues } = body;
+      const { indexesOfMissesSpecificGravity, missingSpecificGravity, percentsOfDosage, aggregates, trial } = body;
 
       let denominadorLessOne = 0;
       let denominadorLessHalf = 0;
@@ -64,7 +62,6 @@ export class MaximumMixtureDensity_Marshall_Service {
       let denominadorPlusOne = 0;
 
       const materials = aggregates.map((element) => element._id);
-      const MissingGravitiesArray = []
 
       const calculate = async (): Promise<any> => {
         try {
@@ -98,8 +95,11 @@ export class MaximumMixtureDensity_Marshall_Service {
                 denominadorPlusOne += percentsOfDosage[i][0] / listOfSpecificGravities[i];
               }
             } else {
-              // to-do: Fazer vir do front como array de números;
-              MissingGravitiesArray.push(inputDmtValues[i])
+              // to-do: Fazer vir do front como array de nÃºmeros;
+              const MissingGravitiesArray = [
+                Number(missingSpecificGravity.material_1),
+                Number(missingSpecificGravity.material_2),
+              ];
               listOfSpecificGravities[i] = MissingGravitiesArray[cont];
               denominadorLessOne += percentsOfDosage[i][4] / listOfSpecificGravities[i];
               denominadorLessHalf += percentsOfDosage[i][3] / listOfSpecificGravities[i];
@@ -178,17 +178,24 @@ export class MaximumMixtureDensity_Marshall_Service {
         }
       };
 
-      const gmm = Array.from({ length: 5 }, (_, i) => {
-        const gmmItem = valuesOfGmm.find((gmm) => gmm.id - 1 === i);
-        return gmmItem || null;
-      });
+      let gmm = [];
 
-      const content = gmm.map((gmmItem) => {
-        if (gmmItem && !gmmItem.value) {
-          const denominator = gmmItem.massOfContainer_Water_Sample - gmmItem.massOfContainer_Water;
-          return (gmmItem.massOfDrySample / (gmmItem.massOfDrySample - denominator)) * temperatureOfWaterGmm;
-        }
-        return gmmItem?.value || null;
+      for (let i = 0; i < 5; i++) {
+        const gmmAtual = valuesOfGmm.find((gmm) => gmm.id - 1 === i);
+        if (gmmAtual) gmm.push(gmmAtual);
+        else gmm.push(null);
+      }
+
+      const content = gmm.map((gmm) => {
+        if (gmm !== null) {
+          if (gmm.insert) return gmm.value;
+          else
+            return (
+              (gmm.massOfDrySample /
+                (gmm.massOfDrySample - (gmm.massOfContainer_Water_Sample - gmm.massOfContainer_Water))) *
+              temperatureOfWaterGmm
+            );
+        } else return null;
       });
 
       const maxSpecificGravity = {
@@ -211,8 +218,10 @@ export class MaximumMixtureDensity_Marshall_Service {
   }
 
   async calculateRiceTest(body): Promise<any> {
-    this.logger.log('calculate rice test > [body]', { body });
     try {
+      // console.log(gmm);
+      // if (gmm.insert) return gmm.value;
+
       const maxSpecificGravity = body.map((item) => {
         return {
           id: item.id,
@@ -229,14 +238,11 @@ export class MaximumMixtureDensity_Marshall_Service {
     }
   }
 
-  async saveMistureMaximumDensityData(body: any, userId: string) {
+  async saveStep5Data(body: any, userId: string) {
     try {
-      this.logger.log(
-        'save marshall maximum misxture density data on maximum-mixture-density.marshall.service.ts > [body]',
-        {
-          body,
-        },
-      );
+      this.logger.log('save marshall binder trial step on maximum-mixture-density.marshall.service.ts > [body]', {
+        body,
+      });
 
       const { name } = body.maximumMixtureDensityData;
 

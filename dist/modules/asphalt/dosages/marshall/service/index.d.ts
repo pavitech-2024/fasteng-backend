@@ -97,7 +97,7 @@ export declare class MarshallService {
             name: any;
         };
     }>;
-    calculateGranulometry(body: any): Promise<{
+    calculateStep3Data(body: any): Promise<{
         data: {
             percentsOfMaterials: any[];
             sumOfPercents: any[];
@@ -234,7 +234,7 @@ export declare class MarshallService {
             name: any;
         };
     }>;
-    saveMistureMaximumDensityData(body: any, userId: string): Promise<{
+    saveStep5Data(body: any, userId: string): Promise<{
         success: boolean;
         error?: undefined;
     } | {
@@ -264,7 +264,7 @@ export declare class MarshallService {
             name: any;
         };
     }>;
-    saveVolumetricParametersData(body: any, userId: string): Promise<{
+    saveStep6Data(body: any, userId: string): Promise<{
         success: boolean;
         error?: undefined;
     } | {

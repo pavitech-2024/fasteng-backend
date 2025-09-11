@@ -32,5 +32,5 @@ export declare class MaximumMixtureDensity_Marshall_Service {
         listOfSpecificGravities: any;
     }>;
     calculateRiceTest(body: any): Promise<any>;
-    saveMistureMaximumDensityData(body: any, userId: string): Promise<boolean>;
+    saveStep5Data(body: any, userId: string): Promise<boolean>;
 }
