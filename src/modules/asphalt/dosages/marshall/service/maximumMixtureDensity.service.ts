@@ -179,7 +179,7 @@ export class MaximumMixtureDensity_Marshall_Service {
       };
 
       const gmm = Array.from({ length: 5 }, (_, i) => {
-        const gmmItem = valuesOfGmm.find((gmm) => gmm.id - 1 === i);
+        const gmmItem = valuesOfGmm.find((gmm) => gmm.id === i);
         return gmmItem || null;
       });
 
