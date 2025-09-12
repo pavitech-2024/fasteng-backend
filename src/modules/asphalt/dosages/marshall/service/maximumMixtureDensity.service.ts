@@ -237,6 +237,7 @@ export class MaximumMixtureDensity_Marshall_Service {
           body,
         },
       );
+      
 
       const { name } = body.maximumMixtureDensityData;
 
