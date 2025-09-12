@@ -180,7 +180,7 @@ let MaximumMixtureDensity_Marshall_Service = MaximumMixtureDensity_Marshall_Serv
                     }
                 });
                 const gmm = Array.from({ length: 5 }, (_, i) => {
-                    const gmmItem = valuesOfGmm.find((gmm) => gmm.id - 1 === i);
+                    const gmmItem = valuesOfGmm.find((gmm) => gmm.id === i);
                     return gmmItem || null;
                 });
                 const content = gmm.map((gmmItem) => {
