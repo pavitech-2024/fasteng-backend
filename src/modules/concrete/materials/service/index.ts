@@ -16,8 +16,8 @@ export class MaterialsService {
 
   async createMaterial(material: CreateConcreteMaterialDto) {
     try {
-      const { name, userId } = material;
-      const materialExists = await this.materialsRepository.findOne({ name, userId });
+      const { name/*, userId*/ } = material;
+      const materialExists = await this.materialsRepository.findOne({ name/*, userId*/ });
       if (materialExists)
         throw new AlreadyExists(`Material with name "${material.name}"`);
 

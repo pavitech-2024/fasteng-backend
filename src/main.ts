@@ -83,6 +83,10 @@ import { UsersModule } from './modules/users/users.module';
 //Soils Modules
 import { SamplesModule } from './modules/soils/samples/samples.module';
 import { AllExceptionsFilter } from './config/filters/http-exception.filter'; // Ajuste o caminho conforme
+import { GranularLayersModule } from 'modules/pro-medina/granular-layers/granular-layers.module';
+import { Granulometry } from 'modules/soils/essays/granulometry/schemas';
+import { GranulometryModule } from 'modules/soils/essays/granulometry/granulometry.module';
+import { AsphaltGranulometryModule } from 'modules/asphalt/essays/granulometry/granulometry.module';
 
 
 
@@ -112,7 +116,7 @@ async function bootstrap() {
     'docs/asphalt',
     app,
     SwaggerModule.createDocument(app, swagger_asphalt, {
-      include: [AuthModule, UsersModule],
+      include: [AuthModule, UsersModule, AsphaltGranulometryModule],
     }),
   );
 
