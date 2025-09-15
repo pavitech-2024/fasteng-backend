@@ -1,8 +1,10 @@
 import { Body, Controller, Get, Logger, Param, Post, Delete, Put } from '@nestjs/common';
 import { SamplesService } from '../service';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { CreateSampleDto } from '../dto/create-sample.dto';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+//import { UpateSampleDto } from '../dto/create-sample.dto';
 import { Sample } from '../schemas';
+import { User } from '../../../../config/decorators/user.decorator';
+import { CreateSampleDto } from '../dto/create-sample.dto';
 
 @ApiTags('samples')
 @Controller('soils/samples')
@@ -15,7 +17,8 @@ export class SamplesController {
   @ApiOperation({ summary: 'Cria uma amostra no banco de dados.' })
   @ApiResponse({ status: 201, description: 'Amostra criada com sucesso!' })
   @ApiResponse({ status: 400, description: 'Erro ao criar amostra!' })
-  async createSample(@Body() sample: CreateSampleDto) {
+  @ApiBody({ type: CreateSampleDto })
+  async createSample(@Body() sample: CreateSampleDto, @User('userId') userId: string) {
     this.logger.log('create sample > [body]');
     const createdSample = await this.samplesService.createSample(sample);
 
@@ -51,6 +54,7 @@ export class SamplesController {
   @ApiOperation({ summary: 'Atualiza uma amostra do banco de dados.' })
   @ApiResponse({ status: 200, description: 'Amostra atualizada com sucesso!' })
   @ApiResponse({ status: 400, description: 'Amostra não encontrada!' })
+  @ApiBody({ type: CreateSampleDto })
   async updateSampleById(@Param('id') sampleId: string, @Body() sample: Sample) {
     this.logger.log(`update sample by id > [id]: ${sampleId}`);
 

@@ -11,15 +11,29 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AsphaltGranulometryInitDto = void 0;
 const class_validator_1 = require("class-validator");
+const swagger_1 = require("@nestjs/swagger");
 const schemas_1 = require("../../../../../modules/asphalt/materials/schemas");
 class AsphaltGranulometryInitDto {
 }
 exports.AsphaltGranulometryInitDto = AsphaltGranulometryInitDto;
 __decorate([
+    (0, swagger_1.ApiProperty)({
+        description: "Nome da granulometria",
+        example: "Granulometry 1"
+    }),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], AsphaltGranulometryInitDto.prototype, "name", void 0);
 __decorate([
+    (0, swagger_1.ApiProperty)({
+        description: "Material usado na granulometria",
+        example: {
+            id: "mat-123",
+            type: "Asfalto CAP 50/70",
+            density: 2.65,
+            supplier: "Construtora XYZ"
+        }
+    }),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", schemas_1.Material)
 ], AsphaltGranulometryInitDto.prototype, "material", void 0);

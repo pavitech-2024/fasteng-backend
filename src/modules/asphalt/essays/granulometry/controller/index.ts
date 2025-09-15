@@ -1,5 +1,5 @@
 import { Controller, Logger, Post, Res, Body } from "@nestjs/common";
-import { ApiTags, ApiOperation, ApiResponse } from "@nestjs/swagger";
+import { ApiTags, ApiOperation, ApiResponse, ApiBody } from "@nestjs/swagger";
 import { Calc_AsphaltGranulometry_Dto, Calc_AsphaltGranulometry_Out } from "../dto/asphalt.calc.granulometry.dto";
 import { AsphaltGranulometryService } from "../service";
 import { AsphaltGranulometryInitDto } from "../dto/asphalt.granulometry-init.dto";
@@ -17,10 +17,12 @@ export class AsphaltGranulometryController {
 
   @Post('verify-init')
   @ApiOperation({ summary: 'Verifica se é possível criar uma granulometria de ensaio de pavimentação asfáltica com os dados enviados.' })
+  @ApiBody({ type: AsphaltGranulometryInitDto })
   @ApiResponse({
     status: 200,
     description: 'É possível criar uma granulometria de ensaio de pavimentação asfáltica com os dados enviados.',
     content: { 'application/json': { schema: { example: { success: true } } } },
+    type: Calc_AsphaltGranulometry_Out
   })
   @ApiResponse({
     status: 200,
@@ -43,10 +45,12 @@ export class AsphaltGranulometryController {
 
   @Post('calculate-results')
   @ApiOperation({ summary: 'Calcula os resultados da granulometria de ensaio de pavimentação asfáltica com os dados enviados.' })
+   @ApiBody({ type: Calc_AsphaltGranulometry_Dto })
   @ApiResponse({
     status: 200,
     description: 'Resultados da granulometria de ensaio de pavimentação asfáltica calculados com sucesso.',
     content: { 'application/json': { schema: { example: { success: true, data: 'essay data' } } } },
+    type: Calc_AsphaltGranulometry_Out 
   })
   @ApiResponse({ status: 400, description: 'Erro ao calcular os resultados da granulometria de ensaio de pavimentação asfáltica com os dados enviados.' })
   async calculateAsphaltGranulometry(@Body() body:  Calc_AsphaltGranulometry_Dto) {

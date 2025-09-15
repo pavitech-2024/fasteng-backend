@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AsphaltGranulometrySchema = exports.AsphaltGranulometry = void 0;
 const mongoose_1 = require("@nestjs/mongoose");
 const class_validator_1 = require("class-validator");
+const asphalt_calc_granulometry_dto_1 = require("../dto/asphalt.calc.granulometry.dto");
 let AsphaltGranulometry = class AsphaltGranulometry {
     ;
 };
@@ -29,7 +30,7 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, mongoose_1.Prop)({ type: Object }),
-    __metadata("design:type", Object)
+    __metadata("design:type", asphalt_calc_granulometry_dto_1.Calc_AsphaltGranulometry_Out)
 ], AsphaltGranulometry.prototype, "results", void 0);
 exports.AsphaltGranulometry = AsphaltGranulometry = __decorate([
     (0, mongoose_1.Schema)({ collection: 'granulometrys' })
