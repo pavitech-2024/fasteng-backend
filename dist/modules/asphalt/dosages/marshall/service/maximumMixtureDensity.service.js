@@ -81,7 +81,7 @@ let MaximumMixtureDensity_Marshall_Service = MaximumMixtureDensity_Marshall_Serv
     calculateDmtData(body) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { indexesOfMissesSpecificGravity, missingSpecificGravity, percentsOfDosage, aggregates, trial, listOfSpecificGravities: inputDmtValues } = body;
+                const { indexesOfMissesSpecificGravity, missingSpecificGravity, percentsOfDosage, aggregates, trial, listOfSpecificGravities: inputDmtValues, } = body;
                 let denominadorLessOne = 0;
                 let denominadorLessHalf = 0;
                 let denominador = 0;
@@ -165,13 +165,18 @@ let MaximumMixtureDensity_Marshall_Service = MaximumMixtureDensity_Marshall_Serv
                             materialsOrNot = materials;
                         }
                         let listOfSpecificGravities = [];
-                        for (let i = 0; i < materialsOrNot.length; i++) {
-                            listOfSpecificGravities.push(null);
-                            if (materialsOrNot[i].generalData.material.type === 'coarseAggregate' ||
-                                materialsOrNot[i].generalData.material.type === 'fineAggregate' ||
-                                materialsOrNot[i].generalData.material.type === 'filler') {
-                                listOfSpecificGravities[i] = materialsOrNot[i].results.bulk_specify_mass;
+                        if (valuesOfGmm.some((gmm) => gmm.value === null)) {
+                            for (let i = 0; i < materialsOrNot.length; i++) {
+                                listOfSpecificGravities.push(null);
+                                if (materialsOrNot[i].generalData.material.type === 'coarseAggregate' ||
+                                    materialsOrNot[i].generalData.material.type === 'fineAggregate' ||
+                                    materialsOrNot[i].generalData.material.type === 'filler') {
+                                    listOfSpecificGravities[i] = materialsOrNot[i].results.bulk_specify_mass;
+                                }
                             }
+                        }
+                        else {
+                            listOfSpecificGravities = valuesOfGmm.map((gmm) => gmm.value);
                         }
                         return listOfSpecificGravities;
                     }
