@@ -39,14 +39,14 @@ export class DduiService {
     try {
       const {
         name,
-        material: { _id: materialId },
+        // material: { _id: materialId },
         userId,
       } = body.generalData;
 
       // verifica se existe uma ddui com mesmo nome , materialId e userId no banco de dados
       const alreadyExists = await this.ddui_Repository.findOne({
         'generalData.name': name,
-        'generalData.material._id': materialId,
+        // 'generalData.material._id': materialId,
         'generalData.userId': userId,
       });
 
@@ -55,6 +55,22 @@ export class DduiService {
 
       // se não existir, salva no banco de dados
       const ddui = await this.ddui_Repository.create(body);
+
+      return { success: true, data: ddui };
+    } catch (error) {
+      const { status, name, message } = error;
+
+      return { success: false, error: { status, message, name } };
+    }
+  }
+
+    async deleteEssay(id: string) {
+    try {
+      const ddui = await this.ddui_Repository.findOne({ _id: id });
+
+      if (ddui) {
+        await this.ddui_Repository.deleteOne(id);
+      }
 
       return { success: true, data: ddui };
     } catch (error) {

@@ -4,7 +4,7 @@ import { HydratedDocument } from 'mongoose';
 
 export type SampleDocument = HydratedDocument<Sample>;
 
-@Schema({ collection: 'samples' })
+@Schema({ collection: 'samples', timestamps: true })
 export class Sample {
   _id: string;
 
@@ -19,10 +19,6 @@ export class Sample {
   @IsNotEmpty()
   @Prop()
   userId: string;
-
-  @IsNotEmpty()
-  @Prop()
-  createdAt: Date;
 
   @Prop({ type: Object })
   description: {

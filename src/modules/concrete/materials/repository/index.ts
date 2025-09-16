@@ -23,7 +23,8 @@ export class MaterialsRepository {
   }
 
   async find(): Promise<Material[]> {
-    return this.materialModel.find();
+    const materials = await this.materialModel.find().sort({ createdAt: -1 });
+    return materials
   }
   
   async findById(id: string): Promise<Material> {
