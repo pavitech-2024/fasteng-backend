@@ -572,7 +572,7 @@ export class MarshallService {
     }
   }
 
-  async saveStep8Data(body: any, userId: string) {  
+  async saveStep8Data(body: any, userId: string) {
     try {
       const success = await this.confirmCompression_Service.saveStep8Data(body, userId);
 

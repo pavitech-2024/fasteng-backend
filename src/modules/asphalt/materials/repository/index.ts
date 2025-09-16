@@ -18,11 +18,11 @@ export class MaterialsRepository {
   }
 
   async findOne(materialsFilterQuery: FilterQuery<Material>): Promise<Material> {
-    const material = this.materialModel.findOne(materialsFilterQuery);
+    const material = await this.materialModel.findOne(materialsFilterQuery);
     return material;
   }
 
-  async findByType(types: any, userId: string) {
+  async findByType(types: any, userId: string): Promise<Material[]> {
     const materials = await this.materialModel.find({
       "userId": userId,
       "type": types

@@ -48,7 +48,7 @@ export type Results = {
   };
 };
 
-@Schema({ collection: 'fwd' })
+@Schema({ collection: 'fwd', timestamps: true })
 export class Fwd {
   _id: string;
 

@@ -95,7 +95,7 @@ export class MaximumMixtureDensity_Marshall_Service {
                 denominadorPlusOne += percentsOfDosage[i][0] / listOfSpecificGravities[i];
               }
             } else {
-              // to-do: Fazer vir do front como array de números;
+              // to-do: Fazer vir do front como array de nÃºmeros;
               const MissingGravitiesArray = [
                 Number(missingSpecificGravity.material_1),
                 Number(missingSpecificGravity.material_2),

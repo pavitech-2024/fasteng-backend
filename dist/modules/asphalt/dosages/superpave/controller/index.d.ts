@@ -1,0 +1,37 @@
+import { Response } from 'express';
+import { SuperpaveService } from '../service';
+import { SuperpaveInitDto } from '../dto/superpave-init.dto';
+export declare class SuperpaveController {
+    private readonly superpaveService;
+    private logger;
+    constructor(superpaveService: SuperpaveService);
+    getAllByUserId(userId: string): Promise<import("../schemas").Superpave[]>;
+    verifyInitSuperpave(response: Response, body: SuperpaveInitDto, userId: string): Promise<Response<any, Record<string, any>>>;
+    calculateGranulometryEssaysData(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
+    saveGranulometryEssayData(response: Response, body: any, userId: string): Promise<Response<any, Record<string, any>>>;
+    saveGranulometryEssayResults(response: Response, body: any, userId: string): Promise<Response<any, Record<string, any>>>;
+    getDosageById(response: Response, dosageId: string): Promise<Response<any, Record<string, any>>>;
+    getStep3Data(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
+    calculateStep3Data(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
+    saveGranulometryCompositionStep(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
+    getStep5SpecificMasses(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
+    calculateStep5Data(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
+    saveInitialBinderStep(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
+    calculateGmm_RiceTest(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
+    getFirstCompressionParametersData(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
+    saveFirstCompressionData(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
+    saveFirstCompressionParamsData(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
+    getChosenCurvePercentsData(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
+    savePercentsOfChosenCurveData(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
+    calculateSecondCompressionRiceTest(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
+    calculateStep7Gmm(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
+    calculateSecondCompressionData(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
+    saveSecondCompressionData(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
+    getSecondCompressionPercentageData(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
+    saveSecondCompressionParams(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
+    calculateStep9RiceTest(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
+    calculateDosageResumeEquation(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
+    saveConfirmattionCompressionData(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
+    saveSuperpaveDosage(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
+    deleteMarshallDosage(response: Response, id: string): Promise<Response<any, Record<string, any>>>;
+}
