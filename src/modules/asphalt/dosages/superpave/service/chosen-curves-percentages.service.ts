@@ -4,11 +4,13 @@ import { DATABASE_CONNECTION } from 'infra/mongoose/database.config';
 import { Model } from 'mongoose';
 import { SuperpaveRepository } from '../repository';
 import { Superpave, SuperpaveDocument } from '../schemas';
-
-interface GranulometryComposition {
-  expectedPli: number;
-  [key: string]: number;
-}
+import { 
+  ChosenCurvePercentagesRequest, 
+  ChosenCurvePercentagesResponse, 
+  SaveChosenCurveParams,
+  GranulometryComposition 
+} from '../types/services/chosen-curve.types';
+import { ChosenCurvePercentagesRequestDto, SaveChosenCurveRequestDto } from '../dto/chosen-curve.dto';
 
 @Injectable()
 export class ChosenCurvePercentages_Superpave_Service {
@@ -20,14 +22,16 @@ export class ChosenCurvePercentages_Superpave_Service {
     private readonly superpave_repository: SuperpaveRepository,
   ) {}
 
-  async getChosenCurvePercentsData(body: any) {
+  async getChosenCurvePercentsData(
+    body: ChosenCurvePercentagesRequestDto
+  ): Promise<ChosenCurvePercentagesResponse> {
     try {
       this.logger.log({ body }, 'start calculate step 5 gmm data > [service]');
 
       const { curve: choosenGranulometryComposition, trafficVolume, percentsOfDosage } = body;
 
-      let porcentageAggregate = [];
-      let returnScreen7 = {};
+      let porcentageAggregate: number[][] = [];
+      let returnScreen7: ChosenCurvePercentagesResponse;
 
       // Apenas remove o termo lower/ average/ higher das keys do objeto
       const formattedGranulomtryComposition: GranulometryComposition = Object.keys(
@@ -38,9 +42,11 @@ export class ChosenCurvePercentages_Superpave_Service {
         return acc;
       }, {} as GranulometryComposition);
 
-      let formattedPercentsOfDosage: number[] = []
+      let formattedPercentsOfDosage: number[] = [];
       
-      Object.values(percentsOfDosage).forEach((e: string) => formattedPercentsOfDosage.push(Number(e)))
+      Object.values(percentsOfDosage).forEach((e: string) => 
+        formattedPercentsOfDosage.push(Number(e))
+      );
 
       const listOfPlis = [
         formattedGranulomtryComposition.expectedPli - 0.5,
@@ -66,34 +72,53 @@ export class ChosenCurvePercentages_Superpave_Service {
 
       return returnScreen7;
     } catch (error) {
+      this.logger.error('Error in getChosenCurvePercentsData', error.stack);
       throw error;
     }
   }
 
-  async savePercentsOfChosenCurveData(body: any, userId: string) {
+  async savePercentsOfChosenCurveData(
+    params: SaveChosenCurveParams
+  ): Promise<boolean> {
     try {
-      this.logger.log('save superpave chosen curve percentages step on chosen-curve-percentages.superpave.service.ts > [body]', { body });
+      const { body, userId } = params;
+      
+      this.logger.log(
+        'save superpave chosen curve percentages step on chosen-curve-percentages.superpave.service.ts > [body]', 
+        { body }
+      );
 
       const { name } = body.chosenCurvePercentagesData;
 
-      const superpaveExists: any = await this.superpave_repository.findOne(name, userId);
+      const superpaveExists = await this.superpave_repository.findOne(name, userId);
 
-      const { name: materialName, ...chosenCurvePercentagesWithoutName } = body.chosenCurvePercentagesData;
+      if (!superpaveExists) {
+        throw new Error(`Superpave with name ${name} not found for user ${userId}`);
+      }
 
-      const superpaveWithChosenCurvePercentages = { ...superpaveExists._doc, chosenCurvePercentagesData: chosenCurvePercentagesWithoutName };
 
-      await this.superpaveModel.updateOne(
-        { _id: superpaveExists._doc._id },
-        superpaveWithChosenCurvePercentages
-      );
+      const superpaveData = superpaveExists.toObject();
 
-      if (superpaveExists._doc.generalData.step < 9) {
-        await this.superpave_repository.saveStep(superpaveExists, 9);
+    const { name: materialName, ...chosenCurvePercentagesWithoutName } = body.chosenCurvePercentagesData;
+
+    const superpaveWithChosenCurvePercentages = { 
+      ...superpaveData, 
+      chosenCurvePercentagesData: chosenCurvePercentagesWithoutName 
+    };
+
+    await this.superpaveModel.updateOne(
+      { _id: superpaveExists._id },
+      { $set: superpaveWithChosenCurvePercentages }
+    );
+
+      if (superpaveExists.generalData.step < 9) {
+        await this.superpave_repository.saveStep(superpaveExists._id.toString(), 9);
       }
 
       return true;
     } catch (error) {
-      throw error
+      this.logger.error('Error in savePercentsOfChosenCurveData', error.stack);
+      throw error;
     }
   }
 }

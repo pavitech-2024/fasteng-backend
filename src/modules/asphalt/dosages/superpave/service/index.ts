@@ -930,7 +930,10 @@ export class SuperpaveService {
 
   async savePercentsOfChosenCurveData(body: any, userId: string) {
     try {
-      const success = await this.chosenCurvePercentages_Service.savePercentsOfChosenCurveData(body, userId);
+      const success = await this.chosenCurvePercentages_Service.savePercentsOfChosenCurveData({
+        body,
+        userId,
+      });
 
       return { success };
     } catch (error) {
