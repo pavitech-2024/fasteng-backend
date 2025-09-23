@@ -289,6 +289,7 @@ export class VolumetricParameters_Marshall_Service {
       const volumeVoids = (confirmedSpecificGravity - apparentBulkSpecificGravity) / confirmedSpecificGravity;
       const voidsFilledAsphalt = (apparentBulkSpecificGravity * optimumContent) / 102.7;
       const aggregateVolumeVoids = volumeVoids + voidsFilledAsphalt;
+      // Vam
       const ratioBitumenVoid = voidsFilledAsphalt / aggregateVolumeVoids;
       const quantitative = confirmedPercentsOfDosage.map(
         (percent, i) => (confirmedSpecificGravity * percent * 10) / 1000 / listOfSpecificGravities[i],
@@ -302,8 +303,8 @@ export class VolumetricParameters_Marshall_Service {
         values: {
           volumeVoids,
           apparentBulkSpecificGravity,
-          voidsFilledAsphalt,
-          aggregateVolumeVoids,
+          voidsFilledAsphalt: aggregateVolumeVoids,
+          aggregateVolumeVoids: volumeVoids,
           ratioBitumenVoid,
           stability: stabilityBar,
           fluency: fluencyBar,

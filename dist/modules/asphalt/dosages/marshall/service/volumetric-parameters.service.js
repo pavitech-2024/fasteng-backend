@@ -263,8 +263,8 @@ let VolumetricParameters_Marshall_Service = VolumetricParameters_Marshall_Servic
                     values: {
                         volumeVoids,
                         apparentBulkSpecificGravity,
-                        voidsFilledAsphalt,
-                        aggregateVolumeVoids,
+                        voidsFilledAsphalt: aggregateVolumeVoids,
+                        aggregateVolumeVoids: volumeVoids,
                         ratioBitumenVoid,
                         stability: stabilityBar,
                         fluency: fluencyBar,

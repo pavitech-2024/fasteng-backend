@@ -55,7 +55,14 @@ export class MaximumMixtureDensity_Marshall_Service {
 
   async calculateDmtData(body: any): Promise<any> {
     try {
-      const { indexesOfMissesSpecificGravity, missingSpecificGravity, percentsOfDosage, aggregates, trial, listOfSpecificGravities: inputDmtValues } = body;
+      const {
+        indexesOfMissesSpecificGravity,
+        missingSpecificGravity,
+        percentsOfDosage,
+        aggregates,
+        trial,
+        listOfSpecificGravities: inputDmtValues,
+      } = body;
 
       let denominadorLessOne = 0;
       let denominadorLessHalf = 0;
@@ -64,7 +71,7 @@ export class MaximumMixtureDensity_Marshall_Service {
       let denominadorPlusOne = 0;
 
       const materials = aggregates.map((element) => element._id);
-      const MissingGravitiesArray = []
+      const MissingGravitiesArray = [];
 
       const calculate = async (): Promise<any> => {
         try {
@@ -99,7 +106,7 @@ export class MaximumMixtureDensity_Marshall_Service {
               }
             } else {
               // to-do: Fazer vir do front como array de números;
-              MissingGravitiesArray.push(inputDmtValues[i])
+              MissingGravitiesArray.push(inputDmtValues[i]);
               listOfSpecificGravities[i] = MissingGravitiesArray[cont];
               denominadorLessOne += percentsOfDosage[i][4] / listOfSpecificGravities[i];
               denominadorLessHalf += percentsOfDosage[i][3] / listOfSpecificGravities[i];
@@ -160,16 +167,20 @@ export class MaximumMixtureDensity_Marshall_Service {
 
           let listOfSpecificGravities = [];
 
-          for (let i = 0; i < materialsOrNot.length; i++) {
-            listOfSpecificGravities.push(null);
+          if (valuesOfGmm.some((gmm) => gmm.value === null)) {
+            for (let i = 0; i < materialsOrNot.length; i++) {
+              listOfSpecificGravities.push(null);
 
-            if (
-              materialsOrNot[i].generalData.material.type === 'coarseAggregate' ||
-              materialsOrNot[i].generalData.material.type === 'fineAggregate' ||
-              materialsOrNot[i].generalData.material.type === 'filler'
-            ) {
-              listOfSpecificGravities[i] = materialsOrNot[i].results.bulk_specify_mass;
+              if (
+                materialsOrNot[i].generalData.material.type === 'coarseAggregate' ||
+                materialsOrNot[i].generalData.material.type === 'fineAggregate' ||
+                materialsOrNot[i].generalData.material.type === 'filler'
+              ) {
+                listOfSpecificGravities[i] = materialsOrNot[i].results.bulk_specify_mass;
+              }
             }
+          } else {
+            listOfSpecificGravities = valuesOfGmm.map((gmm) => gmm.value);
           }
 
           return listOfSpecificGravities;
@@ -237,7 +248,6 @@ export class MaximumMixtureDensity_Marshall_Service {
           body,
         },
       );
-      
 
       const { name } = body.maximumMixtureDensityData;
 
