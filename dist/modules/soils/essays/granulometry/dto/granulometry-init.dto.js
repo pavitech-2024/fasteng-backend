@@ -10,16 +10,30 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GranulometryInitDto = void 0;
-const schemas_1 = require("../../../samples/schemas");
 const class_validator_1 = require("class-validator");
+const swagger_1 = require("@nestjs/swagger");
+const schemas_1 = require("../../../samples/schemas");
 class GranulometryInitDto {
 }
 exports.GranulometryInitDto = GranulometryInitDto;
 __decorate([
+    (0, swagger_1.ApiProperty)({
+        description: "Nome da granulometria",
+        example: "Granulometry Test 1"
+    }),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], GranulometryInitDto.prototype, "name", void 0);
 __decorate([
+    (0, swagger_1.ApiProperty)({
+        description: "Amostra usada na granulometria",
+        example: {
+            id: "sample-123",
+            type: "Areia Média",
+            origin: "Rio Paraíba",
+            weight: 500
+        }
+    }),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", schemas_1.Sample)
 ], GranulometryInitDto.prototype, "sample", void 0);

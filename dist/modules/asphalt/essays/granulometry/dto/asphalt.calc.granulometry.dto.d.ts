@@ -4,7 +4,7 @@ export declare class Calc_AsphaltGranulometry_Dto {
     step2Data: AsphaltGranulometry['step2Data'];
     isSuperpave?: boolean;
 }
-export interface Calc_AsphaltGranulometry_Out {
+export declare class Calc_AsphaltGranulometry_Out {
     accumulated_retained: [string, number][];
     graph_data: [number, number][];
     passant: [string, number][];

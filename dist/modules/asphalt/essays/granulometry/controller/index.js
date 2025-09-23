@@ -73,10 +73,12 @@ exports.AsphaltGranulometryController = AsphaltGranulometryController;
 __decorate([
     (0, common_1.Post)('verify-init'),
     (0, swagger_1.ApiOperation)({ summary: 'Verifica se é possível criar uma granulometria de ensaio de pavimentação asfáltica com os dados enviados.' }),
+    (0, swagger_1.ApiBody)({ type: asphalt_granulometry_init_dto_1.AsphaltGranulometryInitDto }),
     (0, swagger_1.ApiResponse)({
         status: 200,
         description: 'É possível criar uma granulometria de ensaio de pavimentação asfáltica com os dados enviados.',
         content: { 'application/json': { schema: { example: { success: true } } } },
+        type: asphalt_calc_granulometry_dto_1.Calc_AsphaltGranulometry_Out
     }),
     (0, swagger_1.ApiResponse)({
         status: 200,
@@ -97,10 +99,12 @@ __decorate([
 __decorate([
     (0, common_1.Post)('calculate-results'),
     (0, swagger_1.ApiOperation)({ summary: 'Calcula os resultados da granulometria de ensaio de pavimentação asfáltica com os dados enviados.' }),
+    (0, swagger_1.ApiBody)({ type: asphalt_calc_granulometry_dto_1.Calc_AsphaltGranulometry_Dto }),
     (0, swagger_1.ApiResponse)({
         status: 200,
         description: 'Resultados da granulometria de ensaio de pavimentação asfáltica calculados com sucesso.',
         content: { 'application/json': { schema: { example: { success: true, data: 'essay data' } } } },
+        type: asphalt_calc_granulometry_dto_1.Calc_AsphaltGranulometry_Out
     }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Erro ao calcular os resultados da granulometria de ensaio de pavimentação asfáltica com os dados enviados.' }),
     __param(0, (0, common_1.Body)()),
