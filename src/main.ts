@@ -129,7 +129,7 @@ async function bootstrap() {
     'docs/soils',
     app,
     SwaggerModule.createDocument(app, swagger_soils, {
-      include: [AuthModule, UsersModule, SamplesModule],
+      include: [AuthModule, UsersModule, SamplesModule, GranulometryModule],
     }),
   );
 

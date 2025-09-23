@@ -143,7 +143,8 @@ __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'Retorna um ensaio de Granulometria do banco de dados.' }),
     (0, swagger_1.ApiResponse)({
         status: 200,
-        description: 'Granulometria encontrada com sucesso!'
+        description: 'Granulometria encontrada com sucesso!',
+        type: calc_granulometry_dto_1.Calc_GRANULOMETRY_Out
     }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Granulometria não encontrada!' }),
     __param(0, (0, common_1.Res)()),
