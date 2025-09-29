@@ -21,13 +21,9 @@ var Calc_AsphaltGranulometry_Service_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Calc_AsphaltGranulometry_Service = void 0;
 const common_1 = require("@nestjs/common");
-const repository_1 = require("../../../materials/repository");
 const sieves_1 = require("../../../../../modules/soils/util/sieves");
-const repository_2 = require("../repository");
 let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = class Calc_AsphaltGranulometry_Service {
-    constructor(granulometryRepository, materialsRepository) {
-        this.granulometryRepository = granulometryRepository;
-        this.materialsRepository = materialsRepository;
+    constructor() {
         this.logger = new common_1.Logger(Calc_AsphaltGranulometry_Service_1.name);
         this.getDiameter = (table_data, percentage, limits) => {
             if (limits.upperLimit.value === percentage) {
@@ -71,7 +67,7 @@ let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = clas
         };
     }
     calculateGranulometry(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ step2Data, isSuperpave = true, }) {
+        return __awaiter(this, arguments, void 0, function* ({ step2Data, isSuperpave = false, }) {
             try {
                 this.logger.log(`calculate asphalt granulometry on calc.granulometry.service.ts > [${isSuperpave ? 'Superpave' : 'Granulometry'}] [${step2Data}]`);
                 const { table_data, material_mass, bottom } = step2Data;
@@ -89,11 +85,11 @@ let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = clas
                 for (let i = 0; i < table_data.length; i++) {
                     const label = table_data[i].sieve_label;
                     const value = table_data[i].sieve_value;
-                    const passant_porcentage = table_data[i].passant;
+                    const passant_value = table_data[i].passant;
                     const retained = table_data[i].retained;
                     total_retained += retained;
                     passant.push([label, Math.round(100 * (material_mass - total_retained)) / 100]);
-                    accumulated_retained.push([label, Math.round(100 * (100 - passant_porcentage)) / 100]);
+                    accumulated_retained.push([label, Math.round(100 * (100 - passant_value)) / 100]);
                     if (i === 0) {
                         retained_porcentage.push(accumulated_retained[i]);
                     }
@@ -107,18 +103,21 @@ let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = clas
                     if (nominal_size_flag && accumulated_retained[i][1] >= 5) {
                         nominal_size_flag = false;
                         if (i === 0) {
-                            nominal_size = (0, sieves_1.getSieveValue)(label);
+                            nominal_size = (0, sieves_1.getSieveValue)(label, isSuperpave);
                         }
                         else {
                             const previous_retained = accumulated_retained[i - 1][1];
-                            nominal_size = previous_retained <= 5 ? (0, sieves_1.getSieveValue)(table_data[i - 1].sieve_label) : (0, sieves_1.getSieveValue)(label);
+                            nominal_size = previous_retained <= 5
+                                ? (0, sieves_1.getSieveValue)(table_data[i - 1].sieve_label, isSuperpave)
+                                : (0, sieves_1.getSieveValue)(label, isSuperpave);
                         }
                     }
                     if (total_retained > 10 && nominal_diameter_flag) {
                         nominal_diameter_flag = false;
-                        nominal_diameter = (0, sieves_1.getSieveValue)(table_data[i].sieve_label);
+                        nominal_diameter = (0, sieves_1.getSieveValue)(table_data[i].sieve_label, isSuperpave);
                     }
-                    graph_data.push([value, passant_porcentage]);
+                    passant_porcentage.push([label, passant_value]);
+                    graph_data.push([value, passant_value]);
                 }
                 fineness_module = Math.round((100 * fineness_module) / 100) / 100;
                 total_retained = Math.round(100 * total_retained) / 100;
@@ -162,7 +161,6 @@ let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = clas
 exports.Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service;
 exports.Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [repository_2.AsphaltGranulometryRepository,
-        repository_1.MaterialsRepository])
+    __metadata("design:paramtypes", [])
 ], Calc_AsphaltGranulometry_Service);
 //# sourceMappingURL=calc.granulometry.service.js.map
