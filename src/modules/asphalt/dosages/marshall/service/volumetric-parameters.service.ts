@@ -32,6 +32,7 @@ export class VolumetricParameters_Marshall_Service {
       this.logger.log('set volumetric parameters data on volumetric-parameters.marshall.service.ts > [body]', {
         body,
       });
+      
 
       const { volumetricParametersData } = body;
       const {
@@ -80,23 +81,23 @@ export class VolumetricParameters_Marshall_Service {
         // Busca a massa específica de acordo com o teor
         switch (asphaltContent) {
           case 'lessOne':
-            usedMaxSpecifyGravity = maxSpecificGravity.results.lessOne;
+            usedMaxSpecifyGravity = maxSpecificGravity.result.lessOne;
             asphaltContentResult = binderTrial - 1;
             break;
           case 'lessHalf':
-            usedMaxSpecifyGravity = maxSpecificGravity.results.lessHalf;
+            usedMaxSpecifyGravity = maxSpecificGravity.result.lessHalf;
             asphaltContentResult = binderTrial - 0.5;
             break;
           case 'normal':
-            usedMaxSpecifyGravity = maxSpecificGravity.results.normal;
+            usedMaxSpecifyGravity = maxSpecificGravity.result.normal;
             asphaltContentResult = binderTrial;
             break;
           case 'plusHalf':
-            usedMaxSpecifyGravity = maxSpecificGravity.results.plusHalf;
+            usedMaxSpecifyGravity = maxSpecificGravity.result.plusHalf;
             asphaltContentResult = binderTrial + 0.5;
             break;
           case 'plusOne':
-            usedMaxSpecifyGravity = maxSpecificGravity.results.plusOne;
+            usedMaxSpecifyGravity = maxSpecificGravity.result.plusOne;
             asphaltContentResult = binderTrial + 1;
             break;
           default:
@@ -237,6 +238,7 @@ export class VolumetricParameters_Marshall_Service {
         listOfSpecificGravities,
         temperatureOfWater,
       } = body;
+      
 
       let sumDryMass = 0;
       let sumSubmergedMass = 0;
@@ -286,8 +288,8 @@ export class VolumetricParameters_Marshall_Service {
       const apparentBulkSpecificGravity = (dryMass / samplesVolumes) * temperatureOfWater;
       const volumeVoids = (confirmedSpecificGravity - apparentBulkSpecificGravity) / confirmedSpecificGravity;
       const voidsFilledAsphalt = (apparentBulkSpecificGravity * optimumContent) / 102.7;
-      const aggregateVolumeVoids = volumeVoids + voidsFilledAsphalt;
-      const ratioBitumenVoid = voidsFilledAsphalt / aggregateVolumeVoids;
+      const vcb = volumeVoids + voidsFilledAsphalt;
+      const ratioBitumenVoid = voidsFilledAsphalt / vcb;
       const quantitative = confirmedPercentsOfDosage.map(
         (percent, i) => (confirmedSpecificGravity * percent * 10) / 1000 / listOfSpecificGravities[i],
       );
@@ -300,14 +302,15 @@ export class VolumetricParameters_Marshall_Service {
         values: {
           volumeVoids,
           apparentBulkSpecificGravity,
-          voidsFilledAsphalt,
-          aggregateVolumeVoids,
+          vcb,
+          vam: voidsFilledAsphalt,
           ratioBitumenVoid,
           stability: stabilityBar,
           fluency: fluencyBar,
           indirectTensileStrength: indirectTensileStrengthBar,
         },
       };
+      
 
       return confirmedVolumetricParameters;
     } catch (error) {
