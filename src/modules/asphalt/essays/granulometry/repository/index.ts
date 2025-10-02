@@ -34,4 +34,11 @@ export class AsphaltGranulometryRepository {
 
     return createdGranulometry.save();
   }
+
+//p o usuario ver os ensios a partir daquele material 
+  async findByMaterialId(materialId: string): Promise<AsphaltGranulometry[]> {
+  return this.granulometryModel.find({ 
+    'generalData.material._id': materialId 
+  }).sort({ 'generalData.createdAt': -1 });
+}
 }

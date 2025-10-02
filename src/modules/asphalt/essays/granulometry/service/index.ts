@@ -64,4 +64,29 @@ export class AsphaltGranulometryService {
       return { success: false, error: { status, message, name } };
     }
   }
+  //Nova funcao p buscar os ensaios por usuario
+  async getAllEssaysByUser(userId: string) {
+  try {
+    const essays = await this.Granulometry_Repository.findAll();
+    
+    const userEssays = essays.filter(essay => 
+      essay.generalData.userId === userId
+    );
+    
+    return userEssays;
+  } catch (error) {
+    const { status, name, message } = error;
+    return { success: false, error: { status, message, name } };
+  }
+}
+
+async getEssaysByMaterialId(materialId: string) {
+  try {
+    const essays = await this.Granulometry_Repository.findByMaterialId(materialId);
+    return { success: true, data: essays };
+  } catch (error) {
+    const { status, name, message } = error;
+    return { success: false, error: { status, message, name } };
+  }
+}
 }

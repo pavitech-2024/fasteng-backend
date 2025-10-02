@@ -21,4 +21,25 @@ export declare class AsphaltGranulometryController {
         };
     }>;
     saveAsphaltEssay(response: Response, body: Calc_AsphaltGranulometry_Dto & Calc_AsphaltGranulometry_Out): Promise<Response<any, Record<string, any>>>;
+    getEssaysByUser(userId: string): Promise<import("../schemas").AsphaltGranulometry[] | {
+        success: boolean;
+        error: {
+            status: any;
+            message: any;
+            name: any;
+        };
+    }>;
+    getEssaysByMaterial(materialId: string): Promise<{
+        success: boolean;
+        data: import("../schemas").AsphaltGranulometry[];
+        error?: undefined;
+    } | {
+        success: boolean;
+        error: {
+            status: any;
+            message: any;
+            name: any;
+        };
+        data?: undefined;
+    }>;
 }

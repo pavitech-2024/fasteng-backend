@@ -44,4 +44,25 @@ export declare class AsphaltGranulometryService {
         };
         data?: undefined;
     }>;
+    getAllEssaysByUser(userId: string): Promise<import("../schemas").AsphaltGranulometry[] | {
+        success: boolean;
+        error: {
+            status: any;
+            message: any;
+            name: any;
+        };
+    }>;
+    getEssaysByMaterialId(materialId: string): Promise<{
+        success: boolean;
+        data: import("../schemas").AsphaltGranulometry[];
+        error?: undefined;
+    } | {
+        success: boolean;
+        error: {
+            status: any;
+            message: any;
+            name: any;
+        };
+        data?: undefined;
+    }>;
 }
