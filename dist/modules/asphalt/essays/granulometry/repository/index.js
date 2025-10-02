@@ -59,6 +59,13 @@ let AsphaltGranulometryRepository = class AsphaltGranulometryRepository {
             return createdGranulometry.save();
         });
     }
+    findByMaterialId(materialId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.granulometryModel.find({
+                'generalData.material._id': materialId
+            }).sort({ 'generalData.createdAt': -1 });
+        });
+    }
 };
 exports.AsphaltGranulometryRepository = AsphaltGranulometryRepository;
 exports.AsphaltGranulometryRepository = AsphaltGranulometryRepository = __decorate([
