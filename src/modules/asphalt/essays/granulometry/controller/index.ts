@@ -1,4 +1,4 @@
-import { Controller, Logger, Post, Res, Body, Param, Get } from "@nestjs/common";
+import { Controller, Logger, Post, Res, Body, Param, Get, Query } from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiResponse } from "@nestjs/swagger";
 import { Calc_AsphaltGranulometry_Dto, Calc_AsphaltGranulometry_Out } from "../dto/asphalt.calc.granulometry.dto";
 import { AsphaltGranulometryService } from "../service";
@@ -113,10 +113,15 @@ async getEssaysByUser(@Param('userId') userId: string) {
 
 @Get('material/:materialId')
 @ApiOperation({ summary: 'Busca todos os ensaios de granulometria por material ID' })
-async getEssaysByMaterial(@Param('materialId') materialId: string) {
+async getEssaysByMaterial(
+  @Param('materialId') materialId: string,
+  @Query('page') page: number = 1, 
+  @Query('limit') limit: number = 10 
+) {
   this.logger.log(`get essays by material > [materialId: ${materialId}]`);
   
-  const essays = await this.asphaltgranulometryService.getEssaysByMaterialId(materialId);
+  const essays = await this.asphaltgranulometryService.getEssaysByMaterialId(materialId, page, limit);
   return essays;
 }
+
 }

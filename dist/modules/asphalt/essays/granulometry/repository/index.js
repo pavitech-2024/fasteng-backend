@@ -59,11 +59,14 @@ let AsphaltGranulometryRepository = class AsphaltGranulometryRepository {
             return createdGranulometry.save();
         });
     }
-    findByMaterialId(materialId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return this.granulometryModel.find({
-                'generalData.material._id': materialId
-            }).sort({ 'generalData.createdAt': -1 });
+    findByMaterialId(materialId_1) {
+        return __awaiter(this, arguments, void 0, function* (materialId, page = 1, limit = 10) {
+            const skip = (page - 1) * limit;
+            return this.granulometryModel
+                .find({ 'generalData.material._id': materialId })
+                .sort({ 'generalData.createdAt': -1 })
+                .skip(skip)
+                .limit(limit);
         });
     }
 };

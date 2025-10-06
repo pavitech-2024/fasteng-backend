@@ -88,10 +88,10 @@ let AsphaltGranulometryService = AsphaltGranulometryService_1 = class AsphaltGra
             }
         });
     }
-    getEssaysByMaterialId(materialId) {
-        return __awaiter(this, void 0, void 0, function* () {
+    getEssaysByMaterialId(materialId_1) {
+        return __awaiter(this, arguments, void 0, function* (materialId, page = 1, limit = 10) {
             try {
-                const essays = yield this.Granulometry_Repository.findByMaterialId(materialId);
+                const essays = yield this.Granulometry_Repository.findByMaterialId(materialId, page, limit);
                 return { success: true, data: essays };
             }
             catch (error) {

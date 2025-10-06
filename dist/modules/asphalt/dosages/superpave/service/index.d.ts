@@ -120,39 +120,7 @@ export declare class SuperpaveService {
         };
         dosage?: undefined;
     }>;
-    getGranulometricCompositionData(body: any): Promise<{
-        data: {
-            nominalSize: {
-                controlPoints: {
-                    lower: any[];
-                    higher: any[];
-                };
-                restrictedZone: {
-                    lower: any[];
-                    higher: any[];
-                };
-                curve: any[];
-                value: number;
-            };
-            percentsToList: any[];
-            porcentagesPassantsN200: any[];
-            bands: {
-                letter: any;
-                higher: any[];
-                lower: any[];
-            };
-        };
-        success: boolean;
-        error?: undefined;
-    } | {
-        data: any;
-        success: boolean;
-        error: {
-            status: any;
-            message: any;
-            name: any;
-        };
-    }>;
+    getGranulometricCompositionData(body: any): Promise<any>;
     insertBlankPointsOnCurve(curve: any, axisX: any): Promise<any[]>;
     findEquationOfCurve(curve: any, axisX: any, y2: any, y1: any, x2: any, x1: any, i: any): Promise<any>;
     calculateGranulometricCompositionData(body: any): Promise<{

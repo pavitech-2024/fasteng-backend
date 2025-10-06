@@ -72,8 +72,10 @@ let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = clas
     }
     calculateGranulometry(_a) {
         return __awaiter(this, arguments, void 0, function* ({ step2Data, isSuperpave = true, }) {
+            var _b;
             try {
-                this.logger.log(`calculate asphalt granulometry on calc.granulometry.service.ts > [${isSuperpave ? 'Superpave' : 'Granulometry'}] [${step2Data}]`);
+                console.log('=== DEBUG CALCULATE GRANULOMETRY ===');
+                console.log('table_data length:', (_b = step2Data.table_data) === null || _b === void 0 ? void 0 : _b.length);
                 const { table_data, material_mass, bottom } = step2Data;
                 const accumulated_retained = [];
                 const passant = [];
@@ -87,13 +89,24 @@ let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = clas
                 let nominal_size_flag = true;
                 let nominal_diameter_flag = true;
                 for (let i = 0; i < table_data.length; i++) {
-                    const label = table_data[i].sieve_label;
-                    const value = table_data[i].sieve_value;
-                    const passant_porcentage = table_data[i].passant;
-                    const retained = table_data[i].retained;
+                    if (!table_data[i]) {
+                        console.log(`❌ table_data[${i}] éhhh undefined!`);
+                        continue;
+                    }
+                    const item = table_data[i];
+                    const label = item.sieve_label;
+                    const value = item.sieve_value;
+                    const current_passant = item.passant;
+                    const retained = item.retained;
+                    if (label === undefined || value === undefined || current_passant === undefined || retained === undefined) {
+                        console.log(`❌ Dados incompletos no item ${i}:`, item);
+                        continue;
+                    }
+                    console.log(`✅ Processando item ${i}: ${label} - ${value}mm - ${current_passant}%`);
                     total_retained += retained;
                     passant.push([label, Math.round(100 * (material_mass - total_retained)) / 100]);
-                    accumulated_retained.push([label, Math.round(100 * (100 - passant_porcentage)) / 100]);
+                    passant_porcentage.push([label, current_passant]);
+                    accumulated_retained.push([label, Math.round(100 * (100 - current_passant)) / 100]);
                     if (i === 0) {
                         retained_porcentage.push(accumulated_retained[i]);
                     }
@@ -107,7 +120,7 @@ let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = clas
                     if (nominal_size_flag && accumulated_retained[i][1] >= 5) {
                         nominal_size_flag = false;
                         if (i === 0) {
-                            nominal_size = (0, sieves_1.getSieveValue)(label);
+                            nominal_size = (0, sieves_1.getSieveValue)(label, isSuperpave);
                         }
                         else {
                             const previous_retained = accumulated_retained[i - 1][1];
@@ -116,21 +129,31 @@ let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = clas
                     }
                     if (total_retained > 10 && nominal_diameter_flag) {
                         nominal_diameter_flag = false;
-                        nominal_diameter = (0, sieves_1.getSieveValue)(table_data[i].sieve_label);
+                        nominal_diameter = (0, sieves_1.getSieveValue)(table_data[i].sieve_label, isSuperpave);
                     }
-                    graph_data.push([value, passant_porcentage]);
+                    graph_data.push([value, current_passant]);
+                }
+                if (graph_data.length === 0) {
+                    throw new Error('Nenhum dado válido foi processado');
                 }
                 fineness_module = Math.round((100 * fineness_module) / 100) / 100;
                 total_retained = Math.round(100 * total_retained) / 100;
                 const error = Math.round((100 * (material_mass - total_retained - bottom) * 100) / material_mass) / 100;
-                const limit_10 = this.getPercentage(10, table_data);
-                const limit_30 = this.getPercentage(30, table_data);
-                const limit_60 = this.getPercentage(60, table_data);
-                const diameter10 = this.getDiameter(table_data, 10, limit_10);
-                const diameter30 = this.getDiameter(table_data, 30, limit_30);
-                const diameter60 = this.getDiameter(table_data, 60, limit_60);
-                const cnu = Math.round((100 * diameter60) / diameter10) / 100;
-                const cc = Math.round((100 * Math.pow(diameter30, 2)) / (diameter60 * diameter10)) / 100;
+                let cnu = 0;
+                let cc = 0;
+                try {
+                    const limit_10 = this.getPercentage(10, table_data);
+                    const limit_30 = this.getPercentage(30, table_data);
+                    const limit_60 = this.getPercentage(60, table_data);
+                    const diameter10 = this.getDiameter(table_data, 10, limit_10);
+                    const diameter30 = this.getDiameter(table_data, 30, limit_30);
+                    const diameter60 = this.getDiameter(table_data, 60, limit_60);
+                    cnu = Math.round((100 * diameter60) / diameter10) / 100;
+                    cc = Math.round((100 * Math.pow(diameter30, 2)) / (diameter60 * diameter10)) / 100;
+                }
+                catch (calcError) {
+                    console.log('❌ Erro no cálculo de CC/CNU:', calcError);
+                }
                 return {
                     success: true,
                     result: {
@@ -150,6 +173,7 @@ let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = clas
                 };
             }
             catch (error) {
+                console.error('❌ ERRO CRÍTICO NO CALCULATE GRANULOMETRY:', error);
                 this.logger.error(`error on calculate asphalt granulometry > [error]: ${error}`);
                 return {
                     success: false,

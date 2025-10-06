@@ -75,10 +75,10 @@ let AsphaltGranulometryController = AsphaltGranulometryController_1 = class Asph
             return essays;
         });
     }
-    getEssaysByMaterial(materialId) {
-        return __awaiter(this, void 0, void 0, function* () {
+    getEssaysByMaterial(materialId_1) {
+        return __awaiter(this, arguments, void 0, function* (materialId, page = 1, limit = 10) {
             this.logger.log(`get essays by material > [materialId: ${materialId}]`);
-            const essays = yield this.asphaltgranulometryService.getEssaysByMaterialId(materialId);
+            const essays = yield this.asphaltgranulometryService.getEssaysByMaterialId(materialId, page, limit);
             return essays;
         });
     }
@@ -168,8 +168,10 @@ __decorate([
     (0, common_1.Get)('material/:materialId'),
     (0, swagger_1.ApiOperation)({ summary: 'Busca todos os ensaios de granulometria por material ID' }),
     __param(0, (0, common_1.Param)('materialId')),
+    __param(1, (0, common_1.Query)('page')),
+    __param(2, (0, common_1.Query)('limit')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, Number, Number]),
     __metadata("design:returntype", Promise)
 ], AsphaltGranulometryController.prototype, "getEssaysByMaterial", null);
 exports.AsphaltGranulometryController = AsphaltGranulometryController = AsphaltGranulometryController_1 = __decorate([

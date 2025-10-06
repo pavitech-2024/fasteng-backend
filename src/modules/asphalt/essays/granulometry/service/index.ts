@@ -80,13 +80,14 @@ export class AsphaltGranulometryService {
   }
 }
 
-async getEssaysByMaterialId(materialId: string) {
+async getEssaysByMaterialId(materialId: string, page: number = 1, limit: number = 10) {
   try {
-    const essays = await this.Granulometry_Repository.findByMaterialId(materialId);
+    const essays = await this.Granulometry_Repository.findByMaterialId(materialId, page, limit);
     return { success: true, data: essays };
   } catch (error) {
     const { status, name, message } = error;
     return { success: false, error: { status, message, name } };
   }
 }
+
 }

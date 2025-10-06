@@ -170,72 +170,184 @@ export class SuperpaveService {
     }
   }
 
-  async getGranulometricCompositionData(body: any) {
-    try {
-      const { dnitBand, aggregates } = body;
+  //granulometry.results.result pode ser null, mas a rapazeada ta tentando acessar as propriedades diretamente por ele sem validacao
+  //especificamente a parte de nominal_size. por isso da erro nos graficos (typeError)
 
-      let higherBand = [];
-      let lowerBand = [];
-      let porcentagesPassantsN200 = [];
-      let nominalSize = 0;
-      let percentsOfMaterials = [];
-      let listOfPercentsToReturn = [];
-      let indexes = [];
-      let index;
-      let result = {
-        nominalSize: {
-          controlPoints: {
-            lower: [],
-            higher: [],
-          },
-          restrictedZone: {
-            lower: [],
-            higher: [],
-          },
-          curve: [],
-          value: 0,
+
+
+
+async getGranulometricCompositionData(body: any): Promise<any> {
+  try {
+    const { dnitBand, aggregates } = body;
+      console.log('=== BACKEND DEBUG ===');
+    console.log('Body recebido:', JSON.stringify(body, null, 2));
+    console.log('Aggregates count:', aggregates?.length);
+
+
+    // VALIDAÇÃO INICIAL
+    if (!aggregates || !Array.isArray(aggregates)) {
+      throw new Error('Aggregates data is invalid');
+    }
+    console.log('=== ESTRUTURA COMPLETA DOS AGGREGATES ===');
+aggregates?.forEach((agg, index) => {
+  console.log(`Aggregate ${index} - ${agg.material?.name}:`, JSON.stringify(agg, null, 2));
+  console.log('--- Chaves disponíveis:', Object.keys(agg));
+  
+  // Verificar diferentes possíveis locais dos dados
+  console.log('Tem data?', !!agg.data);
+  console.log('Tem results?', !!agg.results); 
+  console.log('Tem result?', !!agg.result);
+  console.log('Tem granulometryData?', !!agg.granulometryData);
+  
+  if (agg.data) {
+    console.log('Data keys:', Object.keys(agg.data));
+    console.log('Tem data.result?', !!agg.data.result);
+  }
+  if (agg.results) {
+    console.log('Results keys:', Object.keys(agg.results));
+  }
+});
+
+    let higherBand = [];
+    let lowerBand = [];
+    let porcentagesPassantsN200 = [];
+    let nominalSize = 0;
+    let percentsOfMaterials = [];
+    let listOfPercentsToReturn = [];
+    let indexes = [];
+    let index;
+    let result = {
+      nominalSize: {
+        controlPoints: {
+          lower: [],
+          higher: [],
         },
-        percentsOfMaterialsToShow: [],
-        percentsOfMaterials: [],
-      };
+        restrictedZone: {
+          lower: [],
+          higher: [],
+        },
+        curve: [],
+        value: 0,
+      },
+      percentsOfMaterialsToShow: [],
+      percentsOfMaterials: [],
+    };
 
-      const granulometryData: {
-        _id: string;
-        passants: {};
-      }[] = [];
+    const granulometryData: {
+      _id: string;
+      passants: {};
+    }[] = [];
 
-      aggregates.forEach((aggregate) => {
-        const { table_data } = aggregate.data;
-
-        let passants = {};
-
-        table_data.forEach((p) => {
-          passants[p.sieve_label] = p.passant;
-        });
-
-        granulometryData.push({
-          _id: aggregate.data.material._id,
-          passants: passants,
-        });
-      });
-
-      percentsOfMaterials = aggregates.map((granulometry) => {
-        if (granulometry.results.result.nominal_size > nominalSize) {
-          nominalSize = granulometry.results.result.nominal_size;
-        }
-
-        return granulometry.results.result.passant_porcentage;
-      });
-
-      result.nominalSize.value = nominalSize;
-
-      for (let i = 0; i < aggregates.length; i++) {
-        porcentagesPassantsN200[i] = null;
-        // ?: Por que exatamente a peneira do índice 10?
-        // peneiras antigas: o índice 10 é o meio da lista (4.8). O equivalente nas novas peneiras seria o índice 6 (4.8);
-        // if (percentsOfMaterials[i][10] !== null) porcentagesPassantsN200[i] = percentsOfMaterials[i][10][1];
-        if (percentsOfMaterials[i][6] !== null) porcentagesPassantsN200[i] = percentsOfMaterials[i][6][1];
+    aggregates.forEach((aggregate) => {
+      // VALIDAÇÃO: Verificar se aggregate.data existe
+      if (!aggregate?.data) {
+        return; // Pular se não existir dados
       }
+
+      const { table_data } = aggregate.data;
+
+      let passants = {};
+
+      table_data.forEach((p) => {
+        passants[p.sieve_label] = p.passant;
+      });
+
+      granulometryData.push({
+        _id: aggregate.data.material._id,
+        passants: passants,
+      });
+    });
+
+    // CORREÇÃO: Adicionar validação para results.result
+  percentsOfMaterials = aggregates.map((granulometry) => {
+  // Se tiver results.result, usa normalmente
+  if (granulometry?.results?.result) {
+    const resultData = granulometry.results.result;
+    
+    if (resultData.nominal_size && resultData.nominal_size > nominalSize) {
+      nominalSize = resultData.nominal_size;
+    }
+
+    return resultData.passant_porcentage || [];
+  }
+  
+  // SE NÃO, PROCESSAR OS DADOS BRUTOS DO table_data
+  if (granulometry?.data?.table_data) {
+    console.log(`Processando dados brutos para ${granulometry.data.material.name}`);
+    
+    const tableData = granulometry.data.table_data;
+    
+    // Extrair apenas os valores de passant para criar o array de percentuais
+    const passantPorcentage = tableData.map(item => [item.sieve_label, item.passant]);
+    
+    // Calcular nominal_size baseado nos dados
+    // O nominal_size é geralmente a maior peneira onde o passant fica abaixo de 100%
+    let calculatedNominalSize = 0;
+    for (const item of tableData) {
+      if (item.passant < 100 && item.sieve_value > calculatedNominalSize) {
+        calculatedNominalSize = item.sieve_value;
+      }
+    }
+    
+    if (calculatedNominalSize > nominalSize) {
+      nominalSize = calculatedNominalSize;
+    }
+    
+    console.log(`Passant porcentage calculado para ${granulometry.data.material.name}:`, passantPorcentage);
+    console.log(`Nominal size calculado: ${calculatedNominalSize}`);
+    
+    return passantPorcentage;
+  }
+  
+  console.log(`Nenhum dado encontrado para ${granulometry.data?.material?.name}`);
+  return [];
+});
+
+result.nominalSize.value = nominalSize;
+
+    // CORREÇÃO: Adicionar validação no loop também
+    for (let i = 0; i < aggregates.length; i++) {
+  porcentagesPassantsN200[i] = null;
+  
+  // PRIMEIRO: Buscar o valor da peneira Nº200 (0.075mm) nos table_data
+  if (aggregates[i]?.data?.table_data) {
+    const n200Sieve = aggregates[i].data.table_data.find(
+      item => item.sieve_value === 0.075 || item.sieve_label.includes('Nº200') || item.sieve_label.includes('0,075')
+    );
+    
+    if (n200Sieve) {
+      porcentagesPassantsN200[i] = n200Sieve.passant;
+      console.log(`N200 encontrado nos table_data para ${aggregates[i].data.material.name}: ${n200Sieve.passant}%`);
+    }
+  }
+  
+  // SEGUNDO: Se não encontrou nos table_data, tenta no percentsOfMaterials (mantém sua lógica original)
+  if (porcentagesPassantsN200[i] === null && percentsOfMaterials[i] && percentsOfMaterials[i].length > 0) {
+    // A peneira N200 geralmente é o último item do array (índice 12)
+    const n200Index = percentsOfMaterials[i].length - 1;
+    if (percentsOfMaterials[i][n200Index] !== null && percentsOfMaterials[i][n200Index] !== undefined) {
+      if (Array.isArray(percentsOfMaterials[i][n200Index])) {
+        porcentagesPassantsN200[i] = percentsOfMaterials[i][n200Index][1];
+      } else {
+        porcentagesPassantsN200[i] = percentsOfMaterials[i][n200Index];
+      }
+      console.log(`N200 encontrado no percentsOfMaterials para índice ${i}: ${porcentagesPassantsN200[i]}%`);
+    }
+  }
+  
+  // TERCEIRO: Se ainda não encontrou, tenta o índice 6 (lógica original)
+  if (porcentagesPassantsN200[i] === null && percentsOfMaterials[i] && percentsOfMaterials[i][6] !== null) {
+    if (Array.isArray(percentsOfMaterials[i][6])) {
+      porcentagesPassantsN200[i] = percentsOfMaterials[i][6][1];
+    } else {
+      porcentagesPassantsN200[i] = percentsOfMaterials[i][6];
+    }
+    console.log(`N200 encontrado no índice 6 para ${i}: ${porcentagesPassantsN200[i]}%`);
+  }
+  
+  console.log(`Valor final de N200 para ${aggregates[i]?.data?.material?.name}: ${porcentagesPassantsN200[i]}`);
+}
+
 
       const axisX = [38.1, 25.4, 19.1, 12.7, 9.5, 6.3, 4.8, 2.36, 1.18, 0.6, 0.3, 0.15, 0.075];
 
@@ -773,10 +885,25 @@ export class SuperpaveService {
         },
       };
 
-      return {
-        data,
-        success: true,
-      };
+     console.log('=== RESPONSE QUE SERÁ ENVIADO PARA FRONTEND ===');
+console.log(JSON.stringify({
+  data: {
+    nominalSize: result.nominalSize,
+    percentsToList: percentsOfMaterials,
+    porcentagesPassantsN200,
+    bands: {
+      letter: dnitBand,
+      higher: higherBand,
+      lower: lowerBand,
+    },
+    aggregatesData: aggregates.map(agg => ({
+      material: agg.material,
+      data: agg.data, // ← ISSO ESTÁ SENDO INCLUÍDO?
+      results: agg.results
+    }))
+  },
+  success: true,
+}, null, 2));
     } catch (error) {
       this.logger.error(`error on getting the step 3 data > [error]: ${error}`);
       const { status, name, message } = error;

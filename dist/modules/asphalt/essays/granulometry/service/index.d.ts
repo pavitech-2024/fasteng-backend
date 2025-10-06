@@ -52,7 +52,7 @@ export declare class AsphaltGranulometryService {
             name: any;
         };
     }>;
-    getEssaysByMaterialId(materialId: string): Promise<{
+    getEssaysByMaterialId(materialId: string, page?: number, limit?: number): Promise<{
         success: boolean;
         data: import("../schemas").AsphaltGranulometry[];
         error?: undefined;

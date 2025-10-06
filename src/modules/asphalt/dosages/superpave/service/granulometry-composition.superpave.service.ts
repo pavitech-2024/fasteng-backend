@@ -316,36 +316,47 @@ export class GranulometryComposition_Superpave_Service {
     return { sumOfPercents, percentsOfMaterials };
   }
 
-  async saveGranulometryCompositionData(body: any, userId: string) {
-    try {
-      this.logger.log(
-        'save superpave granulometry composition step on granulometry-composition.superpave.service.ts > [body]',
-        { body },
-      );
+ async saveGranulometryCompositionData(body: any, userId: string) {
+  try {
+    this.logger.log(
+      'save superpave granulometry composition step on granulometry-composition.superpave.service.ts > [body]',
+      { body },
+    );
 
-      const { name } = body.granulometryCompositionData;
+    const { name } = body.granulometryCompositionData;
 
-      const superpaveExists: any = await this.superpaveRepository.findOne(name, userId);
+    const superpaveExists: any = await this.superpaveRepository.findOne(name, userId);
 
-      const { name: materialName, ...granulometryCompositionWithoutName } = body.granulometryCompositionData;
+    // ⬇️⬇️⬇️ MANTENHA OS TABLE_DATA ⬇️⬇️⬇️
+    const { name: materialName, ...granulometryCompositionWithoutName } = body.granulometryCompositionData;
 
-      const superpaveWithGranulometryComposition = {
-        ...superpaveExists._doc,
-        granulometryCompositionData: granulometryCompositionWithoutName,
-      };
+    // ⬇️⬇️⬇️ CORREÇÃO: Garantir que os table_data sejam preservados ⬇️⬇️⬇️
+    const granulometryCompositionWithTableData = {
+      ...granulometryCompositionWithoutName,
+      // Garantir que cada granulometry mantenha seus table_data
+      granulometrys: granulometryCompositionWithoutName.granulometrys?.map(gran => ({
+        material: gran.material,
+        data: gran.data, // ⬅️ ISSO É CRÍTICO - PRESERVAR OS DADOS BRUTOS
+        result: gran.result // ⬅️ Resultado do processamento (pode ser null)
+      })) || []
+    };
 
-      await this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithGranulometryComposition);
+    const superpaveWithGranulometryComposition = {
+      ...superpaveExists._doc,
+      granulometryCompositionData: granulometryCompositionWithTableData, // ⬅️ USAR A VERSÃO CORRIGIDA
+    };
 
-      if (superpaveExists._doc.generalData.step < 4) {
-        await this.superpaveRepository.saveStep(superpaveExists, 4);
-      }
+    await this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithGranulometryComposition);
 
-      return true;
-    } catch (error) {
-      throw error;
+    if (superpaveExists._doc.generalData.step < 4) {
+      await this.superpaveRepository.saveStep(superpaveExists, 4);
     }
-  }
 
+    return true;
+  } catch (error) {
+    throw error;
+  }
+}
   async saveStep5Data(body: any, userId: string) {
     try {
       this.logger.log('save superpave initial binder step on granulometry-composition.superpave.service.ts > [body]', {

@@ -7,5 +7,5 @@ export declare class AsphaltGranulometryRepository {
     findAll(): Promise<AsphaltGranulometry[]>;
     findById(ids: string[]): Promise<AsphaltGranulometry[]>;
     create(granulometry: any): Promise<AsphaltGranulometry>;
-    findByMaterialId(materialId: string): Promise<AsphaltGranulometry[]>;
+    findByMaterialId(materialId: string, page?: number, limit?: number): Promise<AsphaltGranulometry[]>;
 }

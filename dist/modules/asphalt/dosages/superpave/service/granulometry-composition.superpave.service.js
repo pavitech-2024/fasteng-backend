@@ -287,12 +287,18 @@ let GranulometryComposition_Superpave_Service = GranulometryComposition_Superpav
     }
     saveGranulometryCompositionData(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
+            var _a;
             try {
                 this.logger.log('save superpave granulometry composition step on granulometry-composition.superpave.service.ts > [body]', { body });
                 const { name } = body.granulometryCompositionData;
                 const superpaveExists = yield this.superpaveRepository.findOne(name, userId);
-                const _a = body.granulometryCompositionData, { name: materialName } = _a, granulometryCompositionWithoutName = __rest(_a, ["name"]);
-                const superpaveWithGranulometryComposition = Object.assign(Object.assign({}, superpaveExists._doc), { granulometryCompositionData: granulometryCompositionWithoutName });
+                const _b = body.granulometryCompositionData, { name: materialName } = _b, granulometryCompositionWithoutName = __rest(_b, ["name"]);
+                const granulometryCompositionWithTableData = Object.assign(Object.assign({}, granulometryCompositionWithoutName), { granulometrys: ((_a = granulometryCompositionWithoutName.granulometrys) === null || _a === void 0 ? void 0 : _a.map(gran => ({
+                        material: gran.material,
+                        data: gran.data,
+                        result: gran.result
+                    }))) || [] });
+                const superpaveWithGranulometryComposition = Object.assign(Object.assign({}, superpaveExists._doc), { granulometryCompositionData: granulometryCompositionWithTableData });
                 yield this.superpaveModel.updateOne({ _id: superpaveExists._doc._id }, superpaveWithGranulometryComposition);
                 if (superpaveExists._doc.generalData.step < 4) {
                     yield this.superpaveRepository.saveStep(superpaveExists, 4);
