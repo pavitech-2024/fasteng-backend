@@ -252,8 +252,8 @@ let VolumetricParameters_Marshall_Service = VolumetricParameters_Marshall_Servic
                 const apparentBulkSpecificGravity = (dryMass / samplesVolumes) * temperatureOfWater;
                 const volumeVoids = (confirmedSpecificGravity - apparentBulkSpecificGravity) / confirmedSpecificGravity;
                 const voidsFilledAsphalt = (apparentBulkSpecificGravity * optimumContent) / 102.7;
-                const aggregateVolumeVoids = volumeVoids + voidsFilledAsphalt;
-                const ratioBitumenVoid = voidsFilledAsphalt / aggregateVolumeVoids;
+                const vcb = volumeVoids + voidsFilledAsphalt;
+                const ratioBitumenVoid = voidsFilledAsphalt / vcb;
                 const quantitative = confirmedPercentsOfDosage.map((percent, i) => (confirmedSpecificGravity * percent * 10) / 1000 / listOfSpecificGravities[i]);
                 quantitative.unshift(optimumContent * 10 * confirmedSpecificGravity);
                 const confirmedVolumetricParameters = {
@@ -263,8 +263,8 @@ let VolumetricParameters_Marshall_Service = VolumetricParameters_Marshall_Servic
                     values: {
                         volumeVoids,
                         apparentBulkSpecificGravity,
-                        voidsFilledAsphalt: aggregateVolumeVoids,
-                        aggregateVolumeVoids: volumeVoids,
+                        vcb,
+                        vam: voidsFilledAsphalt,
                         ratioBitumenVoid,
                         stability: stabilityBar,
                         fluency: fluencyBar,

@@ -180,7 +180,7 @@ export class MaximumMixtureDensity_Marshall_Service {
               }
             }
           } else {
-            listOfSpecificGravities = valuesOfGmm.map((gmm) => gmm.value);
+            listOfSpecificGravities = valuesOfGmm.map((gmm) => gmm.GMM);
           }
 
           return listOfSpecificGravities;
@@ -190,7 +190,7 @@ export class MaximumMixtureDensity_Marshall_Service {
       };
 
       const gmm = Array.from({ length: 5 }, (_, i) => {
-        const gmmItem = valuesOfGmm.find((gmm) => gmm.id === i);
+        const gmmItem = valuesOfGmm.find((gmm) => gmm.id === i + 1);
         return gmmItem || null;
       });
 
@@ -204,11 +204,11 @@ export class MaximumMixtureDensity_Marshall_Service {
 
       const maxSpecificGravity = {
         result: {
-          lessOne: content[0],
-          lessHalf: content[1],
-          normal: content[2],
-          plusHalf: content[3],
-          plusOne: content[4],
+          lessOne: gmm[0].GMM ?? content[0],
+          lessHalf: gmm[1].GMM ??  content[1],
+          normal: gmm[2].GMM ?? content[2],
+          plusHalf: gmm[3].GMM ?? content[3],
+          plusOne: gmm[4].GMM ?? content[4],
         },
         method: 'GMM',
       };
