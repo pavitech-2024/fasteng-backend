@@ -1,5 +1,5 @@
 import { Controller, Logger, Post, Res, Body } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
 import { Response } from 'express';
 import { Calc_ViscosityRotational_Dto, Calc_ViscosityRotational_Out } from '../dto/calc-viscosityRotational.dto';
 import { ViscosityRotationalInitDto } from '../dto/init-viscosityRotational.dto';
@@ -13,6 +13,7 @@ export class ViscosityRotationalController {
   constructor(private readonly viscosityRotationalService: ViscosityRotationalService) {}
 
   @Post('verify-init')
+  @ApiBody({ type: ViscosityRotationalInitDto })
   @ApiOperation({ summary: 'Verifica se é possível criar um ensaio de viscosidade rotacional com os dados enviados.' })
   @ApiResponse({
     status: 200,
@@ -43,6 +44,7 @@ export class ViscosityRotationalController {
   }
 
   @Post('calculate-results')
+  @ApiBody({ type: ViscosityRotationalInitDto })
   @ApiOperation({ summary: 'Calcula os resultados do ensaio de viscosidade rotacional com os dados enviados.' })
   @ApiResponse({
     status: 200,
@@ -65,6 +67,7 @@ export class ViscosityRotationalController {
   }
 
   @Post('save-essay')
+  @ApiBody({ type: ViscosityRotationalInitDto })
   @ApiOperation({ summary: 'Se possível, salva os dados do ensaio de viscosidade rotacional no banco de dados.' })
   @ApiResponse({
     status: 200,

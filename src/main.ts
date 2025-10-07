@@ -87,6 +87,7 @@ import { GranularLayersModule } from 'modules/pro-medina/granular-layers/granula
 import { Granulometry } from 'modules/soils/essays/granulometry/schemas';
 import { GranulometryModule } from 'modules/soils/essays/granulometry/granulometry.module';
 import { AsphaltGranulometryModule } from 'modules/asphalt/essays/granulometry/granulometry.module';
+import { ViscosityRotationalModule } from 'modules/asphalt/essays/viscosityRotational/viscosityRotational.module';
 
 
 
@@ -116,7 +117,7 @@ async function bootstrap() {
     'docs/asphalt',
     app,
     SwaggerModule.createDocument(app, swagger_asphalt, {
-      include: [AuthModule, UsersModule, AsphaltGranulometryModule],
+      include: [AuthModule, UsersModule, AsphaltGranulometryModule, ViscosityRotationalModule],
     }),
   );
 

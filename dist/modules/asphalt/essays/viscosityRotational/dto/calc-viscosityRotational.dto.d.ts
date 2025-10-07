@@ -1,9 +1,8 @@
-import { ViscosityRotational } from '../schemas';
 export declare class Calc_ViscosityRotational_Dto {
-    generalData: ViscosityRotational['generalData'];
-    viscosityRotational: ViscosityRotational['viscosityRotational'];
+    generalData: Record<string, any>;
+    viscosityRotational: Record<string, any>;
 }
-export interface Calc_ViscosityRotational_Out {
+export declare class Calc_ViscosityRotational_Out {
     graph: string;
     machiningTemperatureRange: {
         higher: number;
