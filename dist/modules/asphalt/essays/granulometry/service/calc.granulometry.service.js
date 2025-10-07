@@ -120,7 +120,7 @@ let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = clas
                     if (nominal_size_flag && accumulated_retained[i][1] >= 5) {
                         nominal_size_flag = false;
                         if (i === 0) {
-                            nominal_size = (0, sieves_1.getSieveValue)(label, isSuperpave);
+                            nominal_size = (0, sieves_1.getSieveValue)(label);
                         }
                         else {
                             const previous_retained = accumulated_retained[i - 1][1];
@@ -129,7 +129,7 @@ let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = clas
                     }
                     if (total_retained > 10 && nominal_diameter_flag) {
                         nominal_diameter_flag = false;
-                        nominal_diameter = (0, sieves_1.getSieveValue)(table_data[i].sieve_label, isSuperpave);
+                        nominal_diameter = (0, sieves_1.getSieveValue)(table_data[i].sieve_label);
                     }
                     graph_data.push([value, current_passant]);
                 }

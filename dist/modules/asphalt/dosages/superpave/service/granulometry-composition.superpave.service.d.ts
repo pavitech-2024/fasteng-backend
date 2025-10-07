@@ -35,6 +35,9 @@ export declare class GranulometryComposition_Superpave_Service {
         };
         success: boolean;
     }>;
+    getPercentsToListData(materials: any[], dnitBand: string): Promise<any[]>;
+    getDefaultNominalSize(dnitBand: string): Promise<any>;
+    getCompleteNominalSizeData(dnitBand: string, materials: any[]): Promise<any>;
     insertBlankPointsOnCurve(curve: any, axisX: any): any;
     findEquationOfCurve(curve: any, axisX: any, y2: any, y1: any, x2: any, x1: any, i: any): any;
     calculatePercentOfMaterials(materials: any, percentsOfDosage: any, percentsToList: any): {

@@ -2,38 +2,40 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getSieveValue = void 0;
 const interfaces_1 = require("../../../utils/interfaces");
-const getSieveValue = (label, isSuperpave) => {
+const getSieveValue = (label) => {
     console.log('=== DEBUG GETSIEVEVALUE ===');
     console.log('Label recebido:', label);
-    console.log('isSuperpave:', isSuperpave);
     if (!label) {
-        console.log('❌ Label é undefined ou vazio!');
-        return 0;
+        console.error('❌ ERRO: Label é undefined ou vazio!');
+        throw new Error('Label da peneira não fornecido');
     }
-    let sieveSeries = interfaces_1.AllSieves;
-    if (isSuperpave)
-        sieveSeries = interfaces_1.AllSievesSuperpaveUpdatedAstm;
-    console.log('Sieve series:', sieveSeries);
-    const sieve = sieveSeries.find((sieve) => {
-        console.log(`Comparando: "${sieve.label}" com "${label}"`);
-        return sieve.label === label;
-    });
+    const normalizeLabel = (l) => {
+        return l
+            .toLowerCase()
+            .replace(/[,]/g, '.')
+            .replace(/\s+/g, ' ')
+            .replace(/[°º]/g, '')
+            .replace(/pol/g, 'pol')
+            .replace(/nº|n/g, 'n')
+            .trim();
+    };
+    const normalizedInput = normalizeLabel(label);
+    const findInSeries = (series) => {
+        return series.find(sieve => normalizeLabel(sieve.label) === normalizedInput);
+    };
+    let sieve = findInSeries(interfaces_1.AllSievesSuperpaveUpdatedAstm);
+    if (!sieve)
+        sieve = findInSeries(interfaces_1.AllSieves);
     console.log('Sieve encontrado:', sieve);
     if (!sieve) {
-        console.log(`❌ Peneira não encontrada para label: "${label}"`);
-        const numericMatch = label.match(/(\d+[.,]\d+)/);
-        if (numericMatch) {
-            const fallbackValue = parseFloat(numericMatch[1].replace(',', '.'));
-            console.log(`✅ Usando fallback value: ${fallbackValue}`);
-            return fallbackValue;
-        }
-        return 0;
+        throw new Error(`❌ Peneira não configurada no sistema: "${label}".\n` +
+            `Superpave disponíveis: ${interfaces_1.AllSievesSuperpaveUpdatedAstm.map(s => s.label).join(', ')}\n` +
+            `Padrão disponíveis: ${interfaces_1.AllSieves.map(s => s.label).join(', ')}`);
     }
     if (sieve.value === undefined || sieve.value === null) {
-        console.log(`❌ sieve.value é undefined para: "${label}"`);
-        return 0;
+        throw new Error(`❌ Valor da peneira não definido: "${label}"`);
     }
-    console.log(`✅ Retornando value: ${sieve.value}`);
+    console.log(`✅ Retornando value REAL: ${sieve.value}`);
     return sieve.value;
 };
 exports.getSieveValue = getSieveValue;

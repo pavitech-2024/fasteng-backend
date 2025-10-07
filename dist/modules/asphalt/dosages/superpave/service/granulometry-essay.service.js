@@ -130,17 +130,17 @@ let GranulometryEssay_Superpave_Service = GranulometryEssay_Superpave_Service_1 
                             if (i === 0)
                                 nominal_size = (0, sieves_1.getSieveValue)(label);
                             else
-                                nominal_size = (0, sieves_1.getSieveValue)(table_data[i - 1].sieve_label, true);
+                                nominal_size = (0, sieves_1.getSieveValue)(table_data[i - 1].sieve_label);
                         }
                     }
                     if (total_retained > 10 && nominal_diameter_flag) {
                         nominal_diameter_flag = false;
                         if (i === 1)
-                            nominal_diameter = (0, sieves_1.getSieveValue)(label, true);
+                            nominal_diameter = (0, sieves_1.getSieveValue)(label);
                         else if (i === 0)
                             nominal_diameter = value;
                         else
-                            nominal_diameter = (0, sieves_1.getSieveValue)(table_data[i - 1].sieve_label, true);
+                            nominal_diameter = (0, sieves_1.getSieveValue)(table_data[i - 1].sieve_label);
                     }
                     graph_data.push([value, passant_porcentage]);
                 }

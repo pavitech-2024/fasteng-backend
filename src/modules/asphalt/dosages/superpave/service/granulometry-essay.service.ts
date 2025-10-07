@@ -80,15 +80,15 @@ export class GranulometryEssay_Superpave_Service {
           if (total_retained === 5) nominal_size = getSieveValue(label);
           else {
             if (i === 0) nominal_size = getSieveValue(label);
-            else nominal_size = getSieveValue(table_data[i - 1].sieve_label, true);
+            else nominal_size = getSieveValue(table_data[i - 1].sieve_label);
           }
         }
 
         if (total_retained > 10 && nominal_diameter_flag) {
           nominal_diameter_flag = false;
-          if (i === 1) nominal_diameter = getSieveValue(label, true);
+          if (i === 1) nominal_diameter = getSieveValue(label);
           else if (i === 0) nominal_diameter = value;
-          else nominal_diameter = getSieveValue(table_data[i - 1].sieve_label, true);
+          else nominal_diameter = getSieveValue(table_data[i - 1].sieve_label);
         }
 
         graph_data.push([value, passant_porcentage]);

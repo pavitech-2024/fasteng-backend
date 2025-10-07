@@ -1,1 +1,1 @@
-export declare const getSieveValue: (label: string, isSuperpave?: boolean) => number;
+export declare const getSieveValue: (label: string) => number;
