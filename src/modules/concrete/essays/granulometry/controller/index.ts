@@ -1,6 +1,6 @@
 import { Body, Controller, Logger, Post, Res } from '@nestjs/common';
 import { Response } from 'express';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ConcreteGranulometryService } from '../service'; 
 import { ConcreteGranulometryInitDto } from '../dto/concretegranulometry-init.dto';  
 import { Calc_CONCRETEGRANULOMETRY_Dto, Calc_CONCRETEGRANULOMETRY_Out } from '../dto/calc.granulometry.dto';
@@ -39,6 +39,7 @@ export class ConcreteGranulometryController {
 
     @Post('calculate-results')
     @ApiOperation({ summary: 'Calcula os resultados da granulometria de ensaio de concreto com os dados enviados.' })
+    @ApiBody({ type: Calc_CONCRETEGRANULOMETRY_Dto })
     @ApiResponse({
         status: 200,
         description: 'Resultados da granulometria de ensaio de concreto calculados com sucesso.',

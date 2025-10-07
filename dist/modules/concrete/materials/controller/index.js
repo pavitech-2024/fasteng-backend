@@ -27,13 +27,15 @@ const common_1 = require("@nestjs/common");
 const service_1 = require("../service");
 const swagger_1 = require("@nestjs/swagger");
 const create_concrete_material_dto_1 = require("../dto/create-concrete-material.dto");
+const user_decorator_1 = require("../../../../config/decorators/user.decorator");
 const schemas_1 = require("../schemas");
+const create_concrete_response_dto_1 = require("../dto/create-concrete-response.dto");
 let MaterialsController = MaterialsController_1 = class MaterialsController {
     constructor(materialsService) {
         this.materialsService = materialsService;
         this.logger = new common_1.Logger(MaterialsController_1.name);
     }
-    createMaterial(material) {
+    createMaterial(material, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             this.logger.log('create material > [body]');
             const createdMaterial = yield this.materialsService.createMaterial(material);
@@ -72,18 +74,32 @@ exports.MaterialsController = MaterialsController;
 __decorate([
     (0, common_1.Post)(),
     (0, swagger_1.ApiOperation)({ summary: 'Cria um material no banco de dados.' }),
-    (0, swagger_1.ApiResponse)({ status: 201, description: 'Material criado com sucesso!' }),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'Material criado com sucesso!', type: create_concrete_response_dto_1.ConcreteMaterialResponseDto }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Erro ao criar material!' }),
+    (0, swagger_1.ApiParam)({
+        name: 'id',
+        description: 'ID do material',
+        required: true,
+        example: '64f0c12a3d5e2b001234abcd',
+    }),
+    (0, swagger_1.ApiBody)({ type: create_concrete_material_dto_1.CreateConcreteMaterialDto }),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, user_decorator_1.User)('userId')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_concrete_material_dto_1.CreateConcreteMaterialDto]),
+    __metadata("design:paramtypes", [create_concrete_material_dto_1.CreateConcreteMaterialDto, String]),
     __metadata("design:returntype", Promise)
 ], MaterialsController.prototype, "createMaterial", null);
 __decorate([
     (0, common_1.Get)('all/:id'),
     (0, swagger_1.ApiOperation)({ summary: 'Retorna todos os materiais do banco de dados de um usuário.' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Materiais encontrados com sucesso!' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Materiais encontrados com sucesso!', type: create_concrete_response_dto_1.ConcreteMaterialResponseDto }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Usuário não encontrado!' }),
+    (0, swagger_1.ApiParam)({
+        name: 'id',
+        description: 'ID do usuário dono dos materiais',
+        example: 'user-12345',
+        type: String,
+    }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -92,8 +108,14 @@ __decorate([
 __decorate([
     (0, common_1.Get)(':id'),
     (0, swagger_1.ApiOperation)({ summary: 'Retorna um material do banco de dados.' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Material encontrado com sucesso!' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Material encontrado com sucesso!', type: create_concrete_response_dto_1.ConcreteMaterialResponseDto }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Material não encontrado!' }),
+    (0, swagger_1.ApiParam)({
+        name: 'id',
+        description: 'ID do material que deseja buscar',
+        example: '64f0c12a3d5e2b001234abcd',
+        type: String,
+    }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -102,8 +124,15 @@ __decorate([
 __decorate([
     (0, common_1.Put)(':id'),
     (0, swagger_1.ApiOperation)({ summary: 'Atualiza um material do banco de dados.' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Material atualizado com sucesso!' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Material atualizado com sucesso!', type: create_concrete_response_dto_1.ConcreteMaterialResponseDto }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Material não encontrado!' }),
+    (0, swagger_1.ApiParam)({
+        name: 'id',
+        description: 'ID do material que deseja atualizar',
+        example: '64f0c12a3d5e2b001234abcd',
+        type: String,
+    }),
+    (0, swagger_1.ApiBody)({ type: create_concrete_material_dto_1.CreateConcreteMaterialDto }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -113,8 +142,14 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(':id'),
     (0, swagger_1.ApiOperation)({ summary: 'Deleta um material do banco de dados.' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Material deletado com sucesso!' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Material deletado com sucesso!', type: create_concrete_response_dto_1.ConcreteMaterialResponseDto }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Material não encontrado!' }),
+    (0, swagger_1.ApiParam)({
+        name: 'id',
+        description: 'ID do material que deseja deletar',
+        example: '64f0c12a3d5e2b001234abcd',
+        type: String,
+    }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),

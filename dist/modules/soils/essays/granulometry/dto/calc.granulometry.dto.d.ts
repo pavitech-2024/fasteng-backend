@@ -3,7 +3,7 @@ export declare class Calc_GRANULOMETRY_Dto {
     generalData: Granulometry['generalData'];
     step2Data: Granulometry['step2Data'];
 }
-export interface Calc_GRANULOMETRY_Out {
+export declare class Calc_GRANULOMETRY_Out {
     accumulated_retained: number[];
     graph_data: [number, number][];
     passant: number[];

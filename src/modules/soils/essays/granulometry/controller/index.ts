@@ -4,6 +4,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GranulometryService } from '../service';
 import { GranulometryInitDto } from '../dto/granulometry-init.dto';
 import { Calc_GRANULOMETRY_Dto, Calc_GRANULOMETRY_Out } from '../dto/calc.granulometry.dto';
+import { Granulometry } from '../schemas';
 
 @ApiTags('granulometry')
 @Controller('soils/essays/granulometry')
@@ -93,7 +94,9 @@ export class GranulometryController {
     @ApiOperation({ summary: 'Retorna um ensaio de Granulometria do banco de dados.' })
     @ApiResponse({ 
         status: 200, 
-        description: 'Granulometria encontrada com sucesso!' 
+        description: 'Granulometria encontrada com sucesso!',
+        //type: Granulometry, 
+        type: Calc_GRANULOMETRY_Out
     })
     @ApiResponse({ status: 400, description: 'Granulometria não encontrada!' })
     async getGranulometryBySampleId(@Res() response: Response, @Param('sample_id') sample_id: string) {

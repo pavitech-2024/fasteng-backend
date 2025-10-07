@@ -33,8 +33,8 @@ let MaterialsService = MaterialsService_1 = class MaterialsService {
     createMaterial(material) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { name, userId } = material;
-                const materialExists = yield this.materialsRepository.findOne({ name, userId });
+                const { name } = material;
+                const materialExists = yield this.materialsRepository.findOne({ name });
                 if (materialExists)
                     throw new exceptions_1.AlreadyExists(`Material with name "${material.name}"`);
                 const createdMaterial = yield this.materialsRepository.create(material);
