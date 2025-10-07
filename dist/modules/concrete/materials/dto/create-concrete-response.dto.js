@@ -9,28 +9,31 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateConcreteMaterialDto = void 0;
-const class_validator_1 = require("class-validator");
+exports.ConcreteMaterialResponseDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
-class CreateConcreteMaterialDto {
+class ConcreteMaterialResponseDto {
 }
-exports.CreateConcreteMaterialDto = CreateConcreteMaterialDto;
+exports.ConcreteMaterialResponseDto = ConcreteMaterialResponseDto;
 __decorate([
-    (0, swagger_1.ApiProperty)({
-        example: 'Brita 1',
-        description: 'Nome do material',
-    }),
-    (0, class_validator_1.IsNotEmpty)(),
+    (0, swagger_1.ApiProperty)({ description: 'ID do material no banco de dados', example: '64f8a2c3d5e6f123456789ab' }),
     __metadata("design:type", String)
-], CreateConcreteMaterialDto.prototype, "name", void 0);
+], ConcreteMaterialResponseDto.prototype, "id", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ description: 'Código único do material', example: 'CONC-001' }),
+    __metadata("design:type", String)
+], ConcreteMaterialResponseDto.prototype, "code", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ description: 'Nome do material', example: 'Brita 1' }),
+    __metadata("design:type", String)
+], ConcreteMaterialResponseDto.prototype, "name", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        example: 'coarseAggregate',
         description: 'Tipo do material',
+        example: 'coarseAggregate',
         enum: ['coarseAggregate', 'fineAggregate', 'filler', 'asphaltBinder', 'CAP', 'other'],
     }),
     __metadata("design:type", String)
-], CreateConcreteMaterialDto.prototype, "type", void 0);
+], ConcreteMaterialResponseDto.prototype, "type", void 0);
 __decorate([
     (0, swagger_1.ApiPropertyOptional)({
         description: 'Descrição detalhada do material',
@@ -50,5 +53,5 @@ __decorate([
         },
     }),
     __metadata("design:type", Object)
-], CreateConcreteMaterialDto.prototype, "description", void 0);
-//# sourceMappingURL=create-concrete-material.dto.js.map
+], ConcreteMaterialResponseDto.prototype, "description", void 0);
+//# sourceMappingURL=create-concrete-response.dto.js.map

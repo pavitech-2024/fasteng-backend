@@ -91,6 +91,7 @@ __decorate([
 __decorate([
     (0, common_1.Post)('calculate-results'),
     (0, swagger_1.ApiOperation)({ summary: 'Calcula os resultados da granulometria de ensaio de concreto com os dados enviados.' }),
+    (0, swagger_1.ApiBody)({ type: calc_granulometry_dto_1.Calc_CONCRETEGRANULOMETRY_Dto }),
     (0, swagger_1.ApiResponse)({
         status: 200,
         description: 'Resultados da granulometria de ensaio de concreto calculados com sucesso.',

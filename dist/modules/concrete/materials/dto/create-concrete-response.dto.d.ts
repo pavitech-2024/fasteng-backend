@@ -1,5 +1,7 @@
 import { Sieve } from '../../../../utils/interfaces';
-export declare class CreateConcreteMaterialDto {
+export declare class ConcreteMaterialResponseDto {
+    id: string;
+    code: string;
     name: string;
     type: 'coarseAggregate' | 'fineAggregate' | 'filler' | 'asphaltBinder' | 'CAP' | 'other';
     description?: {

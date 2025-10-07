@@ -11,14 +11,31 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Calc_CONCRETEGRANULOMETRY_Dto = void 0;
 const class_validator_1 = require("class-validator");
+const swagger_1 = require("@nestjs/swagger");
 class Calc_CONCRETEGRANULOMETRY_Dto {
 }
 exports.Calc_CONCRETEGRANULOMETRY_Dto = Calc_CONCRETEGRANULOMETRY_Dto;
 __decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Dados gerais da granulometria (ex: tipo de material, data, massa total etc.)',
+        example: {
+            material: 'Brita 1',
+            date: '2025-10-07',
+            total_weight: 1200,
+            operator: 'Maria Clara',
+        },
+    }),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
 ], Calc_CONCRETEGRANULOMETRY_Dto.prototype, "generalData", void 0);
 __decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Dados da segunda etapa do ensaio (ex: peneiras e massas retidas)',
+        example: {
+            sieves: [9.5, 4.8, 2.4, 1.2, 0.6],
+            retained_weights: [150, 320, 400, 250, 80],
+        },
+    }),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
 ], Calc_CONCRETEGRANULOMETRY_Dto.prototype, "step2Data", void 0);

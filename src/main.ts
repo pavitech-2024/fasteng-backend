@@ -83,6 +83,13 @@ import { UsersModule } from './modules/users/users.module';
 //Soils Modules
 import { SamplesModule } from './modules/soils/samples/samples.module';
 import { AllExceptionsFilter } from './config/filters/http-exception.filter'; // Ajuste o caminho conforme
+import { GranularLayersModule } from 'modules/pro-medina/granular-layers/granular-layers.module';
+import { Granulometry } from 'modules/soils/essays/granulometry/schemas';
+import { GranulometryModule } from 'modules/soils/essays/granulometry/granulometry.module';
+import { AsphaltGranulometryModule } from 'modules/asphalt/essays/granulometry/granulometry.module';
+import { ViscosityRotationalModule } from 'modules/asphalt/essays/viscosityRotational/viscosityRotational.module';
+
+
 
 async function bootstrap() {
   // Criar a app com logs detalhados
@@ -110,7 +117,7 @@ async function bootstrap() {
     'docs/asphalt',
     app,
     SwaggerModule.createDocument(app, swagger_asphalt, {
-      include: [AuthModule, UsersModule],
+      include: [AuthModule, UsersModule, AsphaltGranulometryModule, ViscosityRotationalModule],
     }),
   );
 
@@ -123,13 +130,14 @@ async function bootstrap() {
     'docs/soils',
     app,
     SwaggerModule.createDocument(app, swagger_soils, {
-      include: [AuthModule, UsersModule, SamplesModule],
+      include: [AuthModule, UsersModule, SamplesModule, GranulometryModule],
     }),
   );
 
   const swagger_concrete = new DocumentBuilder()
     .setTitle('FastEng API')
-    .setDescription(`The FastEng [ Soils ] API description`)
+    //.setDescription(`The FastEng [ Soils ] API description`)
+    .setDescription(`The FastEng [ Concrete ] API description`)
     .setVersion('1.0')
     .build();
   SwaggerModule.setup('docs/concrete', app, SwaggerModule.createDocument(app, swagger_concrete));

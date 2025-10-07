@@ -1,7 +1,6 @@
-import { Granulometry } from '../schemas';
 export declare class Calc_CONCRETEGRANULOMETRY_Dto {
-    generalData: Granulometry['generalData'];
-    step2Data: Granulometry['step2Data'];
+    generalData: Record<string, any>;
+    step2Data: Record<string, any>;
 }
 export interface Calc_CONCRETEGRANULOMETRY_Out {
     accumulated_retained: number[];
