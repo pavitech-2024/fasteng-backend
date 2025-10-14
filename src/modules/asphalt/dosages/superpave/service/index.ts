@@ -188,25 +188,7 @@ async getGranulometricCompositionData(body: any): Promise<any> {
     if (!aggregates || !Array.isArray(aggregates)) {
       throw new Error('Aggregates data is invalid');
     }
-    console.log('=== ESTRUTURA COMPLETA DOS AGGREGATES ===');
-aggregates?.forEach((agg, index) => {
-  console.log(`Aggregate ${index} - ${agg.material?.name}:`, JSON.stringify(agg, null, 2));
-  console.log('--- Chaves disponíveis:', Object.keys(agg));
-  
-  // Verificar diferentes possíveis locais dos dados
-  console.log('Tem data?', !!agg.data);
-  console.log('Tem results?', !!agg.results); 
-  console.log('Tem result?', !!agg.result);
-  console.log('Tem granulometryData?', !!agg.granulometryData);
-  
-  if (agg.data) {
-    console.log('Data keys:', Object.keys(agg.data));
-    console.log('Tem data.result?', !!agg.data.result);
-  }
-  if (agg.results) {
-    console.log('Results keys:', Object.keys(agg.results));
-  }
-});
+
 
     let higherBand = [];
     let lowerBand = [];
@@ -904,6 +886,19 @@ console.log(JSON.stringify({
   },
   success: true,
 }, null, 2));
+return {
+  data: {
+    nominalSize: result.nominalSize,
+    percentsToList: percentsOfMaterials,
+    porcentagesPassantsN200,
+    bands: {
+      letter: dnitBand,
+      higher: higherBand,
+      lower: lowerBand,
+    }
+  },
+  success: true
+};
     } catch (error) {
       this.logger.error(`error on getting the step 3 data > [error]: ${error}`);
       const { status, name, message } = error;
