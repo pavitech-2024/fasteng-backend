@@ -290,15 +290,18 @@ export class VolumetricParameters_Marshall_Service {
       const voidsFilledAsphalt = (apparentBulkSpecificGravity * optimumContent) / 102.7;
       const vcb = volumeVoids + voidsFilledAsphalt;
       const ratioBitumenVoid = voidsFilledAsphalt / vcb;
-      const quantitative = confirmedPercentsOfDosage.map(
-        (percent, i) => (confirmedSpecificGravity * percent * 10) / 1000 / listOfSpecificGravities[i],
-      );
-      quantitative.unshift(optimumContent * 10 * confirmedSpecificGravity);
+
+      // Resultados para os quantitativos por metro cúbico
+
+      const massPerCubicMeter = ((1 - volumeVoids)) * Math.pow(10, 6) * confirmedSpecificGravity;
+      const tonPerCubicMeter = massPerCubicMeter / Math.pow(10, 6);
+      const materialsPerCubicMeter = confirmedPercentsOfDosage.map((material) => (material / 100) * tonPerCubicMeter);
+      materialsPerCubicMeter.unshift((optimumContent / 100) * tonPerCubicMeter);
 
       const confirmedVolumetricParameters = {
         valuesOfVolumetricParameters,
         asphaltContent: optimumContent,
-        quantitative,
+        quantitative: materialsPerCubicMeter,
         values: {
           volumeVoids,
           apparentBulkSpecificGravity,
@@ -310,7 +313,6 @@ export class VolumetricParameters_Marshall_Service {
           indirectTensileStrength: indirectTensileStrengthBar,
         },
       };
-      
 
       return confirmedVolumetricParameters;
     } catch (error) {
