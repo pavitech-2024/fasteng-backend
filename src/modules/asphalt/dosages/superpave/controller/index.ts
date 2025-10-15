@@ -71,6 +71,7 @@ export class SuperpaveController {
     const status = await this.superpaveService.calculateGranulometryEssayData(body);
 
     return response.status(200).json(status);
+    
   }
 
   @Post('save-granulometry-essay-data/:id')
