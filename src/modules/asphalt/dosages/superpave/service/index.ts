@@ -179,9 +179,9 @@ export class SuperpaveService {
 async getGranulometricCompositionData(body: any): Promise<any> {
   try {
     const { dnitBand, aggregates } = body;
-      console.log('=== BACKEND DEBUG ===');
-    console.log('Body recebido:', JSON.stringify(body, null, 2));
-    console.log('Aggregates count:', aggregates?.length);
+     // console.log('=== BACKEND DEBUG ===');
+   // console.log('Body recebido:', JSON.stringify(body, null, 2));
+    //console.log('Aggregates count:', aggregates?.length);
 
 
     // VALIDAÇÃO INICIAL
@@ -253,9 +253,7 @@ async getGranulometricCompositionData(body: any): Promise<any> {
     return resultData.passant_porcentage || [];
   }
   
-  // SE NÃO, PROCESSAR OS DADOS BRUTOS DO table_data
   if (granulometry?.data?.table_data) {
-    console.log(`Processando dados brutos para ${granulometry.data.material.name}`);
     
     const tableData = granulometry.data.table_data;
     
@@ -275,13 +273,10 @@ async getGranulometricCompositionData(body: any): Promise<any> {
       nominalSize = calculatedNominalSize;
     }
     
-    console.log(`Passant porcentage calculado para ${granulometry.data.material.name}:`, passantPorcentage);
-    console.log(`Nominal size calculado: ${calculatedNominalSize}`);
     
     return passantPorcentage;
   }
   
-  console.log(`Nenhum dado encontrado para ${granulometry.data?.material?.name}`);
   return [];
 });
 
@@ -299,7 +294,7 @@ result.nominalSize.value = nominalSize;
     
     if (n200Sieve) {
       porcentagesPassantsN200[i] = n200Sieve.passant;
-      console.log(`N200 encontrado nos table_data para ${aggregates[i].data.material.name}: ${n200Sieve.passant}%`);
+     // console.log(`N200 encontrado nos table_data para ${aggregates[i].data.material.name}: ${n200Sieve.passant}%`);
     }
   }
   
@@ -313,7 +308,6 @@ result.nominalSize.value = nominalSize;
       } else {
         porcentagesPassantsN200[i] = percentsOfMaterials[i][n200Index];
       }
-      console.log(`N200 encontrado no percentsOfMaterials para índice ${i}: ${porcentagesPassantsN200[i]}%`);
     }
   }
   
@@ -324,10 +318,8 @@ result.nominalSize.value = nominalSize;
     } else {
       porcentagesPassantsN200[i] = percentsOfMaterials[i][6];
     }
-    console.log(`N200 encontrado no índice 6 para ${i}: ${porcentagesPassantsN200[i]}%`);
   }
   
-  console.log(`Valor final de N200 para ${aggregates[i]?.data?.material?.name}: ${porcentagesPassantsN200[i]}`);
 }
 
 
@@ -929,18 +921,21 @@ return {
     else curve[i] = y1;
     return curve;
   }
-
-  async calculateGranulometricCompositionData(body: any) {
-    try {
-      const granulometry = await this.granulometryComposition_Service.calculateGranulometry(body);
-
-      return { data: granulometry.data, success: true };
-    } catch (error) {
-      this.logger.error(`error on calculating granulometric composition data > [error]: ${error}`);
-      const { status, name, message } = error;
-      return { data: null, success: false, error: { status, message, name } };
-    }
+async calculateGranulometricCompositionData(body: any) {
+  try {
+    const result = await this.granulometryComposition_Service.calculateGranulometry(body);
+    
+    return { 
+      data: result.data, 
+      success: true 
+    };
+    
+  } catch (error) {
+    this.logger.error(`error on calculating granulometric composition data > [error]: ${error}`);
+    const { status, name, message } = error;
+    return { data: null, success: false, error: { status, message, name } };
   }
+}
 
   async saveStep3Data(body: any, userId: string) {
     try {

@@ -830,8 +830,11 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
     calculateGranulometricCompositionData(body) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const granulometry = yield this.granulometryComposition_Service.calculateGranulometry(body);
-                return { data: granulometry.data, success: true };
+                const result = yield this.granulometryComposition_Service.calculateGranulometry(body);
+                return {
+                    data: result.data,
+                    success: true
+                };
             }
             catch (error) {
                 this.logger.error(`error on calculating granulometric composition data > [error]: ${error}`);
