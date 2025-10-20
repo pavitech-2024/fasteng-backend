@@ -75,6 +75,31 @@ let AsphaltGranulometryService = AsphaltGranulometryService_1 = class AsphaltGra
             }
         });
     }
+    getAllEssaysByUser(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const essays = yield this.Granulometry_Repository.findAll();
+                const userEssays = essays.filter(essay => essay.generalData.userId === userId);
+                return userEssays;
+            }
+            catch (error) {
+                const { status, name, message } = error;
+                return { success: false, error: { status, message, name } };
+            }
+        });
+    }
+    getEssaysByMaterialId(materialId_1) {
+        return __awaiter(this, arguments, void 0, function* (materialId, page = 1, limit = 10) {
+            try {
+                const essays = yield this.Granulometry_Repository.findByMaterialId(materialId, page, limit);
+                return { success: true, data: essays };
+            }
+            catch (error) {
+                const { status, name, message } = error;
+                return { success: false, error: { status, message, name } };
+            }
+        });
+    }
 };
 exports.AsphaltGranulometryService = AsphaltGranulometryService;
 exports.AsphaltGranulometryService = AsphaltGranulometryService = AsphaltGranulometryService_1 = __decorate([
