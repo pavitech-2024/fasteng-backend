@@ -125,21 +125,24 @@ export declare class SuperpaveService {
     findEquationOfCurve(curve: any, axisX: any, y2: any, y1: any, x2: any, x1: any, i: any): Promise<any>;
     calculateGranulometricCompositionData(body: any): Promise<{
         data: {
-            lowerComposition: {
-                sumOfPercents: any[];
-                percentsOfMaterials: any;
+            data: {
+                lowerComposition: {
+                    sumOfPercents: any[];
+                    percentsOfMaterials: any;
+                };
+                averageComposition: {
+                    sumOfPercents: any[];
+                    percentsOfMaterials: any;
+                };
+                higherComposition: {
+                    sumOfPercents: any[];
+                    percentsOfMaterials: any;
+                };
+                pointsOfCurve: any[];
+                nominalSize: any;
+                chosenCurves: any;
             };
-            averageComposition: {
-                sumOfPercents: any[];
-                percentsOfMaterials: any;
-            };
-            higherComposition: {
-                sumOfPercents: any[];
-                percentsOfMaterials: any;
-            };
-            pointsOfCurve: any[];
-            nominalSize: any;
-            chosenCurves: any;
+            success: boolean;
         };
         success: boolean;
         error?: undefined;

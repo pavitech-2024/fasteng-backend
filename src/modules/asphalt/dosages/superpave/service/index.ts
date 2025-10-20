@@ -926,7 +926,7 @@ async calculateGranulometricCompositionData(body: any) {
     const result = await this.granulometryComposition_Service.calculateGranulometry(body);
     
     return { 
-      data: result.data, 
+      data: result, 
       success: true 
     };
     

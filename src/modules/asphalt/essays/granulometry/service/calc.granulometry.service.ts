@@ -91,15 +91,17 @@ export class Calc_AsphaltGranulometry_Service {
 
       fineness_module += accumulated_retained[i][1];
 
-      if (nominal_size_flag && accumulated_retained[i][1] >= 5) {
-        nominal_size_flag = false;
-        if (i === 0) {
-         nominal_size = getSieveValue(label);
-        } else {
-          const previous_retained = accumulated_retained[i - 1][1];
-          nominal_size = previous_retained <= 5 ? getSieveValue(table_data[i - 1].sieve_label) : getSieveValue(label);
-        }
-      }
+      if (nominal_size_flag && (accumulated_retained[i][1] > 10 || current_passant < 90)) {
+  nominal_size_flag = false;
+  // TNM é a peneira IMEDIATAMENTE ACIMA (índice i-1)
+  if (i > 0) {
+    nominal_size = getSieveValue(table_data[i - 1].sieve_label);
+  } else {
+    // Se for a primeira peneira, usar ela mesma
+    nominal_size = getSieveValue(label);
+  }
+  console.log(`🎯 TNM calculado: ${nominal_size}mm (peneira acima de ${label} - Retido: ${accumulated_retained[i][1]}%, Passante: ${current_passant}%)`);
+}
 
       if (total_retained > 10 && nominal_diameter_flag) {
         nominal_diameter_flag = false;
