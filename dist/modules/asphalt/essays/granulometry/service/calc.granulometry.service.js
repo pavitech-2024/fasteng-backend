@@ -105,16 +105,15 @@ let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = clas
                         ]);
                     }
                     fineness_module += accumulated_retained[i][1];
-                    if (total_retained >= 5 && nominal_size_flag) {
+                    if (nominal_size_flag && (accumulated_retained[i][1] > 10 || table_data[i].passant < 90)) {
                         nominal_size_flag = false;
-                        if (total_retained === 5)
-                            nominal_size = (0, sieves_1.getSieveValue)(label, isSuperpave);
-                        else {
-                            if (i === 0)
-                                nominal_size = (0, sieves_1.getSieveValue)(label, isSuperpave);
-                            else
-                                nominal_size = (0, sieves_1.getSieveValue)(table_data[i - 1].sieve_label, isSuperpave);
+                        if (i > 0) {
+                            nominal_size = (0, sieves_1.getSieveValue)(table_data[i - 1].sieve_label, isSuperpave);
                         }
+                        else {
+                            nominal_size = (0, sieves_1.getSieveValue)(label, isSuperpave);
+                        }
+                        console.log(`🎯 TNM calculado: ${nominal_size}mm (peneira acima de ${label} - Retido: ${accumulated_retained[i][1]}%, Passante: ${table_data[i].passant}%)`);
                     }
                     if (total_retained > 10 && nominal_diameter_flag) {
                         nominal_diameter_flag = false;

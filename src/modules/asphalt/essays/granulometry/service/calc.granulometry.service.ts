@@ -86,14 +86,16 @@ export class Calc_AsphaltGranulometry_Service {
 
         fineness_module += accumulated_retained[i][1];
 
-        // verifica se o total de retido é maior ou igual a 5 e seta o diâmetro nominal
-        if (total_retained >= 5 && nominal_size_flag) {
+        if (nominal_size_flag && (accumulated_retained[i][1] > 10 || table_data[i].passant < 90)) {
           nominal_size_flag = false;
-          if (total_retained === 5) nominal_size = getSieveValue(label, isSuperpave);
-          else {
-            if (i === 0) nominal_size = getSieveValue(label, isSuperpave);
-            else nominal_size = getSieveValue(table_data[i - 1].sieve_label, isSuperpave);
+          if (i > 0) {
+            nominal_size = getSieveValue(table_data[i - 1].sieve_label, isSuperpave);
+          } else {
+            nominal_size = getSieveValue(label, isSuperpave);
           }
+          console.log(
+            `🎯 TNM calculado: ${nominal_size}mm (peneira acima de ${label} - Retido: ${accumulated_retained[i][1]}%, Passante: ${table_data[i].passant}%)`,
+          );
         }
 
         // verifica se o total de retido é maior ou igual a 10 e seta o diâmetro nominal
