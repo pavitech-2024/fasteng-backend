@@ -68,6 +68,20 @@ let AsphaltGranulometryController = AsphaltGranulometryController_1 = class Asph
             return response.status(200).json(granulometry);
         });
     }
+    getEssaysByUser(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.log(`get essays by user > [userId: ${userId}]`);
+            const essays = yield this.asphaltgranulometryService.getAllEssaysByUser(userId);
+            return essays;
+        });
+    }
+    getEssaysByMaterial(materialId_1) {
+        return __awaiter(this, arguments, void 0, function* (materialId, page = 1, limit = 10) {
+            this.logger.log(`get essays by material > [materialId: ${materialId}]`);
+            const essays = yield this.asphaltgranulometryService.getEssaysByMaterialId(materialId, page, limit);
+            return essays;
+        });
+    }
 };
 exports.AsphaltGranulometryController = AsphaltGranulometryController;
 __decorate([
@@ -137,6 +151,29 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], AsphaltGranulometryController.prototype, "saveAsphaltEssay", null);
+__decorate([
+    (0, common_1.Get)('user/:userId'),
+    (0, swagger_1.ApiOperation)({ summary: 'Busca todos os ensaios de granulometria do usuário' }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'Ensaios encontrados com sucesso',
+        content: { 'application/json': { schema: { example: { success: true, data: [] } } } },
+    }),
+    __param(0, (0, common_1.Param)('userId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], AsphaltGranulometryController.prototype, "getEssaysByUser", null);
+__decorate([
+    (0, common_1.Get)('material/:materialId'),
+    (0, swagger_1.ApiOperation)({ summary: 'Busca todos os ensaios de granulometria por material ID' }),
+    __param(0, (0, common_1.Param)('materialId')),
+    __param(1, (0, common_1.Query)('page')),
+    __param(2, (0, common_1.Query)('limit')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Number, Number]),
+    __metadata("design:returntype", Promise)
+], AsphaltGranulometryController.prototype, "getEssaysByMaterial", null);
 exports.AsphaltGranulometryController = AsphaltGranulometryController = AsphaltGranulometryController_1 = __decorate([
     (0, swagger_1.ApiTags)('granulometry'),
     (0, common_1.Controller)('asphalt/essays/granulometry'),

@@ -1,4 +1,4 @@
-import { Controller, Logger, Post, Res, Body } from "@nestjs/common";
+import { Controller, Logger, Post, Res, Body, Get, Param, Query } from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiResponse } from "@nestjs/swagger";
 import { Calc_AsphaltGranulometry_Dto, Calc_AsphaltGranulometry_Out } from "../dto/asphalt.calc.granulometry.dto";
 import { AsphaltGranulometryService } from "../service";
@@ -92,4 +92,33 @@ export class AsphaltGranulometryController {
 
     return response.status(200).json(granulometry);
   }
+    @Get('user/:userId')
+@ApiOperation({ summary: 'Busca todos os ensaios de granulometria do usuário' })
+@ApiResponse({
+  status: 200,
+  description: 'Ensaios encontrados com sucesso',
+  content: { 'application/json': { schema: { example: { success: true, data: [] } } } },
+})
+
+async getEssaysByUser(@Param('userId') userId: string) {
+  this.logger.log(`get essays by user > [userId: ${userId}]`);
+
+  const essays = await this.asphaltgranulometryService.getAllEssaysByUser(userId);
+
+  return essays;
+}
+
+
+@Get('material/:materialId')
+@ApiOperation({ summary: 'Busca todos os ensaios de granulometria por material ID' })
+async getEssaysByMaterial(
+  @Param('materialId') materialId: string,
+  @Query('page') page: number = 1, 
+  @Query('limit') limit: number = 10 
+) {
+  this.logger.log(`get essays by material > [materialId: ${materialId}]`);
+  
+  const essays = await this.asphaltgranulometryService.getEssaysByMaterialId(materialId, page, limit);
+  return essays;
+}
 }
