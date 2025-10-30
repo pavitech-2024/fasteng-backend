@@ -21,14 +21,12 @@ var Calc_AsphaltGranulometry_Service_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Calc_AsphaltGranulometry_Service = void 0;
 const common_1 = require("@nestjs/common");
-const repository_1 = require("../../../materials/repository");
 const sieves_1 = require("../../../../../modules/soils/util/sieves");
-const repository_2 = require("../repository");
+
 let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = class Calc_AsphaltGranulometry_Service {
-    constructor(granulometryRepository, materialsRepository) {
-        this.granulometryRepository = granulometryRepository;
-        this.materialsRepository = materialsRepository;
+    constructor() {
         this.logger = new common_1.Logger(Calc_AsphaltGranulometry_Service_1.name);
+
         this.getDiameter = (table_data, percentage, limits) => {
             if (limits.upperLimit.value === percentage) {
                 return table_data[limits.upperLimit.index].passant;
@@ -41,6 +39,7 @@ let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = clas
             const coefficientB = limits.upperLimit.value / (coefficientA * table_data[limits.upperLimit.index].passant);
             return (percentage - coefficientB) / coefficientA;
         };
+
         this.getPercentage = (percentage, table_data) => {
             return table_data.reduce((accumulate, sieve, index) => {
                 if (sieve.passant >= percentage) {
@@ -49,8 +48,7 @@ let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = clas
                             value: sieve.passant,
                             index: index,
                         };
-                }
-                else {
+                } else {
                     if (accumulate.inferiorLimit.value === 0 || sieve.passant > accumulate.inferiorLimit.value)
                         accumulate.inferiorLimit = {
                             value: sieve.passant,
@@ -70,73 +68,82 @@ let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = clas
             });
         };
     }
-    calculateGranulometry(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ step2Data, isSuperpave = true, }) {
+
+    calculateGranulometry({ step2Data, isSuperpave = false }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log(`calculate asphalt granulometry on calc.granulometry.service.ts > [${isSuperpave ? 'Superpave' : 'Granulometry'}] [${step2Data}]`);
                 const { table_data, material_mass, bottom } = step2Data;
-                const length = table_data.length;
                 const accumulated_retained = [];
                 const passant = [];
                 const retained_porcentage = [];
                 const passant_porcentage = [];
                 const graph_data = [];
+
                 let total_retained = 0;
                 let nominal_diameter = 0;
                 let nominal_size = 0;
                 let fineness_module = 0;
                 let nominal_size_flag = true;
                 let nominal_diameter_flag = true;
-                for (let i = 0; i < length; i++) {
+
+                for (let i = 0; i < table_data.length; i++) {
                     const label = table_data[i].sieve_label;
                     const value = table_data[i].sieve_value;
-                    passant_porcentage.push([table_data[i].sieve_label, table_data[i].passant]);
+                    const passant_value = table_data[i].passant;
                     const retained = table_data[i].retained;
+
                     total_retained += retained;
+
                     passant.push([label, Math.round(100 * (material_mass - total_retained)) / 100]);
-                    accumulated_retained.push([label, Math.round(100 * (100 - passant_porcentage[i][1])) / 100]);
+                    accumulated_retained.push([label, Math.round(100 * (100 - passant_value)) / 100]);
+
                     if (i === 0) {
                         retained_porcentage.push(accumulated_retained[i]);
-                    }
-                    else {
+                    } else {
                         retained_porcentage.push([
                             label,
                             Math.round(100 * (accumulated_retained[i][1] - accumulated_retained[i - 1][1])) / 100,
                         ]);
                     }
+
                     fineness_module += accumulated_retained[i][1];
+
                     if (nominal_size_flag && (accumulated_retained[i][1] > 10 || table_data[i].passant < 90)) {
                         nominal_size_flag = false;
                         if (i > 0) {
                             nominal_size = (0, sieves_1.getSieveValue)(table_data[i - 1].sieve_label, isSuperpave);
-                        }
-                        else {
+                        } else {
                             nominal_size = (0, sieves_1.getSieveValue)(label, isSuperpave);
                         }
                         console.log(`🎯 TNM calculado: ${nominal_size}mm (peneira acima de ${label} - Retido: ${accumulated_retained[i][1]}%, Passante: ${table_data[i].passant}%)`);
                     }
+
                     if (total_retained > 10 && nominal_diameter_flag) {
                         nominal_diameter_flag = false;
-                        if (i === 1)
-                            nominal_diameter = (0, sieves_1.getSieveValue)(label, isSuperpave);
-                        else if (i === 0)
-                            nominal_diameter = value;
-                        else
-                            nominal_diameter = (0, sieves_1.getSieveValue)(table_data[i - 1].sieve_label, isSuperpave);
+                        nominal_diameter = (0, sieves_1.getSieveValue)(table_data[i].sieve_label, isSuperpave);
                     }
-                    graph_data.push([value, passant_porcentage[i][1]]);
+
+                    passant_porcentage.push([label, passant_value]);
+                    graph_data.push([value, passant_value]);
                 }
+
                 fineness_module = Math.round((100 * fineness_module) / 100) / 100;
                 total_retained = Math.round(100 * total_retained) / 100;
+
                 const error = Math.round((100 * (material_mass - total_retained - bottom) * 100) / material_mass) / 100;
+
                 const limit_10 = this.getPercentage(10, table_data);
                 const limit_30 = this.getPercentage(30, table_data);
                 const limit_60 = this.getPercentage(60, table_data);
+
                 const diameter10 = this.getDiameter(table_data, 10, limit_10);
                 const diameter30 = this.getDiameter(table_data, 30, limit_30);
                 const diameter60 = this.getDiameter(table_data, 60, limit_60);
+
                 const cnu = Math.round((100 * diameter60) / diameter10) / 100;
                 const cc = Math.round((100 * Math.pow(diameter30, 2)) / (diameter60 * diameter10)) / 100;
+
                 return {
                     success: true,
                     result: {
@@ -154,8 +161,7 @@ let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = clas
                         error,
                     },
                 };
-            }
-            catch (error) {
+            } catch (error) {
                 this.logger.error(`error on calculate asphalt granulometry > [error]: ${error}`);
                 return {
                     success: false,
@@ -165,10 +171,9 @@ let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = clas
         });
     }
 };
+
 exports.Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service;
 exports.Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [repository_2.AsphaltGranulometryRepository,
-        repository_1.MaterialsRepository])
+    __metadata("design:paramtypes", [])
 ], Calc_AsphaltGranulometry_Service);
-//# sourceMappingURL=calc.granulometry.service.js.map

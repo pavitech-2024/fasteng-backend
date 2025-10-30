@@ -34,8 +34,8 @@ export declare class VolumetricParameters_Marshall_Service {
         values: {
             volumeVoids: number;
             apparentBulkSpecificGravity: number;
-            voidsFilledAsphalt: number;
-            aggregateVolumeVoids: number;
+            vcb: number;
+            vam: number;
             ratioBitumenVoid: number;
             stability: number;
             fluency: number;

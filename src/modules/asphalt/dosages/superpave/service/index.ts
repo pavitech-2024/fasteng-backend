@@ -86,6 +86,7 @@ export class SuperpaveService {
         return {
           generalData: material,
           step2Data: { material_mass, table_data, bottom },
+          isSuperpave: true
         };
       });
 
@@ -142,20 +143,6 @@ export class SuperpaveService {
     }
   }
 
-  // async getUserMaterials(userId: string) {
-  //   try {
-  //     const materials = await this.materialSelection_Service.getMaterials(userId);
-
-  //     this.logger.log(`materials returned > [materials]`);
-
-  //     return { materials, success: true };
-  //   } catch (error) {
-  //     this.logger.error(`error on getting all materials by user id > [error]: ${error}`);
-  //     const { status, name, message } = error;
-  //     return { materials: [], success: false, error: { status, message, name } };
-  //   }
-  // }
-
   async getDosageById(dosageId: string) {
     try {
       const dosage = await this.generalData_Service.getDosageById(dosageId);
@@ -181,7 +168,6 @@ export class SuperpaveService {
       let percentsOfMaterials = [];
       let listOfPercentsToReturn = [];
       let indexes = [];
-      let index;
       let result = {
         nominalSize: {
           controlPoints: {
@@ -763,7 +749,6 @@ export class SuperpaveService {
 
       const data = {
         nominalSize: result.nominalSize,
-        // percentsToList: listOfPercentsToReturn,
         percentsToList: percentsOfMaterials,
         porcentagesPassantsN200,
         bands: {
