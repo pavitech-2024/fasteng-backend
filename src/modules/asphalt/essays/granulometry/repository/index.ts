@@ -34,4 +34,15 @@ export class AsphaltGranulometryRepository {
 
     return createdGranulometry.save();
   }
+
+async findByMaterialId(materialId: string, page: number = 1, limit: number = 10): Promise<AsphaltGranulometry[]> {
+  const skip = (page - 1) * limit;
+  
+  return this.granulometryModel
+    .find({ 'generalData.material._id': materialId })
+    .sort({ 'generalData.createdAt': -1 })
+    .skip(skip)
+    .limit(limit);
+}
+
 }

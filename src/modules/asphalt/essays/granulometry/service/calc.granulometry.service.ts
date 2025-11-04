@@ -78,16 +78,16 @@ export class Calc_AsphaltGranulometry_Service {
 
         fineness_module += accumulated_retained[i][1];
 
-        if (nominal_size_flag && accumulated_retained[i][1] >= 5) {
+        if (nominal_size_flag && (accumulated_retained[i][1] > 10 || table_data[i].passant < 90)) {
           nominal_size_flag = false;
-          if (i === 0) {
-            nominal_size = getSieveValue(label, isSuperpave);
+          if (i > 0) {
+            nominal_size = getSieveValue(table_data[i - 1].sieve_label, isSuperpave);
           } else {
-            const previous_retained = accumulated_retained[i - 1][1];
-            nominal_size = previous_retained <= 5
-              ? getSieveValue(table_data[i - 1].sieve_label, isSuperpave)
-              : getSieveValue(label, isSuperpave);
+            nominal_size = getSieveValue(label, isSuperpave);
           }
+          console.log(
+            `🎯 TNM calculado: ${nominal_size}mm (peneira acima de ${label} - Retido: ${accumulated_retained[i][1]}%, Passante: ${table_data[i].passant}%)`,
+          );
         }
 
         if (total_retained > 10 && nominal_diameter_flag) {
@@ -100,7 +100,6 @@ export class Calc_AsphaltGranulometry_Service {
       }
 
       fineness_module = Math.round((100 * fineness_module) / 100) / 100;
-
       total_retained = Math.round(100 * total_retained) / 100;
 
       const error = Math.round((100 * (material_mass - total_retained - bottom) * 100) / material_mass) / 100;
@@ -114,7 +113,6 @@ export class Calc_AsphaltGranulometry_Service {
       const diameter60 = this.getDiameter(table_data, 60, limit_60);
 
       const cnu = Math.round((100 * diameter60) / diameter10) / 100;
-
       const cc = Math.round((100 * Math.pow(diameter30, 2)) / (diameter60 * diameter10)) / 100;
 
       return {
@@ -159,71 +157,47 @@ export class Calc_AsphaltGranulometry_Service {
     percentage: number,
     limits: { upperLimit: limit; inferiorLimit: limit },
   ): number => {
-    // Check if the percentage matches the upper limit value
     if (limits.upperLimit.value === percentage) {
       return table_data[limits.upperLimit.index].passant;
     }
-    // Check if the percentage matches the lower limit value
     if (limits.inferiorLimit.value === percentage) {
       return table_data[limits.inferiorLimit.index].passant;
     }
 
-    // Calculate the coefficients for linear interpolation
     const coefficientA =
       (limits.upperLimit.value - limits.inferiorLimit.value) /
       (table_data[limits.upperLimit.index].passant - table_data[limits.inferiorLimit.index].passant);
     const coefficientB = limits.upperLimit.value / (coefficientA * table_data[limits.upperLimit.index].passant);
 
-    // Use the coefficients to interpolate and find the diameter
     return (percentage - coefficientB) / coefficientA;
   };
 
   /**
    * Finds the upper and lower limits of the given percentage in the table of values.
-   * The upper limit is the value of the sieve that is just above the given percentage
-   * and the lower limit is the value of the sieve that is just below the given percentage.
-   * If the given percentage is equal to the value of the sieve, the upper and lower limits
-   * are the same.
-   * @param percentage the percentage to find the limits for
-   * @param table_data the table of values to search in
-   * @returns an object with two properties: upperLimit and inferiorLimit. Each property
-   * is an object with two properties: value and index. The value is the value of the sieve
-   * and the index is the index of the sieve in the table.
    */
   getPercentage = (percentage: number, table_data: { sieve_label: string; passant: number; retained: number }[]) => {
     return table_data.reduce(
       (accumulate, sieve, index) => {
-        // sieve.passant is the value of the sieve
-        // if the value of the sieve is greater than or equal to the percentage
-        // then the upper limit is the value of the sieve
         if (sieve.passant >= percentage) {
           if (accumulate.upperLimit.value === 0 || sieve.passant < accumulate.upperLimit.value)
             accumulate.upperLimit = {
-              // the value of the sieve
               value: sieve.passant,
-              // the index of the sieve in the table
               index: index,
             };
         } else {
-          // if the value of the sieve is less than the percentage
-          // then the lower limit is the value of the sieve
           if (accumulate.inferiorLimit.value === 0 || sieve.passant > accumulate.inferiorLimit.value)
             accumulate.inferiorLimit = {
-              // the value of the sieve
               value: sieve.passant,
-              // the index of the sieve in the table
               index: index,
             };
         }
         return accumulate;
       },
       {
-        // the initial upper limit is 0
         upperLimit: {
           value: 0,
           index: 0,
         },
-        // the initial lower limit is 0
         inferiorLimit: {
           value: 0,
           index: 0,
