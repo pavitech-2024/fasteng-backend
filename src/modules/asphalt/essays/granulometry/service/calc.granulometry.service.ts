@@ -3,7 +3,6 @@ import { MaterialsRepository } from '../../../materials/repository';
 import { getSieveValue } from '../../../../../modules/soils/util/sieves';
 import { Calc_AsphaltGranulometry_Dto, Calc_AsphaltGranulometry_Out } from '../dto/asphalt.calc.granulometry.dto';
 import { AsphaltGranulometryRepository } from '../repository';
-import { AllSievesSuperpaveUpdatedAstm } from 'utils/interfaces';
 
 type limit = { value: number; index: number };
 
@@ -58,11 +57,8 @@ export class Calc_AsphaltGranulometry_Service {
       let nominal_size = 0;
       let fineness_module = 0;
       let nominal_size_flag = true;
-      let nominal_diameter_flag = true;
 
-      // loop na tabela de dados para calcular a granulometria
-      // criando arrays para plotar o gráfico e calcular o módulo de finura
-      // e o diâmetro nominal
+      // Loop principal para cálculos básicos
       for (let i = 0; i < length; i++) {
         const label = table_data[i].sieve_label;
         const value = table_data[i].sieve_value;
@@ -86,6 +82,9 @@ export class Calc_AsphaltGranulometry_Service {
 
         fineness_module += accumulated_retained[i][1];
 
+        // ✅ 3.2 TAMANHO NOMINAL MÁXIMO (TNM)
+        // "Peneira imediatamente acima daquela que retém mais que 10% acumulado 
+        // OU da que passa menos que 90% dos grãos"
         if (nominal_size_flag && (accumulated_retained[i][1] > 10 || table_data[i].passant < 90)) {
           nominal_size_flag = false;
           if (i > 0) {
@@ -98,21 +97,29 @@ export class Calc_AsphaltGranulometry_Service {
           );
         }
 
-        // verifica se o total de retido é maior ou igual a 10 e seta o diâmetro nominal
-        if (total_retained > 10 && nominal_diameter_flag) {
-          nominal_diameter_flag = false;
-          if (i === 1) nominal_diameter = getSieveValue(label, isSuperpave);
-          else if (i === 0) nominal_diameter = value;
-          else nominal_diameter = getSieveValue(table_data[i - 1].sieve_label, isSuperpave);
-        }
-
         graph_data.push([value, passant_porcentage[i][1]]);
       }
 
+      //3.1 DIMENSÃO MÁXIMA
+      // "Menor abertura das peneira através da quall vai passar 100% dos grãos"
+      let max_dimension_found = false;
+      for (let i = length - 1; i >= 0; i--) { 
+        if (table_data[i].passant === 100) {
+          nominal_diameter = getSieveValue(table_data[i].sieve_label, isSuperpave);
+          max_dimension_found = true;
+          console.log(`📏 Dimensão Máxima: ${nominal_diameter}mm (${table_data[i].sieve_label} - MENOR peneira que passa 100%)`);
+          break; 
+        }
+      }
+
+      // Se n encontrou nenhuma peneira que passa 100%, ent vai dar log de aviso
+      if (!max_dimension_found) {
+        nominal_diameter = 0;
+        console.log(`⚠️ Nenhuma peneira passou 100% - não foi possível determinar Dimensão Máxima`);
+      }
+
       fineness_module = Math.round((100 * fineness_module) / 100) / 100;
-
       total_retained = Math.round(100 * total_retained) / 100;
-
       const error = Math.round((100 * (material_mass - total_retained - bottom) * 100) / material_mass) / 100;
 
       const limit_10 = this.getPercentage(10, table_data);
@@ -124,7 +131,6 @@ export class Calc_AsphaltGranulometry_Service {
       const diameter60 = this.getDiameter(table_data, 60, limit_60);
 
       const cnu = Math.round((100 * diameter60) / diameter10) / 100;
-
       const cc = Math.round((100 * Math.pow(diameter30, 2)) / (diameter60 * diameter10)) / 100;
 
       return {
@@ -136,8 +142,8 @@ export class Calc_AsphaltGranulometry_Service {
           retained_porcentage,
           passant_porcentage,
           total_retained,
-          nominal_diameter,
-          nominal_size,
+          nominal_diameter, // ✅ Agora é a Dimensão Máxima correta
+          nominal_size,     // ✅ TNM correto
           fineness_module,
           cc,
           cnu,

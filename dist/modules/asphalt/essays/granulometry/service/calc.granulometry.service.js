@@ -86,7 +86,6 @@ let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = clas
                 let nominal_size = 0;
                 let fineness_module = 0;
                 let nominal_size_flag = true;
-                let nominal_diameter_flag = true;
                 for (let i = 0; i < length; i++) {
                     const label = table_data[i].sieve_label;
                     const value = table_data[i].sieve_value;
@@ -115,16 +114,20 @@ let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = clas
                         }
                         console.log(`🎯 TNM calculado: ${nominal_size}mm (peneira acima de ${label} - Retido: ${accumulated_retained[i][1]}%, Passante: ${table_data[i].passant}%)`);
                     }
-                    if (total_retained > 10 && nominal_diameter_flag) {
-                        nominal_diameter_flag = false;
-                        if (i === 1)
-                            nominal_diameter = (0, sieves_1.getSieveValue)(label, isSuperpave);
-                        else if (i === 0)
-                            nominal_diameter = value;
-                        else
-                            nominal_diameter = (0, sieves_1.getSieveValue)(table_data[i - 1].sieve_label, isSuperpave);
-                    }
                     graph_data.push([value, passant_porcentage[i][1]]);
+                }
+                let max_dimension_found = false;
+                for (let i = length - 1; i >= 0; i--) {
+                    if (table_data[i].passant === 100) {
+                        nominal_diameter = (0, sieves_1.getSieveValue)(table_data[i].sieve_label, isSuperpave);
+                        max_dimension_found = true;
+                        console.log(`📏 Dimensão Máxima: ${nominal_diameter}mm (${table_data[i].sieve_label} - MENOR peneira que passa 100%)`);
+                        break;
+                    }
+                }
+                if (!max_dimension_found) {
+                    nominal_diameter = 0;
+                    console.log(`⚠️ Nenhuma peneira passou 100% - não foi possível determinar Dimensão Máxima`);
                 }
                 fineness_module = Math.round((100 * fineness_module) / 100) / 100;
                 total_retained = Math.round(100 * total_retained) / 100;
