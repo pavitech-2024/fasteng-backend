@@ -1,6 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { getSieveValue } from '../../../../../modules/soils/util/sieves';
-import { Calc_AsphaltGranulometry_Dto, Calc_AsphaltGranulometry_Out } from '../dto/asphalt.calc.granulometry.dto';
+import {
+  Calc_AsphaltGranulometry_Dto,
+  Calc_AsphaltGranulometry_Out,
+} from '../dto/asphalt.calc.granulometry.dto';
 
 type limit = { value: number; index: number };
 
@@ -10,27 +13,13 @@ export class Calc_AsphaltGranulometry_Service {
 
   constructor() {}
 
-  /**
-   * Calculates the granulometry for asphalt materials.
-   *
-   * @param step2Data - Contains the table data, material mass, and bottom value for the calculation.
-   * @param isSuperpave - Indicates whether the method should consider Superpave specifications (default is true).
-   *
-   * @returns A promise that resolves to an object containing:
-   * - success: A boolean indicating whether the calculation was successful.
-   * - result: An object with detailed granulometry results including accumulated retained, graph data, passant, retained percentage,
-   *   passant percentage, total retained, nominal diameter, nominal size, fineness module, coefficient of curvature (cc),
-   *   uniformity coefficient (cnu), and error.
-   *
-   * The function calculates the accumulated retained percentage, passant percentage, and retained percentage for each sieve.
-   * It determines the nominal diameter and size based on the retained material. The fineness module is computed as well.
-   * The function also calculates the coefficients of curvature and uniformity based on specified sieve limits.
-   * Errors are logged if the calculation fails.
-   */
   async calculateGranulometry({
     step2Data,
     isSuperpave = false,
-  }: Calc_AsphaltGranulometry_Dto): Promise<{ success: boolean; result: Calc_AsphaltGranulometry_Out }> {
+  }: Calc_AsphaltGranulometry_Dto): Promise<{
+    success: boolean;
+    result: Calc_AsphaltGranulometry_Out;
+  }> {
     try {
       this.logger.log(
         `calculate asphalt granulometry on calc.granulometry.service.ts > [${
@@ -39,6 +28,7 @@ export class Calc_AsphaltGranulometry_Service {
       );
 
       const { table_data, material_mass, bottom } = step2Data;
+
       const accumulated_retained: [string, number][] = [];
       const passant: [string, number][] = [];
       const retained_porcentage: [string, number][] = [];
@@ -49,12 +39,11 @@ export class Calc_AsphaltGranulometry_Service {
       let nominal_diameter = 0;
       let nominal_size = 0;
       let fineness_module = 0;
+
       let nominal_size_flag = true;
       let nominal_diameter_flag = true;
 
-      // loop na tabela de dados para calcular a granulometria
-      // criando arrays para plotar o gráfico e calcular o módulo de finura
-      // e o diâmetro nominal
+      // 🔵 Código da branch HML (incoming change)
       for (let i = 0; i < table_data.length; i++) {
         const label = table_data[i].sieve_label;
         const value = table_data[i].sieve_value;
@@ -63,36 +52,54 @@ export class Calc_AsphaltGranulometry_Service {
 
         total_retained += retained;
 
-        passant.push([label, Math.round(100 * (material_mass - total_retained)) / 100]);
+        passant.push([
+          label,
+          Math.round(100 * (material_mass - total_retained)) / 100,
+        ]);
 
-        accumulated_retained.push([label, Math.round(100 * (100 - passant_value)) / 100]);
+        accumulated_retained.push([
+          label,
+          Math.round(100 * (100 - passant_value)) / 100,
+        ]);
 
         if (i === 0) {
           retained_porcentage.push(accumulated_retained[i]);
         } else {
           retained_porcentage.push([
             label,
-            Math.round(100 * (accumulated_retained[i][1] - accumulated_retained[i - 1][1])) / 100,
+            Math.round(
+              100 * (accumulated_retained[i][1] - accumulated_retained[i - 1][1]),
+            ) / 100,
           ]);
         }
 
         fineness_module += accumulated_retained[i][1];
 
-        if (nominal_size_flag && (accumulated_retained[i][1] > 10 || table_data[i].passant < 90)) {
+        // 🔵 TNM — tamanho nominal máximo
+        if (
+          nominal_size_flag &&
+          (accumulated_retained[i][1] > 10 || table_data[i].passant < 90)
+        ) {
           nominal_size_flag = false;
+
           if (i > 0) {
-            nominal_size = getSieveValue(table_data[i - 1].sieve_label, isSuperpave);
+            nominal_size = getSieveValue(
+              table_data[i - 1].sieve_label,
+              isSuperpave,
+            );
           } else {
             nominal_size = getSieveValue(label, isSuperpave);
           }
+
           console.log(
-            `🎯 TNM calculado: ${nominal_size}mm (peneira acima de ${label} - Retido: ${accumulated_retained[i][1]}%, Passante: ${table_data[i].passant}%)`,
+            `🎯 TNM calculado: ${nominal_size}mm (peneira acima de ${label})`,
           );
         }
 
+        // 🔵 Dimensão máxima (da HML)
         if (total_retained > 10 && nominal_diameter_flag) {
           nominal_diameter_flag = false;
-          nominal_diameter = getSieveValue(table_data[i].sieve_label, isSuperpave);
+          nominal_diameter = getSieveValue(label, isSuperpave);
         }
 
         passant_porcentage.push([label, passant_value]);
@@ -102,7 +109,11 @@ export class Calc_AsphaltGranulometry_Service {
       fineness_module = Math.round((100 * fineness_module) / 100) / 100;
       total_retained = Math.round(100 * total_retained) / 100;
 
-      const error = Math.round((100 * (material_mass - total_retained - bottom) * 100) / material_mass) / 100;
+      const error =
+        Math.round(
+          (100 * (material_mass - total_retained - bottom) * 100) /
+            material_mass,
+        ) / 100;
 
       const limit_10 = this.getPercentage(10, table_data);
       const limit_30 = this.getPercentage(30, table_data);
@@ -113,7 +124,10 @@ export class Calc_AsphaltGranulometry_Service {
       const diameter60 = this.getDiameter(table_data, 60, limit_60);
 
       const cnu = Math.round((100 * diameter60) / diameter10) / 100;
-      const cc = Math.round((100 * Math.pow(diameter30, 2)) / (diameter60 * diameter10)) / 100;
+      const cc =
+        Math.round(
+          (100 * Math.pow(diameter30, 2)) / (diameter60 * diameter10),
+        ) / 100;
 
       return {
         success: true,
@@ -133,7 +147,9 @@ export class Calc_AsphaltGranulometry_Service {
         },
       };
     } catch (error) {
-      this.logger.error(`error on calculate asphalt granulometry > [error]: ${error}`);
+      this.logger.error(
+        `error on calculate asphalt granulometry > [error]: ${error}`,
+      );
       return {
         success: false,
         result: null,
@@ -141,17 +157,6 @@ export class Calc_AsphaltGranulometry_Service {
     }
   }
 
-  /**
-   * Calculates the diameter corresponding to a given percentage based on the table data and specified limits.
-   * This function uses linear interpolation to determine the diameter when the percentage does not exactly
-   * match the upper or lower limit values.
-   *
-   * @param table_data - Array of objects containing sieve data with labels, passant, and retained values.
-   * @param percentage - The percentage for which the diameter needs to be calculated.
-   * @param limits - An object containing the upper and lower limits with their respective values and indices.
-   *
-   * @returns The calculated diameter corresponding to the given percentage.
-   */
   getDiameter = (
     table_data: { sieve_label: string; passant: number; retained: number }[],
     percentage: number,
@@ -166,26 +171,40 @@ export class Calc_AsphaltGranulometry_Service {
 
     const coefficientA =
       (limits.upperLimit.value - limits.inferiorLimit.value) /
-      (table_data[limits.upperLimit.index].passant - table_data[limits.inferiorLimit.index].passant);
-    const coefficientB = limits.upperLimit.value / (coefficientA * table_data[limits.upperLimit.index].passant);
+      (table_data[limits.upperLimit.index].passant -
+        table_data[limits.inferiorLimit.index].passant);
+
+    const coefficientB =
+      limits.upperLimit.value /
+      (coefficientA * table_data[limits.upperLimit.index].passant);
 
     return (percentage - coefficientB) / coefficientA;
   };
 
-  /**
-   * Finds the upper and lower limits of the given percentage in the table of values.
-   */
-  getPercentage = (percentage: number, table_data: { sieve_label: string; passant: number; retained: number }[]) => {
+  getPercentage = (
+    percentage: number,
+    table_data: {
+      sieve_label: string;
+      passant: number;
+      retained: number;
+    }[],
+  ) => {
     return table_data.reduce(
       (accumulate, sieve, index) => {
         if (sieve.passant >= percentage) {
-          if (accumulate.upperLimit.value === 0 || sieve.passant < accumulate.upperLimit.value)
+          if (
+            accumulate.upperLimit.value === 0 ||
+            sieve.passant < accumulate.upperLimit.value
+          )
             accumulate.upperLimit = {
               value: sieve.passant,
               index: index,
             };
         } else {
-          if (accumulate.inferiorLimit.value === 0 || sieve.passant > accumulate.inferiorLimit.value)
+          if (
+            accumulate.inferiorLimit.value === 0 ||
+            sieve.passant > accumulate.inferiorLimit.value
+          )
             accumulate.inferiorLimit = {
               value: sieve.passant,
               index: index,

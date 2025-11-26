@@ -1,6 +1,6 @@
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    var c = arguments.length, r = c < 3 ? target : desc === null ? target = Object.getOwnPropertyDescriptor(key, desc) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
@@ -85,9 +85,9 @@ let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = clas
                 let nominal_size = 0;
                 let fineness_module = 0;
                 let nominal_size_flag = true;
-                let nominal_diameter_flag = true;
 
-                for (let i = 0; i < table_data.length; i++) {
+                /** ───────── SUAS MUDANÇAS (current change) ───────── **/
+                for (let i = 0; i < length; i++) {
                     const label = table_data[i].sieve_label;
                     const value = table_data[i].sieve_value;
                     const passant_value = table_data[i].passant;
@@ -119,14 +119,24 @@ let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = clas
                         console.log(`🎯 TNM calculado: ${nominal_size}mm (peneira acima de ${label} - Retido: ${accumulated_retained[i][1]}%, Passante: ${table_data[i].passant}%)`);
                     }
 
-                    if (total_retained > 10 && nominal_diameter_flag) {
-                        nominal_diameter_flag = false;
-                        nominal_diameter = (0, sieves_1.getSieveValue)(table_data[i].sieve_label, isSuperpave);
-                    }
-
-                    passant_porcentage.push([label, passant_value]);
-                    graph_data.push([value, passant_value]);
+                    graph_data.push([value, passant_porcentage[i][1]]);
                 }
+
+                let max_dimension_found = false;
+                for (let i = length - 1; i >= 0; i--) {
+                    if (table_data[i].passant === 100) {
+                        nominal_diameter = (0, sieves_1.getSieveValue)(table_data[i].sieve_label, isSuperpave);
+                        max_dimension_found = true;
+                        console.log(`📏 Dimensão Máxima: ${nominal_diameter}mm (${table_data[i].sieve_label} - MENOR peneira que passa 100%)`);
+                        break;
+                    }
+                }
+
+                if (!max_dimension_found) {
+                    nominal_diameter = 0;
+                    console.log(`⚠️ Nenhuma peneira passou 100% - não foi possível determinar Dimensão Máxima`);
+                }
+                /** ───────── FIM DAS SUAS MUDANÇAS ───────── **/
 
                 fineness_module = Math.round((100 * fineness_module) / 100) / 100;
                 total_retained = Math.round(100 * total_retained) / 100;

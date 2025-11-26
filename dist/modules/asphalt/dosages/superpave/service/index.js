@@ -227,7 +227,7 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
                 const curve9 = Array(interfaces_1.AllSievesSuperpaveUpdatedAstm.length).fill(null);
                 curve9[3] = 100;
                 curve9[curve9.length - 1] = 0;
-                if (nominalSize === 38.1) {
+                if (nominalSize <= 37.5 && nominalSize > 25) {
                     result.nominalSize.controlPoints.lower = [100, 90, null, null, null, null, null, 15, null, null, null, null, 0];
                     result.nominalSize.controlPoints.higher = [
                         100,
@@ -263,7 +263,7 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
                     result.nominalSize.restrictedZone.higher = yield this.insertBlankPointsOnCurve([null, null, null, null, null, null, 34.7, 27.3, 21.5, 15.7, 10, null, null], axisX);
                     result.nominalSize.curve = curve38_1;
                 }
-                else if (nominalSize === 25) {
+                else if (nominalSize <= 25 && nominalSize > 19) {
                     result.nominalSize.controlPoints.lower = [
                         100,
                         90,
@@ -326,7 +326,7 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
                     ], axisX);
                     result.nominalSize.curve = curve25;
                 }
-                else if (nominalSize === 19) {
+                else if (nominalSize <= 19 && nominalSize > 12.5) {
                     result.nominalSize.controlPoints.lower = [
                         null,
                         100,
@@ -389,7 +389,7 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
                     ], axisX);
                     result.nominalSize.curve = curve19;
                 }
-                else if (nominalSize === 12.5) {
+                else if (nominalSize <= 12.5 && nominalSize > 9.5) {
                     result.nominalSize.controlPoints.lower = [
                         null,
                         null,
@@ -452,7 +452,7 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
                     ], axisX);
                     result.nominalSize.curve = curve12;
                 }
-                else if (nominalSize === 9.5) {
+                else if (nominalSize <= 9.5) {
                     result.nominalSize.controlPoints.lower = [
                         null,
                         null,
@@ -514,69 +514,6 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
                         null,
                     ], axisX);
                     result.nominalSize.curve = curve9;
-                }
-                else {
-                    result.nominalSize.controlPoints.lower = [
-                        null,
-                        null,
-                        100,
-                        90,
-                        null,
-                        null,
-                        null,
-                        28,
-                        null,
-                        null,
-                        null,
-                        null,
-                        2,
-                    ];
-                    result.nominalSize.controlPoints.higher = [
-                        null,
-                        null,
-                        null,
-                        100,
-                        90,
-                        null,
-                        null,
-                        58,
-                        null,
-                        null,
-                        null,
-                        null,
-                        10,
-                    ];
-                    result.nominalSize.restrictedZone.lower = yield this.insertBlankPointsOnCurve([
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        39.1,
-                        25.6,
-                        19.1,
-                        15.5,
-                        null,
-                        null,
-                    ], axisX);
-                    result.nominalSize.restrictedZone.higher = yield this.insertBlankPointsOnCurve([
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        39.1,
-                        31.6,
-                        23.1,
-                        15.5,
-                        null,
-                        null,
-                    ], axisX);
-                    result.nominalSize.curve = curve12;
                 }
                 for (let i = 0; i < percentsOfMaterials.length; i++) {
                     for (let j = 0; j < 13; j++) {
