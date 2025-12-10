@@ -81,7 +81,7 @@ let MaximumMixtureDensity_Marshall_Service = MaximumMixtureDensity_Marshall_Serv
     calculateDmtData(body) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { indexesOfMissesSpecificGravity, missingSpecificGravity, percentsOfDosage, aggregates, trial, listOfSpecificGravities: inputDmtValues } = body;
+                const { indexesOfMissesSpecificGravity, missingSpecificGravity, percentsOfDosage, aggregates, trial, listOfSpecificGravities: inputDmtValues, } = body;
                 let denominadorLessOne = 0;
                 let denominadorLessHalf = 0;
                 let denominador = 0;
@@ -149,6 +149,7 @@ let MaximumMixtureDensity_Marshall_Service = MaximumMixtureDensity_Marshall_Serv
     }
     calculateGmmData(body) {
         return __awaiter(this, void 0, void 0, function* () {
+            var _a, _b, _c, _d, _e;
             try {
                 const { gmm: valuesOfGmm, temperatureOfWaterGmm, aggregates } = body;
                 const materials = aggregates.map((element) => element._id);
@@ -165,13 +166,18 @@ let MaximumMixtureDensity_Marshall_Service = MaximumMixtureDensity_Marshall_Serv
                             materialsOrNot = materials;
                         }
                         let listOfSpecificGravities = [];
-                        for (let i = 0; i < materialsOrNot.length; i++) {
-                            listOfSpecificGravities.push(null);
-                            if (materialsOrNot[i].generalData.material.type === 'coarseAggregate' ||
-                                materialsOrNot[i].generalData.material.type === 'fineAggregate' ||
-                                materialsOrNot[i].generalData.material.type === 'filler') {
-                                listOfSpecificGravities[i] = materialsOrNot[i].results.bulk_specify_mass;
+                        if (valuesOfGmm.some((gmm) => gmm.value === null)) {
+                            for (let i = 0; i < materialsOrNot.length; i++) {
+                                listOfSpecificGravities.push(null);
+                                if (materialsOrNot[i].generalData.material.type === 'coarseAggregate' ||
+                                    materialsOrNot[i].generalData.material.type === 'fineAggregate' ||
+                                    materialsOrNot[i].generalData.material.type === 'filler') {
+                                    listOfSpecificGravities[i] = materialsOrNot[i].results.bulk_specify_mass;
+                                }
                             }
+                        }
+                        else {
+                            listOfSpecificGravities = valuesOfGmm.map((gmm) => gmm.GMM);
                         }
                         return listOfSpecificGravities;
                     }
@@ -180,7 +186,7 @@ let MaximumMixtureDensity_Marshall_Service = MaximumMixtureDensity_Marshall_Serv
                     }
                 });
                 const gmm = Array.from({ length: 5 }, (_, i) => {
-                    const gmmItem = valuesOfGmm.find((gmm) => gmm.id - 1 === i);
+                    const gmmItem = valuesOfGmm.find((gmm) => gmm.id === i + 1);
                     return gmmItem || null;
                 });
                 const content = gmm.map((gmmItem) => {
@@ -192,11 +198,11 @@ let MaximumMixtureDensity_Marshall_Service = MaximumMixtureDensity_Marshall_Serv
                 });
                 const maxSpecificGravity = {
                     result: {
-                        lessOne: content[0],
-                        lessHalf: content[1],
-                        normal: content[2],
-                        plusHalf: content[3],
-                        plusOne: content[4],
+                        lessOne: (_a = gmm[0].GMM) !== null && _a !== void 0 ? _a : content[0],
+                        lessHalf: (_b = gmm[1].GMM) !== null && _b !== void 0 ? _b : content[1],
+                        normal: (_c = gmm[2].GMM) !== null && _c !== void 0 ? _c : content[2],
+                        plusHalf: (_d = gmm[3].GMM) !== null && _d !== void 0 ? _d : content[3],
+                        plusOne: (_e = gmm[4].GMM) !== null && _e !== void 0 ? _e : content[4],
                     },
                     method: 'GMM',
                 };

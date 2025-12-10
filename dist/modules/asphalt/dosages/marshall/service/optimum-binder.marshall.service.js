@@ -118,7 +118,7 @@ let OptimumBinderContent_Marshall_Service = class OptimumBinderContent_Marshall_
                 const confirmedPercentsOfDosage = yield this.confirmPercentsOfDosage(percentsOfDosage, optimumContent);
                 return {
                     pointsOfCurveDosage,
-                    optimumContent: this.calculateVv4(trialAsphaltContent - 1, this.calculateVv(trialAsphaltContent - 1, curveVv), trialAsphaltContent - 0.5, this.calculateVv(trialAsphaltContent - 0.5, curveVv)),
+                    optimumContent,
                     confirmedPercentsOfDosage,
                     curveRBV,
                     curveVv
