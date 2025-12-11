@@ -25,6 +25,7 @@ export class GranulometryEssay_Superpave_Service {
    * @returns An object with the result of the granulometry essay.
    * @throws {Error} If fails to calculate the granulometry essay.
    */
+  //calculate tst
   async calculateGranulometryEssay(body: Calc_Superpave_GranulometyEssay_Dto) {
     try {
       this.logger.log('calculate granulometry essay data on granulometry-essay.superpave.service.ts > [body]', {
