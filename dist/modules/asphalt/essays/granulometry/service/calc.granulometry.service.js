@@ -22,7 +22,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Calc_AsphaltGranulometry_Service = void 0;
 const common_1 = require("@nestjs/common");
 const repository_1 = require("../../../materials/repository");
-const sieves_1 = require("../../../../../modules/soils/util/sieves");
 const repository_2 = require("../repository");
 let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = class Calc_AsphaltGranulometry_Service {
     constructor(granulometryRepository, materialsRepository) {
@@ -30,50 +29,94 @@ let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = clas
         this.materialsRepository = materialsRepository;
         this.logger = new common_1.Logger(Calc_AsphaltGranulometry_Service_1.name);
         this.getDiameter = (table_data, percentage, limits) => {
+            if (!table_data || table_data.length === 0) {
+                console.error('Invalid table_data');
+                return 0;
+            }
+            if (limits.upperLimit.value === limits.inferiorLimit.value) {
+                console.log('Limits are equal, returning:', limits.upperLimit.value);
+                return limits.upperLimit.value;
+            }
+            if (limits.upperLimit.index < 0 || limits.upperLimit.index >= table_data.length ||
+                limits.inferiorLimit.index < 0 || limits.inferiorLimit.index >= table_data.length) {
+                console.error('Invalid limit indices');
+                return 0;
+            }
+            const upperItem = table_data[limits.upperLimit.index];
+            const inferiorItem = table_data[limits.inferiorLimit.index];
             if (limits.upperLimit.value === percentage) {
-                return table_data[limits.upperLimit.index].passant;
+                console.log('Upper limit matches percentage');
+                return upperItem.passant;
             }
             if (limits.inferiorLimit.value === percentage) {
-                return table_data[limits.inferiorLimit.index].passant;
+                console.log('Inferior limit matches percentage');
+                return inferiorItem.passant;
+            }
+            if (upperItem.passant === inferiorItem.passant) {
+                console.error('Cannot calculate: equal passant values');
+                const weight = (percentage - limits.inferiorLimit.value) / (limits.upperLimit.value - limits.inferiorLimit.value);
+                const result = inferiorItem.passant + (upperItem.passant - inferiorItem.passant) * weight;
+                console.log('Using weighted interpolation, result:', result);
+                return result;
             }
             const coefficientA = (limits.upperLimit.value - limits.inferiorLimit.value) /
-                (table_data[limits.upperLimit.index].passant - table_data[limits.inferiorLimit.index].passant);
-            const coefficientB = limits.upperLimit.value / (coefficientA * table_data[limits.upperLimit.index].passant);
-            return (percentage - coefficientB) / coefficientA;
+                (upperItem.passant - inferiorItem.passant);
+            const coefficientB = limits.upperLimit.value / (coefficientA * upperItem.passant);
+            const result = (percentage - coefficientB) / coefficientA;
+            console.log('Result:', result);
+            return result;
         };
         this.getPercentage = (percentage, table_data) => {
-            return table_data.reduce((accumulate, sieve, index) => {
-                if (sieve.passant >= percentage) {
-                    if (accumulate.upperLimit.value === 0 || sieve.passant < accumulate.upperLimit.value)
-                        accumulate.upperLimit = {
-                            value: sieve.passant,
-                            index: index,
-                        };
+            let upperLimit = { value: Infinity, index: -1 };
+            let inferiorLimit = { value: -Infinity, index: -1 };
+            for (let i = 0; i < table_data.length; i++) {
+                const passantValue = table_data[i].passant;
+                if (passantValue >= percentage && passantValue < upperLimit.value) {
+                    upperLimit = { value: passantValue, index: i };
                 }
-                else {
-                    if (accumulate.inferiorLimit.value === 0 || sieve.passant > accumulate.inferiorLimit.value)
-                        accumulate.inferiorLimit = {
-                            value: sieve.passant,
-                            index: index,
-                        };
+            }
+            for (let i = 0; i < table_data.length; i++) {
+                const passantValue = table_data[i].passant;
+                if (passantValue < percentage &&
+                    passantValue > inferiorLimit.value &&
+                    i !== upperLimit.index) {
+                    inferiorLimit = { value: passantValue, index: i };
                 }
-                return accumulate;
-            }, {
-                upperLimit: {
-                    value: 0,
-                    index: 0,
-                },
-                inferiorLimit: {
-                    value: 0,
-                    index: 0,
-                },
-            });
+            }
+            if (inferiorLimit.index === -1) {
+                for (let i = 0; i < table_data.length; i++) {
+                    if (i !== upperLimit.index && table_data[i].passant !== upperLimit.value) {
+                        inferiorLimit = { value: table_data[i].passant, index: i };
+                        break;
+                    }
+                }
+            }
+            if (inferiorLimit.index === -1) {
+                for (let i = table_data.length - 1; i >= 0; i--) {
+                    if (i !== upperLimit.index) {
+                        inferiorLimit = { value: table_data[i].passant, index: i };
+                        break;
+                    }
+                }
+            }
+            if (inferiorLimit.index === -1 || inferiorLimit.value === upperLimit.value) {
+                if (upperLimit.index === 0 && table_data.length > 1) {
+                    inferiorLimit = { value: table_data[1].passant, index: 1 };
+                }
+                else if (upperLimit.index === table_data.length - 1 && table_data.length > 1) {
+                    inferiorLimit = { value: table_data[table_data.length - 2].passant, index: table_data.length - 2 };
+                }
+                else if (upperLimit.index > 0) {
+                    inferiorLimit = { value: table_data[upperLimit.index - 1].passant, index: upperLimit.index - 1 };
+                }
+            }
+            return { upperLimit, inferiorLimit };
         };
     }
     calculateGranulometry(_a) {
         return __awaiter(this, arguments, void 0, function* ({ step2Data, isSuperpave = true, }) {
             try {
-                this.logger.log(`calculate asphalt granulometry on calc.granulometry.service.ts > [${isSuperpave ? 'Superpave' : 'Granulometry'}] [${step2Data}]`);
+                this.logger.log(`calculate asphalt granulometry on calc.granulometry.service.ts > [${isSuperpave ? 'Superpave' : 'Granulometry'}]`);
                 const { table_data, material_mass, bottom } = step2Data;
                 const length = table_data.length;
                 const accumulated_retained = [];
@@ -89,11 +132,12 @@ let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = clas
                 for (let i = 0; i < length; i++) {
                     const label = table_data[i].sieve_label;
                     const value = table_data[i].sieve_value;
-                    passant_porcentage.push([table_data[i].sieve_label, table_data[i].passant]);
+                    const currentPassant = table_data[i].passant;
                     const retained = table_data[i].retained;
+                    passant_porcentage.push([label, currentPassant]);
                     total_retained += retained;
                     passant.push([label, Math.round(100 * (material_mass - total_retained)) / 100]);
-                    accumulated_retained.push([label, Math.round(100 * (100 - passant_porcentage[i][1])) / 100]);
+                    accumulated_retained.push([label, Math.round(100 * (100 - currentPassant)) / 100]);
                     if (i === 0) {
                         retained_porcentage.push(accumulated_retained[i]);
                     }
@@ -104,30 +148,27 @@ let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = clas
                         ]);
                     }
                     fineness_module += accumulated_retained[i][1];
-                    if (nominal_size_flag && (accumulated_retained[i][1] > 10 || table_data[i].passant < 90)) {
+                    if (nominal_size_flag && (accumulated_retained[i][1] > 10 || currentPassant < 90)) {
                         nominal_size_flag = false;
                         if (i > 0) {
-                            nominal_size = (0, sieves_1.getSieveValue)(table_data[i - 1].sieve_label, isSuperpave);
+                            nominal_size = table_data[i - 1].sieve_value;
                         }
                         else {
-                            nominal_size = (0, sieves_1.getSieveValue)(label, isSuperpave);
+                            nominal_size = value;
                         }
-                        console.log(`🎯 TNM calculado: ${nominal_size}mm (peneira acima de ${label} - Retido: ${accumulated_retained[i][1]}%, Passante: ${table_data[i].passant}%)`);
                     }
-                    graph_data.push([value, passant_porcentage[i][1]]);
+                    graph_data.push([value, currentPassant]);
                 }
                 let max_dimension_found = false;
                 for (let i = length - 1; i >= 0; i--) {
                     if (table_data[i].passant === 100) {
-                        nominal_diameter = (0, sieves_1.getSieveValue)(table_data[i].sieve_label, isSuperpave);
+                        nominal_diameter = table_data[i].sieve_value;
                         max_dimension_found = true;
-                        console.log(`📏 Dimensão Máxima: ${nominal_diameter}mm (${table_data[i].sieve_label} - MENOR peneira que passa 100%)`);
                         break;
                     }
                 }
                 if (!max_dimension_found) {
                     nominal_diameter = 0;
-                    console.log(`⚠️ Nenhuma peneira passou 100% - não foi possível determinar Dimensão Máxima`);
                 }
                 fineness_module = Math.round((100 * fineness_module) / 100) / 100;
                 total_retained = Math.round(100 * total_retained) / 100;
@@ -138,8 +179,8 @@ let Calc_AsphaltGranulometry_Service = Calc_AsphaltGranulometry_Service_1 = clas
                 const diameter10 = this.getDiameter(table_data, 10, limit_10);
                 const diameter30 = this.getDiameter(table_data, 30, limit_30);
                 const diameter60 = this.getDiameter(table_data, 60, limit_60);
-                const cnu = Math.round((100 * diameter60) / diameter10) / 100;
-                const cc = Math.round((100 * Math.pow(diameter30, 2)) / (diameter60 * diameter10)) / 100;
+                const cnu = diameter10 > 0 ? Math.round((100 * diameter60) / diameter10) / 100 : 0;
+                const cc = (diameter60 * diameter10) > 0 ? Math.round((100 * Math.pow(diameter30, 2)) / (diameter60 * diameter10)) / 100 : 0;
                 return {
                     success: true,
                     result: {
