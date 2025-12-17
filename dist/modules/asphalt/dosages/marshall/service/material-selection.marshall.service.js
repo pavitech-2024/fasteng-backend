@@ -61,31 +61,7 @@ let MaterialSelection_Marshall_Service = MaterialSelection_Marshall_Service_1 = 
                 const materials = yield this.material_repository.findByUserId({
                     userId: userId,
                 });
-                const granulometrys = yield this.granulometry_repository.findAll();
-                const rotationalViscosities = yield this.rotationalViscosity_repository.findAll();
-                const specificMasses = yield this.specificMass_repository.findAll();
-                const filteredMaterials = materials.filter((material) => {
-                    const { _id, type } = material;
-                    if (type === 'CAP' || type === 'asphaltBinder') {
-                        return rotationalViscosities.some(({ generalData }) => {
-                            const { material: viscosityMaterial } = generalData;
-                            return _id.toString() === viscosityMaterial._id.toString();
-                        });
-                    }
-                    else {
-                        const granulometriesEssays = granulometrys.some(({ generalData }) => {
-                            const { material: granulometryMaterial } = generalData;
-                            return _id.toString() === granulometryMaterial._id.toString();
-                        });
-                        const specificMassesEssays = specificMasses.some(({ generalData }) => {
-                            const { material: specificMassMaterial } = generalData;
-                            return _id.toString() === specificMassMaterial._id.toString();
-                        });
-                        return granulometriesEssays && specificMassesEssays;
-                    }
-                    ;
-                });
-                return filteredMaterials;
+                return materials;
             }
             catch (error) {
                 throw error;
