@@ -54,6 +54,18 @@ let VolumetricParameters_Marshall_Service = VolumetricParameters_Marshall_Servic
                 });
                 const { volumetricParametersData } = body;
                 const { trial: binderTrial, maxSpecificGravity, temperatureOfWater, } = body;
+                if (!maxSpecificGravity) {
+                    throw new Error('maxSpecificGravity is required');
+                }
+                const gravityResult = maxSpecificGravity.result || maxSpecificGravity.results;
+                if (!gravityResult) {
+                    throw new Error('maxSpecificGravity must have either "result" or "results" property');
+                }
+                this.logger.log(`Gravity structure: ${JSON.stringify({
+                    hasResult: !!maxSpecificGravity.result,
+                    hasResults: !!maxSpecificGravity.results,
+                    keys: Object.keys(gravityResult)
+                })}`);
                 let pointsOfCurveDosageVv = [];
                 let pointsOfCurveDosageRBV = [];
                 let volumetricParameters = [];
@@ -85,23 +97,23 @@ let VolumetricParameters_Marshall_Service = VolumetricParameters_Marshall_Servic
                     asphaltContent = Object.keys(newArray[i])[0];
                     switch (asphaltContent) {
                         case 'lessOne':
-                            usedMaxSpecifyGravity = maxSpecificGravity.results.lessOne;
+                            usedMaxSpecifyGravity = maxSpecificGravity.result.lessOne;
                             asphaltContentResult = binderTrial - 1;
                             break;
                         case 'lessHalf':
-                            usedMaxSpecifyGravity = maxSpecificGravity.results.lessHalf;
+                            usedMaxSpecifyGravity = maxSpecificGravity.result.lessHalf;
                             asphaltContentResult = binderTrial - 0.5;
                             break;
                         case 'normal':
-                            usedMaxSpecifyGravity = maxSpecificGravity.results.normal;
+                            usedMaxSpecifyGravity = maxSpecificGravity.result.normal;
                             asphaltContentResult = binderTrial;
                             break;
                         case 'plusHalf':
-                            usedMaxSpecifyGravity = maxSpecificGravity.results.plusHalf;
+                            usedMaxSpecifyGravity = maxSpecificGravity.result.plusHalf;
                             asphaltContentResult = binderTrial + 0.5;
                             break;
                         case 'plusOne':
-                            usedMaxSpecifyGravity = maxSpecificGravity.results.plusOne;
+                            usedMaxSpecifyGravity = maxSpecificGravity.result.plusOne;
                             asphaltContentResult = binderTrial + 1;
                             break;
                         default:
@@ -167,10 +179,10 @@ let VolumetricParameters_Marshall_Service = VolumetricParameters_Marshall_Servic
                 let pointsOfCurveDosageRBV = [];
                 let volumetricParameters = [];
                 const { asphaltContent, sumOfSaturatedMass, sumOfDryMass, sumOfSubmergedMass, stability, fluency, diametricalCompressionStrength, temperatureOfWater, maxSpecificGravity, } = samplesData;
-                const samplesVolumes = (sumOfSaturatedMass - sumOfSubmergedMass);
+                const samplesVolumes = sumOfSaturatedMass - sumOfSubmergedMass;
                 const apparentBulkSpecificGravity = (sumOfDryMass / samplesVolumes) * temperatureOfWater;
                 const volumeVoids = (maxSpecificGravity - apparentBulkSpecificGravity) / maxSpecificGravity;
-                const voidsFilledAsphalt = apparentBulkSpecificGravity * asphaltContent / 102.7;
+                const voidsFilledAsphalt = (apparentBulkSpecificGravity * asphaltContent) / 102.7;
                 const aggregateVolumeVoids = volumeVoids + voidsFilledAsphalt;
                 const ratioBitumenVoid = voidsFilledAsphalt / aggregateVolumeVoids;
                 volumetricParameters.push({
