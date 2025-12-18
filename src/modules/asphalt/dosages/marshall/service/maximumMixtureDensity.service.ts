@@ -6,6 +6,7 @@ import { MarshallRepository } from '../repository';
 import { Model } from 'mongoose';
 import { MaterialsRepository } from '../../../materials/repository';
 import { SpecifyMassRepository } from '../../../essays/specifyMass/repository';
+import { Calc_SPECIFYMASS_Out } from '../../../essays/specifyMass/dto/calc.specifyMass.dto';
 
 @Injectable()
 export class MaximumMixtureDensity_Marshall_Service {
@@ -18,38 +19,105 @@ export class MaximumMixtureDensity_Marshall_Service {
     private readonly materialsRepository: MaterialsRepository,
     private readonly specificMassRepository: SpecifyMassRepository,
   ) {}
-
-  async getIndexesOfMissesSpecificGravity(aggregates: any) {
-    try {
-      let materials = aggregates.map((element) => element._id);
-
-      const getIndexesOfMissesSpecificGravity = async () => {
-        const materialsData = await Promise.all(
-          materials.map((materialId) =>
-            this.specificMassRepository.findOne({
-              'generalData.material._id': materialId,
-            }),
-          ),
-        );
-
-        const withoutExperimentSpecificGravity = materialsData
-          .map((material) => {
-            return {
-              value: material.results.bulk_specify_mass,
-              _id: material._id.toString(),
-              name: material.generalData.material.name,
-            };
-          })
-          .filter((index) => index !== null);
-
-        return { missesSpecificGravity: withoutExperimentSpecificGravity };
-      };
-
-      return await getIndexesOfMissesSpecificGravity();
-    } catch (error) {
-      throw new Error('Failed to calculate max specific gravity.');
+//
+async getIndexesOfMissesSpecificGravity(aggregates: any) {
+  try {
+    if (!aggregates || !Array.isArray(aggregates) || aggregates.length === 0) {
+      throw new Error('Aggregates array is required and must not be empty');
     }
+
+    this.logger.log(`Getting indexes for ${aggregates.length} aggregates`);
+    
+    let materials = aggregates.map((element) => element._id);
+
+    const getIndexesOfMissesSpecificGravity = async (materialsArray: string[]) => { // ← ADICIONAR PARÂMETRO
+      const materialsData = await Promise.all(
+        materialsArray.map((materialId) =>
+          this.specificMassRepository.findOne({
+            'generalData.material._id': materialId,
+          }),
+        ),
+      );
+
+      this.logger.log(`Found ${materialsData.filter(m => m !== null).length} material records`);
+
+      const withoutExperimentSpecificGravity = materialsData
+        .map((material, index) => {
+          if (!material) {
+            this.logger.warn(`Material ${materialsArray[index]} not found in SpecifyMass database`);
+            // Fallback para material não encontrado
+            return {
+              value: 2.65,
+              _id: materialsArray[index],
+              name: aggregates[index]?.name || `Material ${index + 1}`,
+              hasRealData: false,
+              status: 'not_found'
+            };
+          }
+
+          // EXTRAIR bulk_specify_mass - COM TYPE ASSERTION CORRETO
+          let bulkSpecifyMass: number | null = null;
+          
+          // VERIFICAÇÃO 1: material.results.bulk_specify_mass (ESTRUTURA ATUAL)
+          const resultsAny = material.results as any; // Type assertion para any
+          if (resultsAny && resultsAny.bulk_specify_mass !== undefined) {
+            bulkSpecifyMass = resultsAny.bulk_specify_mass;
+            this.logger.log(`Using bulk_specify_mass from results (direct): ${bulkSpecifyMass}`);
+          }
+          // VERIFICAÇÃO 2: material.results.data.bulk_specify_mass (ESTRUTURA ANTIGA)
+          else if (resultsAny?.data?.bulk_specify_mass !== undefined) {
+            bulkSpecifyMass = resultsAny.data.bulk_specify_mass;
+            this.logger.log(`Using bulk_specify_mass from results.data: ${bulkSpecifyMass}`);
+          }
+          
+          // VALIDAÇÃO do valor
+          if (bulkSpecifyMass === null || bulkSpecifyMass === undefined) {
+            this.logger.warn(`bulk_specify_mass is null/undefined for material: ${material._id}`);
+            bulkSpecifyMass = 2.65; // fallback
+          } else if (bulkSpecifyMass <= 0 || bulkSpecifyMass > 5) {
+            // Valores inválidos como -4.99
+            this.logger.warn(`Invalid bulk_specify_mass value (${bulkSpecifyMass}) for material: ${material._id}`);
+            bulkSpecifyMass = 2.65; // fallback para valor inválido
+          }
+
+          const materialType = material.generalData?.material?.type as 
+            'coarseAggregate' | 'fineAggregate' | 'filler' | 'asphaltBinder' | 'CAP' | 'other';
+          
+          const isRealData = bulkSpecifyMass !== 2.65 && bulkSpecifyMass > 0 && bulkSpecifyMass <= 5;
+
+          return {
+            value: bulkSpecifyMass,
+            _id: material._id.toString(),
+            name: material.generalData.material.name,
+            materialType: materialType,
+            hasRealData: isRealData,
+            status: isRealData ? 'real_data' : 'fallback'
+          };
+        });
+
+      this.logger.log(`Returning ${withoutExperimentSpecificGravity.length} indexes`);
+      
+      // Filtrar apenas válidos
+      const validIndexes = withoutExperimentSpecificGravity.filter(index => index !== null);
+
+      return { 
+        missesSpecificGravity: validIndexes,
+        summary: {
+          totalAggregates: aggregates.length,
+          foundInDb: materialsData.filter(m => m !== null).length,
+          hasRealData: validIndexes.filter(i => i.hasRealData).length,
+          usingFallback: validIndexes.filter(i => !i.hasRealData).length
+        }
+      };
+    };
+
+    return await getIndexesOfMissesSpecificGravity(materials); // ← PASSAR O PARÂMETRO
+  } catch (error) {
+    this.logger.error(`Error in getIndexesOfMissesSpecificGravity: ${error.message}`);
+    this.logger.error(`Full error: ${error.stack}`);
+    throw new Error(`Failed to calculate max specific gravity: ${error.message}`);
   }
+}
 
   async calculateDmtData(body: any): Promise<any> {
     try {
@@ -134,81 +202,154 @@ export class MaximumMixtureDensity_Marshall_Service {
       throw new Error('Failed to calculate max specific gravity.');
     }
   }
+async calculateGmmData(body: any) {
+  try {
+    const { gmm: valuesOfGmm, temperatureOfWaterGmm, aggregates } = body;
 
-  async calculateGmmData(body: any) {
-    try {
-      const { gmm: valuesOfGmm, temperatureOfWaterGmm, aggregates } = body;
-
-      const materials = aggregates.map((element) => element._id);
-
-      const calculate = async (): Promise<any> => {
-        try {
-          let materialsOrNot;
-          const listOfMaterials = await Promise.all(
-            materials.map((materialId) =>
-              this.specificMassRepository.findOne({
-                'generalData.material._id': materialId,
-              }),
-            ),
-          );
-
-          if (listOfMaterials[0] !== null) {
-            materialsOrNot = listOfMaterials;
-          } else {
-            materialsOrNot = materials;
-          }
-
-          let listOfSpecificGravities = [];
-
-          for (let i = 0; i < materialsOrNot.length; i++) {
-            listOfSpecificGravities.push(null);
-
-            if (
-              materialsOrNot[i].generalData.material.type === 'coarseAggregate' ||
-              materialsOrNot[i].generalData.material.type === 'fineAggregate' ||
-              materialsOrNot[i].generalData.material.type === 'filler'
-            ) {
-              listOfSpecificGravities[i] = materialsOrNot[i].results.bulk_specify_mass;
-            }
-          }
-
-          return listOfSpecificGravities;
-        } catch (error) {
-          throw new Error('Failed to calculate max specific gravity.');
-        }
-      };
-
-      const gmm = Array.from({ length: 5 }, (_, i) => {
-        const gmmItem = valuesOfGmm.find(gmm => gmm.id - 1 === i);
-        return gmmItem || null;
-      });
-
-      const content = gmm.map(gmmItem => {
-        if (gmmItem && !gmmItem.value) {
-          const denominator = gmmItem.massOfContainer_Water_Sample - gmmItem.massOfContainer_Water;
-          return (gmmItem.massOfDrySample / (gmmItem.massOfDrySample - denominator)) * temperatureOfWaterGmm;
-        }
-        return gmmItem?.value || null;
-      });
-
-      const maxSpecificGravity = {
-        result: {
-          lessOne: content[0],
-          lessHalf: content[1],
-          normal: content[2],
-          plusHalf: content[3],
-          plusOne: content[4],
-        },
-        method: 'GMM',
-      };
-
-      const listOfSpecificGravities = await calculate();
-
-      return { maxSpecificGravity, listOfSpecificGravities };
-    } catch (error) {
-      throw new Error('Failed to calculate max specific gravity GMM.');
+    // Validação inicial
+    if (!valuesOfGmm || !Array.isArray(valuesOfGmm)) {
+      throw new Error('GMM values are required and must be an array');
     }
+
+    if (!aggregates || !Array.isArray(aggregates)) {
+      throw new Error('Aggregates are required and must be an array');
+    }
+
+    const materials = aggregates.map((element) => element._id);
+
+    const calculate = async (): Promise<any[]> => {
+      try {
+        const listOfMaterials = await Promise.all(
+          materials.map((materialId) =>
+            this.specificMassRepository.findOne({
+              'generalData.material._id': materialId,
+            }),
+          ),
+        );
+
+        const listOfSpecificGravities = [];
+
+        for (let i = 0; i < listOfMaterials.length; i++) {
+          const material = listOfMaterials[i];
+          
+          // Verificar se o material existe
+          if (!material) {
+            listOfSpecificGravities.push(null);
+            continue;
+          }
+
+          // Verificar se tem generalData
+          if (!material.generalData || !material.generalData.material) {
+            listOfSpecificGravities.push(null);
+            continue;
+          }
+
+          const materialType = material.generalData.material.type;
+          const isAggregate = ['coarseAggregate', 'fineAggregate', 'filler'].includes(materialType);
+          
+          // Acessar a estrutura correta: material.results.data
+          let bulkSpecifyMass = null;
+          
+          if (material.results && 
+              material.results.data && 
+              material.results.data.bulk_specify_mass !== undefined) {
+            bulkSpecifyMass = material.results.data.bulk_specify_mass;
+          } 
+          
+          if (isAggregate && bulkSpecifyMass !== null) {
+            listOfSpecificGravities.push(bulkSpecifyMass);
+          } else {
+            listOfSpecificGravities.push(null);
+          }
+        }
+
+        return listOfSpecificGravities;
+      } catch (error) {
+        this.logger.error(`Error in calculate function: ${error.message}`);
+        throw new Error('Failed to calculate specific gravities from database.');
+      }
+    };
+
+    // Processar valores GMM com validação
+    const gmm = Array.from({ length: 5 }, (_, i) => {
+      const gmmItem = valuesOfGmm.find(gmm => gmm.id - 1 === i);
+      return gmmItem || null;
+    });
+
+    const content = gmm.map((gmmItem, index) => {
+      if (!gmmItem) {
+        this.logger.warn(`GMM item ${index + 1} is missing`);
+        return null;
+      }
+
+      // Se já tem value, retorna
+      if (gmmItem.value !== undefined && gmmItem.value !== null) {
+        return gmmItem.value;
+      }
+
+      // Verificar se tem os dados necessários para o cálculo
+      const hasRequiredFields = 
+        gmmItem.massOfDrySample !== undefined &&
+        gmmItem.massOfContainer_Water_Sample !== undefined &&
+        gmmItem.massOfContainer_Water !== undefined &&
+        temperatureOfWaterGmm !== undefined;
+
+      if (!hasRequiredFields) {
+        this.logger.warn(`Missing required fields for GMM calculation at index ${index}`);
+        return null;
+      }
+
+      // Validar valores antes do cálculo
+      const massDry = parseFloat(gmmItem.massOfDrySample);
+      const massContainerWaterSample = parseFloat(gmmItem.massOfContainer_Water_Sample);
+      const massContainerWater = parseFloat(gmmItem.massOfContainer_Water);
+      const tempWater = parseFloat(temperatureOfWaterGmm);
+
+      if (isNaN(massDry) || isNaN(massContainerWaterSample) || isNaN(massContainerWater) || isNaN(tempWater)) {
+        this.logger.warn(`Invalid numeric values for GMM calculation at index ${index}`);
+        return null;
+      }
+
+      const denominator = massContainerWaterSample - massContainerWater;
+      const difference = massDry - denominator;
+
+      // Evitar divisão por zero ou números muito pequenos
+      if (Math.abs(difference) < 0.0001) {
+        this.logger.warn(`Division by near-zero value in GMM calculation at index ${index}`);
+        return null;
+      }
+
+      const result = (massDry / difference) * tempWater;
+
+      // Validar resultado
+      if (isNaN(result) || !isFinite(result) || result <= 0) {
+        this.logger.warn(`Invalid GMM result at index ${index}: ${result}`);
+        return null;
+      }
+
+      return result;
+    });
+
+    const maxSpecificGravity = {
+      result: {
+        lessOne: content[0],
+        lessHalf: content[1],
+        normal: content[2],
+        plusHalf: content[3],
+        plusOne: content[4],
+      },
+      method: 'GMM',
+    };
+
+    const listOfSpecificGravities = await calculate();
+
+    return { maxSpecificGravity, listOfSpecificGravities };
+  } catch (error) {
+    this.logger.error(`Error in calculateGmmData: ${error.message}`);
+    this.logger.error(`Stack trace: ${error.stack}`);
+    throw new Error(`Failed to calculate max specific gravity GMM: ${error.message}`);
   }
+}
 
   async calculateRiceTest(body): Promise<any> {
     this.logger.log('calculate rice test > [body]', { body });
