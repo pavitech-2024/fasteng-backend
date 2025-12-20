@@ -97,7 +97,7 @@ export declare class MarshallService {
             name: any;
         };
     }>;
-    calculateStep3Data(body: any): Promise<{
+    calculateGranulometry(body: any): Promise<{
         data: {
             percentsOfMaterials: any[];
             sumOfPercents: any[];
@@ -396,8 +396,8 @@ export declare class MarshallService {
                 values: {
                     volumeVoids: number;
                     apparentBulkSpecificGravity: number;
-                    voidsFilledAsphalt: number;
-                    aggregateVolumeVoids: number;
+                    vcb: number;
+                    vam: number;
                     ratioBitumenVoid: number;
                     stability: number;
                     fluency: number;
