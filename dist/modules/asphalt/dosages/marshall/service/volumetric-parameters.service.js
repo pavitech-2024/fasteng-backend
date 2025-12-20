@@ -57,14 +57,15 @@ let VolumetricParameters_Marshall_Service = VolumetricParameters_Marshall_Servic
                 if (!maxSpecificGravity) {
                     throw new Error('maxSpecificGravity is required');
                 }
-                const gravityResult = maxSpecificGravity.result || maxSpecificGravity.results;
-                if (!gravityResult) {
+                const gravityData = maxSpecificGravity.results || maxSpecificGravity.result;
+                if (!gravityData) {
                     throw new Error('maxSpecificGravity must have either "result" or "results" property');
                 }
                 this.logger.log(`Gravity structure: ${JSON.stringify({
                     hasResult: !!maxSpecificGravity.result,
                     hasResults: !!maxSpecificGravity.results,
-                    keys: Object.keys(gravityResult)
+                    method: maxSpecificGravity.method,
+                    gravityDataKeys: Object.keys(gravityData)
                 })}`);
                 let pointsOfCurveDosageVv = [];
                 let pointsOfCurveDosageRBV = [];
@@ -97,27 +98,30 @@ let VolumetricParameters_Marshall_Service = VolumetricParameters_Marshall_Servic
                     asphaltContent = Object.keys(newArray[i])[0];
                     switch (asphaltContent) {
                         case 'lessOne':
-                            usedMaxSpecifyGravity = maxSpecificGravity.result.lessOne;
+                            usedMaxSpecifyGravity = gravityData.lessOne;
                             asphaltContentResult = binderTrial - 1;
                             break;
                         case 'lessHalf':
-                            usedMaxSpecifyGravity = maxSpecificGravity.result.lessHalf;
+                            usedMaxSpecifyGravity = gravityData.lessHalf;
                             asphaltContentResult = binderTrial - 0.5;
                             break;
                         case 'normal':
-                            usedMaxSpecifyGravity = maxSpecificGravity.result.normal;
+                            usedMaxSpecifyGravity = gravityData.normal;
                             asphaltContentResult = binderTrial;
                             break;
                         case 'plusHalf':
-                            usedMaxSpecifyGravity = maxSpecificGravity.result.plusHalf;
+                            usedMaxSpecifyGravity = gravityData.plusHalf;
                             asphaltContentResult = binderTrial + 0.5;
                             break;
                         case 'plusOne':
-                            usedMaxSpecifyGravity = maxSpecificGravity.result.plusOne;
+                            usedMaxSpecifyGravity = gravityData.plusOne;
                             asphaltContentResult = binderTrial + 1;
                             break;
                         default:
                             throw new Error('Invalid asphalt content');
+                    }
+                    if (!usedMaxSpecifyGravity) {
+                        throw new Error(`Could not find max specific gravity for ${asphaltContent}`);
                     }
                     for (let j = 0; j < newArray[i][asphaltContent].length; j++) {
                         const { dryMass, drySurfaceSaturatedMass, submergedMass, stability, fluency, diametricalCompressionStrength, } = newArray[i][asphaltContent][j];
@@ -168,7 +172,8 @@ let VolumetricParameters_Marshall_Service = VolumetricParameters_Marshall_Servic
                 return { volumetricParameters, pointsOfCurveDosageRBV, pointsOfCurveDosageVv };
             }
             catch (error) {
-                throw new Error('Failed to set volumetric parameters.');
+                this.logger.error(`Failed to set volumetric parameters: ${error.message}`);
+                throw new Error(`Failed to set volumetric parameters: ${error.message}`);
             }
         });
     }
