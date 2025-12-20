@@ -312,27 +312,45 @@ export class MarshallService {
       return { success: false, error: { status, message, name } };
     }
   }
-
-  async calculateStep4Data(body: any) {
-    try {
-      const binderTrial = await this.setBinderTrial_Service.calculateInitlaBinderTrial(body);
-
-      const data = {
-        percentsOfDosage: binderTrial.result.percentsOfDosage,
-        bandsOfTemperatures: binderTrial.result.bandsOfTemperatures,
-        newPercentOfDosage: binderTrial.result.newPercentOfDosage
-      };
-
+//
+ async calculateStep4Data(body: any) {
+  try {
+    // ADICIONAR VALIDAÇÃO
+    if (!body || Object.keys(body).length === 0) {
+      this.logger.warn('Empty body received for calculateStep4Data');
       return { 
-        data, 
-        success: true 
+        data: null, 
+        success: false, 
+        error: { 
+          message: 'Body is required for calculation',
+          status: 400,
+          name: 'ValidationError'
+        } 
       };
-    } catch (error) {
-      this.logger.error(`error on getting the step 3 data > [error]: ${error}`);
-      const { status, name, message } = error;
-      return { data: null, success: false, error: { status, message, name } };
     }
+
+    this.logger.log(`Calculating step 4 data with body: ${JSON.stringify(body, null, 2)}`);
+    
+    const binderTrial = await this.setBinderTrial_Service.calculateInitlaBinderTrial(body);
+
+    const data = {
+      percentsOfDosage: binderTrial.result.percentsOfDosage,
+      bandsOfTemperatures: binderTrial.result.bandsOfTemperatures,
+      newPercentOfDosage: binderTrial.result.newPercentOfDosage
+    };
+
+    return { 
+      data, 
+      success: true 
+    };
+  } catch (error) {
+    // CORRIGIR MENSAGEM DE ERRO
+    this.logger.error(`error on calculating step 4 data > [error]: ${error.message}`);
+    this.logger.error(`Stack trace: ${error.stack}`);
+    const { status, name, message } = error;
+    return { data: null, success: false, error: { status, message, name } };
   }
+}
 
   async saveStep4Data(body: any, userId: string) {
     try {

@@ -329,6 +329,19 @@ let MarshallService = MarshallService_1 = class MarshallService {
     calculateStep4Data(body) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                if (!body || Object.keys(body).length === 0) {
+                    this.logger.warn('Empty body received for calculateStep4Data');
+                    return {
+                        data: null,
+                        success: false,
+                        error: {
+                            message: 'Body is required for calculation',
+                            status: 400,
+                            name: 'ValidationError'
+                        }
+                    };
+                }
+                this.logger.log(`Calculating step 4 data with body: ${JSON.stringify(body, null, 2)}`);
                 const binderTrial = yield this.setBinderTrial_Service.calculateInitlaBinderTrial(body);
                 const data = {
                     percentsOfDosage: binderTrial.result.percentsOfDosage,
@@ -341,7 +354,8 @@ let MarshallService = MarshallService_1 = class MarshallService {
                 };
             }
             catch (error) {
-                this.logger.error(`error on getting the step 3 data > [error]: ${error}`);
+                this.logger.error(`error on calculating step 4 data > [error]: ${error.message}`);
+                this.logger.error(`Stack trace: ${error.stack}`);
                 const { status, name, message } = error;
                 return { data: null, success: false, error: { status, message, name } };
             }

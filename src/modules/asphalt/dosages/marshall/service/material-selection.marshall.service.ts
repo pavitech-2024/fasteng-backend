@@ -9,7 +9,6 @@ import { DATABASE_CONNECTION } from '../../../../../infra/mongoose/database.conf
 import { ViscosityRotationalRepository } from '../../../essays/viscosityRotational/repository';
 import { SpecifyMassRepository } from '../../../essays/specifyMass/repository/index';
 
-
 @Injectable()
 export class MaterialSelection_Marshall_Service {
   private logger = new Logger(MaterialSelection_Marshall_Service.name);
@@ -21,20 +20,23 @@ export class MaterialSelection_Marshall_Service {
     private readonly granulometry_repository: AsphaltGranulometryRepository,
     private readonly marshallRepository: MarshallRepository,
     private readonly rotationalViscosity_repository: ViscosityRotationalRepository,
-    private readonly specificMass_repository: SpecifyMassRepository
+    private readonly specificMass_repository: SpecifyMassRepository,
   ) {}
 
   async getMaterials(userId: string) {
     try {
-      this.logger.log('get materials on material-selection.marshall.service.ts > [body]', { userId: userId });
-      
+      this.logger.log(
+        'get materials on material-selection.marshall.service.ts > [body]',
+        { userId },
+      );
+
       const materials = await this.material_repository.findByUserId({
-        userId: userId,
+        userId,
       });
 
       const granulometrys = await this.granulometry_repository.findAll();
-
-      const rotationalViscosities = await this.rotationalViscosity_repository.findAll();
+      const rotationalViscosities =
+        await this.rotationalViscosity_repository.findAll();
 
       const filteredMaterials = materials.filter((material) => {
         const { _id, type } = material;
@@ -44,14 +46,12 @@ export class MaterialSelection_Marshall_Service {
             const { material: viscosityMaterial } = generalData;
             return _id.toString() === viscosityMaterial._id.toString();
           });
-        } else {
-          const granulometriesEssays = granulometrys.some(({ generalData }) => {
-            const { material: granulometryMaterial } = generalData;
-            return _id.toString() === granulometryMaterial._id.toString();
-          });
+        }
 
-          return granulometriesEssays;
-        };
+        return granulometrys.some(({ generalData }) => {
+          const { material: granulometryMaterial } = generalData;
+          return _id.toString() === granulometryMaterial._id.toString();
+        });
       });
 
       return filteredMaterials;
@@ -62,17 +62,30 @@ export class MaterialSelection_Marshall_Service {
 
   async saveMaterials(body: any, userId: string) {
     try {
-      this.logger.log('save marshall materials step on material-selection.marshall.service.ts > [body]', { body });
+      this.logger.log(
+        'save marshall materials step on material-selection.marshall.service.ts > [body]',
+        { body },
+      );
 
       const { name } = body.materialSelectionData;
 
-      const marshallExists: any = await this.marshallRepository.findOne(name, userId);
+      const marshallExists: any =
+        await this.marshallRepository.findOne(name, userId);
 
-      const { name: materialName, ...materialDataWithoutName } = body.materialSelectionData;
+      const {
+        name: materialName,
+        ...materialDataWithoutName
+      } = body.materialSelectionData;
 
-      const marshallWithMaterials = { ...marshallExists._doc, materialSelectionData: materialDataWithoutName };
+      const marshallWithMaterials = {
+        ...marshallExists._doc,
+        materialSelectionData: materialDataWithoutName,
+      };
 
-      await this.marshallModel.updateOne({ _id: marshallExists._doc._id }, marshallWithMaterials);
+      await this.marshallModel.updateOne(
+        { _id: marshallExists._doc._id },
+        marshallWithMaterials,
+      );
 
       if (marshallExists._doc.generalData.step < 2) {
         await this.marshallRepository.saveStep(marshallExists, 2);
