@@ -120,88 +120,138 @@ async getIndexesOfMissesSpecificGravity(aggregates: any) {
 }
 
   async calculateDmtData(body: any): Promise<any> {
-    try {
-      const { indexesOfMissesSpecificGravity, missingSpecificGravity, percentsOfDosage, aggregates, trial } = body;
-
-      let denominadorLessOne = 0;
-      let denominadorLessHalf = 0;
-      let denominador = 0;
-      let denominadorPlusHalf = 0;
-      let denominadorPlusOne = 0;
-
-      const materials = aggregates.map((element) => element._id);
-
-      const calculate = async (): Promise<any> => {
-        try {
-          const listOfMaterials = await Promise.all(
-            materials.map((materialId) =>
-              this.specificMassRepository.findOne({
-                'generalData.material._id': materialId,
-              }),
-            ),
-          );
-
-          let listOfSpecificGravities = [];
-
-          let cont = 0;
-
-          for (let i = 0; i < listOfMaterials.length; i++) {
-            listOfSpecificGravities.push(null);
-            if (listOfMaterials[0] !== null) {
-              if (
-                listOfMaterials[i].generalData.material.type === 'coarseAggregate' ||
-                listOfMaterials[i].generalData.material.type === 'fineAggregate'
-              ) {
-                let experiment: any = await this.specificMassRepository.findOne({
-                  'generalData.material._id': listOfMaterials[i].generalData.material._id,
-                });
-                listOfSpecificGravities[i] = experiment.results.bulk_specify_mass;
-                denominadorLessOne += percentsOfDosage[i][4] / listOfSpecificGravities[i];
-                denominadorLessHalf += percentsOfDosage[i][3] / listOfSpecificGravities[i];
-                denominador += percentsOfDosage[i][2] / listOfSpecificGravities[i];
-                denominadorPlusHalf += percentsOfDosage[i][1] / listOfSpecificGravities[i];
-                denominadorPlusOne += percentsOfDosage[i][0] / listOfSpecificGravities[i];
-              }
-            } else {
-              // to-do: Fazer vir do front como array de números;
-              const MissingGravitiesArray = [
-                Number(missingSpecificGravity.material_1),
-                Number(missingSpecificGravity.material_2),
-              ];
-              listOfSpecificGravities[i] = MissingGravitiesArray[cont];
-              denominadorLessOne += percentsOfDosage[i][4] / listOfSpecificGravities[i];
-              denominadorLessHalf += percentsOfDosage[i][3] / listOfSpecificGravities[i];
-              denominador += percentsOfDosage[i][2] / listOfSpecificGravities[i];
-              denominadorPlusHalf += percentsOfDosage[i][1] / listOfSpecificGravities[i];
-              denominadorPlusOne += percentsOfDosage[i][0] / listOfSpecificGravities[i];
-              cont++;
-            }
-          }
-
-          const maxSpecificGravity = {
-            result: {
-              lessOne: 100 / (denominadorLessOne + (trial - 1) / 1.03),
-              lessHalf: 100 / (denominadorLessHalf + (trial - 0.5) / 1.03),
-              normal: 100 / (denominador + trial / 1.03),
-              plusHalf: 100 / (denominadorPlusHalf + (trial + 0.5) / 1.03),
-              plusOne: 100 / (denominadorPlusOne + (trial + 1) / 1.03),
-            },
-            method: 'DMT',
-          };
-
-          return { maxSpecificGravity, listOfSpecificGravities };
-        } catch (error) {
-          throw new Error('Failed to calculate max specific gravity.');
-        }
-      };
-
-      const result = await calculate();
-
-      return result;
-    } catch (error) {
-      throw new Error('Failed to calculate max specific gravity.');
+  try {
+    // LOG para debug
+    console.log('🔍 DMT Body recebido:', JSON.stringify(body, null, 2));
+    
+    // O corpo já vem no formato correto! Não precisa extrair
+    const { 
+      aggregates, 
+      percentsOfDosage, 
+      trial, 
+      missingSpecificGravity 
+    } = body;  // ← Extrai DIRETAMENTE do body!
+    
+    console.log('🔍 Dados extraídos CORRETAMENTE:', {
+      aggregatesCount: aggregates?.length,
+      trial,
+      percentsOfDosageLength: percentsOfDosage?.length,
+      missingSpecificGravityCount: missingSpecificGravity?.length
+    });
+    
+    // Validação básica
+    if (!trial) throw new Error('Trial é obrigatório');
+    if (!percentsOfDosage || percentsOfDosage.length === 0) {
+      throw new Error('PercentsOfDosage é obrigatório');
     }
+    if (!aggregates || aggregates.length === 0) {
+      throw new Error('Aggregates é obrigatório');
+    }
+    
+    let denominadorLessOne = 0;
+    let denominadorLessHalf = 0;
+    let denominador = 0;
+    let denominadorPlusHalf = 0;
+    let denominadorPlusOne = 0;
+
+    const materials = aggregates.map((element) => element._id);
+
+    const calculate = async (): Promise<any> => {
+      try {
+        const listOfMaterials = await Promise.all(
+          materials.map((materialId) =>
+            this.specificMassRepository.findOne({
+              'generalData.material._id': materialId,
+            }),
+          ),
+        );
+
+        let listOfSpecificGravities = [];
+        let cont = 0;
+
+        for (let i = 0; i < listOfMaterials.length; i++) {
+          listOfSpecificGravities.push(null);
+          
+          // Verifica se tem missingSpecificGravity para este material
+          const missingGravity = missingSpecificGravity?.find(
+            mg => mg._id === aggregates[i]._id
+          );
+          
+          if (missingGravity && missingGravity.hasRealData === false) {
+            // Usa valor do frontend (usuário digitou)
+            listOfSpecificGravities[i] = Number(missingGravity.value);
+            console.log(`📝 Usando valor do frontend para ${aggregates[i].name}: ${missingGravity.value}`);
+          } else if (listOfMaterials[i] !== null) {
+            // Tenta pegar do banco
+            if (
+              listOfMaterials[i].generalData.material.type === 'coarseAggregate' ||
+              listOfMaterials[i].generalData.material.type === 'fineAggregate'
+            ) {
+              let experiment: any = await this.specificMassRepository.findOne({
+                'generalData.material._id': listOfMaterials[i].generalData.material._id,
+              });
+              
+              if (!experiment || !experiment.results || !experiment.results.bulk_specify_mass) {
+                throw new Error(`Material ${aggregates[i].name} não possui massa específica válida`);
+              }
+              
+              listOfSpecificGravities[i] = experiment.results.bulk_specify_mass;
+              console.log(`📝 Usando valor do banco para ${aggregates[i].name}: ${listOfSpecificGravities[i]}`);
+            }
+          } else {
+            throw new Error(`Material ${aggregates[i].name} não encontrado e sem valor fornecido`);
+          }
+          
+          // Calcula os denominadores (verifica índices do percentsOfDosage)
+          if (percentsOfDosage[i] && percentsOfDosage[i].length >= 5 && listOfSpecificGravities[i]) {
+            denominadorLessOne += percentsOfDosage[i][4] / listOfSpecificGravities[i];
+            denominadorLessHalf += percentsOfDosage[i][3] / listOfSpecificGravities[i];
+            denominador += percentsOfDosage[i][2] / listOfSpecificGravities[i];
+            denominadorPlusHalf += percentsOfDosage[i][1] / listOfSpecificGravities[i];
+            denominadorPlusOne += percentsOfDosage[i][0] / listOfSpecificGravities[i];
+            
+            console.log(`🧮 Material ${i} (${aggregates[i].name}):`);
+            console.log(`   - Gravidade: ${listOfSpecificGravities[i]}`);
+            console.log(`   - Percents: [${percentsOfDosage[i].join(', ')}]`);
+          }
+        }
+
+        // Verifica se os denominadores são válidos
+        console.log('🧮 Denominadores calculados:', {
+          denominadorLessOne,
+          denominadorLessHalf,
+          denominador,
+          denominadorPlusHalf,
+          denominadorPlusOne
+        });
+
+        const maxSpecificGravity = {
+          result: {
+            lessOne: 100 / (denominadorLessOne + (trial - 1) / 1.03),
+            lessHalf: 100 / (denominadorLessHalf + (trial - 0.5) / 1.03),
+            normal: 100 / (denominador + trial / 1.03),
+            plusHalf: 100 / (denominadorPlusHalf + (trial + 0.5) / 1.03),
+            plusOne: 100 / (denominadorPlusOne + (trial + 1) / 1.03),
+          },
+          method: 'DMT',
+        };
+
+        console.log('✅ DMT Calculado com sucesso:', maxSpecificGravity);
+
+        return { maxSpecificGravity, listOfSpecificGravities };
+      } catch (error) {
+        console.error('💥 Erro no cálculo interno:', error);
+        throw new Error(`Failed to calculate max specific gravity: ${error.message}`);
+      }
+    };
+
+    const result = await calculate();
+    return result;
+  } catch (error) {
+    console.error('💥 Erro geral no calculateDmtData:', error);
+    throw new Error(`Failed to calculate max specific gravity: ${error.message}`);
   }
+}
 async calculateGmmData(body: any) {
   try {
     const { gmm: valuesOfGmm, temperatureOfWaterGmm, aggregates } = body;
