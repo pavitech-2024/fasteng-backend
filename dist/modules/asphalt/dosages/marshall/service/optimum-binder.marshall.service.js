@@ -118,7 +118,7 @@ let OptimumBinderContent_Marshall_Service = class OptimumBinderContent_Marshall_
                 const confirmedPercentsOfDosage = yield this.confirmPercentsOfDosage(percentsOfDosage, optimumContent);
                 return {
                     pointsOfCurveDosage,
-                    optimumContent: this.calculateVv4(trialAsphaltContent - 1, this.calculateVv(trialAsphaltContent - 1, curveVv), trialAsphaltContent - 0.5, this.calculateVv(trialAsphaltContent - 0.5, curveVv)),
+                    optimumContent,
                     confirmedPercentsOfDosage,
                     curveRBV,
                     curveVv
@@ -160,11 +160,11 @@ let OptimumBinderContent_Marshall_Service = class OptimumBinderContent_Marshall_
                 });
                 if (maxSpecificGravity.method === 'GMM') {
                     const GMMs = [
-                        maxSpecificGravity.results.lessOne,
-                        maxSpecificGravity.results.lessHalf,
-                        maxSpecificGravity.results.normal,
-                        maxSpecificGravity.results.plusHalf,
-                        maxSpecificGravity.results.plusOne,
+                        maxSpecificGravity.result.lessOne,
+                        maxSpecificGravity.result.lessHalf,
+                        maxSpecificGravity.result.normal,
+                        maxSpecificGravity.result.plusHalf,
+                        maxSpecificGravity.result.plusOne,
                     ];
                     const Contents = [
                         trialAsphaltContent - 1,
