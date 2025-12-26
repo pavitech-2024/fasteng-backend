@@ -58,7 +58,7 @@ export class MarshallController {
     return response.status(200).json(status);
   }
 
-  @Get(':id')
+  @Get('by-id/:id')
   @ApiOperation({ summary: 'Retorna uma dosagem do banco de dados com o id informado.' })
   @ApiResponse({ status: 200, description: 'Dosagem encontrada com sucesso!' })
   @ApiResponse({ status: 400, description: 'Dosagem não encontrada!' })
