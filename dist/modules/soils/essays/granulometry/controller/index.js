@@ -70,7 +70,6 @@ let GranulometryController = GranulometryController_1 = class GranulometryContro
         });
     }
 };
-exports.GranulometryController = GranulometryController;
 __decorate([
     (0, common_1.Post)('verify-init'),
     (0, swagger_1.ApiOperation)({ summary: 'Verifica se é possível criar uma GRANULOMETRY com os dados enviados.' }),
@@ -152,9 +151,10 @@ __decorate([
     __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)
 ], GranulometryController.prototype, "getGranulometryBySampleId", null);
-exports.GranulometryController = GranulometryController = GranulometryController_1 = __decorate([
+GranulometryController = GranulometryController_1 = __decorate([
     (0, swagger_1.ApiTags)('granulometry'),
     (0, common_1.Controller)('soils/essays/granulometry'),
     __metadata("design:paramtypes", [service_1.GranulometryService])
 ], GranulometryController);
+exports.GranulometryController = GranulometryController;
 //# sourceMappingURL=index.js.map

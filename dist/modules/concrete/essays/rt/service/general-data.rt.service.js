@@ -29,8 +29,8 @@ let GeneralData_CONCRETERT_Service = GeneralData_CONCRETERT_Service_1 = class Ge
         this.rtRepository = rtRepository;
         this.logger = new common_1.Logger(GeneralData_CONCRETERT_Service_1.name);
     }
-    verifyInitRt(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ name }) {
+    verifyInitRt({ name }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 const existingRt = yield this.rtRepository.findOne({ generalData: { name } });
                 if (existingRt) {
@@ -44,9 +44,9 @@ let GeneralData_CONCRETERT_Service = GeneralData_CONCRETERT_Service_1 = class Ge
         });
     }
 };
-exports.GeneralData_CONCRETERT_Service = GeneralData_CONCRETERT_Service;
-exports.GeneralData_CONCRETERT_Service = GeneralData_CONCRETERT_Service = GeneralData_CONCRETERT_Service_1 = __decorate([
+GeneralData_CONCRETERT_Service = GeneralData_CONCRETERT_Service_1 = __decorate([
     (0, decorators_1.Injectable)(),
     __metadata("design:paramtypes", [repository_1.ConcreteRtRepository])
 ], GeneralData_CONCRETERT_Service);
+exports.GeneralData_CONCRETERT_Service = GeneralData_CONCRETERT_Service;
 //# sourceMappingURL=general-data.rt.service.js.map

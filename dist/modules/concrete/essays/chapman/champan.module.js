@@ -16,8 +16,7 @@ const calc_chapman_service_1 = require("./service/calc.chapman.service");
 const services = [champan_service_1.ChapmanService, general_data_chapman_service_1.GeneralData_Chapman_Service, calc_chapman_service_1.Calc_CHAPMAN_Service];
 let ChapmanModule = class ChapmanModule {
 };
-exports.ChapmanModule = ChapmanModule;
-exports.ChapmanModule = ChapmanModule = __decorate([
+ChapmanModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [controller_1.ChapmanController],
@@ -25,4 +24,5 @@ exports.ChapmanModule = ChapmanModule = __decorate([
         exports: [champan_service_1.ChapmanService, repository_1.ChapmanRepository],
     })
 ], ChapmanModule);
+exports.ChapmanModule = ChapmanModule;
 //# sourceMappingURL=champan.module.js.map

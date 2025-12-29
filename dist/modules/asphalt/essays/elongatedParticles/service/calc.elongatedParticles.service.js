@@ -29,8 +29,8 @@ let Calc_ELONGATEDPARTICLES_Service = Calc_ELONGATEDPARTICLES_Service_1 = class 
         this.materialRepository = materialRepository;
         this.logger = new common_1.Logger(Calc_ELONGATEDPARTICLES_Service_1.name);
     }
-    calculateElongatedParticles(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ step2Data }) {
+    calculateElongatedParticles({ step2Data }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('calculate elongatedParticles on calc.elongatedParticles.service.ts > [body]');
                 const { dimensions_table_data } = step2Data;
@@ -66,9 +66,9 @@ let Calc_ELONGATEDPARTICLES_Service = Calc_ELONGATEDPARTICLES_Service_1 = class 
         });
     }
 };
-exports.Calc_ELONGATEDPARTICLES_Service = Calc_ELONGATEDPARTICLES_Service;
-exports.Calc_ELONGATEDPARTICLES_Service = Calc_ELONGATEDPARTICLES_Service = Calc_ELONGATEDPARTICLES_Service_1 = __decorate([
+Calc_ELONGATEDPARTICLES_Service = Calc_ELONGATEDPARTICLES_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_1.ElongatedParticlesRepository, repository_2.MaterialsRepository])
 ], Calc_ELONGATEDPARTICLES_Service);
+exports.Calc_ELONGATEDPARTICLES_Service = Calc_ELONGATEDPARTICLES_Service;
 //# sourceMappingURL=calc.elongatedParticles.service.js.map

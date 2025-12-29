@@ -76,11 +76,11 @@ let ElongatedParticlesService = ElongatedParticlesService_1 = class ElongatedPar
         });
     }
 };
-exports.ElongatedParticlesService = ElongatedParticlesService;
-exports.ElongatedParticlesService = ElongatedParticlesService = ElongatedParticlesService_1 = __decorate([
+ElongatedParticlesService = ElongatedParticlesService_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [general_data_elongatedParticles_service_1.GeneralData_ELONGATEDPARTICLES_Service,
         calc_elongatedParticles_service_1.Calc_ELONGATEDPARTICLES_Service,
         repository_1.ElongatedParticlesRepository])
 ], ElongatedParticlesService);
+exports.ElongatedParticlesService = ElongatedParticlesService;
 //# sourceMappingURL=index.js.map

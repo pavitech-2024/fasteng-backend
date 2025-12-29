@@ -85,7 +85,6 @@ let SandIncreaseController = SandIncreaseController_1 = class SandIncreaseContro
         });
     }
 };
-exports.SandIncreaseController = SandIncreaseController;
 __decorate([
     (0, common_1.Post)('verify-init'),
     (0, swagger_1.ApiOperation)({ summary: 'Verifica se é possível criar um ensaio de Inchamento de Areia com os dados enviados.' }),
@@ -185,9 +184,10 @@ __decorate([
     __metadata("design:paramtypes", [Object, calc_sand_increase_dto_1.Save_SandIncreaseDto]),
     __metadata("design:returntype", Promise)
 ], SandIncreaseController.prototype, "saveEssay", null);
-exports.SandIncreaseController = SandIncreaseController = SandIncreaseController_1 = __decorate([
+SandIncreaseController = SandIncreaseController_1 = __decorate([
     (0, swagger_1.ApiTags)('sandIncrease'),
     (0, common_1.Controller)('concrete/essays/sand-increase'),
     __metadata("design:paramtypes", [service_1.SandIncreaseService])
 ], SandIncreaseController);
+exports.SandIncreaseController = SandIncreaseController;
 //# sourceMappingURL=index.js.map

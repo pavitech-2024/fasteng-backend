@@ -63,7 +63,6 @@ let AbrasionController = AbrasionController_1 = class AbrasionController {
         });
     }
 };
-exports.AbrasionController = AbrasionController;
 __decorate([
     (0, common_1.Post)('verify-init'),
     (0, swagger_1.ApiOperation)({ summary: 'Verifica se é possível criar um ensaio de abrasão com os dados enviados.' }),
@@ -131,9 +130,10 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], AbrasionController.prototype, "saveEssay", null);
-exports.AbrasionController = AbrasionController = AbrasionController_1 = __decorate([
+AbrasionController = AbrasionController_1 = __decorate([
     (0, swagger_1.ApiTags)('abrasion'),
     (0, common_1.Controller)('asphalt/essays/abrasion'),
     __metadata("design:paramtypes", [service_1.AbrasionService])
 ], AbrasionController);
+exports.AbrasionController = AbrasionController;
 //# sourceMappingURL=index.js.map

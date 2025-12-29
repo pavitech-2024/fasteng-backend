@@ -74,11 +74,11 @@ let CbrService = class CbrService {
         });
     }
 };
-exports.CbrService = CbrService;
-exports.CbrService = CbrService = __decorate([
+CbrService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [general_data_cbr_service_1.GeneralData_CBR_Service,
         calc_cbr_service_1.Calc_CBR_Service,
         repository_1.CbrRepository])
 ], CbrService);
+exports.CbrService = CbrService;
 //# sourceMappingURL=index.js.map

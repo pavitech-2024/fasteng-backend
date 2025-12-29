@@ -91,11 +91,11 @@ let GeneralData_Superpave_Service = GeneralData_Superpave_Service_1 = class Gene
         });
     }
 };
-exports.GeneralData_Superpave_Service = GeneralData_Superpave_Service;
-exports.GeneralData_Superpave_Service = GeneralData_Superpave_Service = GeneralData_Superpave_Service_1 = __decorate([
+GeneralData_Superpave_Service = GeneralData_Superpave_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.Superpave.name, database_config_1.DATABASE_CONNECTION.ASPHALT)),
     __metadata("design:paramtypes", [mongoose_2.Model,
         index_1.SuperpaveRepository])
 ], GeneralData_Superpave_Service);
+exports.GeneralData_Superpave_Service = GeneralData_Superpave_Service;
 //# sourceMappingURL=general-data.superpave.service.js.map

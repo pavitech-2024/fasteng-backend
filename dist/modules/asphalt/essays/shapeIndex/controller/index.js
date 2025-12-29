@@ -63,7 +63,6 @@ let ShapeIndexController = ShapeIndexController_1 = class ShapeIndexController {
         });
     }
 };
-exports.ShapeIndexController = ShapeIndexController;
 __decorate([
     (0, common_1.Post)('verify-init'),
     (0, swagger_1.ApiOperation)({ summary: 'Verifica se é possível criar uma SHAPEINDEX com os dados enviados.' }),
@@ -131,9 +130,10 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], ShapeIndexController.prototype, "saveEssay", null);
-exports.ShapeIndexController = ShapeIndexController = ShapeIndexController_1 = __decorate([
+ShapeIndexController = ShapeIndexController_1 = __decorate([
     (0, swagger_1.ApiTags)('shapeIndex'),
     (0, common_1.Controller)('asphalt/essays/shapeIndex'),
     __metadata("design:paramtypes", [service_1.ShapeIndexService])
 ], ShapeIndexController);
+exports.ShapeIndexController = ShapeIndexController;
 //# sourceMappingURL=index.js.map

@@ -107,9 +107,9 @@ let ABCPRepository = class ABCPRepository {
         });
     }
 };
-exports.ABCPRepository = ABCPRepository;
-exports.ABCPRepository = ABCPRepository = __decorate([
+ABCPRepository = __decorate([
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.ABCP.name, database_config_1.DATABASE_CONNECTION.CONCRETE)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], ABCPRepository);
+exports.ABCPRepository = ABCPRepository;
 //# sourceMappingURL=index.js.map

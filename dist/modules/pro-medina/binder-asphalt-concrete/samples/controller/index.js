@@ -60,8 +60,8 @@ let BinderAsphaltConcreteSamplesController = BinderAsphaltConcreteSamplesControl
             return this.binderAsphaltConcreteSamplesService.getSamplesByFilter(queryFilter);
         });
     }
-    getAllSamples() {
-        return __awaiter(this, arguments, void 0, function* (page = 1, limit = 10) {
+    getAllSamples(page = 1, limit = 10) {
+        return __awaiter(this, void 0, void 0, function* () {
             this.logger.log(`get all samples`);
             return this.binderAsphaltConcreteSamplesService.getAllSamples({ page, limit });
         });
@@ -85,7 +85,6 @@ let BinderAsphaltConcreteSamplesController = BinderAsphaltConcreteSamplesControl
         });
     }
 };
-exports.BinderAsphaltConcreteSamplesController = BinderAsphaltConcreteSamplesController;
 __decorate([
     (0, common_1.Post)('save'),
     (0, swagger_1.ApiOperation)({ summary: 'Cria uma amostra de ligante asfáltico/concreto no banco de dados.' }),
@@ -147,9 +146,10 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], BinderAsphaltConcreteSamplesController.prototype, "deleteSampleById", null);
-exports.BinderAsphaltConcreteSamplesController = BinderAsphaltConcreteSamplesController = BinderAsphaltConcreteSamplesController_1 = __decorate([
+BinderAsphaltConcreteSamplesController = BinderAsphaltConcreteSamplesController_1 = __decorate([
     (0, swagger_1.ApiTags)('samples'),
     (0, common_1.Controller)('promedina/binder-asphalt-concrete/binder-asphalt-concrete-samples'),
     __metadata("design:paramtypes", [binder_asphalt_concrete_samples_service_1.BinderAsphaltConcreteSamplesService])
 ], BinderAsphaltConcreteSamplesController);
+exports.BinderAsphaltConcreteSamplesController = BinderAsphaltConcreteSamplesController;
 //# sourceMappingURL=index.js.map

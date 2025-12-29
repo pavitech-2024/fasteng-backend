@@ -13,7 +13,6 @@ exports.CreateConcreteMaterialDto = void 0;
 const class_validator_1 = require("class-validator");
 class CreateConcreteMaterialDto {
 }
-exports.CreateConcreteMaterialDto = CreateConcreteMaterialDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
@@ -24,4 +23,5 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], CreateConcreteMaterialDto.prototype, "userId", void 0);
+exports.CreateConcreteMaterialDto = CreateConcreteMaterialDto;
 //# sourceMappingURL=create-concrete-material.dto.js.map

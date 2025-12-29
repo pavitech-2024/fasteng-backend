@@ -22,8 +22,8 @@ let Calc_SandEquivalent_Service = Calc_SandEquivalent_Service_1 = class Calc_San
     constructor() {
         this.logger = new common_1.Logger(Calc_SandEquivalent_Service_1.name);
     }
-    calculateSandEquivalent(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ sandEquivalent, generalData }) {
+    calculateSandEquivalent({ sandEquivalent, generalData }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('calculate sand equivalent on calc.sandEquivalent.service.ts > [body]');
                 const { sandLevel, clayLevel } = sandEquivalent;
@@ -46,8 +46,8 @@ let Calc_SandEquivalent_Service = Calc_SandEquivalent_Service_1 = class Calc_San
         });
     }
 };
-exports.Calc_SandEquivalent_Service = Calc_SandEquivalent_Service;
-exports.Calc_SandEquivalent_Service = Calc_SandEquivalent_Service = Calc_SandEquivalent_Service_1 = __decorate([
+Calc_SandEquivalent_Service = Calc_SandEquivalent_Service_1 = __decorate([
     (0, common_1.Injectable)()
 ], Calc_SandEquivalent_Service);
+exports.Calc_SandEquivalent_Service = Calc_SandEquivalent_Service;
 //# sourceMappingURL=calc.sandEquivalent.service.js.map

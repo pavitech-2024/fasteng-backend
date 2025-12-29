@@ -14,7 +14,6 @@ const mongoose_1 = require("@nestjs/mongoose");
 const class_validator_1 = require("class-validator");
 let StabilizedLayers_Sample = class StabilizedLayers_Sample {
 };
-exports.StabilizedLayers_Sample = StabilizedLayers_Sample;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, mongoose_1.Prop)({ type: Object }),
@@ -30,8 +29,9 @@ __decorate([
     (0, mongoose_1.Prop)({ type: Object }),
     __metadata("design:type", Object)
 ], StabilizedLayers_Sample.prototype, "step3Data", void 0);
-exports.StabilizedLayers_Sample = StabilizedLayers_Sample = __decorate([
+StabilizedLayers_Sample = __decorate([
     (0, mongoose_1.Schema)({ collection: 'stabilizedLayersSamples', timestamps: true })
 ], StabilizedLayers_Sample);
+exports.StabilizedLayers_Sample = StabilizedLayers_Sample;
 exports.StabilizedLayers_SampleSchema = mongoose_1.SchemaFactory.createForClass(StabilizedLayers_Sample);
 //# sourceMappingURL=index.js.map

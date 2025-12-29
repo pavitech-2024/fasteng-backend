@@ -23,8 +23,8 @@ let Calc_ConcreteRt_Service = Calc_ConcreteRt_Service_1 = class Calc_ConcreteRt_
     constructor() {
         this.logger = new common_1.Logger(Calc_ConcreteRt_Service_1.name);
     }
-    calculateConcreteRt(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ step2Data, }) {
+    calculateConcreteRt({ step2Data, }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('calculate rt on calc.rc.service.ts > [body]');
                 const samples = step2Data;
@@ -146,8 +146,8 @@ let Calc_ConcreteRt_Service = Calc_ConcreteRt_Service_1 = class Calc_ConcreteRt_
         return compressionResistance;
     }
 };
-exports.Calc_ConcreteRt_Service = Calc_ConcreteRt_Service;
-exports.Calc_ConcreteRt_Service = Calc_ConcreteRt_Service = Calc_ConcreteRt_Service_1 = __decorate([
+Calc_ConcreteRt_Service = Calc_ConcreteRt_Service_1 = __decorate([
     (0, common_1.Injectable)()
 ], Calc_ConcreteRt_Service);
+exports.Calc_ConcreteRt_Service = Calc_ConcreteRt_Service;
 //# sourceMappingURL=calc.rt.service.js.map

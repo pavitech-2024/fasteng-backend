@@ -30,10 +30,10 @@ const service_1 = require("../service");
 const asphalt_granulometry_init_dto_1 = require("../dto/asphalt.granulometry-init.dto");
 let ControllerController = class ControllerController {
 };
-exports.ControllerController = ControllerController;
-exports.ControllerController = ControllerController = __decorate([
+ControllerController = __decorate([
     (0, common_1.Controller)('controller')
 ], ControllerController);
+exports.ControllerController = ControllerController;
 let AsphaltGranulometryController = AsphaltGranulometryController_1 = class AsphaltGranulometryController {
     constructor(asphaltgranulometryService) {
         this.asphaltgranulometryService = asphaltgranulometryService;
@@ -69,7 +69,6 @@ let AsphaltGranulometryController = AsphaltGranulometryController_1 = class Asph
         });
     }
 };
-exports.AsphaltGranulometryController = AsphaltGranulometryController;
 __decorate([
     (0, common_1.Post)('verify-init'),
     (0, swagger_1.ApiOperation)({ summary: 'Verifica se é possível criar uma granulometria de ensaio de pavimentação asfáltica com os dados enviados.' }),
@@ -137,9 +136,10 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], AsphaltGranulometryController.prototype, "saveAsphaltEssay", null);
-exports.AsphaltGranulometryController = AsphaltGranulometryController = AsphaltGranulometryController_1 = __decorate([
+AsphaltGranulometryController = AsphaltGranulometryController_1 = __decorate([
     (0, swagger_1.ApiTags)('granulometry'),
     (0, common_1.Controller)('asphalt/essays/granulometry'),
     __metadata("design:paramtypes", [service_1.AsphaltGranulometryService])
 ], AsphaltGranulometryController);
+exports.AsphaltGranulometryController = AsphaltGranulometryController;
 //# sourceMappingURL=index.js.map

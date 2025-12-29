@@ -35,9 +35,9 @@ let AppService = class AppService {
         });
     }
 };
-exports.AppService = AppService;
-exports.AppService = AppService = __decorate([
+AppService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [])
 ], AppService);
+exports.AppService = AppService;
 //# sourceMappingURL=app.service.js.map

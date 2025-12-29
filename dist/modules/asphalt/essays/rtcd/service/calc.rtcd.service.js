@@ -26,8 +26,8 @@ let Calc_Rtcd_Service = Calc_Rtcd_Service_1 = class Calc_Rtcd_Service {
         const { rtsMpa: everyRtsMpa, rtsKgf: everyRtsKgf, average: average, } = this.calculateRtsValues(data, Number(pressConstant));
         return { everyRtsMpa, everyRtsKgf, average };
     }
-    calculateRtcd(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ rtcdStep2, rtcdStep3 }) {
+    calculateRtcd({ rtcdStep2, rtcdStep3 }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('calculate rtcd on calc.rtcd.service.ts > [body]');
                 const result = this.confirmResults(rtcdStep3.data, rtcdStep2.pressConstant);
@@ -78,8 +78,8 @@ let Calc_Rtcd_Service = Calc_Rtcd_Service_1 = class Calc_Rtcd_Service {
         return { rtsMpa, rtsKgf, average };
     }
 };
-exports.Calc_Rtcd_Service = Calc_Rtcd_Service;
-exports.Calc_Rtcd_Service = Calc_Rtcd_Service = Calc_Rtcd_Service_1 = __decorate([
+Calc_Rtcd_Service = Calc_Rtcd_Service_1 = __decorate([
     (0, common_1.Injectable)()
 ], Calc_Rtcd_Service);
+exports.Calc_Rtcd_Service = Calc_Rtcd_Service;
 //# sourceMappingURL=calc.rtcd.service.js.map

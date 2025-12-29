@@ -130,9 +130,9 @@ let StabilizedLayers_SamplesRepository = class StabilizedLayers_SamplesRepositor
         });
     }
 };
-exports.StabilizedLayers_SamplesRepository = StabilizedLayers_SamplesRepository;
-exports.StabilizedLayers_SamplesRepository = StabilizedLayers_SamplesRepository = __decorate([
+StabilizedLayers_SamplesRepository = __decorate([
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.StabilizedLayers_Sample.name, database_config_1.DATABASE_CONNECTION.PROMEDINA)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], StabilizedLayers_SamplesRepository);
+exports.StabilizedLayers_SamplesRepository = StabilizedLayers_SamplesRepository;
 //# sourceMappingURL=index.js.map

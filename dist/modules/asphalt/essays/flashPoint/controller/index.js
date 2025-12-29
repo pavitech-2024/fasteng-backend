@@ -63,7 +63,6 @@ let FlashPointController = FlashPointController_1 = class FlashPointController {
         });
     }
 };
-exports.FlashPointController = FlashPointController;
 __decorate([
     (0, common_1.Post)('verify-init'),
     (0, swagger_1.ApiOperation)({ summary: 'Verifica se é possível criar uma FLASHPOINT com os dados enviados.' }),
@@ -131,9 +130,10 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], FlashPointController.prototype, "saveEssay", null);
-exports.FlashPointController = FlashPointController = FlashPointController_1 = __decorate([
+FlashPointController = FlashPointController_1 = __decorate([
     (0, swagger_1.ApiTags)('flashPoint'),
     (0, common_1.Controller)('asphalt/essays/flashPoint'),
     __metadata("design:paramtypes", [service_1.FlashPointService])
 ], FlashPointController);
+exports.FlashPointController = FlashPointController;
 //# sourceMappingURL=index.js.map

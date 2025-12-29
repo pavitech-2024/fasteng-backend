@@ -22,8 +22,8 @@ let Calc_CHAPMAN_Service = Calc_CHAPMAN_Service_1 = class Calc_CHAPMAN_Service {
     constructor() {
         this.logger = new common_1.Logger(Calc_CHAPMAN_Service_1.name);
     }
-    calculateChapman(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ step2Data }) {
+    calculateChapman({ step2Data }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('calculate chapman on calc.chapman.service.ts > [body]');
                 const result = 500 / (step2Data.displaced_volume - 200);
@@ -40,8 +40,8 @@ let Calc_CHAPMAN_Service = Calc_CHAPMAN_Service_1 = class Calc_CHAPMAN_Service {
         });
     }
 };
-exports.Calc_CHAPMAN_Service = Calc_CHAPMAN_Service;
-exports.Calc_CHAPMAN_Service = Calc_CHAPMAN_Service = Calc_CHAPMAN_Service_1 = __decorate([
+Calc_CHAPMAN_Service = Calc_CHAPMAN_Service_1 = __decorate([
     (0, common_1.Injectable)()
 ], Calc_CHAPMAN_Service);
+exports.Calc_CHAPMAN_Service = Calc_CHAPMAN_Service;
 //# sourceMappingURL=calc.chapman.service.js.map

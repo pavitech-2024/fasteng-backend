@@ -16,8 +16,7 @@ const calc_adhesiveness_service_1 = require("./service/calc.adhesiveness.service
 const services = [service_1.AdhesivenessService, general_data_adhesiveness_service_1.GeneralData_Adhesiveness_Service, calc_adhesiveness_service_1.Calc_Adhesiveness_Service];
 let AdhesivenessModule = class AdhesivenessModule {
 };
-exports.AdhesivenessModule = AdhesivenessModule;
-exports.AdhesivenessModule = AdhesivenessModule = __decorate([
+AdhesivenessModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [controller_1.AdhesivenessController],
@@ -25,4 +24,5 @@ exports.AdhesivenessModule = AdhesivenessModule = __decorate([
         exports: [service_1.AdhesivenessService, repository_1.AdhesivenessRepository],
     })
 ], AdhesivenessModule);
+exports.AdhesivenessModule = AdhesivenessModule;
 //# sourceMappingURL=adhesiveness.module.js.map

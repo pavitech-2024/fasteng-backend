@@ -31,8 +31,8 @@ let Calc_Penetration_Service = Calc_Penetration_Service_1 = class Calc_Penetrati
         this.softeningPointRespository = softeningPointRespository;
         this.logger = new common_1.Logger(Calc_Penetration_Service_1.name);
     }
-    calculatePenetration(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ penetrationCalc, generalData, }) {
+    calculatePenetration({ penetrationCalc, generalData, }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('calculate penetration on calc.penetration.service.ts > [body]');
                 const { points } = penetrationCalc;
@@ -178,11 +178,11 @@ let Calc_Penetration_Service = Calc_Penetration_Service_1 = class Calc_Penetrati
         });
     }
 };
-exports.Calc_Penetration_Service = Calc_Penetration_Service;
-exports.Calc_Penetration_Service = Calc_Penetration_Service = Calc_Penetration_Service_1 = __decorate([
+Calc_Penetration_Service = Calc_Penetration_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_2.PenetrationRepository,
         repository_1.MaterialsRepository,
         repository_3.SofteningPointRepository])
 ], Calc_Penetration_Service);
+exports.Calc_Penetration_Service = Calc_Penetration_Service;
 //# sourceMappingURL=calc.penetration.service.js.map

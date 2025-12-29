@@ -22,8 +22,8 @@ let Calc_Rtfo_Service = Calc_Rtfo_Service_1 = class Calc_Rtfo_Service {
     constructor() {
         this.logger = new common_1.Logger(Calc_Rtfo_Service_1.name);
     }
-    calculateRtfo(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ rtfo, generalData }) {
+    calculateRtfo({ rtfo, generalData }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('calculate rtfo on calc.rtfo.service.ts > [body]');
                 const resultList = rtfo.list.map(sample => ({
@@ -57,8 +57,8 @@ let Calc_Rtfo_Service = Calc_Rtfo_Service_1 = class Calc_Rtfo_Service {
         });
     }
 };
-exports.Calc_Rtfo_Service = Calc_Rtfo_Service;
-exports.Calc_Rtfo_Service = Calc_Rtfo_Service = Calc_Rtfo_Service_1 = __decorate([
+Calc_Rtfo_Service = Calc_Rtfo_Service_1 = __decorate([
     (0, common_1.Injectable)()
 ], Calc_Rtfo_Service);
+exports.Calc_Rtfo_Service = Calc_Rtfo_Service;
 //# sourceMappingURL=calc.rtfo.service.js.map

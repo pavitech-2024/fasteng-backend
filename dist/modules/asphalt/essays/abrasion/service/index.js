@@ -74,11 +74,11 @@ let AbrasionService = class AbrasionService {
         });
     }
 };
-exports.AbrasionService = AbrasionService;
-exports.AbrasionService = AbrasionService = __decorate([
+AbrasionService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [general_data_abrasion_service_1.GeneralData_Abrasion_Service,
         calc_abrasion_service_1.Calc_Abrasion_Service,
         repository_1.AbrasionRepository])
 ], AbrasionService);
+exports.AbrasionService = AbrasionService;
 //# sourceMappingURL=index.js.map

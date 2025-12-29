@@ -76,11 +76,11 @@ let SpecifyMassService = SpecifyMassService_1 = class SpecifyMassService {
         });
     }
 };
-exports.SpecifyMassService = SpecifyMassService;
-exports.SpecifyMassService = SpecifyMassService = SpecifyMassService_1 = __decorate([
+SpecifyMassService = SpecifyMassService_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [general_data_specifyMass_service_1.GeneralData_SPECIFYMASS_Service,
         calc_specifyMass_service_1.Calc_SPECIFYMASS_Service,
         repository_1.SpecifyMassRepository])
 ], SpecifyMassService);
+exports.SpecifyMassService = SpecifyMassService;
 //# sourceMappingURL=index.js.map

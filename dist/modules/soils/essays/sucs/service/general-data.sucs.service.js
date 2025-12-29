@@ -34,8 +34,8 @@ let GeneralData_SUCS_Service = GeneralData_SUCS_Service_1 = class GeneralData_SU
         this.sampleRepository = sampleRepository;
         this.logger = new common_1.Logger(GeneralData_SUCS_Service_1.name);
     }
-    verifyInitSucs(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ name, sample }) {
+    verifyInitSucs({ name, sample }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 const sampleExists = yield this.sampleRepository.findOne({
                     "_id": sample._id
@@ -61,11 +61,11 @@ let GeneralData_SUCS_Service = GeneralData_SUCS_Service_1 = class GeneralData_SU
         });
     }
 };
-exports.GeneralData_SUCS_Service = GeneralData_SUCS_Service;
-exports.GeneralData_SUCS_Service = GeneralData_SUCS_Service = GeneralData_SUCS_Service_1 = __decorate([
+GeneralData_SUCS_Service = GeneralData_SUCS_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_1.SucsRepository,
         index_1.GranulometryRepository,
         repository_2.SamplesRepository])
 ], GeneralData_SUCS_Service);
+exports.GeneralData_SUCS_Service = GeneralData_SUCS_Service;
 //# sourceMappingURL=general-data.sucs.service.js.map

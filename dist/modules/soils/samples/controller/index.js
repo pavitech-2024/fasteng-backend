@@ -68,7 +68,6 @@ let SamplesController = SamplesController_1 = class SamplesController {
         });
     }
 };
-exports.SamplesController = SamplesController;
 __decorate([
     (0, common_1.Post)(),
     (0, swagger_1.ApiOperation)({ summary: 'Cria uma amostra no banco de dados.' }),
@@ -120,9 +119,10 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], SamplesController.prototype, "deleteSampleById", null);
-exports.SamplesController = SamplesController = SamplesController_1 = __decorate([
+SamplesController = SamplesController_1 = __decorate([
     (0, swagger_1.ApiTags)('samples'),
     (0, common_1.Controller)('soils/samples'),
     __metadata("design:paramtypes", [service_1.SamplesService])
 ], SamplesController);
+exports.SamplesController = SamplesController;
 //# sourceMappingURL=index.js.map

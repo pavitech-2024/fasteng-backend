@@ -14,7 +14,6 @@ const mongoose_1 = require("@nestjs/mongoose");
 const class_validator_1 = require("class-validator");
 let UnitMass = class UnitMass {
 };
-exports.UnitMass = UnitMass;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, mongoose_1.Prop)({ type: Object }),
@@ -30,8 +29,9 @@ __decorate([
     (0, mongoose_1.Prop)({ type: Object }),
     __metadata("design:type", Object)
 ], UnitMass.prototype, "result", void 0);
-exports.UnitMass = UnitMass = __decorate([
+UnitMass = __decorate([
     (0, mongoose_1.Schema)({ collection: 'unitMass' })
 ], UnitMass);
+exports.UnitMass = UnitMass;
 exports.UnitMassSchema = mongoose_1.SchemaFactory.createForClass(UnitMass);
 //# sourceMappingURL=index.js.map

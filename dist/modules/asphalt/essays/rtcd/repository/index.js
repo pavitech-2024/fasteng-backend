@@ -57,9 +57,9 @@ let RtcdRepository = class RtcdRepository {
         });
     }
 };
-exports.RtcdRepository = RtcdRepository;
-exports.RtcdRepository = RtcdRepository = __decorate([
+RtcdRepository = __decorate([
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.Rtcd.name, database_config_1.DATABASE_CONNECTION.ASPHALT)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], RtcdRepository);
+exports.RtcdRepository = RtcdRepository;
 //# sourceMappingURL=index.js.map

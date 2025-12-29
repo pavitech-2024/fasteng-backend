@@ -14,7 +14,6 @@ const schemas_1 = require("../../../samples/schemas");
 const class_validator_1 = require("class-validator");
 class SucsInitDto {
 }
-exports.SucsInitDto = SucsInitDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
@@ -23,4 +22,5 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", schemas_1.Sample)
 ], SucsInitDto.prototype, "sample", void 0);
+exports.SucsInitDto = SucsInitDto;
 //# sourceMappingURL=sucs-init.dto.js.map

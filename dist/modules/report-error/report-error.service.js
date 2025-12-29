@@ -102,8 +102,8 @@ let ReportErrorService = ReportErrorService_1 = class ReportErrorService {
         });
     }
 };
-exports.ReportErrorService = ReportErrorService;
-exports.ReportErrorService = ReportErrorService = ReportErrorService_1 = __decorate([
+ReportErrorService = ReportErrorService_1 = __decorate([
     (0, common_1.Injectable)()
 ], ReportErrorService);
+exports.ReportErrorService = ReportErrorService;
 //# sourceMappingURL=report-error.service.js.map

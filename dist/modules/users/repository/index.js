@@ -58,9 +58,9 @@ let UsersRepository = class UsersRepository {
         user.lastLoginList.push(new Date());
     }
 };
-exports.UsersRepository = UsersRepository;
-exports.UsersRepository = UsersRepository = __decorate([
+UsersRepository = __decorate([
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.User.name, database_config_1.DATABASE_CONNECTION.COMMON)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], UsersRepository);
+exports.UsersRepository = UsersRepository;
 //# sourceMappingURL=index.js.map

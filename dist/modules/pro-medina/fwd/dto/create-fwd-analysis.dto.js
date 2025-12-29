@@ -10,13 +10,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateFwdAnalysisDto = exports.FwdSampleDto = void 0;
-const openapi = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
 class FwdSampleDto {
-    static _OPENAPI_METADATA_FACTORY() {
-        return { stationNumber: { required: true, type: () => Number }, d0: { required: true, type: () => Number }, d20: { required: true, type: () => Number }, d30: { required: true, type: () => Number }, d45: { required: true, type: () => Number }, d60: { required: true, type: () => Number }, d90: { required: true, type: () => Number }, d120: { required: true, type: () => Number }, d150: { required: true, type: () => Number }, d180: { required: true, type: () => Number }, date: { required: false, type: () => Date }, airTemperature: { required: false, type: () => Number }, pavementTemperature: { required: false, type: () => Number }, appliedLoad: { required: false, type: () => Number } };
-    }
 }
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
@@ -76,9 +72,6 @@ __decorate([
 ], FwdSampleDto.prototype, "appliedLoad", void 0);
 exports.FwdSampleDto = FwdSampleDto;
 class CreateFwdAnalysisDto {
-    static _OPENAPI_METADATA_FACTORY() {
-        return { name: { required: true, type: () => String }, description: { required: false, type: () => String }, samples: { required: true, type: () => [require("./create-fwd-analysis.dto").FwdSampleDto] }, status: { required: false, type: () => String }, userId: { required: false, type: () => String } };
-    }
 }
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),

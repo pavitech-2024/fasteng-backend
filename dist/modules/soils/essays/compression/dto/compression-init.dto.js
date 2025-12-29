@@ -14,7 +14,6 @@ const class_validator_1 = require("class-validator");
 const schemas_1 = require("../../../../../modules/soils/samples/schemas");
 class CompressionInitDto {
 }
-exports.CompressionInitDto = CompressionInitDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
@@ -23,4 +22,5 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", schemas_1.Sample)
 ], CompressionInitDto.prototype, "sample", void 0);
+exports.CompressionInitDto = CompressionInitDto;
 //# sourceMappingURL=compression-init.dto.js.map

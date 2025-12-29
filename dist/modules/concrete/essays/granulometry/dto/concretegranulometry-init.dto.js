@@ -14,7 +14,6 @@ const class_validator_1 = require("class-validator");
 const schemas_1 = require("../../../../../modules/concrete/materials/schemas");
 class ConcreteGranulometryInitDto {
 }
-exports.ConcreteGranulometryInitDto = ConcreteGranulometryInitDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
@@ -23,4 +22,5 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", schemas_1.Material)
 ], ConcreteGranulometryInitDto.prototype, "material", void 0);
+exports.ConcreteGranulometryInitDto = ConcreteGranulometryInitDto;
 //# sourceMappingURL=concretegranulometry-init.dto.js.map

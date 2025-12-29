@@ -340,12 +340,12 @@ let InitialBinder_Superpave_Service = InitialBinder_Superpave_Service_1 = class 
         });
     }
 };
-exports.InitialBinder_Superpave_Service = InitialBinder_Superpave_Service;
-exports.InitialBinder_Superpave_Service = InitialBinder_Superpave_Service = InitialBinder_Superpave_Service_1 = __decorate([
+InitialBinder_Superpave_Service = InitialBinder_Superpave_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_2.InjectModel)(schemas_1.Superpave.name, database_config_1.DATABASE_CONNECTION.ASPHALT)),
     __metadata("design:paramtypes", [mongoose_1.Model,
         repository_1.SpecifyMassRepository,
         repository_2.SuperpaveRepository])
 ], InitialBinder_Superpave_Service);
+exports.InitialBinder_Superpave_Service = InitialBinder_Superpave_Service;
 //# sourceMappingURL=initial-binder.superpave.service.js.map

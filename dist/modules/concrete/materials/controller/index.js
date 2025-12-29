@@ -68,7 +68,6 @@ let MaterialsController = MaterialsController_1 = class MaterialsController {
         });
     }
 };
-exports.MaterialsController = MaterialsController;
 __decorate([
     (0, common_1.Post)(),
     (0, swagger_1.ApiOperation)({ summary: 'Cria um material no banco de dados.' }),
@@ -120,9 +119,10 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], MaterialsController.prototype, "deleteMaterialById", null);
-exports.MaterialsController = MaterialsController = MaterialsController_1 = __decorate([
+MaterialsController = MaterialsController_1 = __decorate([
     (0, swagger_1.ApiTags)('materials'),
     (0, common_1.Controller)('concrete/materials'),
     __metadata("design:paramtypes", [service_1.MaterialsService])
 ], MaterialsController);
+exports.MaterialsController = MaterialsController;
 //# sourceMappingURL=index.js.map

@@ -13,7 +13,6 @@ exports.Calc_Igg_Dto = void 0;
 const class_validator_1 = require("class-validator");
 class Calc_Igg_Dto {
 }
-exports.Calc_Igg_Dto = Calc_Igg_Dto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
@@ -30,4 +29,5 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
 ], Calc_Igg_Dto.prototype, "iggStep4", void 0);
+exports.Calc_Igg_Dto = Calc_Igg_Dto;
 //# sourceMappingURL=calc-igg.dto.js.map

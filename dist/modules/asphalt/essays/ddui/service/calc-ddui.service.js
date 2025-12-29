@@ -49,8 +49,8 @@ let Calc_Ddui_Service = Calc_Ddui_Service_1 = class Calc_Ddui_Service {
             rrt,
         };
     }
-    calculateDdui(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ dduiStep2, dduiStep3, generalData }) {
+    calculateDdui({ dduiStep2, dduiStep3, generalData }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('calculate sand equivalent on calc.ddui.service.ts > [body]');
                 const result = this.confirmResults(dduiStep3.ddui_data, dduiStep2.pressConstant);
@@ -101,8 +101,8 @@ let Calc_Ddui_Service = Calc_Ddui_Service_1 = class Calc_Ddui_Service {
         return { rtsMpa, rtsKgf, average };
     }
 };
-exports.Calc_Ddui_Service = Calc_Ddui_Service;
-exports.Calc_Ddui_Service = Calc_Ddui_Service = Calc_Ddui_Service_1 = __decorate([
+Calc_Ddui_Service = Calc_Ddui_Service_1 = __decorate([
     (0, common_1.Injectable)()
 ], Calc_Ddui_Service);
+exports.Calc_Ddui_Service = Calc_Ddui_Service;
 //# sourceMappingURL=calc-ddui.service.js.map

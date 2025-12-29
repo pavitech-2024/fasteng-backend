@@ -26,8 +26,8 @@ let ErrorsInterceptor = class ErrorsInterceptor {
         }));
     }
 };
-exports.ErrorsInterceptor = ErrorsInterceptor;
-exports.ErrorsInterceptor = ErrorsInterceptor = __decorate([
+ErrorsInterceptor = __decorate([
     (0, common_1.Injectable)()
 ], ErrorsInterceptor);
+exports.ErrorsInterceptor = ErrorsInterceptor;
 //# sourceMappingURL=ErrorsInterceptor.js.map

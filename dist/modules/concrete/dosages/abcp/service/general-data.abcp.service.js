@@ -46,9 +46,9 @@ let GeneralData_ABCP_Service = GeneralData_ABCP_Service_1 = class GeneralData_AB
         });
     }
 };
-exports.GeneralData_ABCP_Service = GeneralData_ABCP_Service;
-exports.GeneralData_ABCP_Service = GeneralData_ABCP_Service = GeneralData_ABCP_Service_1 = __decorate([
+GeneralData_ABCP_Service = GeneralData_ABCP_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [index_1.ABCPRepository])
 ], GeneralData_ABCP_Service);
+exports.GeneralData_ABCP_Service = GeneralData_ABCP_Service;
 //# sourceMappingURL=general-data.abcp.service.js.map

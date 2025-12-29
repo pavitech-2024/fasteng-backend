@@ -71,8 +71,8 @@ let Calc_GRANULOMETRY_Service = Calc_GRANULOMETRY_Service_1 = class Calc_GRANULO
             });
         };
     }
-    calculateGranulometry(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ step2Data, }) {
+    calculateGranulometry({ step2Data, }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('calculate granulometry on calc.granulometry.service.ts > [body]');
                 const { table_data, sample_mass, bottom } = step2Data;
@@ -164,10 +164,10 @@ let Calc_GRANULOMETRY_Service = Calc_GRANULOMETRY_Service_1 = class Calc_GRANULO
         });
     }
 };
-exports.Calc_GRANULOMETRY_Service = Calc_GRANULOMETRY_Service;
-exports.Calc_GRANULOMETRY_Service = Calc_GRANULOMETRY_Service = Calc_GRANULOMETRY_Service_1 = __decorate([
+Calc_GRANULOMETRY_Service = Calc_GRANULOMETRY_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_1.GranulometryRepository,
         repository_2.SamplesRepository])
 ], Calc_GRANULOMETRY_Service);
+exports.Calc_GRANULOMETRY_Service = Calc_GRANULOMETRY_Service;
 //# sourceMappingURL=calc.granulometry.service.js.map

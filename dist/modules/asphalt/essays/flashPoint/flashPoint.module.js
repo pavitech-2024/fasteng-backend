@@ -16,8 +16,7 @@ const general_data_flashPoint_service_1 = require("./service/general-data.flashP
 const services = [index_1.FlashPointService, general_data_flashPoint_service_1.GeneralData_FLASHPOINT_Service, calc_flashPoint_service_1.Calc_FLASHPOINT_Service];
 let FlashPointModule = class FlashPointModule {
 };
-exports.FlashPointModule = FlashPointModule;
-exports.FlashPointModule = FlashPointModule = __decorate([
+FlashPointModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [controller_1.FlashPointController],
@@ -25,4 +24,5 @@ exports.FlashPointModule = FlashPointModule = __decorate([
         exports: [index_1.FlashPointService, repository_1.FlashPointRepository],
     })
 ], FlashPointModule);
+exports.FlashPointModule = FlashPointModule;
 //# sourceMappingURL=flashPoint.module.js.map

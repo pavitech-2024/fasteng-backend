@@ -27,8 +27,8 @@ let AllExceptionsFilter = class AllExceptionsFilter {
         }
     }
 };
-exports.AllExceptionsFilter = AllExceptionsFilter;
-exports.AllExceptionsFilter = AllExceptionsFilter = __decorate([
+AllExceptionsFilter = __decorate([
     (0, common_1.Catch)()
 ], AllExceptionsFilter);
+exports.AllExceptionsFilter = AllExceptionsFilter;
 //# sourceMappingURL=http-exception.filter.js.map

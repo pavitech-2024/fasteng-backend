@@ -77,11 +77,11 @@ let Calc_SandIncrease_Service = Calc_SandIncrease_Service_1 = class Calc_SandInc
         });
     }
 };
-exports.Calc_SandIncrease_Service = Calc_SandIncrease_Service;
-exports.Calc_SandIncrease_Service = Calc_SandIncrease_Service = Calc_SandIncrease_Service_1 = __decorate([
+Calc_SandIncrease_Service = Calc_SandIncrease_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [])
 ], Calc_SandIncrease_Service);
+exports.Calc_SandIncrease_Service = Calc_SandIncrease_Service;
 function graphLines(listaDeX, listaDeY) {
     console.log('Lista X>', listaDeX, 'Lista Y>', listaDeY);
     const coeficiente = (0, leastSquaresRegression_1.regression)(listaDeX, listaDeY, 3);

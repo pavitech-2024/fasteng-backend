@@ -89,11 +89,11 @@ let IggService = class IggService {
         });
     }
 };
-exports.IggService = IggService;
-exports.IggService = IggService = __decorate([
+IggService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [general_data_igg_service_1.GeneralData_Igg_Service,
         repository_1.IggRepository,
         calc_igg_service_1.Calc_Igg_Service])
 ], IggService);
+exports.IggService = IggService;
 //# sourceMappingURL=index.js.map

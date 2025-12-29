@@ -63,7 +63,6 @@ let ElongatedParticlesController = ElongatedParticlesController_1 = class Elonga
         });
     }
 };
-exports.ElongatedParticlesController = ElongatedParticlesController;
 __decorate([
     (0, common_1.Post)('verify-init'),
     (0, swagger_1.ApiOperation)({ summary: 'Verifica se é possível criar uma ELONGATEDPARTICLES com os dados enviados.' }),
@@ -131,9 +130,10 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], ElongatedParticlesController.prototype, "saveEssay", null);
-exports.ElongatedParticlesController = ElongatedParticlesController = ElongatedParticlesController_1 = __decorate([
+ElongatedParticlesController = ElongatedParticlesController_1 = __decorate([
     (0, swagger_1.ApiTags)('elongatedParticles'),
     (0, common_1.Controller)('asphalt/essays/elongatedParticles'),
     __metadata("design:paramtypes", [service_1.ElongatedParticlesService])
 ], ElongatedParticlesController);
+exports.ElongatedParticlesController = ElongatedParticlesController;
 //# sourceMappingURL=index.js.map

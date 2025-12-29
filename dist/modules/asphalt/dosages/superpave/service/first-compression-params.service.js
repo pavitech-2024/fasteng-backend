@@ -27,11 +27,11 @@ let firstCompressionParamsData_Service = firstCompressionParamsData_Service_1 = 
         this.logger = new common_1.Logger(firstCompressionParamsData_Service_1.name);
     }
 };
-exports.firstCompressionParamsData_Service = firstCompressionParamsData_Service;
-exports.firstCompressionParamsData_Service = firstCompressionParamsData_Service = firstCompressionParamsData_Service_1 = __decorate([
+firstCompressionParamsData_Service = firstCompressionParamsData_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.Superpave.name, database_config_1.DATABASE_CONNECTION.ASPHALT)),
     __metadata("design:paramtypes", [mongoose_2.Model,
         repository_1.SuperpaveRepository])
 ], firstCompressionParamsData_Service);
+exports.firstCompressionParamsData_Service = firstCompressionParamsData_Service;
 //# sourceMappingURL=first-compression-params.service.js.map

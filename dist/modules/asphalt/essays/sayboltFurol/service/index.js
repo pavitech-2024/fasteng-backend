@@ -74,11 +74,11 @@ let SayboltFurolService = class SayboltFurolService {
         });
     }
 };
-exports.SayboltFurolService = SayboltFurolService;
-exports.SayboltFurolService = SayboltFurolService = __decorate([
+SayboltFurolService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [general_data_sayboltFurol_service_1.GeneralData_SayboltFurol_Service,
         repository_1.SayboltFurolRepository,
         calc_sayboltFurol_service_1.Calc_SayboltFurol_Service])
 ], SayboltFurolService);
+exports.SayboltFurolService = SayboltFurolService;
 //# sourceMappingURL=index.js.map

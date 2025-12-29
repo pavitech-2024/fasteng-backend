@@ -16,11 +16,11 @@ const Models = [{ name: schemas_1.GranularLayers_Sample.name, schema: schemas_1.
 const Modules = [granular_layers_samples_module_1.GranularLayersSamplesModule];
 let GranularLayersModule = class GranularLayersModule {
 };
-exports.GranularLayersModule = GranularLayersModule;
-exports.GranularLayersModule = GranularLayersModule = __decorate([
+GranularLayersModule = __decorate([
     (0, common_1.Module)({
         imports: [mongoose_1.MongooseModule.forFeature(Models, database_config_1.DATABASE_CONNECTION.PROMEDINA), ...Modules],
         exports: [mongoose_1.MongooseModule, ...Modules],
     })
 ], GranularLayersModule);
+exports.GranularLayersModule = GranularLayersModule;
 //# sourceMappingURL=granular-layers.module.js.map

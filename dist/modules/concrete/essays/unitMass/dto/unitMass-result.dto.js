@@ -13,7 +13,6 @@ exports.Result_UnitMass_Dto = void 0;
 const class_validator_1 = require("class-validator");
 class Result_UnitMass_Dto {
 }
-exports.Result_UnitMass_Dto = Result_UnitMass_Dto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
@@ -22,4 +21,5 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
 ], Result_UnitMass_Dto.prototype, "step2Data", void 0);
+exports.Result_UnitMass_Dto = Result_UnitMass_Dto;
 //# sourceMappingURL=unitMass-result.dto.js.map

@@ -33,12 +33,12 @@ const Models = [
 const Modules = [samples_module_1.SamplesModule, cbr_module_1.CbrModule, hrb_module_1.HrbModule, sucs_module_1.SucsModule, granulometry_module_1.GranulometryModule, compression_module_1.CompressionModule];
 let SoilsModule = class SoilsModule {
 };
-exports.SoilsModule = SoilsModule;
-exports.SoilsModule = SoilsModule = __decorate([
+SoilsModule = __decorate([
     (0, common_1.Global)(),
     (0, common_1.Module)({
         imports: [mongoose_1.MongooseModule.forFeature(Models, database_config_1.DATABASE_CONNECTION.SOILS), ...Modules],
         exports: [mongoose_1.MongooseModule, ...Modules],
     })
 ], SoilsModule);
+exports.SoilsModule = SoilsModule;
 //# sourceMappingURL=soils.module.js.map

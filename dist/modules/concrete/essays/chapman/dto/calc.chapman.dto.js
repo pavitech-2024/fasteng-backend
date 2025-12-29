@@ -13,7 +13,6 @@ exports.Calc_CHAPMAN_dto = void 0;
 const class_validator_1 = require("class-validator");
 class Calc_CHAPMAN_dto {
 }
-exports.Calc_CHAPMAN_dto = Calc_CHAPMAN_dto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
@@ -22,4 +21,5 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
 ], Calc_CHAPMAN_dto.prototype, "step2Data", void 0);
+exports.Calc_CHAPMAN_dto = Calc_CHAPMAN_dto;
 //# sourceMappingURL=calc.chapman.dto.js.map

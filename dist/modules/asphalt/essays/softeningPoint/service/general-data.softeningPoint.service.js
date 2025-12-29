@@ -32,8 +32,8 @@ let GeneralData_SofteningPoint_Service = GeneralData_SofteningPoint_Service_1 = 
         this.penetrationRepository = penetrationRepository;
         this.logger = new common_1.Logger(GeneralData_SofteningPoint_Service_1.name);
     }
-    verifyInitSofteningPoint(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ name, material }) {
+    verifyInitSofteningPoint({ name, material }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('verify init softening point on general-data.softeningPoint.service.ts > [body]');
                 const materialExists = yield this.materialsRepository.findOne({ _id: material._id });
@@ -58,11 +58,11 @@ let GeneralData_SofteningPoint_Service = GeneralData_SofteningPoint_Service_1 = 
         });
     }
 };
-exports.GeneralData_SofteningPoint_Service = GeneralData_SofteningPoint_Service;
-exports.GeneralData_SofteningPoint_Service = GeneralData_SofteningPoint_Service = GeneralData_SofteningPoint_Service_1 = __decorate([
+GeneralData_SofteningPoint_Service = GeneralData_SofteningPoint_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_2.SofteningPointRepository,
         repository_1.MaterialsRepository,
         index_1.PenetrationRepository])
 ], GeneralData_SofteningPoint_Service);
+exports.GeneralData_SofteningPoint_Service = GeneralData_SofteningPoint_Service;
 //# sourceMappingURL=general-data.softeningPoint.service.js.map

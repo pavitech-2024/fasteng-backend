@@ -13,7 +13,6 @@ exports.Calc_ViscosityRotational_Dto = void 0;
 const class_validator_1 = require("class-validator");
 class Calc_ViscosityRotational_Dto {
 }
-exports.Calc_ViscosityRotational_Dto = Calc_ViscosityRotational_Dto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
@@ -22,4 +21,5 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
 ], Calc_ViscosityRotational_Dto.prototype, "viscosityRotational", void 0);
+exports.Calc_ViscosityRotational_Dto = Calc_ViscosityRotational_Dto;
 //# sourceMappingURL=calc-viscosityRotational.dto.js.map

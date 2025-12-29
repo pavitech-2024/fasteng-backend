@@ -110,12 +110,12 @@ const Modules = [
 ];
 let AsphaltModule = class AsphaltModule {
 };
-exports.AsphaltModule = AsphaltModule;
-exports.AsphaltModule = AsphaltModule = __decorate([
+AsphaltModule = __decorate([
     (0, common_1.Global)(),
     (0, common_1.Module)({
         imports: [mongoose_1.MongooseModule.forFeature(Models, database_config_1.DATABASE_CONNECTION.ASPHALT), ...Modules],
         exports: [mongoose_1.MongooseModule, ...Modules],
     })
 ], AsphaltModule);
+exports.AsphaltModule = AsphaltModule;
 //# sourceMappingURL=asphalt.module.js.map

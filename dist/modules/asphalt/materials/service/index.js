@@ -142,8 +142,7 @@ let MaterialsService = MaterialsService_1 = class MaterialsService {
         });
     }
 };
-exports.MaterialsService = MaterialsService;
-exports.MaterialsService = MaterialsService = MaterialsService_1 = __decorate([
+MaterialsService = MaterialsService_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_1.MaterialsRepository,
         get_essays_by_material_service_1.GetEssaysByMaterial_Service,
@@ -152,4 +151,5 @@ exports.MaterialsService = MaterialsService = MaterialsService_1 = __decorate([
         repository_4.RtcdRepository,
         repository_5.DduiRepository])
 ], MaterialsService);
+exports.MaterialsService = MaterialsService;
 //# sourceMappingURL=index.js.map

@@ -74,11 +74,11 @@ let AdhesivenessService = class AdhesivenessService {
         });
     }
 };
-exports.AdhesivenessService = AdhesivenessService;
-exports.AdhesivenessService = AdhesivenessService = __decorate([
+AdhesivenessService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [general_data_adhesiveness_service_1.GeneralData_Adhesiveness_Service,
         repository_1.AdhesivenessRepository,
         calc_adhesiveness_service_1.Calc_Adhesiveness_Service])
 ], AdhesivenessService);
+exports.AdhesivenessService = AdhesivenessService;
 //# sourceMappingURL=index.js.map

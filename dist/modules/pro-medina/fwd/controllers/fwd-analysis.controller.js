@@ -13,7 +13,6 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FwdAnalysisController = void 0;
-const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
 const fwd_analysis_service_1 = require("../service/fwd-analysis.service");
 const create_fwd_analysis_dto_1 = require("../dto/create-fwd-analysis.dto");
@@ -42,7 +41,6 @@ let FwdAnalysisController = class FwdAnalysisController {
 };
 __decorate([
     (0, common_1.Post)('save'),
-    openapi.ApiResponse({ status: 201, type: Object }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_fwd_analysis_dto_1.CreateFwdAnalysisDto]),
@@ -50,14 +48,12 @@ __decorate([
 ], FwdAnalysisController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)('all'),
-    openapi.ApiResponse({ status: 200, type: [Object] }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], FwdAnalysisController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)(':id'),
-    openapi.ApiResponse({ status: 200, type: Object }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -65,7 +61,6 @@ __decorate([
 ], FwdAnalysisController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Put)(':id'),
-    openapi.ApiResponse({ status: 200, type: Object }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -74,7 +69,6 @@ __decorate([
 ], FwdAnalysisController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(':id'),
-    openapi.ApiResponse({ status: 200, type: Object }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -82,7 +76,6 @@ __decorate([
 ], FwdAnalysisController.prototype, "remove", null);
 __decorate([
     (0, common_1.Post)(':id/process'),
-    openapi.ApiResponse({ status: 201, type: Object }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),

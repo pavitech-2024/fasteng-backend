@@ -1,34 +1,335 @@
-import { Response } from 'express';
 import { MarshallService } from '../service';
 import { MarshallInitDto } from '../dto/marshall-init.dto';
+import { Response } from 'express';
 export declare class MarshallController {
     private readonly marshallService;
-    private logger;
+    private readonly logger;
     constructor(marshallService: MarshallService);
     getAllByUserId(userId: string): Promise<import("../schemas").Marshall[]>;
-    verifyInitMarshall(response: Response, body: MarshallInitDto, userId: string): Promise<Response<any, Record<string, any>>>;
+    verifyInitMarshall(body: MarshallInitDto, userId: string): Promise<{
+        success: boolean;
+        dosage: any;
+    } | {
+        success: boolean;
+        error: {
+            status: any;
+            message: any;
+            name: any;
+        };
+    }>;
     getMaterialsByUserId(response: Response, userId: string): Promise<Response<any, Record<string, any>>>;
     getDosageById(response: Response, dosageId: string): Promise<Response<any, Record<string, any>>>;
-    saveMaterialSelectionStep(response: Response, body: any, userId: string): Promise<Response<any, Record<string, any>>>;
-    getStep3Data(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
-    calculateGranulometry(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
-    saveGranulometryCompositionStep(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
-    calculateStep4Data(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
-    saveBinderTrialStep(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
-    getIndexesOfMissesSpecificGravity(response: Response, aggregates: any): Promise<Response<any, Record<string, any>>>;
-    calculateDmtData(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
-    calculateGmmData(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
+    saveMaterialSelectionStep(body: any, userId: string): Promise<{
+        success: boolean;
+        error?: undefined;
+    } | {
+        success: boolean;
+        error: {
+            status: any;
+            message: any;
+            name: any;
+        };
+    }>;
+    getStep3Data(body: any): Promise<{
+        data: {
+            dnitBands: {
+                higher: any[];
+                lower: any[];
+            };
+            table_data: {
+                table_column_headers: string[];
+                table_rows: any[];
+            };
+            project: any[];
+            graphData: any[];
+        };
+        success: boolean;
+        error?: undefined;
+    } | {
+        data: any;
+        success: boolean;
+        error: {
+            status: any;
+            message: any;
+            name: any;
+        };
+    }>;
+    saveGranulometryCompositionStep(userId: string, body: any): Promise<{
+        success: boolean;
+        error?: undefined;
+    } | {
+        success: boolean;
+        error: {
+            status: any;
+            message: any;
+            name: any;
+        };
+    }>;
+    calculateStep4Data(body: any): Promise<{
+        data: {
+            percentsOfDosage: any[];
+            bandsOfTemperatures: any;
+            newPercentOfDosage: any[];
+        };
+        success: boolean;
+        error?: undefined;
+    } | {
+        data: any;
+        success: boolean;
+        error: {
+            status: any;
+            message: any;
+            name: any;
+        };
+    }>;
+    saveBinderTrialStep(userId: string, body: any): Promise<{
+        success: boolean;
+        error?: undefined;
+    } | {
+        success: boolean;
+        error: {
+            status: any;
+            message: any;
+            name: any;
+        };
+    }>;
+    getIndexesOfMissesSpecificGravity(aggregates: any): Promise<{
+        data: {
+            missesSpecificGravity: {
+                value: any;
+                _id: any;
+                name: any;
+            }[];
+        };
+        success: boolean;
+        error?: undefined;
+    } | {
+        success: boolean;
+        error: {
+            status: any;
+            message: any;
+            name: any;
+        };
+        data?: undefined;
+    }>;
+    calculateDmtData(body: any): Promise<{
+        data: {
+            maxSpecificGravity: any;
+            method: any;
+            listOfSpecificGravities: any;
+        };
+        success: boolean;
+        error?: undefined;
+    } | {
+        data: any;
+        success: boolean;
+        error: {
+            status: any;
+            message: any;
+            name: any;
+        };
+    }>;
+    calculateGmmData(body: any): Promise<{
+        data: {
+            maxSpecificGravity: {
+                lessOne: any;
+                lessHalf: any;
+                normal: any;
+                plusHalf: any;
+                plusOne: any;
+            };
+            method: string;
+            listOfSpecificGravities: any;
+        };
+        success: boolean;
+        error?: undefined;
+    } | {
+        data: any;
+        success: boolean;
+        error: {
+            status: any;
+            message: any;
+            name: any;
+        };
+    }>;
     calculateRiceTest(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
     saveMaximumMixtureDensityData(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
-    setVolumetricParameters(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
+    setVolumetricParameters(body: any): Promise<{
+        data: {
+            volumetricParameters: {
+                volumetricParameters: any[];
+                pointsOfCurveDosageRBV: any[];
+                pointsOfCurveDosageVv: any[];
+            };
+        };
+        success: boolean;
+        error?: undefined;
+    } | {
+        data: any;
+        success: boolean;
+        error: {
+            status: any;
+            message: any;
+            name: any;
+        };
+    }>;
     saveVolumetricParametersData(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
-    setOptimumBinderContentData(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
-    setOptimumBinderContentDosageGraph(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
-    getOptimumBinderExpectedParameters(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
-    saveOptimumBinderContentData(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
-    confirmSpecificGravity(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
-    confirmVolumetricParameters(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
-    saveConfirmationCompressionData(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
-    saveMarshallDosage(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
-    deleteMarshallDosage(response: Response, id: string): Promise<Response<any, Record<string, any>>>;
+    setOptimumBinderContentData(body: any): Promise<{
+        data: {
+            optimumBinder: {
+                rbv: string[][];
+                vv: string[][];
+                sg: string[][];
+                gmb: string[][];
+                stability: string[][];
+                vam: string[][];
+            };
+        };
+        success: boolean;
+        error?: undefined;
+    } | {
+        data: any;
+        success: boolean;
+        error: {
+            status: any;
+            message: any;
+            name: any;
+        };
+    }>;
+    setOptimumBinderContentDosageGraph(body: any): Promise<{
+        data: {
+            optimumBinderDosageGraph: {
+                pointsOfCurveDosage: any[];
+                optimumContent: number;
+                confirmedPercentsOfDosage: any;
+                curveRBV: {
+                    a: any;
+                    b: any;
+                };
+                curveVv: {
+                    a: any;
+                    b: any;
+                };
+            };
+        };
+        success: boolean;
+        error?: undefined;
+    } | {
+        data: any;
+        success: boolean;
+        error: {
+            status: any;
+            message: any;
+            name: any;
+        };
+    }>;
+    getOptimumBinderExpectedParameters(body: any): Promise<{
+        data: {
+            expectedParameters: {
+                Vv: any;
+                RBV: any;
+                Vam: number;
+                Gmb: number;
+                newMaxSpecificGravity: any;
+            };
+        };
+        success: boolean;
+        error?: undefined;
+    } | {
+        data: any;
+        success: boolean;
+        error: {
+            status: any;
+            message: any;
+            name: any;
+        };
+    }>;
+    saveOptimumBinderContentData(userId: string, body: any): Promise<{
+        success: boolean;
+        error?: undefined;
+    } | {
+        success: boolean;
+        error: {
+            status: any;
+            message: any;
+            name: any;
+        };
+    }>;
+    confirmSpecificGravity(body: any): Promise<{
+        data: {
+            confirmedSpecificGravity: any;
+        };
+        success: boolean;
+        error?: undefined;
+    } | {
+        data: any;
+        success: boolean;
+        error: {
+            status: any;
+            message: any;
+            name: any;
+        };
+    }>;
+    confirmVolumetricParameters(body: any): Promise<{
+        data: {
+            confirmedVolumetricParameters: {
+                valuesOfVolumetricParameters: any;
+                asphaltContent: any;
+                quantitative: any;
+                values: {
+                    volumeVoids: number;
+                    apparentBulkSpecificGravity: number;
+                    voidsFilledAsphalt: number;
+                    aggregateVolumeVoids: number;
+                    ratioBitumenVoid: number;
+                    stability: number;
+                    fluency: number;
+                    indirectTensileStrength: number;
+                };
+            };
+        };
+        success: boolean;
+        error?: undefined;
+    } | {
+        data: any;
+        success: boolean;
+        error: {
+            status: any;
+            message: any;
+            name: any;
+        };
+    }>;
+    saveConfirmationCompressionData(userId: string, body: any): Promise<{
+        success: boolean;
+        error?: undefined;
+    } | {
+        success: boolean;
+        error: {
+            status: any;
+            message: any;
+            name: any;
+        };
+    }>;
+    saveMarshallDosage(userId: string, body: any): Promise<{
+        success: boolean;
+        error?: undefined;
+    } | {
+        success: boolean;
+        error: {
+            status: any;
+            message: any;
+            name: any;
+        };
+    }>;
+    deleteMarshallDosage(id: string): Promise<{
+        success: boolean;
+        error?: undefined;
+    } | {
+        success: boolean;
+        error: {
+            status: any;
+            message: any;
+            name: any;
+        };
+    }>;
 }

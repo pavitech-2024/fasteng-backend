@@ -13,9 +13,9 @@ exports.MaterialSelectionDataDto = void 0;
 const class_validator_1 = require("class-validator");
 class MaterialSelectionDataDto {
 }
-exports.MaterialSelectionDataDto = MaterialSelectionDataDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
 ], MaterialSelectionDataDto.prototype, "materialSelectionData", void 0);
+exports.MaterialSelectionDataDto = MaterialSelectionDataDto;
 //# sourceMappingURL=save-material-selection.dto.js.map

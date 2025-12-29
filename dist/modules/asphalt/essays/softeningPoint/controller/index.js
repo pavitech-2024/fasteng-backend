@@ -63,7 +63,6 @@ let SofteningPointController = SofteningPointController_1 = class SofteningPoint
         });
     }
 };
-exports.SofteningPointController = SofteningPointController;
 __decorate([
     (0, common_1.Post)('verify-init'),
     (0, swagger_1.ApiOperation)({ summary: 'Verifica se é possível criar um ensaio de ponto de amolecimento com os dados enviados.' }),
@@ -117,9 +116,10 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], SofteningPointController.prototype, "saveEssay", null);
-exports.SofteningPointController = SofteningPointController = SofteningPointController_1 = __decorate([
+SofteningPointController = SofteningPointController_1 = __decorate([
     (0, swagger_1.ApiTags)('softeningPoint'),
     (0, common_1.Controller)('asphalt/essays/softeningPoint'),
     __metadata("design:paramtypes", [service_1.SofteningPointService])
 ], SofteningPointController);
+exports.SofteningPointController = SofteningPointController;
 //# sourceMappingURL=index.js.map

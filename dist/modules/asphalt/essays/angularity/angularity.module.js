@@ -16,8 +16,7 @@ const general_data_angularity_service_1 = require("./service/general-data.angula
 const services = [index_1.AngularityService, general_data_angularity_service_1.GeneralData_ANGULARITY_Service, calc_angularity_service_1.Calc_ANGULARITY_Service];
 let AngularityModule = class AngularityModule {
 };
-exports.AngularityModule = AngularityModule;
-exports.AngularityModule = AngularityModule = __decorate([
+AngularityModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [controller_1.AngularityController],
@@ -25,4 +24,5 @@ exports.AngularityModule = AngularityModule = __decorate([
         exports: [index_1.AngularityService, repository_1.AngularityRepository],
     })
 ], AngularityModule);
+exports.AngularityModule = AngularityModule;
 //# sourceMappingURL=angularity.module.js.map

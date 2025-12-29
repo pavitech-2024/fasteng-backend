@@ -18,8 +18,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.step2Data_Service = void 0;
 const common_1 = require("@nestjs/common");
 let step2Data_Service = class step2Data_Service {
-    verifyStep2DataUnitMass(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ containerVolume, containerWeight, sampleContainerWeight }) {
+    verifyStep2DataUnitMass({ containerVolume, containerWeight, sampleContainerWeight }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 if (containerVolume && containerWeight && containerVolume + containerWeight >= sampleContainerWeight) {
                     return true;
@@ -31,8 +31,8 @@ let step2Data_Service = class step2Data_Service {
         });
     }
 };
-exports.step2Data_Service = step2Data_Service;
-exports.step2Data_Service = step2Data_Service = __decorate([
+step2Data_Service = __decorate([
     (0, common_1.Injectable)()
 ], step2Data_Service);
+exports.step2Data_Service = step2Data_Service;
 //# sourceMappingURL=step2Data.unitMass.service.js.map

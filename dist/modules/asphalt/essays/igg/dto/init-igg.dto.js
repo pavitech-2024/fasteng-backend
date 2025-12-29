@@ -13,9 +13,9 @@ exports.IggInitDto = void 0;
 const class_validator_1 = require("class-validator");
 class IggInitDto {
 }
-exports.IggInitDto = IggInitDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], IggInitDto.prototype, "name", void 0);
+exports.IggInitDto = IggInitDto;
 //# sourceMappingURL=init-igg.dto.js.map

@@ -88,9 +88,9 @@ let MarshallRepository = class MarshallRepository {
         });
     }
 };
-exports.MarshallRepository = MarshallRepository;
-exports.MarshallRepository = MarshallRepository = __decorate([
+MarshallRepository = __decorate([
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.Marshall.name, database_config_1.DATABASE_CONNECTION.ASPHALT)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], MarshallRepository);
+exports.MarshallRepository = MarshallRepository;
 //# sourceMappingURL=index.js.map

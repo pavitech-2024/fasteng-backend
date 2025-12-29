@@ -31,8 +31,8 @@ let GeneralData_SPECIFYMASS_Service = GeneralData_SPECIFYMASS_Service_1 = class 
         this.materialRepository = materialRepository;
         this.logger = new common_1.Logger(GeneralData_SPECIFYMASS_Service_1.name);
     }
-    verifyInitSpecifyMass(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ name, material }) {
+    verifyInitSpecifyMass({ name, material }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('verify init specifyMass on general-data.specifyMass.service.ts > [body]');
                 const materialExists = yield this.materialRepository.findOne({
@@ -54,9 +54,9 @@ let GeneralData_SPECIFYMASS_Service = GeneralData_SPECIFYMASS_Service_1 = class 
         });
     }
 };
-exports.GeneralData_SPECIFYMASS_Service = GeneralData_SPECIFYMASS_Service;
-exports.GeneralData_SPECIFYMASS_Service = GeneralData_SPECIFYMASS_Service = GeneralData_SPECIFYMASS_Service_1 = __decorate([
+GeneralData_SPECIFYMASS_Service = GeneralData_SPECIFYMASS_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_1.SpecifyMassRepository, repository_2.MaterialsRepository])
 ], GeneralData_SPECIFYMASS_Service);
+exports.GeneralData_SPECIFYMASS_Service = GeneralData_SPECIFYMASS_Service;
 //# sourceMappingURL=general-data.specifyMass.service.js.map
