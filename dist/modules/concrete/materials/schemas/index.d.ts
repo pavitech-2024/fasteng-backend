@@ -9,7 +9,7 @@ export declare class Material {
     description?: {
         source?: string;
         responsible?: string;
-        maxDiammeter?: Sieve;
+        maxDiameter?: Sieve;
         aggregateNature?: string;
         boughtDate?: string;
         recieveDate?: string;
