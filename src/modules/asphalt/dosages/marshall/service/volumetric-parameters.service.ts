@@ -26,180 +26,153 @@ export class VolumetricParameters_Marshall_Service {
     private readonly marshallModel: Model<MarshallDocument>,
     private readonly marshallRepository: MarshallRepository,
   ) {}
-//tst
+
   async setVolumetricParameters(body: any) {
-  try {
-    this.logger.log('set volumetric parameters data on volumetric-parameters.marshall.service.ts > [body]', {
-      body,
-    });
+    try {
+      this.logger.log('set volumetric parameters data on volumetric-parameters.marshall.service.ts > [body]', {
+        body,
+      });
 
-    const { volumetricParametersData } = body;
-    const {
-      trial: binderTrial,
-      maxSpecificGravity,
-      temperatureOfWater,
-    } = body;
-
-    if (!maxSpecificGravity) {
-      throw new Error('maxSpecificGravity is required');
-    }
-
-    // AQUI: Declare gravityData uma vez só
-    const gravityData = maxSpecificGravity.results || maxSpecificGravity.result;
-    if (!gravityData) {
-      throw new Error('maxSpecificGravity must have either "result" or "results" property');
-    }
-
-    // Agora o log pode usar gravityData
-    this.logger.log(`Gravity structure: ${JSON.stringify({
-      hasResult: !!maxSpecificGravity.result,
-      hasResults: !!maxSpecificGravity.results,
-      method: maxSpecificGravity.method,
-      gravityDataKeys: Object.keys(gravityData)
-    })}`);
-
-    let pointsOfCurveDosageVv = [];
-    let pointsOfCurveDosageRBV = [];
-    let volumetricParameters = [];
-    let asphaltContent;
-
-    let newArray: any[] = [];
-
-    // Filtra apenas os teores que foram selecionados e tiveram seus campos preenchidos
-    Object.entries(volumetricParametersData).forEach(([key, value]: [string, any[]]) => {
-      const allNonNull = value.every((obj: any) => Object.values(obj).every((val: any) => val !== null));
-      if (allNonNull) {
-        const newObj: any = {};
-        newObj[key] = value;
-        newArray.push(newObj);
-      }
-    });
-
-    for (let i = 0; i < newArray.length; i++) {
-      let sumOfDryMass = 0;
-      let sumOfSaturatedMass = 0;
-      let sumOfSubmergedMass = 0;
-      let sumStability = 0;
-      let sumFluency = 0;
-      let sumIndirectTensileStrength = 0;
-      let nStability = 0;
-      let nFluency = 0;
-      let nIndirectTensileStrength = 0;
-      let nDryMass = 0;
-      let nSubmergedMass = 0;
-      let nSaturatedMass = 0;
-
-      let usedMaxSpecifyGravity;
-      let asphaltContentResult;
-
-      // Extrai apenas o nome do teor
-      asphaltContent = Object.keys(newArray[i])[0];
-
-      // REMOVA esta duplicação - já temos gravityData declarado acima
-      // const gravityData = maxSpecificGravity.results || maxSpecificGravity.result;
-
-      // Use gravityData que já foi declarado
-      switch (asphaltContent) {
-        case 'lessOne':
-          usedMaxSpecifyGravity = gravityData.lessOne;
-          asphaltContentResult = binderTrial - 1;
-          break;
-        case 'lessHalf':
-          usedMaxSpecifyGravity = gravityData.lessHalf;
-          asphaltContentResult = binderTrial - 0.5;
-          break;
-        case 'normal':
-          usedMaxSpecifyGravity = gravityData.normal;
-          asphaltContentResult = binderTrial;
-          break;
-        case 'plusHalf':
-          usedMaxSpecifyGravity = gravityData.plusHalf;
-          asphaltContentResult = binderTrial + 0.5;
-          break;
-        case 'plusOne':
-          usedMaxSpecifyGravity = gravityData.plusOne;
-          asphaltContentResult = binderTrial + 1;
-          break;
-        default:
-          throw new Error('Invalid asphalt content');
-      }
-
-      // Verifique se o valor foi encontrado
-      if (!usedMaxSpecifyGravity) {
-        throw new Error(`Could not find max specific gravity for ${asphaltContent}`);
-      }
-
-      for (let j = 0; j < newArray[i][asphaltContent].length; j++) {
-        const {
-          dryMass,
-          drySurfaceSaturatedMass,
-          submergedMass,
-          stability,
-          fluency,
-          diametricalCompressionStrength,
-        } = newArray[i][asphaltContent][j];
-
-        sumOfDryMass += dryMass;
-        sumOfSaturatedMass += drySurfaceSaturatedMass;
-        sumOfSubmergedMass += submergedMass;
-        nDryMass++;
-        nSubmergedMass++;
-        nSaturatedMass++;
-
-        if (stability !== 0) {
-          sumStability += stability;
-          nStability++;
-        }
-
-        if (fluency !== 0) {
-          sumFluency += fluency;
-          nFluency++;
-        }
-
-        if (diametricalCompressionStrength !== 0) {
-          sumIndirectTensileStrength += diametricalCompressionStrength;
-          nIndirectTensileStrength++;
-        }
-      }
-
-      if (nStability === 0) nStability = 1;
-      if (nFluency === 0) nFluency = 1;
-      if (nIndirectTensileStrength === 0) nIndirectTensileStrength = 1;
-
-      const stabilityBar = sumStability / nStability;
-      const fluencyBar = sumFluency / nFluency;
-      const diametricalCompressionStrengthBar = sumIndirectTensileStrength / nIndirectTensileStrength;
-
-      const sampleData = {
-        asphaltContent: asphaltContentResult,
-        sumOfDryMass,
-        sumOfSubmergedMass,
-        sumOfSaturatedMass,
-        stability: stabilityBar,
-        fluency: fluencyBar,
-        diametricalCompressionStrength: diametricalCompressionStrengthBar,
-        temperatureOfWater,
-        maxSpecificGravity: usedMaxSpecifyGravity,
-      };
-
+      const { volumetricParametersData } = body;
       const {
-        pointsOfCurveDosageVv: returnVv,
-        pointsOfCurveDosageRBV: returnRBV,
-        volumetricParameters: returnVp,
-      } = await this.calculateVolumetricParameters(sampleData);
+        trial: binderTrial,
+        maxSpecificGravity,
+        temperatureOfWater,
+      } = body;
 
-      pointsOfCurveDosageVv.push(...returnVv);
-      pointsOfCurveDosageRBV.push(...returnRBV);
-      volumetricParameters.push(...returnVp);
+      let pointsOfCurveDosageVv = [];
+      let pointsOfCurveDosageRBV = [];
+      let volumetricParameters = [];
+      let asphaltContent;
+
+      let newArray: any[] = [];
+
+      // Filtra apenas os teores que foram selecionados e tiveram seus campos preenchidos
+      Object.entries(volumetricParametersData).forEach(([key, value]: [string, any[]]) => {
+        const allNonNull = value.every((obj: any) => Object.values(obj).every((val: any) => val !== null));
+        if (allNonNull) {
+          const newObj: any = {};
+          newObj[key] = value;
+          newArray.push(newObj);
+        }
+      });
+
+      for (let i = 0; i < newArray.length; i++) {
+        let sumOfDryMass = 0;
+        let sumOfSaturatedMass = 0;
+        let sumOfSubmergedMass = 0;
+        let sumStability = 0;
+        let sumFluency = 0;
+        let sumIndirectTensileStrength = 0;
+        let nStability = 0;
+        let nFluency = 0;
+        let nIndirectTensileStrength = 0;
+        let nDryMass = 0;
+        let nSubmergedMass = 0;
+        let nSaturatedMass = 0;
+
+        let usedMaxSpecifyGravity;
+        let asphaltContentResult;
+
+        // Extrai apenas o nome do teor
+        asphaltContent = Object.keys(newArray[i])[0];
+
+        // Busca a massa específica de acordo com o teor
+        switch (asphaltContent) {
+          case 'lessOne':
+            usedMaxSpecifyGravity = maxSpecificGravity.results.lessOne;
+            asphaltContentResult = binderTrial - 1;
+            break;
+          case 'lessHalf':
+            usedMaxSpecifyGravity = maxSpecificGravity.results.lessHalf;
+            asphaltContentResult = binderTrial - 0.5;
+            break;
+          case 'normal':
+            usedMaxSpecifyGravity = maxSpecificGravity.results.normal;
+            asphaltContentResult = binderTrial;
+            break;
+          case 'plusHalf':
+            usedMaxSpecifyGravity = maxSpecificGravity.results.plusHalf;
+            asphaltContentResult = binderTrial + 0.5;
+            break;
+          case 'plusOne':
+            usedMaxSpecifyGravity = maxSpecificGravity.results.plusOne;
+            asphaltContentResult = binderTrial + 1;
+            break;
+          default:
+          throw new Error('Invalid asphalt content');
+        }
+
+        for (let j = 0; j < newArray[i][asphaltContent].length; j++) {
+          const {
+            dryMass,
+            drySurfaceSaturatedMass,
+            submergedMass,
+            stability,
+            fluency,
+            diametricalCompressionStrength,
+          } = newArray[i][asphaltContent][j];
+
+          sumOfDryMass += dryMass;
+          sumOfSaturatedMass += drySurfaceSaturatedMass;
+          sumOfSubmergedMass += submergedMass;
+          nDryMass++;
+          nSubmergedMass++;
+          nSaturatedMass++;
+
+          if (stability !== 0) {
+            sumStability += stability;
+            nStability++;
+          }
+
+          if (fluency !== 0) {
+            sumFluency += fluency;
+            nFluency++;
+          }
+
+          if (diametricalCompressionStrength !== 0) {
+            sumIndirectTensileStrength += diametricalCompressionStrength;
+            nIndirectTensileStrength++;
+          }
+        }
+
+        if (nStability === 0) nStability = 1;
+        if (nFluency === 0) nFluency = 1;
+        if (nIndirectTensileStrength === 0) nIndirectTensileStrength = 1;
+
+        const stabilityBar = sumStability / nStability;
+        const fluencyBar = sumFluency / nFluency;
+        const diametricalCompressionStrengthBar = sumIndirectTensileStrength / nIndirectTensileStrength;
+
+        const sampleData =
+          {
+            asphaltContent: asphaltContentResult,
+            sumOfDryMass,
+            sumOfSubmergedMass,
+            sumOfSaturatedMass,
+            stability: stabilityBar,
+            fluency: fluencyBar,
+            diametricalCompressionStrength: diametricalCompressionStrengthBar,
+            temperatureOfWater,
+            maxSpecificGravity: usedMaxSpecifyGravity,
+          };
+
+        const {
+          pointsOfCurveDosageVv: returnVv,
+          pointsOfCurveDosageRBV: returnRBV,
+          volumetricParameters: returnVp,
+        } = await this.calculateVolumetricParameters(sampleData);
+
+        pointsOfCurveDosageVv.push(...returnVv);
+        pointsOfCurveDosageRBV.push(...returnRBV);
+        volumetricParameters.push(...returnVp);
+      }
+
+      return { volumetricParameters, pointsOfCurveDosageRBV, pointsOfCurveDosageVv };
+    } catch (error) {
+      throw new Error('Failed to set volumetric parameters.');
     }
-
-    return { volumetricParameters, pointsOfCurveDosageRBV, pointsOfCurveDosageVv };
-  } catch (error) {
-    // Modifique para ver o erro real
-    this.logger.error(`Failed to set volumetric parameters: ${error.message}`);
-    throw new Error(`Failed to set volumetric parameters: ${error.message}`);
   }
-}
 
   async calculateVolumetricParameters(samplesData: SampleData) {
     try {
@@ -219,10 +192,10 @@ export class VolumetricParameters_Marshall_Service {
         maxSpecificGravity,
       } = samplesData;
 
-      const samplesVolumes = sumOfSaturatedMass - sumOfSubmergedMass;
+      const samplesVolumes = (sumOfSaturatedMass - sumOfSubmergedMass);
       const apparentBulkSpecificGravity = (sumOfDryMass / samplesVolumes) * temperatureOfWater;
       const volumeVoids = (maxSpecificGravity - apparentBulkSpecificGravity) / maxSpecificGravity;
-      const voidsFilledAsphalt = (apparentBulkSpecificGravity * asphaltContent) / 102.7;
+      const voidsFilledAsphalt = apparentBulkSpecificGravity * asphaltContent / 102.7;
       const aggregateVolumeVoids = volumeVoids + voidsFilledAsphalt;
       const ratioBitumenVoid = voidsFilledAsphalt / aggregateVolumeVoids;
 
