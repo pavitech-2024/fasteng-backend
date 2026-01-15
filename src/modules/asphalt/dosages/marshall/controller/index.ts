@@ -316,7 +316,7 @@ export class MarshallController {
     return response.status(200).json(status);
   }
 
-  @Delete(':id')
+@Delete('delete/:id')
   async deleteMarshallDosage(
     @Res() response: Response,
     @Param('id') id: string
