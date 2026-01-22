@@ -228,6 +228,21 @@ __decorate([
 __decorate([
     (0, common_1.Post)('verify-init/:id'),
     (0, swagger_1.ApiOperation)({ summary: 'Verifica se é possível criar uma dosagem Marshall com os dados enviados.' }),
+    (0, swagger_1.ApiBody)({
+        description: 'Dados iniciais necessários para verificar se é possível iniciar a dosagem Marshall.',
+        type: marshall_init_dto_1.MarshallInitDto,
+        examples: {
+            exemplo1: {
+                summary: 'Exemplo de request',
+                value: {
+                    generalData: {
+                        nome: "Exemplo Marshall",
+                        descricao: "Descrição de exemplo",
+                    }
+                }
+            }
+        }
+    }),
     (0, swagger_1.ApiResponse)({
         status: 200,
         description: 'É possível criar uma dosagem Marshall com os dados enviados.',

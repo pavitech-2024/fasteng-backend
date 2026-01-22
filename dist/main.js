@@ -21,6 +21,7 @@ const http_exception_filter_1 = require("./config/filters/http-exception.filter"
 const granulometry_module_1 = require("./modules/soils/essays/granulometry/granulometry.module");
 const granulometry_module_2 = require("./modules/asphalt/essays/granulometry/granulometry.module");
 const viscosityRotational_module_1 = require("./modules/asphalt/essays/viscosityRotational/viscosityRotational.module");
+const marshall_module_1 = require("./modules/asphalt/dosages/marshall/marshall.module");
 function bootstrap() {
     return __awaiter(this, void 0, void 0, function* () {
         const app = yield core_1.NestFactory.create(app_module_1.AppModule, {
@@ -37,7 +38,7 @@ function bootstrap() {
             .setVersion('1.0')
             .build();
         swagger_1.SwaggerModule.setup('docs/asphalt', app, swagger_1.SwaggerModule.createDocument(app, swagger_asphalt, {
-            include: [auth_module_1.AuthModule, users_module_1.UsersModule, granulometry_module_2.AsphaltGranulometryModule, viscosityRotational_module_1.ViscosityRotationalModule],
+            include: [auth_module_1.AuthModule, users_module_1.UsersModule, granulometry_module_2.AsphaltGranulometryModule, viscosityRotational_module_1.ViscosityRotationalModule, marshall_module_1.MarshallModule],
         }));
         const swagger_soils = new swagger_1.DocumentBuilder()
             .setTitle('FastEng API')

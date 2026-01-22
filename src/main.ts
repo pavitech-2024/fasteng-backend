@@ -88,6 +88,8 @@ import { Granulometry } from 'modules/soils/essays/granulometry/schemas';
 import { GranulometryModule } from 'modules/soils/essays/granulometry/granulometry.module';
 import { AsphaltGranulometryModule } from 'modules/asphalt/essays/granulometry/granulometry.module';
 import { ViscosityRotationalModule } from 'modules/asphalt/essays/viscosityRotational/viscosityRotational.module';
+import { Marshall } from 'modules/asphalt/dosages/marshall/schemas';
+import { MarshallModule } from 'modules/asphalt/dosages/marshall/marshall.module';
 
 
 
@@ -117,7 +119,7 @@ async function bootstrap() {
     'docs/asphalt',
     app,
     SwaggerModule.createDocument(app, swagger_asphalt, {
-      include: [AuthModule, UsersModule, AsphaltGranulometryModule, ViscosityRotationalModule],
+      include: [AuthModule, UsersModule, AsphaltGranulometryModule, ViscosityRotationalModule, MarshallModule],
     }),
   );
 

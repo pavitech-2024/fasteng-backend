@@ -51,7 +51,7 @@ let GeneralData_Marshall_Service = GeneralData_Marshall_Service_1 = class Genera
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('verify init Marshall on general-data.marshall.service.ts > [body]');
-                const { generalData: { name }, _id } = marshall;
+                const { generalData: _id } = marshall;
                 const MarshallExists = yield this.marshallRepository.findOne(name, userId);
                 if (MarshallExists && !_id)
                     throw new exceptions_1.AlreadyExists('name');

@@ -21,7 +21,7 @@ export class GeneralData_Marshall_Service {
     try {
       this.logger.log('verify init Marshall on general-data.marshall.service.ts > [body]');
 
-      const { generalData: { name }, _id } = marshall;
+      const { generalData: /*{ name },*/ _id } = marshall;
 
       const MarshallExists = await this.marshallRepository.findOne(name, userId)
 

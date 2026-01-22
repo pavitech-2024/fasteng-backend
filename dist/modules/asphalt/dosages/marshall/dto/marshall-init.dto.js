@@ -11,15 +11,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MarshallInitDto = void 0;
 const class_validator_1 = require("class-validator");
+const swagger_1 = require("@nestjs/swagger");
 class MarshallInitDto {
 }
 exports.MarshallInitDto = MarshallInitDto;
 __decorate([
+    (0, swagger_1.ApiPropertyOptional)({
+        description: 'ID opcional do Marshall',
+        example: '507f1f77bcf86cd799439011'
+    }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], MarshallInitDto.prototype, "_id", void 0);
 __decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Dados gerais do Marshall',
+        type: 'object',
+        example: {
+            nome: "Marshall Exemplo",
+            descricao: "Dosagem Marshall para teste",
+        }
+    }),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
 ], MarshallInitDto.prototype, "generalData", void 0);

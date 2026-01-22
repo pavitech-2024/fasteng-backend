@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Logger, Param, Post, Res } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { MarshallService } from '../service';
 import { MarshallInitDto } from '../dto/marshall-init.dto';
@@ -23,6 +23,21 @@ export class MarshallController {
 
   @Post('verify-init/:id')
   @ApiOperation({ summary: 'Verifica se é possível criar uma dosagem Marshall com os dados enviados.' })
+  @ApiBody({
+  description: 'Dados iniciais necessários para verificar se é possível iniciar a dosagem Marshall.',
+  type: MarshallInitDto,
+  examples: {
+    exemplo1: {
+      summary: 'Exemplo de request',
+      value: {
+        generalData: {
+          nome: "Exemplo Marshall",
+          descricao: "Descrição de exemplo",
+        }
+      }
+    }
+  }
+})
   @ApiResponse({
     status: 200,
     description: 'É possível criar uma dosagem Marshall com os dados enviados.',
