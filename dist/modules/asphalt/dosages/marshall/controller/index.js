@@ -81,6 +81,13 @@ let MarshallController = MarshallController_1 = class MarshallController {
             return response.status(200).json(status);
         });
     }
+    calculateStep3vData(response, body) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.log(`calculate step 3 data > [body]: ${body}`);
+            const status = yield this.marshallService.calculateStep3Data(body);
+            return response.status(200).json(status);
+        });
+    }
     saveGranulometryCompositionStep(response, userId, body) {
         return __awaiter(this, void 0, void 0, function* () {
             this.logger.log(`save step 3 data > [body]: ${body}`);
@@ -305,6 +312,14 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "calculateStep3Data", null);
+__decorate([
+    (0, common_1.Post)('calculate-stepv-3-data'),
+    __param(0, (0, common_1.Res)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], MarshallController.prototype, "calculateStep3vData", null);
 __decorate([
     (0, common_1.Post)('save-granulometry-composition-step/:userId'),
     __param(0, (0, common_1.Res)()),
