@@ -11,18 +11,26 @@ export declare class MaximumMixtureDensity_Marshall_Service {
     private logger;
     constructor(marshallModel: Model<MarshallDocument>, marshallRepository: MarshallRepository, materialsRepository: MaterialsRepository, specificMassRepository: SpecifyMassRepository);
     getIndexesOfMissesSpecificGravity(aggregates: any): Promise<{
-        missesSpecificGravity: {
+        missesSpecificGravity: ({
+            value: number;
+            _id: string;
+            name: any;
+            hasRealData: boolean;
+            status: string;
+            materialType?: undefined;
+        } | {
             value: number;
             _id: string;
             name: string;
             materialType: "coarseAggregate" | "fineAggregate" | "filler" | "asphaltBinder" | "CAP" | "other";
             hasRealData: boolean;
             status: string;
-        }[];
+        })[];
         summary: {
             totalAggregates: number;
             foundInDb: number;
             hasRealData: number;
+            usingFallback: number;
         };
     }>;
     calculateDmtData(body: any): Promise<any>;
@@ -37,9 +45,8 @@ export declare class MaximumMixtureDensity_Marshall_Service {
             };
             method: string;
         };
-        listOfSpecificGravities: number[];
+        listOfSpecificGravities: any[];
     }>;
-    private getSpecificGravitiesFromDatabase;
     calculateRiceTest(body: any): Promise<any>;
     saveMistureMaximumDensityData(body: any, userId: string): Promise<boolean>;
 }

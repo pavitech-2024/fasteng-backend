@@ -52,196 +52,22 @@ let GranulometryComposition_Marshall_Service = GranulometryComposition_Marshall_
     getGranulometryData(aggregates) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                console.log('🔍 === INÍCIO getGranulometryData ===');
-                console.log('Aggregates recebidos:', JSON.stringify(aggregates, null, 2));
-                if (!aggregates || !Array.isArray(aggregates) || aggregates.length === 0) {
-                    return { table_column_headers: ['sieve_label'], table_rows: [] };
-                }
                 const granulometry_data = [];
                 const granulometrys = yield this.granulometry_repository.findAll();
-                console.log('📊 Total de ensaios:', granulometrys.length);
                 aggregates.forEach((aggregate) => {
-                    var _a, _b, _c, _d, _e, _f;
-                    console.log(`\n🔍 Processando aggregate: ${aggregate.name} (${aggregate._id})`);
                     const granulometry = granulometrys.find(({ generalData }) => {
-                        if (!generalData || !generalData.material)
-                            return false;
-                        return generalData.material._id.toString() === aggregate._id.toString();
+                        const { material } = generalData;
+                        return aggregate._id.toString() === material._id.toString();
                     });
-                    if (!granulometry) {
-                        console.log('  ❌ Nenhum ensaio encontrado');
-                        granulometry_data.push({
-                            _id: aggregate._id,
-                            passants: {},
-                        });
-                        return;
-                    }
-                    console.log('  ✅ Ensaio encontrado! ID:', granulometry._id);
-                    console.log('  🔎 Investigando estrutura do ensaio:');
-                    if (granulometry.step2Data) {
-                        console.log('    - Tem step2Data? SIM');
-                        console.log('    - Keys do step2Data:', Object.keys(granulometry.step2Data));
-                        if (granulometry.step2Data.table_data) {
-                            console.log('    - Tem table_data? SIM');
-                            console.log('    - Keys do table_data:', Object.keys(granulometry.step2Data.table_data));
-                            if (granulometry.step2Data.table_data.rows && Array.isArray(granulometry.step2Data.table_data.rows)) {
-                                console.log('    - Tem rows no table_data? SIM');
-                                console.log('    - Quantidade de rows:', granulometry.step2Data.table_data.rows.length);
-                                if (granulometry.step2Data.table_data.rows.length > 0) {
-                                    console.log('    - Primeira row:', JSON.stringify(granulometry.step2Data.table_data.rows[0], null, 2));
-                                }
-                                const rows = granulometry.step2Data.table_data.rows;
-                                const passants = {};
-                                rows.forEach((row, index) => {
-                                    console.log(`    Row ${index}:`, row);
-                                    if (row && row.sieve_label) {
-                                        const value = row.accumulated_passant !== undefined ? row.accumulated_passant :
-                                            row.passant !== undefined ? row.passant :
-                                                null;
-                                        if (value !== null) {
-                                            passants[row.sieve_label] = value;
-                                            console.log(`      ✅ Peneira: ${row.sieve_label} = ${value}`);
-                                        }
-                                        else {
-                                            console.log(`      ⚠️ Peneira ${row.sieve_label} sem valor de passant`);
-                                        }
-                                    }
-                                });
-                                console.log('    Passants extraídos:', Object.keys(passants).length, 'peneiras');
-                                granulometry_data.push({
-                                    _id: aggregate._id,
-                                    passants: passants,
-                                });
-                                return;
-                            }
-                        }
-                    }
-                    console.log('    - Tem data?', !!granulometry.data);
-                    console.log('    - Tem results?', !!granulometry.results);
-                    console.log('    - Tem passant direto?', !!granulometry.passant);
-                    let passantData = null;
-                    if (granulometry.passant && Array.isArray(granulometry.passant)) {
-                        console.log('  📌 Passant encontrado em granulometry.passant');
-                        passantData = granulometry.passant;
-                    }
-                    else if (((_a = granulometry.step2Data) === null || _a === void 0 ? void 0 : _a.passant) && Array.isArray(granulometry.step2Data.passant)) {
-                        console.log('  📌 Passant encontrado em granulometry.step2Data.passant');
-                        passantData = granulometry.step2Data.passant;
-                    }
-                    else if (((_c = (_b = granulometry.step2Data) === null || _b === void 0 ? void 0 : _b.data) === null || _c === void 0 ? void 0 : _c.passant) && Array.isArray(granulometry.step2Data.data.passant)) {
-                        console.log('  📌 Passant encontrado em granulometry.step2Data.data.passant');
-                        passantData = granulometry.step2Data.data.passant;
-                    }
-                    else if (((_d = granulometry.results) === null || _d === void 0 ? void 0 : _d.passant) && Array.isArray(granulometry.results.passant)) {
-                        console.log('  📌 Passant encontrado em granulometry.results.passant');
-                        passantData = granulometry.results.passant;
-                    }
-                    else if (((_e = granulometry.data) === null || _e === void 0 ? void 0 : _e.passant) && Array.isArray(granulometry.data.passant)) {
-                        console.log('  📌 Passant encontrado em granulometry.data.passant');
-                        passantData = granulometry.data.passant;
-                    }
-                    else if (((_f = granulometry.table_data) === null || _f === void 0 ? void 0 : _f.rows) && Array.isArray(granulometry.table_data.rows)) {
-                        console.log('  📌 Dados encontrados em granulometry.table_data.rows');
-                        const rows = granulometry.table_data.rows;
-                        const passants = {};
-                        rows.forEach(row => {
-                            if (row && row.sieve_label) {
-                                const value = row.accumulated_passant !== undefined ? row.accumulated_passant :
-                                    row.passant !== undefined ? row.passant :
-                                        null;
-                                if (value !== null) {
-                                    passants[row.sieve_label] = value;
-                                }
-                            }
-                        });
-                        granulometry_data.push({
-                            _id: aggregate._id,
-                            passants: passants,
-                        });
-                        return;
-                    }
-                    if (!passantData) {
-                        console.log('  ❌ Nenhum dado de passant encontrado em nenhum lugar!');
-                        console.log('  📋 Estrutura completa do ensaio:');
-                        const keys = Object.keys(granulometry);
-                        console.log('  Keys principais:', keys);
-                        ['step2Data', 'data', 'results', 'table_data'].forEach(key => {
-                            if (granulometry[key]) {
-                                console.log(`  Conteúdo de ${key}:`, Object.keys(granulometry[key]));
-                            }
-                        });
-                        granulometry_data.push({
-                            _id: aggregate._id,
-                            passants: {},
-                        });
-                        return;
-                    }
-                    console.log('    Passant encontrado:', passantData.length, 'itens');
-                    console.log('    🔎 Estrutura do primeiro item do passant:');
-                    if (passantData.length > 0) {
-                        console.log('      Primeiro item:', passantData[0]);
-                        console.log('      Tipo:', typeof passantData[0]);
-                        console.log('      É array?', Array.isArray(passantData[0]));
-                        if (typeof passantData[0] === 'object') {
-                            console.log('      Keys do primeiro item:', Object.keys(passantData[0]));
-                        }
-                    }
+                    const { passant } = granulometry.step2Data;
                     let passants = {};
-                    passantData.forEach((p, index) => {
-                        console.log(`    Item ${index}:`, p);
-                        if (p) {
-                            let sieveLabel = null;
-                            let passantValue = null;
-                            if (p.sieve_label !== undefined && p.passant !== undefined) {
-                                sieveLabel = p.sieve_label;
-                                passantValue = p.passant;
-                            }
-                            else if (p.label !== undefined && p.value !== undefined) {
-                                sieveLabel = p.label;
-                                passantValue = p.value;
-                            }
-                            else if (Array.isArray(p) && p.length >= 2) {
-                                sieveLabel = p[0];
-                                passantValue = p[1];
-                            }
-                            else if (p.sieve_label !== undefined && p.accumulated_passant !== undefined) {
-                                sieveLabel = p.sieve_label;
-                                passantValue = p.accumulated_passant;
-                            }
-                            else {
-                                if (typeof p === 'object') {
-                                    console.log('      Keys:', Object.keys(p));
-                                    for (const key in p) {
-                                        if (typeof p[key] === 'number' && (key.includes('passant') || key.includes('value'))) {
-                                            sieveLabel = key;
-                                            passantValue = p[key];
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-                            if (sieveLabel !== null && passantValue !== null) {
-                                passants[sieveLabel] = passantValue;
-                                console.log(`      ✅ Adicionado: ${sieveLabel} = ${passantValue}`);
-                            }
-                        }
+                    passant.forEach((p) => {
+                        passants[p.sieve_label] = p.passant;
                     });
-                    console.log('    Passants extraídos:', Object.keys(passants).length, 'peneiras');
-                    if (Object.keys(passants).length > 0) {
-                        console.log('    Peneiras:', Object.keys(passants));
-                    }
                     granulometry_data.push({
                         _id: aggregate._id,
                         passants: passants,
                     });
-                });
-                console.log('\n📊 RESUMO DOS DADOS COLETADOS:');
-                granulometry_data.forEach((data, index) => {
-                    const hasData = Object.keys(data.passants).length > 0;
-                    console.log(`  Aggregate ${index + 1}: ${data._id} - ${hasData ? 'COM dados' : 'SEM dados'}`);
-                    if (hasData) {
-                        console.log(`    Peneiras: ${Object.keys(data.passants).join(', ')}`);
-                    }
                 });
                 const table_column_headers = [];
                 const table_rows = [];
@@ -252,7 +78,7 @@ let GranulometryComposition_Marshall_Service = GranulometryComposition_Marshall_
                         const aggregates_data = {};
                         granulometry_data.forEach((aggregate) => {
                             const { _id, passants } = aggregate;
-                            aggregates_data['total_passant_'.concat(_id)] = passants[sieve.label] || null;
+                            aggregates_data['total_passant_'.concat(_id)] = passants[sieve.label];
                             aggregates_data['passant_'.concat(_id)] = null;
                             if (!table_column_headers.some((header) => header.includes(_id))) {
                                 table_column_headers.push('total_passant_'.concat(_id));
@@ -262,33 +88,15 @@ let GranulometryComposition_Marshall_Service = GranulometryComposition_Marshall_
                         table_rows.push(Object.assign({ sieve_label: sieve.label }, aggregates_data));
                     }
                 });
-                console.log('\n📋 TABELA GERADA:');
-                console.log('  Table rows:', table_rows.length);
-                console.log('  Table columns:', table_column_headers.length);
-                console.log('  Columns:', table_column_headers);
-                if (table_rows.length === 0) {
-                    console.log('❌ TABELA VAZIA! Possíveis causas:');
-                    console.log('  1. Nenhum dado de passant encontrado');
-                    console.log('  2. As peneiras em AllSieves não batem com as dos dados');
-                    console.log('  3. sieve_labels diferentes');
-                    const allSieveLabels = new Set();
-                    granulometry_data.forEach(agg => {
-                        Object.keys(agg.passants).forEach(label => {
-                            allSieveLabels.add(label);
-                        });
-                    });
-                    console.log('  Sieve_labels encontrados nos dados:', Array.from(allSieveLabels));
-                    console.log('  Primeiras 5 peneiras de AllSieves:', interfaces_1.AllSieves.slice(0, 5).map(s => s.label));
-                }
+                this.logger.log(table_rows);
+                this.logger.log(table_column_headers);
                 const table_data = {
                     table_column_headers,
                     table_rows,
                 };
-                console.log('✅ === FIM getGranulometryData ===');
                 return table_data;
             }
             catch (error) {
-                console.error('💥 Error in getGranulometryData:', error);
                 throw error;
             }
         });
@@ -491,12 +299,104 @@ let GranulometryComposition_Marshall_Service = GranulometryComposition_Marshall_
                         }
                     });
                 });
+                const ensureCorrectBandValues = (band, dnitBands) => {
+                    if (dnitBands === 'C') {
+                        console.log('=== APLICANDO CORREÇÃO PARA BANDA C ===');
+                        const correctValues = {
+                            lower: {
+                                6: 100,
+                                8: 70,
+                                10: 44,
+                                12: 22,
+                                14: 14,
+                                15: 8,
+                                17: 4,
+                                19: 2
+                            },
+                            higher: {
+                                6: 100,
+                                8: 90,
+                                10: 72,
+                                12: 50,
+                                14: 36.29,
+                                15: 26,
+                                17: 16,
+                                19: 10
+                            }
+                        };
+                        Object.keys(correctValues.lower).forEach(idxStr => {
+                            const idx = parseInt(idxStr);
+                            if (idx < band.lower.length) {
+                                console.log(`Corrigindo band.lower[${idx}] de ${band.lower[idx]} para ${correctValues.lower[idx]}`);
+                                band.lower[idx] = correctValues.lower[idx];
+                            }
+                        });
+                        Object.keys(correctValues.higher).forEach(idxStr => {
+                            const idx = parseInt(idxStr);
+                            if (idx < band.higher.length) {
+                                console.log(`Corrigindo band.higher[${idx}] de ${band.higher[idx]} para ${correctValues.higher[idx]}`);
+                                band.higher[idx] = correctValues.higher[idx];
+                            }
+                        });
+                    }
+                    return band;
+                };
+                band = ensureCorrectBandValues(band, dnitBands);
+                const filteredBand = {
+                    lowerBand: [],
+                    higherBand: []
+                };
+                const indexCorrection = {
+                    6: 6,
+                    14: 15,
+                    16: 17,
+                    18: 19
+                };
+                projections.forEach((proj) => {
+                    const sieveLabel = proj.label;
+                    const sieveIndex = interfaces_1.AllSieves.findIndex(sieve => sieve.label === sieveLabel);
+                    let bandIndex = sieveIndex;
+                    if (indexCorrection[sieveIndex] !== undefined) {
+                        bandIndex = indexCorrection[sieveIndex];
+                    }
+                    let lowerValue = null;
+                    let higherValue = null;
+                    if (bandIndex !== -1) {
+                        if (bandIndex < band.lower.length)
+                            lowerValue = band.lower[bandIndex];
+                        if (bandIndex < band.higher.length)
+                            higherValue = band.higher[bandIndex];
+                    }
+                    filteredBand.lowerBand.push(lowerValue);
+                    filteredBand.higherBand.push(higherValue);
+                });
+                const tableWithBands = projections.map((proj, idx) => {
+                    return {
+                        sieve_label: proj.label,
+                        projection: proj.value,
+                        inferior: filteredBand.lowerBand[idx] !== null
+                            ? filteredBand.lowerBand[idx].toFixed(2)
+                            : '---',
+                        superior: filteredBand.higherBand[idx] !== null
+                            ? filteredBand.higherBand[idx].toFixed(2)
+                            : '---'
+                    };
+                });
+                console.log('=== VALORES CORRETOS FINAIS ===');
+                console.log('Peneira               | Projeção | Inferior | Superior');
+                console.log('----------------------|----------|----------|----------');
+                tableWithBands.forEach(row => {
+                    console.log(`${row.sieve_label.padEnd(20)} | ${row.projection.padEnd(8)} | ${row.inferior.padEnd(8)} | ${row.superior}`);
+                });
                 const data = {
                     percentsOfMaterials,
                     sumOfPercents,
                     pointsOfCurve,
                     table_data: newTableRows,
                     projections,
+                    bands: filteredBand,
+                    dnitBands: band,
+                    tableWithBands: tableWithBands
                 };
                 return data;
             }

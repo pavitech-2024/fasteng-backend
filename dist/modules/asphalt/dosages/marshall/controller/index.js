@@ -104,22 +104,9 @@ let MarshallController = MarshallController_1 = class MarshallController {
     }
     getIndexesOfMissesSpecificGravity(response, aggregates) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log('🔍🔍🔍 ENDPOINT get-specific-mass-indexes RECEBEU:');
-            console.log('🔍 Tipo de aggregates:', typeof aggregates);
-            console.log('🔍 É array?', Array.isArray(aggregates));
-            console.log('🔍 Quantidade:', (aggregates === null || aggregates === void 0 ? void 0 : aggregates.length) || 0);
-            console.log('🔍 Conteúdo:', JSON.stringify(aggregates, null, 2));
             this.logger.log(`get specific mass indexes - step 5 > [body]: ${aggregates}`);
-            try {
-                const status = yield this.marshallService.getIndexesOfMissesSpecificGravity(aggregates);
-                console.log('✅✅✅ RESPOSTA do get-specific-mass-indexes:');
-                console.log('✅ Status:', JSON.stringify(status, null, 2));
-                return response.status(200).json(status);
-            }
-            catch (error) {
-                console.error('❌❌❌ ERRO no get-specific-mass-indexes:', error);
-                return response.status(500).json({ error: error.message });
-            }
+            const status = yield this.marshallService.getIndexesOfMissesSpecificGravity(aggregates);
+            return response.status(200).json(status);
         });
     }
     calculateDmtData(response, body) {
