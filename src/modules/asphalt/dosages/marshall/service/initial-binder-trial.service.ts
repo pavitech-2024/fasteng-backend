@@ -104,7 +104,7 @@ export class SetBinderTrial_Marshall_Service {
     try {
 
       const resultRotational: any = await this.viscosityRepository.findOne({
-        'generalData.material._id': binder._id,
+        'generalData.material._id': binder,
       });
 
       if (!resultRotational) {

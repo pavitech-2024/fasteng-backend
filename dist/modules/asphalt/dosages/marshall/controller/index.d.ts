@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { MarshallService } from '../service/marshall.service';
+import { MarshallService } from '../service';
 import { MarshallInitDto } from '../dto/marshall-init.dto';
 export declare class MarshallController {
     private readonly marshallService;
@@ -11,8 +11,7 @@ export declare class MarshallController {
     getDosageById(response: Response, dosageId: string): Promise<Response<any, Record<string, any>>>;
     saveMaterialSelectionStep(response: Response, body: any, userId: string): Promise<Response<any, Record<string, any>>>;
     getStep3Data(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
-    calculateGranulometry(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
-    calculateStep3vData(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
+    calculateStep3Data(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
     saveGranulometryCompositionStep(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
     calculateStep4Data(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
     saveBinderTrialStep(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;

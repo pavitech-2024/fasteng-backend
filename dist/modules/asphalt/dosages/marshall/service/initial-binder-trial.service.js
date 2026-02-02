@@ -124,7 +124,7 @@ let SetBinderTrial_Marshall_Service = SetBinderTrial_Marshall_Service_1 = class 
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const resultRotational = yield this.viscosityRepository.findOne({
-                    'generalData.material._id': binder._id,
+                    'generalData.material._id': binder,
                 });
                 if (!resultRotational) {
                     throw new common_1.NotFoundException(`O ligante selecionado não passou por nenhum ensaio de viscosidade ainda.`);

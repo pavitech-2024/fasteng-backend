@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Logger, Param, Post, Res } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
-import { SuperpaveService } from '../service/marshall.service';
+import { SuperpaveService } from '../service';
 import { SuperpaveInitDto } from '../dto/superpave-init.dto';
 
 @ApiTags('superpave')

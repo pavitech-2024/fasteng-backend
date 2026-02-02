@@ -50,12 +50,12 @@ let ConfirmCompression_Marshall_Service = ConfirmCompression_Marshall_Service_1 
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.logger.log('confirming specific gravity on confirm-compression.marshall.service.ts > [body]', { body });
-                const { method, listOfSpecificGravities, percentsOfDosage, confirmedPercentsOfDosage, optimumContent, gmm: gmmInput, valuesOfSpecificGravity, } = body;
+                const { method, listOfSpecificGravities, percentsOfDosage, confirmedPercentsOfDosage, optimumContent, gmm, valuesOfSpecificGravity } = body;
                 let confirmedSpecificGravity;
                 let GMM;
                 let formattedPercentsOfDosage = [];
                 const ids1 = new Set();
-                Object.keys(percentsOfDosage[0]).forEach((key) => {
+                Object.keys(percentsOfDosage[0]).forEach(key => {
                     const id = key.split('_')[1];
                     ids1.add(id);
                     const value = percentsOfDosage[0][key];
@@ -72,20 +72,15 @@ let ConfirmCompression_Marshall_Service = ConfirmCompression_Marshall_Service_1 
                     return confirmedSpecificGravity;
                 }
                 else if (method === 'GMM') {
-                    if (gmmInput && gmmInput > 0)
-                        GMM = parseFloat(gmmInput);
-                    else {
-                        const normalize = (val) => typeof val === 'string' ? parseFloat(val.replace(',', '.')) : Number(val);
-                        const GMM = normalize(valuesOfSpecificGravity.massOfDrySample) /
-                            (normalize(valuesOfSpecificGravity.massOfDrySample) +
-                                normalize(valuesOfSpecificGravity.massOfContainerWater) -
-                                normalize(valuesOfSpecificGravity.massOfContainerWaterSample));
-                        confirmedSpecificGravity = {
-                            result: GMM,
-                            type: 'GMM',
-                        };
-                        return confirmedSpecificGravity;
-                    }
+                    if (gmm)
+                        GMM = gmm;
+                    else
+                        GMM = valuesOfSpecificGravity.massOfDrySample / (valuesOfSpecificGravity.massOfDrySample - valuesOfSpecificGravity.massOfContainerWaterSample + valuesOfSpecificGravity.massOfContainerWater);
+                    confirmedSpecificGravity = {
+                        result: GMM,
+                        type: "GMM"
+                    };
+                    return confirmedSpecificGravity;
                 }
             }
             catch (error) {

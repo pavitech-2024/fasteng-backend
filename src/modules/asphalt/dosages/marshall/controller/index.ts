@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Logger, Param, Post, Res } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
-import { MarshallService } from '../service/marshall.service';
+import { MarshallService } from '../service';
 import { MarshallInitDto } from '../dto/marshall-init.dto';
 //tst
 @ApiTags('marshall')
@@ -52,18 +52,20 @@ export class MarshallController {
   @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
   async getMaterialsByUserId(@Res() response: Response, @Param('id') userId: string) {
     this.logger.log(`get all materials, by user id, with the necessary dosage essays > [id]: ${userId}`);
+    
 
     const status = await this.marshallService.getUserMaterials(userId);
 
     return response.status(200).json(status);
   }
-//st
+
   @Get('by-id/:id')
   @ApiOperation({ summary: 'Retorna uma dosagem do banco de dados com o id informado.' })
   @ApiResponse({ status: 200, description: 'Dosagem encontrada com sucesso!' })
   @ApiResponse({ status: 400, description: 'Dosagem não encontrada!' })
   async getDosageById(@Res() response: Response, @Param('id') dosageId: string) {
     this.logger.log(`get all materials, by user id, with the necessary dosage essays > [id]: ${dosageId}`);
+    this.logger.log(`get a dosage by dosage id > [id]: ${dosageId}`);
 
     const status = await this.marshallService.getDosageById(dosageId);
 
@@ -100,24 +102,15 @@ export class MarshallController {
     return response.status(200).json(status);
   }
 
-  @Post('calculate-granulometry')
-  async calculateGranulometry(@Res() response: Response, @Body() body: any) {
-    this.logger.log(`calculate granulometry data > [body]: ${body}`);
-
-    const status = await this.marshallService.calculateGranulometry(body);
-
-    return response.status(200).json(status);
-  }
-
-//tst
-   @Post('calculate-stepv-3-data')
-  async calculateStep3vData(@Res() response: Response, @Body() body: any) {
+  @Post('calculate-step-3-data')
+  async calculateStep3Data(@Res() response: Response, @Body() body: any) {
     this.logger.log(`calculate step 3 data > [body]: ${body}`);
 
     const status = await this.marshallService.calculateStep3Data(body);
 
     return response.status(200).json(status);
   }
+
   @Post('save-granulometry-composition-step/:userId')
   async saveGranulometryCompositionStep(
     @Res() response: Response,

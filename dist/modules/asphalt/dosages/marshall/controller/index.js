@@ -25,7 +25,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MarshallController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
-const marshall_service_1 = require("../service/marshall.service");
+const service_1 = require("../service");
 const marshall_init_dto_1 = require("../dto/marshall-init.dto");
 let MarshallController = MarshallController_1 = class MarshallController {
     constructor(marshallService) {
@@ -55,6 +55,7 @@ let MarshallController = MarshallController_1 = class MarshallController {
     getDosageById(response, dosageId) {
         return __awaiter(this, void 0, void 0, function* () {
             this.logger.log(`get all materials, by user id, with the necessary dosage essays > [id]: ${dosageId}`);
+            this.logger.log(`get a dosage by dosage id > [id]: ${dosageId}`);
             const status = yield this.marshallService.getDosageById(dosageId);
             return response.status(200).json(status);
         });
@@ -73,14 +74,7 @@ let MarshallController = MarshallController_1 = class MarshallController {
             return response.status(200).json(status);
         });
     }
-    calculateGranulometry(response, body) {
-        return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`calculate granulometry data > [body]: ${body}`);
-            const status = yield this.marshallService.calculateGranulometry(body);
-            return response.status(200).json(status);
-        });
-    }
-    calculateStep3vData(response, body) {
+    calculateStep3Data(response, body) {
         return __awaiter(this, void 0, void 0, function* () {
             this.logger.log(`calculate step 3 data > [body]: ${body}`);
             const status = yield this.marshallService.calculateStep3Data(body);
@@ -304,21 +298,13 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "getStep3Data", null);
 __decorate([
-    (0, common_1.Post)('calculate-granulometry'),
+    (0, common_1.Post)('calculate-step-3-data'),
     __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
-], MarshallController.prototype, "calculateGranulometry", null);
-__decorate([
-    (0, common_1.Post)('calculate-stepv-3-data'),
-    __param(0, (0, common_1.Res)()),
-    __param(1, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
-    __metadata("design:returntype", Promise)
-], MarshallController.prototype, "calculateStep3vData", null);
+], MarshallController.prototype, "calculateStep3Data", null);
 __decorate([
     (0, common_1.Post)('save-granulometry-composition-step/:userId'),
     __param(0, (0, common_1.Res)()),
@@ -481,6 +467,6 @@ __decorate([
 exports.MarshallController = MarshallController = MarshallController_1 = __decorate([
     (0, swagger_1.ApiTags)('marshall'),
     (0, common_1.Controller)('asphalt/dosages/marshall'),
-    __metadata("design:paramtypes", [marshall_service_1.MarshallService])
+    __metadata("design:paramtypes", [service_1.MarshallService])
 ], MarshallController);
 //# sourceMappingURL=index.js.map
