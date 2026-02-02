@@ -54,19 +54,6 @@ let VolumetricParameters_Marshall_Service = VolumetricParameters_Marshall_Servic
                 });
                 const { volumetricParametersData } = body;
                 const { trial: binderTrial, maxSpecificGravity, temperatureOfWater, } = body;
-                if (!maxSpecificGravity) {
-                    throw new Error('maxSpecificGravity is required');
-                }
-                const gravityData = maxSpecificGravity.results || maxSpecificGravity.result;
-                if (!gravityData) {
-                    throw new Error('maxSpecificGravity must have either "result" or "results" property');
-                }
-                this.logger.log(`Gravity structure: ${JSON.stringify({
-                    hasResult: !!maxSpecificGravity.result,
-                    hasResults: !!maxSpecificGravity.results,
-                    method: maxSpecificGravity.method,
-                    gravityDataKeys: Object.keys(gravityData)
-                })}`);
                 let pointsOfCurveDosageVv = [];
                 let pointsOfCurveDosageRBV = [];
                 let volumetricParameters = [];
@@ -98,30 +85,27 @@ let VolumetricParameters_Marshall_Service = VolumetricParameters_Marshall_Servic
                     asphaltContent = Object.keys(newArray[i])[0];
                     switch (asphaltContent) {
                         case 'lessOne':
-                            usedMaxSpecifyGravity = gravityData.lessOne;
+                            usedMaxSpecifyGravity = maxSpecificGravity.results.lessOne;
                             asphaltContentResult = binderTrial - 1;
                             break;
                         case 'lessHalf':
-                            usedMaxSpecifyGravity = gravityData.lessHalf;
+                            usedMaxSpecifyGravity = maxSpecificGravity.results.lessHalf;
                             asphaltContentResult = binderTrial - 0.5;
                             break;
                         case 'normal':
-                            usedMaxSpecifyGravity = gravityData.normal;
+                            usedMaxSpecifyGravity = maxSpecificGravity.results.normal;
                             asphaltContentResult = binderTrial;
                             break;
                         case 'plusHalf':
-                            usedMaxSpecifyGravity = gravityData.plusHalf;
+                            usedMaxSpecifyGravity = maxSpecificGravity.results.plusHalf;
                             asphaltContentResult = binderTrial + 0.5;
                             break;
                         case 'plusOne':
-                            usedMaxSpecifyGravity = gravityData.plusOne;
+                            usedMaxSpecifyGravity = maxSpecificGravity.results.plusOne;
                             asphaltContentResult = binderTrial + 1;
                             break;
                         default:
                             throw new Error('Invalid asphalt content');
-                    }
-                    if (!usedMaxSpecifyGravity) {
-                        throw new Error(`Could not find max specific gravity for ${asphaltContent}`);
                     }
                     for (let j = 0; j < newArray[i][asphaltContent].length; j++) {
                         const { dryMass, drySurfaceSaturatedMass, submergedMass, stability, fluency, diametricalCompressionStrength, } = newArray[i][asphaltContent][j];
@@ -172,8 +156,7 @@ let VolumetricParameters_Marshall_Service = VolumetricParameters_Marshall_Servic
                 return { volumetricParameters, pointsOfCurveDosageRBV, pointsOfCurveDosageVv };
             }
             catch (error) {
-                this.logger.error(`Failed to set volumetric parameters: ${error.message}`);
-                throw new Error(`Failed to set volumetric parameters: ${error.message}`);
+                throw new Error('Failed to set volumetric parameters.');
             }
         });
     }
@@ -184,10 +167,10 @@ let VolumetricParameters_Marshall_Service = VolumetricParameters_Marshall_Servic
                 let pointsOfCurveDosageRBV = [];
                 let volumetricParameters = [];
                 const { asphaltContent, sumOfSaturatedMass, sumOfDryMass, sumOfSubmergedMass, stability, fluency, diametricalCompressionStrength, temperatureOfWater, maxSpecificGravity, } = samplesData;
-                const samplesVolumes = sumOfSaturatedMass - sumOfSubmergedMass;
+                const samplesVolumes = (sumOfSaturatedMass - sumOfSubmergedMass);
                 const apparentBulkSpecificGravity = (sumOfDryMass / samplesVolumes) * temperatureOfWater;
                 const volumeVoids = (maxSpecificGravity - apparentBulkSpecificGravity) / maxSpecificGravity;
-                const voidsFilledAsphalt = (apparentBulkSpecificGravity * asphaltContent) / 102.7;
+                const voidsFilledAsphalt = apparentBulkSpecificGravity * asphaltContent / 102.7;
                 const aggregateVolumeVoids = volumeVoids + voidsFilledAsphalt;
                 const ratioBitumenVoid = voidsFilledAsphalt / aggregateVolumeVoids;
                 volumetricParameters.push({
