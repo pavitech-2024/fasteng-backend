@@ -273,7 +273,7 @@ export class Calc_AsphaltGranulometry_Service {
     }
   }
   
-  // Quarto: fallback - se ainda não encontrou, usa valores extremos
+ 
   if (inferiorLimit.index === -1) {
     // Procura o último índice diferente
     for (let i = table_data.length - 1; i >= 0; i--) {
@@ -284,14 +284,14 @@ export class Calc_AsphaltGranulometry_Service {
     }
   }
   
-  // Quinto: se tudo falhar, ajusta manualmente
+  
   if (inferiorLimit.index === -1 || inferiorLimit.value === upperLimit.value) {
     
-    // Se upperLimit é o primeiro item, inferiorLimit será o segundo
+  
     if (upperLimit.index === 0 && table_data.length > 1) {
       inferiorLimit = { value: table_data[1].passant, index: 1 };
     } 
-    // Se upperLimit é o último item, inferiorLimit será o penúltimo
+  
     else if (upperLimit.index === table_data.length - 1 && table_data.length > 1) {
       inferiorLimit = { value: table_data[table_data.length - 2].passant, index: table_data.length - 2 };
     }
