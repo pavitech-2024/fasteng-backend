@@ -73,6 +73,29 @@ export declare class MarshallService {
             name: any;
         };
     }>;
+    calculateStep3Data(body: any): Promise<{
+        data: {
+            percentsOfMaterials: any[];
+            sumOfPercents: any[];
+            pointsOfCurve: any[];
+            table_data: any;
+            projections: any[];
+            bands: {
+                higherBand: any;
+                lowerBand: any;
+            };
+        };
+        success: boolean;
+        error?: undefined;
+    } | {
+        data: any;
+        success: boolean;
+        error: {
+            status: any;
+            message: any;
+            name: any;
+        };
+    }>;
     getStep3Data(body: MarshallStep3Dto): Promise<{
         data: {
             dnitBands: {
