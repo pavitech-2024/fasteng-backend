@@ -25,7 +25,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SuperpaveController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
-const service_1 = require("../service");
+const marshall_service_1 = require("../service/marshall.service");
 const superpave_init_dto_1 = require("../dto/superpave-init.dto");
 let SuperpaveController = SuperpaveController_1 = class SuperpaveController {
     constructor(superpaveService) {
@@ -571,6 +571,6 @@ __decorate([
 exports.SuperpaveController = SuperpaveController = SuperpaveController_1 = __decorate([
     (0, swagger_1.ApiTags)('superpave'),
     (0, common_1.Controller)('asphalt/dosages/superpave'),
-    __metadata("design:paramtypes", [service_1.SuperpaveService])
+    __metadata("design:paramtypes", [marshall_service_1.SuperpaveService])
 ], SuperpaveController);
 //# sourceMappingURL=index.js.map
