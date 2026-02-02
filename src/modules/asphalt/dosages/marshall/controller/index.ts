@@ -1,9 +1,9 @@
 import { Body, Controller, Delete, Get, Logger, Param, Post, Res } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
-import { MarshallService } from '../service';
+import { MarshallService } from '../service/marshall.service';
 import { MarshallInitDto } from '../dto/marshall-init.dto';
-
+//tst
 @ApiTags('marshall')
 @Controller('asphalt/dosages/marshall')
 export class MarshallController {
@@ -57,8 +57,8 @@ export class MarshallController {
 
     return response.status(200).json(status);
   }
-
-  @Get(':id')
+//st
+  @Get('by-id/:id')
   @ApiOperation({ summary: 'Retorna uma dosagem do banco de dados com o id informado.' })
   @ApiResponse({ status: 200, description: 'Dosagem encontrada com sucesso!' })
   @ApiResponse({ status: 400, description: 'Dosagem não encontrada!' })
@@ -109,6 +109,15 @@ export class MarshallController {
     return response.status(200).json(status);
   }
 
+//tst
+   @Post('calculate-stepv-3-data')
+  async calculateStep3vData(@Res() response: Response, @Body() body: any) {
+    this.logger.log(`calculate step 3 data > [body]: ${body}`);
+
+    const status = await this.marshallService.calculateStep3Data(body);
+
+    return response.status(200).json(status);
+  }
   @Post('save-granulometry-composition-step/:userId')
   async saveGranulometryCompositionStep(
     @Res() response: Response,

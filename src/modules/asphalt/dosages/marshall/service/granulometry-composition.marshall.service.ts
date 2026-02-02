@@ -88,11 +88,11 @@ export class GranulometryComposition_Marshall_Service {
     }
   }
 
-  async calculateGranulometry(body: any) {
+async calculateGranulometry(body: any) {
     try {
       const { dnitBands, percentageInputs, tableRows } = body;
 
-      //Materiais
+      // Materiais
       let percentsOfDosage = [];
 
       const ids1 = new Set();
@@ -114,8 +114,6 @@ export class GranulometryComposition_Marshall_Service {
         let key = Object.keys(obj)[0];
         percentsOfMaterials.push(Array(20).fill({ [key]: null }));
       }
-
-      // let percentsOfMaterials = [Array(20).fill(null), Array(20).fill(null)];
 
       let newTableRows = tableRows;
 
@@ -178,6 +176,7 @@ export class GranulometryComposition_Marshall_Service {
       if (dnitBands === 'A') band = { higher: higherBandA, lower: lowerBandA };
       else if (dnitBands === 'B') band = { higher: higherBandB, lower: lowerBandB };
       else if (dnitBands === 'C') band = { higher: higherBandC, lower: lowerBandC };
+      
       let sumOfPercents = [
         null,
         null,
@@ -323,7 +322,6 @@ export class GranulometryComposition_Marshall_Service {
         ]);
       }
 
-
       newTableRows.map((row) => {
         Object.values(row).some((value) => {
           if (value === null) {
@@ -336,15 +334,141 @@ export class GranulometryComposition_Marshall_Service {
         });
       });
 
-      const data = {
-        percentsOfMaterials,
-        sumOfPercents,
-        pointsOfCurve,
-        table_data: newTableRows,
-        projections,
-      };
+      // 🟡 **1. Filtrar as bandas para manter apenas os pontos correspondentes às projections**
+     // 🟡 **1. Filtrar as bandas para manter apenas os pontos correspondentes às projections**
+// 🟡 **1. Filtrar as bandas para manter apenas os pontos correspondentes às projections**
+// No final do método calculateGranulometry, ANTES do return:
 
-      return data;
+// 🟡 **1. Filtrar as bandas CORRETAMENTE - VERSÃO SIMPLIFICADA**
+// 🟡 **SOLUÇÃO DEFINITIVA - Mapeamento correto**
+// 🟡 **CORREÇÃO DOS ÍNDICES - Versão final**
+// 🟡 **1. Filtrar as bandas CORRETAMENTE**
+// Função para garantir valores CORRETOS na banda C
+const ensureCorrectBandValues = (band, dnitBands) => {
+  if (dnitBands === 'C') {
+    console.log('=== APLICANDO CORREÇÃO PARA BANDA C ===');
+    
+    // Valores CORRETOS para Banda C
+    const correctValues = {
+      lower: {
+        6: 100,   // 3/4 pol - 19mm
+        8: 70,    // 3/8 pol - 9,5mm
+        10: 44,   // Nº4 - 4,8mm
+        12: 22,   // Nº8 - 2,4mm
+        14: 14,   // Nº16 - 1,2mm
+        15: 8,    // Nº30 - 0,6mm
+        17: 4,    // Nº50 - 0,3mm
+        19: 2     // Nº100 - 0,15mm
+      },
+      higher: {
+        6: 100,   // 3/4 pol - 19mm
+        8: 90,    // 3/8 pol - 9,5mm
+        10: 72,   // Nº4 - 4,8mm
+        12: 50,   // Nº8 - 2,4mm
+        14: 36.29, // Nº16 - 1,2mm
+        15: 26,   // Nº30 - 0,6mm
+        17: 16,   // Nº50 - 0,3mm
+        19: 10    // Nº100 - 0,15mm
+      }
+    };
+    
+    // Aplicar correções
+    Object.keys(correctValues.lower).forEach(idxStr => {
+      const idx = parseInt(idxStr);
+      if (idx < band.lower.length) {
+        console.log(`Corrigindo band.lower[${idx}] de ${band.lower[idx]} para ${correctValues.lower[idx]}`);
+        band.lower[idx] = correctValues.lower[idx];
+      }
+    });
+    
+    Object.keys(correctValues.higher).forEach(idxStr => {
+      const idx = parseInt(idxStr);
+      if (idx < band.higher.length) {
+        console.log(`Corrigindo band.higher[${idx}] de ${band.higher[idx]} para ${correctValues.higher[idx]}`);
+        band.higher[idx] = correctValues.higher[idx];
+      }
+    });
+  }
+  
+  return band;
+};
+band = ensureCorrectBandValues(band, dnitBands);
+const filteredBand = {
+  lowerBand: [],
+  higherBand: []
+};
+
+// Mapeamento de CORREÇÃO baseado nos seus logs
+// AllSieves index → Band index correto
+const indexCorrection = {
+  6: 6, 
+  14: 15,  // "Nº30 - 0,6mm"   AllSieves: 14 → Band: 15
+  16: 17,  // "Nº50 - 0,3mm"   AllSieves: 16 → Band: 17  
+  18: 19   // "Nº100 - 0,15mm" AllSieves: 18 → Band: 19
+};
+
+// Para cada projection
+projections.forEach((proj) => {
+  const sieveLabel = proj.label;
+  
+  // 1. Encontrar índice no AllSieves
+  const sieveIndex = AllSieves.findIndex(sieve => sieve.label === sieveLabel);
+  
+  // 2. Aplicar correção se necessário
+  let bandIndex = sieveIndex;
+  if (indexCorrection[sieveIndex] !== undefined) {
+    bandIndex = indexCorrection[sieveIndex];
+  }
+  
+  // 3. Pegar valores da banda com índice CORRETO
+  let lowerValue = null;
+  let higherValue = null;
+  
+  if (bandIndex !== -1) {
+    if (bandIndex < band.lower.length) lowerValue = band.lower[bandIndex];
+    if (bandIndex < band.higher.length) higherValue = band.higher[bandIndex];
+  }
+  
+  filteredBand.lowerBand.push(lowerValue);
+  filteredBand.higherBand.push(higherValue);
+});
+
+// 🟡 **2. Criar dados formatados para a tabela (tableWithBands)**
+const tableWithBands = projections.map((proj, idx) => {
+  return {
+    sieve_label: proj.label,
+    projection: proj.value,
+    inferior: filteredBand.lowerBand[idx] !== null 
+      ? filteredBand.lowerBand[idx].toFixed(2) 
+      : '---',
+    superior: filteredBand.higherBand[idx] !== null 
+      ? filteredBand.higherBand[idx].toFixed(2) 
+      : '---'
+  };
+});
+
+// 🟡 **3. Debug para verificar**
+console.log('=== VALORES CORRETOS FINAIS ===');
+console.log('Peneira               | Projeção | Inferior | Superior');
+console.log('----------------------|----------|----------|----------');
+
+tableWithBands.forEach(row => {
+  console.log(`${row.sieve_label.padEnd(20)} | ${row.projection.padEnd(8)} | ${row.inferior.padEnd(8)} | ${row.superior}`);
+});
+
+// 🟡 **4. Retornar TODOS os dados necessários**
+const data = {
+  percentsOfMaterials,
+  sumOfPercents,
+  pointsOfCurve,
+  table_data: newTableRows,
+  projections,
+  bands: filteredBand,           // ← Bandas filtradas
+  dnitBands: band,               // ← Bandas completas (para o gráfico)
+  tableWithBands: tableWithBands // ← Dados já formatados para a tabela
+};
+
+return data;
     } catch (error) {
       throw error;
     }
