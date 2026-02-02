@@ -109,6 +109,15 @@ export class MarshallController {
     return response.status(200).json(status);
   }
 
+
+   @Post('calculate-stepv-3-data')
+  async calculateStep3vData(@Res() response: Response, @Body() body: any) {
+    this.logger.log(`calculate step 3 data > [body]: ${body}`);
+
+    const status = await this.marshallService.calculateStep3Data(body);
+
+    return response.status(200).json(status);
+  }
   @Post('save-granulometry-composition-step/:userId')
   async saveGranulometryCompositionStep(
     @Res() response: Response,
