@@ -24,6 +24,7 @@ export class OptimumBinderContent_Marshall_Service {
       const { volumetricParametersData } = body;
       const { volumetricParameters } = volumetricParametersData;
 
+
       const graphics = {
         rbv: [['Teor', 'Rbv']],
         vv: [['Teor', 'Vv']],
@@ -90,23 +91,19 @@ export class OptimumBinderContent_Marshall_Service {
 
       [-1, -0.5, 0, 0.5, 1].forEach((increment) => pushData(trialAsphaltContent + increment));
 
+      // Teor ótimo de ligante
       const optimumContent = this.calculateVv4(
-        trialAsphaltContent - 1,
-        this.calculateVv(trialAsphaltContent - 1, curveVv),
-        trialAsphaltContent - 0.5,
-        this.calculateVv(trialAsphaltContent - 0.5, curveVv),
+        trialAsphaltContent - 1,                              // x1 
+        this.calculateVv(trialAsphaltContent - 1, curveVv),   // y1
+        trialAsphaltContent - 0.5,                            // x2 
+        this.calculateVv(trialAsphaltContent - 0.5, curveVv), // y2
       );
 
       const confirmedPercentsOfDosage = await this.confirmPercentsOfDosage(percentsOfDosage, optimumContent)
 
       return {
         pointsOfCurveDosage,
-        optimumContent: this.calculateVv4(
-          trialAsphaltContent - 1,
-          this.calculateVv(trialAsphaltContent - 1, curveVv),
-          trialAsphaltContent - 0.5,
-          this.calculateVv(trialAsphaltContent - 0.5, curveVv),
-        ),
+        optimumContent,
         confirmedPercentsOfDosage,
         curveRBV,
         curveVv
@@ -136,8 +133,8 @@ export class OptimumBinderContent_Marshall_Service {
   async getExpectedParameters(body: any) {
     try {
       const { 
-        percentsOfDosage,
-        optimumContent,
+        percentsOfDosage, // Porcentagem de cada agregado na composição granulometrica
+        optimumContent, // Conteúdo ótimo de ligante
         maxSpecificGravity,
         listOfSpecificGravities,
         trial: trialAsphaltContent,
@@ -163,11 +160,11 @@ export class OptimumBinderContent_Marshall_Service {
       if (maxSpecificGravity.method === 'GMM') {
   
         const GMMs = [
-          maxSpecificGravity.results.lessOne,
-          maxSpecificGravity.results.lessHalf,
-          maxSpecificGravity.results.normal,
-          maxSpecificGravity.results.plusHalf,
-          maxSpecificGravity.results.plusOne,
+          maxSpecificGravity.result.lessOne,
+          maxSpecificGravity.result.lessHalf,
+          maxSpecificGravity.result.normal,
+          maxSpecificGravity.result.plusHalf,
+          maxSpecificGravity.result.plusOne,
         ];
   
         const Contents = [

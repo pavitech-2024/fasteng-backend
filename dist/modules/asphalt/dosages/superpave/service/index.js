@@ -93,6 +93,7 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
                     return {
                         generalData: material,
                         step2Data: { material_mass, table_data, bottom },
+                        isSuperpave: true
                     };
                 });
                 const results = yield Promise.allSettled(formattedBody.map((dto) => this.asphaltGranulometry_Service.calculateGranulometry(dto)));
@@ -170,7 +171,6 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
                 let percentsOfMaterials = [];
                 let listOfPercentsToReturn = [];
                 let indexes = [];
-                let index;
                 let result = {
                     nominalSize: {
                         controlPoints: {
