@@ -10,7 +10,7 @@ exports.MarshallModule = void 0;
 const common_1 = require("@nestjs/common");
 const controller_1 = require("./controller");
 const repository_1 = require("./repository");
-const service_1 = require("./service");
+const marshall_service_1 = require("./service/marshall.service");
 const general_data_marshall_service_1 = require("./service/general-data.marshall.service");
 const material_selection_marshall_service_1 = require("./service/material-selection.marshall.service");
 const granulometry_composition_marshall_service_1 = require("./service/granulometry-composition.marshall.service");
@@ -20,7 +20,7 @@ const volumetric_parameters_service_1 = require("./service/volumetric-parameters
 const optimum_binder_marshall_service_1 = require("./service/optimum-binder.marshall.service");
 const confirm_compression_marshall_service_1 = require("./service/confirm-compression.marshall.service");
 const services = [
-    service_1.MarshallService,
+    marshall_service_1.MarshallService,
     general_data_marshall_service_1.GeneralData_Marshall_Service,
     material_selection_marshall_service_1.MaterialSelection_Marshall_Service,
     granulometry_composition_marshall_service_1.GranulometryComposition_Marshall_Service,
@@ -38,7 +38,7 @@ exports.MarshallModule = MarshallModule = __decorate([
         imports: [],
         controllers: [controller_1.MarshallController],
         providers: [...services, repository_1.MarshallRepository],
-        exports: [service_1.MarshallService, repository_1.MarshallRepository],
+        exports: [marshall_service_1.MarshallService, repository_1.MarshallRepository],
     })
 ], MarshallModule);
 //# sourceMappingURL=marshall.module.js.map

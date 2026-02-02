@@ -34,7 +34,7 @@ var __rest = (this && this.__rest) || function (s, e) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OptimumBinderContent_Marshall_Service = void 0;
 const common_1 = require("@nestjs/common");
-const _1 = require(".");
+const marshall_service_1 = require("./marshall.service");
 const mongoose_1 = require("@nestjs/mongoose");
 const schemas_1 = require("../schemas");
 const database_config_1 = require("../../../../../infra/mongoose/database.config");
@@ -44,7 +44,7 @@ let OptimumBinderContent_Marshall_Service = class OptimumBinderContent_Marshall_
     constructor(marshallModel, marshallRepository) {
         this.marshallModel = marshallModel;
         this.marshallRepository = marshallRepository;
-        this.logger = new common_1.Logger(_1.MarshallService.name);
+        this.logger = new common_1.Logger(marshall_service_1.MarshallService.name);
     }
     setOptimumBinderContentData(body) {
         return __awaiter(this, void 0, void 0, function* () {

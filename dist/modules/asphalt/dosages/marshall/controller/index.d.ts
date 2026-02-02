@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { MarshallService } from '../service';
+import { MarshallService } from '../service/marshall.service';
 import { MarshallInitDto } from '../dto/marshall-init.dto';
 export declare class MarshallController {
     private readonly marshallService;

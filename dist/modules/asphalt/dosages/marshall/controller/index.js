@@ -25,7 +25,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MarshallController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
-const service_1 = require("../service");
+const marshall_service_1 = require("../service/marshall.service");
 const marshall_init_dto_1 = require("../dto/marshall-init.dto");
 let MarshallController = MarshallController_1 = class MarshallController {
     constructor(marshallService) {
@@ -482,6 +482,6 @@ __decorate([
 exports.MarshallController = MarshallController = MarshallController_1 = __decorate([
     (0, swagger_1.ApiTags)('marshall'),
     (0, common_1.Controller)('asphalt/dosages/marshall'),
-    __metadata("design:paramtypes", [service_1.MarshallService])
+    __metadata("design:paramtypes", [marshall_service_1.MarshallService])
 ], MarshallController);
 //# sourceMappingURL=index.js.map

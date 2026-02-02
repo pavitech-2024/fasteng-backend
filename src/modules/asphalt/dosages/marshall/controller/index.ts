@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Logger, Param, Post, Res } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
-import { MarshallService } from '../service';
+import { MarshallService } from '../service/marshall.service';
 import { MarshallInitDto } from '../dto/marshall-init.dto';
 //tst
 @ApiTags('marshall')
