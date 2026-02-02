@@ -34,7 +34,7 @@ var __rest = (this && this.__rest) || function (s, e) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OptimumBinderContent_Marshall_Service = void 0;
 const common_1 = require("@nestjs/common");
-const marshall_service_1 = require("./marshall.service");
+const _1 = require(".");
 const mongoose_1 = require("@nestjs/mongoose");
 const schemas_1 = require("../schemas");
 const database_config_1 = require("../../../../../infra/mongoose/database.config");
@@ -44,7 +44,7 @@ let OptimumBinderContent_Marshall_Service = class OptimumBinderContent_Marshall_
     constructor(marshallModel, marshallRepository) {
         this.marshallModel = marshallModel;
         this.marshallRepository = marshallRepository;
-        this.logger = new common_1.Logger(marshall_service_1.MarshallService.name);
+        this.logger = new common_1.Logger(_1.MarshallService.name);
     }
     setOptimumBinderContentData(body) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -118,7 +118,7 @@ let OptimumBinderContent_Marshall_Service = class OptimumBinderContent_Marshall_
                 const confirmedPercentsOfDosage = yield this.confirmPercentsOfDosage(percentsOfDosage, optimumContent);
                 return {
                     pointsOfCurveDosage,
-                    optimumContent,
+                    optimumContent: this.calculateVv4(trialAsphaltContent - 1, this.calculateVv(trialAsphaltContent - 1, curveVv), trialAsphaltContent - 0.5, this.calculateVv(trialAsphaltContent - 0.5, curveVv)),
                     confirmedPercentsOfDosage,
                     curveRBV,
                     curveVv
@@ -160,11 +160,11 @@ let OptimumBinderContent_Marshall_Service = class OptimumBinderContent_Marshall_
                 });
                 if (maxSpecificGravity.method === 'GMM') {
                     const GMMs = [
-                        maxSpecificGravity.result.lessOne,
-                        maxSpecificGravity.result.lessHalf,
-                        maxSpecificGravity.result.normal,
-                        maxSpecificGravity.result.plusHalf,
-                        maxSpecificGravity.result.plusOne,
+                        maxSpecificGravity.results.lessOne,
+                        maxSpecificGravity.results.lessHalf,
+                        maxSpecificGravity.results.normal,
+                        maxSpecificGravity.results.plusHalf,
+                        maxSpecificGravity.results.plusOne,
                     ];
                     const Contents = [
                         trialAsphaltContent - 1,

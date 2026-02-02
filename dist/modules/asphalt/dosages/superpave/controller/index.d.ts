@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { SuperpaveService } from '../service/marshall.service';
+import { SuperpaveService } from '../service';
 import { SuperpaveInitDto } from '../dto/superpave-init.dto';
 export declare class SuperpaveController {
     private readonly superpaveService;

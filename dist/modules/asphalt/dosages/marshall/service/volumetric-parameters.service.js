@@ -85,23 +85,23 @@ let VolumetricParameters_Marshall_Service = VolumetricParameters_Marshall_Servic
                     asphaltContent = Object.keys(newArray[i])[0];
                     switch (asphaltContent) {
                         case 'lessOne':
-                            usedMaxSpecifyGravity = maxSpecificGravity.result.lessOne;
+                            usedMaxSpecifyGravity = maxSpecificGravity.results.lessOne;
                             asphaltContentResult = binderTrial - 1;
                             break;
                         case 'lessHalf':
-                            usedMaxSpecifyGravity = maxSpecificGravity.result.lessHalf;
+                            usedMaxSpecifyGravity = maxSpecificGravity.results.lessHalf;
                             asphaltContentResult = binderTrial - 0.5;
                             break;
                         case 'normal':
-                            usedMaxSpecifyGravity = maxSpecificGravity.result.normal;
+                            usedMaxSpecifyGravity = maxSpecificGravity.results.normal;
                             asphaltContentResult = binderTrial;
                             break;
                         case 'plusHalf':
-                            usedMaxSpecifyGravity = maxSpecificGravity.result.plusHalf;
+                            usedMaxSpecifyGravity = maxSpecificGravity.results.plusHalf;
                             asphaltContentResult = binderTrial + 0.5;
                             break;
                         case 'plusOne':
-                            usedMaxSpecifyGravity = maxSpecificGravity.result.plusOne;
+                            usedMaxSpecifyGravity = maxSpecificGravity.results.plusOne;
                             asphaltContentResult = binderTrial + 1;
                             break;
                         default:
@@ -252,21 +252,19 @@ let VolumetricParameters_Marshall_Service = VolumetricParameters_Marshall_Servic
                 const apparentBulkSpecificGravity = (dryMass / samplesVolumes) * temperatureOfWater;
                 const volumeVoids = (confirmedSpecificGravity - apparentBulkSpecificGravity) / confirmedSpecificGravity;
                 const voidsFilledAsphalt = (apparentBulkSpecificGravity * optimumContent) / 102.7;
-                const vcb = volumeVoids + voidsFilledAsphalt;
-                const ratioBitumenVoid = voidsFilledAsphalt / vcb;
-                const massPerCubicMeter = ((1 - volumeVoids)) * Math.pow(10, 6) * confirmedSpecificGravity;
-                const tonPerCubicMeter = massPerCubicMeter / Math.pow(10, 6);
-                const materialsPerCubicMeter = confirmedPercentsOfDosage.map((material) => (material / 100) * tonPerCubicMeter);
-                materialsPerCubicMeter.unshift((optimumContent / 100) * tonPerCubicMeter);
+                const aggregateVolumeVoids = volumeVoids + voidsFilledAsphalt;
+                const ratioBitumenVoid = voidsFilledAsphalt / aggregateVolumeVoids;
+                const quantitative = confirmedPercentsOfDosage.map((percent, i) => (confirmedSpecificGravity * percent * 10) / 1000 / listOfSpecificGravities[i]);
+                quantitative.unshift(optimumContent * 10 * confirmedSpecificGravity);
                 const confirmedVolumetricParameters = {
                     valuesOfVolumetricParameters,
                     asphaltContent: optimumContent,
-                    quantitative: materialsPerCubicMeter,
+                    quantitative,
                     values: {
                         volumeVoids,
                         apparentBulkSpecificGravity,
-                        vcb,
-                        vam: voidsFilledAsphalt,
+                        voidsFilledAsphalt,
+                        aggregateVolumeVoids,
                         ratioBitumenVoid,
                         stability: stabilityBar,
                         fluency: fluencyBar,

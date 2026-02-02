@@ -10,7 +10,7 @@ exports.SuperpaveModule = void 0;
 const common_1 = require("@nestjs/common");
 const controller_1 = require("./controller");
 const repository_1 = require("./repository");
-const marshall_service_1 = require("./service/marshall.service");
+const service_1 = require("./service");
 const general_data_superpave_service_1 = require("./service/general-data.superpave.service");
 const material_selection_superpave_service_1 = require("./service/material-selection.superpave.service");
 const granulometry_composition_superpave_service_1 = require("./service/granulometry-composition.superpave.service");
@@ -24,7 +24,7 @@ const resume_dosage_service_1 = require("./service/resume-dosage.service");
 const granulometry_essay_service_1 = require("./service/granulometry-essay.service");
 const confirm_compaction_service_1 = require("./service/confirm-compaction.service");
 const services = [
-    marshall_service_1.SuperpaveService,
+    service_1.SuperpaveService,
     general_data_superpave_service_1.GeneralData_Superpave_Service,
     material_selection_superpave_service_1.MaterialSelection_Superpave_Service,
     granulometry_essay_service_1.GranulometryEssay_Superpave_Service,
@@ -46,7 +46,7 @@ exports.SuperpaveModule = SuperpaveModule = __decorate([
         imports: [],
         controllers: [controller_1.SuperpaveController],
         providers: [...services, repository_1.SuperpaveRepository],
-        exports: [marshall_service_1.SuperpaveService, repository_1.SuperpaveRepository],
+        exports: [service_1.SuperpaveService, repository_1.SuperpaveRepository],
     })
 ], SuperpaveModule);
 //# sourceMappingURL=superpave.module.js.map
