@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Logger, Param, Post, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, Param, Patch, Post, Res } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { MarshallService } from '../service';
@@ -327,4 +327,38 @@ export class MarshallController {
 
     return response.status(200).json(status);
   }
+
+
+  @Patch(':id/fatigue-curve')
+  @ApiOperation({ summary: 'Atualiza os dados da curva de fadiga de uma dosagem Marshall' })
+  @ApiResponse({ status: 200, description: 'Curva de fadiga atualizada com sucesso!' })
+  @ApiResponse({ status: 400, description: 'Erro ao atualizar curva de fadiga!' })
+  async updateFatigueCurve(
+    @Res() response: Response,
+    @Param('id') dosageId: string,
+    @Body() fatigueData: any
+  ) {
+    this.logger.log(`update fatigue curve data > [dosageId]: ${dosageId}, [data]: ${JSON.stringify(fatigueData)}`);
+
+    const status = await this.marshallService.updateFatigueCurve(dosageId, fatigueData);
+
+    return response.status(200).json(status);
+  }
+
+  @Patch(':id/resilience-module')
+  @ApiOperation({ summary: 'Atualiza os dados do módulo de resiliência de uma dosagem Marshall' })
+  @ApiResponse({ status: 200, description: 'Módulo de resiliência atualizado com sucesso!' })
+  @ApiResponse({ status: 400, description: 'Erro ao atualizar módulo de resiliência!' })
+  async updateResilienceModule(
+    @Res() response: Response,
+    @Param('id') dosageId: string,
+    @Body() resilienceData: any
+  ) {
+    this.logger.log(`update resilience module data > [dosageId]: ${dosageId}, [data]: ${JSON.stringify(resilienceData)}`);
+
+    const status = await this.marshallService.updateResilienceModule(dosageId, resilienceData);
+
+    return response.status(200).json(status);
+  }
+
 }

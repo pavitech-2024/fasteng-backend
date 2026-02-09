@@ -87,6 +87,11 @@ let MarshallRepository = class MarshallRepository {
             }
         });
     }
+    findByIdAndUpdate(id, update, options) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.marshallModel.findByIdAndUpdate(id, update, Object.assign({ new: true }, options)).exec();
+        });
+    }
 };
 exports.MarshallRepository = MarshallRepository;
 exports.MarshallRepository = MarshallRepository = __decorate([

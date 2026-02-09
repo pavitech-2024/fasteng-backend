@@ -59,4 +59,9 @@ export class MarshallRepository {
       throw error;
     }
   }
+
+   async findByIdAndUpdate(id: string, update: any, options?: any): Promise<Marshall> {
+    return this.marshallModel.findByIdAndUpdate(id, update, { new: true, ...options }).exec();
+  }
+
 }
