@@ -269,13 +269,15 @@ let GranulometryComposition_Superpave_Service = GranulometryComposition_Superpav
         Object.values(percentsOfDosage).forEach((value) => {
             newPercentsOfDosage.push(value);
         });
-        let sumOfPercents = [null, null, null, null, null, null, null, null, null, null, null, null, null];
+        let sumOfPercents = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         let percentsOfMaterials = [];
         for (let i = 0; i < materialsWithoutBinder.length; i++) {
             percentsOfMaterials.push([]);
             for (let j = 0; j < percentsOfMaterialsToShow[i].length; j++) {
                 if (percentsOfMaterialsToShow[i][j] !== null) {
                     percentsOfMaterials[i][j] = (percentsOfMaterialsToShow[i][j] * newPercentsOfDosage[i]) / 100;
+                    if (sumOfPercents[j] === undefined)
+                        sumOfPercents[j] = 0;
                     sumOfPercents[j] += percentsOfMaterials[i][j];
                 }
                 else {
@@ -283,6 +285,7 @@ let GranulometryComposition_Superpave_Service = GranulometryComposition_Superpav
                 }
             }
         }
+        sumOfPercents = sumOfPercents.map(val => val === 0 ? null : val);
         return { sumOfPercents, percentsOfMaterials };
     }
     saveGranulometryCompositionData(body, userId) {
