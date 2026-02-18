@@ -72,9 +72,15 @@ export class SetBinderTrial_Marshall_Service {
         percentOfDosage.push({
           material: modifiedPercentsOfDosages[i]._id,
           value: (newPercent * modifiedPercentsOfDosages[i].value) / 100,
-          trial: 'normal'
-        })
-        newPercentOfDosage.push([onePlus[i].value, halfPlus[i].value, percentOfDosage[i].value, halfLess[i].value, oneLess[i].value]);
+          trial: 'normal',
+        });
+        newPercentOfDosage.push([
+          onePlus[i].value,
+          halfPlus[i].value,
+          percentOfDosage[i].value,
+          halfLess[i].value,
+          oneLess[i].value,
+        ]);
         percentOfDosageToReturn.push([oneLess[i], halfLess[i], percentOfDosage[i], halfPlus[i], onePlus[i]]);
       }
       percentOfDosageToReturn.push([
@@ -102,9 +108,10 @@ export class SetBinderTrial_Marshall_Service {
 
   async getBandsOfTemperatures(binder: any): Promise<any> {
     try {
+      const binderId = typeof binder === 'string' ? binder : binder._id;
 
       const resultRotational: any = await this.viscosityRepository.findOne({
-        'generalData.material._id': binder,
+        'generalData.material._id': binderId,
       });
 
       if (!resultRotational) {
@@ -164,7 +171,6 @@ export class SetBinderTrial_Marshall_Service {
       if (marshallExists._doc.generalData.step < 4) {
         await this.marshallRepository.saveStep(marshallExists, 4);
       }
-      
 
       return true;
     } catch (error) {
