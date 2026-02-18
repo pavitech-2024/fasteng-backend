@@ -94,9 +94,15 @@ let SetBinderTrial_Marshall_Service = SetBinderTrial_Marshall_Service_1 = class 
                     percentOfDosage.push({
                         material: modifiedPercentsOfDosages[i]._id,
                         value: (newPercent * modifiedPercentsOfDosages[i].value) / 100,
-                        trial: 'normal'
+                        trial: 'normal',
                     });
-                    newPercentOfDosage.push([onePlus[i].value, halfPlus[i].value, percentOfDosage[i].value, halfLess[i].value, oneLess[i].value]);
+                    newPercentOfDosage.push([
+                        onePlus[i].value,
+                        halfPlus[i].value,
+                        percentOfDosage[i].value,
+                        halfLess[i].value,
+                        oneLess[i].value,
+                    ]);
                     percentOfDosageToReturn.push([oneLess[i], halfLess[i], percentOfDosage[i], halfPlus[i], onePlus[i]]);
                 }
                 percentOfDosageToReturn.push([
@@ -123,8 +129,9 @@ let SetBinderTrial_Marshall_Service = SetBinderTrial_Marshall_Service_1 = class 
     getBandsOfTemperatures(binder) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                const binderId = typeof binder === 'string' ? binder : binder._id;
                 const resultRotational = yield this.viscosityRepository.findOne({
-                    'generalData.material._id': binder,
+                    'generalData.material._id': binderId,
                 });
                 if (!resultRotational) {
                     throw new common_1.NotFoundException(`O ligante selecionado não passou por nenhum ensaio de viscosidade ainda.`);

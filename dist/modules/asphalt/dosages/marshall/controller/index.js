@@ -214,6 +214,20 @@ let MarshallController = MarshallController_1 = class MarshallController {
             return response.status(200).json(status);
         });
     }
+    updateFatigueCurve(response, dosageId, fatigueData) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.log(`update fatigue curve data > [dosageId]: ${dosageId}, [data]: ${JSON.stringify(fatigueData)}`);
+            const status = yield this.marshallService.updateFatigueCurve(dosageId, fatigueData);
+            return response.status(200).json(status);
+        });
+    }
+    updateResilienceModule(response, dosageId, resilienceData) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.log(`update resilience module data > [dosageId]: ${dosageId}, [data]: ${JSON.stringify(resilienceData)}`);
+            const status = yield this.marshallService.updateResilienceModule(dosageId, resilienceData);
+            return response.status(200).json(status);
+        });
+    }
 };
 exports.MarshallController = MarshallController;
 __decorate([
@@ -464,6 +478,30 @@ __decorate([
     __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "deleteMarshallDosage", null);
+__decorate([
+    (0, common_1.Patch)(':id/fatigue-curve'),
+    (0, swagger_1.ApiOperation)({ summary: 'Atualiza os dados da curva de fadiga de uma dosagem Marshall' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Curva de fadiga atualizada com sucesso!' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Erro ao atualizar curva de fadiga!' }),
+    __param(0, (0, common_1.Res)()),
+    __param(1, (0, common_1.Param)('id')),
+    __param(2, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String, Object]),
+    __metadata("design:returntype", Promise)
+], MarshallController.prototype, "updateFatigueCurve", null);
+__decorate([
+    (0, common_1.Patch)(':id/resilience-module'),
+    (0, swagger_1.ApiOperation)({ summary: 'Atualiza os dados do módulo de resiliência de uma dosagem Marshall' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Módulo de resiliência atualizado com sucesso!' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Erro ao atualizar módulo de resiliência!' }),
+    __param(0, (0, common_1.Res)()),
+    __param(1, (0, common_1.Param)('id')),
+    __param(2, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String, Object]),
+    __metadata("design:returntype", Promise)
+], MarshallController.prototype, "updateResilienceModule", null);
 exports.MarshallController = MarshallController = MarshallController_1 = __decorate([
     (0, swagger_1.ApiTags)('marshall'),
     (0, common_1.Controller)('asphalt/dosages/marshall'),

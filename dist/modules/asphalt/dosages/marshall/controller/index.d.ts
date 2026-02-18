@@ -31,4 +31,6 @@ export declare class MarshallController {
     saveConfirmationCompressionData(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
     saveMarshallDosage(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
     deleteMarshallDosage(response: Response, id: string): Promise<Response<any, Record<string, any>>>;
+    updateFatigueCurve(response: Response, dosageId: string, fatigueData: any): Promise<Response<any, Record<string, any>>>;
+    updateResilienceModule(response: Response, dosageId: string, resilienceData: any): Promise<Response<any, Record<string, any>>>;
 }

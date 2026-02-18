@@ -179,6 +179,23 @@ export type ConfirmationCompressionData = {
         massOfContainerWater: number;
     };
 };
+export type FatigueCurveData = {
+    ncp?: number;
+    k1?: number;
+    k2?: number;
+    r2?: number;
+    observations?: string;
+    createdAt?: Date;
+    updatedAt?: Date;
+};
+export type ResilienceModuleData = {
+    k1?: number;
+    k2?: number;
+    k3?: number;
+    r2?: number;
+    createdAt?: Date;
+    updatedAt?: Date;
+};
 export declare class Marshall {
     _id: string;
     step: number;
@@ -190,6 +207,8 @@ export declare class Marshall {
     volumetricParametersData: VolumetricParametersData;
     optimumBinderContentData: OptimumBinderContentData;
     confirmationCompressionData: ConfirmationCompressionData;
+    fatigueCurveData?: FatigueCurveData;
+    resilienceModuleData?: ResilienceModuleData;
 }
 declare const MarshallSchema: import("mongoose").Schema<Marshall, import("mongoose").Model<Marshall, any, any, any, import("mongoose").Document<unknown, any, Marshall> & Marshall & Required<{
     _id: string;

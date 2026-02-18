@@ -24,6 +24,7 @@ const common_1 = require("@nestjs/common");
 const general_data_marshall_service_1 = require("./general-data.marshall.service");
 const material_selection_marshall_service_1 = require("./material-selection.marshall.service");
 const index_1 = require("../repository/index");
+const exceptions_1 = require("../../../../../utils/exceptions");
 const granulometry_composition_marshall_service_1 = require("./granulometry-composition.marshall.service");
 const initial_binder_trial_service_1 = require("./initial-binder-trial.service");
 const maximumMixtureDensity_service_1 = require("./maximumMixtureDensity.service");
@@ -623,6 +624,88 @@ let MarshallService = MarshallService_1 = class MarshallService {
             }
             catch (error) {
                 this.logger.error(`error on delete marshall dosage > [error]: ${error}`);
+                const { status, name, message } = error;
+                return { success: false, error: { status, message, name } };
+            }
+        });
+    }
+    updateFatigueCurve(dosageId, fatigueData) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a;
+            try {
+                const dosage = yield this.marshall_repository.findById(dosageId);
+                if (!dosage) {
+                    throw new exceptions_1.NotFound(`Dosagem com ID ${dosageId} não encontrada`);
+                }
+                const updateData = Object.assign(Object.assign({}, fatigueData), { updatedAt: new Date() });
+                if ((_a = dosage.fatigueCurveData) === null || _a === void 0 ? void 0 : _a.createdAt) {
+                    updateData.createdAt = dosage.fatigueCurveData.createdAt;
+                }
+                else {
+                    updateData.createdAt = new Date();
+                }
+                if (updateData.ncp)
+                    updateData.ncp = Number(updateData.ncp);
+                if (updateData.k1)
+                    updateData.k1 = Number(updateData.k1);
+                if (updateData.k2)
+                    updateData.k2 = Number(updateData.k2);
+                if (updateData.r2)
+                    updateData.r2 = Number(updateData.r2);
+                const updatedDosage = yield this.marshall_repository.findByIdAndUpdate(dosageId, {
+                    $set: {
+                        'fatigueCurveData': updateData,
+                    },
+                });
+                this.logger.log(`fatigue curve data updated successfully for dosage: ${dosageId}`);
+                return {
+                    dosage: updatedDosage,
+                    success: true
+                };
+            }
+            catch (error) {
+                this.logger.error(`error on updating fatigue curve data > [error]: ${error}`);
+                const { status, name, message } = error;
+                return { success: false, error: { status, message, name } };
+            }
+        });
+    }
+    updateResilienceModule(dosageId, resilienceData) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a;
+            try {
+                const dosage = yield this.marshall_repository.findById(dosageId);
+                if (!dosage) {
+                    throw new exceptions_1.NotFound(`Dosagem com ID ${dosageId} não encontrada`);
+                }
+                const updateData = Object.assign(Object.assign({}, resilienceData), { updatedAt: new Date() });
+                if ((_a = dosage.resilienceModuleData) === null || _a === void 0 ? void 0 : _a.createdAt) {
+                    updateData.createdAt = dosage.resilienceModuleData.createdAt;
+                }
+                else {
+                    updateData.createdAt = new Date();
+                }
+                if (updateData.k1)
+                    updateData.k1 = Number(updateData.k1);
+                if (updateData.k2)
+                    updateData.k2 = Number(updateData.k2);
+                if (updateData.k3)
+                    updateData.k3 = Number(updateData.k3);
+                if (updateData.r2)
+                    updateData.r2 = Number(updateData.r2);
+                const updatedDosage = yield this.marshall_repository.findByIdAndUpdate(dosageId, {
+                    $set: {
+                        'resilienceModuleData': updateData,
+                    },
+                });
+                this.logger.log(`resilience module data updated successfully for dosage: ${dosageId}`);
+                return {
+                    dosage: updatedDosage,
+                    success: true
+                };
+            }
+            catch (error) {
+                this.logger.error(`error on updating resilience module data > [error]: ${error}`);
                 const { status, name, message } = error;
                 return { success: false, error: { status, message, name } };
             }

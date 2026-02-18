@@ -297,23 +297,28 @@ export class GranulometryComposition_Superpave_Service {
       newPercentsOfDosage.push(value);
     });
 
-    let sumOfPercents = [null, null, null, null, null, null, null, null, null, null, null, null, null];
+let sumOfPercents = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
-    let percentsOfMaterials = [];
+let percentsOfMaterials = [];
 
-    for (let i = 0; i < materialsWithoutBinder.length; i++) {
-      percentsOfMaterials.push([]);
-      for (let j = 0; j < percentsOfMaterialsToShow[i].length; j++) {
-        if (percentsOfMaterialsToShow[i][j] !== null) {
-          percentsOfMaterials[i][j] = (percentsOfMaterialsToShow[i][j] * newPercentsOfDosage[i]) / 100;
-          sumOfPercents[j] += percentsOfMaterials[i][j];
-        } else {
-          percentsOfMaterials[i][j] = null;
-        }
-      }
+for (let i = 0; i < materialsWithoutBinder.length; i++) {
+  percentsOfMaterials.push([]);
+  for (let j = 0; j < percentsOfMaterialsToShow[i].length; j++) {
+    if (percentsOfMaterialsToShow[i][j] !== null) {
+      percentsOfMaterials[i][j] = (percentsOfMaterialsToShow[i][j] * newPercentsOfDosage[i]) / 100;
+      // Garante que sumOfPercents[j] existe e é número
+      if (sumOfPercents[j] === undefined) sumOfPercents[j] = 0;
+      sumOfPercents[j] += percentsOfMaterials[i][j];
+    } else {
+      percentsOfMaterials[i][j] = null;
     }
+  }
+}
 
-    return { sumOfPercents, percentsOfMaterials };
+// Opcional: converte 0 para null onde não houve contribuição
+sumOfPercents = sumOfPercents.map(val => val === 0 ? null : val);
+
+return { sumOfPercents, percentsOfMaterials };
   }
 
   async saveGranulometryCompositionData(body: any, userId: string) {

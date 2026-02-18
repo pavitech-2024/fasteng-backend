@@ -55,6 +55,14 @@ __decorate([
     (0, mongoose_1.Prop)({ type: Object }),
     __metadata("design:type", Object)
 ], Marshall.prototype, "confirmationCompressionData", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: Object, required: false }),
+    __metadata("design:type", Object)
+], Marshall.prototype, "fatigueCurveData", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: Object, required: false }),
+    __metadata("design:type", Object)
+], Marshall.prototype, "resilienceModuleData", void 0);
 exports.Marshall = Marshall = __decorate([
     (0, mongoose_1.Schema)({ collection: 'marshalls' })
 ], Marshall);

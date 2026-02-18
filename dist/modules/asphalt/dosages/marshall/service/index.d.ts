@@ -449,4 +449,30 @@ export declare class MarshallService {
             name: any;
         };
     }>;
+    updateFatigueCurve(dosageId: string, fatigueData: any): Promise<{
+        dosage: Marshall;
+        success: boolean;
+        error?: undefined;
+    } | {
+        success: boolean;
+        error: {
+            status: any;
+            message: any;
+            name: any;
+        };
+        dosage?: undefined;
+    }>;
+    updateResilienceModule(dosageId: string, resilienceData: any): Promise<{
+        dosage: Marshall;
+        success: boolean;
+        error?: undefined;
+    } | {
+        success: boolean;
+        error: {
+            status: any;
+            message: any;
+            name: any;
+        };
+        dosage?: undefined;
+    }>;
 }
