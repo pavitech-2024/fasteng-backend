@@ -228,6 +228,11 @@ let MarshallController = MarshallController_1 = class MarshallController {
             return response.status(200).json(status);
         });
     }
+    saveCompleteDosage(userId, completeData) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.marshallService.saveCompleteDosage(userId, completeData);
+        });
+    }
 };
 exports.MarshallController = MarshallController;
 __decorate([
@@ -502,6 +507,14 @@ __decorate([
     __metadata("design:paramtypes", [Object, String, Object]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "updateResilienceModule", null);
+__decorate([
+    (0, common_1.Post)('complete/:userId'),
+    __param(0, (0, common_1.Param)('userId')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], MarshallController.prototype, "saveCompleteDosage", null);
 exports.MarshallController = MarshallController = MarshallController_1 = __decorate([
     (0, swagger_1.ApiTags)('marshall'),
     (0, common_1.Controller)('asphalt/dosages/marshall'),

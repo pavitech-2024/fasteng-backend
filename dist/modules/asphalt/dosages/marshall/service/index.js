@@ -644,14 +644,10 @@ let MarshallService = MarshallService_1 = class MarshallService {
                 else {
                     updateData.createdAt = new Date();
                 }
-                if (updateData.ncp)
-                    updateData.ncp = Number(updateData.ncp);
                 if (updateData.k1)
                     updateData.k1 = Number(updateData.k1);
                 if (updateData.k2)
                     updateData.k2 = Number(updateData.k2);
-                if (updateData.r2)
-                    updateData.r2 = Number(updateData.r2);
                 const updatedDosage = yield this.marshall_repository.findByIdAndUpdate(dosageId, {
                     $set: {
                         'fatigueCurveData': updateData,
@@ -685,14 +681,10 @@ let MarshallService = MarshallService_1 = class MarshallService {
                 else {
                     updateData.createdAt = new Date();
                 }
-                if (updateData.k1)
-                    updateData.k1 = Number(updateData.k1);
-                if (updateData.k2)
-                    updateData.k2 = Number(updateData.k2);
-                if (updateData.k3)
-                    updateData.k3 = Number(updateData.k3);
-                if (updateData.r2)
-                    updateData.r2 = Number(updateData.r2);
+                if (updateData.moduloMedio)
+                    updateData.moduloMedio = Number(updateData.moduloMedio);
+                if (updateData.moduloInstantaneo)
+                    updateData.moduloInstantaneo = Number(updateData.moduloInstantaneo);
                 const updatedDosage = yield this.marshall_repository.findByIdAndUpdate(dosageId, {
                     $set: {
                         'resilienceModuleData': updateData,
@@ -708,6 +700,41 @@ let MarshallService = MarshallService_1 = class MarshallService {
                 this.logger.error(`error on updating resilience module data > [error]: ${error}`);
                 const { status, name, message } = error;
                 return { success: false, error: { status, message, name } };
+            }
+        });
+    }
+    saveCompleteDosage(userId, completeData) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a;
+            try {
+                this.logger.log(`💾 Salvando dosagem completa para usuário: ${userId}`);
+                if (!((_a = completeData.generalData) === null || _a === void 0 ? void 0 : _a.name)) {
+                    throw new Error('Nome da dosagem é obrigatório');
+                }
+                const dataToSave = Object.assign(Object.assign({}, completeData), { step: 9, generalData: Object.assign(Object.assign({}, completeData.generalData), { userId: userId }) });
+                const existingDosage = yield this.marshall_repository.findOne(completeData.generalData.name, userId);
+                let savedDosage;
+                if (existingDosage) {
+                    savedDosage = yield this.marshall_repository.findByIdAndUpdate(existingDosage._id, { $set: dataToSave }, { new: true });
+                }
+                else {
+                    savedDosage = yield this.marshall_repository.create(dataToSave);
+                }
+                return {
+                    success: true,
+                    data: savedDosage,
+                    message: existingDosage ? 'Dosagem atualizada com sucesso' : 'Dosagem criada com sucesso'
+                };
+            }
+            catch (error) {
+                this.logger.error(`❌ Erro ao salvar dosagem completa: ${error.message}`);
+                return {
+                    success: false,
+                    error: {
+                        message: error.message,
+                        name: error.name || 'SaveCompleteError'
+                    }
+                };
             }
         });
     }

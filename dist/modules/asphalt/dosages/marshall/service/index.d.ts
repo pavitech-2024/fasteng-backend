@@ -475,4 +475,18 @@ export declare class MarshallService {
         };
         dosage?: undefined;
     }>;
+    saveCompleteDosage(userId: string, completeData: any): Promise<{
+        success: boolean;
+        data: any;
+        message: string;
+        error?: undefined;
+    } | {
+        success: boolean;
+        error: {
+            message: any;
+            name: any;
+        };
+        data?: undefined;
+        message?: undefined;
+    }>;
 }
