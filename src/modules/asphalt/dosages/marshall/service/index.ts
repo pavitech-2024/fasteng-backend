@@ -607,7 +607,11 @@ export class MarshallService {
       return { success: false, error: { status, message, name } };
     }
   }
-async updateFatigueCurve(dosageId: string, fatigueData: any) {
+async updateFatigueCurve(dosageId: string, fatigueData: { 
+  k1?: number; 
+  k2?: number; 
+  observacoes?: string;
+}) {
   try {
     const dosage = await this.marshall_repository.findById(dosageId);
     
@@ -615,49 +619,53 @@ async updateFatigueCurve(dosageId: string, fatigueData: any) {
       throw new NotFound(`Dosagem com ID ${dosageId} não encontrada`);
     }
 
-    // Preparar dados para atualização
+    // ✅ CORRETO: Preserva dados existentes
     const updateData: any = {
-      ...fatigueData,
+      ...(dosage.fatigueCurveData || {}), // Mantém dados antigos
+      ...fatigueData,                      // Atualiza com novos
       updatedAt: new Date(),
     };
 
-    // Se já existe, mantém o createdAt original
+    // Garantir que createdAt seja preservado
     if (dosage.fatigueCurveData?.createdAt) {
       updateData.createdAt = dosage.fatigueCurveData.createdAt;
-    } else {
+    } else if (!updateData.createdAt) {
       updateData.createdAt = new Date();
     }
 
-    // ✅ ATUALIZADO: Converter apenas k1 e k2 para números
-    if (updateData.k1) updateData.k1 = Number(updateData.k1);
-    if (updateData.k2) updateData.k2 = Number(updateData.k2);
-    // ❌ Removido: ncp e r2 não existem mais
-    // observacoes mantém como string
+    // Converter para número
+    if (updateData.k1 !== undefined) updateData.k1 = Number(updateData.k1);
+    if (updateData.k2 !== undefined) updateData.k2 = Number(updateData.k2);
 
-    // Atualizar no repositório
+    // ✅ CORRETO: Com { new: true }
     const updatedDosage = await this.marshall_repository.findByIdAndUpdate(
       dosageId,
       {
         $set: {
           'fatigueCurveData': updateData,
         },
-      }
+      },
+      { new: true } // 👈 ESSENCIAL!
     );
 
-    this.logger.log(`fatigue curve data updated successfully for dosage: ${dosageId}`);
+    this.logger.log(`✅ fatigue curve data updated for dosage: ${dosageId}`);
 
     return { 
       dosage: updatedDosage, 
       success: true 
     };
   } catch (error) {
-    this.logger.error(`error on updating fatigue curve data > [error]: ${error}`);
+    this.logger.error(`❌ error on updating fatigue curve data: ${error}`);
     const { status, name, message } = error;
     return { success: false, error: { status, message, name } };
   }
 }
 
-async updateResilienceModule(dosageId: string, resilienceData: any) {
+async updateResilienceModule(dosageId: string, resilienceData: {
+  moduloMedio?: number;
+  moduloInstantaneo?: number;
+  observacoes?: string;
+}) {
   try {
     const dosage = await this.marshall_repository.findById(dosageId);
     
@@ -665,43 +673,43 @@ async updateResilienceModule(dosageId: string, resilienceData: any) {
       throw new NotFound(`Dosagem com ID ${dosageId} não encontrada`);
     }
 
-    // Preparar dados para atualização
+    // ✅ CORRETO: Preserva dados existentes
     const updateData: any = {
-      ...resilienceData,
+      ...(dosage.resilienceModuleData || {}), // Mantém dados antigos
+      ...resilienceData,                       // Atualiza com novos
       updatedAt: new Date(),
     };
 
-    // Se já existe, mantém o createdAt original
+    // Garantir que createdAt seja preservado
     if (dosage.resilienceModuleData?.createdAt) {
       updateData.createdAt = dosage.resilienceModuleData.createdAt;
-    } else {
+    } else if (!updateData.createdAt) {
       updateData.createdAt = new Date();
     }
 
-    // ✅ ATUALIZADO: Converter moduloMedio e moduloInstantaneo para números
-    if (updateData.moduloMedio) updateData.moduloMedio = Number(updateData.moduloMedio);
-    if (updateData.moduloInstantaneo) updateData.moduloInstantaneo = Number(updateData.moduloInstantaneo);
-    // ❌ Removido: k1, k2, k3, r2 não existem mais
-    // observacoes mantém como string
+    // Converter para número
+    if (updateData.moduloMedio !== undefined) updateData.moduloMedio = Number(updateData.moduloMedio);
+    if (updateData.moduloInstantaneo !== undefined) updateData.moduloInstantaneo = Number(updateData.moduloInstantaneo);
 
-    // Atualizar no repositório
+    // ✅ CORRETO: Com { new: true }
     const updatedDosage = await this.marshall_repository.findByIdAndUpdate(
       dosageId,
       {
         $set: {
           'resilienceModuleData': updateData,
         },
-      }
+      },
+      { new: true } // 👈 ESSENCIAL!
     );
 
-    this.logger.log(`resilience module data updated successfully for dosage: ${dosageId}`);
+    this.logger.log(`✅ resilience module data updated for dosage: ${dosageId}`);
 
     return { 
       dosage: updatedDosage, 
       success: true 
     };
   } catch (error) {
-    this.logger.error(`error on updating resilience module data > [error]: ${error}`);
+    this.logger.error(`❌ error on updating resilience module data: ${error}`);
     const { status, name, message } = error;
     return { success: false, error: { status, message, name } };
   }
