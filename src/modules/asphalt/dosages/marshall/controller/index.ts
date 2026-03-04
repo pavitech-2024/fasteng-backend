@@ -361,4 +361,13 @@ export class MarshallController {
     return response.status(200).json(status);
   }
 
+
+
+@Post('complete/:userId')
+async saveCompleteDosage(
+  @Param('userId') userId: string,
+  @Body() completeData: any
+) {
+  return this.marshallService.saveCompleteDosage(userId, completeData);
+}
 }
