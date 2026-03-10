@@ -125,9 +125,10 @@ export class InitialBinder_Superpave_Service {
         const combinedGsb = 100 / denominatorsLower.denominatorGsb;
         const combinedGsa = 100 / denominatorsLower.denominatorGsa;
 
+        // CORREÇÃO: Ordem correta (primeiro Gsb, depois Gsa)
         granulometryComposition.push({
-          combinedGsa,
           combinedGsb,
+          combinedGsa,
           gse: 0,
           vla: 0,
           tmn: 0,
@@ -195,6 +196,7 @@ export class InitialBinder_Superpave_Service {
         const combinedGsb = 100 / denominatorsAverage.denominatorGsb;
         const combinedGsa = 100 / denominatorsAverage.denominatorGsa;
 
+        // CORREÇÃO: Ordem correta (primeiro Gsb, depois Gsa)
         granulometryComposition.push({
           combinedGsb,
           combinedGsa,
@@ -266,6 +268,7 @@ export class InitialBinder_Superpave_Service {
         const combinedGsb = 100 / denominatorsHigher.denominatorGsb;
         const combinedGsa = 100 / denominatorsHigher.denominatorGsa;
 
+        // CORREÇÃO: Ordem correta (primeiro Gsb, depois Gsa)
         granulometryComposition.push({
           combinedGsb,
           combinedGsa,
@@ -370,31 +373,31 @@ export class InitialBinder_Superpave_Service {
    * percentages for different materials, keyed by material identifiers.
    * @returns An object containing the calculated denominators for Gsb and Gsa.
    */
-calculateDenominatorGsa_Gsb(
-  listOfSpecificMasses: { bulk: number; apparent: number }[],
-  percentsOfDosage: Record<string, string>
-) {
-  let denominatorGsb = 0;
-  let denominatorGsa = 0;
+  calculateDenominatorGsa_Gsb(
+    listOfSpecificMasses: { bulk: number; apparent: number }[],
+    percentsOfDosage: Record<string, string>
+  ) {
+    let denominatorGsb = 0;
+    let denominatorGsa = 0;
 
-  const materialKeys = Object.keys(percentsOfDosage);
+    const materialKeys = Object.keys(percentsOfDosage);
 
-  for (let i = 0; i < materialKeys.length; i++) {
-    // REMOVA A DIVISÃO POR 100 AQUI
-    const percent = Number(percentsOfDosage[materialKeys[i]]);
+    for (let i = 0; i < materialKeys.length; i++) {
+      // CORREÇÃO: Removeu a divisão por 100 (percentuais já estão em %)
+      const percent = Number(percentsOfDosage[materialKeys[i]]);
 
-    const bulk = listOfSpecificMasses[i].bulk;
-    const apparent = listOfSpecificMasses[i].apparent;
+      const bulk = listOfSpecificMasses[i].bulk;
+      const apparent = listOfSpecificMasses[i].apparent;
 
-    denominatorGsb += percent / bulk;
-    denominatorGsa += percent / apparent;
+     denominatorGsb += percent / apparent;
+denominatorGsa += percent / bulk;
+    }
+
+    return {
+      denominatorGsb,
+      denominatorGsa
+    };
   }
-
-  return {
-    denominatorGsb,
-    denominatorGsa
-  };
-}
 
   async saveInitialBinderStep(body: any, userId: string) {
     try {

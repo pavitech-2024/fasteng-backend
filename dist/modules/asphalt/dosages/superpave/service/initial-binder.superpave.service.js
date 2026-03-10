@@ -122,8 +122,8 @@ let InitialBinder_Superpave_Service = InitialBinder_Superpave_Service_1 = class 
                     const combinedGsb = 100 / denominatorsLower.denominatorGsb;
                     const combinedGsa = 100 / denominatorsLower.denominatorGsa;
                     granulometryComposition.push({
-                        combinedGsa,
                         combinedGsb,
+                        combinedGsa,
                         gse: 0,
                         vla: 0,
                         tmn: 0,
@@ -321,8 +321,8 @@ let InitialBinder_Superpave_Service = InitialBinder_Superpave_Service_1 = class 
             const percent = Number(percentsOfDosage[materialKeys[i]]);
             const bulk = listOfSpecificMasses[i].bulk;
             const apparent = listOfSpecificMasses[i].apparent;
-            denominatorGsb += percent / bulk;
-            denominatorGsa += percent / apparent;
+            denominatorGsb += percent / apparent;
+            denominatorGsa += percent / bulk;
         }
         return {
             denominatorGsb,
