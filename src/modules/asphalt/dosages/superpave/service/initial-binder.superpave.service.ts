@@ -115,8 +115,12 @@ export class InitialBinder_Superpave_Service {
         });
       }
 
+      // Cálculos para a curva inferior
       if (chosenCurves.includes('lower')) {
-        const denominatorsLower = this.calculateDenominatorGsa_Gsb(listOfSpecificMasses, percentsOfDosage);
+        // Pegar os percentuais específicos da curva inferior
+        const lowerPercents = percentsOfDosage[0];
+        
+        const denominatorsLower = this.calculateDenominatorGsa_Gsb(listOfSpecificMasses, lowerPercents);
 
         const combinedGsb = 100 / denominatorsLower.denominatorGsb;
         const combinedGsa = 100 / denominatorsLower.denominatorGsa;
@@ -137,52 +141,56 @@ export class InitialBinder_Superpave_Service {
         let lowerAbsorve = 0;
         let percentsOfDosageArray = [];
 
-        Object.values(percentsOfDosage[0]).forEach((e) => {
+        Object.values(lowerPercents).forEach((e) => {
           percentsOfDosageArray.push(e);
         });
 
         for (let i = 0; i < percentsOfDosageArray.length; i++) {
-          if (listOfSpecificMasses.length < i) {
+          if (listOfSpecificMasses.length > i) {
             lowerAbsorve += ((percentsOfDosageArray[i] / 100) * listOfSpecificMasses[i].absorption) / 100;
           }
-          const lowerGse = combinedGsb + lowerAbsorve * (combinedGsa - combinedGsb);
-          const lowerVla =
-            ((0.95 + 0.96) / (0.05 / binderSpecificMass + 0.95 / lowerGse)) * (1 / combinedGsb - 1 / lowerGse);
-          const lowerTmn = nominalSize.value / 24.384;
-
-          //todo: remover esta condiccional após resolver o problema do tamanho nominal
-          let lowerVle;
-          if (lowerTmn < 0.5) {
-            lowerVle = 0.081 - 0.02931 * 0;
-          } else {
-            lowerVle = 0.081 - 0.02931 * Math.log(lowerTmn);
-          }
-
-          const lowerMag = (0.95 * 0.96) / (0.05 / binderSpecificMass + 0.95 / lowerGse);
-          const lowerPli =
-            binderSpecificMass === 0 && lowerMag === 0
-              ? 0
-              : ((binderSpecificMass * (lowerVle + lowerVla)) /
-                  (binderSpecificMass * (lowerVle + lowerVla) + lowerMag)) *
-                100;
-
-          for (let j = 0; j < listOfSpecificMasses.length; j++) {
-            granulometryComposition[0].percentsOfDosageWithBinder[j] =
-              ((100 - lowerPli) * percentsOfDosageArray[j]) / 100;
-          }
-
-          granulometryComposition[0].gse = lowerGse;
-          granulometryComposition[0].vla = lowerVla;
-          granulometryComposition[0].tmn = lowerTmn;
-          granulometryComposition[0].vle = lowerVle;
-          granulometryComposition[0].mag = lowerMag;
-          granulometryComposition[0].pli = lowerPli;
         }
+        
+        const lowerGse = combinedGsb + lowerAbsorve * (combinedGsa - combinedGsb);
+        const lowerVla =
+          ((0.95 + 0.96) / (0.05 / binderSpecificMass + 0.95 / lowerGse)) * (1 / combinedGsb - 1 / lowerGse);
+        const lowerTmn = nominalSize.value / 24.384;
+
+        //todo: remover esta condiccional após resolver o problema do tamanho nominal
+        let lowerVle;
+        if (lowerTmn < 0.5) {
+          lowerVle = 0.081 - 0.02931 * 0;
+        } else {
+          lowerVle = 0.081 - 0.02931 * Math.log(lowerTmn);
+        }
+
+        const lowerMag = (0.95 * 0.96) / (0.05 / binderSpecificMass + 0.95 / lowerGse);
+        const lowerPli =
+          binderSpecificMass === 0 && lowerMag === 0
+            ? 0
+            : ((binderSpecificMass * (lowerVle + lowerVla)) /
+                (binderSpecificMass * (lowerVle + lowerVla) + lowerMag)) *
+              100;
+
+        for (let j = 0; j < listOfSpecificMasses.length; j++) {
+          granulometryComposition[0].percentsOfDosageWithBinder[j] =
+            ((100 - lowerPli) * percentsOfDosageArray[j]) / 100;
+        }
+
+        granulometryComposition[0].gse = lowerGse;
+        granulometryComposition[0].vla = lowerVla;
+        granulometryComposition[0].tmn = lowerTmn;
+        granulometryComposition[0].vle = lowerVle;
+        granulometryComposition[0].mag = lowerMag;
+        granulometryComposition[0].pli = lowerPli;
       }
 
-      //Cálculos para a curva intermediária caso tenha sido selecionada
+      //Cálculos para a curva intermediária
       if (chosenCurves.includes('average')) {
-        const denominatorsAverage = this.calculateDenominatorGsa_Gsb(listOfSpecificMasses, percentsOfDosage);
+        // Pegar os percentuais específicos da curva intermediária
+        const averagePercents = percentsOfDosage[1];
+        
+        const denominatorsAverage = this.calculateDenominatorGsa_Gsb(listOfSpecificMasses, averagePercents);
 
         const combinedGsb = 100 / denominatorsAverage.denominatorGsb;
         const combinedGsa = 100 / denominatorsAverage.denominatorGsa;
@@ -203,12 +211,12 @@ export class InitialBinder_Superpave_Service {
         let averageAbsorve = 0;
         let percentsOfDosageArray = [];
 
-        Object.values(percentsOfDosage[1]).forEach((e) => {
+        Object.values(averagePercents).forEach((e) => {
           percentsOfDosageArray.push(e);
         });
 
         for (let i = 0; i < percentsOfDosageArray.length; i++) {
-          if (listOfSpecificMasses.length < i) {
+          if (listOfSpecificMasses.length > i) {
             averageAbsorve += ((percentsOfDosageArray[i] / 100) * listOfSpecificMasses[i].absorption) / 100;
           }
         }
@@ -248,12 +256,15 @@ export class InitialBinder_Superpave_Service {
         granulometryComposition[1].pli = averagePli;
       }
 
-      //Cálculos para a curva intermediária caso tenha sido selecionada
+      //Cálculos para a curva superior
       if (chosenCurves.includes('higher')) {
-        const denominatorsAverage = this.calculateDenominatorGsa_Gsb(listOfSpecificMasses, percentsOfDosage);
+        // Pegar os percentuais específicos da curva superior
+        const higherPercents = percentsOfDosage[2];
+        
+        const denominatorsHigher = this.calculateDenominatorGsa_Gsb(listOfSpecificMasses, higherPercents);
 
-        const combinedGsb = 100 / denominatorsAverage.denominatorGsb;
-        const combinedGsa = 100 / denominatorsAverage.denominatorGsa;
+        const combinedGsb = 100 / denominatorsHigher.denominatorGsb;
+        const combinedGsa = 100 / denominatorsHigher.denominatorGsa;
 
         granulometryComposition.push({
           combinedGsb,
@@ -271,13 +282,14 @@ export class InitialBinder_Superpave_Service {
         let higherAbsorve = 0;
         let percentsOfDosageArray = [];
 
-        Object.values(percentsOfDosage[2]).forEach((e) => {
+        Object.values(higherPercents).forEach((e) => {
           percentsOfDosageArray.push(e);
         });
 
         for (let i = 0; i < percentsOfDosageArray.length; i++) {
-          if (listOfSpecificMasses.length < i)
+          if (listOfSpecificMasses.length > i) {
             higherAbsorve += ((percentsOfDosageArray[i] / 100) * listOfSpecificMasses[i].absorption) / 100;
+          }
         }
 
         const higherGse = combinedGsb + higherAbsorve * (combinedGsa - combinedGsb);
@@ -306,6 +318,13 @@ export class InitialBinder_Superpave_Service {
           granulometryComposition[2].percentsOfDosageWithBinder[j] =
             ((100 - higherPli) * percentsOfDosageArray[j]) / 100;
         }
+
+        granulometryComposition[2].gse = higherGse;
+        granulometryComposition[2].vla = higherVla;
+        granulometryComposition[2].tmn = higherTmn;
+        granulometryComposition[2].vle = higherVle;
+        granulometryComposition[2].mag = higherMag;
+        granulometryComposition[2].pli = higherPli;
       }
 
       if (trafficVolume === 'low') {
@@ -351,35 +370,33 @@ export class InitialBinder_Superpave_Service {
    * percentages for different materials, keyed by material identifiers.
    * @returns An object containing the calculated denominators for Gsb and Gsa.
    */
-  calculateDenominatorGsa_Gsb(
-    listOfSpecificMasses: { bulk: string; apparent: string }[],
-    percentsOfDosage: Record<string, string>[],
-  ) {
-    let denominatorGsb = 0;
-    let denominatorGsa = 0;
+calculateDenominatorGsa_Gsb(
+  listOfSpecificMasses: { bulk: number; apparent: number }[],
+  percentsOfDosage: Record<string, string>
+) {
+  let denominatorGsb = 0;
+  let denominatorGsa = 0;
 
-    // Para cada índice de material
-    for (let j = 0; j < listOfSpecificMasses.length; j++) {
-      let percentSum = 0;
+  const materialKeys = Object.keys(percentsOfDosage);
 
-      // Para cada dosagem (linha)
-      for (const dosage of percentsOfDosage) {
-        const materialKey = Object.keys(dosage)[j];
-        const percent = parseFloat(dosage[materialKey] || '0');
-        percentSum += percent;
-      }
+  for (let i = 0; i < materialKeys.length; i++) {
+    // REMOVA A DIVISÃO POR 100 AQUI
+    const percent = Number(percentsOfDosage[materialKeys[i]]);
 
-      const bulk = parseFloat(listOfSpecificMasses[j].bulk);
-      const apparent = parseFloat(listOfSpecificMasses[j].apparent);
+    const bulk = listOfSpecificMasses[i].bulk;
+    const apparent = listOfSpecificMasses[i].apparent;
 
-      denominatorGsb += percentSum / bulk;
-      denominatorGsa += percentSum / apparent;
-    }
-
-    return { denominatorGsb, denominatorGsa };
+    denominatorGsb += percent / bulk;
+    denominatorGsa += percent / apparent;
   }
 
-    async saveInitialBinderStep(body: any, userId: string) {
+  return {
+    denominatorGsb,
+    denominatorGsa
+  };
+}
+
+  async saveInitialBinderStep(body: any, userId: string) {
     try {
       this.logger.log(
         'save superpave initial binder step on initial-binder.superpave.service.ts > [body]',
