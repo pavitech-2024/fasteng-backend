@@ -32,9 +32,9 @@ export declare class InitialBinder_Superpave_Service {
         };
     }>;
     calculateDenominatorGsa_Gsb(listOfSpecificMasses: {
-        bulk: string;
-        apparent: string;
-    }[], percentsOfDosage: Record<string, string>[]): {
+        bulk: number;
+        apparent: number;
+    }[], percentsOfDosage: Record<string, string>): {
         denominatorGsb: number;
         denominatorGsa: number;
     };
