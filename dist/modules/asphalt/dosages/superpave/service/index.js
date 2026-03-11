@@ -263,7 +263,7 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
                     result.nominalSize.restrictedZone.higher = yield this.insertBlankPointsOnCurve([null, null, null, null, null, null, 34.7, 27.3, 21.5, 15.7, 10, null, null], axisX);
                     result.nominalSize.curve = curve38_1;
                 }
-                else if (nominalSize <= 25 && nominalSize > 19) {
+                else if (nominalSize <= 25 && nominalSize > 19.1) {
                     result.nominalSize.controlPoints.lower = [
                         100,
                         90,
@@ -326,7 +326,7 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
                     ], axisX);
                     result.nominalSize.curve = curve25;
                 }
-                else if (nominalSize <= 19 && nominalSize > 12.5) {
+                else if (nominalSize <= 19.1 && nominalSize > 12.5) {
                     result.nominalSize.controlPoints.lower = [
                         null,
                         100,

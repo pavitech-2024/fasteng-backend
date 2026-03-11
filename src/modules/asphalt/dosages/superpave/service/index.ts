@@ -289,7 +289,7 @@ export class SuperpaveService {
         );
 
         result.nominalSize.curve = curve38_1;
-      } else if (nominalSize <= 25 && nominalSize > 19) {
+      } else if (nominalSize <= 25 && nominalSize > 19.1) {
         result.nominalSize.controlPoints.lower = [
           100, // 38.1
           90, // 25.4
@@ -357,7 +357,7 @@ export class SuperpaveService {
           axisX,
         );
         result.nominalSize.curve = curve25;
-      } else if (nominalSize <= 19 && nominalSize > 12.5) {
+      } else if (nominalSize <= 19.1 && nominalSize > 12.5) {
         result.nominalSize.controlPoints.lower = [
           null, // 38.1
           100, // 25.4

@@ -149,6 +149,14 @@ let GranulometryComposition_Superpave_Service = GranulometryComposition_Superpav
                 else if (dnitBand === 'C') {
                     band = { higher: higherBandC, lower: lowerBandC };
                 }
+                const nmas = nominalSize.value;
+                const nmasIndex = axisX.indexOf(nmas);
+                const D = nmasIndex > 0 ? axisX[nmasIndex - 1] : axisX[0];
+                const densityMaxCurve = axisX.map((d) => {
+                    if (d > D)
+                        return null;
+                    return parseFloat((100 * Math.pow(d / D, 0.45)).toFixed(2));
+                });
                 if (granulometryComposition.lower.percentsOfDosage.isEmpty) {
                     lowerComposition = this.calculatePercentOfMaterials(materials, percentsOfDosage[0], percentsToList);
                     sumOfPercents[0] = lowerComposition.sumOfPercents.map((e) => e);
@@ -179,18 +187,19 @@ let GranulometryComposition_Superpave_Service = GranulometryComposition_Superpav
                 else {
                     sumOfPercents[2] = [null, null, null, null, null, null, null, null, null, null, null, null, null];
                 }
-                for (let i = 0; i < nominalSize.curve.length; i++) {
+                for (let i = 0; i < axisX.length; i++) {
                     pointsOfCurve.push([
-                        Math.pow(axisX[i] / nominalSize.value, 0.45),
+                        parseFloat(Math.pow(axisX[i] / nominalSize.value, 0.45).toFixed(6)),
                         nominalSize.controlPoints.lower[i],
                         nominalSize.controlPoints.higher[i],
                         nominalSize.restrictedZone.lower[i],
                         nominalSize.restrictedZone.higher[i],
-                        nominalSize.curve[i],
+                        densityMaxCurve[i],
                         band.higher[i],
                         band.lower[i],
                     ]);
                 }
+                console.log(pointsOfCurve);
                 if (granulometryComposition.lower.percentsOfDosage.isEmpty) {
                     for (let i = 0; i < 13; i++) {
                         pointsOfCurve[i].push(sumOfPercents[0][i]);
@@ -206,7 +215,6 @@ let GranulometryComposition_Superpave_Service = GranulometryComposition_Superpav
                         pointsOfCurve[i].push(sumOfPercents[2][i]);
                     }
                 }
-                pointsOfCurve = pointsOfCurve;
                 const data = {
                     lowerComposition,
                     averageComposition,

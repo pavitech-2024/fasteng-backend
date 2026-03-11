@@ -89,160 +89,177 @@ export class GranulometryComposition_Superpave_Service {
     }
   }
 
-  async calculateGranulometry(body: any) {
-    try {
-      const {
-        chosenCurves,
-        percentageInputs: percentsOfDosage,
-        percentsToList,
-        dnitBand,
-        materials,
-        nominalSize,
-      } = body;
+ async calculateGranulometry(body: any) {
+  try {
+    const {
+      chosenCurves,
+      percentageInputs: percentsOfDosage,
+      percentsToList,
+      dnitBand,
+      materials,
+      nominalSize,
+    } = body;
 
-      let pointsOfCurve = [];
-      let band = { higher: [Number], lower: [Number] };
-      let sumOfPercents = [];
+    let pointsOfCurve = [];
+    let band = { higher: [Number], lower: [Number] };
+    let sumOfPercents = [];
 
-      let lowerComposition = {
-        sumOfPercents: [],
-        percentsOfMaterials: null,
-      };
+    let lowerComposition = {
+      sumOfPercents: [],
+      percentsOfMaterials: null,
+    };
 
-      let averageComposition = {
-        sumOfPercents: [],
-        percentsOfMaterials: null,
-      };
+    let averageComposition = {
+      sumOfPercents: [],
+      percentsOfMaterials: null,
+    };
 
-      let higherComposition = {
-        sumOfPercents: [],
-        percentsOfMaterials: null,
-      };
+    let higherComposition = {
+      sumOfPercents: [],
+      percentsOfMaterials: null,
+    };
 
-      let granulometryComposition = {
-        lower: {
-          percentsOfDosage: {
-            value: chosenCurves.includes('lower') ? percentsOfDosage[0] : [],
-            isEmpty: chosenCurves.includes('lower'),
-          },
+    let granulometryComposition = {
+      lower: {
+        percentsOfDosage: {
+          value: chosenCurves.includes('lower') ? percentsOfDosage[0] : [],
+          isEmpty: chosenCurves.includes('lower'),
         },
-        average: {
-          percentsOfDosage: {
-            value: chosenCurves.includes('average') ? percentsOfDosage[1] : [],
-            isEmpty: chosenCurves.includes('average'),
-          },
+      },
+      average: {
+        percentsOfDosage: {
+          value: chosenCurves.includes('average') ? percentsOfDosage[1] : [],
+          isEmpty: chosenCurves.includes('average'),
         },
-        higher: {
-          percentsOfDosage: {
-            value: chosenCurves.includes('average') ? percentsOfDosage[2] : [],
-            isEmpty: chosenCurves.includes('higher'),
-          },
+      },
+      higher: {
+        percentsOfDosage: {
+          value: chosenCurves.includes('average') ? percentsOfDosage[2] : [],
+          isEmpty: chosenCurves.includes('higher'),
         },
-      };
+      },
+    };
 
-      const axisX = [38.1, 25.4, 19.1, 12.7, 9.5, 6.3, 4.8, 2.36, 1.18, 0.6, 0.3, 0.15, 0.075];
+    const axisX = [38.1, 25.4, 19.1, 12.7, 9.5, 6.3, 4.8, 2.36, 1.18, 0.6, 0.3, 0.15, 0.075];
 
-      const higherBandA = this.insertBlankPointsOnCurve([100, 100, 89, 78, 71, 61, 55, 45, 36, 28, 24, 14, 7], axisX);
-      const lowerBandA = this.insertBlankPointsOnCurve([100, 90, 75, 58, 48, 35, 29, 19, 13, 9, 5, 2, 1], axisX);
-      const higherBandB = this.insertBlankPointsOnCurve([null, 100, 100, 89, 82, 70, 63, 49, 37, 28, 20, 13, 8], axisX);
-      const lowerBandB = this.insertBlankPointsOnCurve([null, 100, 90, 70, 55, 42, 35, 23, 16, 10, 6, 4, 2], axisX);
-      const higherBandC = this.insertBlankPointsOnCurve(
-        [null, null, null, 100, 100, 89, 83, 67, 52, 40, 29, 19, 10],
-        axisX,
-      );
-      const lowerBandC = this.insertBlankPointsOnCurve([null, null, null, 100, 90, 65, 53, 32, 20, 13, 8, 4, 2], axisX);
+    const higherBandA = this.insertBlankPointsOnCurve([100, 100, 89, 78, 71, 61, 55, 45, 36, 28, 24, 14, 7], axisX);
+    const lowerBandA = this.insertBlankPointsOnCurve([100, 90, 75, 58, 48, 35, 29, 19, 13, 9, 5, 2, 1], axisX);
+    const higherBandB = this.insertBlankPointsOnCurve([null, 100, 100, 89, 82, 70, 63, 49, 37, 28, 20, 13, 8], axisX);
+    const lowerBandB = this.insertBlankPointsOnCurve([null, 100, 90, 70, 55, 42, 35, 23, 16, 10, 6, 4, 2], axisX);
+    const higherBandC = this.insertBlankPointsOnCurve([null, null, null, 100, 100, 89, 83, 67, 52, 40, 29, 19, 10], axisX);
+    const lowerBandC = this.insertBlankPointsOnCurve([null, null, null, 100, 90, 65, 53, 32, 20, 13, 8, 4, 2], axisX);
 
-      if (dnitBand === 'A') {
-        band = { higher: higherBandA, lower: lowerBandA };
-      } else if (dnitBand === 'B') {
-        band = { higher: higherBandB, lower: lowerBandB };
-      } else if (dnitBand === 'C') {
-        band = { higher: higherBandC, lower: lowerBandC };
-      }
-
-      if (granulometryComposition.lower.percentsOfDosage.isEmpty) {
-        lowerComposition = this.calculatePercentOfMaterials(materials, percentsOfDosage[0], percentsToList);
-        sumOfPercents[0] = lowerComposition.sumOfPercents.map((e) => e);
-      }
-      // if (granulometryComposition.lower.percentsOfDosage.isEmpty) {
-      //   const percentsOfDosageValues = granulometryComposition.lower.percentsOfDosage.value;
-      //   lowerComposition = this.calculatePercentOfMaterials(0, materials, percentsOfDosageValues, percentsToList);
-      //   sumOfPercents[0] = lowerComposition.sumOfPercents.map((e) => e);
-      // }
-
-      if (granulometryComposition.average.percentsOfDosage.isEmpty) {
-        averageComposition = this.calculatePercentOfMaterials(materials, percentsOfDosage[1], percentsToList);
-        sumOfPercents[1] = averageComposition.sumOfPercents.map((e) => e);
-      }
-
-      if (granulometryComposition.higher.percentsOfDosage.isEmpty) {
-        higherComposition = this.calculatePercentOfMaterials(materials, percentsOfDosage[2], percentsToList);
-        sumOfPercents[2] = higherComposition.sumOfPercents.map((e) => e);
-      }
-
-      if (granulometryComposition.lower.percentsOfDosage.isEmpty) {
-        sumOfPercents[0] = this.insertBlankPointsOnCurve(sumOfPercents[0], axisX);
-      } else {
-        sumOfPercents[0] = [null, null, null, null, null, null, null, null, null, null, null, null, null];
-      }
-
-      if (granulometryComposition.average.percentsOfDosage.isEmpty) {
-        sumOfPercents[1] = this.insertBlankPointsOnCurve(sumOfPercents[1], axisX);
-      } else {
-        sumOfPercents[1] = [null, null, null, null, null, null, null, null, null, null, null, null, null];
-      }
-
-      if (granulometryComposition.higher.percentsOfDosage.isEmpty) {
-        sumOfPercents[2] = this.insertBlankPointsOnCurve(sumOfPercents[2], axisX);
-      } else {
-        sumOfPercents[2] = [null, null, null, null, null, null, null, null, null, null, null, null, null];
-      }
-
-      for (let i = 0; i < nominalSize.curve.length; i++) {
-        pointsOfCurve.push([
-          Math.pow(axisX[i] / nominalSize.value, 0.45),
-          nominalSize.controlPoints.lower[i],
-          nominalSize.controlPoints.higher[i],
-          nominalSize.restrictedZone.lower[i],
-          nominalSize.restrictedZone.higher[i],
-          nominalSize.curve[i],
-          band.higher[i],
-          band.lower[i],
-        ]);
-      }
-
-      if (granulometryComposition.lower.percentsOfDosage.isEmpty) {
-        for (let i = 0; i < 13; i++) {
-          pointsOfCurve[i].push(sumOfPercents[0][i]);
-        }
-      }
-      if (granulometryComposition.average.percentsOfDosage.isEmpty) {
-        for (let i = 0; i < 13; i++) {
-          pointsOfCurve[i].push(sumOfPercents[1][i]);
-        }
-      }
-      if (granulometryComposition.higher.percentsOfDosage.isEmpty) {
-        for (let i = 0; i < 13; i++) {
-          pointsOfCurve[i].push(sumOfPercents[2][i]);
-        }
-      }
-
-      pointsOfCurve = pointsOfCurve;
-
-      const data = {
-        lowerComposition,
-        averageComposition,
-        higherComposition,
-        pointsOfCurve,
-        nominalSize,
-        chosenCurves,
-      };
-
-      return { data, success: true };
-    } catch (error) {
-      throw error;
+    if (dnitBand === 'A') {
+      band = { higher: higherBandA, lower: lowerBandA };
+    } else if (dnitBand === 'B') {
+      band = { higher: higherBandB, lower: lowerBandB };
+    } else if (dnitBand === 'C') {
+      band = { higher: higherBandC, lower: lowerBandC };
     }
+
+    // ✅ FIX PRINCIPAL: Calcula a curva de densidade máxima de Fuller
+    // Fórmula: passant[i] = 100 * (d[i] / D)^0.45
+    // onde d[i] é o diâmetro da peneira e D é o diâmetro nominal máximo
+   const nmas = nominalSize.value; // TNM = 19.1
+// NMAS é sempre a peneira imediatamente superior ao TNM
+
+const nmasIndex = axisX.indexOf(nmas);
+const D = nmasIndex > 0 ? axisX[nmasIndex - 1] : axisX[0]; // peneira acima = 25.4
+
+const densityMaxCurve = axisX.map((d) => {
+  if (d > D) return null; // acima do NMAS não plota
+  return parseFloat((100 * Math.pow(d / D, 0.45)).toFixed(2));
+});
+
+    if (granulometryComposition.lower.percentsOfDosage.isEmpty) {
+      lowerComposition = this.calculatePercentOfMaterials(materials, percentsOfDosage[0], percentsToList);
+      sumOfPercents[0] = lowerComposition.sumOfPercents.map((e) => e);
+    }
+
+    if (granulometryComposition.average.percentsOfDosage.isEmpty) {
+      averageComposition = this.calculatePercentOfMaterials(materials, percentsOfDosage[1], percentsToList);
+      sumOfPercents[1] = averageComposition.sumOfPercents.map((e) => e);
+    }
+
+    if (granulometryComposition.higher.percentsOfDosage.isEmpty) {
+      higherComposition = this.calculatePercentOfMaterials(materials, percentsOfDosage[2], percentsToList);
+      sumOfPercents[2] = higherComposition.sumOfPercents.map((e) => e);
+    }
+
+    if (granulometryComposition.lower.percentsOfDosage.isEmpty) {
+      sumOfPercents[0] = this.insertBlankPointsOnCurve(sumOfPercents[0], axisX);
+    } else {
+      sumOfPercents[0] = [null, null, null, null, null, null, null, null, null, null, null, null, null];
+    }
+
+    if (granulometryComposition.average.percentsOfDosage.isEmpty) {
+      sumOfPercents[1] = this.insertBlankPointsOnCurve(sumOfPercents[1], axisX);
+    } else {
+      sumOfPercents[1] = [null, null, null, null, null, null, null, null, null, null, null, null, null];
+    }
+
+    if (granulometryComposition.higher.percentsOfDosage.isEmpty) {
+      sumOfPercents[2] = this.insertBlankPointsOnCurve(sumOfPercents[2], axisX);
+    } else {
+      sumOfPercents[2] = [null, null, null, null, null, null, null, null, null, null, null, null, null];
+    }
+
+    // ✅ FIX: Monta os pontos do gráfico usando densityMaxCurve no lugar de nominalSize.curve
+    // A ordem das colunas é:
+    // [0] eixo X = (d/D)^0.45
+    // [1] controlPoints.lower  → pontos de controle inferiores
+    // [2] controlPoints.higher → pontos de controle superiores
+    // [3] restrictedZone.lower → zona de restrição inferior
+    // [4] restrictedZone.higher → zona de restrição superior
+    // [5] densityMaxCurve      → curva de densidade máxima (Fuller)
+    // [6] band.higher          → faixa DNIT superior
+    // [7] band.lower           → faixa DNIT inferior
+    // [8/9/10] sumOfPercents   → curvas lower/average/higher (dependendo do chosenCurves)
+    for (let i = 0; i < axisX.length; i++) {
+      pointsOfCurve.push([
+        parseFloat(Math.pow(axisX[i] / nominalSize.value, 0.45).toFixed(6)),
+        nominalSize.controlPoints.lower[i],
+        nominalSize.controlPoints.higher[i],
+        nominalSize.restrictedZone.lower[i],
+        nominalSize.restrictedZone.higher[i],
+        densityMaxCurve[i],  // ← Fuller correto
+        band.higher[i],
+        band.lower[i],
+      ]);
+    }
+
+    console.log(pointsOfCurve)
+
+    if (granulometryComposition.lower.percentsOfDosage.isEmpty) {
+      for (let i = 0; i < 13; i++) {
+        pointsOfCurve[i].push(sumOfPercents[0][i]);
+      }
+    }
+    if (granulometryComposition.average.percentsOfDosage.isEmpty) {
+      for (let i = 0; i < 13; i++) {
+        pointsOfCurve[i].push(sumOfPercents[1][i]);
+      }
+    }
+    if (granulometryComposition.higher.percentsOfDosage.isEmpty) {
+      for (let i = 0; i < 13; i++) {
+        pointsOfCurve[i].push(sumOfPercents[2][i]);
+      }
+    }
+
+    const data = {
+      lowerComposition,
+      averageComposition,
+      higherComposition,
+      pointsOfCurve,
+      nominalSize,
+      chosenCurves,
+    };
+
+    return { data, success: true };
+  } catch (error) {
+    throw error;
   }
+}
 
   insertBlankPointsOnCurve(curve, axisX) {
     for (let k = 0; k < curve.length; k++) {
