@@ -229,290 +229,37 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
                 curve9[curve9.length - 1] = 0;
                 if (nominalSize <= 37.5 && nominalSize > 25) {
                     result.nominalSize.controlPoints.lower = [100, 90, null, null, null, null, null, 15, null, null, null, null, 0];
-                    result.nominalSize.controlPoints.higher = [
-                        100,
-                        90,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        41,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        6,
-                    ];
-                    result.nominalSize.restrictedZone.lower = yield this.insertBlankPointsOnCurve([
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        34.7,
-                        23.3,
-                        15.5,
-                        11.7,
-                        10,
-                        null,
-                        null,
-                    ], axisX);
-                    result.nominalSize.restrictedZone.higher = yield this.insertBlankPointsOnCurve([null, null, null, null, null, null, 34.7, 27.3, 21.5, 15.7, 10, null, null], axisX);
+                    result.nominalSize.controlPoints.higher = [100, 90, null, null, null, null, null, 41, null, null, null, null, null, 6];
+                    result.nominalSize.restrictedZone.lower = [null, null, null, null, null, null, 34.7, 23.3, 15.5, 11.7, 10, null, null];
+                    result.nominalSize.restrictedZone.higher = [null, null, null, null, null, null, 34.7, 27.3, 21.5, 15.7, 10, null, null];
                     result.nominalSize.curve = curve38_1;
                 }
                 else if (nominalSize <= 25 && nominalSize > 19.1) {
-                    result.nominalSize.controlPoints.lower = [
-                        100,
-                        90,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        19,
-                        null,
-                        null,
-                        null,
-                        null,
-                        1,
-                    ];
-                    result.nominalSize.controlPoints.higher = [
-                        null,
-                        100,
-                        90,
-                        null,
-                        null,
-                        null,
-                        null,
-                        45,
-                        null,
-                        null,
-                        null,
-                        null,
-                        7,
-                    ];
-                    result.nominalSize.restrictedZone.lower = yield this.insertBlankPointsOnCurve([
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        39.5,
-                        26.8,
-                        18.1,
-                        13.6,
-                        11.4,
-                        null,
-                        null,
-                    ], axisX);
-                    result.nominalSize.restrictedZone.higher = yield this.insertBlankPointsOnCurve([
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        39.5,
-                        30.8,
-                        24.1,
-                        17.6,
-                        13.7,
-                        null,
-                        null,
-                    ], axisX);
+                    result.nominalSize.controlPoints.lower = [100, 90, null, null, null, null, null, 19, null, null, null, null, 1];
+                    result.nominalSize.controlPoints.higher = [null, 100, 90, null, null, null, null, 45, null, null, null, null, 7];
+                    result.nominalSize.restrictedZone.lower = [null, null, null, null, null, null, 39.5, 26.8, 18.1, 13.6, 11.4, null, null];
+                    result.nominalSize.restrictedZone.higher = [null, null, null, null, null, null, 39.5, 30.8, 24.1, 17.6, 13.7, null, null];
                     result.nominalSize.curve = curve25;
                 }
                 else if (nominalSize <= 19.1 && nominalSize > 12.5) {
-                    result.nominalSize.controlPoints.lower = [
-                        null,
-                        100,
-                        90,
-                        null,
-                        null,
-                        null,
-                        null,
-                        23,
-                        null,
-                        null,
-                        null,
-                        null,
-                        2,
-                    ];
-                    result.nominalSize.controlPoints.higher = [
-                        null,
-                        null,
-                        100,
-                        90,
-                        null,
-                        null,
-                        null,
-                        49,
-                        null,
-                        null,
-                        null,
-                        null,
-                        8,
-                    ];
-                    result.nominalSize.restrictedZone.lower = yield this.insertBlankPointsOnCurve([
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        34.6,
-                        22.3,
-                        16.7,
-                        13.7,
-                        null,
-                        null,
-                    ], axisX);
-                    result.nominalSize.restrictedZone.higher = yield this.insertBlankPointsOnCurve([
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        34.6,
-                        28.3,
-                        20.7,
-                        13.7,
-                        null,
-                        null,
-                    ], axisX);
+                    result.nominalSize.controlPoints.lower = [null, 100, 90, null, null, null, null, 23, null, null, null, null, 2];
+                    result.nominalSize.controlPoints.higher = [null, null, 100, 90, null, null, null, 49, null, null, null, null, 8];
+                    result.nominalSize.restrictedZone.lower = [null, null, null, null, null, null, null, 34.6, 22.3, 16.7, 13.7, null, null];
+                    result.nominalSize.restrictedZone.higher = [null, null, null, null, null, null, null, 34.6, 28.3, 20.7, 13.7, null, null];
                     result.nominalSize.curve = curve19;
                 }
                 else if (nominalSize <= 12.5 && nominalSize > 9.5) {
-                    result.nominalSize.controlPoints.lower = [
-                        null,
-                        null,
-                        100,
-                        90,
-                        null,
-                        null,
-                        null,
-                        28,
-                        null,
-                        null,
-                        null,
-                        null,
-                        2,
-                    ];
-                    result.nominalSize.controlPoints.higher = [
-                        null,
-                        null,
-                        null,
-                        100,
-                        90,
-                        null,
-                        null,
-                        58,
-                        null,
-                        null,
-                        null,
-                        null,
-                        10,
-                    ];
-                    result.nominalSize.restrictedZone.lower = yield this.insertBlankPointsOnCurve([
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        39.1,
-                        25.6,
-                        19.1,
-                        15.5,
-                        null,
-                        null,
-                    ], axisX);
-                    result.nominalSize.restrictedZone.higher = yield this.insertBlankPointsOnCurve([
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        39.1,
-                        31.6,
-                        23.1,
-                        15.5,
-                        null,
-                        null,
-                    ], axisX);
+                    result.nominalSize.controlPoints.lower = [null, null, 100, 90, null, null, null, 28, null, null, null, null, 2];
+                    result.nominalSize.controlPoints.higher = [null, null, null, 100, 90, null, null, 58, null, null, null, null, 10];
+                    result.nominalSize.restrictedZone.lower = [null, null, null, null, null, null, null, 39.1, 25.6, 19.1, 15.5, null, null];
+                    result.nominalSize.restrictedZone.higher = [null, null, null, null, null, null, null, 39.1, 31.6, 23.1, 15.5, null, null];
                     result.nominalSize.curve = curve12;
                 }
                 else if (nominalSize <= 9.5) {
-                    result.nominalSize.controlPoints.lower = [
-                        null,
-                        null,
-                        null,
-                        100,
-                        90,
-                        null,
-                        null,
-                        32,
-                        null,
-                        null,
-                        null,
-                        null,
-                        2,
-                    ];
-                    result.nominalSize.controlPoints.higher = [
-                        null,
-                        null,
-                        null,
-                        null,
-                        100,
-                        null,
-                        90,
-                        67,
-                        null,
-                        null,
-                        null,
-                        null,
-                        10,
-                    ];
-                    result.nominalSize.restrictedZone.lower = yield this.insertBlankPointsOnCurve([
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        47.2,
-                        31.6,
-                        23.1,
-                        18.7,
-                        null,
-                        null,
-                    ], axisX);
-                    result.nominalSize.restrictedZone.higher = yield this.insertBlankPointsOnCurve([
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        47.2,
-                        37.6,
-                        37.5,
-                        18.7,
-                        null,
-                        null,
-                    ], axisX);
+                    result.nominalSize.controlPoints.lower = [null, null, null, 100, 90, null, null, 32, null, null, null, null, 2];
+                    result.nominalSize.controlPoints.higher = [null, null, null, null, 100, null, 90, 67, null, null, null, null, 10];
+                    result.nominalSize.restrictedZone.lower = [null, null, null, null, null, null, null, 47.2, 31.6, 23.1, 18.7, null, null];
+                    result.nominalSize.restrictedZone.higher = [null, null, null, null, null, null, null, 47.2, 37.6, 37.5, 18.7, null, null];
                     result.nominalSize.curve = curve9;
                 }
                 for (let i = 0; i < percentsOfMaterials.length; i++) {
