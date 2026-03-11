@@ -189,7 +189,7 @@ let GranulometryComposition_Superpave_Service = GranulometryComposition_Superpav
                 }
                 for (let i = 0; i < axisX.length; i++) {
                     pointsOfCurve.push([
-                        parseFloat(Math.pow(axisX[i] / nominalSize.value, 0.45).toFixed(6)),
+                        parseFloat(Math.pow(axisX[i] / D, 0.45).toFixed(6)),
                         nominalSize.controlPoints.lower[i],
                         nominalSize.controlPoints.higher[i],
                         nominalSize.restrictedZone.lower[i],
