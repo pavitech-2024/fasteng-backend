@@ -14,6 +14,7 @@ const mongoose_1 = require("@nestjs/mongoose");
 const class_validator_1 = require("class-validator");
 let RT = class RT {
 };
+exports.RT = RT;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, mongoose_1.Prop)({ type: Object }),
@@ -39,9 +40,8 @@ __decorate([
     (0, mongoose_1.Prop)({ type: Object }),
     __metadata("design:type", Object)
 ], RT.prototype, "results", void 0);
-RT = __decorate([
+exports.RT = RT = __decorate([
     (0, mongoose_1.Schema)({ collection: 'rt' })
 ], RT);
-exports.RT = RT;
 exports.RTSchema = mongoose_1.SchemaFactory.createForClass(RT);
 //# sourceMappingURL=index.js.map

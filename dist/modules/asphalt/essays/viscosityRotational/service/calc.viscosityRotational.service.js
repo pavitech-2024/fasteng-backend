@@ -196,8 +196,8 @@ let Calc_ViscosityRotational_Service = Calc_ViscosityRotational_Service_1 = clas
         return points;
     }
 };
-Calc_ViscosityRotational_Service = Calc_ViscosityRotational_Service_1 = __decorate([
+exports.Calc_ViscosityRotational_Service = Calc_ViscosityRotational_Service;
+exports.Calc_ViscosityRotational_Service = Calc_ViscosityRotational_Service = Calc_ViscosityRotational_Service_1 = __decorate([
     (0, common_1.Injectable)()
 ], Calc_ViscosityRotational_Service);
-exports.Calc_ViscosityRotational_Service = Calc_ViscosityRotational_Service;
 //# sourceMappingURL=calc.viscosityRotational.service.js.map

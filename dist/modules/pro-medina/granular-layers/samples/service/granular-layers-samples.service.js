@@ -117,9 +117,9 @@ let GranularLayersSamplesService = GranularLayersSamplesService_1 = class Granul
         });
     }
 };
-GranularLayersSamplesService = GranularLayersSamplesService_1 = __decorate([
+exports.GranularLayersSamplesService = GranularLayersSamplesService;
+exports.GranularLayersSamplesService = GranularLayersSamplesService = GranularLayersSamplesService_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_1.GranularLayers_SamplesRepository])
 ], GranularLayersSamplesService);
-exports.GranularLayersSamplesService = GranularLayersSamplesService;
 //# sourceMappingURL=granular-layers-samples.service.js.map

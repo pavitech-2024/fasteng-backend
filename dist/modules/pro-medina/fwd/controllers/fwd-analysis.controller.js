@@ -39,6 +39,7 @@ let FwdAnalysisController = class FwdAnalysisController {
         return this.fwdAnalysisService.processAnalysis(id);
     }
 };
+exports.FwdAnalysisController = FwdAnalysisController;
 __decorate([
     (0, common_1.Post)('save'),
     __param(0, (0, common_1.Body)()),
@@ -81,9 +82,8 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], FwdAnalysisController.prototype, "processAnalysis", null);
-FwdAnalysisController = __decorate([
+exports.FwdAnalysisController = FwdAnalysisController = __decorate([
     (0, common_1.Controller)('fwd-analysis'),
     __metadata("design:paramtypes", [fwd_analysis_service_1.FwdAnalysisService])
 ], FwdAnalysisController);
-exports.FwdAnalysisController = FwdAnalysisController;
 //# sourceMappingURL=fwd-analysis.controller.js.map

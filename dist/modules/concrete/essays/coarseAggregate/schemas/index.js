@@ -14,6 +14,7 @@ const mongoose_1 = require("@nestjs/mongoose");
 const class_validator_1 = require("class-validator");
 let CoarseAggregateSpecificMass = class CoarseAggregateSpecificMass {
 };
+exports.CoarseAggregateSpecificMass = CoarseAggregateSpecificMass;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, mongoose_1.Prop)({ type: Object }),
@@ -29,9 +30,8 @@ __decorate([
     (0, mongoose_1.Prop)({ type: Object }),
     __metadata("design:type", Object)
 ], CoarseAggregateSpecificMass.prototype, "results", void 0);
-CoarseAggregateSpecificMass = __decorate([
+exports.CoarseAggregateSpecificMass = CoarseAggregateSpecificMass = __decorate([
     (0, mongoose_1.Schema)({ collection: 'coarseAggregateSpecificMass' })
 ], CoarseAggregateSpecificMass);
-exports.CoarseAggregateSpecificMass = CoarseAggregateSpecificMass;
 exports.CoarseAggregateSpecificMassSchema = mongoose_1.SchemaFactory.createForClass(CoarseAggregateSpecificMass);
 //# sourceMappingURL=index.js.map

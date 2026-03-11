@@ -30,8 +30,8 @@ let GeneralData_Chapman_Service = GeneralData_Chapman_Service_1 = class GeneralD
         this.materialsRepository = materialsRepository;
         this.logger = new common_1.Logger(GeneralData_Chapman_Service_1.name);
     }
-    verifyInitChapman({ name, material }) {
-        return __awaiter(this, void 0, void 0, function* () {
+    verifyInitChapman(_a) {
+        return __awaiter(this, arguments, void 0, function* ({ name, material }) {
             try {
                 this.logger.log('verify init chapman on general-data.chapman.service.ts > [body]');
                 const materialExists = yield this.materialsRepository.findOne({ _id: material._id });
@@ -50,10 +50,10 @@ let GeneralData_Chapman_Service = GeneralData_Chapman_Service_1 = class GeneralD
         });
     }
 };
-GeneralData_Chapman_Service = GeneralData_Chapman_Service_1 = __decorate([
+exports.GeneralData_Chapman_Service = GeneralData_Chapman_Service;
+exports.GeneralData_Chapman_Service = GeneralData_Chapman_Service = GeneralData_Chapman_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_2.ChapmanRepository,
         repository_1.MaterialsRepository])
 ], GeneralData_Chapman_Service);
-exports.GeneralData_Chapman_Service = GeneralData_Chapman_Service;
 //# sourceMappingURL=general-data.chapman.service.js.map

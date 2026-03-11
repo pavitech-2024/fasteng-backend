@@ -75,6 +75,7 @@ let UsersController = UsersController_1 = class UsersController {
         });
     }
 };
+exports.UsersController = UsersController;
 __decorate([
     (0, common_1.Post)(),
     (0, swagger_1.ApiOperation)({ summary: 'Cria um usuário no banco de dados.' }),
@@ -116,10 +117,9 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "deleteUser", null);
-UsersController = UsersController_1 = __decorate([
+exports.UsersController = UsersController = UsersController_1 = __decorate([
     (0, common_1.Controller)('users'),
     (0, swagger_1.ApiTags)('users'),
     __metadata("design:paramtypes", [service_1.UsersService])
 ], UsersController);
-exports.UsersController = UsersController;
 //# sourceMappingURL=index.js.map

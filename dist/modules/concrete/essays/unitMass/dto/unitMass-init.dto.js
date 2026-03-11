@@ -14,6 +14,7 @@ const class_validator_1 = require("class-validator");
 const schemas_1 = require("../../../../../modules/concrete/materials/schemas");
 class UnitMass_Init_Dto {
 }
+exports.UnitMass_Init_Dto = UnitMass_Init_Dto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
@@ -26,5 +27,4 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", schemas_1.Material)
 ], UnitMass_Init_Dto.prototype, "material", void 0);
-exports.UnitMass_Init_Dto = UnitMass_Init_Dto;
 //# sourceMappingURL=unitMass-init.dto.js.map

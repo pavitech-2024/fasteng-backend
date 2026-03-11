@@ -113,6 +113,7 @@ let ABCPController = ABCPController_1 = class ABCPController {
         });
     }
 };
+exports.ABCPController = ABCPController;
 __decorate([
     (0, common_1.Post)('verify-init/:id'),
     (0, swagger_1.ApiOperation)({ summary: 'Verifica se é possível criar uma ABCP com os dados enviados.' }),
@@ -253,10 +254,9 @@ __decorate([
     __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)
 ], ABCPController.prototype, "deleteDosage", null);
-ABCPController = ABCPController_1 = __decorate([
+exports.ABCPController = ABCPController = ABCPController_1 = __decorate([
     (0, swagger_1.ApiTags)('abcp'),
     (0, common_1.Controller)('concrete/dosages/abcp'),
     __metadata("design:paramtypes", [service_1.ABCPService])
 ], ABCPController);
-exports.ABCPController = ABCPController;
 //# sourceMappingURL=index.js.map

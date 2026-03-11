@@ -107,7 +107,8 @@ let MaterialSelection_Marshall_Service = MaterialSelection_Marshall_Service_1 = 
         });
     }
 };
-MaterialSelection_Marshall_Service = MaterialSelection_Marshall_Service_1 = __decorate([
+exports.MaterialSelection_Marshall_Service = MaterialSelection_Marshall_Service;
+exports.MaterialSelection_Marshall_Service = MaterialSelection_Marshall_Service = MaterialSelection_Marshall_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_2.InjectModel)(schemas_1.Marshall.name, database_config_1.DATABASE_CONNECTION.ASPHALT)),
     __metadata("design:paramtypes", [mongoose_1.Model,
@@ -117,5 +118,4 @@ MaterialSelection_Marshall_Service = MaterialSelection_Marshall_Service_1 = __de
         repository_4.ViscosityRotationalRepository,
         index_1.SpecifyMassRepository])
 ], MaterialSelection_Marshall_Service);
-exports.MaterialSelection_Marshall_Service = MaterialSelection_Marshall_Service;
 //# sourceMappingURL=material-selection.marshall.service.js.map

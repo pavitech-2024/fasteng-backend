@@ -74,11 +74,11 @@ let SofteningPointService = class SofteningPointService {
         });
     }
 };
-SofteningPointService = __decorate([
+exports.SofteningPointService = SofteningPointService;
+exports.SofteningPointService = SofteningPointService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [general_data_softeningPoint_service_1.GeneralData_SofteningPoint_Service,
         repository_1.SofteningPointRepository,
         calc_softeningPoint_softeningPoint_service_1.Calc_SofteningPoint_Service])
 ], SofteningPointService);
-exports.SofteningPointService = SofteningPointService;
 //# sourceMappingURL=index.js.map

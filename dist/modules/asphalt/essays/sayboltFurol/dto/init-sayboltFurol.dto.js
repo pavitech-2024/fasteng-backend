@@ -14,6 +14,7 @@ const class_validator_1 = require("class-validator");
 const schemas_1 = require("../../../../../modules/asphalt/materials/schemas");
 class SayboltFurolInitDto {
 }
+exports.SayboltFurolInitDto = SayboltFurolInitDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
@@ -22,5 +23,4 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", schemas_1.Material)
 ], SayboltFurolInitDto.prototype, "material", void 0);
-exports.SayboltFurolInitDto = SayboltFurolInitDto;
 //# sourceMappingURL=init-sayboltFurol.dto.js.map

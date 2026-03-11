@@ -74,6 +74,7 @@ let FwdController = FwdController_1 = class FwdController {
         });
     }
 };
+exports.FwdController = FwdController;
 __decorate([
     (0, common_1.Post)('verify-init'),
     (0, swagger_1.ApiOperation)({ summary: 'Verifica se é possível criar um ensaio fwd com os dados enviados.' }),
@@ -136,10 +137,9 @@ __decorate([
     __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)
 ], FwdController.prototype, "deleteEssay", null);
-FwdController = FwdController_1 = __decorate([
+exports.FwdController = FwdController = FwdController_1 = __decorate([
     (0, swagger_1.ApiTags)('fwd'),
     (0, common_1.Controller)('asphalt/essays/fwd'),
     __metadata("design:paramtypes", [services_1.FwdService])
 ], FwdController);
-exports.FwdController = FwdController;
 //# sourceMappingURL=index.js.map

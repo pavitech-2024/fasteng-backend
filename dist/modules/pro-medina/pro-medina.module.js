@@ -35,7 +35,8 @@ const Modules = [
 ];
 let ProMedinaModule = class ProMedinaModule {
 };
-ProMedinaModule = __decorate([
+exports.ProMedinaModule = ProMedinaModule;
+exports.ProMedinaModule = ProMedinaModule = __decorate([
     (0, common_1.Global)(),
     (0, common_1.Module)({
         imports: [
@@ -49,5 +50,4 @@ ProMedinaModule = __decorate([
         exports: [mongoose_1.MongooseModule, ...Modules],
     })
 ], ProMedinaModule);
-exports.ProMedinaModule = ProMedinaModule;
 //# sourceMappingURL=pro-medina.module.js.map

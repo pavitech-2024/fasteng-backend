@@ -14,6 +14,7 @@ const schemas_1 = require("../../../../../modules/concrete/materials/schemas");
 const class_validator_1 = require("class-validator");
 class SandIncreaseInitDto {
 }
+exports.SandIncreaseInitDto = SandIncreaseInitDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
@@ -22,5 +23,4 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", schemas_1.Material)
 ], SandIncreaseInitDto.prototype, "material", void 0);
-exports.SandIncreaseInitDto = SandIncreaseInitDto;
 //# sourceMappingURL=sand-increase-init.dto.js.map

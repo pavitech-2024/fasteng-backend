@@ -13,7 +13,8 @@ const database_config_1 = require("./database.config");
 const mongoose_config_service_1 = require("./mongoose-config.service");
 let DatabaseModule = class DatabaseModule {
 };
-DatabaseModule = __decorate([
+exports.DatabaseModule = DatabaseModule;
+exports.DatabaseModule = DatabaseModule = __decorate([
     (0, common_1.Module)({
         imports: [
             mongoose_1.MongooseModule.forRootAsync({
@@ -40,5 +41,4 @@ DatabaseModule = __decorate([
         exports: [mongoose_1.MongooseModule],
     })
 ], DatabaseModule);
-exports.DatabaseModule = DatabaseModule;
 //# sourceMappingURL=database.module.js.map

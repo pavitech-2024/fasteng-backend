@@ -13,6 +13,7 @@ exports.MarshallInitDto = void 0;
 const class_validator_1 = require("class-validator");
 class MarshallInitDto {
 }
+exports.MarshallInitDto = MarshallInitDto;
 __decorate([
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
@@ -22,5 +23,4 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
 ], MarshallInitDto.prototype, "generalData", void 0);
-exports.MarshallInitDto = MarshallInitDto;
 //# sourceMappingURL=marshall-init.dto.js.map

@@ -16,7 +16,8 @@ const calc_specifyMass_service_1 = require("./service/calc.specifyMass.service")
 const services = [index_1.SpecifyMassService, general_data_specifyMass_service_1.GeneralData_SPECIFYMASS_Service, calc_specifyMass_service_1.Calc_SPECIFYMASS_Service];
 let SpecifyMassModule = class SpecifyMassModule {
 };
-SpecifyMassModule = __decorate([
+exports.SpecifyMassModule = SpecifyMassModule;
+exports.SpecifyMassModule = SpecifyMassModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [controller_1.SpecifyMassController],
@@ -24,5 +25,4 @@ SpecifyMassModule = __decorate([
         exports: [index_1.SpecifyMassService, repository_1.SpecifyMassRepository],
     })
 ], SpecifyMassModule);
-exports.SpecifyMassModule = SpecifyMassModule;
 //# sourceMappingURL=specifyMass.module.js.map

@@ -63,6 +63,7 @@ let ViscosityRotationalController = ViscosityRotationalController_1 = class Visc
         });
     }
 };
+exports.ViscosityRotationalController = ViscosityRotationalController;
 __decorate([
     (0, common_1.Post)('verify-init'),
     (0, swagger_1.ApiOperation)({ summary: 'Verifica se é possível criar um ensaio de viscosidade rotacional com os dados enviados.' }),
@@ -127,10 +128,9 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], ViscosityRotationalController.prototype, "saveEssay", null);
-ViscosityRotationalController = ViscosityRotationalController_1 = __decorate([
+exports.ViscosityRotationalController = ViscosityRotationalController = ViscosityRotationalController_1 = __decorate([
     (0, swagger_1.ApiTags)('viscosityRotational'),
     (0, common_1.Controller)('asphalt/essays/viscosityRotational'),
     __metadata("design:paramtypes", [viscosityRotational_service_1.ViscosityRotationalService])
 ], ViscosityRotationalController);
-exports.ViscosityRotationalController = ViscosityRotationalController;
 //# sourceMappingURL=index.js.map

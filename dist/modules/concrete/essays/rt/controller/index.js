@@ -63,6 +63,7 @@ let ConcreteRtController = ConcreteRtController_1 = class ConcreteRtController {
         });
     }
 };
+exports.ConcreteRtController = ConcreteRtController;
 __decorate([
     (0, common_1.Post)('verify-init'),
     (0, decorators_1.ApiOperation)({ summary: 'Verifica se é possível criar umensaio de compressão de corpos de prova cilíndricos de concreto com os dados enviados.' }),
@@ -139,10 +140,9 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], ConcreteRtController.prototype, "saveConcreteEssay", null);
-ConcreteRtController = ConcreteRtController_1 = __decorate([
+exports.ConcreteRtController = ConcreteRtController = ConcreteRtController_1 = __decorate([
     (0, decorators_1.ApiTags)('concreteRt'),
     (0, common_1.Controller)('concrete/essays/concreteRt'),
     __metadata("design:paramtypes", [service_1.ConcreteRtService])
 ], ConcreteRtController);
-exports.ConcreteRtController = ConcreteRtController;
 //# sourceMappingURL=index.js.map

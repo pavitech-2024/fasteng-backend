@@ -88,11 +88,11 @@ let DduiService = class DduiService {
         });
     }
 };
-DduiService = __decorate([
+exports.DduiService = DduiService;
+exports.DduiService = DduiService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [general_data_ddui_service_1.GeneralData_Ddui_Service,
         repository_1.DduiRepository,
         calc_ddui_service_1.Calc_Ddui_Service])
 ], DduiService);
-exports.DduiService = DduiService;
 //# sourceMappingURL=index.js.map

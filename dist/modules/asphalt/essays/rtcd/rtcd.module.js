@@ -16,7 +16,8 @@ const rtcd_service_1 = require("./service/rtcd.service");
 const services = [rtcd_service_1.RtcdService, general_data_rtcd_service_1.GeneralData_Rtcd_Service, calc_rtcd_service_1.Calc_Rtcd_Service];
 let RtcdModule = class RtcdModule {
 };
-RtcdModule = __decorate([
+exports.RtcdModule = RtcdModule;
+exports.RtcdModule = RtcdModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [controller_1.RtcdController],
@@ -24,5 +25,4 @@ RtcdModule = __decorate([
         exports: [rtcd_service_1.RtcdService, repository_1.RtcdRepository],
     })
 ], RtcdModule);
-exports.RtcdModule = RtcdModule;
 //# sourceMappingURL=rtcd.module.js.map

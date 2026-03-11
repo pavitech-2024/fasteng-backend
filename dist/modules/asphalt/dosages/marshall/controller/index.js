@@ -205,6 +205,7 @@ let MarshallController = MarshallController_1 = class MarshallController {
         });
     }
 };
+exports.MarshallController = MarshallController;
 __decorate([
     (0, common_1.Get)('all/:id'),
     (0, swagger_1.ApiOperation)({ summary: 'Retorna todas as dosagens Marshall do banco de dados de um usuário.' }),
@@ -407,10 +408,9 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "deleteMarshallDosage", null);
-MarshallController = MarshallController_1 = __decorate([
+exports.MarshallController = MarshallController = MarshallController_1 = __decorate([
     (0, swagger_1.ApiTags)('marshall'),
     (0, common_1.Controller)('asphalt/dosages/marshall'),
     __metadata("design:paramtypes", [service_1.MarshallService])
 ], MarshallController);
-exports.MarshallController = MarshallController;
 //# sourceMappingURL=index.js.map

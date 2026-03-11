@@ -16,7 +16,8 @@ const general_data_granulometry_service_1 = require("./service/general-data.gran
 const services = [service_1.AsphaltGranulometryService, general_data_granulometry_service_1.GeneralData_AsphaltGranulometry_Service, calc_granulometry_service_1.Calc_AsphaltGranulometry_Service];
 let AsphaltGranulometryModule = class AsphaltGranulometryModule {
 };
-AsphaltGranulometryModule = __decorate([
+exports.AsphaltGranulometryModule = AsphaltGranulometryModule;
+exports.AsphaltGranulometryModule = AsphaltGranulometryModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [controller_1.AsphaltGranulometryController],
@@ -24,5 +25,4 @@ AsphaltGranulometryModule = __decorate([
         exports: [service_1.AsphaltGranulometryService, repository_1.AsphaltGranulometryRepository]
     })
 ], AsphaltGranulometryModule);
-exports.AsphaltGranulometryModule = AsphaltGranulometryModule;
 //# sourceMappingURL=granulometry.module.js.map

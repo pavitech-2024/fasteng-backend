@@ -63,6 +63,7 @@ let AngularityController = AngularityController_1 = class AngularityController {
         });
     }
 };
+exports.AngularityController = AngularityController;
 __decorate([
     (0, common_1.Post)('verify-init'),
     (0, swagger_1.ApiOperation)({ summary: 'Verifica se é possível criar uma ANGULARITY com os dados enviados.' }),
@@ -130,10 +131,9 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], AngularityController.prototype, "saveEssay", null);
-AngularityController = AngularityController_1 = __decorate([
+exports.AngularityController = AngularityController = AngularityController_1 = __decorate([
     (0, swagger_1.ApiTags)('angularity'),
     (0, common_1.Controller)('asphalt/essays/angularity'),
     __metadata("design:paramtypes", [service_1.AngularityService])
 ], AngularityController);
-exports.AngularityController = AngularityController;
 //# sourceMappingURL=index.js.map

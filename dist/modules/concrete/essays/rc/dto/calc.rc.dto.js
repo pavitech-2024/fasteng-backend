@@ -13,6 +13,7 @@ exports.Calc_CONCRETERC_Dto = void 0;
 const class_validator_1 = require("class-validator");
 class Calc_CONCRETERC_Dto {
 }
+exports.Calc_CONCRETERC_Dto = Calc_CONCRETERC_Dto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
@@ -25,5 +26,4 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
 ], Calc_CONCRETERC_Dto.prototype, "step3Data", void 0);
-exports.Calc_CONCRETERC_Dto = Calc_CONCRETERC_Dto;
 //# sourceMappingURL=calc.rc.dto.js.map

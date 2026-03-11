@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.regression = exports.calculateInverseMatrix = void 0;
+exports.calculateInverseMatrix = calculateInverseMatrix;
+exports.regression = regression;
 function calculateInverseMatrix(listaDeX, n) {
     let matriz = [];
     for (let i = 0; i <= n; i++) {
@@ -48,7 +49,6 @@ function calculateInverseMatrix(listaDeX, n) {
     }
     return result;
 }
-exports.calculateInverseMatrix = calculateInverseMatrix;
 function regression(listaDeX, listaDeY, n) {
     const matrizInversa = calculateInverseMatrix(listaDeX, n);
     let matriz2 = [];
@@ -69,5 +69,4 @@ function regression(listaDeX, listaDeY, n) {
     }
     return resultado;
 }
-exports.regression = regression;
 //# sourceMappingURL=index.js.map

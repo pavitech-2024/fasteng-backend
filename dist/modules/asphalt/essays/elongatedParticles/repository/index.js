@@ -20,6 +20,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var ElongatedParticlesRepository_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ElongatedParticlesRepository = void 0;
 const mongoose_1 = require("@nestjs/mongoose");
@@ -27,10 +28,10 @@ const schemas_1 = require("../schemas");
 const database_config_1 = require("../../../../../infra/mongoose/database.config");
 const mongoose_2 = require("mongoose");
 const common_1 = require("@nestjs/common");
-let ElongatedParticlesRepository = class ElongatedParticlesRepository {
+let ElongatedParticlesRepository = ElongatedParticlesRepository_1 = class ElongatedParticlesRepository {
     constructor(elongatedParticlesModel) {
         this.elongatedParticlesModel = elongatedParticlesModel;
-        this.logger = new common_1.Logger(ElongatedParticlesRepository.name);
+        this.logger = new common_1.Logger(ElongatedParticlesRepository_1.name);
     }
     findOne(elongatedParticlesFilterQuery) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -49,9 +50,9 @@ let ElongatedParticlesRepository = class ElongatedParticlesRepository {
         });
     }
 };
-ElongatedParticlesRepository = __decorate([
+exports.ElongatedParticlesRepository = ElongatedParticlesRepository;
+exports.ElongatedParticlesRepository = ElongatedParticlesRepository = ElongatedParticlesRepository_1 = __decorate([
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.ElongatedParticles.name, database_config_1.DATABASE_CONNECTION.ASPHALT)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], ElongatedParticlesRepository);
-exports.ElongatedParticlesRepository = ElongatedParticlesRepository;
 //# sourceMappingURL=index.js.map

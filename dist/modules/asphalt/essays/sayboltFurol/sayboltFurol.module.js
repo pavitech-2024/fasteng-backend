@@ -16,7 +16,8 @@ const service_1 = require("./service");
 const services = [service_1.SayboltFurolService, general_data_sayboltFurol_service_1.GeneralData_SayboltFurol_Service, calc_sayboltFurol_service_1.Calc_SayboltFurol_Service];
 let SayboltFurolModule = class SayboltFurolModule {
 };
-SayboltFurolModule = __decorate([
+exports.SayboltFurolModule = SayboltFurolModule;
+exports.SayboltFurolModule = SayboltFurolModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [controller_1.SayboltFurolController],
@@ -24,5 +25,4 @@ SayboltFurolModule = __decorate([
         exports: [service_1.SayboltFurolService, repository_1.SayboltFurolRepository],
     })
 ], SayboltFurolModule);
-exports.SayboltFurolModule = SayboltFurolModule;
 //# sourceMappingURL=sayboltFurol.module.js.map

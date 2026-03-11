@@ -55,6 +55,7 @@ let AuthController = AuthController_1 = class AuthController {
         });
     }
 };
+exports.AuthController = AuthController;
 __decorate([
     (0, common_1.Post)('login'),
     (0, common_1.HttpCode)(200),
@@ -75,10 +76,9 @@ __decorate([
     __metadata("design:paramtypes", [refresh_login_user_dto_1.InputRefreshLoginDto]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "refreshLogin", null);
-AuthController = AuthController_1 = __decorate([
+exports.AuthController = AuthController = AuthController_1 = __decorate([
     (0, common_1.Controller)('auth'),
     (0, swagger_1.ApiTags)('auth'),
     __metadata("design:paramtypes", [service_1.AuthService])
 ], AuthController);
-exports.AuthController = AuthController;
 //# sourceMappingURL=index.js.map

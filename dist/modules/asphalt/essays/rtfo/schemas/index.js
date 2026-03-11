@@ -14,6 +14,7 @@ const mongoose_1 = require("@nestjs/mongoose");
 const class_validator_1 = require("class-validator");
 let Rtfo = class Rtfo {
 };
+exports.Rtfo = Rtfo;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, mongoose_1.Prop)({ type: Object }),
@@ -29,9 +30,8 @@ __decorate([
     (0, mongoose_1.Prop)({ type: Object }),
     __metadata("design:type", Object)
 ], Rtfo.prototype, "results", void 0);
-Rtfo = __decorate([
+exports.Rtfo = Rtfo = __decorate([
     (0, mongoose_1.Schema)({ collection: 'rtfo' })
 ], Rtfo);
-exports.Rtfo = Rtfo;
 exports.RtfoSchema = mongoose_1.SchemaFactory.createForClass(Rtfo);
 //# sourceMappingURL=index.js.map

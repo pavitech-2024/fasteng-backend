@@ -16,7 +16,8 @@ const fwd_analysis_repository_1 = require("./repository/fwd-analysis.repository"
 const database_config_1 = require("../../../infra/mongoose/database.config");
 let FwdModule = class FwdModule {
 };
-FwdModule = __decorate([
+exports.FwdModule = FwdModule;
+exports.FwdModule = FwdModule = __decorate([
     (0, common_1.Module)({
         imports: [
             mongoose_1.MongooseModule.forFeature([
@@ -28,5 +29,4 @@ FwdModule = __decorate([
         exports: [fwd_analysis_service_1.FwdAnalysisService],
     })
 ], FwdModule);
-exports.FwdModule = FwdModule;
 //# sourceMappingURL=fwd-analysis.module.js.map

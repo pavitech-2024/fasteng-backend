@@ -13,6 +13,7 @@ exports.Save_SandIncreaseDto = exports.Calc_MoistureContentDto = exports.Calc_Un
 const class_validator_1 = require("class-validator");
 class Calc_SandIncrease_Dto {
 }
+exports.Calc_SandIncrease_Dto = Calc_SandIncrease_Dto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
@@ -25,9 +26,9 @@ __decorate([
     (0, class_validator_1.ValidateIf)(obj => obj.step === 2),
     __metadata("design:type", Object)
 ], Calc_SandIncrease_Dto.prototype, "humidityFoundData", void 0);
-exports.Calc_SandIncrease_Dto = Calc_SandIncrease_Dto;
 class Calc_UnitMassDto {
 }
+exports.Calc_UnitMassDto = Calc_UnitMassDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
@@ -43,17 +44,17 @@ __decorate([
     (0, class_validator_1.IsArray)(),
     __metadata("design:type", Array)
 ], Calc_UnitMassDto.prototype, "tableData", void 0);
-exports.Calc_UnitMassDto = Calc_UnitMassDto;
 class Calc_MoistureContentDto {
 }
+exports.Calc_MoistureContentDto = Calc_MoistureContentDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsArray)(),
     __metadata("design:type", Array)
 ], Calc_MoistureContentDto.prototype, "tableData", void 0);
-exports.Calc_MoistureContentDto = Calc_MoistureContentDto;
 class Save_SandIncreaseDto {
 }
+exports.Save_SandIncreaseDto = Save_SandIncreaseDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
@@ -70,5 +71,4 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
 ], Save_SandIncreaseDto.prototype, "results", void 0);
-exports.Save_SandIncreaseDto = Save_SandIncreaseDto;
 //# sourceMappingURL=calc.sand-increase.dto.js.map

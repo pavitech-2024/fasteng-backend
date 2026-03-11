@@ -16,7 +16,8 @@ const general_data_elasticRecovery_service_1 = require("./service/general-data.e
 const services = [service_1.ElasticRecoveryService, general_data_elasticRecovery_service_1.GeneralData_ElasticRecovery_Service, calc_elasticRecovery_service_1.Calc_ElasticRecovery_Service];
 let ElasticRecoveryModule = class ElasticRecoveryModule {
 };
-ElasticRecoveryModule = __decorate([
+exports.ElasticRecoveryModule = ElasticRecoveryModule;
+exports.ElasticRecoveryModule = ElasticRecoveryModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [controller_1.ElasticRecoveryController],
@@ -24,5 +25,4 @@ ElasticRecoveryModule = __decorate([
         exports: [service_1.ElasticRecoveryService, repository_1.ElasticRecoveryRepository],
     })
 ], ElasticRecoveryModule);
-exports.ElasticRecoveryModule = ElasticRecoveryModule;
 //# sourceMappingURL=elasticRecovery.module.js.map

@@ -64,9 +64,9 @@ let FwdAnalysisService = class FwdAnalysisService {
         });
     }
 };
-FwdAnalysisService = __decorate([
+exports.FwdAnalysisService = FwdAnalysisService;
+exports.FwdAnalysisService = FwdAnalysisService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [fwd_analysis_repository_1.FwdAnalysisRepository])
 ], FwdAnalysisService);
-exports.FwdAnalysisService = FwdAnalysisService;
 //# sourceMappingURL=fwd-analysis.service.js.map
