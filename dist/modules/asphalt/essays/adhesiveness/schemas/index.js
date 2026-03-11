@@ -14,6 +14,7 @@ const mongoose_1 = require("@nestjs/mongoose");
 const class_validator_1 = require("class-validator");
 let Adhesiveness = class Adhesiveness {
 };
+exports.Adhesiveness = Adhesiveness;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, mongoose_1.Prop)({ type: Object }),
@@ -29,9 +30,8 @@ __decorate([
     (0, mongoose_1.Prop)({ type: Object }),
     __metadata("design:type", Object)
 ], Adhesiveness.prototype, "results", void 0);
-Adhesiveness = __decorate([
+exports.Adhesiveness = Adhesiveness = __decorate([
     (0, mongoose_1.Schema)({ collection: 'adhesions' })
 ], Adhesiveness);
-exports.Adhesiveness = Adhesiveness;
 exports.AdhesivenessSchema = mongoose_1.SchemaFactory.createForClass(Adhesiveness);
 //# sourceMappingURL=index.js.map

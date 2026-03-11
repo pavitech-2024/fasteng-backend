@@ -20,6 +20,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var GranulometryRepository_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GranulometryRepository = void 0;
 const mongoose_1 = require("@nestjs/mongoose");
@@ -27,10 +28,10 @@ const schemas_1 = require("../schemas");
 const database_config_1 = require("../../../../../infra/mongoose/database.config");
 const mongoose_2 = require("mongoose");
 const common_1 = require("@nestjs/common");
-let GranulometryRepository = class GranulometryRepository {
+let GranulometryRepository = GranulometryRepository_1 = class GranulometryRepository {
     constructor(granulometryModel) {
         this.granulometryModel = granulometryModel;
-        this.logger = new common_1.Logger(GranulometryRepository.name);
+        this.logger = new common_1.Logger(GranulometryRepository_1.name);
     }
     findOne(granulometryFilterQuery) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -54,9 +55,9 @@ let GranulometryRepository = class GranulometryRepository {
         });
     }
 };
-GranulometryRepository = __decorate([
+exports.GranulometryRepository = GranulometryRepository;
+exports.GranulometryRepository = GranulometryRepository = GranulometryRepository_1 = __decorate([
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.Granulometry.name, database_config_1.DATABASE_CONNECTION.SOILS)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], GranulometryRepository);
-exports.GranulometryRepository = GranulometryRepository;
 //# sourceMappingURL=index.js.map

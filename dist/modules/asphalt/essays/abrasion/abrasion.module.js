@@ -16,7 +16,8 @@ const general_data_abrasion_service_1 = require("./service/general-data.abrasion
 const services = [service_1.AbrasionService, general_data_abrasion_service_1.GeneralData_Abrasion_Service, calc_abrasion_service_1.Calc_Abrasion_Service];
 let AbrasionModule = class AbrasionModule {
 };
-AbrasionModule = __decorate([
+exports.AbrasionModule = AbrasionModule;
+exports.AbrasionModule = AbrasionModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [controller_1.AbrasionController],
@@ -24,5 +25,4 @@ AbrasionModule = __decorate([
         exports: [service_1.AbrasionService, repository_1.AbrasionRepository],
     })
 ], AbrasionModule);
-exports.AbrasionModule = AbrasionModule;
 //# sourceMappingURL=abrasion.module.js.map

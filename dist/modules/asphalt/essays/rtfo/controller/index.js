@@ -63,6 +63,7 @@ let RtfoController = RtfoController_1 = class RtfoController {
         });
     }
 };
+exports.RtfoController = RtfoController;
 __decorate([
     (0, common_1.Post)('verify-init'),
     (0, swagger_1.ApiOperation)({ summary: 'Verifica se é possível criar um ensaio de rtfo com os dados enviados.' }),
@@ -116,10 +117,9 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], RtfoController.prototype, "saveEssay", null);
-RtfoController = RtfoController_1 = __decorate([
+exports.RtfoController = RtfoController = RtfoController_1 = __decorate([
     (0, swagger_1.ApiTags)('rtfo'),
     (0, common_1.Controller)('asphalt/essays/rtfo'),
     __metadata("design:paramtypes", [service_1.RtfoService])
 ], RtfoController);
-exports.RtfoController = RtfoController;
 //# sourceMappingURL=index.js.map

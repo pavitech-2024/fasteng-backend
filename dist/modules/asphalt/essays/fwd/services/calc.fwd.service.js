@@ -27,8 +27,8 @@ let Calc_Fwd_Service = Calc_Fwd_Service_1 = class Calc_Fwd_Service {
         this.fwdRepository = fwdRepository;
         this.logger = new common_1.Logger(Calc_Fwd_Service_1.name);
     }
-    calculateFwd({ fwdStep3 }) {
-        return __awaiter(this, void 0, void 0, function* () {
+    calculateFwd(_a) {
+        return __awaiter(this, arguments, void 0, function* ({ fwdStep3 }) {
             try {
                 const dFWD2Db = (dFWD, forca) => {
                     const fwdMicro = (dFWD / 10) * (41 / forca);
@@ -96,9 +96,9 @@ let Calc_Fwd_Service = Calc_Fwd_Service_1 = class Calc_Fwd_Service {
         });
     }
 };
-Calc_Fwd_Service = Calc_Fwd_Service_1 = __decorate([
+exports.Calc_Fwd_Service = Calc_Fwd_Service;
+exports.Calc_Fwd_Service = Calc_Fwd_Service = Calc_Fwd_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_1.FwdRepository])
 ], Calc_Fwd_Service);
-exports.Calc_Fwd_Service = Calc_Fwd_Service;
 //# sourceMappingURL=calc.fwd.service.js.map

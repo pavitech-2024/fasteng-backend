@@ -14,6 +14,7 @@ const schemas_1 = require("../../../samples/schemas");
 const class_validator_1 = require("class-validator");
 class CbrInitDto {
 }
+exports.CbrInitDto = CbrInitDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
@@ -22,5 +23,4 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", schemas_1.Sample)
 ], CbrInitDto.prototype, "sample", void 0);
-exports.CbrInitDto = CbrInitDto;
 //# sourceMappingURL=cbr-init.dto.js.map

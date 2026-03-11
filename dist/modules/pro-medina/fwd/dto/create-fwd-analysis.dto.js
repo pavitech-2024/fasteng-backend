@@ -14,6 +14,7 @@ const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
 class FwdSampleDto {
 }
+exports.FwdSampleDto = FwdSampleDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
@@ -70,9 +71,9 @@ __decorate([
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Number)
 ], FwdSampleDto.prototype, "appliedLoad", void 0);
-exports.FwdSampleDto = FwdSampleDto;
 class CreateFwdAnalysisDto {
 }
+exports.CreateFwdAnalysisDto = CreateFwdAnalysisDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
@@ -99,5 +100,4 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], CreateFwdAnalysisDto.prototype, "userId", void 0);
-exports.CreateFwdAnalysisDto = CreateFwdAnalysisDto;
 //# sourceMappingURL=create-fwd-analysis.dto.js.map

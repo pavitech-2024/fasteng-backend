@@ -13,6 +13,7 @@ exports.FwdAnalysisSchema = exports.FwdAnalysis = void 0;
 const mongoose_1 = require("@nestjs/mongoose");
 let FwdAnalysis = class FwdAnalysis {
 };
+exports.FwdAnalysis = FwdAnalysis;
 __decorate([
     (0, mongoose_1.Prop)({ required: true }),
     __metadata("design:type", String)
@@ -50,10 +51,9 @@ __decorate([
     (0, mongoose_1.Prop)({ required: false }),
     __metadata("design:type", String)
 ], FwdAnalysis.prototype, "userId", void 0);
-FwdAnalysis = __decorate([
+exports.FwdAnalysis = FwdAnalysis = __decorate([
     (0, mongoose_1.Schema)({ collection: 'fwdAnalyses', timestamps: true })
 ], FwdAnalysis);
-exports.FwdAnalysis = FwdAnalysis;
 exports.FwdAnalysisSchema = mongoose_1.SchemaFactory.createForClass(FwdAnalysis);
 exports.FwdAnalysisSchema.index({ name: 1 });
 exports.FwdAnalysisSchema.index({ userId: 1 });

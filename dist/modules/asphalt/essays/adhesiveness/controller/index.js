@@ -63,6 +63,7 @@ let AdhesivenessController = AdhesivenessController_1 = class AdhesivenessContro
         });
     }
 };
+exports.AdhesivenessController = AdhesivenessController;
 __decorate([
     (0, common_1.Post)('verify-init'),
     (0, swagger_1.ApiOperation)({ summary: 'Verifica se é possível criar um ensaio de adesividade com os dados enviados.' }),
@@ -116,10 +117,9 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], AdhesivenessController.prototype, "saveEssay", null);
-AdhesivenessController = AdhesivenessController_1 = __decorate([
+exports.AdhesivenessController = AdhesivenessController = AdhesivenessController_1 = __decorate([
     (0, swagger_1.ApiTags)('adhesiveness'),
     (0, common_1.Controller)('asphalt/essays/adhesiveness'),
     __metadata("design:paramtypes", [service_1.AdhesivenessService])
 ], AdhesivenessController);
-exports.AdhesivenessController = AdhesivenessController;
 //# sourceMappingURL=index.js.map

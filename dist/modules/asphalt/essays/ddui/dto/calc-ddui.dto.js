@@ -13,6 +13,7 @@ exports.Calc_Ddui_Dto = void 0;
 const class_validator_1 = require("class-validator");
 class Calc_Ddui_Dto {
 }
+exports.Calc_Ddui_Dto = Calc_Ddui_Dto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
@@ -25,5 +26,4 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
 ], Calc_Ddui_Dto.prototype, "dduiStep3", void 0);
-exports.Calc_Ddui_Dto = Calc_Ddui_Dto;
 //# sourceMappingURL=calc-ddui.dto.js.map

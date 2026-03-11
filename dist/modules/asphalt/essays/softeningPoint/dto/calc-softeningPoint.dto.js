@@ -13,6 +13,7 @@ exports.Calc_SofteningPoint_Dto = void 0;
 const class_validator_1 = require("class-validator");
 class Calc_SofteningPoint_Dto {
 }
+exports.Calc_SofteningPoint_Dto = Calc_SofteningPoint_Dto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
@@ -21,5 +22,4 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
 ], Calc_SofteningPoint_Dto.prototype, "softeningPoint", void 0);
-exports.Calc_SofteningPoint_Dto = Calc_SofteningPoint_Dto;
 //# sourceMappingURL=calc-softeningPoint.dto.js.map

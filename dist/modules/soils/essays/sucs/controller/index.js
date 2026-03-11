@@ -63,6 +63,7 @@ let SucsController = SucsController_1 = class SucsController {
         });
     }
 };
+exports.SucsController = SucsController;
 __decorate([
     (0, common_1.Post)('verify-init'),
     (0, swagger_1.ApiOperation)({ summary: 'Verifica se é possível criar uma SUCS com os dados enviados.' }),
@@ -130,10 +131,9 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], SucsController.prototype, "saveEssay", null);
-SucsController = SucsController_1 = __decorate([
+exports.SucsController = SucsController = SucsController_1 = __decorate([
     (0, swagger_1.ApiTags)('sucs'),
     (0, common_1.Controller)('soils/essays/sucs'),
     __metadata("design:paramtypes", [index_1.SucsService])
 ], SucsController);
-exports.SucsController = SucsController;
 //# sourceMappingURL=index.js.map

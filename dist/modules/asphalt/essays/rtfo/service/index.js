@@ -74,11 +74,11 @@ let RtfoService = class RtfoService {
         });
     }
 };
-RtfoService = __decorate([
+exports.RtfoService = RtfoService;
+exports.RtfoService = RtfoService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [general_data_rtfo_service_1.GeneralData_Rtfo_Service,
         repository_1.RtfoRepository,
         calc_rtfo_service_1.Calc_Rtfo_Service])
 ], RtfoService);
-exports.RtfoService = RtfoService;
 //# sourceMappingURL=index.js.map

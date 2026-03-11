@@ -71,10 +71,10 @@ let FwdAnalysisRepository = class FwdAnalysisRepository {
         });
     }
 };
-FwdAnalysisRepository = __decorate([
+exports.FwdAnalysisRepository = FwdAnalysisRepository;
+exports.FwdAnalysisRepository = FwdAnalysisRepository = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_1.InjectModel)(fwd_analysis_schema_1.FwdAnalysis.name, database_config_1.DATABASE_CONNECTION.PROMEDINA)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], FwdAnalysisRepository);
-exports.FwdAnalysisRepository = FwdAnalysisRepository;
 //# sourceMappingURL=fwd-analysis.repository.js.map

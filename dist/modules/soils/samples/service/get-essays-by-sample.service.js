@@ -117,7 +117,8 @@ let GetEssaysBySample_Service = GetEssaysBySample_Service_1 = class GetEssaysByS
         return possiblesExperimentTypes;
     }
 };
-GetEssaysBySample_Service = GetEssaysBySample_Service_1 = __decorate([
+exports.GetEssaysBySample_Service = GetEssaysBySample_Service;
+exports.GetEssaysBySample_Service = GetEssaysBySample_Service = GetEssaysBySample_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.Sample.name, database_config_1.DATABASE_CONNECTION.SOILS)),
     __metadata("design:paramtypes", [mongoose_2.Model,
@@ -127,5 +128,4 @@ GetEssaysBySample_Service = GetEssaysBySample_Service_1 = __decorate([
         repository_4.SucsRepository,
         repository_2.CompressionRepository])
 ], GetEssaysBySample_Service);
-exports.GetEssaysBySample_Service = GetEssaysBySample_Service;
 //# sourceMappingURL=get-essays-by-sample.service.js.map

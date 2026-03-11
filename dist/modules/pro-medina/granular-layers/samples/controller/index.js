@@ -87,6 +87,7 @@ let GranularLayersSamplesController = GranularLayersSamplesController_1 = class 
         });
     }
 };
+exports.GranularLayersSamplesController = GranularLayersSamplesController;
 __decorate([
     (0, common_1.Post)('save'),
     (0, swagger_1.ApiOperation)({ summary: 'Cria uma amostra de camadas granulares no banco de dados.' }),
@@ -147,10 +148,9 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], GranularLayersSamplesController.prototype, "deleteSampleById", null);
-GranularLayersSamplesController = GranularLayersSamplesController_1 = __decorate([
+exports.GranularLayersSamplesController = GranularLayersSamplesController = GranularLayersSamplesController_1 = __decorate([
     (0, swagger_1.ApiTags)('samples'),
     (0, common_1.Controller)('promedina/granular-layers/granular-layers-samples'),
     __metadata("design:paramtypes", [granular_layers_samples_service_1.GranularLayersSamplesService])
 ], GranularLayersSamplesController);
-exports.GranularLayersSamplesController = GranularLayersSamplesController;
 //# sourceMappingURL=index.js.map

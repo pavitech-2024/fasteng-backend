@@ -16,7 +16,8 @@ const general_data_penetration_service_1 = require("./service/general-data.penet
 const services = [service_1.PenetrationService, general_data_penetration_service_1.GeneralData_Penetration_Service, calc_penetration_service_1.Calc_Penetration_Service];
 let PenetrationModule = class PenetrationModule {
 };
-PenetrationModule = __decorate([
+exports.PenetrationModule = PenetrationModule;
+exports.PenetrationModule = PenetrationModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [controller_1.PenetrationController],
@@ -24,5 +25,4 @@ PenetrationModule = __decorate([
         exports: [service_1.PenetrationService, repository_1.PenetrationRepository],
     })
 ], PenetrationModule);
-exports.PenetrationModule = PenetrationModule;
 //# sourceMappingURL=penetration.module.js.map

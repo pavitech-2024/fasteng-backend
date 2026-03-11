@@ -16,7 +16,8 @@ const general_data_elongatedParticles_service_1 = require("./service/general-dat
 const services = [index_1.ElongatedParticlesService, general_data_elongatedParticles_service_1.GeneralData_ELONGATEDPARTICLES_Service, calc_elongatedParticles_service_1.Calc_ELONGATEDPARTICLES_Service];
 let ElongatedParticlesModule = class ElongatedParticlesModule {
 };
-ElongatedParticlesModule = __decorate([
+exports.ElongatedParticlesModule = ElongatedParticlesModule;
+exports.ElongatedParticlesModule = ElongatedParticlesModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [controller_1.ElongatedParticlesController],
@@ -24,5 +25,4 @@ ElongatedParticlesModule = __decorate([
         exports: [index_1.ElongatedParticlesService, repository_1.ElongatedParticlesRepository],
     })
 ], ElongatedParticlesModule);
-exports.ElongatedParticlesModule = ElongatedParticlesModule;
 //# sourceMappingURL=elongatedParticles.module.js.map

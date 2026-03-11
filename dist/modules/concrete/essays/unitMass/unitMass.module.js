@@ -22,7 +22,8 @@ const services = [
 ];
 let UnitMassModule = class UnitMassModule {
 };
-UnitMassModule = __decorate([
+exports.UnitMassModule = UnitMassModule;
+exports.UnitMassModule = UnitMassModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [controller_1.UnitMassController],
@@ -30,5 +31,4 @@ UnitMassModule = __decorate([
         exports: [service_1.UnitMassService, repository_1.UnitMassRepository],
     })
 ], UnitMassModule);
-exports.UnitMassModule = UnitMassModule;
 //# sourceMappingURL=unitMass.module.js.map

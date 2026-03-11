@@ -14,6 +14,7 @@ const class_validator_1 = require("class-validator");
 const schemas_1 = require("../../../../../modules/asphalt/materials/schemas");
 class RtfoInitDto {
 }
+exports.RtfoInitDto = RtfoInitDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
@@ -22,5 +23,4 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", schemas_1.Material)
 ], RtfoInitDto.prototype, "material", void 0);
-exports.RtfoInitDto = RtfoInitDto;
 //# sourceMappingURL=rtfo-init.dto.js.map

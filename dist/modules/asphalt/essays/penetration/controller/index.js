@@ -63,6 +63,7 @@ let PenetrationController = PenetrationController_1 = class PenetrationControlle
         });
     }
 };
+exports.PenetrationController = PenetrationController;
 __decorate([
     (0, common_1.Post)('verify-init'),
     (0, swagger_1.ApiOperation)({ summary: 'Verifica se é possível criar um ensaio de penetração com os dados enviados.' }),
@@ -130,10 +131,9 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], PenetrationController.prototype, "saveEssay", null);
-PenetrationController = PenetrationController_1 = __decorate([
+exports.PenetrationController = PenetrationController = PenetrationController_1 = __decorate([
     (0, swagger_1.ApiTags)('penetration'),
     (0, common_1.Controller)('asphalt/essays/penetration'),
     __metadata("design:paramtypes", [service_1.PenetrationService])
 ], PenetrationController);
-exports.PenetrationController = PenetrationController;
 //# sourceMappingURL=index.js.map

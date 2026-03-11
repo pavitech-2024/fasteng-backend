@@ -14,6 +14,7 @@ const class_validator_1 = require("class-validator");
 const schemas_1 = require("../../../../../modules/asphalt/materials/schemas");
 class SofteningPointInitDto {
 }
+exports.SofteningPointInitDto = SofteningPointInitDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
@@ -22,5 +23,4 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", schemas_1.Material)
 ], SofteningPointInitDto.prototype, "material", void 0);
-exports.SofteningPointInitDto = SofteningPointInitDto;
 //# sourceMappingURL=init-softeningPoint.dto.js.map

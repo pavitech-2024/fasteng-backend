@@ -13,6 +13,7 @@ exports.SuperpaveStep3Dto = void 0;
 const class_validator_1 = require("class-validator");
 class SuperpaveStep3Dto {
 }
+exports.SuperpaveStep3Dto = SuperpaveStep3Dto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
@@ -21,5 +22,4 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Array)
 ], SuperpaveStep3Dto.prototype, "aggregates", void 0);
-exports.SuperpaveStep3Dto = SuperpaveStep3Dto;
 //# sourceMappingURL=step-3-superpave.dto.js.map

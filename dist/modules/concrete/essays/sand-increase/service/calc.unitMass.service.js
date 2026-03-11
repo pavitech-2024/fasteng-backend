@@ -42,11 +42,11 @@ let Calc_UnitMass_Service = Calc_UnitMass_Service_1 = class Calc_UnitMass_Servic
         });
     }
 };
-Calc_UnitMass_Service = Calc_UnitMass_Service_1 = __decorate([
+exports.Calc_UnitMass_Service = Calc_UnitMass_Service;
+exports.Calc_UnitMass_Service = Calc_UnitMass_Service = Calc_UnitMass_Service_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [])
 ], Calc_UnitMass_Service);
-exports.Calc_UnitMass_Service = Calc_UnitMass_Service;
 function calculateUnitMasses(tableData, containerVolume, containerWeight) {
     const unitMasses = [];
     tableData.forEach(item => {

@@ -24,6 +24,7 @@ __decorate([
 ], PreferencesDto.prototype, "decimal", void 0);
 class UpdateUserDto {
 }
+exports.UpdateUserDto = UpdateUserDto;
 __decorate([
     (0, class_validator_1.IsUUID)(),
     (0, class_validator_1.IsOptional)(),
@@ -87,5 +88,4 @@ __decorate([
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Number)
 ], UpdateUserDto.prototype, "__v", void 0);
-exports.UpdateUserDto = UpdateUserDto;
 //# sourceMappingURL=update-user.dto.js.map

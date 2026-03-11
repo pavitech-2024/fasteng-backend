@@ -20,7 +20,8 @@ const services = [
 ];
 let ConcreteRcModule = class ConcreteRcModule {
 };
-ConcreteRcModule = __decorate([
+exports.ConcreteRcModule = ConcreteRcModule;
+exports.ConcreteRcModule = ConcreteRcModule = __decorate([
     (0, modules_1.Module)({
         imports: [],
         controllers: [controller_1.ConcreteRcController],
@@ -28,5 +29,4 @@ ConcreteRcModule = __decorate([
         exports: [service_1.ConcreteRcService, respository_1.ConcreteRCRepository],
     })
 ], ConcreteRcModule);
-exports.ConcreteRcModule = ConcreteRcModule;
 //# sourceMappingURL=rc.module.js.map

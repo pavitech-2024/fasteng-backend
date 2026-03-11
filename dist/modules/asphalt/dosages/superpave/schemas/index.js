@@ -14,6 +14,7 @@ const mongoose_1 = require("@nestjs/mongoose");
 const class_validator_1 = require("class-validator");
 let Superpave = class Superpave {
 };
+exports.Superpave = Superpave;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, mongoose_1.Prop)({ type: Object }),
@@ -78,10 +79,9 @@ __decorate([
     (0, mongoose_1.Prop)({ type: Object }),
     __metadata("design:type", Object)
 ], Superpave.prototype, "dosageResume", void 0);
-Superpave = __decorate([
+exports.Superpave = Superpave = __decorate([
     (0, mongoose_1.Schema)({ collection: 'superpaves' })
 ], Superpave);
-exports.Superpave = Superpave;
 const SuperpaveSchema = mongoose_1.SchemaFactory.createForClass(Superpave);
 exports.SuperpaveSchema = SuperpaveSchema;
 SuperpaveSchema.set('timestamps', true);

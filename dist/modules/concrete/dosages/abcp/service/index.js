@@ -190,7 +190,8 @@ let ABCPService = ABCPService_1 = class ABCPService {
         });
     }
 };
-ABCPService = ABCPService_1 = __decorate([
+exports.ABCPService = ABCPService;
+exports.ABCPService = ABCPService = ABCPService_1 = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.ABCP.name, database_config_1.DATABASE_CONNECTION.CONCRETE)),
     __metadata("design:paramtypes", [mongoose_2.Model,
@@ -201,5 +202,4 @@ ABCPService = ABCPService_1 = __decorate([
         calc_abcp_service_1.Calculate_ABCP_Results_Service,
         repository_1.ABCPRepository])
 ], ABCPService);
-exports.ABCPService = ABCPService;
 //# sourceMappingURL=index.js.map

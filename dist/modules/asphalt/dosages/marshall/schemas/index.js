@@ -14,6 +14,7 @@ const mongoose_1 = require("@nestjs/mongoose");
 const class_validator_1 = require("class-validator");
 let Marshall = class Marshall {
 };
+exports.Marshall = Marshall;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, mongoose_1.Prop)({ type: Object }),
@@ -54,10 +55,9 @@ __decorate([
     (0, mongoose_1.Prop)({ type: Object }),
     __metadata("design:type", Object)
 ], Marshall.prototype, "confirmationCompressionData", void 0);
-Marshall = __decorate([
+exports.Marshall = Marshall = __decorate([
     (0, mongoose_1.Schema)({ collection: 'marshalls' })
 ], Marshall);
-exports.Marshall = Marshall;
 const MarshallSchema = mongoose_1.SchemaFactory.createForClass(Marshall);
 exports.MarshallSchema = MarshallSchema;
 MarshallSchema.set('timestamps', true);

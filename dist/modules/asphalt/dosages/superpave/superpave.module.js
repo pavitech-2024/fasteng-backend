@@ -40,7 +40,8 @@ const services = [
 ];
 let SuperpaveModule = class SuperpaveModule {
 };
-SuperpaveModule = __decorate([
+exports.SuperpaveModule = SuperpaveModule;
+exports.SuperpaveModule = SuperpaveModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [controller_1.SuperpaveController],
@@ -48,5 +49,4 @@ SuperpaveModule = __decorate([
         exports: [service_1.SuperpaveService, repository_1.SuperpaveRepository],
     })
 ], SuperpaveModule);
-exports.SuperpaveModule = SuperpaveModule;
 //# sourceMappingURL=superpave.module.js.map

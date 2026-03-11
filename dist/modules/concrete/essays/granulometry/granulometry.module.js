@@ -16,7 +16,8 @@ const calc_granulometry_service_1 = require("./service/calc.granulometry.service
 const services = [service_1.ConcreteGranulometryService, general_data_granulometry_service_1.GeneralData_CONCRETEGRANULOMETRY_Service, calc_granulometry_service_1.Calc_CONCRETEGRANULOMETRY_Service];
 let ConcreteGranulometryModule = class ConcreteGranulometryModule {
 };
-ConcreteGranulometryModule = __decorate([
+exports.ConcreteGranulometryModule = ConcreteGranulometryModule;
+exports.ConcreteGranulometryModule = ConcreteGranulometryModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [controller_1.ConcreteGranulometryController],
@@ -24,5 +25,4 @@ ConcreteGranulometryModule = __decorate([
         exports: [service_1.ConcreteGranulometryService, repository_1.ConcreteGranulometryRepository],
     })
 ], ConcreteGranulometryModule);
-exports.ConcreteGranulometryModule = ConcreteGranulometryModule;
 //# sourceMappingURL=granulometry.module.js.map

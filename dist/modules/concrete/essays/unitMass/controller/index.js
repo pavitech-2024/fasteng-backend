@@ -71,6 +71,7 @@ let UnitMassController = UnitMassController_1 = class UnitMassController {
         });
     }
 };
+exports.UnitMassController = UnitMassController;
 __decorate([
     (0, common_1.Post)('verify-init'),
     (0, swagger_1.ApiOperation)({ summary: 'Verifica se é possível criar uma massa unitária com os dados enviados.' }),
@@ -154,10 +155,9 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], UnitMassController.prototype, "saveEssay", null);
-UnitMassController = UnitMassController_1 = __decorate([
+exports.UnitMassController = UnitMassController = UnitMassController_1 = __decorate([
     (0, swagger_1.ApiTags)('unitMass'),
     (0, common_1.Controller)('concrete/essays/unitMass'),
     __metadata("design:paramtypes", [service_1.UnitMassService])
 ], UnitMassController);
-exports.UnitMassController = UnitMassController;
 //# sourceMappingURL=index.js.map

@@ -14,6 +14,7 @@ const mongoose_1 = require("@nestjs/mongoose");
 const class_validator_1 = require("class-validator");
 let GranularLayers_Sample = class GranularLayers_Sample {
 };
+exports.GranularLayers_Sample = GranularLayers_Sample;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, mongoose_1.Prop)({ type: Object }),
@@ -29,12 +30,11 @@ __decorate([
     (0, mongoose_1.Prop)({ type: Object }),
     __metadata("design:type", Object)
 ], GranularLayers_Sample.prototype, "step3Data", void 0);
-GranularLayers_Sample = __decorate([
+exports.GranularLayers_Sample = GranularLayers_Sample = __decorate([
     (0, mongoose_1.Schema)({
         collection: 'granularLayersSamples',
         timestamps: true,
     })
 ], GranularLayers_Sample);
-exports.GranularLayers_Sample = GranularLayers_Sample;
 exports.GranularLayers_SampleSchema = mongoose_1.SchemaFactory.createForClass(GranularLayers_Sample);
 //# sourceMappingURL=index.js.map

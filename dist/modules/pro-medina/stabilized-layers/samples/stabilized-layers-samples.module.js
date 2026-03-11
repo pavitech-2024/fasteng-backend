@@ -13,7 +13,8 @@ const repository_1 = require("./repository");
 const stabilized_layers_samples_service_1 = require("./service/stabilized-layers-samples.service");
 let StabilizedLayersSamplesModule = class StabilizedLayersSamplesModule {
 };
-StabilizedLayersSamplesModule = __decorate([
+exports.StabilizedLayersSamplesModule = StabilizedLayersSamplesModule;
+exports.StabilizedLayersSamplesModule = StabilizedLayersSamplesModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [controller_1.StabilizedLayersSamplesController],
@@ -21,5 +22,4 @@ StabilizedLayersSamplesModule = __decorate([
         exports: [stabilized_layers_samples_service_1.StabilizedLayersSamplesService, repository_1.StabilizedLayers_SamplesRepository],
     })
 ], StabilizedLayersSamplesModule);
-exports.StabilizedLayersSamplesModule = StabilizedLayersSamplesModule;
 //# sourceMappingURL=stabilized-layers-samples.module.js.map

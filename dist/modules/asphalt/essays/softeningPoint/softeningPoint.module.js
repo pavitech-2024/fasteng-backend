@@ -17,7 +17,8 @@ const penetration_module_1 = require("../penetration/penetration.module");
 const services = [service_1.SofteningPointService, general_data_softeningPoint_service_1.GeneralData_SofteningPoint_Service, calc_softeningPoint_softeningPoint_service_1.Calc_SofteningPoint_Service];
 let SofteningPointModule = class SofteningPointModule {
 };
-SofteningPointModule = __decorate([
+exports.SofteningPointModule = SofteningPointModule;
+exports.SofteningPointModule = SofteningPointModule = __decorate([
     (0, common_1.Module)({
         imports: [penetration_module_1.PenetrationModule],
         controllers: [controller_1.SofteningPointController],
@@ -25,5 +26,4 @@ SofteningPointModule = __decorate([
         exports: [service_1.SofteningPointService, repository_1.SofteningPointRepository],
     })
 ], SofteningPointModule);
-exports.SofteningPointModule = SofteningPointModule;
 //# sourceMappingURL=softeningPoint.module.js.map

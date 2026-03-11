@@ -16,7 +16,8 @@ const calc_compression_service_1 = require("./service/calc.compression.service")
 const services = [service_1.CompressionService, general_data_compression_service_1.GeneralData_Compression_Service, calc_compression_service_1.Calc_Compression_Service];
 let CompressionModule = class CompressionModule {
 };
-CompressionModule = __decorate([
+exports.CompressionModule = CompressionModule;
+exports.CompressionModule = CompressionModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [controller_1.CompressionController],
@@ -24,5 +25,4 @@ CompressionModule = __decorate([
         exports: [service_1.CompressionService, repository_1.CompressionRepository],
     })
 ], CompressionModule);
-exports.CompressionModule = CompressionModule;
 //# sourceMappingURL=compression.module.js.map
