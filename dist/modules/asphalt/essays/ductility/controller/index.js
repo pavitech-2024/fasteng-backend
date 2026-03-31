@@ -35,31 +35,75 @@ let DuctilityController = DuctilityController_1 = class DuctilityController {
     }
     verifyInitDuctility(response, body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log('verify init ductility > [body]');
             const status = yield this.ductilityService.verifyInitDuctility(body);
             return response.status(200).json(status);
         });
     }
     calculateDuctility(body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log('calculate ductility > [body]');
             const ductility = yield this.ductilityService.calculateDuctility(body);
-            if (ductility.success)
-                this.logger.log('calculate ductility > [success]');
-            else
-                this.logger.error('calculate ductility > [error]');
             return ductility;
         });
     }
     saveEssay(response, body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log('save essay > [body]');
             const ductility = yield this.ductilityService.saveEssay(body);
-            if (ductility.success)
-                this.logger.log('save ductility essay > [success]');
-            else
-                this.logger.error('save ductility essay > [error]');
             return response.status(200).json(ductility);
+        });
+    }
+    getEssaysByUser(userId, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const essays = yield this.ductilityService.getAllEssaysByUser(userId);
+            return response.status(200).json({
+                success: true,
+                data: essays,
+                count: essays.length
+            });
+        });
+    }
+    getEssaysByMaterial(materialId, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const essays = yield this.ductilityService.getAllEssaysByMaterial(materialId);
+            return response.status(200).json({
+                success: true,
+                data: essays,
+                count: essays.length
+            });
+        });
+    }
+    debugGetAllEssays(response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const essays = yield this.ductilityService.getAllEssays();
+            const formattedEssays = essays.map(essay => {
+                var _a, _b, _c, _d, _e, _f;
+                return ({
+                    id: essay._id,
+                    name: (_a = essay.generalData) === null || _a === void 0 ? void 0 : _a.name,
+                    userId: (_b = essay.generalData) === null || _b === void 0 ? void 0 : _b.userId,
+                    materialId: (_d = (_c = essay.generalData) === null || _c === void 0 ? void 0 : _c.material) === null || _d === void 0 ? void 0 : _d._id,
+                    materialName: (_f = (_e = essay.generalData) === null || _e === void 0 ? void 0 : _e.material) === null || _f === void 0 ? void 0 : _f.name,
+                    results: essay.results
+                });
+            });
+            return response.status(200).json({
+                total: essays.length,
+                essays: formattedEssays
+            });
+        });
+    }
+    getEssayById(id, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const essay = yield this.ductilityService.getEssayById(id);
+            if (!essay) {
+                return response.status(404).json({
+                    success: false,
+                    error: `Essay with ID ${id} not found`
+                });
+            }
+            return response.status(200).json({
+                success: true,
+                data: essay
+            });
         });
     }
 };
@@ -67,21 +111,6 @@ exports.DuctilityController = DuctilityController;
 __decorate([
     (0, common_1.Post)('verify-init'),
     (0, swagger_1.ApiOperation)({ summary: 'Verifica se é possível criar uma DUCTILITY com os dados enviados.' }),
-    (0, swagger_1.ApiResponse)({
-        status: 200,
-        description: 'É possível criar uma DUCTILITY com os dados enviados.',
-        content: { 'application/json': { schema: { example: { success: true } } } },
-    }),
-    (0, swagger_1.ApiResponse)({
-        status: 200,
-        description: 'Não é possível criar uma DUCTILITY com os dados enviados.',
-        content: {
-            'application/json': {
-                schema: { example: { success: false, error: { message: 'Sample Not Found.', status: 400, name: 'NotFound' } } },
-            },
-        },
-    }),
-    (0, swagger_1.ApiResponse)({ status: 400, description: 'Erro ao verificar se é possível criar uma DUCTILITY com os dados enviados.' }),
     __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -91,12 +120,6 @@ __decorate([
 __decorate([
     (0, common_1.Post)('calculate-results'),
     (0, swagger_1.ApiOperation)({ summary: 'Calcula os resultados da DUCTILITY com os dados enviados.' }),
-    (0, swagger_1.ApiResponse)({
-        status: 200,
-        description: 'Resultados da DUCTILITY calculados com sucesso.',
-        content: { 'application/json': { schema: { example: { success: true, data: 'essay data' } } } },
-    }),
-    (0, swagger_1.ApiResponse)({ status: 400, description: 'Erro ao calcular os resultados da DUCTILITY com os dados enviados.' }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [calc_ductility_dto_1.Calc_DUCTILITY_Dto]),
@@ -105,32 +128,47 @@ __decorate([
 __decorate([
     (0, common_1.Post)('save-essay'),
     (0, swagger_1.ApiOperation)({ summary: 'Se possível, salva os dados da DUCTILITY no banco de dados.' }),
-    (0, swagger_1.ApiResponse)({
-        status: 200,
-        description: 'Dados da DUCTILITY salvos com sucesso.',
-        content: { 'application/json': { schema: { example: { success: true, data: 'essay data' } } } },
-    }),
-    (0, swagger_1.ApiResponse)({
-        status: 200,
-        description: 'Não foi possível salvar os dados da DUCTILITY no banco de dados.',
-        content: {
-            'application/json': {
-                schema: {
-                    example: {
-                        success: false,
-                        error: { message: 'DUCTILITY with name "DUCTILITY 1" from user "user 1"', status: 400, name: 'AlreadyExists' },
-                    },
-                },
-            },
-        },
-    }),
-    (0, swagger_1.ApiResponse)({ status: 400, description: 'Erro ao salvar os dados da DUCTILITY no banco de dados.' }),
     __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], DuctilityController.prototype, "saveEssay", null);
+__decorate([
+    (0, common_1.Get)('user/:userId'),
+    (0, swagger_1.ApiOperation)({ summary: 'Busca todos os ensaios de ductilidade do usuário' }),
+    __param(0, (0, common_1.Param)('userId')),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], DuctilityController.prototype, "getEssaysByUser", null);
+__decorate([
+    (0, common_1.Get)('material/:materialId'),
+    (0, swagger_1.ApiOperation)({ summary: 'Busca todos os ensaios de ductilidade por material' }),
+    __param(0, (0, common_1.Param)('materialId')),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], DuctilityController.prototype, "getEssaysByMaterial", null);
+__decorate([
+    (0, common_1.Get)('debug/all'),
+    (0, swagger_1.ApiOperation)({ summary: 'DEBUG: Lista todos os ensaios de ductilidade' }),
+    __param(0, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], DuctilityController.prototype, "debugGetAllEssays", null);
+__decorate([
+    (0, common_1.Get)(':id'),
+    (0, swagger_1.ApiOperation)({ summary: 'Busca um ensaio de ductilidade específico por ID' }),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], DuctilityController.prototype, "getEssayById", null);
 exports.DuctilityController = DuctilityController = DuctilityController_1 = __decorate([
     (0, swagger_1.ApiTags)('ductility'),
     (0, common_1.Controller)('asphalt/essays/ductility'),

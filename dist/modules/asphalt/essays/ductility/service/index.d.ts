@@ -7,7 +7,6 @@ export declare class DuctilityService {
     private readonly generalData_Service;
     private readonly calc_Service;
     private readonly Ductility_Repository;
-    private logger;
     constructor(generalData_Service: GeneralData_DUCTILITY_Service, calc_Service: Calc_DUCTILITY_Service, Ductility_Repository: DuctilityRepository);
     verifyInitDuctility(body: DuctilityInitDto): Promise<{
         result: boolean;
@@ -46,4 +45,8 @@ export declare class DuctilityService {
         };
         data?: undefined;
     }>;
+    getAllEssaysByUser(userId: string): Promise<import("../schemas").Ductility[]>;
+    getAllEssaysByMaterial(materialId: string): Promise<import("../schemas").Ductility[]>;
+    getAllEssays(): Promise<import("../schemas").Ductility[]>;
+    getEssayById(id: string): Promise<import("../schemas").Ductility>;
 }
