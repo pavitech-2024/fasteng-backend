@@ -24,17 +24,17 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, mongoose_1.Prop)({ type: Object }),
     __metadata("design:type", Object)
-], BinderAsphaltConcrete_Sample.prototype, "step2Data", void 0);
-__decorate([
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, mongoose_1.Prop)({ type: Object }),
-    __metadata("design:type", Object)
 ], BinderAsphaltConcrete_Sample.prototype, "step3Data", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, mongoose_1.Prop)({ type: Object }),
     __metadata("design:type", Object)
 ], BinderAsphaltConcrete_Sample.prototype, "step4Data", void 0);
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, mongoose_1.Prop)({ type: Object }),
+    __metadata("design:type", Object)
+], BinderAsphaltConcrete_Sample.prototype, "step5Data", void 0);
 exports.BinderAsphaltConcrete_Sample = BinderAsphaltConcrete_Sample = __decorate([
     (0, mongoose_1.Schema)({ collection: 'binderAsphaltConcreteSamples', timestamps: true })
 ], BinderAsphaltConcrete_Sample);

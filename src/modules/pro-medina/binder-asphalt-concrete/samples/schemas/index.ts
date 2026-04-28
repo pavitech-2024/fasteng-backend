@@ -1,5 +1,4 @@
 import { Prop, SchemaFactory, Schema } from '@nestjs/mongoose';
-import { Type } from 'class-transformer';
 import { IsNotEmpty } from 'class-validator';
 import { HydratedDocument } from 'mongoose';
 
@@ -7,84 +6,155 @@ export type BinderAsphaltConcrete_SamplesDocument = HydratedDocument<BinderAspha
 
 export type BinderAsphaltConcreteGeneralData = {
   name: string;
-  zone: string;
-  layer: string;
-  highway: string;
-  cityState: string;
-  guideLineSpeed: string;
+  identification?: string;
+  tipoSecao?: string;
+  faseMonitoramento?: string;
+  liberacaoTrafico?: string;
+  utilizadaMedina?: string;
+  utilizadaLvec?: string;
+  dadosConfirmadosICT?: string;
   observations?: string;
-};
-
-export type BinderAsphaltConcreteStep2Data = {
-  // PavimentData
-  identification: string;
-  sectionType: string;
-  extension: string;
-  initialStakeMeters: string;
-  latitudeI: string;
-  longitudeI: string;
-  finalStakeMeters: string;
-  latitudeF: string;
-  longitudeF: string;
-  monitoringPhase: string;
-  trafficLiberation: string;
-  averageAltitude: string;
-  numberOfTracks: string;
-  monitoredTrack: string;
-  trackWidth: string;
-  observation: string;
-  // Paviment Preparation
-  milling: string;
-  interventionAtTheBase: string;
-  sami: string;
-  bondingPaint: string;
-  priming: string;
-  images: string[];
-  // Structural Composition
-  structuralComposition: {
+  iriPreReabilitacao?: string;
+  atPreReabilitacao?: string;
+  fresagem?: string;
+  espessuraFresagem?: string;
+  intervencaoBase?: string;
+  sami?: string;
+  pinturaLigacao?: string;
+  imprimacao?: string;
+  dataUltimaAtualizacao?: string;
+  tempoServicoAnos?: string;
+  tempoServicoMeses?: string;
+  local?: string;
+  municipioEstado?: string;
+  extensao?: string;
+  velocidadeDiretriz?: string;
+  kmInicial?: string;
+  kmFinal?: string;
+  inicioEstaca?: string;
+  inicioMetros?: string;
+  fimEstaca?: string;
+  fimMetros?: string;
+  altitudeMedia?: string;
+  numeroFaixas?: string;
+  faixaMonitorada?: string;
+  larguraFaixa?: string;
+  latitudeI?: string;
+  longitudeI?: string;
+  latitudeF?: string;
+  longitudeF?: string;
+  camadasEstruturais?: {
     id: number;
-    layer: unknown;
-    material: unknown;
-    thickness: unknown;
+    tipo: string;
+    material: string;
+    espessura: string;
   }[];
+  imagemEstrutural?: string;
+  dataImagens?: string;
 };
 
 export type BinderAsphaltConcreteStep3Data = {
-  // PavimentData
-  refinery: string; // Refinaria
-  company: string; // Empresa
-  collectionDate: string; // Data do carregamento
-  invoiceNumber: string; // Número da nota fiscal
-  dataInvoice: string; // Data da nota fiscal
-  certificateDate: string; // Data do certificado
-  capType: string; // Tipo de CAP
-  performanceGrade: string; // Performance grade (PG)
-  penetration: string; // Penetração - 25°C (mm)
-  softeningPoint: string; // Ponto de amolecimento (°C)
-  elasticRecovery: string; // Recuperação elástica - 25°C (%)
-  // Viscosidade Brookfield
-  vb_sp21_20: string; // 135°C (SP21, 20rpm)
-  vb_sp21_50: string; // 150°C (SP21, 50rpm)
-  vb_sp21_100: string; // 177°C (SP21, 100rpm)
-  observations: string; // Observações
+  tipoTratamento: string;
+  tipoEmulsao: string;
+  taxaEmulsao: string;
+  taxaAgregados: string;
+  faixaGranulometrica: string;
+  abrasaoLosAngeles: string;
+  massaEspecifica: string;
+  referenciaComercial: string;
+  refinaria: string;
+  empresaDistribuidora: string;
+  dataCarregamento: string;
+  numeroNotaFiscal: string;
+  dataNotaFiscal: string;
+  numeroCertificado: string;
+  dataCertificado: string;
+  viscosidadeSSF: string;
+  peneiracao: string;
+  residuo: string;
+  cargaParticula: string;
+  penetracao: string;
+  recuperacaoElastica: string;
+  pontoAmolecimento: string;
+  observacoes: string;
 };
 
 export type BinderAsphaltConcreteStep4Data = {
-  granulometricRange: string;
+  referenciaComercial: string;
+  refinaria: string;
+  empresaDistribuidora: string;
+  dataCarregamento: string;
+  numeroNotaFiscal: string;
+  dataNotaFiscal: string;
+  numeroCertificado: string;
+  dataCertificado: string;
+  tipoCAP: string;
+  performanceGrade: string;
+  penetracao25: string;
+  pontoAmolecimento: string;
+  viscosidadeBrookfield_135: string;
+  viscosidadeBrookfield_150: string;
+  viscosidadeBrookfield_177: string;
+  recuperacaoElastica: string;
+  dsr_original: { temp: string; G_sen: string }[];
+  dsr_rtfot: { temp: string; G_sen: string }[];
+  mscr_Jnr_3_2: string;
+  mscr_Jndiff: string;
+  las_temperatura: string;
+  las_strain_1_25: string;
+  las_strain_2_5: string;
+  las_strain_5: string;
+  las_af: string;
+  las_FFL: string;
+  las_D: string;
+  bbr_S: string;
+  bbr_m: string;
+  bbr_temp: string;
+  observacoes: string;
+};
+
+export type BinderAsphaltConcreteStep5Data = {
+  tipoCAP: string;
+  massaEspecifica: string;
+  resistenciaTracao: string;
+  teorAsfalto: string;
+  volumeVazios: string;
+  faixaGranulometrica: string;
   tmn: string;
-  asphaltTenor: string;
-  specificMass: string;
-  volumeVoids: string;
-  abrasionLA: string;
-  rt: string;
+  abrasaoLosAngeles: string;
   flowNumber: string;
-  mr: string;
-  // Diametral Compression Fatigue Curve
-  fatigueCurve_n_cps: string;
-  fatigueCurve_k1: string;
-  fatigueCurve_k2: string;
-  fatigueCurve_r2: string;
-  observations: string;
+  moduloResiliencia: string;
+  curvaFadiga_n_cps: string;
+  curvaFadiga_k1: string;
+  curvaFadiga_k2: string;
+  curvaFadiga_r2: string;
+  sigmoidal_a: string;
+  sigmoidal_b: string;
+  sigmoidal_d: string;
+  sigmoidal_g: string;
+  sigmoidal_a1: string;
+  sigmoidal_a2: string;
+  sigmoidal_a3: string;
+  parametro_alfa: string;
+  dano_C10: string;
+  dano_C11: string;
+  dano_C12: string;
+  dano_a: string;
+  dano_b: string;
+  dano_Y: string;
+  dano_Delta: string;
+  einf: string;
+  prony_pi: string[];
+  prony_Ei: string[];
+  shiftModel_n_cps: string;
+  shiftModel_ε0: string;
+  shiftModel_N1: string;
+  shiftModel_β: string;
+  shiftModel_p1: string;
+  shiftModel_p2: string;
+  shiftModel_d1: string;
+  shiftModel_d2: string;
+  observacoes: string;
 };
 
 @Schema({ collection: 'binderAsphaltConcreteSamples', timestamps: true })
@@ -97,15 +167,15 @@ export class BinderAsphaltConcrete_Sample {
 
   @IsNotEmpty()
   @Prop({ type: Object })
-  step2Data: BinderAsphaltConcreteStep2Data;
-
-  @IsNotEmpty()
-  @Prop({ type: Object })
   step3Data: BinderAsphaltConcreteStep3Data;
 
   @IsNotEmpty()
   @Prop({ type: Object })
   step4Data: BinderAsphaltConcreteStep4Data;
+
+  @IsNotEmpty()
+  @Prop({ type: Object })
+  step5Data: BinderAsphaltConcreteStep5Data;
 }
 
 export const BinderAsphaltConcrete_SampleSchema = SchemaFactory.createForClass(BinderAsphaltConcrete_Sample);

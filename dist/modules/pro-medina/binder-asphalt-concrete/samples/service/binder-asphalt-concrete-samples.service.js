@@ -31,7 +31,9 @@ let BinderAsphaltConcreteSamplesService = BinderAsphaltConcreteSamplesService_1 
     createSample(sample) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const sampleFound = yield this.binderAsphaltConcrete_SamplesRepository.findOne({ name: sample.generalData.name });
+                const sampleFound = yield this.binderAsphaltConcrete_SamplesRepository.findOne({
+                    'generalData.name': sample.generalData.name
+                });
                 if (sampleFound) {
                     throw new common_1.HttpException({
                         status: common_1.HttpStatus.CONFLICT,
@@ -53,7 +55,7 @@ let BinderAsphaltConcreteSamplesService = BinderAsphaltConcreteSamplesService_1 
                 return samples;
             }
             catch (error) {
-                this.logger.error(`error on get all stabilized layers samples > [error]: ${error}`);
+                this.logger.error(`error on get all samples > [error]: ${error}`);
                 throw error;
             }
         });
