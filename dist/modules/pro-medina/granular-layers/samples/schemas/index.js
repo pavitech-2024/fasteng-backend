@@ -25,11 +25,6 @@ __decorate([
     (0, mongoose_1.Prop)({ type: Object }),
     __metadata("design:type", Object)
 ], GranularLayers_Sample.prototype, "step2Data", void 0);
-__decorate([
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, mongoose_1.Prop)({ type: Object }),
-    __metadata("design:type", Object)
-], GranularLayers_Sample.prototype, "step3Data", void 0);
 exports.GranularLayers_Sample = GranularLayers_Sample = __decorate([
     (0, mongoose_1.Schema)({
         collection: 'granularLayersSamples',

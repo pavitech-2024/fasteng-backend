@@ -7,7 +7,4 @@ export class CreateGranularLayersSampleDto {
 
   @IsNotEmpty()
   step2Data: GranularLayers_Sample['step2Data'];
-
-  @IsNotEmpty()
-  step3Data: GranularLayers_Sample['step3Data'];
 }
