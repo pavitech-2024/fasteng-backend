@@ -8,6 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -18,57 +21,60 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FwdAnalysisService = void 0;
+exports.IggAnalysisRepository = void 0;
 const common_1 = require("@nestjs/common");
-const fwd_analysis_repository_1 = require("../repository/fwd-analysis.repository");
-let FwdAnalysisService = class FwdAnalysisService {
-    constructor(fwdAnalysisRepository) {
-        this.fwdAnalysisRepository = fwdAnalysisRepository;
+const mongoose_1 = require("@nestjs/mongoose");
+const mongoose_2 = require("mongoose");
+const igg_analysis_schema_1 = require("../schema/igg-analysis.schema");
+const database_config_1 = require("../../../../infra/mongoose/database.config");
+let IggAnalysisRepository = class IggAnalysisRepository {
+    constructor(iggAnalysisModel) {
+        this.iggAnalysisModel = iggAnalysisModel;
     }
-    create(createFwdAnalysisDto) {
+    create(createIggAnalysisDto) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                console.log('Dados recebidos para criação:', JSON.stringify(createFwdAnalysisDto, null, 2));
-                return yield this.fwdAnalysisRepository.create(createFwdAnalysisDto);
+                const createdAnalysis = new this.iggAnalysisModel(createIggAnalysisDto);
+                return yield createdAnalysis.save();
             }
             catch (error) {
-                console.error('Erro detalhado ao criar análise:', error);
-                if (error instanceof Error) {
-                    throw new Error(`Falha ao criar análise: ${error.message}`);
-                }
+                console.error('Erro no repository ao criar análise IGG:', error);
+                throw error;
             }
         });
     }
     findAll() {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.fwdAnalysisRepository.findAll();
+            return this.iggAnalysisModel.find().exec();
         });
     }
-    findOne(id) {
+    findById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.fwdAnalysisRepository.findById(id);
+            return this.iggAnalysisModel.findById(id).exec();
         });
     }
-    update(id, updateFwdAnalysisDto) {
+    update(id, updateData) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.fwdAnalysisRepository.update(id, updateFwdAnalysisDto);
+            return this.iggAnalysisModel
+                .findByIdAndUpdate(id, updateData, { new: true })
+                .exec();
         });
     }
-    remove(id) {
+    delete(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.fwdAnalysisRepository.delete(id);
+            return this.iggAnalysisModel.findByIdAndDelete(id).exec();
         });
     }
-    processAnalysis(id) {
+    findByUserId(userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const analysis = yield this.findOne(id);
-            return { message: 'Análise processada', analysis };
+            return this.iggAnalysisModel.find({ userId }).exec();
         });
     }
 };
-exports.FwdAnalysisService = FwdAnalysisService;
-exports.FwdAnalysisService = FwdAnalysisService = __decorate([
+exports.IggAnalysisRepository = IggAnalysisRepository;
+exports.IggAnalysisRepository = IggAnalysisRepository = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [fwd_analysis_repository_1.FwdAnalysisRepository])
-], FwdAnalysisService);
-//# sourceMappingURL=fwd-analysis.service.js.map
+    __param(0, (0, mongoose_1.InjectModel)(igg_analysis_schema_1.IggAnalysis.name, database_config_1.DATABASE_CONNECTION.PROMEDINA)),
+    __metadata("design:paramtypes", [mongoose_2.Model])
+], IggAnalysisRepository);
+//# sourceMappingURL=igg-analysis.repository.js.map
