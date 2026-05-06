@@ -6,11 +6,11 @@ export class CreateBinderAsphaltConcreteSampleDto {
   generalData: BinderAsphaltConcrete_Sample['generalData'];
 
   @IsNotEmpty()
-  step2Data: BinderAsphaltConcrete_Sample['step2Data'];
-
-  @IsNotEmpty()
   step3Data: BinderAsphaltConcrete_Sample['step3Data'];
 
   @IsNotEmpty()
   step4Data: BinderAsphaltConcrete_Sample['step4Data'];
+
+  @IsNotEmpty()
+  step5Data: BinderAsphaltConcrete_Sample['step5Data'];
 }

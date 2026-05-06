@@ -5,69 +5,77 @@ import { HydratedDocument } from 'mongoose';
 export type GranularLayers_SamplesDocument = HydratedDocument<GranularLayers_Sample>;
 
 export type GranularLayersGeneralData = {
+  // IDENTIFICAÇÃO
   name: string;
-  zone: string;
-  layer: string;
-  cityState: string;
-  highway: string;
-  guideLineSpeed: string;
-  observations?: string;
-};
-
-export type GranularLayersStep2Data = {
-  // PavimentData
-  identification: string;
-  sectionType: string;
-  extension: string;
-  initialStakeMeters: string;
-  latitudeI: string;
-  longitudeI: string;
-  finalStakeMeters: string;
-  latitudeF: string;
-  longitudeF: string;
-  monitoringPhase: string;
-  trafficLiberation: string;
-  averageAltitude: string;
-  numberOfTracks: string;
-  monitoredTrack: string;
-  trackWidth: string;
+  tipoSecao: string;
+  faseMonitoramento: string;
+  liberacaoTrafico: string;
+  utilizadaMedina: string;
+  utilizadaLvec: string;
+  dadosConfirmadosICT: string;
   observation: string;
-  // Paviment Preparation
-  milling: string;
+
+  // PREPARO DO PAVIMENTO
+  iriPrerehabilitation: string;
+  atPrerehabilitation: string;
+  fresagem: string;
+  millingThickness: string;
   interventionAtTheBase: string;
   sami: string;
   bondingPaint: string;
   priming: string;
-  images: string[];
-  // Structural Composition
+
+  // DATA ÚLTIMA ATUALIZAÇÃO
+  lastUpdate: string;
+  serviceTimeYears: string;
+  serviceTimeMonths: string;
+
+  // CARACTERÍSTICAS
+  roadName: string;
+  cityState: string;
+  experimentalLength: string;
+  guideSpeed: string;
+  kmInicial: string;
+  kmFinal: string;
+  inicioEstaca: string;
+  inicioMetros: string;
+  fimEstaca: string;
+  fimMetros: string;
+  averageAltitude: string;
+  numberOfTracks: string;
+  monitoredTrack: string;
+  trackWidth: string;
+
+  // COMPOSIÇÃO ESTRUTURAL
   structuralComposition: {
     id: number;
-    layer: unknown;
-    material: unknown;
-    thickness: unknown;
+    layer: string;
+    material: string;
+    thickness: string;
   }[];
+
+  images: string;
+  imagesDate: string;
 };
 
-export type GranularLayersStep3Data = {
-  // Paviment Data
-  mctGroup: string;
-  mctCoefficientC: string;
-  mctIndexE: string;
-  especificMass: string;
-  compressionEnergy: string;
-  granulometricRange: string;
-  optimalHumidity: string;
-  abrasionLA: string;
-  // Resilience module
-  k1: string;
-  k2: string;
-  k3: string;
-  k4: string;
-  // Permanent deformation
-  k1psi1: string;
-  k2psi2: string;
-  k3psi3: string;
-  k4psi4: string;
+export type GranularLayersStep2Data = {
+  layers: {
+    id: string;
+    name: string;
+    mctCoefficientC: string;
+    mctIndexE: string;
+    especificMass: string;
+    optimalHumidity: string;
+    compressionEnergy: string;
+    k1: string;
+    k2: string;
+    k3: string;
+    k4: string;
+    k1psi1: string;
+    k2psi2: string;
+    k3psi3: string;
+    k4psi4: string;
+  }[];
   observations: string;
 };
 
@@ -85,10 +93,6 @@ export class GranularLayers_Sample {
   @IsNotEmpty()
   @Prop({ type: Object })
   step2Data: GranularLayersStep2Data;
-
-  @IsNotEmpty()
-  @Prop({ type: Object })
-  step3Data: GranularLayersStep3Data;
 }
 
 export const GranularLayers_SampleSchema = SchemaFactory.createForClass(GranularLayers_Sample);

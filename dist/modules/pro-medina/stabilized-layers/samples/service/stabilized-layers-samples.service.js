@@ -31,11 +31,13 @@ let StabilizedLayersSamplesService = StabilizedLayersSamplesService_1 = class St
     createSample(sample) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const sampleFound = yield this.stabilizedLayers_SamplesRepository.findOne({ name: sample.generalData.name });
+                const sampleFound = yield this.stabilizedLayers_SamplesRepository.findOne({
+                    'generalData.name': sample.generalData.name
+                });
                 if (sampleFound) {
                     throw new common_1.HttpException({
                         status: common_1.HttpStatus.CONFLICT,
-                        error: `Granular layer sample with name "${sample.generalData.name}" already exists.`,
+                        error: `Stabilized layer sample with name "${sample.generalData.name}" already exists.`,
                     }, common_1.HttpStatus.CONFLICT);
                 }
                 return this.stabilizedLayers_SamplesRepository.create(Object.assign(Object.assign({}, sample), { createdAt: new Date() }));

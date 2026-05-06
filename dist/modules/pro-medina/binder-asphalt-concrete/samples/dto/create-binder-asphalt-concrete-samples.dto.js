@@ -21,13 +21,13 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
-], CreateBinderAsphaltConcreteSampleDto.prototype, "step2Data", void 0);
-__decorate([
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", Object)
 ], CreateBinderAsphaltConcreteSampleDto.prototype, "step3Data", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
 ], CreateBinderAsphaltConcreteSampleDto.prototype, "step4Data", void 0);
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", Object)
+], CreateBinderAsphaltConcreteSampleDto.prototype, "step5Data", void 0);
 //# sourceMappingURL=create-binder-asphalt-concrete-samples.dto.js.map

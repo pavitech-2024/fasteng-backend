@@ -22,8 +22,4 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
 ], CreateStabilizedLayersSampleDto.prototype, "step2Data", void 0);
-__decorate([
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", Object)
-], CreateStabilizedLayersSampleDto.prototype, "step3Data", void 0);
 //# sourceMappingURL=create-stabilized-layers-sample.dto.js.map
