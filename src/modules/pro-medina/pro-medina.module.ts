@@ -16,19 +16,23 @@ import {
 import { BinderAsphaltConcreteSamplesModule } from './binder-asphalt-concrete/samples/binder-asphalt-concrete-samples.module';
 import { FwdAnalysis, FwdAnalysisSchema } from './fwd/schemas/fwd-analysis.schema';
 import { FwdModule } from './fwd//fwd-analysis.module'; // ✅ CORRIGIDO: FwdModule em vez de FwdAnalysisModule
+import { IggAnalysis, IggAnalysisSchema } from './IGG/schema/igg-analysis.schema';
+import { IggModule } from './IGG/igg.module';
 
 const Models: ModelDefinition[] = [
   { name: GranularLayers_Sample.name, schema: GranularLayers_SampleSchema },
   { name: StabilizedLayers_Sample.name, schema: StabilizedLayers_SampleSchema },
   { name: BinderAsphaltConcrete_Sample.name, schema: BinderAsphaltConcrete_SampleSchema },
-  { name: FwdAnalysis.name, schema: FwdAnalysisSchema }, // ✅ ADICIONADO
+  { name: FwdAnalysis.name, schema: FwdAnalysisSchema }, 
+  { name: IggAnalysis.name, schema: IggAnalysisSchema },
 ];
 
 const Modules = [
   GranularLayersSamplesModule,
   StabilizedLayersSamplesModule,
   BinderAsphaltConcreteSamplesModule,
-  FwdModule, // ✅ CORRIGIDO: FwdModule em vez de FwdAnalysisModule
+  IggModule,
+  FwdModule,
 ];
 
 @Global()
@@ -38,6 +42,7 @@ const Modules = [
     ...Modules,
     GranularLayersModule,
     StabilizedLayersModule,
+    IggModule,
     BinderAsphaltConcreteModule,
     FwdModule, // ✅ CORRIGIDO: FwdModule em vez de FwdAnalysisModule
   ],

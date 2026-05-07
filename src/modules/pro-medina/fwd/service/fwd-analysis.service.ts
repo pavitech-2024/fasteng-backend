@@ -15,9 +15,11 @@ export class FwdAnalysisService {
       return await this.fwdAnalysisRepository.create(createFwdAnalysisDto);
     } catch (error) {
       console.error('Erro detalhado ao criar análise:', error);
+      if(error instanceof Error) {
       throw new Error(`Falha ao criar análise: ${error.message}`);
     }
   }
+}
 
   async findAll(): Promise<any[]> {
     return this.fwdAnalysisRepository.findAll();
