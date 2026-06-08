@@ -18,5 +18,5 @@ export declare class SofteningPointController {
             name: any;
         };
     }>;
-    saveEssay(response: Response, body: Calc_SofteningPoint_Dto & Calc_SofteningPoint_Out): Promise<Response<any, Record<string, any>>>;
+    saveEssay(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
 }

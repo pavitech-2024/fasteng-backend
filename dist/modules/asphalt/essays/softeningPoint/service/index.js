@@ -55,21 +55,35 @@ let SofteningPointService = class SofteningPointService {
     }
     saveEssay(body) {
         return __awaiter(this, void 0, void 0, function* () {
+            var _a, _b, _c, _d;
             try {
-                const { name, material: { _id: materialId }, userId, } = body.generalData;
+                const name = (_a = body.generalData) === null || _a === void 0 ? void 0 : _a.name;
+                const materialId = (_c = (_b = body.generalData) === null || _b === void 0 ? void 0 : _b.material) === null || _c === void 0 ? void 0 : _c._id;
+                const userId = (_d = body.generalData) === null || _d === void 0 ? void 0 : _d.userId;
+                if (!name || !materialId || !userId) {
+                    throw new Error("Missing required fields in generalData");
+                }
                 const alreadyExists = yield this.softeningPoint_Repository.findOne({
                     'generalData.name': name,
                     'generalData.material._id': materialId,
                     'generalData.userId': userId,
                 });
-                if (alreadyExists)
+                if (alreadyExists) {
                     throw new exceptions_1.AlreadyExists(`Softening point with name "${name}" from user "${userId}"`);
+                }
                 const softeningPoint = yield this.softeningPoint_Repository.create(body);
                 return { success: true, data: softeningPoint };
             }
             catch (error) {
                 const { status, name, message } = error;
-                return { success: false, error: { status, message, name } };
+                return {
+                    success: false,
+                    error: {
+                        status: status || 400,
+                        message: message || "Error saving essay",
+                        name: name || "Error"
+                    }
+                };
             }
         });
     }

@@ -30,7 +30,7 @@ export declare class SofteningPointService {
             name: any;
         };
     }>;
-    saveEssay(body: Calc_SofteningPoint_Dto & Calc_SofteningPoint_Out): Promise<{
+    saveEssay(body: any): Promise<{
         success: boolean;
         data: import("../schemas").SofteningPoint;
         error?: undefined;
