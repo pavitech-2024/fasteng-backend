@@ -20,18 +20,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var DuctilityRepository_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DuctilityRepository = void 0;
 const mongoose_1 = require("@nestjs/mongoose");
 const schemas_1 = require("../schemas");
 const database_config_1 = require("../../../../../infra/mongoose/database.config");
 const mongoose_2 = require("mongoose");
-const common_1 = require("@nestjs/common");
-let DuctilityRepository = DuctilityRepository_1 = class DuctilityRepository {
+let DuctilityRepository = class DuctilityRepository {
     constructor(ductilityModel) {
         this.ductilityModel = ductilityModel;
-        this.logger = new common_1.Logger(DuctilityRepository_1.name);
     }
     findOne(ductilityFilterQuery) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -49,9 +46,28 @@ let DuctilityRepository = DuctilityRepository_1 = class DuctilityRepository {
             return createdDuctility.save();
         });
     }
+    listAllDocuments() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const allDocs = yield this.ductilityModel.find({});
+            return allDocs.map(doc => {
+                var _a, _b, _c, _d;
+                return ({
+                    id: doc._id,
+                    name: (_a = doc.generalData) === null || _a === void 0 ? void 0 : _a.name,
+                    userId: (_b = doc.generalData) === null || _b === void 0 ? void 0 : _b.userId,
+                    materialId: (_d = (_c = doc.generalData) === null || _c === void 0 ? void 0 : _c.material) === null || _d === void 0 ? void 0 : _d._id,
+                });
+            });
+        });
+    }
+    find() {
+        return __awaiter(this, arguments, void 0, function* (filterQuery = {}) {
+            return this.ductilityModel.find(filterQuery);
+        });
+    }
 };
 exports.DuctilityRepository = DuctilityRepository;
-exports.DuctilityRepository = DuctilityRepository = DuctilityRepository_1 = __decorate([
+exports.DuctilityRepository = DuctilityRepository = __decorate([
     __param(0, (0, mongoose_1.InjectModel)(schemas_1.Ductility.name, database_config_1.DATABASE_CONNECTION.ASPHALT)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], DuctilityRepository);

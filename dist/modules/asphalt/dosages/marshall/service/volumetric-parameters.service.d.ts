@@ -22,6 +22,9 @@ export declare class VolumetricParameters_Marshall_Service {
         pointsOfCurveDosageRBV: any[];
         pointsOfCurveDosageVv: any[];
     }>;
+    private setVolumetricParametersDMT;
+    private setVolumetricParametersGMM;
+    private processVolumetricParameters;
     calculateVolumetricParameters(samplesData: SampleData): Promise<{
         pointsOfCurveDosageVv: any[];
         pointsOfCurveDosageRBV: any[];

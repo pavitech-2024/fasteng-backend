@@ -11,30 +11,31 @@ export class GranularLayersSamplesService {
 
   constructor(private readonly granularLayers_SamplesRepository: GranularLayers_SamplesRepository) {}
 
-  async createSample(sample: CreateGranularLayersSampleDto): Promise<GranularLayers_Sample> {
-    try {
-      const sampleFound = await this.granularLayers_SamplesRepository.findOne({ name: sample.generalData.name });
+ async createSample(sample: CreateGranularLayersSampleDto): Promise<GranularLayers_Sample> {
+  try {
+    const sampleFound = await this.granularLayers_SamplesRepository.findOne({ 
+      'generalData.name': sample.generalData.name 
+    });
 
-      if (sampleFound) {
-        throw new HttpException(
-          {
-            status: HttpStatus.CONFLICT,
-            error: `Granular layer sample with name "${sample.generalData.name}" already exists.`,
-          },
-          HttpStatus.CONFLICT,
-        );
-      }
-
-      // cria uma amostra no banco de dados
-      return this.granularLayers_SamplesRepository.create({
-        ...sample,
-        createdAt: new Date(),
-      });
-    } catch (error) {
-      this.logger.error(`error on create sample > [error]: ${error}`);
-      throw error;
+    if (sampleFound) {
+      throw new HttpException(
+        {
+          status: HttpStatus.CONFLICT,
+          error: `Granular layer sample with name "${sample.generalData.name}" already exists.`,
+        },
+        HttpStatus.CONFLICT,
+      );
     }
+
+    return this.granularLayers_SamplesRepository.create({
+      ...sample,
+      createdAt: new Date(),
+    });
+  } catch (error) {
+    this.logger.error(`error on create sample > [error]: ${error}`);
+    throw error;
   }
+}
 
   async getAllSamples(): Promise<GranularLayers_Sample[]> {
     try {

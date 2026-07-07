@@ -33,7 +33,9 @@ let FwdAnalysisService = class FwdAnalysisService {
             }
             catch (error) {
                 console.error('Erro detalhado ao criar análise:', error);
-                throw new Error(`Falha ao criar análise: ${error.message}`);
+                if (error instanceof Error) {
+                    throw new Error(`Falha ao criar análise: ${error.message}`);
+                }
             }
         });
     }

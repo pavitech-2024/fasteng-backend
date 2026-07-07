@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { DuctilityInitDto } from '../dto/ductility-init.dto';
 import { Calc_DUCTILITY_Dto, Calc_DUCTILITY_Out } from '../dto/calc.ductility.dto';
 import { AlreadyExists } from '../../../../../utils/exceptions';
@@ -8,8 +8,6 @@ import { GeneralData_DUCTILITY_Service } from './general-data.ductility.service'
 
 @Injectable()
 export class DuctilityService {
-  private logger = new Logger(DuctilityService.name);
-
   constructor(
     private readonly generalData_Service: GeneralData_DUCTILITY_Service,
     private readonly calc_Service: Calc_DUCTILITY_Service,
@@ -19,7 +17,6 @@ export class DuctilityService {
   async verifyInitDuctility(body: DuctilityInitDto) {
     try {
       const result = await this.generalData_Service.verifyInitDuctility(body);
-
       return { result };
     } catch (error) {
       const { status, name, message } = error;
@@ -32,7 +29,6 @@ export class DuctilityService {
       return await this.calc_Service.calculateDuctility(body);
     } catch (error) {
       const { status, name, message } = error;
-
       return { success: false, error: { status, message, name } };
     }
   }
@@ -45,25 +41,60 @@ export class DuctilityService {
         userId,
       } = body.generalData;
 
-      // verifica se existe uma ductility com mesmo nome , materialId e userId no banco de dados
       const alreadyExists = await this.Ductility_Repository.findOne({
         'generalData.name': name,
         'generalData.material._id': materialId,
         'generalData.userId': userId,
       });
 
-      // se existir, retorna erro
       if (alreadyExists) throw new AlreadyExists(`DUCTILITY with name "${name}" from user "${userId}"`);
 
-      // se não existir, salva no banco de dados
       const ductility = await this.Ductility_Repository.create(body);
 
       return { success: true, data: ductility };
     } catch (error) {
       const { status, name, message } = error;
-
       return { success: false, error: { status, message, name } };
     }
   }
 
+  async getAllEssaysByUser(userId: string) {
+    try {
+      const essays = await this.Ductility_Repository.find({
+        'generalData.userId': userId
+      });
+      return essays;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getAllEssaysByMaterial(materialId: string) {
+    try {
+      const essays = await this.Ductility_Repository.find({
+        'generalData.material._id': materialId
+      });
+      return essays;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getAllEssays() {
+    try {
+      const essays = await this.Ductility_Repository.findAll();
+      return essays;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getEssayById(id: string) {
+    try {
+      const essay = await this.Ductility_Repository.findOne({ _id: id });
+      return essay;
+    } catch (error) {
+      throw error;
+    }
+  }
 }

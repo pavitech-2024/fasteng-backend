@@ -19,4 +19,8 @@ export declare class DuctilityController {
         };
     }>;
     saveEssay(response: Response, body: Calc_DUCTILITY_Dto & Calc_DUCTILITY_Out): Promise<Response<any, Record<string, any>>>;
+    getEssaysByUser(userId: string, response: Response): Promise<Response<any, Record<string, any>>>;
+    getEssaysByMaterial(materialId: string, response: Response): Promise<Response<any, Record<string, any>>>;
+    debugGetAllEssays(response: Response): Promise<Response<any, Record<string, any>>>;
+    getEssayById(id: string, response: Response): Promise<Response<any, Record<string, any>>>;
 }

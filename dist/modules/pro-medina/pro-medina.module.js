@@ -21,16 +21,20 @@ const schemas_3 = require("./binder-asphalt-concrete/samples/schemas");
 const binder_asphalt_concrete_samples_module_1 = require("./binder-asphalt-concrete/samples/binder-asphalt-concrete-samples.module");
 const fwd_analysis_schema_1 = require("./fwd/schemas/fwd-analysis.schema");
 const fwd_analysis_module_1 = require("./fwd//fwd-analysis.module");
+const igg_analysis_schema_1 = require("./IGG/schema/igg-analysis.schema");
+const igg_module_1 = require("./IGG/igg.module");
 const Models = [
     { name: schemas_1.GranularLayers_Sample.name, schema: schemas_1.GranularLayers_SampleSchema },
     { name: schemas_2.StabilizedLayers_Sample.name, schema: schemas_2.StabilizedLayers_SampleSchema },
     { name: schemas_3.BinderAsphaltConcrete_Sample.name, schema: schemas_3.BinderAsphaltConcrete_SampleSchema },
     { name: fwd_analysis_schema_1.FwdAnalysis.name, schema: fwd_analysis_schema_1.FwdAnalysisSchema },
+    { name: igg_analysis_schema_1.IggAnalysis.name, schema: igg_analysis_schema_1.IggAnalysisSchema },
 ];
 const Modules = [
     granular_layers_samples_module_1.GranularLayersSamplesModule,
     stabilized_layers_samples_module_1.StabilizedLayersSamplesModule,
     binder_asphalt_concrete_samples_module_1.BinderAsphaltConcreteSamplesModule,
+    igg_module_1.IggModule,
     fwd_analysis_module_1.FwdModule,
 ];
 let ProMedinaModule = class ProMedinaModule {
@@ -44,6 +48,7 @@ exports.ProMedinaModule = ProMedinaModule = __decorate([
             ...Modules,
             granular_layers_module_1.GranularLayersModule,
             stabilized_layers_module_1.StabilizedLayersModule,
+            igg_module_1.IggModule,
             binder_asphalt_concrete_module_1.BinderAsphaltConcreteModule,
             fwd_analysis_module_1.FwdModule,
         ],
