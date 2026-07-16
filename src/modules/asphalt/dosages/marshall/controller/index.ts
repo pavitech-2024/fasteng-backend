@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Logger, Param, Patch, Post, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, Param, Patch, Post, Query, Res } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { MarshallService } from '../service';
@@ -361,7 +361,30 @@ export class MarshallController {
     return response.status(200).json(status);
   }
 
-
+ @Get('all-dosages')
+@ApiOperation({ summary: 'Retorna TODAS as dosagens Marshall com paginação' })
+async getAllDosagesFromAllUsers(
+  @Res() response: Response,
+  @Query('page') page?: string,
+  @Query('limit') limit?: string
+) {
+  try {
+    const pageNum = parseInt(page) || 1;
+    const limitNum = parseInt(limit) || 10;
+    
+    const result = await this.marshallService.getAllDosagesFromAllUsers(pageNum, limitNum);
+    
+    return response.status(200).json({
+      success: true,
+      ...result
+    });
+  } catch (error: any) {
+    return response.status(400).json({
+      success: false,
+      error: error?.message || 'Erro desconhecido'
+    });
+  }
+}
 
 @Post('complete/:userId')
 async saveCompleteDosage(

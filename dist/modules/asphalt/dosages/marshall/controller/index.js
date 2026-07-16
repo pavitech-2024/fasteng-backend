@@ -228,6 +228,22 @@ let MarshallController = MarshallController_1 = class MarshallController {
             return response.status(200).json(status);
         });
     }
+    getAllDosagesFromAllUsers(response, page, limit) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const pageNum = parseInt(page) || 1;
+                const limitNum = parseInt(limit) || 10;
+                const result = yield this.marshallService.getAllDosagesFromAllUsers(pageNum, limitNum);
+                return response.status(200).json(Object.assign({ success: true }, result));
+            }
+            catch (error) {
+                return response.status(400).json({
+                    success: false,
+                    error: (error === null || error === void 0 ? void 0 : error.message) || 'Erro desconhecido'
+                });
+            }
+        });
+    }
     saveCompleteDosage(userId, completeData) {
         return __awaiter(this, void 0, void 0, function* () {
             return this.marshallService.saveCompleteDosage(userId, completeData);
@@ -507,6 +523,16 @@ __decorate([
     __metadata("design:paramtypes", [Object, String, Object]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "updateResilienceModule", null);
+__decorate([
+    (0, common_1.Get)('all-dosages'),
+    (0, swagger_1.ApiOperation)({ summary: 'Retorna TODAS as dosagens Marshall com paginação' }),
+    __param(0, (0, common_1.Res)()),
+    __param(1, (0, common_1.Query)('page')),
+    __param(2, (0, common_1.Query)('limit')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String, String]),
+    __metadata("design:returntype", Promise)
+], MarshallController.prototype, "getAllDosagesFromAllUsers", null);
 __decorate([
     (0, common_1.Post)('complete/:userId'),
     __param(0, (0, common_1.Param)('userId')),
