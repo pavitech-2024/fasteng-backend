@@ -98,6 +98,29 @@ let MarshallService = MarshallService_1 = class MarshallService {
             }
         });
     }
+    getAllDosagesFromAllUsers() {
+        return __awaiter(this, arguments, void 0, function* (page = 1, limit = 10) {
+            try {
+                const skip = (page - 1) * limit;
+                const [allDosages, total] = yield Promise.all([
+                    this.marshall_repository.findAllWithPagination(skip, limit),
+                    this.marshall_repository.countAll()
+                ]);
+                this.logger.log(`📊 Retornando ${allDosages.length} dosagens de ${total} (página ${page})`);
+                return {
+                    data: allDosages,
+                    total,
+                    page,
+                    totalPages: Math.ceil(total / limit),
+                    hasMore: skip + allDosages.length < total
+                };
+            }
+            catch (error) {
+                this.logger.error(`❌ Erro ao buscar todas as dosagens: ${(error === null || error === void 0 ? void 0 : error.message) || error}`);
+                throw error;
+            }
+        });
+    }
     saveMaterialSelectionStep(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

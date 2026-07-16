@@ -41,6 +41,11 @@ let UsersController = UsersController_1 = class UsersController {
                 connections: body.connections,
                 lastLoginList: [new Date()],
                 photo: null,
+                name: body.name,
+                email: body.email,
+                phone: body.phone,
+                dob: body.dob,
+                password: body.password,
             });
             if (user)
                 this.logger.log(`user created with success > [id]: ${user._id}`);
@@ -72,6 +77,20 @@ let UsersController = UsersController_1 = class UsersController {
             if (user)
                 this.logger.log(`user deleted with sucess > [user]`);
             return user;
+        });
+    }
+    resetPassword(id, body) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.log(`reset password for user > [id]: ${id}`);
+            const user = yield this.usersService.resetPassword(id, body.password);
+            if (user)
+                this.logger.log(`password reset with success > [user]: ${user._id}`);
+            return user;
+        });
+    }
+    completeUserData(id, body) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.usersService.completeUserData(id, body);
         });
     }
 };
@@ -117,6 +136,26 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "deleteUser", null);
+__decorate([
+    (0, common_1.Put)('reset-password/:id'),
+    (0, swagger_1.ApiOperation)({ summary: 'Reseta a senha de um usuário' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Senha resetada com sucesso!' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Usuário não encontrado!' }),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "resetPassword", null);
+__decorate([
+    (0, common_1.Put)('complete-data/:id'),
+    (0, swagger_1.ApiOperation)({ summary: 'Completa dados faltantes de um usuário' }),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "completeUserData", null);
 exports.UsersController = UsersController = UsersController_1 = __decorate([
     (0, common_1.Controller)('users'),
     (0, swagger_1.ApiTags)('users'),

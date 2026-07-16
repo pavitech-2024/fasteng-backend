@@ -6,7 +6,6 @@ export declare class AuthService implements IAuthService {
     private logger;
     private tokenService;
     constructor(usersRepository: UsersRepository);
-    private roxConnection;
     login(data: InputLoginUserDto): Promise<OutputLoginUserDto>;
     refreshLogin(data: InputRefreshLoginDto): Promise<OutputLoginUserDto>;
 }

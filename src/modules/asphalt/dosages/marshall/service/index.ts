@@ -84,6 +84,31 @@ export class MarshallService {
       return { materials: [], success: false, error: { status, message, name } };
     }
   }
+// MarshallService
+async getAllDosagesFromAllUsers(page = 1, limit = 10): Promise<any> {
+  try {
+    const skip = (page - 1) * limit;
+    
+    // Busca com paginação
+    const [allDosages, total] = await Promise.all([
+      this.marshall_repository.findAllWithPagination(skip, limit),
+      this.marshall_repository.countAll()
+    ]);
+
+    this.logger.log(`📊 Retornando ${allDosages.length} dosagens de ${total} (página ${page})`);
+
+    return {
+      data: allDosages,
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
+      hasMore: skip + allDosages.length < total
+    };
+  } catch (error: any) {
+    this.logger.error(`❌ Erro ao buscar todas as dosagens: ${error?.message || error}`);
+    throw error;
+  }
+}
 
   async saveMaterialSelectionStep(body: any, userId: string) {
     try {
@@ -766,7 +791,9 @@ async saveCompleteDosage(userId: string, completeData: any) {
         name: error.name || 'SaveCompleteError'
       }
     };
+    
   }
+  
 }
 
 }

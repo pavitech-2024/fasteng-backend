@@ -33,6 +33,7 @@ export declare class MarshallController {
     deleteMarshallDosage(response: Response, id: string): Promise<Response<any, Record<string, any>>>;
     updateFatigueCurve(response: Response, dosageId: string, fatigueData: any): Promise<Response<any, Record<string, any>>>;
     updateResilienceModule(response: Response, dosageId: string, resilienceData: any): Promise<Response<any, Record<string, any>>>;
+    getAllDosagesFromAllUsers(response: Response, page?: string, limit?: string): Promise<Response<any, Record<string, any>>>;
     saveCompleteDosage(userId: string, completeData: any): Promise<{
         success: boolean;
         data: any;

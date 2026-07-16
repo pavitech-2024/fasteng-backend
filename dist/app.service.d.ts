@@ -1,4 +1,7 @@
 export declare class AppService {
-    constructor();
-    healthCheck(): Promise<any>;
+    healthCheck(): {
+        status: string;
+        message: string;
+        timestamp: string;
+    };
 }

@@ -62,6 +62,7 @@ export declare class MarshallService {
         };
         dosage?: undefined;
     }>;
+    getAllDosagesFromAllUsers(page?: number, limit?: number): Promise<any>;
     saveMaterialSelectionStep(body: any, userId: string): Promise<{
         success: boolean;
         error?: undefined;
