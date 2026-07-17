@@ -1,6 +1,5 @@
-// src/modules/pro-medina/fwd/controller/fwd-analysis.controller.ts
 import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
-import { FwdAnalysisService } from '../service/fwd-analysis.service';
+import { FwdAnalysisService } from '../services/fwd.service';
 import { CreateFwdAnalysisDto } from '../dto/create-fwd-analysis.dto';
 
 @Controller('fwd-analysis')
