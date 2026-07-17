@@ -63,5 +63,20 @@ export class MarshallRepository {
    async findByIdAndUpdate(id: string, update: any, options?: any): Promise<Marshall> {
     return this.marshallModel.findByIdAndUpdate(id, update, { new: true, ...options }).exec();
   }
+async findAllWithPagination(skip: number, limit: number): Promise<Marshall[]> {
+  return this.marshallModel.find()
+    .select('generalData.userId generalData.name generalData.step')
+    .skip(skip)
+    .limit(limit)
+    .lean()
+    .exec();
+}
 
+async countAll(): Promise<number> {
+  return this.marshallModel.countDocuments().exec();
+}
+
+async findAll(): Promise<Marshall[]> {
+  return this.marshallModel.find().lean().exec();
+}
 }

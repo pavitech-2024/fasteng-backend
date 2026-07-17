@@ -12,4 +12,7 @@ export declare class MarshallRepository {
     createPartialMarshall(marshall: MarshallInitDto, userId: string): Promise<any>;
     saveStep(marshall: any, step: number): Promise<void>;
     findByIdAndUpdate(id: string, update: any, options?: any): Promise<Marshall>;
+    findAllWithPagination(skip: number, limit: number): Promise<Marshall[]>;
+    countAll(): Promise<number>;
+    findAll(): Promise<Marshall[]>;
 }

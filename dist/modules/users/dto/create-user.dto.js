@@ -31,4 +31,30 @@ __decorate([
     (0, class_transformer_1.Type)(() => Number),
     __metadata("design:type", Number)
 ], InputCreateUserDto.prototype, "connections", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsEmail)(),
+    __metadata("design:type", String)
+], InputCreateUserDto.prototype, "email", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], InputCreateUserDto.prototype, "name", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], InputCreateUserDto.prototype, "phone", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsDate)(),
+    (0, class_transformer_1.Type)(() => Date),
+    __metadata("design:type", Date)
+], InputCreateUserDto.prototype, "dob", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], InputCreateUserDto.prototype, "password", void 0);
 //# sourceMappingURL=create-user.dto.js.map

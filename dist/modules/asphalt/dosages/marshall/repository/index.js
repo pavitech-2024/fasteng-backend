@@ -92,6 +92,26 @@ let MarshallRepository = class MarshallRepository {
             return this.marshallModel.findByIdAndUpdate(id, update, Object.assign({ new: true }, options)).exec();
         });
     }
+    findAllWithPagination(skip, limit) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.marshallModel.find()
+                .select('generalData.userId generalData.name generalData.step')
+                .skip(skip)
+                .limit(limit)
+                .lean()
+                .exec();
+        });
+    }
+    countAll() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.marshallModel.countDocuments().exec();
+        });
+    }
+    findAll() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.marshallModel.find().lean().exec();
+        });
+    }
 };
 exports.MarshallRepository = MarshallRepository;
 exports.MarshallRepository = MarshallRepository = __decorate([
