@@ -7,7 +7,7 @@ import { DATABASE_CONNECTION } from '../../../../../infra/mongoose/database.conf
 @Injectable()
 export class FwdRepository {
   constructor(
-    @InjectModel(FwdAnalysis.name, DATABASE_CONNECTION.PROMEDINA)
+    @InjectModel(FwdAnalysis.name, DATABASE_CONNECTION.ASPHALT)
     private fwdAnalysisModel: Model<FwdAnalysisDocument>,
   ) {}
 

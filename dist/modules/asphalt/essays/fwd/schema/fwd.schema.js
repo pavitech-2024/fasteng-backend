@@ -23,7 +23,8 @@ __decorate([
     __metadata("design:type", String)
 ], FwdAnalysis.prototype, "description", void 0);
 __decorate([
-    (0, mongoose_1.Prop)([{
+    (0, mongoose_1.Prop)([
+        {
             type: {
                 stationNumber: { type: Number, required: true },
                 d0: { type: Number, required: true },
@@ -38,9 +39,10 @@ __decorate([
                 date: { type: Date, required: false },
                 airTemperature: { type: Number, required: false },
                 pavementTemperature: { type: Number, required: false },
-                appliedLoad: { type: Number, required: false }
-            }
-        }]),
+                appliedLoad: { type: Number, required: false },
+            },
+        },
+    ]),
     __metadata("design:type", Array)
 ], FwdAnalysis.prototype, "samples", void 0);
 __decorate([

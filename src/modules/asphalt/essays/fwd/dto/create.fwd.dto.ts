@@ -1,4 +1,3 @@
-// src/modules/pro-medina/fwd/dto/create-fwd-analysis.dto.ts
 import { IsArray, IsNotEmpty, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 

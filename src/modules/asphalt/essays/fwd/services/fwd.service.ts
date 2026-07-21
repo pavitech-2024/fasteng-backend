@@ -1,4 +1,3 @@
-// src/modules/pro-medina/fwd/service/fwd.service.ts
 import { Injectable } from '@nestjs/common';
 import { FwdRepository } from '../repository/fwd.repository';
 import { CreateFwdAnalysisDto } from '../dto/create.fwd.dto';

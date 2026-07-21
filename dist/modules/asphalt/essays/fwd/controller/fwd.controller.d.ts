@@ -1,12 +1,12 @@
-import { FwdAnalysisService } from '../services/fwd.service';
-import { CreateFwdAnalysisDto } from '../dto/create-fwd-analysis.dto';
+import { FwdService } from '../services/fwd.service';
+import { CreateFwdAnalysisDto } from '../dto/create.fwd.dto';
 export declare class FwdAnalysisController {
-    private readonly fwdAnalysisService;
-    constructor(fwdAnalysisService: FwdAnalysisService);
-    create(createFwdAnalysisDto: CreateFwdAnalysisDto): any;
-    findAll(): any;
-    findOne(id: string): any;
-    update(id: string, updateFwdAnalysisDto: any): any;
-    remove(id: string): any;
-    processAnalysis(id: string): any;
+    private readonly FwdService;
+    constructor(FwdService: FwdService);
+    create(createFwdAnalysisDto: CreateFwdAnalysisDto): Promise<any>;
+    findAll(): Promise<any[]>;
+    findOne(id: string): Promise<any>;
+    update(id: string, updateFwdAnalysisDto: any): Promise<any>;
+    remove(id: string): Promise<any>;
+    processAnalysis(id: string): Promise<any>;
 }

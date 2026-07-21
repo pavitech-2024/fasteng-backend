@@ -11,33 +11,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var _a, _b;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FwdAnalysisController = void 0;
 const common_1 = require("@nestjs/common");
 const fwd_service_1 = require("../services/fwd.service");
-const create_fwd_analysis_dto_1 = require("../dto/create-fwd-analysis.dto");
+const create_fwd_dto_1 = require("../dto/create.fwd.dto");
 let FwdAnalysisController = class FwdAnalysisController {
-    constructor(fwdAnalysisService) {
-        this.fwdAnalysisService = fwdAnalysisService;
+    constructor(FwdService) {
+        this.FwdService = FwdService;
     }
     create(createFwdAnalysisDto) {
-        return this.fwdAnalysisService.create(createFwdAnalysisDto);
+        return this.FwdService.create(createFwdAnalysisDto);
     }
     findAll() {
-        return this.fwdAnalysisService.findAll();
+        return this.FwdService.findAll();
     }
     findOne(id) {
-        return this.fwdAnalysisService.findOne(id);
+        return this.FwdService.findOne(id);
     }
     update(id, updateFwdAnalysisDto) {
-        return this.fwdAnalysisService.update(id, updateFwdAnalysisDto);
+        return this.FwdService.update(id, updateFwdAnalysisDto);
     }
     remove(id) {
-        return this.fwdAnalysisService.remove(id);
+        return this.FwdService.remove(id);
     }
     processAnalysis(id) {
-        return this.fwdAnalysisService.processAnalysis(id);
+        return this.FwdService.processAnalysis(id);
     }
 };
 exports.FwdAnalysisController = FwdAnalysisController;
@@ -45,7 +44,7 @@ __decorate([
     (0, common_1.Post)('save'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [typeof (_b = typeof create_fwd_analysis_dto_1.CreateFwdAnalysisDto !== "undefined" && create_fwd_analysis_dto_1.CreateFwdAnalysisDto) === "function" ? _b : Object]),
+    __metadata("design:paramtypes", [create_fwd_dto_1.CreateFwdAnalysisDto]),
     __metadata("design:returntype", void 0)
 ], FwdAnalysisController.prototype, "create", null);
 __decorate([
@@ -85,6 +84,6 @@ __decorate([
 ], FwdAnalysisController.prototype, "processAnalysis", null);
 exports.FwdAnalysisController = FwdAnalysisController = __decorate([
     (0, common_1.Controller)('fwd-analysis'),
-    __metadata("design:paramtypes", [typeof (_a = typeof fwd_service_1.FwdAnalysisService !== "undefined" && fwd_service_1.FwdAnalysisService) === "function" ? _a : Object])
+    __metadata("design:paramtypes", [fwd_service_1.FwdService])
 ], FwdAnalysisController);
 //# sourceMappingURL=fwd.controller.js.map
