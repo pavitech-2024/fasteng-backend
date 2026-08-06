@@ -21,13 +21,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FwdAnalysisRepository = void 0;
+exports.FwdRepository = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
-const fwd_analysis_schema_1 = require("../schemas/fwd-analysis.schema");
-const database_config_1 = require("../../../../infra/mongoose/database.config");
-let FwdAnalysisRepository = class FwdAnalysisRepository {
+const fwd_schema_1 = require("../schema/fwd.schema");
+const database_config_1 = require("../../../../../infra/mongoose/database.config");
+let FwdRepository = class FwdRepository {
     constructor(fwdAnalysisModel) {
         this.fwdAnalysisModel = fwdAnalysisModel;
     }
@@ -55,9 +55,7 @@ let FwdAnalysisRepository = class FwdAnalysisRepository {
     }
     update(id, updateData) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.fwdAnalysisModel
-                .findByIdAndUpdate(id, updateData, { new: true })
-                .exec();
+            return this.fwdAnalysisModel.findByIdAndUpdate(id, updateData, { new: true }).exec();
         });
     }
     delete(id) {
@@ -71,10 +69,10 @@ let FwdAnalysisRepository = class FwdAnalysisRepository {
         });
     }
 };
-exports.FwdAnalysisRepository = FwdAnalysisRepository;
-exports.FwdAnalysisRepository = FwdAnalysisRepository = __decorate([
+exports.FwdRepository = FwdRepository;
+exports.FwdRepository = FwdRepository = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, mongoose_1.InjectModel)(fwd_analysis_schema_1.FwdAnalysis.name, database_config_1.DATABASE_CONNECTION.ASPHALT)),
+    __param(0, (0, mongoose_1.InjectModel)(fwd_schema_1.FwdAnalysis.name, database_config_1.DATABASE_CONNECTION.ASPHALT)),
     __metadata("design:paramtypes", [mongoose_2.Model])
-], FwdAnalysisRepository);
-//# sourceMappingURL=fwd-analysis.repository.js.map
+], FwdRepository);
+//# sourceMappingURL=fwd.repository.js.map

@@ -24,10 +24,10 @@ const common_1 = require("@nestjs/common");
 const repository_1 = require("../repository");
 const exceptions_1 = require("../../../../utils/exceptions");
 const get_essays_by_material_service_1 = require("./get-essays-by-material.service");
-const repository_2 = require("../../essays/fwd/repository");
-const repository_3 = require("../../essays/igg/repository");
-const repository_4 = require("../../essays/rtcd/repository");
-const repository_5 = require("../../essays/ddui/repository");
+const fwd_repository_1 = require("../../essays/fwd/repository/fwd.repository");
+const repository_2 = require("../../essays/igg/repository");
+const repository_3 = require("../../essays/rtcd/repository");
+const repository_4 = require("../../essays/ddui/repository");
 let MaterialsService = MaterialsService_1 = class MaterialsService {
     constructor(materialsRepository, getEssaysByMaterial_Service, fwdRepository, iggRepository, rtcdRepository, dduiRepository) {
         this.materialsRepository = materialsRepository;
@@ -83,7 +83,7 @@ let MaterialsService = MaterialsService_1 = class MaterialsService {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const materials = yield this.materialsRepository.findByType({ $in: ['filler', 'CAP', 'asphaltBinder', 'coarseAggregate', 'fineAggregate'] }, userId);
-                const fwdEssays = yield this.fwdRepository.findAllByUserId(userId);
+                const fwdEssays = yield this.fwdRepository.findByUserId(userId);
                 const iggEssays = yield this.iggRepository.findAllByUserId(userId);
                 const rtcdEssays = yield this.rtcdRepository.findAllByUserId(userId);
                 const dduiEssays = yield this.dduiRepository.findAllByUserId(userId);
@@ -92,7 +92,7 @@ let MaterialsService = MaterialsService_1 = class MaterialsService {
                     fwdEssays,
                     iggEssays,
                     rtcdEssays,
-                    dduiEssays
+                    dduiEssays,
                 };
             }
             catch (error) {
@@ -147,9 +147,9 @@ exports.MaterialsService = MaterialsService = MaterialsService_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [repository_1.MaterialsRepository,
         get_essays_by_material_service_1.GetEssaysByMaterial_Service,
-        repository_2.FwdRepository,
-        repository_3.IggRepository,
-        repository_4.RtcdRepository,
-        repository_5.DduiRepository])
+        fwd_repository_1.FwdRepository,
+        repository_2.IggRepository,
+        repository_3.RtcdRepository,
+        repository_4.DduiRepository])
 ], MaterialsService);
 //# sourceMappingURL=index.js.map

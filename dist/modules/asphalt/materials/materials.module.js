@@ -12,6 +12,7 @@ const controller_1 = require("./controller");
 const service_1 = require("./service");
 const repository_1 = require("./repository");
 const get_essays_by_material_service_1 = require("./service/get-essays-by-material.service");
+const fwd_module_1 = require("../../../modules/asphalt/essays/fwd/fwd.module");
 const services = [
     service_1.MaterialsService,
     get_essays_by_material_service_1.GetEssaysByMaterial_Service
@@ -21,7 +22,7 @@ let MaterialsModule = class MaterialsModule {
 exports.MaterialsModule = MaterialsModule;
 exports.MaterialsModule = MaterialsModule = __decorate([
     (0, common_1.Module)({
-        imports: [],
+        imports: [fwd_module_1.FwdModule],
         controllers: [controller_1.MaterialsController],
         providers: [...services, repository_1.MaterialsRepository],
         exports: [service_1.MaterialsService, repository_1.MaterialsRepository],

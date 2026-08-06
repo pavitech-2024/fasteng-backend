@@ -1,12 +1,11 @@
-// src/modules/pro-medina/fwd/repository/fwd.repository.ts
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { FwdAnalysis, FwdAnalysisDocument } from '../schemas/fwd-analysis.schema';
-import { DATABASE_CONNECTION } from '../../../../infra/mongoose/database.config';
+import { FwdAnalysis, FwdAnalysisDocument } from '../schema/fwd.schema';
+import { DATABASE_CONNECTION } from '../../../../../infra/mongoose/database.config';
 
 @Injectable()
-export class FwdAnalysisRepository {
+export class FwdRepository {
   constructor(
     @InjectModel(FwdAnalysis.name, DATABASE_CONNECTION.ASPHALT)
     private fwdAnalysisModel: Model<FwdAnalysisDocument>,
@@ -31,9 +30,7 @@ export class FwdAnalysisRepository {
   }
 
   async update(id: string, updateData: any): Promise<FwdAnalysis> {
-    return this.fwdAnalysisModel
-      .findByIdAndUpdate(id, updateData, { new: true })
-      .exec();
+    return this.fwdAnalysisModel.findByIdAndUpdate(id, updateData, { new: true }).exec();
   }
 
   async delete(id: string): Promise<FwdAnalysis> {

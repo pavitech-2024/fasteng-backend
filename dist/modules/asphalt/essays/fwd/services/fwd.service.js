@@ -8,9 +8,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -21,46 +18,57 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FwdRepository = void 0;
-const mongoose_1 = require("@nestjs/mongoose");
-const database_config_1 = require("../../../../../infra/mongoose/database.config");
-const mongoose_2 = require("mongoose");
-const schema_1 = require("../schema");
-let FwdRepository = class FwdRepository {
-    constructor(fwdModel) {
-        this.fwdModel = fwdModel;
+exports.FwdService = void 0;
+const common_1 = require("@nestjs/common");
+const fwd_repository_1 = require("../repository/fwd.repository");
+let FwdService = class FwdService {
+    constructor(fwdAnalysisRepository) {
+        this.fwdAnalysisRepository = fwdAnalysisRepository;
     }
-    findOne(fwdFilterQuery) {
+    create(createFwdAnalysisDto) {
         return __awaiter(this, void 0, void 0, function* () {
-            const essay = yield this.fwdModel.findOne(fwdFilterQuery);
-            return essay;
+            try {
+                console.log('Dados recebidos para criação:', JSON.stringify(createFwdAnalysisDto, null, 2));
+                return yield this.fwdAnalysisRepository.create(createFwdAnalysisDto);
+            }
+            catch (error) {
+                console.error('Erro detalhado ao criar análise:', error);
+                if (error instanceof Error) {
+                    throw new Error(`Falha ao criar análise: ${error.message}`);
+                }
+            }
         });
     }
     findAll() {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.fwdModel.find();
+            return this.fwdAnalysisRepository.findAll();
         });
     }
-    findAllByUserId(id) {
+    findOne(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.fwdModel.find({ 'generalData.userId': id });
+            return this.fwdAnalysisRepository.findById(id);
         });
     }
-    create(fwd) {
+    update(id, updateFwdAnalysisDto) {
         return __awaiter(this, void 0, void 0, function* () {
-            const createdFwd = new this.fwdModel(fwd);
-            return createdFwd.save();
+            return this.fwdAnalysisRepository.update(id, updateFwdAnalysisDto);
         });
     }
-    deleteOne(id) {
+    remove(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.fwdModel.findByIdAndDelete(id);
+            return this.fwdAnalysisRepository.delete(id);
+        });
+    }
+    processAnalysis(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const analysis = yield this.findOne(id);
+            return { message: 'Análise processada', analysis };
         });
     }
 };
-exports.FwdRepository = FwdRepository;
-exports.FwdRepository = FwdRepository = __decorate([
-    __param(0, (0, mongoose_1.InjectModel)(schema_1.Fwd.name, database_config_1.DATABASE_CONNECTION.ASPHALT)),
-    __metadata("design:paramtypes", [mongoose_2.Model])
-], FwdRepository);
-//# sourceMappingURL=index.js.map
+exports.FwdService = FwdService;
+exports.FwdService = FwdService = __decorate([
+    (0, common_1.Injectable)(),
+    __metadata("design:paramtypes", [fwd_repository_1.FwdRepository])
+], FwdService);
+//# sourceMappingURL=fwd.service.js.map

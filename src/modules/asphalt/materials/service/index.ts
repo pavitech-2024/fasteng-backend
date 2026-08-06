@@ -4,21 +4,21 @@ import { CreateAsphaltMaterialDto } from '../dto/create-asphalt-material.dto';
 import { AlreadyExists, NotFound } from '../../../../utils/exceptions';
 import { Material } from '../schemas';
 import { GetEssaysByMaterial_Service } from './get-essays-by-material.service';
-import { FwdRepository } from 'modules/asphalt/essays/fwd/repository';
+import { FwdRepository } from 'modules/asphalt/essays/fwd/repository/fwd.repository';
 import { IggRepository } from 'modules/asphalt/essays/igg/repository';
 import { RtcdRepository } from 'modules/asphalt/essays/rtcd/repository';
 import { DduiRepository } from 'modules/asphalt/essays/ddui/repository';
 import { Igg } from 'modules/asphalt/essays/igg/schemas';
-import { Fwd } from 'modules/asphalt/essays/fwd/schema';
+import { FwdAnalysis } from 'modules/asphalt/essays/fwd/schema/fwd.schema';
 import { Ddui } from 'modules/asphalt/essays/ddui/schemas';
 import { Rtcd } from 'modules/asphalt/essays/rtcd/schemas';
 
 export interface AsphaltMaterialsList {
-  materials: Material[],
-  iggEssays: Igg[],
-  fwdEssays: Fwd[],
-  dduiEssays: Ddui[],
-  rtcdEssays: Rtcd[]
+  materials: Material[];
+  iggEssays: Igg[];
+  fwdEssays: FwdAnalysis[];
+  dduiEssays: Ddui[];
+  rtcdEssays: Rtcd[];
 }
 
 @Injectable()
@@ -38,8 +38,7 @@ export class MaterialsService {
     this.logger.log('create material > [body]');
     const { name, userId } = material;
     const materialExists = await this.materialsRepository.findOne({ name, userId });
-    if (materialExists)
-      throw new AlreadyExists(`Material with name "${material.name}"`);
+    if (materialExists) throw new AlreadyExists(`Material with name "${material.name}"`);
 
     const createdMaterial = await this.materialsRepository.create({
       ...material,
@@ -80,7 +79,9 @@ export class MaterialsService {
 
     try {
       const materials = await this.materialsRepository.findSelectedById(materialIds);
-      const essaysPromises = materials.map((material) => this.getEssaysByMaterial_Service.getEssaysByMaterial(material));
+      const essaysPromises = materials.map((material) =>
+        this.getEssaysByMaterial_Service.getEssaysByMaterial(material),
+      );
       const essays = await Promise.all(essaysPromises);
 
       return { materials, essays };
@@ -99,10 +100,10 @@ export class MaterialsService {
         userId,
       );
 
-      const fwdEssays = await this.fwdRepository.findAllByUserId(userId);
+      const fwdEssays = await this.fwdRepository.findByUserId(userId);
       const iggEssays = await this.iggRepository.findAllByUserId(userId);
       const rtcdEssays = await this.rtcdRepository.findAllByUserId(userId);
-      const dduiEssays = await this.dduiRepository.findAllByUserId(userId)
+      const dduiEssays = await this.dduiRepository.findAllByUserId(userId);
 
       // retorna os materiais encontrados que pertencem ao usuário
       return {
@@ -110,7 +111,7 @@ export class MaterialsService {
         fwdEssays,
         iggEssays,
         rtcdEssays,
-        dduiEssays
+        dduiEssays,
       };
     } catch (error) {
       this.logger.error(`error on get all materials > [error]: ${error}`);

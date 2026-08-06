@@ -8,21 +8,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FwdModule = void 0;
 const common_1 = require("@nestjs/common");
-const controller_1 = require("./controller");
-const repository_1 = require("./repository");
-const services_1 = require("./services");
-const general_data_fwd_service_1 = require("./services/general-data.fwd.service");
-const calc_fwd_service_1 = require("./services/calc.fwd.service");
-const services = [services_1.FwdService, general_data_fwd_service_1.GeneralData_Fwd_Service, calc_fwd_service_1.Calc_Fwd_Service];
+const mongoose_1 = require("@nestjs/mongoose");
+const fwd_schema_1 = require("../fwd/schema/fwd.schema");
+const fwd_service_1 = require("../fwd/services/fwd.service");
+const fwd_controller_1 = require("../fwd/controller/fwd.controller");
+const fwd_repository_1 = require("../fwd/repository/fwd.repository");
+const database_config_1 = require("../../../../infra/mongoose/database.config");
 let FwdModule = class FwdModule {
 };
 exports.FwdModule = FwdModule;
 exports.FwdModule = FwdModule = __decorate([
     (0, common_1.Module)({
-        imports: [],
-        controllers: [controller_1.FwdController],
-        providers: [...services, repository_1.FwdRepository],
-        exports: [services_1.FwdService, repository_1.FwdRepository],
+        imports: [
+            mongoose_1.MongooseModule.forFeature([{ name: fwd_schema_1.FwdAnalysis.name, schema: fwd_schema_1.FwdAnalysisSchema }], database_config_1.DATABASE_CONNECTION.ASPHALT),
+        ],
+        controllers: [fwd_controller_1.FwdAnalysisController],
+        providers: [fwd_service_1.FwdService, fwd_repository_1.FwdRepository],
+        exports: [fwd_service_1.FwdService, fwd_repository_1.FwdRepository],
     })
 ], FwdModule);
 //# sourceMappingURL=fwd.module.js.map
