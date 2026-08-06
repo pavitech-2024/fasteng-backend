@@ -13,6 +13,7 @@ export class FwdAnalysisController {
 
   @Get('all')
   findAll() {
+    console.log('teste');
     return this.FwdService.findAll();
   }
 
