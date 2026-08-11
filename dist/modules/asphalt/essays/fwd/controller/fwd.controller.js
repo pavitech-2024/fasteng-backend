@@ -24,6 +24,7 @@ let FwdAnalysisController = class FwdAnalysisController {
         return this.FwdService.create(createFwdAnalysisDto);
     }
     findAll() {
+        console.log('teste');
         return this.FwdService.findAll();
     }
     findOne(id) {
