@@ -3,12 +3,11 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { IggAnalysis, IggAnalysisDocument } from '../schema/igg-analysis.schema';
 import { DATABASE_CONNECTION } from '../../../../infra/mongoose/database.config';
-import { from } from 'rxjs';
 
 @Injectable()
 export class IggAnalysisRepository {
   constructor(
-    @InjectModel(IggAnalysis.name, DATABASE_CONNECTION.PROMEDINA)
+    @InjectModel(IggAnalysis.name, DATABASE_CONNECTION.ASPHALT)
     private iggAnalysisModel: Model<IggAnalysisDocument>,
   ) {}
 
