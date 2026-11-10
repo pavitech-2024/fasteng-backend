@@ -77,12 +77,12 @@ export class IggController {
     content: { 'application/json': { schema: { example: { success: true, data: 'essay data' } } } },
   })
   @ApiResponse({ status: 400, description: 'Erro ao deletar o ensaio igg no banco de dados.' })
-  async deleteEssay(@Res() response: Response, @Param() id: string) {
+  async deleteEssay(@Res() response: Response, @Param('id') id: string) {
     this.logger.log('delete igg > [body]');
 
     const igg = await this.iggService.deleteEssay(id);
 
-    if (igg.success) this.logger.log('delete igg > [success]');
+     if (igg.success) this.logger.log('delete igg > [success]');
     else this.logger.error('delete igg > [error]');
 
     return response.status(200).json(igg);

@@ -10,7 +10,7 @@ import { DATABASE_CONNECTION } from '../../../infra/mongoose/database.config';
   imports: [
     MongooseModule.forFeature(
       [{ name: IggAnalysis.name, schema: IggAnalysisSchema }],
-      DATABASE_CONNECTION.PROMEDINA,
+      DATABASE_CONNECTION.ASPHALT,
     ),
   ],
   controllers: [IggAnalysisController],

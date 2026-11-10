@@ -5,7 +5,7 @@ import { CreateIggAnalysisDto } from '../dto/create-igg-analysis.dto';
 import { UpdateIggAnalysisDto } from '../dto/update-igg-analysis.dto';
 
 @ApiTags('IGG Analysis')
-@Controller('promedina/igg/igg-analysis')
+@Controller('asphalt/igg/igg-analysis')
 export class IggAnalysisController {
   private logger = new Logger(IggAnalysisController.name);
 
