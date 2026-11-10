@@ -42,6 +42,7 @@ const mongoose_1 = require("@nestjs/mongoose");
 const database_config_1 = require("../../../../../infra/mongoose/database.config");
 const repository_2 = require("../repository");
 const mongoose_2 = require("mongoose");
+const CANON_AXIS = [38.1, 25.4, 19.1, 12.7, 9.5, 6.3, 4.8, 2.36, 1.18, 0.6, 0.3, 0.15, 0.075];
 let GranulometryComposition_Superpave_Service = GranulometryComposition_Superpave_Service_1 = class GranulometryComposition_Superpave_Service {
     constructor(superpaveModel, superpaveRepository, granulometry_repository) {
         this.superpaveModel = superpaveModel;
@@ -62,32 +63,26 @@ let GranulometryComposition_Superpave_Service = GranulometryComposition_Superpav
                         passants,
                     });
                 });
-                const table_column_headers = [];
+                const table_column_headers = ['sieve_label'];
                 const table_rows = [];
-                table_column_headers.push('sieve_label');
-                interfaces_1.AllSieves.forEach((sieve) => {
+                const sievesByDiameter = [...interfaces_1.AllSieves].sort((a, b) => Number(b.value) - Number(a.value));
+                sievesByDiameter.forEach((sieve) => {
                     const contains = granulometry_data.some((aggregate) => sieve.label in aggregate.passants);
-                    if (contains) {
-                        const aggregates_data = {};
-                        granulometry_data.forEach((aggregate) => {
-                            const { _id, passants } = aggregate;
-                            aggregates_data['total_passant_'.concat(_id)] = passants[sieve.label];
-                            aggregates_data['passant_'.concat(_id)] = null;
-                            if (!table_column_headers.some((header) => header.includes(_id))) {
-                                table_column_headers.push('total_passant_'.concat(_id));
-                                table_column_headers.push('passant_'.concat(_id));
-                            }
-                        });
-                        table_rows.push(Object.assign({ sieve_label: sieve.label }, aggregates_data));
-                    }
+                    if (!contains)
+                        return;
+                    const aggregates_data = {};
+                    granulometry_data.forEach((aggregate) => {
+                        const { _id, passants } = aggregate;
+                        aggregates_data['total_passant_'.concat(_id)] = passants[sieve.label];
+                        aggregates_data['passant_'.concat(_id)] = null;
+                        if (!table_column_headers.some((header) => header.includes(_id))) {
+                            table_column_headers.push('total_passant_'.concat(_id));
+                            table_column_headers.push('passant_'.concat(_id));
+                        }
+                    });
+                    table_rows.push(Object.assign({ sieve_label: sieve.label }, aggregates_data));
                 });
-                this.logger.log(table_rows);
-                this.logger.log(table_column_headers);
-                const table_data = {
-                    table_column_headers,
-                    table_rows,
-                };
-                return table_data;
+                return { table_column_headers, table_rows };
             }
             catch (error) {
                 throw error;
@@ -96,24 +91,23 @@ let GranulometryComposition_Superpave_Service = GranulometryComposition_Superpav
     }
     calculateGranulometry(body) {
         return __awaiter(this, void 0, void 0, function* () {
+            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
             try {
                 const { chosenCurves, percentageInputs: percentsOfDosage, percentsToList, dnitBand, materials, nominalSize, } = body;
-                let pointsOfCurve = [];
-                let band = { higher: [Number], lower: [Number] };
-                let sumOfPercents = [];
-                let lowerComposition = {
-                    sumOfPercents: [],
-                    percentsOfMaterials: null,
-                };
-                let averageComposition = {
-                    sumOfPercents: [],
-                    percentsOfMaterials: null,
-                };
-                let higherComposition = {
-                    sumOfPercents: [],
-                    percentsOfMaterials: null,
-                };
-                let granulometryComposition = {
+                const labels = ((_a = percentsToList === null || percentsToList === void 0 ? void 0 : percentsToList[0]) !== null && _a !== void 0 ? _a : []).map((point) => Array.isArray(point) ? point[0] : point === null || point === void 0 ? void 0 : point.sieve_label);
+                const axisX = labels.map((label) => {
+                    const sieve = interfaces_1.AllSieves.find((s) => s.label === label);
+                    return sieve ? Number(sieve.value) : NaN;
+                });
+                if (axisX.length === 0 || axisX.some((value) => Number.isNaN(value))) {
+                    throw new Error('Não foi possível montar o eixo de peneiras da composição: rótulo ausente em AllSieves ou percentsToList vazio.');
+                }
+                const pointsOfCurve = [];
+                const sumOfPercents = [];
+                let lowerComposition = { sumOfPercents: [], percentsOfMaterials: null };
+                let averageComposition = { sumOfPercents: [], percentsOfMaterials: null };
+                let higherComposition = { sumOfPercents: [], percentsOfMaterials: null };
+                const granulometryComposition = {
                     lower: {
                         percentsOfDosage: {
                             value: chosenCurves.includes('lower') ? percentsOfDosage[0] : [],
@@ -128,92 +122,81 @@ let GranulometryComposition_Superpave_Service = GranulometryComposition_Superpav
                     },
                     higher: {
                         percentsOfDosage: {
-                            value: chosenCurves.includes('average') ? percentsOfDosage[2] : [],
+                            value: chosenCurves.includes('higher') ? percentsOfDosage[2] : [],
                             isEmpty: chosenCurves.includes('higher'),
                         },
                     },
                 };
-                const axisX = [38.1, 25.4, 19.1, 12.7, 9.5, 6.3, 4.8, 2.36, 1.18, 0.6, 0.3, 0.15, 0.075];
-                const higherBandA = this.insertBlankPointsOnCurve([100, 100, 89, 78, 71, 61, 55, 45, 36, 28, 24, 14, 7], axisX);
-                const lowerBandA = this.insertBlankPointsOnCurve([100, 90, 75, 58, 48, 35, 29, 19, 13, 9, 5, 2, 1], axisX);
-                const higherBandB = this.insertBlankPointsOnCurve([null, 100, 100, 89, 82, 70, 63, 49, 37, 28, 20, 13, 8], axisX);
-                const lowerBandB = this.insertBlankPointsOnCurve([null, 100, 90, 70, 55, 42, 35, 23, 16, 10, 6, 4, 2], axisX);
-                const higherBandC = this.insertBlankPointsOnCurve([null, null, null, 100, 100, 89, 83, 67, 52, 40, 29, 19, 10], axisX);
-                const lowerBandC = this.insertBlankPointsOnCurve([null, null, null, 100, 90, 65, 53, 32, 20, 13, 8, 4, 2], axisX);
-                if (dnitBand === 'A') {
-                    band = { higher: higherBandA, lower: lowerBandA };
+                const bandsByLetter = {
+                    A: {
+                        higher: [100, 100, 89, 78, 71, 61, 55, 45, 36, 28, 24, 14, 7],
+                        lower: [100, 90, 75, 58, 48, 35, 29, 19, 13, 9, 5, 2, 1],
+                    },
+                    B: {
+                        higher: [null, 100, 100, 89, 82, 70, 63, 49, 37, 28, 20, 13, 8],
+                        lower: [null, 100, 90, 70, 55, 42, 35, 23, 16, 10, 6, 4, 2],
+                    },
+                    C: {
+                        higher: [null, null, null, 100, 100, 89, 83, 67, 52, 40, 29, 19, 10],
+                        lower: [null, null, null, 100, 90, 65, 53, 32, 20, 13, 8, 4, 2],
+                    },
+                };
+                const chosenBand = (_b = bandsByLetter[dnitBand]) !== null && _b !== void 0 ? _b : { higher: [], lower: [] };
+                const band = {
+                    higher: this.projectOntoAxis(chosenBand.higher, CANON_AXIS, axisX),
+                    lower: this.projectOntoAxis(chosenBand.lower, CANON_AXIS, axisX),
+                };
+                const controlPoints = {
+                    lower: this.projectOntoAxis((_d = (_c = nominalSize === null || nominalSize === void 0 ? void 0 : nominalSize.controlPoints) === null || _c === void 0 ? void 0 : _c.lower) !== null && _d !== void 0 ? _d : [], CANON_AXIS, axisX),
+                    higher: this.projectOntoAxis((_f = (_e = nominalSize === null || nominalSize === void 0 ? void 0 : nominalSize.controlPoints) === null || _e === void 0 ? void 0 : _e.higher) !== null && _f !== void 0 ? _f : [], CANON_AXIS, axisX),
+                };
+                const restrictedZone = {
+                    lower: this.projectOntoAxis((_h = (_g = nominalSize === null || nominalSize === void 0 ? void 0 : nominalSize.restrictedZone) === null || _g === void 0 ? void 0 : _g.lower) !== null && _h !== void 0 ? _h : [], CANON_AXIS, axisX),
+                    higher: this.projectOntoAxis((_k = (_j = nominalSize === null || nominalSize === void 0 ? void 0 : nominalSize.restrictedZone) === null || _j === void 0 ? void 0 : _j.higher) !== null && _k !== void 0 ? _k : [], CANON_AXIS, axisX),
+                };
+                if (((_m = (_l = nominalSize === null || nominalSize === void 0 ? void 0 : nominalSize.controlPoints) === null || _l === void 0 ? void 0 : _l.lower) !== null && _m !== void 0 ? _m : []).length === 0) {
+                    this.logger.warn(`nominalSize.controlPoints veio vazio para TNM ${nominalSize === null || nominalSize === void 0 ? void 0 : nominalSize.value}: o gráfico sai sem pontos de controle.`);
                 }
-                else if (dnitBand === 'B') {
-                    band = { higher: higherBandB, lower: lowerBandB };
-                }
-                else if (dnitBand === 'C') {
-                    band = { higher: higherBandC, lower: lowerBandC };
-                }
-                const nmas = nominalSize.value;
-                const nmasIndex = axisX.indexOf(nmas);
-                const D = nmasIndex > 0 ? axisX[nmasIndex - 1] : axisX[0];
-                const densityMaxCurve = axisX.map((d) => {
-                    if (d > D)
-                        return null;
-                    return parseFloat((100 * Math.pow(d / D, 0.45)).toFixed(2));
-                });
+                const nmas = Number(nominalSize === null || nominalSize === void 0 ? void 0 : nominalSize.value);
+                const above = CANON_AXIS.filter((d) => d > nmas);
+                const D = above.length > 0 ? Math.min(...above) : CANON_AXIS[0];
+                const densityMaxCurve = axisX.map((d) => (d > D ? null : parseFloat((100 * Math.pow(d / D, 0.45)).toFixed(2))));
+                const emptyCurve = new Array(axisX.length).fill(null);
                 if (granulometryComposition.lower.percentsOfDosage.isEmpty) {
                     lowerComposition = this.calculatePercentOfMaterials(materials, percentsOfDosage[0], percentsToList);
-                    sumOfPercents[0] = lowerComposition.sumOfPercents.map((e) => e);
+                    sumOfPercents[0] = this.insertBlankPointsOnCurve([...lowerComposition.sumOfPercents], axisX);
+                }
+                else {
+                    sumOfPercents[0] = [...emptyCurve];
                 }
                 if (granulometryComposition.average.percentsOfDosage.isEmpty) {
                     averageComposition = this.calculatePercentOfMaterials(materials, percentsOfDosage[1], percentsToList);
-                    sumOfPercents[1] = averageComposition.sumOfPercents.map((e) => e);
+                    sumOfPercents[1] = this.insertBlankPointsOnCurve([...averageComposition.sumOfPercents], axisX);
+                }
+                else {
+                    sumOfPercents[1] = [...emptyCurve];
                 }
                 if (granulometryComposition.higher.percentsOfDosage.isEmpty) {
                     higherComposition = this.calculatePercentOfMaterials(materials, percentsOfDosage[2], percentsToList);
-                    sumOfPercents[2] = higherComposition.sumOfPercents.map((e) => e);
-                }
-                if (granulometryComposition.lower.percentsOfDosage.isEmpty) {
-                    sumOfPercents[0] = this.insertBlankPointsOnCurve(sumOfPercents[0], axisX);
+                    sumOfPercents[2] = this.insertBlankPointsOnCurve([...higherComposition.sumOfPercents], axisX);
                 }
                 else {
-                    sumOfPercents[0] = [null, null, null, null, null, null, null, null, null, null, null, null, null];
-                }
-                if (granulometryComposition.average.percentsOfDosage.isEmpty) {
-                    sumOfPercents[1] = this.insertBlankPointsOnCurve(sumOfPercents[1], axisX);
-                }
-                else {
-                    sumOfPercents[1] = [null, null, null, null, null, null, null, null, null, null, null, null, null];
-                }
-                if (granulometryComposition.higher.percentsOfDosage.isEmpty) {
-                    sumOfPercents[2] = this.insertBlankPointsOnCurve(sumOfPercents[2], axisX);
-                }
-                else {
-                    sumOfPercents[2] = [null, null, null, null, null, null, null, null, null, null, null, null, null];
+                    sumOfPercents[2] = [...emptyCurve];
                 }
                 for (let i = 0; i < axisX.length; i++) {
                     pointsOfCurve.push([
                         parseFloat(Math.pow(axisX[i] / D, 0.45).toFixed(6)),
-                        nominalSize.controlPoints.lower[i],
-                        nominalSize.controlPoints.higher[i],
-                        nominalSize.restrictedZone.lower[i],
-                        nominalSize.restrictedZone.higher[i],
+                        controlPoints.lower[i],
+                        controlPoints.higher[i],
+                        restrictedZone.lower[i],
+                        restrictedZone.higher[i],
                         densityMaxCurve[i],
                         band.higher[i],
                         band.lower[i],
+                        sumOfPercents[0][i],
+                        sumOfPercents[1][i],
+                        sumOfPercents[2][i],
                     ]);
-                }
-                console.log(pointsOfCurve);
-                if (granulometryComposition.lower.percentsOfDosage.isEmpty) {
-                    for (let i = 0; i < 13; i++) {
-                        pointsOfCurve[i].push(sumOfPercents[0][i]);
-                    }
-                }
-                if (granulometryComposition.average.percentsOfDosage.isEmpty) {
-                    for (let i = 0; i < 13; i++) {
-                        pointsOfCurve[i].push(sumOfPercents[1][i]);
-                    }
-                }
-                if (granulometryComposition.higher.percentsOfDosage.isEmpty) {
-                    for (let i = 0; i < 13; i++) {
-                        pointsOfCurve[i].push(sumOfPercents[2][i]);
-                    }
                 }
                 const data = {
                     lowerComposition,
@@ -228,6 +211,29 @@ let GranulometryComposition_Superpave_Service = GranulometryComposition_Superpav
             catch (error) {
                 throw error;
             }
+        });
+    }
+    projectOntoAxis(curve, fromAxis, toAxis) {
+        if (!curve || curve.length === 0)
+            return new Array(toAxis.length).fill(null);
+        const filled = this.insertBlankPointsOnCurve([...curve], fromAxis);
+        return toAxis.map((d) => {
+            var _a;
+            const exact = fromAxis.findIndex((x) => Math.abs(x - d) < 1e-9);
+            if (exact >= 0)
+                return (_a = filled[exact]) !== null && _a !== void 0 ? _a : null;
+            for (let i = 0; i < fromAxis.length - 1; i++) {
+                const x1 = fromAxis[i];
+                const x2 = fromAxis[i + 1];
+                if (d <= x1 && d >= x2) {
+                    const y1 = filled[i];
+                    const y2 = filled[i + 1];
+                    if (y1 === null || y1 === undefined || y2 === null || y2 === undefined)
+                        return null;
+                    return y1 + ((d - x1) / (x2 - x1)) * (y2 - y1);
+                }
+            }
+            return null;
         });
     }
     insertBlankPointsOnCurve(curve, axisX) {
@@ -254,10 +260,19 @@ let GranulometryComposition_Superpave_Service = GranulometryComposition_Superpav
             curve[i] = y1;
         return curve;
     }
+    fillMissingPassants(serie) {
+        let last = 100;
+        return serie.map((value) => {
+            if (value === null || value === undefined)
+                return last;
+            last = Number(value);
+            return last;
+        });
+    }
     calculatePercentOfMaterials(materials, percentsOfDosage, percentsToList) {
-        let percentsOfMaterialsToShow = [];
-        let newPercentsOfDosage = [];
-        let materialsWithoutBinder = materials.filter((material) => material.type !== 'asphaltBinder' && material.type !== 'CAP' && material.type !== 'other');
+        var _a, _b, _c;
+        const percentsOfMaterialsToShow = [];
+        const materialsWithoutBinder = materials.filter((material) => material.type !== 'asphaltBinder' && material.type !== 'CAP' && material.type !== 'other');
         for (let i = 0; i < percentsToList.length; i++) {
             percentsOfMaterialsToShow.push([]);
         }
@@ -274,26 +289,22 @@ let GranulometryComposition_Superpave_Service = GranulometryComposition_Superpav
                 }
             });
         });
-        Object.values(percentsOfDosage).forEach((value) => {
-            newPercentsOfDosage.push(value);
-        });
-        let sumOfPercents = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-        let percentsOfMaterials = [];
+        const newPercentsOfDosage = Object.keys(percentsOfDosage !== null && percentsOfDosage !== void 0 ? percentsOfDosage : {})
+            .sort((a, b) => Number(a.split('_').pop()) - Number(b.split('_').pop()))
+            .map((key) => Number(percentsOfDosage[key]) || 0);
+        const sieveCount = (_b = (_a = percentsToList === null || percentsToList === void 0 ? void 0 : percentsToList[0]) === null || _a === void 0 ? void 0 : _a.length) !== null && _b !== void 0 ? _b : 0;
+        const sumOfPercents = new Array(sieveCount).fill(0);
+        const percentsOfMaterials = [];
         for (let i = 0; i < materialsWithoutBinder.length; i++) {
             percentsOfMaterials.push([]);
-            for (let j = 0; j < percentsOfMaterialsToShow[i].length; j++) {
-                if (percentsOfMaterialsToShow[i][j] !== null) {
-                    percentsOfMaterials[i][j] = (percentsOfMaterialsToShow[i][j] * newPercentsOfDosage[i]) / 100;
-                    if (sumOfPercents[j] === undefined)
-                        sumOfPercents[j] = 0;
-                    sumOfPercents[j] += percentsOfMaterials[i][j];
-                }
-                else {
-                    percentsOfMaterials[i][j] = null;
-                }
+            const serie = this.fillMissingPassants((_c = percentsOfMaterialsToShow[i]) !== null && _c !== void 0 ? _c : []);
+            for (let j = 0; j < serie.length; j++) {
+                percentsOfMaterials[i][j] = (serie[j] * newPercentsOfDosage[i]) / 100;
+                if (sumOfPercents[j] === undefined)
+                    sumOfPercents[j] = 0;
+                sumOfPercents[j] += percentsOfMaterials[i][j];
             }
         }
-        sumOfPercents = sumOfPercents.map(val => val === 0 ? null : val);
         return { sumOfPercents, percentsOfMaterials };
     }
     saveGranulometryCompositionData(body, userId) {

@@ -223,18 +223,7 @@ export declare class SuperpaveService {
     }>;
     calculateStep5Data(body: any): Promise<{
         data: {
-            granulometryComposition: {
-                combinedGsb: number;
-                combinedGsa: number;
-                gse: number;
-                vla: number;
-                tmn: number;
-                vle: number;
-                mag: number;
-                pli: number;
-                percentsOfDosageWithBinder: number[];
-                curve: string;
-            }[];
+            granulometryComposition: import("./initial-binder.superpave.service").CurveComposition[];
             turnNumber: {
                 initialN: number;
                 projectN: number;

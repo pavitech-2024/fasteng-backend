@@ -35,10 +35,12 @@ export declare class GranulometryComposition_Superpave_Service {
         };
         success: boolean;
     }>;
+    projectOntoAxis(curve: (number | null)[], fromAxis: number[], toAxis: number[]): (number | null)[];
     insertBlankPointsOnCurve(curve: any, axisX: any): any;
     findEquationOfCurve(curve: any, axisX: any, y2: any, y1: any, x2: any, x1: any, i: any): any;
+    private fillMissingPassants;
     calculatePercentOfMaterials(materials: any, percentsOfDosage: any, percentsToList: any): {
-        sumOfPercents: number[];
+        sumOfPercents: any[];
         percentsOfMaterials: any[];
     };
     saveGranulometryCompositionData(body: any, userId: string): Promise<boolean>;
