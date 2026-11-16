@@ -35,11 +35,11 @@ var GeneralData_Marshall_Service_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GeneralData_Marshall_Service = void 0;
 const common_1 = require("@nestjs/common");
+const mongoose_1 = require("@nestjs/mongoose");
+const mongoose_2 = require("mongoose");
 const index_1 = require("../repository/index");
 const exceptions_1 = require("../../../../../utils/exceptions");
-const mongoose_1 = require("@nestjs/mongoose");
 const database_config_1 = require("../../../../../infra/mongoose/database.config");
-const mongoose_2 = require("mongoose");
 const schemas_1 = require("../schemas");
 let GeneralData_Marshall_Service = GeneralData_Marshall_Service_1 = class GeneralData_Marshall_Service {
     constructor(marshallModel, marshallRepository) {
@@ -49,77 +49,55 @@ let GeneralData_Marshall_Service = GeneralData_Marshall_Service_1 = class Genera
     }
     verifyInitMarshall(marshall, userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                this.logger.log('verify init Marshall on general-data.marshall.service.ts > [body]');
-                const { generalData: { name }, _id } = marshall;
-                const MarshallExists = yield this.marshallRepository.findOne(name, userId);
-                if (MarshallExists && !_id)
-                    throw new exceptions_1.AlreadyExists('name');
-                const createdPartialMarshall = yield this.marshallRepository.createPartialMarshall(marshall, userId);
-                yield this.marshallRepository.saveStep(createdPartialMarshall._doc, 1);
-                return {
-                    success: true,
-                    dosage: createdPartialMarshall
-                };
+            this.logger.log('Verifying Marshall initialization on general-data.marshall.service.ts');
+            const { generalData: { name }, _id, } = marshall;
+            const marshallExists = yield this.marshallRepository.findOne(name, userId);
+            if (marshallExists && !_id) {
+                throw new exceptions_1.AlreadyExists('name');
             }
-            catch (error) {
-                throw error;
-            }
+            const createdPartialMarshall = yield this.marshallRepository.createPartialMarshall(marshall, userId);
+            yield this.marshallRepository.saveStep(createdPartialMarshall, 1);
+            return {
+                success: true,
+                dosage: createdPartialMarshall,
+            };
         });
     }
     getDosageById(dosageId) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                this.logger.log('get dosage by id on general-data.marshall.service.ts > [body]', {
-                    dosageId,
-                });
-                const dosage = yield this.marshallRepository.findById(dosageId);
-                if (!dosage) {
-                    throw new common_1.NotFoundException(`Dosage whith id ${dosageId} not found`);
-                }
-                return dosage;
+            this.logger.log('Getting dosage by ID on general-data.marshall.service.ts', { dosageId });
+            const dosage = yield this.marshallRepository.findById(dosageId);
+            if (!dosage) {
+                throw new common_1.NotFoundException(`Dosage with id ${dosageId} not found`);
             }
-            catch (error) {
-                throw error;
-            }
+            return dosage;
         });
     }
     saveMarshallDosage(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                this.logger.log('save marshall dosage on general-data.marshall.service.ts > [body]', {
-                    body,
-                });
-                const { name } = body.generalData;
-                const marshallExists = yield this.marshallRepository.findOne(name, userId);
-                const { isConsult } = body, marshallDosageWithoutIsConsult = __rest(body, ["isConsult"]);
-                const completedMarshallDosage = Object.assign(Object.assign({}, marshallExists._doc), marshallDosageWithoutIsConsult);
-                yield this.marshallModel.updateOne({ _id: marshallExists._doc._id }, completedMarshallDosage);
-                if (marshallExists._doc.generalData.step < 9) {
-                    yield this.marshallRepository.saveStep(marshallExists, 9);
-                }
-                return true;
+            this.logger.log('Saving Marshall dosage on general-data.marshall.service.ts', { body });
+            const { name } = body.generalData;
+            const marshallExists = yield this.marshallRepository.findOne(name, userId);
+            if (!marshallExists) {
+                throw new common_1.NotFoundException('Marshall not found');
             }
-            catch (error) {
-                throw error;
+            const { isConsult } = body, marshallDosageWithoutIsConsult = __rest(body, ["isConsult"]);
+            marshallExists.set(marshallDosageWithoutIsConsult);
+            yield marshallExists.save();
+            if (marshallExists.step < 9) {
+                yield this.marshallRepository.saveStep(marshallExists, 9);
             }
+            return true;
         });
     }
     deleteMarshallDosage(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                this.logger.log('delete marshall dosage on general-data.marshall.service.ts > [body]', {
-                    id,
-                });
-                const result = yield this.marshallModel.findByIdAndDelete(id);
-                if (!result) {
-                    throw new Error('Documento não encontrado para deletar.');
-                }
-                return true;
+            this.logger.log('Deleting Marshall dosage on general-data.marshall.service.ts', { id });
+            const result = yield this.marshallModel.findByIdAndDelete(id);
+            if (!result) {
+                throw new common_1.NotFoundException('Documento não encontrado para deletar.');
             }
-            catch (error) {
-                throw error;
-            }
+            return true;
         });
     }
 };

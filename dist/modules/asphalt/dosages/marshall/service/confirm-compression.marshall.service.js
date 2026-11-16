@@ -48,51 +48,41 @@ let ConfirmCompression_Marshall_Service = ConfirmCompression_Marshall_Service_1 
     }
     confirmSpecificGravity(body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log('confirming specific gravity on confirm-compression.marshall.service.ts > [body]', { body });
-            const { method, listOfSpecificGravities, percentsOfDosage, confirmedPercentsOfDosage, optimumContent, gmm, valuesOfSpecificGravity, } = body;
-            const ids = new Set();
-            const formattedPercentsOfDosage = [];
-            Object.keys(percentsOfDosage[0]).forEach((key) => {
-                const id = key.split('_')[1];
-                ids.add(id);
-                const value = percentsOfDosage[0][key];
-                const index = Array.from(ids).indexOf(id);
-                formattedPercentsOfDosage[index] = value;
-            });
-            switch (method) {
-                case 'DMT': {
-                    const denominator = formattedPercentsOfDosage.reduce((acc, percent, index) => acc + confirmedPercentsOfDosage[index] / listOfSpecificGravities[index], 0);
-                    const DMT = 100 / (denominator + optimumContent / 1.03);
-                    return {
-                        result: DMT,
-                        type: 'DMT',
-                    };
-                }
-                case 'GMM': {
-                    const GMM = gmm
-                        ? gmm
-                        : valuesOfSpecificGravity.massOfDrySample /
-                            (valuesOfSpecificGravity.massOfDrySample -
-                                valuesOfSpecificGravity.massOfContainerWaterSample +
-                                valuesOfSpecificGravity.massOfContainerWater);
-                    return {
-                        result: GMM,
-                        type: 'GMM',
-                    };
-                }
-                default:
-                    return undefined;
+            this.logger.log('Confirming specific gravity on confirm-compression.marshall.service.ts', { body });
+            const { method, listOfSpecificGravities, confirmedPercentsOfDosage, optimumContent, gmm, valuesOfSpecificGravity, } = body;
+            if (method === 'DMT') {
+                const denominator = confirmedPercentsOfDosage.reduce((acc, percent, index) => acc + percent / listOfSpecificGravities[index], 0);
+                const DMT = 100 / (denominator + optimumContent / 1.03);
+                return {
+                    result: DMT,
+                    type: 'DMT',
+                };
             }
+            if (method === 'GMM') {
+                const GMM = gmm !== null && gmm !== void 0 ? gmm : valuesOfSpecificGravity.massOfDrySample /
+                    (valuesOfSpecificGravity.massOfDrySample -
+                        valuesOfSpecificGravity.massOfContainerWaterSample +
+                        valuesOfSpecificGravity.massOfContainerWater);
+                return {
+                    result: GMM,
+                    type: 'GMM',
+                };
+            }
+            return undefined;
         });
     }
     saveStep8Data(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log('save marshall confirmation compression step on confirmation-compression.marshall.service.ts > [body]', { body });
+            this.logger.log('Saving Marshall confirmation compression step 8', { body });
             const _a = body.confirmationCompressionData, { name } = _a, confirmationCompressionWithoutName = __rest(_a, ["name"]);
             const marshallExists = yield this.marshallRepository.findOne(name, userId);
-            const marshallWithConfirmationCompression = Object.assign(Object.assign({}, marshallExists._doc), { confirmationCompressionData: confirmationCompressionWithoutName });
-            yield this.marshallModel.updateOne({ _id: marshallExists._doc._id }, marshallWithConfirmationCompression);
-            if (marshallExists._doc.generalData.step < 8) {
+            if (!marshallExists) {
+                throw new Error('Marshall not found');
+            }
+            marshallExists.confirmationCompressionData =
+                confirmationCompressionWithoutName;
+            yield marshallExists.save();
+            if (marshallExists.step < 8) {
                 yield this.marshallRepository.saveStep(marshallExists, 8);
             }
             return true;

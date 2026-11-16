@@ -25,7 +25,9 @@ export declare class MarshallService {
     getAllDosages(userId: string): Promise<Marshall[]>;
     verifyInitMarshall(body: MarshallInitDto, userId: string): Promise<{
         success: boolean;
-        dosage: any;
+        dosage: import("mongoose").Document<unknown, {}, Marshall> & Marshall & Required<{
+            _id: string;
+        }>;
     } | {
         success: boolean;
         error: {
