@@ -9,4 +9,12 @@ export declare class UsersController {
     getUser(id: string): Promise<User>;
     updateUser(id: string, body: User): Promise<User>;
     deleteUser(id: string): Promise<User>;
+    resetPassword(id: string, body: {
+        password: string;
+    }): Promise<User>;
+    completeUserData(id: string, body: {
+        email: string;
+        name: string;
+        password: string;
+    }): Promise<User>;
 }

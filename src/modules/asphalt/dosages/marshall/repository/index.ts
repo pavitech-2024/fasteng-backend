@@ -16,7 +16,7 @@ export class MarshallRepository {
     return this.marshallModel.find().sort({ createdAt: -1 });
   }
 
-  async findOne(name: any, userId: string): Promise<Marshall> {
+  async findOne(name: any, userId: string): Promise<MarshallDocument | null> {
     const dosage = await this.marshallModel.findOne({
       "generalData.name": name,
       "generalData.userId": userId
@@ -59,4 +59,24 @@ export class MarshallRepository {
       throw error;
     }
   }
+
+   async findByIdAndUpdate(id: string, update: any, options?: any): Promise<Marshall> {
+    return this.marshallModel.findByIdAndUpdate(id, update, { new: true, ...options }).exec();
+  }
+async findAllWithPagination(skip: number, limit: number): Promise<Marshall[]> {
+  return this.marshallModel.find()
+    .select('generalData.userId generalData.name generalData.step')
+    .skip(skip)
+    .limit(limit)
+    .lean()
+    .exec();
+}
+
+async countAll(): Promise<number> {
+  return this.marshallModel.countDocuments().exec();
+}
+
+async findAll(): Promise<Marshall[]> {
+  return this.marshallModel.find().lean().exec();
+}
 }

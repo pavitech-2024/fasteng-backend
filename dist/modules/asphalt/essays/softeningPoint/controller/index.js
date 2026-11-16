@@ -54,6 +54,7 @@ let SofteningPointController = SofteningPointController_1 = class SofteningPoint
     saveEssay(response, body) {
         return __awaiter(this, void 0, void 0, function* () {
             this.logger.log('save softeningPoint > [body]');
+            this.logger.debug('Body received:', JSON.stringify(body));
             const softeningPoint = yield this.softeningPointService.saveEssay(body);
             if (softeningPoint.success)
                 this.logger.log('save softeningPoint > [success]');
@@ -93,7 +94,7 @@ __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'Calcula os resultados do ensaio de ponto de amolecimento com os dados enviados.' }),
     (0, swagger_1.ApiResponse)({
         status: 200,
-        description: 'Resultados d ensaio de ponto de amolecimento calculados com sucesso.',
+        description: 'Resultados do ensaio de ponto de amolecimento calculados com sucesso.',
         content: { 'application/json': { schema: { example: { success: true, data: 'essay data' } } } },
     }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Erro ao calcular os resultados do ensaio de ponto de amolecimento com os dados enviados.' }),

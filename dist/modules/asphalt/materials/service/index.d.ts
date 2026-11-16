@@ -2,18 +2,18 @@ import { MaterialsRepository } from '../repository';
 import { CreateAsphaltMaterialDto } from '../dto/create-asphalt-material.dto';
 import { Material } from '../schemas';
 import { GetEssaysByMaterial_Service } from './get-essays-by-material.service';
-import { FwdRepository } from 'modules/asphalt/essays/fwd/repository';
+import { FwdRepository } from 'modules/asphalt/essays/fwd/repository/fwd.repository';
 import { IggRepository } from 'modules/asphalt/essays/igg/repository';
 import { RtcdRepository } from 'modules/asphalt/essays/rtcd/repository';
 import { DduiRepository } from 'modules/asphalt/essays/ddui/repository';
 import { Igg } from 'modules/asphalt/essays/igg/schemas';
-import { Fwd } from 'modules/asphalt/essays/fwd/schema';
+import { FwdAnalysis } from 'modules/asphalt/essays/fwd/schema/fwd.schema';
 import { Ddui } from 'modules/asphalt/essays/ddui/schemas';
 import { Rtcd } from 'modules/asphalt/essays/rtcd/schemas';
 export interface AsphaltMaterialsList {
     materials: Material[];
     iggEssays: Igg[];
-    fwdEssays: Fwd[];
+    fwdEssays: FwdAnalysis[];
     dduiEssays: Ddui[];
     rtcdEssays: Rtcd[];
 }

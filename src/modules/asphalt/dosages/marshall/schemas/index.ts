@@ -186,6 +186,25 @@ export type ConfirmationCompressionData = {
   }
 }
 
+export type FatigueCurveData = {
+  ncp?: number;
+  k1?: number;
+  k2?: number;
+  r2?: number;
+  observations?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export type ResilienceModuleData = {
+  k1?: number;
+  k2?: number;
+  k3?: number;
+  r2?: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
 @Schema({ collection: 'marshalls'})
 export class Marshall {
   _id: string;
@@ -222,6 +241,12 @@ export class Marshall {
   @IsNotEmpty()
   @Prop({ type: Object })
   confirmationCompressionData: ConfirmationCompressionData
+
+  @Prop({ type: Object, required: false })
+  fatigueCurveData?: FatigueCurveData;
+
+  @Prop({ type: Object, required: false })
+  resilienceModuleData?: ResilienceModuleData;
 }
 
 const MarshallSchema = SchemaFactory.createForClass(Marshall);

@@ -299,12 +299,104 @@ let GranulometryComposition_Marshall_Service = GranulometryComposition_Marshall_
                         }
                     });
                 });
+                const ensureCorrectBandValues = (band, dnitBands) => {
+                    if (dnitBands === 'C') {
+                        console.log('=== APLICANDO CORREÇÃO PARA BANDA C ===');
+                        const correctValues = {
+                            lower: {
+                                6: 100,
+                                8: 70,
+                                10: 44,
+                                12: 22,
+                                14: 14,
+                                15: 8,
+                                17: 4,
+                                19: 2
+                            },
+                            higher: {
+                                6: 100,
+                                8: 90,
+                                10: 72,
+                                12: 50,
+                                14: 36.29,
+                                15: 26,
+                                17: 16,
+                                19: 10
+                            }
+                        };
+                        Object.keys(correctValues.lower).forEach(idxStr => {
+                            const idx = parseInt(idxStr);
+                            if (idx < band.lower.length) {
+                                console.log(`Corrigindo band.lower[${idx}] de ${band.lower[idx]} para ${correctValues.lower[idx]}`);
+                                band.lower[idx] = correctValues.lower[idx];
+                            }
+                        });
+                        Object.keys(correctValues.higher).forEach(idxStr => {
+                            const idx = parseInt(idxStr);
+                            if (idx < band.higher.length) {
+                                console.log(`Corrigindo band.higher[${idx}] de ${band.higher[idx]} para ${correctValues.higher[idx]}`);
+                                band.higher[idx] = correctValues.higher[idx];
+                            }
+                        });
+                    }
+                    return band;
+                };
+                band = ensureCorrectBandValues(band, dnitBands);
+                const filteredBand = {
+                    lowerBand: [],
+                    higherBand: []
+                };
+                const indexCorrection = {
+                    6: 6,
+                    14: 15,
+                    16: 17,
+                    18: 19
+                };
+                projections.forEach((proj) => {
+                    const sieveLabel = proj.label;
+                    const sieveIndex = interfaces_1.AllSieves.findIndex(sieve => sieve.label === sieveLabel);
+                    let bandIndex = sieveIndex;
+                    if (indexCorrection[sieveIndex] !== undefined) {
+                        bandIndex = indexCorrection[sieveIndex];
+                    }
+                    let lowerValue = null;
+                    let higherValue = null;
+                    if (bandIndex !== -1) {
+                        if (bandIndex < band.lower.length)
+                            lowerValue = band.lower[bandIndex];
+                        if (bandIndex < band.higher.length)
+                            higherValue = band.higher[bandIndex];
+                    }
+                    filteredBand.lowerBand.push(lowerValue);
+                    filteredBand.higherBand.push(higherValue);
+                });
+                const tableWithBands = projections.map((proj, idx) => {
+                    return {
+                        sieve_label: proj.label,
+                        projection: proj.value,
+                        inferior: filteredBand.lowerBand[idx] !== null
+                            ? filteredBand.lowerBand[idx].toFixed(2)
+                            : '---',
+                        superior: filteredBand.higherBand[idx] !== null
+                            ? filteredBand.higherBand[idx].toFixed(2)
+                            : '---'
+                    };
+                });
+                console.log('=== VALORES CORRETOS FINAIS ===');
+                console.log('Peneira               | Projeção | Inferior | Superior');
+                console.log('----------------------|----------|----------|----------');
+                tableWithBands.forEach(row => {
+                    console.log(`${row.sieve_label.padEnd(20)} | ${row.projection.padEnd(8)} | ${row.inferior.padEnd(8)} | ${row.superior}`);
+                });
                 const data = {
                     percentsOfMaterials,
                     sumOfPercents,
                     pointsOfCurve,
                     table_data: newTableRows,
                     projections,
+                    bands: filteredBand,
+                    dnitBands: band,
+                    tableWithBands: tableWithBands
                 };
                 return data;
             }

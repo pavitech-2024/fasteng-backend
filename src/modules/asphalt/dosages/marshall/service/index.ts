@@ -84,6 +84,31 @@ export class MarshallService {
       return { materials: [], success: false, error: { status, message, name } };
     }
   }
+// MarshallService
+async getAllDosagesFromAllUsers(page = 1, limit = 10): Promise<any> {
+  try {
+    const skip = (page - 1) * limit;
+    
+    // Busca com paginação
+    const [allDosages, total] = await Promise.all([
+      this.marshall_repository.findAllWithPagination(skip, limit),
+      this.marshall_repository.countAll()
+    ]);
+
+    this.logger.log(`📊 Retornando ${allDosages.length} dosagens de ${total} (página ${page})`);
+
+    return {
+      data: allDosages,
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
+      hasMore: skip + allDosages.length < total
+    };
+  } catch (error: any) {
+    this.logger.error(`❌ Erro ao buscar todas as dosagens: ${error?.message || error}`);
+    throw error;
+  }
+}
 
   async saveMaterialSelectionStep(body: any, userId: string) {
     try {
@@ -261,7 +286,7 @@ export class MarshallService {
     }
   }
 
-  async calculateGranulometry(body: any) {
+  async calculateStep3Data(body: any) {
     try {
       const { dnitBands } = body;
 
@@ -607,4 +632,168 @@ export class MarshallService {
       return { success: false, error: { status, message, name } };
     }
   }
+async updateFatigueCurve(dosageId: string, fatigueData: { 
+  k1?: number; 
+  k2?: number; 
+  observacoes?: string;
+}) {
+  try {
+    const dosage = await this.marshall_repository.findById(dosageId);
+    
+    if (!dosage) {
+      throw new NotFound(`Dosagem com ID ${dosageId} não encontrada`);
+    }
+
+    // ✅ CORRETO: Preserva dados existentes
+    const updateData: any = {
+      ...(dosage.fatigueCurveData || {}), // Mantém dados antigos
+      ...fatigueData,                      // Atualiza com novos
+      updatedAt: new Date(),
+    };
+
+    // Garantir que createdAt seja preservado
+    if (dosage.fatigueCurveData?.createdAt) {
+      updateData.createdAt = dosage.fatigueCurveData.createdAt;
+    } else if (!updateData.createdAt) {
+      updateData.createdAt = new Date();
+    }
+
+    // Converter para número
+    if (updateData.k1 !== undefined) updateData.k1 = Number(updateData.k1);
+    if (updateData.k2 !== undefined) updateData.k2 = Number(updateData.k2);
+
+    // ✅ CORRETO: Com { new: true }
+    const updatedDosage = await this.marshall_repository.findByIdAndUpdate(
+      dosageId,
+      {
+        $set: {
+          'fatigueCurveData': updateData,
+        },
+      },
+      { new: true } // 👈 ESSENCIAL!
+    );
+
+    this.logger.log(`✅ fatigue curve data updated for dosage: ${dosageId}`);
+
+    return { 
+      dosage: updatedDosage, 
+      success: true 
+    };
+  } catch (error) {
+    this.logger.error(`❌ error on updating fatigue curve data: ${error}`);
+    const { status, name, message } = error;
+    return { success: false, error: { status, message, name } };
+  }
+}
+
+async updateResilienceModule(dosageId: string, resilienceData: {
+  moduloMedio?: number;
+  moduloInstantaneo?: number;
+  observacoes?: string;
+}) {
+  try {
+    const dosage = await this.marshall_repository.findById(dosageId);
+    
+    if (!dosage) {
+      throw new NotFound(`Dosagem com ID ${dosageId} não encontrada`);
+    }
+
+    // ✅ CORRETO: Preserva dados existentes
+    const updateData: any = {
+      ...(dosage.resilienceModuleData || {}), // Mantém dados antigos
+      ...resilienceData,                       // Atualiza com novos
+      updatedAt: new Date(),
+    };
+
+    // Garantir que createdAt seja preservado
+    if (dosage.resilienceModuleData?.createdAt) {
+      updateData.createdAt = dosage.resilienceModuleData.createdAt;
+    } else if (!updateData.createdAt) {
+      updateData.createdAt = new Date();
+    }
+
+    // Converter para número
+    if (updateData.moduloMedio !== undefined) updateData.moduloMedio = Number(updateData.moduloMedio);
+    if (updateData.moduloInstantaneo !== undefined) updateData.moduloInstantaneo = Number(updateData.moduloInstantaneo);
+
+    // ✅ CORRETO: Com { new: true }
+    const updatedDosage = await this.marshall_repository.findByIdAndUpdate(
+      dosageId,
+      {
+        $set: {
+          'resilienceModuleData': updateData,
+        },
+      },
+      { new: true } // 👈 ESSENCIAL!
+    );
+
+    this.logger.log(`✅ resilience module data updated for dosage: ${dosageId}`);
+
+    return { 
+      dosage: updatedDosage, 
+      success: true 
+    };
+  } catch (error) {
+    this.logger.error(`❌ error on updating resilience module data: ${error}`);
+    const { status, name, message } = error;
+    return { success: false, error: { status, message, name } };
+  }
+}
+
+// Adicione este método no MarshallService (junto com os outros)
+
+async saveCompleteDosage(userId: string, completeData: any) {
+  try {
+    this.logger.log(`💾 Salvando dosagem completa para usuário: ${userId}`);
+
+    if (!completeData.generalData?.name) {
+      throw new Error('Nome da dosagem é obrigatório');
+    }
+
+    const dataToSave = {
+      ...completeData,
+      step: 9, // 👈 FORÇA O STEP PARA 9 (último passo)
+      generalData: {
+        ...completeData.generalData,
+        userId: userId
+      }
+    };
+
+    const existingDosage = await this.marshall_repository.findOne(
+      completeData.generalData.name,
+      userId
+    );
+
+    let savedDosage;
+
+    if (existingDosage) {
+      savedDosage = await this.marshall_repository.findByIdAndUpdate(
+        existingDosage._id,
+        { $set: dataToSave },
+        { new: true }
+      );
+    } else {
+      savedDosage = await this.marshall_repository.create(dataToSave);
+    }
+
+    return {
+      success: true,
+      data: savedDosage,
+      message: existingDosage ? 'Dosagem atualizada com sucesso' : 'Dosagem criada com sucesso'
+    };
+
+  } catch (error) {
+    this.logger.error(`❌ Erro ao salvar dosagem completa: ${error.message}`);
+    return {
+      success: false,
+      error: {
+        message: error.message,
+        name: error.name || 'SaveCompleteError'
+      }
+    };
+    
+  }
+  
+}
+
 }

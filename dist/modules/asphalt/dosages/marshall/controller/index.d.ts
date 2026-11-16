@@ -11,7 +11,7 @@ export declare class MarshallController {
     getDosageById(response: Response, dosageId: string): Promise<Response<any, Record<string, any>>>;
     saveMaterialSelectionStep(response: Response, body: any, userId: string): Promise<Response<any, Record<string, any>>>;
     getStep3Data(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
-    calculateGranulometry(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
+    calculateStep3Data(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
     saveGranulometryCompositionStep(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
     calculateStep4Data(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
     saveBinderTrialStep(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
@@ -31,4 +31,21 @@ export declare class MarshallController {
     saveConfirmationCompressionData(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
     saveMarshallDosage(response: Response, userId: string, body: any): Promise<Response<any, Record<string, any>>>;
     deleteMarshallDosage(response: Response, id: string): Promise<Response<any, Record<string, any>>>;
+    updateFatigueCurve(response: Response, dosageId: string, fatigueData: any): Promise<Response<any, Record<string, any>>>;
+    updateResilienceModule(response: Response, dosageId: string, resilienceData: any): Promise<Response<any, Record<string, any>>>;
+    getAllDosagesFromAllUsers(response: Response, page?: string, limit?: string): Promise<Response<any, Record<string, any>>>;
+    saveCompleteDosage(userId: string, completeData: any): Promise<{
+        success: boolean;
+        data: any;
+        message: string;
+        error?: undefined;
+    } | {
+        success: boolean;
+        error: {
+            message: any;
+            name: any;
+        };
+        data?: undefined;
+        message?: undefined;
+    }>;
 }

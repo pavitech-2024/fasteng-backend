@@ -1,9 +1,9 @@
-import { Body, Controller, Delete, Get, Logger, Param, Post, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, Param, Patch, Post, Query, Res } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { MarshallService } from '../service';
 import { MarshallInitDto } from '../dto/marshall-init.dto';
-
+//tst
 @ApiTags('marshall')
 @Controller('asphalt/dosages/marshall')
 export class MarshallController {
@@ -52,18 +52,20 @@ export class MarshallController {
   @ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
   async getMaterialsByUserId(@Res() response: Response, @Param('id') userId: string) {
     this.logger.log(`get all materials, by user id, with the necessary dosage essays > [id]: ${userId}`);
+    
 
     const status = await this.marshallService.getUserMaterials(userId);
 
     return response.status(200).json(status);
   }
 
-  @Get(':id')
+  @Get('by-id/:id')
   @ApiOperation({ summary: 'Retorna uma dosagem do banco de dados com o id informado.' })
   @ApiResponse({ status: 200, description: 'Dosagem encontrada com sucesso!' })
   @ApiResponse({ status: 400, description: 'Dosagem não encontrada!' })
   async getDosageById(@Res() response: Response, @Param('id') dosageId: string) {
     this.logger.log(`get all materials, by user id, with the necessary dosage essays > [id]: ${dosageId}`);
+    this.logger.log(`get a dosage by dosage id > [id]: ${dosageId}`);
 
     const status = await this.marshallService.getDosageById(dosageId);
 
@@ -100,11 +102,11 @@ export class MarshallController {
     return response.status(200).json(status);
   }
 
-  @Post('calculate-granulometry')
-  async calculateGranulometry(@Res() response: Response, @Body() body: any) {
-    this.logger.log(`calculate granulometry data > [body]: ${body}`);
+  @Post('calculate-step-3-data')
+  async calculateStep3Data(@Res() response: Response, @Body() body: any) {
+    this.logger.log(`calculate step 3 data > [body]: ${body}`);
 
-    const status = await this.marshallService.calculateGranulometry(body);
+    const status = await this.marshallService.calculateStep3Data(body);
 
     return response.status(200).json(status);
   }
@@ -325,4 +327,70 @@ export class MarshallController {
 
     return response.status(200).json(status);
   }
+
+
+  @Patch(':id/fatigue-curve')
+  @ApiOperation({ summary: 'Atualiza os dados da curva de fadiga de uma dosagem Marshall' })
+  @ApiResponse({ status: 200, description: 'Curva de fadiga atualizada com sucesso!' })
+  @ApiResponse({ status: 400, description: 'Erro ao atualizar curva de fadiga!' })
+  async updateFatigueCurve(
+    @Res() response: Response,
+    @Param('id') dosageId: string,
+    @Body() fatigueData: any
+  ) {
+    this.logger.log(`update fatigue curve data > [dosageId]: ${dosageId}, [data]: ${JSON.stringify(fatigueData)}`);
+
+    const status = await this.marshallService.updateFatigueCurve(dosageId, fatigueData);
+
+    return response.status(200).json(status);
+  }
+
+  @Patch(':id/resilience-module')
+  @ApiOperation({ summary: 'Atualiza os dados do módulo de resiliência de uma dosagem Marshall' })
+  @ApiResponse({ status: 200, description: 'Módulo de resiliência atualizado com sucesso!' })
+  @ApiResponse({ status: 400, description: 'Erro ao atualizar módulo de resiliência!' })
+  async updateResilienceModule(
+    @Res() response: Response,
+    @Param('id') dosageId: string,
+    @Body() resilienceData: any
+  ) {
+    this.logger.log(`update resilience module data > [dosageId]: ${dosageId}, [data]: ${JSON.stringify(resilienceData)}`);
+
+    const status = await this.marshallService.updateResilienceModule(dosageId, resilienceData);
+
+    return response.status(200).json(status);
+  }
+
+ @Get('all-dosages')
+@ApiOperation({ summary: 'Retorna TODAS as dosagens Marshall com paginação' })
+async getAllDosagesFromAllUsers(
+  @Res() response: Response,
+  @Query('page') page?: string,
+  @Query('limit') limit?: string
+) {
+  try {
+    const pageNum = parseInt(page) || 1;
+    const limitNum = parseInt(limit) || 10;
+    
+    const result = await this.marshallService.getAllDosagesFromAllUsers(pageNum, limitNum);
+    
+    return response.status(200).json({
+      success: true,
+      ...result
+    });
+  } catch (error: any) {
+    return response.status(400).json({
+      success: false,
+      error: error?.message || 'Erro desconhecido'
+    });
+  }
+}
+
+@Post('complete/:userId')
+async saveCompleteDosage(
+  @Param('userId') userId: string,
+  @Body() completeData: any
+) {
+  return this.marshallService.saveCompleteDosage(userId, completeData);
+}
 }
