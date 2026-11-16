@@ -16,7 +16,7 @@ export class MarshallRepository {
     return this.marshallModel.find().sort({ createdAt: -1 });
   }
 
-  async findOne(name: any, userId: string): Promise<Marshall> {
+  async findOne(name: any, userId: string): Promise<MarshallDocument | null> {
     const dosage = await this.marshallModel.findOne({
       "generalData.name": name,
       "generalData.userId": userId

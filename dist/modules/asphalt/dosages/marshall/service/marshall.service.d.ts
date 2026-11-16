@@ -397,7 +397,10 @@ export declare class MarshallService {
     }>;
     confirmSpecificGravity(body: any): Promise<{
         data: {
-            confirmedSpecificGravity: any;
+            confirmedSpecificGravity: {
+                result: any;
+                type: string;
+            };
         };
         success: boolean;
         error?: undefined;
