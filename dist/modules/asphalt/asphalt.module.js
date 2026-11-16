@@ -53,7 +53,7 @@ const marshall_module_1 = require("./dosages/marshall/marshall.module");
 const superpave_module_1 = require("./dosages/superpave/superpave.module");
 const igg_module_1 = require("./essays/igg/igg.module");
 const schemas_20 = require("./essays/igg/schemas");
-const schema_2 = require("./essays/fwd/schema");
+const fwd_schema_1 = require("./essays/fwd/schema/fwd.schema");
 const fwd_module_1 = require("./essays/fwd/fwd.module");
 const schemas_21 = require("./dosages/superpave/schemas");
 const Models = [
@@ -79,7 +79,7 @@ const Models = [
     { name: schemas_19.Marshall.name, schema: schemas_19.MarshallSchema },
     { name: schemas_21.Superpave.name, schema: schemas_21.SuperpaveSchema },
     { name: schemas_20.Igg.name, schema: schemas_20.IggSchema },
-    { name: schema_2.Fwd.name, schema: schema_2.FwdSchema },
+    { name: fwd_schema_1.FwdAnalysis.name, schema: fwd_schema_1.FwdAnalysisSchema },
     { name: schemas_21.Superpave.name, schema: schemas_21.SuperpaveSchema },
 ];
 const Modules = [

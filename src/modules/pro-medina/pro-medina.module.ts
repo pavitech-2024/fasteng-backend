@@ -1,3 +1,4 @@
+// src/modules/pro-medina/pro-medina.module.ts
 import { Global, Module } from '@nestjs/common';
 import { GranularLayersSamplesModule } from './granular-layers/samples/granular-layers-samples.module';
 import { ModelDefinition, MongooseModule } from '@nestjs/mongoose';
@@ -13,14 +14,26 @@ import {
   BinderAsphaltConcrete_SampleSchema,
 } from './binder-asphalt-concrete/samples/schemas';
 import { BinderAsphaltConcreteSamplesModule } from './binder-asphalt-concrete/samples/binder-asphalt-concrete-samples.module';
+import { FwdAnalysis, FwdAnalysisSchema } from './fwd/schemas/fwd-analysis.schema';
+import { FwdModule } from './fwd//fwd-analysis.module'; // ✅ CORRIGIDO: FwdModule em vez de FwdAnalysisModule
+import { IggAnalysis, IggAnalysisSchema } from './IGG/schema/igg-analysis.schema';
+import { IggModule } from './IGG/igg.module';
 
 const Models: ModelDefinition[] = [
   { name: GranularLayers_Sample.name, schema: GranularLayers_SampleSchema },
   { name: StabilizedLayers_Sample.name, schema: StabilizedLayers_SampleSchema },
   { name: BinderAsphaltConcrete_Sample.name, schema: BinderAsphaltConcrete_SampleSchema },
+  { name: FwdAnalysis.name, schema: FwdAnalysisSchema }, 
+  { name: IggAnalysis.name, schema: IggAnalysisSchema },
 ];
 
-const Modules = [GranularLayersSamplesModule, StabilizedLayersSamplesModule, BinderAsphaltConcreteSamplesModule];
+const Modules = [
+  GranularLayersSamplesModule,
+  StabilizedLayersSamplesModule,
+  BinderAsphaltConcreteSamplesModule,
+  IggModule,
+  FwdModule,
+];
 
 @Global()
 @Module({
@@ -29,7 +42,9 @@ const Modules = [GranularLayersSamplesModule, StabilizedLayersSamplesModule, Bin
     ...Modules,
     GranularLayersModule,
     StabilizedLayersModule,
+    IggModule,
     BinderAsphaltConcreteModule,
+    FwdModule, // ✅ CORRIGIDO: FwdModule em vez de FwdAnalysisModule
   ],
   exports: [MongooseModule, ...Modules],
 })

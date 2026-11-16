@@ -16,7 +16,7 @@ export class MarshallRepository {
     return this.marshallModel.find().sort({ createdAt: -1 });
   }
 
-  async findOne(name: any, userId: string): Promise<Marshall> {
+  async findOne(name: any, userId: string): Promise<MarshallDocument | null> {
     const dosage = await this.marshallModel.findOne({
       "generalData.name": name,
       "generalData.userId": userId
@@ -35,28 +35,44 @@ export class MarshallRepository {
     return this.marshallModel.findById(dosageId);
   }
 
-  async createPartialMarshall(marshall: MarshallInitDto, userId: string): Promise<any> {
-    try {
-      const createdPartialMarshall = await this.marshallModel.create({
-        generalData: {...marshall.generalData, userId},
-      });
+  async createPartialMarshall(marshall: MarshallInitDto, userId: string): Promise<MarshallDocument> {
+    const createdPartialMarshall = await this.marshallModel.create({
+    generalData: {
+      ...marshall.generalData,
+      userId,
+    },
+  });
 
-      return createdPartialMarshall;
-    } catch (error) {
-      console.error("Erro ao salvar o step:", error);
-      throw error
-    }
+  return createdPartialMarshall;
   }
 
-  async saveStep(marshall: any, step: number): Promise<void> {
-    try {
-      await this.marshallModel.updateOne(
-        { _id: marshall._id },
-        { $set: { "generalData.step": step } }
-      );
-    } catch (error) {
-      console.error("Erro ao salvar o passo:", error);
-      throw error;
-    }
+  async saveStep(
+  marshall: Pick<MarshallDocument, '_id'>,
+  step: number,
+): Promise<void> {
+  await this.marshallModel.updateOne(
+    { _id: marshall._id },
+    { $set: { step } },
+  );
+}
+
+   async findByIdAndUpdate(id: string, update: any, options?: any): Promise<Marshall> {
+    return this.marshallModel.findByIdAndUpdate(id, update, { new: true, ...options }).exec();
   }
+async findAllWithPagination(skip: number, limit: number): Promise<Marshall[]> {
+  return this.marshallModel.find()
+    .select('generalData.userId generalData.name generalData.step')
+    .skip(skip)
+    .limit(limit)
+    .lean()
+    .exec();
+}
+
+async countAll(): Promise<number> {
+  return this.marshallModel.countDocuments().exec();
+}
+
+async findAll(): Promise<Marshall[]> {
+  return this.marshallModel.find().lean().exec();
+}
 }

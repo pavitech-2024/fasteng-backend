@@ -22,56 +22,47 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
 const exceptions_1 = require("@nestjs/common/exceptions");
-const axios_1 = require("axios");
 const repository_1 = require("../../users/repository");
 const utils_1 = require("../../../utils");
+const password_1 = require("../../../utils/password");
 let AuthService = AuthService_1 = class AuthService {
     constructor(usersRepository) {
         this.usersRepository = usersRepository;
         this.logger = new common_1.Logger(AuthService_1.name);
         this.tokenService = new utils_1.Token();
     }
-    roxConnection(url, axiosMethod, config, data) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const roxResponse = yield axios_1.default[axiosMethod](url, data, config);
-                if (!roxResponse)
-                    throw new exceptions_1.UnauthorizedException('Erro ao conectar com a Rox');
-                if (roxResponse.data.response_code !== '200 OK')
-                    throw new exceptions_1.UnauthorizedException('Usuário não encontrado (Rox)');
-                const roxUser = roxResponse.data.data;
-                if (roxUser.plan_status !== 'ACTIVE')
-                    throw new exceptions_1.UnauthorizedException('Usuário com plano inativo');
-                return roxUser;
-            }
-            catch (error) {
-                this.logger.error(`error on rox connection: ${error}`);
-                throw error;
-            }
-        });
-    }
     login(data) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const roxUser = yield this.roxConnection('https://fastengapp.com.br/minhaconta/api/auth', 'post', null, data);
-                const user = yield this.usersRepository.findOne({ _id: roxUser.uuid });
-                if (!user)
+                const user = yield this.usersRepository.findOne({ email: data.email });
+                this.logger.debug(`login attempt for email=${data.email}, userFound=${!!user}`);
+                if (!user) {
+                    this.logger.warn(`login failed: user not found for email=${data.email}`);
                     throw new exceptions_1.UnauthorizedException('Usuário não encontrado');
+                }
+                if (!user.password) {
+                    this.logger.warn(`login failed: user has no password set for email=${data.email}`);
+                    throw new exceptions_1.UnauthorizedException('Credenciais inválidas');
+                }
+                if (!(0, password_1.verifyPassword)(data.password, user.password)) {
+                    this.logger.warn(`login failed: invalid password for email=${data.email}`);
+                    throw new exceptions_1.UnauthorizedException('Credenciais inválidas');
+                }
                 yield this.usersRepository.updateUserLastLogin(user);
                 const token = this.tokenService.createToken({
-                    planName: roxUser.plan_name,
-                    email: roxUser.email,
-                    name: roxUser.name,
-                    userId: roxUser.uuid,
+                    planName: 'INTERNAL',
+                    email: user.email,
+                    name: user.name,
+                    userId: user._id,
                     lastLogin: user.lastLoginList[user.lastLoginList.length - 1],
                 }, '10h');
                 return {
                     statusCode: 200,
                     token,
                     user,
-                    name: roxUser.name,
-                    email: roxUser.email,
-                    planName: roxUser.plan_name,
+                    name: user.name,
+                    email: user.email,
+                    planName: 'INTERNAL',
                 };
             }
             catch (error) {
@@ -83,37 +74,28 @@ let AuthService = AuthService_1 = class AuthService {
     refreshLogin(data) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { _id } = data;
-                let { token } = data;
+                const { _id, token } = data;
                 const user = yield this.usersRepository.findOne({ _id });
                 if (!user)
                     throw new exceptions_1.UnauthorizedException('Usuário não encontrado');
-                const roxUser = yield this.roxConnection(`https://fastengapp.com.br/minhaconta/api/user/${_id}`, 'get', null, {
-                    headers: {
-                        Accept: 'application/json',
-                        Authorization: 'Bearer pZcbMoog4bSjWZYGP2GM1FMyjj4o96ZjtYeDJdRsPus3bwNcWklR0HnO0CFm',
-                    },
-                });
                 if (!this.tokenService.verifyToken(token))
                     throw new exceptions_1.UnauthorizedException('Usuário com token inválido');
-                else {
-                    token = this.tokenService.createToken({
-                        planName: roxUser.plan_name,
-                        email: roxUser.email,
-                        name: roxUser.name,
-                        userId: roxUser.uuid,
-                        lastLogin: new Date(),
-                    }, '10h');
-                    yield this.usersRepository.updateUserLastLogin(user);
-                    return {
-                        statusCode: 200,
-                        token,
-                        user,
-                        name: roxUser.name,
-                        planName: roxUser.plan_name,
-                        email: roxUser.email,
-                    };
-                }
+                yield this.usersRepository.updateUserLastLogin(user);
+                const newToken = this.tokenService.createToken({
+                    planName: 'INTERNAL',
+                    email: user.email,
+                    name: user.name,
+                    userId: user._id,
+                    lastLogin: new Date(),
+                }, '10h');
+                return {
+                    statusCode: 200,
+                    token: newToken,
+                    user,
+                    name: user.name,
+                    planName: 'INTERNAL',
+                    email: user.email,
+                };
             }
             catch (error) {
                 this.logger.error(`error on refreshLogin: ${error}`);

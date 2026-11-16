@@ -35,11 +35,11 @@ var GranulometryComposition_Marshall_Service_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GranulometryComposition_Marshall_Service = void 0;
 const common_1 = require("@nestjs/common");
+const mongoose_1 = require("@nestjs/mongoose");
+const mongoose_2 = require("mongoose");
 const repository_1 = require("../../../essays/granulometry/repository");
 const interfaces_1 = require("../../../../../utils/interfaces");
-const mongoose_1 = require("@nestjs/mongoose");
 const database_config_1 = require("../../../../../infra/mongoose/database.config");
-const mongoose_2 = require("mongoose");
 const schemas_1 = require("../schemas");
 const repository_2 = require("../repository");
 let GranulometryComposition_Marshall_Service = GranulometryComposition_Marshall_Service_1 = class GranulometryComposition_Marshall_Service {
@@ -51,312 +51,345 @@ let GranulometryComposition_Marshall_Service = GranulometryComposition_Marshall_
     }
     getGranulometryData(aggregates) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const granulometry_data = [];
-                const granulometrys = yield this.granulometry_repository.findAll();
-                aggregates.forEach((aggregate) => {
-                    const granulometry = granulometrys.find(({ generalData }) => {
-                        const { material } = generalData;
-                        return aggregate._id.toString() === material._id.toString();
-                    });
-                    const { passant } = granulometry.step2Data;
-                    let passants = {};
-                    passant.forEach((p) => {
-                        passants[p.sieve_label] = p.passant;
-                    });
-                    granulometry_data.push({
-                        _id: aggregate._id,
-                        passants: passants,
-                    });
+            const granulometrys = yield this.granulometry_repository.findAll();
+            const granulometryData = aggregates.map((aggregate) => {
+                var _a, _b;
+                const granulometry = granulometrys.find(({ generalData }) => aggregate._id.toString() === generalData.material._id.toString());
+                const passants = {};
+                (_b = (_a = granulometry === null || granulometry === void 0 ? void 0 : granulometry.step2Data) === null || _a === void 0 ? void 0 : _a.table_data) === null || _b === void 0 ? void 0 : _b.forEach((item) => {
+                    passants[item.sieve_label] = item.passant;
                 });
-                const table_column_headers = [];
-                const table_rows = [];
-                table_column_headers.push('sieve_label');
-                interfaces_1.AllSieves.forEach((sieve) => {
-                    const contains = granulometry_data.some((aggregate) => sieve.label in aggregate.passants);
-                    if (contains) {
-                        const aggregates_data = {};
-                        granulometry_data.forEach((aggregate) => {
-                            const { _id, passants } = aggregate;
-                            aggregates_data['total_passant_'.concat(_id)] = passants[sieve.label];
-                            aggregates_data['passant_'.concat(_id)] = null;
-                            if (!table_column_headers.some((header) => header.includes(_id))) {
-                                table_column_headers.push('total_passant_'.concat(_id));
-                                table_column_headers.push('passant_'.concat(_id));
-                            }
-                        });
-                        table_rows.push(Object.assign({ sieve_label: sieve.label }, aggregates_data));
+                return {
+                    _id: aggregate._id,
+                    passants,
+                };
+            });
+            const tableColumnHeaders = ['sieve_label'];
+            const tableRows = [];
+            interfaces_1.AllSieves.forEach((sieve) => {
+                const containsSieve = granulometryData.some((aggregate) => sieve.label in aggregate.passants);
+                if (!containsSieve)
+                    return;
+                const aggregatesData = {};
+                granulometryData.forEach(({ _id, passants }) => {
+                    const totalPassantKey = `total_passant_${_id}`;
+                    const passantKey = `passant_${_id}`;
+                    aggregatesData[totalPassantKey] = passants[sieve.label];
+                    aggregatesData[passantKey] = null;
+                    if (!tableColumnHeaders.includes(totalPassantKey)) {
+                        tableColumnHeaders.push(totalPassantKey, passantKey);
                     }
                 });
-                this.logger.log(table_rows);
-                this.logger.log(table_column_headers);
-                const table_data = {
-                    table_column_headers,
-                    table_rows,
-                };
-                return table_data;
-            }
-            catch (error) {
-                throw error;
-            }
+                tableRows.push(Object.assign({ sieve_label: sieve.label }, aggregatesData));
+            });
+            this.logger.log(tableRows);
+            this.logger.log(tableColumnHeaders);
+            return {
+                table_column_headers: tableColumnHeaders,
+                table_rows: tableRows,
+            };
         });
     }
     calculateGranulometry(body) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const { dnitBands, percentageInputs, tableRows } = body;
-                let percentsOfDosage = [];
-                const ids1 = new Set();
-                Object.keys(percentageInputs[0]).forEach((key) => {
-                    const id = key.split('_')[1];
-                    ids1.add(id);
-                    const value = percentageInputs[0][key];
-                    const index = Array.from(ids1).indexOf(id);
-                    percentsOfDosage[index] = { [id]: value };
-                });
-                const ids2 = new Set();
-                let percentsOfMaterials = [];
-                for (let i = 0; i < percentsOfDosage.length; i++) {
-                    let obj = percentsOfDosage[i];
-                    let key = Object.keys(obj)[0];
-                    percentsOfMaterials.push(Array(20).fill({ [key]: null }));
+            const { dnitBands, percentageInputs, tableRows } = body;
+            const percentsOfDosage = [];
+            const materialIds = [];
+            Object.keys(percentageInputs[0]).forEach((key) => {
+                const id = key.split('_')[1];
+                if (!materialIds.includes(id)) {
+                    materialIds.push(id);
+                    percentsOfDosage.push({ [id]: percentageInputs[0][key] });
                 }
-                let newTableRows = tableRows;
-                tableRows.forEach((element) => {
-                    Object.keys(element).forEach((key) => {
-                        if (key === 'sieve_label') {
-                            const sieveLabel = element[key];
-                            Object.keys(element).forEach((key2) => {
-                                const stringIdx = key2.lastIndexOf('_');
-                                if (stringIdx !== -1) {
-                                    const firstString = key2.substring(0, stringIdx);
-                                    if (firstString === 'total_passant') {
-                                        const id = key2.substring(stringIdx + 1);
-                                        ids2.add(id);
-                                        const value = element[key2];
-                                        const internIndex = Array.from(ids2).indexOf(id);
-                                        const sieveIndex = interfaces_1.AllSieves.findIndex((sieve) => sieve.label === sieveLabel);
-                                        if (sieveIndex !== -1) {
-                                            percentsOfMaterials[internIndex][sieveIndex] = { [id]: value };
-                                        }
-                                    }
-                                }
-                            });
-                        }
-                    });
+            });
+            const percentsOfMaterials = percentsOfDosage.map((dosage) => {
+                const materialId = Object.keys(dosage)[0];
+                return Array(20).fill({ [materialId]: null });
+            });
+            const materialIndexes = new Map();
+            percentsOfDosage.forEach((dosage, index) => {
+                materialIndexes.set(Object.keys(dosage)[0], index);
+            });
+            tableRows.forEach((row) => {
+                const sieveIndex = interfaces_1.AllSieves.findIndex((sieve) => sieve.label === row.sieve_label);
+                if (sieveIndex === -1)
+                    return;
+                Object.keys(row).forEach((key) => {
+                    const lastIndex = key.lastIndexOf('_');
+                    if (lastIndex === -1)
+                        return;
+                    const property = key.substring(0, lastIndex);
+                    if (property !== 'total_passant')
+                        return;
+                    const id = key.substring(lastIndex + 1);
+                    const materialIndex = materialIndexes.get(id);
+                    if (materialIndex === undefined)
+                        return;
+                    percentsOfMaterials[materialIndex][sieveIndex] = {
+                        [id]: row[key],
+                    };
                 });
-                const axisX = [
-                    76, 64, 50, 38, 32, 25, 19, 12.5, 9.5, 6.3, 4.8, 2.4, 2, 1.2, 0.85, 0.6, 0.43, 0.3, 0.25, 0.18, 0.15, 0.106,
-                    0.075,
-                ];
-                let higherBandA = this.insertBlankPointsOnCurve([null, null, 100, 100, null, 100, 90, null, 65, null, 50, null, 40, null, null, 30, null, 20, null, 8], axisX);
-                let lowerBandA = this.insertBlankPointsOnCurve([null, null, 100, 95, null, 75, 60, null, 35, null, 25, null, 20, null, null, 10, null, 5, null, 1], axisX);
-                let higherBandB = this.insertBlankPointsOnCurve([null, null, null, 100, null, 100, 100, null, 80, null, 60, null, 45, null, null, 32, null, 20, null, 8], axisX);
-                let lowerBandB = this.insertBlankPointsOnCurve([null, null, null, 100, null, 95, 80, null, 45, null, 28, null, 20, null, null, 10, null, 8, null, 3], axisX);
-                let higherBandC = this.insertBlankPointsOnCurve([null, null, null, null, null, null, 100, 100, 90, null, 72, null, 50, null, null, 26, null, 16, null, 10], axisX);
-                let lowerBandC = this.insertBlankPointsOnCurve([null, null, null, null, null, null, 100, 80, 70, null, 44, null, 22, null, null, 8, null, 4, null, 2], axisX);
-                let band = { higher: [], lower: [] };
-                if (dnitBands === 'A')
-                    band = { higher: higherBandA, lower: lowerBandA };
-                else if (dnitBands === 'B')
-                    band = { higher: higherBandB, lower: lowerBandB };
-                else if (dnitBands === 'C')
-                    band = { higher: higherBandC, lower: lowerBandC };
-                let sumOfPercents = [
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                ];
-                for (let i = 0; i < percentsOfMaterials.length; i++) {
-                    for (let j = 0; j < 20; j++) {
-                        let materialValue = Object.values(percentsOfMaterials[i][j])[0];
-                        let materialKey = Object.keys(percentsOfMaterials[i][j])[0];
-                        if (materialValue !== null) {
-                            let dosageObject = percentsOfDosage.find((e) => e.hasOwnProperty(materialKey));
-                            let dosageValue = null;
-                            if (dosageObject) {
-                                dosageValue = dosageObject[materialKey];
-                            }
-                            if (materialValue !== null) {
-                                let value = (materialValue * dosageValue) / 100;
-                                percentsOfMaterials[i][j] = { [materialKey]: value };
-                                sumOfPercents[j] += percentsOfMaterials[i][j][materialKey];
-                            }
-                        }
-                        else
-                            percentsOfMaterials[i][j] = null;
-                    }
-                }
-                tableRows.forEach((element) => {
-                    Object.keys(element).forEach((keys) => {
-                        const stringIndex = keys.indexOf('_');
-                        const label = keys.substring(0, stringIndex);
-                        const id = keys.substring(stringIndex + 1);
-                        const newArray = percentsOfMaterials.map((innerArray) => innerArray.filter((value) => value !== null));
-                        const index = tableRows.indexOf(element);
-                        if (label === 'passant') {
-                            const key = Object.keys(tableRows[index]).find((k) => k === `passant_${id}`);
-                            if (key) {
-                                let newArrIndex = newArray.findIndex((e) => e[0] && e[0].hasOwnProperty(id));
-                                if (newArrIndex !== -1 && newArray[newArrIndex][index] && newArray[newArrIndex][index][id]) {
-                                    newTableRows[index][key] = newArray[newArrIndex][index][id];
-                                }
-                                else {
-                                    if (!newTableRows[index])
-                                        newTableRows[index] = {};
-                                    newTableRows[index][`total_passant_${id}`] = '---';
-                                    console.log(`The id "${id}" was not found in the index ${index} of the newArray.`);
-                                }
-                            }
-                            else {
-                                if (!newTableRows[index])
-                                    newTableRows[index] = {};
-                                newTableRows[index][`total_passant_${id}`] = '---';
-                                console.log(`The key "passant_${id}" was not found in the object at index ${index}.`);
-                            }
-                        }
-                    });
+            });
+            const axisX = [
+                76, 64, 50, 38, 32, 25, 19, 12.5, 9.5, 6.3, 4.8, 2.4,
+                2, 1.2, 0.85, 0.6, 0.43, 0.3, 0.25, 0.18, 0.15, 0.106,
+                0.075,
+            ];
+            const bands = {
+                A: {
+                    higher: [
+                        null, null, 100, 100, null, 100, 90, null, 65, null,
+                        50, null, 40, null, null, 30, null, 20, null, 8,
+                    ],
+                    lower: [
+                        null, null, 100, 95, null, 75, 60, null, 35, null,
+                        25, null, 20, null, null, 10, null, 5, null, 1,
+                    ],
+                },
+                B: {
+                    higher: [
+                        null, null, null, 100, null, 100, 100, null, 80, null,
+                        60, null, 45, null, null, 32, null, 20, null, 8,
+                    ],
+                    lower: [
+                        null, null, null, 100, null, 95, 80, null, 45, null,
+                        28, null, 20, null, null, 10, null, 8, null, 3,
+                    ],
+                },
+                C: {
+                    higher: [
+                        null, null, null, null, null, null, 100, 100, 90, null,
+                        72, null, 50, null, null, 26, null, 16, null, 10,
+                    ],
+                    lower: [
+                        null, null, null, null, null, null, 100, 80, 70, null,
+                        44, null, 22, null, null, 8, null, 4, null, 2,
+                    ],
+                },
+            };
+            let band = {
+                higher: [],
+                lower: [],
+            };
+            if (bands[dnitBands]) {
+                band = {
+                    higher: this.insertBlankPointsOnCurve([...bands[dnitBands].higher], axisX),
+                    lower: this.insertBlankPointsOnCurve([...bands[dnitBands].lower], axisX),
+                };
+            }
+            let sumOfPercents = Array(24).fill(null);
+            percentsOfMaterials.forEach((material) => {
+                material.forEach((materialData, sieveIndex) => {
+                    var _a;
+                    if (materialData === null)
+                        return;
+                    const materialId = Object.keys(materialData)[0];
+                    const materialValue = Object.values(materialData)[0];
+                    if (materialValue === null)
+                        return;
+                    const dosage = percentsOfDosage.find((item) => Object.prototype.hasOwnProperty.call(item, materialId));
+                    const dosageValue = dosage ? dosage[materialId] : null;
+                    const value = (materialValue * dosageValue) / 100;
+                    material[sieveIndex] = {
+                        [materialId]: value,
+                    };
+                    sumOfPercents[sieveIndex] =
+                        ((_a = sumOfPercents[sieveIndex]) !== null && _a !== void 0 ? _a : 0) + value;
                 });
-                const projections = [];
-                sumOfPercents.map((e, idx) => {
-                    if (e !== null) {
-                        const index = idx;
-                        const sieve = interfaces_1.AllSieves[index];
-                        projections.push({ label: sieve.label, value: e.toFixed(2) });
-                    }
-                });
-                sumOfPercents = this.insertBlankPointsOnCurve(sumOfPercents, axisX);
-                const higherTolerance = [];
-                const lowerTolerance = [];
-                for (let i = 0; i < sumOfPercents.length; i++) {
-                    if (sumOfPercents[i] === null) {
-                        higherTolerance.push(null);
-                        lowerTolerance.push(null);
+            });
+            const newTableRows = tableRows.map((row, rowIndex) => {
+                const updatedRow = Object.assign({}, row);
+                Object.keys(row).forEach((key) => {
+                    const lastIndex = key.lastIndexOf('_');
+                    if (lastIndex === -1)
+                        return;
+                    const property = key.substring(0, lastIndex);
+                    if (property !== 'passant')
+                        return;
+                    const id = key.substring(lastIndex + 1);
+                    const materialIndex = materialIndexes.get(id);
+                    const sieveIndex = interfaces_1.AllSieves.findIndex((sieve) => sieve.label === row.sieve_label);
+                    const materialData = materialIndex !== undefined && sieveIndex !== -1
+                        ? percentsOfMaterials[materialIndex][sieveIndex]
+                        : null;
+                    const calculatedValue = materialData && materialData[id] !== undefined
+                        ? materialData[id]
+                        : null;
+                    if (calculatedValue !== null) {
+                        updatedRow[key] = calculatedValue;
                     }
                     else {
-                        let upperLimit = band.higher[i];
-                        let lowerLimit = band.lower[i];
-                        if (i < 9) {
-                            upperLimit = Math.min(band.higher[i], sumOfPercents[i] + 7);
-                            lowerLimit = Math.max(band.lower[i], sumOfPercents[i] - 7);
-                        }
-                        else if (i > 8 && i < 16) {
-                            upperLimit = Math.min(band.higher[i], sumOfPercents[i] + 5);
-                            lowerLimit = Math.max(band.lower[i], sumOfPercents[i] - 5);
-                        }
-                        else if (i > 15 && i < 19) {
-                            upperLimit = Math.min(band.higher[i], sumOfPercents[i] + 3);
-                            lowerLimit = Math.max(band.lower[i], sumOfPercents[i] - 3);
-                        }
-                        else if (i === 19) {
-                            upperLimit = Math.min(band.higher[i], sumOfPercents[i] + 2);
-                            lowerLimit = Math.max(band.lower[i], sumOfPercents[i] - 2);
-                        }
-                        higherTolerance.push(upperLimit);
-                        lowerTolerance.push(lowerLimit);
+                        updatedRow[`total_passant_${id}`] = '---';
+                        this.logger.warn(`Material "${id}" não encontrado na linha ${rowIndex}.`);
                     }
-                }
-                const pointsOfCurve = [];
-                for (let i = 0; i < sumOfPercents.length; i++) {
-                    pointsOfCurve.push([
-                        axisX[i],
-                        band.higher[i],
-                        higherTolerance[i],
-                        sumOfPercents[i],
-                        lowerTolerance[i],
-                        band.lower[i],
-                    ]);
-                }
-                newTableRows.map((row) => {
-                    Object.values(row).some((value) => {
-                        if (value === null) {
-                            Object.keys(row).forEach((key) => {
-                                if (row[key] === null) {
-                                    row[key] = '---';
-                                }
-                            });
-                        }
-                    });
                 });
-                const data = {
-                    percentsOfMaterials,
-                    sumOfPercents,
-                    pointsOfCurve,
-                    table_data: newTableRows,
-                    projections,
-                };
-                return data;
+                return updatedRow;
+            });
+            const projections = sumOfPercents.reduce((result, value, index) => {
+                if (value !== null && interfaces_1.AllSieves[index]) {
+                    result.push({
+                        label: interfaces_1.AllSieves[index].label,
+                        value: value.toFixed(2),
+                    });
+                }
+                return result;
+            }, []);
+            sumOfPercents = this.insertBlankPointsOnCurve(sumOfPercents, axisX);
+            const higherTolerance = [];
+            const lowerTolerance = [];
+            sumOfPercents.forEach((value, index) => {
+                if (value === null) {
+                    higherTolerance.push(null);
+                    lowerTolerance.push(null);
+                    return;
+                }
+                let tolerance = 0;
+                if (index < 9) {
+                    tolerance = 7;
+                }
+                else if (index < 16) {
+                    tolerance = 5;
+                }
+                else if (index < 19) {
+                    tolerance = 3;
+                }
+                else if (index === 19) {
+                    tolerance = 2;
+                }
+                const upperLimit = Math.min(band.higher[index], value + tolerance);
+                const lowerLimit = Math.max(band.lower[index], value - tolerance);
+                higherTolerance.push(upperLimit);
+                lowerTolerance.push(lowerLimit);
+            });
+            const pointsOfCurve = sumOfPercents.map((value, index) => [
+                axisX[index],
+                band.higher[index],
+                higherTolerance[index],
+                value,
+                lowerTolerance[index],
+                band.lower[index],
+            ]);
+            newTableRows.forEach((row) => {
+                Object.keys(row).forEach((key) => {
+                    if (row[key] === null) {
+                        row[key] = '---';
+                    }
+                });
+            });
+            const correctBandCValues = {
+                lower: {
+                    6: 100,
+                    8: 70,
+                    10: 44,
+                    12: 22,
+                    14: 14,
+                    15: 8,
+                    17: 4,
+                    19: 2,
+                },
+                higher: {
+                    6: 100,
+                    8: 90,
+                    10: 72,
+                    12: 50,
+                    14: 36.29,
+                    15: 26,
+                    17: 16,
+                    19: 10,
+                },
+            };
+            if (dnitBands === 'C') {
+                Object.entries(correctBandCValues.lower).forEach(([index, value]) => {
+                    band.lower[Number(index)] = value;
+                });
+                Object.entries(correctBandCValues.higher).forEach(([index, value]) => {
+                    band.higher[Number(index)] = value;
+                });
             }
-            catch (error) {
-                throw error;
-            }
+            const indexCorrection = {
+                6: 6,
+                14: 15,
+                16: 17,
+                18: 19,
+            };
+            const filteredBand = {
+                lowerBand: [],
+                higherBand: [],
+            };
+            projections.forEach((projection) => {
+                var _a, _b;
+                const sieveIndex = interfaces_1.AllSieves.findIndex((sieve) => sieve.label === projection.label);
+                const bandIndex = indexCorrection[sieveIndex] !== undefined
+                    ? indexCorrection[sieveIndex]
+                    : sieveIndex;
+                filteredBand.lowerBand.push(bandIndex !== -1 ? (_a = band.lower[bandIndex]) !== null && _a !== void 0 ? _a : null : null);
+                filteredBand.higherBand.push(bandIndex !== -1 ? (_b = band.higher[bandIndex]) !== null && _b !== void 0 ? _b : null : null);
+            });
+            const tableWithBands = projections.map((projection, index) => ({
+                sieve_label: projection.label,
+                projection: projection.value,
+                inferior: filteredBand.lowerBand[index] !== null
+                    ? filteredBand.lowerBand[index].toFixed(2)
+                    : '---',
+                superior: filteredBand.higherBand[index] !== null
+                    ? filteredBand.higherBand[index].toFixed(2)
+                    : '---',
+            }));
+            this.logger.log('Valores finais das projeções e bandas:');
+            this.logger.log(tableWithBands);
+            return {
+                percentsOfMaterials,
+                sumOfPercents,
+                pointsOfCurve,
+                table_data: newTableRows,
+                projections,
+                bands: filteredBand,
+                dnitBands: band,
+                tableWithBands,
+            };
         });
     }
     saveStep3Data(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                this.logger.log('save marshall granulometry composition step on granulometry-composition.marshall.service.ts > [body]', { body });
-                const { name } = body.granulometryCompositionData;
-                const marshallExists = yield this.marshallRepository.findOne(name, userId);
-                const _a = body.granulometryCompositionData, { name: materialName } = _a, granulometryCompositionWithoutName = __rest(_a, ["name"]);
-                const marshallWithGranulometryComposition = Object.assign(Object.assign({}, marshallExists._doc), { granulometryCompositionData: granulometryCompositionWithoutName });
-                yield this.marshallModel.updateOne({ _id: marshallExists._doc._id }, marshallWithGranulometryComposition);
-                if (marshallExists._doc.generalData.step < 3) {
-                    yield this.marshallRepository.saveStep(marshallExists, 3);
-                }
-                return true;
+            this.logger.log('save marshall granulometry composition step on granulometry-composition.marshall.service.ts > [body]', { body });
+            const _a = body.granulometryCompositionData, { name } = _a, granulometryCompositionWithoutName = __rest(_a, ["name"]);
+            const marshallExists = yield this.marshallRepository.findOne(name, userId);
+            yield this.marshallModel.updateOne({ _id: marshallExists._id }, {
+                $set: {
+                    granulometryCompositionData: granulometryCompositionWithoutName,
+                },
+            });
+            if (marshallExists.step < 3) {
+                yield this.marshallRepository.saveStep(marshallExists, 3);
             }
-            catch (error) {
-                throw error;
-            }
+            return true;
         });
     }
     insertBlankPointsOnCurve(curve, axisX) {
         for (let k = 0; k < curve.length; k++) {
-            if (curve[k] !== null) {
-                for (let i = k; i < curve.length; i++) {
-                    if (curve[i] === null) {
-                        for (let j = i; j < curve.length; j++) {
-                            if (curve[j] !== null) {
-                                curve = this.findEquationOfCurve(curve, axisX, curve[i - 1], curve[j], axisX[i - 1], axisX[j], i);
-                                break;
-                            }
-                        }
-                    }
+            if (curve[k] === null)
+                continue;
+            for (let i = k; i < curve.length; i++) {
+                if (curve[i] !== null)
+                    continue;
+                for (let j = i; j < curve.length; j++) {
+                    if (curve[j] === null)
+                        continue;
+                    curve = this.findEquationOfCurve(curve, axisX, curve[i - 1], curve[j], axisX[i - 1], axisX[j], i);
+                    break;
                 }
             }
         }
         return curve;
     }
     findEquationOfCurve(curve, axisX, y2, y1, x2, x1, i) {
-        if (y1 !== y2) {
-            let a = (y2 - y1) / (x2 - x1);
-            let b = (y1 * x2 - y2 * x1) / (x2 - x1);
-            curve[i] = a * axisX[i] + b;
-        }
-        else
+        if (y1 === y2) {
             curve[i] = y1;
+            return curve;
+        }
+        const a = (y2 - y1) / (x2 - x1);
+        const b = (y1 * x2 - y2 * x1) / (x2 - x1);
+        curve[i] = a * axisX[i] + b;
         return curve;
     }
 };

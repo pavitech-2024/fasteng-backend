@@ -55,6 +55,7 @@ let MarshallController = MarshallController_1 = class MarshallController {
     getDosageById(response, dosageId) {
         return __awaiter(this, void 0, void 0, function* () {
             this.logger.log(`get all materials, by user id, with the necessary dosage essays > [id]: ${dosageId}`);
+            this.logger.log(`get a dosage by dosage id > [id]: ${dosageId}`);
             const status = yield this.marshallService.getDosageById(dosageId);
             return response.status(200).json(status);
         });
@@ -73,10 +74,10 @@ let MarshallController = MarshallController_1 = class MarshallController {
             return response.status(200).json(status);
         });
     }
-    calculateGranulometry(response, body) {
+    calculateStep3Data(response, body) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.log(`calculate granulometry data > [body]: ${body}`);
-            const status = yield this.marshallService.calculateGranulometry(body);
+            this.logger.log(`calculate step 3 data > [body]: ${body}`);
+            const status = yield this.marshallService.calculateStep3Data(body);
             return response.status(200).json(status);
         });
     }
@@ -213,6 +214,41 @@ let MarshallController = MarshallController_1 = class MarshallController {
             return response.status(200).json(status);
         });
     }
+    updateFatigueCurve(response, dosageId, fatigueData) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.log(`update fatigue curve data > [dosageId]: ${dosageId}, [data]: ${JSON.stringify(fatigueData)}`);
+            const status = yield this.marshallService.updateFatigueCurve(dosageId, fatigueData);
+            return response.status(200).json(status);
+        });
+    }
+    updateResilienceModule(response, dosageId, resilienceData) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.log(`update resilience module data > [dosageId]: ${dosageId}, [data]: ${JSON.stringify(resilienceData)}`);
+            const status = yield this.marshallService.updateResilienceModule(dosageId, resilienceData);
+            return response.status(200).json(status);
+        });
+    }
+    getAllDosagesFromAllUsers(response, page, limit) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const pageNum = parseInt(page) || 1;
+                const limitNum = parseInt(limit) || 10;
+                const result = yield this.marshallService.getAllDosagesFromAllUsers(pageNum, limitNum);
+                return response.status(200).json(Object.assign({ success: true }, result));
+            }
+            catch (error) {
+                return response.status(400).json({
+                    success: false,
+                    error: (error === null || error === void 0 ? void 0 : error.message) || 'Erro desconhecido'
+                });
+            }
+        });
+    }
+    saveCompleteDosage(userId, completeData) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.marshallService.saveCompleteDosage(userId, completeData);
+        });
+    }
 };
 exports.MarshallController = MarshallController;
 __decorate([
@@ -262,7 +298,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "getMaterialsByUserId", null);
 __decorate([
-    (0, common_1.Get)(':id'),
+    (0, common_1.Get)('by-id/:id'),
     (0, swagger_1.ApiOperation)({ summary: 'Retorna uma dosagem do banco de dados com o id informado.' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Dosagem encontrada com sucesso!' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Dosagem não encontrada!' }),
@@ -297,13 +333,13 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "getStep3Data", null);
 __decorate([
-    (0, common_1.Post)('calculate-granulometry'),
+    (0, common_1.Post)('calculate-step-3-data'),
     __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
-], MarshallController.prototype, "calculateGranulometry", null);
+], MarshallController.prototype, "calculateStep3Data", null);
 __decorate([
     (0, common_1.Post)('save-granulometry-composition-step/:userId'),
     __param(0, (0, common_1.Res)()),
@@ -463,6 +499,48 @@ __decorate([
     __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)
 ], MarshallController.prototype, "deleteMarshallDosage", null);
+__decorate([
+    (0, common_1.Patch)(':id/fatigue-curve'),
+    (0, swagger_1.ApiOperation)({ summary: 'Atualiza os dados da curva de fadiga de uma dosagem Marshall' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Curva de fadiga atualizada com sucesso!' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Erro ao atualizar curva de fadiga!' }),
+    __param(0, (0, common_1.Res)()),
+    __param(1, (0, common_1.Param)('id')),
+    __param(2, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String, Object]),
+    __metadata("design:returntype", Promise)
+], MarshallController.prototype, "updateFatigueCurve", null);
+__decorate([
+    (0, common_1.Patch)(':id/resilience-module'),
+    (0, swagger_1.ApiOperation)({ summary: 'Atualiza os dados do módulo de resiliência de uma dosagem Marshall' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Módulo de resiliência atualizado com sucesso!' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Erro ao atualizar módulo de resiliência!' }),
+    __param(0, (0, common_1.Res)()),
+    __param(1, (0, common_1.Param)('id')),
+    __param(2, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String, Object]),
+    __metadata("design:returntype", Promise)
+], MarshallController.prototype, "updateResilienceModule", null);
+__decorate([
+    (0, common_1.Get)('all-dosages'),
+    (0, swagger_1.ApiOperation)({ summary: 'Retorna TODAS as dosagens Marshall com paginação' }),
+    __param(0, (0, common_1.Res)()),
+    __param(1, (0, common_1.Query)('page')),
+    __param(2, (0, common_1.Query)('limit')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String, String]),
+    __metadata("design:returntype", Promise)
+], MarshallController.prototype, "getAllDosagesFromAllUsers", null);
+__decorate([
+    (0, common_1.Post)('complete/:userId'),
+    __param(0, (0, common_1.Param)('userId')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], MarshallController.prototype, "saveCompleteDosage", null);
 exports.MarshallController = MarshallController = MarshallController_1 = __decorate([
     (0, swagger_1.ApiTags)('marshall'),
     (0, common_1.Controller)('asphalt/dosages/marshall'),

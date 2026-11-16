@@ -1,117 +1,118 @@
-import { Injectable, Logger, NotFoundException } from "@nestjs/common";
+
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+
 import { MarshallRepository } from '../repository/index';
-import { AlreadyExists } from "../../../../../utils/exceptions";
-import { InjectModel } from "@nestjs/mongoose";
-import { DATABASE_CONNECTION } from "../../../../../infra/mongoose/database.config";
-import { Model } from "mongoose";
-import { Marshall, MarshallDocument } from "../schemas";
-import { MarshallInitDto } from "../dto/marshall-init.dto";
+import { AlreadyExists } from '../../../../../utils/exceptions';
+import { DATABASE_CONNECTION } from '../../../../../infra/mongoose/database.config';
+import { Marshall, MarshallDocument } from '../schemas';
+import { MarshallInitDto } from '../dto/marshall-init.dto';
 
 @Injectable()
 export class GeneralData_Marshall_Service {
-  private logger = new Logger(GeneralData_Marshall_Service.name)
+  private readonly logger = new Logger(GeneralData_Marshall_Service.name);
 
   constructor(
     @InjectModel(Marshall.name, DATABASE_CONNECTION.ASPHALT)
-    private marshallModel: Model<MarshallDocument>,
+    private readonly marshallModel: Model<MarshallDocument>,
     private readonly marshallRepository: MarshallRepository,
-  ) { }
+  ) {}
 
   async verifyInitMarshall(marshall: MarshallInitDto, userId: string) {
-    try {
-      this.logger.log('verify init Marshall on general-data.marshall.service.ts > [body]');
+    this.logger.log(
+      'Verifying Marshall initialization on general-data.marshall.service.ts',
+    );
 
-      const { generalData: { name }, _id } = marshall;
+    const {
+      generalData: { name },
+      _id,
+    } = marshall;
 
-      const MarshallExists = await this.marshallRepository.findOne(name, userId)
+    const marshallExists = await this.marshallRepository.findOne(
+      name,
+      userId,
+    );
 
-      if (MarshallExists && !_id) throw new AlreadyExists('name');
-
-      const createdPartialMarshall = await this.marshallRepository.createPartialMarshall(marshall, userId);
-
-      await this.marshallRepository.saveStep(createdPartialMarshall._doc, 1);
-
-      return {
-        success: true,
-        dosage: createdPartialMarshall
-      };
-    } catch (error) {
-      throw error
+    if (marshallExists && !_id) {
+      throw new AlreadyExists('name');
     }
+
+    const createdPartialMarshall =
+      await this.marshallRepository.createPartialMarshall(
+        marshall,
+        userId,
+      );
+
+    await this.marshallRepository.saveStep(createdPartialMarshall, 1);
+
+    return {
+      success: true,
+      dosage: createdPartialMarshall,
+    };
   }
 
   async getDosageById(dosageId: string) {
-    try {
-      this.logger.log(
-        'get dosage by id on general-data.marshall.service.ts > [body]',
-        {
-          dosageId,
-        },
+    this.logger.log(
+      'Getting dosage by ID on general-data.marshall.service.ts',
+      { dosageId },
+    );
+
+    const dosage = await this.marshallRepository.findById(dosageId);
+
+    if (!dosage) {
+      throw new NotFoundException(
+        `Dosage with id ${dosageId} not found`,
       );
-      const dosage = await this.marshallRepository.findById(dosageId);
-
-      if (!dosage) {
-        throw new NotFoundException(`Dosage whith id ${dosageId} not found`);
-      }
-
-      return dosage;
-    } catch (error) {
-      throw error;
     }
+
+    return dosage;
   }
 
   async saveMarshallDosage(body: any, userId: string) {
-    try {
-      this.logger.log(
-        'save marshall dosage on general-data.marshall.service.ts > [body]',
-        {
-          body,
-        },
-      );
+    this.logger.log(
+      'Saving Marshall dosage on general-data.marshall.service.ts',
+      { body },
+    );
 
-      const { name } = body.generalData;
+    const { name } = body.generalData;
 
-      const marshallExists: any = await this.marshallRepository.findOne(name, userId);
+    const marshallExists = await this.marshallRepository.findOne(
+      name,
+      userId,
+    );
 
-      const { isConsult, ...marshallDosageWithoutIsConsult } = body;
-      
-
-      // const completedMarshallDosage = {
-      //   ...marshallExists._doc,
-      //   saveMarshallDosage: marshallDosageWithoutIsConsult,
-      // };
-      const completedMarshallDosage = { ...marshallExists._doc, ...marshallDosageWithoutIsConsult };
-
-      await this.marshallModel.updateOne({ _id: marshallExists._doc._id }, completedMarshallDosage);
-
-      if (marshallExists._doc.generalData.step < 9) {
-        await this.marshallRepository.saveStep(marshallExists, 9);
-      }
-
-      return true;
-    } catch (error) {
-      throw error;
+    if (!marshallExists) {
+      throw new NotFoundException('Marshall not found');
     }
+
+    const { isConsult, ...marshallDosageWithoutIsConsult } = body;
+
+    marshallExists.set(marshallDosageWithoutIsConsult);
+
+    await marshallExists.save();
+
+    if (marshallExists.step < 9) {
+      await this.marshallRepository.saveStep(marshallExists, 9);
+    }
+
+    return true;
   }
 
   async deleteMarshallDosage(id: string) {
-    try {
-      this.logger.log(
-        'delete marshall dosage on general-data.marshall.service.ts > [body]',
-        {
-          id,
-        },
+    this.logger.log(
+      'Deleting Marshall dosage on general-data.marshall.service.ts',
+      { id },
+    );
+
+    const result = await this.marshallModel.findByIdAndDelete(id);
+
+    if (!result) {
+      throw new NotFoundException(
+        'Documento não encontrado para deletar.',
       );
-
-      const result = await this.marshallModel.findByIdAndDelete(id);
-
-      if (!result) {
-        throw new Error('Documento não encontrado para deletar.')
-      }
-
-      return true;
-    } catch (error) {
-      throw error;
     }
+
+    return true;
   }
 }

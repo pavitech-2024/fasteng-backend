@@ -23,25 +23,28 @@ exports.UsersService = void 0;
 const common_1 = require("@nestjs/common");
 const repository_1 = require("../repository");
 const exceptions_1 = require("../../../utils/exceptions");
+const password_1 = require("../../../utils/password");
 let UsersService = UsersService_1 = class UsersService {
     constructor(usersRepository) {
         this.usersRepository = usersRepository;
         this.logger = new common_1.Logger(UsersService_1.name);
     }
     createUser(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ uuid, connections, lastLoginList, photo }) {
+        return __awaiter(this, arguments, void 0, function* ({ uuid, connections, lastLoginList, photo, name, email, phone, dob, password }) {
             try {
                 if (yield this.usersRepository.findOne({ _id: uuid }))
                     throw new exceptions_1.AlreadyExists('User');
+                const passwordHash = password ? (0, password_1.hashPassword)(password) : null;
                 return this.usersRepository.create({
                     _id: uuid,
                     connections,
                     lastLoginList,
                     photo,
-                    name: '',
-                    email: '',
-                    phone: '',
-                    dob: new Date(),
+                    name: name !== null && name !== void 0 ? name : '',
+                    email: email !== null && email !== void 0 ? email : '',
+                    phone: phone !== null && phone !== void 0 ? phone : '',
+                    dob: dob !== null && dob !== void 0 ? dob : new Date(),
+                    password: passwordHash,
                     preferences: {
                         language: 'pt-BR',
                         decimal: 2,
@@ -105,6 +108,45 @@ let UsersService = UsersService_1 = class UsersService {
             }
             catch (error) {
                 this.logger.error(`error on delete user > [error]: ${error}`);
+                throw error;
+            }
+        });
+    }
+    resetPassword(id, newPassword) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const existingUser = yield this.usersRepository.findOne({ _id: id });
+                if (!existingUser) {
+                    throw new exceptions_1.NotFound('User');
+                }
+                const passwordHash = (0, password_1.hashPassword)(newPassword);
+                existingUser.password = passwordHash;
+                const updatedUser = yield this.usersRepository.findOneAndUpdate({ _id: id }, existingUser);
+                this.logger.log(`password reset for user: ${id}`);
+                return updatedUser;
+            }
+            catch (error) {
+                this.logger.error(`error on reset password > [error]: ${error}`);
+                throw error;
+            }
+        });
+    }
+    completeUserData(id, data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const existingUser = yield this.usersRepository.findOne({ _id: id });
+                if (!existingUser)
+                    throw new exceptions_1.NotFound('User');
+                const passwordHash = (0, password_1.hashPassword)(data.password);
+                existingUser.email = data.email;
+                existingUser.name = data.name;
+                existingUser.password = passwordHash;
+                const updatedUser = yield this.usersRepository.findOneAndUpdate({ _id: id }, existingUser);
+                this.logger.log(`✅ Dados completados para usuário: ${id}`);
+                return updatedUser;
+            }
+            catch (error) {
+                this.logger.error(`❌ Erro ao completar dados: ${error}`);
                 throw error;
             }
         });

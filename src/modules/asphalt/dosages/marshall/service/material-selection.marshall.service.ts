@@ -24,41 +24,33 @@ export class MaterialSelection_Marshall_Service {
     private readonly specificMass_repository: SpecifyMassRepository
   ) {}
 
-  async getMaterials(userId: string) {
-    try {
-      this.logger.log('get materials on material-selection.marshall.service.ts > [body]', { userId: userId });
-      
-      const materials = await this.material_repository.findByUserId({
-        userId: userId,
-      });
+async getMaterials(userId: string) {
+  try {
+    this.logger.log('get materials on material-selection.marshall.service.ts > [body]', { userId: userId });
+    
+    const materials = await this.material_repository.findByUserId({
+      userId: userId,
+    });
 
-      const granulometrys = await this.granulometry_repository.findAll();
+    // TEMPORARIAMENTE: Retorna todos os materiais sem filtro
+    return materials;
+    
+    /* COMENTE O FILTRO POR ENQUANTO:
+    const granulometrys = await this.granulometry_repository.findAll();
+    const rotationalViscosities = await this.rotationalViscosity_repository.findAll();
+    const specificMasses = await this.specificMass_repository.findAll();
 
-      const rotationalViscosities = await this.rotationalViscosity_repository.findAll();
+    const filteredMaterials = materials.filter((material) => {
+      // ... código do filtro
+    });
 
-      const filteredMaterials = materials.filter((material) => {
-        const { _id, type } = material;
-
-        if (type === 'CAP' || type === 'asphaltBinder') {
-          return rotationalViscosities.some(({ generalData }) => {
-            const { material: viscosityMaterial } = generalData;
-            return _id.toString() === viscosityMaterial._id.toString();
-          });
-        } else {
-          const granulometriesEssays = granulometrys.some(({ generalData }) => {
-            const { material: granulometryMaterial } = generalData;
-            return _id.toString() === granulometryMaterial._id.toString();
-          });
-
-          return granulometriesEssays;
-        };
-      });
-
-      return filteredMaterials;
-    } catch (error) {
-      throw error;
-    }
+    return filteredMaterials;
+    */
+    
+  } catch (error) {
+    throw error;
   }
+}
 
   async saveMaterials(body: any, userId: string) {
     try {

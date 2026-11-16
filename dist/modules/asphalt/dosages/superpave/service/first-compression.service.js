@@ -52,10 +52,31 @@ let FirstCompression_Superpave_Service = FirstCompression_Superpave_Service_1 = 
                 this.logger.log({ body }, 'start calculate step 5 gmm data > [service]');
                 const { riceTest } = body;
                 const { drySampleMass, waterSampleContainerMass, waterSampleMass, temperatureOfWater } = riceTest;
-                const riceTestValue = (drySampleMass / (drySampleMass + waterSampleMass - waterSampleContainerMass)) * temperatureOfWater;
-                return riceTestValue;
+                if (!drySampleMass || !waterSampleContainerMass || !waterSampleMass || !temperatureOfWater) {
+                    this.logger.error('Dados incompletos para cálculo do GMM');
+                    throw new Error('Todos os campos são obrigatórios para o cálculo');
+                }
+                const volumeDisplaced = (drySampleMass + waterSampleContainerMass) - waterSampleMass;
+                const densityWithoutCorrection = drySampleMass / volumeDisplaced;
+                const gmm = densityWithoutCorrection * temperatureOfWater;
+                this.logger.log({
+                    drySampleMass,
+                    waterSampleContainerMass,
+                    waterSampleMass,
+                    temperatureOfWater,
+                    volumeDisplaced,
+                    densityWithoutCorrection,
+                    gmm
+                }, 'GMM Calculation Details');
+                if (isNaN(gmm) || !isFinite(gmm)) {
+                    throw new Error('Cálculo resultou em valor inválido');
+                }
+                const roundedGmm = Math.round(gmm * 1000) / 1000;
+                this.logger.log(`GMM calculado: ${roundedGmm}`);
+                return roundedGmm;
             }
             catch (error) {
+                this.logger.error('Erro no cálculo do GMM:', error);
                 throw error;
             }
         });
