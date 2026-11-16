@@ -102,11 +102,11 @@ export declare class MarshallService {
     }>;
     calculateStep3Data(body: any): Promise<{
         data: {
-            percentsOfMaterials: any[];
+            percentsOfMaterials: any[][];
             sumOfPercents: any[];
-            pointsOfCurve: any[];
+            pointsOfCurve: any[][];
             table_data: any;
-            projections: any[];
+            projections: any;
             bands: {
                 higherBand: any;
                 lowerBand: any;

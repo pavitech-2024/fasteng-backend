@@ -1,521 +1,500 @@
+
 import { Injectable, Logger } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+
 import { AsphaltGranulometryRepository } from '../../../essays/granulometry/repository';
 import { AllSieves } from '../../../../../utils/interfaces';
-import { InjectModel } from '@nestjs/mongoose';
 import { DATABASE_CONNECTION } from '../../../../../infra/mongoose/database.config';
-import { Model } from 'mongoose';
 import { Marshall, MarshallDocument } from '../schemas';
 import { MarshallRepository } from '../repository';
 
 @Injectable()
 export class GranulometryComposition_Marshall_Service {
-  private logger = new Logger(GranulometryComposition_Marshall_Service.name);
+  private readonly logger = new Logger(
+    GranulometryComposition_Marshall_Service.name,
+  );
 
   constructor(
     @InjectModel(Marshall.name, DATABASE_CONNECTION.ASPHALT)
-    private marshallModel: Model<MarshallDocument>,
+    private readonly marshallModel: Model<MarshallDocument>,
     private readonly granulometry_repository: AsphaltGranulometryRepository,
     private readonly marshallRepository: MarshallRepository,
   ) {}
 
   async getGranulometryData(aggregates: { _id: string; name: string }[]) {
-    try {
-      const granulometry_data: {
-        _id: string;
-        passants: {};
-      }[] = [];
+    const granulometrys = await this.granulometry_repository.findAll();
 
-      const granulometrys = await this.granulometry_repository.findAll();
+    const granulometryData = aggregates.map((aggregate) => {
+      const granulometry = granulometrys.find(
+        ({ generalData }) =>
+          aggregate._id.toString() === generalData.material._id.toString(),
+      );
 
-      aggregates.forEach((aggregate) => {
-        const granulometry: any = granulometrys.find(({ generalData }) => {
-          const { material } = generalData;
-          return aggregate._id.toString() === material._id.toString();
-        });
+      const passants = {};
 
-        const { passant } = granulometry.step2Data;
-
-        let passants = {};
-
-        passant.forEach((p) => {
-          passants[p.sieve_label] = p.passant;
-        });
-
-        granulometry_data.push({
-          _id: aggregate._id,
-          passants: passants,
-        });
+      granulometry?.step2Data?.table_data?.forEach((item) => {
+        passants[item.sieve_label] = item.passant;
       });
 
-      const table_column_headers: string[] = [];
-      const table_rows = [];
+      return {
+        _id: aggregate._id,
+        passants,
+      };
+    });
 
-      table_column_headers.push('sieve_label');
+    const tableColumnHeaders = ['sieve_label'];
+    const tableRows = [];
 
-      AllSieves.forEach((sieve) => {
-        const contains = granulometry_data.some((aggregate) => sieve.label in aggregate.passants);
+    AllSieves.forEach((sieve) => {
+      const containsSieve = granulometryData.some(
+        (aggregate) => sieve.label in aggregate.passants,
+      );
 
-        if (contains) {
-          const aggregates_data = {};
-          granulometry_data.forEach((aggregate) => {
-            const { _id, passants } = aggregate;
+      if (!containsSieve) return;
 
-            aggregates_data['total_passant_'.concat(_id)] = passants[sieve.label];
-            aggregates_data['passant_'.concat(_id)] = null;
+      const aggregatesData = {};
 
-            // adicionando as colunas à tabela
-            if (!table_column_headers.some((header) => header.includes(_id))) {
-              table_column_headers.push('total_passant_'.concat(_id));
-              table_column_headers.push('passant_'.concat(_id));
-            }
-          });
-          table_rows.push({ sieve_label: sieve.label, ...aggregates_data });
+      granulometryData.forEach(({ _id, passants }) => {
+        const totalPassantKey = `total_passant_${_id}`;
+        const passantKey = `passant_${_id}`;
+
+        aggregatesData[totalPassantKey] = passants[sieve.label];
+        aggregatesData[passantKey] = null;
+
+        if (!tableColumnHeaders.includes(totalPassantKey)) {
+          tableColumnHeaders.push(totalPassantKey, passantKey);
         }
       });
 
-      this.logger.log(table_rows);
-      this.logger.log(table_column_headers);
+      tableRows.push({
+        sieve_label: sieve.label,
+        ...aggregatesData,
+      });
+    });
 
-      const table_data = {
-        table_column_headers,
-        table_rows,
-      };
-      //
+    this.logger.log(tableRows);
+    this.logger.log(tableColumnHeaders);
 
-      return table_data;
-    } catch (error) {
-      throw error;
-    }
+    return {
+      table_column_headers: tableColumnHeaders,
+      table_rows: tableRows,
+    };
   }
 
-async calculateGranulometry(body: any) {
-    try {
-      const { dnitBands, percentageInputs, tableRows } = body;
+  async calculateGranulometry(body: any) {
+    const { dnitBands, percentageInputs, tableRows } = body;
 
-      // Materiais
-      let percentsOfDosage = [];
+    // Materiais e porcentagens de dosagem
+    const percentsOfDosage = [];
+    const materialIds = [];
 
-      const ids1 = new Set();
+    Object.keys(percentageInputs[0]).forEach((key) => {
+      const id = key.split('_')[1];
 
-      Object.keys(percentageInputs[0]).forEach((key) => {
-        const id = key.split('_')[1];
-        ids1.add(id);
-        const value = percentageInputs[0][key];
-        const index = Array.from(ids1).indexOf(id);
-        percentsOfDosage[index] = { [id]: value };
-      });
-
-      const ids2 = new Set();
-
-      let percentsOfMaterials = [];
-
-      for (let i = 0; i < percentsOfDosage.length; i++) {
-        let obj = percentsOfDosage[i];
-        let key = Object.keys(obj)[0];
-        percentsOfMaterials.push(Array(20).fill({ [key]: null }));
+      if (!materialIds.includes(id)) {
+        materialIds.push(id);
+        percentsOfDosage.push({ [id]: percentageInputs[0][key] });
       }
+    });
 
-      let newTableRows = tableRows;
+    const percentsOfMaterials = percentsOfDosage.map((dosage) => {
+      const materialId = Object.keys(dosage)[0];
 
-      tableRows.forEach((element) => {
-        Object.keys(element).forEach((key) => {
-          if (key === 'sieve_label') {
-            const sieveLabel = element[key];
-            Object.keys(element).forEach((key2) => {
-              const stringIdx = key2.lastIndexOf('_');
-              if (stringIdx !== -1) {
-                const firstString = key2.substring(0, stringIdx);
-                if (firstString === 'total_passant') {
-                  const id = key2.substring(stringIdx + 1);
+      return Array(20).fill({ [materialId]: null });
+    });
 
-                  ids2.add(id);
-                  const value = element[key2];
-                  const internIndex = Array.from(ids2).indexOf(id);
-                  const sieveIndex = AllSieves.findIndex((sieve) => sieve.label === sieveLabel);
-                  if (sieveIndex !== -1) {
-                    percentsOfMaterials[internIndex][sieveIndex] = { [id]: value };
-                  }
-                }
-              }
-            });
-          }
-        });
+    // Preenchimento dos valores de granulometria dos materiais
+    const materialIndexes = new Map();
+
+    percentsOfDosage.forEach((dosage, index) => {
+      materialIndexes.set(Object.keys(dosage)[0], index);
+    });
+
+    tableRows.forEach((row) => {
+      const sieveIndex = AllSieves.findIndex(
+        (sieve) => sieve.label === row.sieve_label,
+      );
+
+      if (sieveIndex === -1) return;
+
+      Object.keys(row).forEach((key) => {
+        const lastIndex = key.lastIndexOf('_');
+
+        if (lastIndex === -1) return;
+
+        const property = key.substring(0, lastIndex);
+
+        if (property !== 'total_passant') return;
+
+        const id = key.substring(lastIndex + 1);
+        const materialIndex = materialIndexes.get(id);
+
+        if (materialIndex === undefined) return;
+
+        percentsOfMaterials[materialIndex][sieveIndex] = {
+          [id]: row[key],
+        };
       });
+    });
 
-      const axisX = [
-        76, 64, 50, 38, 32, 25, 19, 12.5, 9.5, 6.3, 4.8, 2.4, 2, 1.2, 0.85, 0.6, 0.43, 0.3, 0.25, 0.18, 0.15, 0.106,
-        0.075,
-      ];
-      let higherBandA = this.insertBlankPointsOnCurve(
-        [null, null, 100, 100, null, 100, 90, null, 65, null, 50, null, 40, null, null, 30, null, 20, null, 8],
-        axisX,
-      );
-      let lowerBandA = this.insertBlankPointsOnCurve(
-        [null, null, 100, 95, null, 75, 60, null, 35, null, 25, null, 20, null, null, 10, null, 5, null, 1],
-        axisX,
-      );
-      let higherBandB = this.insertBlankPointsOnCurve(
-        [null, null, null, 100, null, 100, 100, null, 80, null, 60, null, 45, null, null, 32, null, 20, null, 8],
-        axisX,
-      );
-      let lowerBandB = this.insertBlankPointsOnCurve(
-        [null, null, null, 100, null, 95, 80, null, 45, null, 28, null, 20, null, null, 10, null, 8, null, 3],
-        axisX,
-      );
-      let higherBandC = this.insertBlankPointsOnCurve(
-        [null, null, null, null, null, null, 100, 100, 90, null, 72, null, 50, null, null, 26, null, 16, null, 10],
-        axisX,
-      );
-      let lowerBandC = this.insertBlankPointsOnCurve(
-        [null, null, null, null, null, null, 100, 80, 70, null, 44, null, 22, null, null, 8, null, 4, null, 2],
-        axisX,
-      );
+    // Eixo X e bandas DNIT
+    const axisX = [
+      76, 64, 50, 38, 32, 25, 19, 12.5, 9.5, 6.3, 4.8, 2.4,
+      2, 1.2, 0.85, 0.6, 0.43, 0.3, 0.25, 0.18, 0.15, 0.106,
+      0.075,
+    ];
 
-      let band = { higher: [], lower: [] };
+    const bands = {
+      A: {
+        higher: [
+          null, null, 100, 100, null, 100, 90, null, 65, null,
+          50, null, 40, null, null, 30, null, 20, null, 8,
+        ],
+        lower: [
+          null, null, 100, 95, null, 75, 60, null, 35, null,
+          25, null, 20, null, null, 10, null, 5, null, 1,
+        ],
+      },
+      B: {
+        higher: [
+          null, null, null, 100, null, 100, 100, null, 80, null,
+          60, null, 45, null, null, 32, null, 20, null, 8,
+        ],
+        lower: [
+          null, null, null, 100, null, 95, 80, null, 45, null,
+          28, null, 20, null, null, 10, null, 8, null, 3,
+        ],
+      },
+      C: {
+        higher: [
+          null, null, null, null, null, null, 100, 100, 90, null,
+          72, null, 50, null, null, 26, null, 16, null, 10,
+        ],
+        lower: [
+          null, null, null, null, null, null, 100, 80, 70, null,
+          44, null, 22, null, null, 8, null, 4, null, 2,
+        ],
+      },
+    };
 
-      if (dnitBands === 'A') band = { higher: higherBandA, lower: lowerBandA };
-      else if (dnitBands === 'B') band = { higher: higherBandB, lower: lowerBandB };
-      else if (dnitBands === 'C') band = { higher: higherBandC, lower: lowerBandC };
-      
-      let sumOfPercents = [
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-      ];
+    let band = {
+      higher: [],
+      lower: [],
+    };
 
-      for (let i = 0; i < percentsOfMaterials.length; i++) {
-        for (let j = 0; j < 20; j++) {
-          let materialValue = Object.values(percentsOfMaterials[i][j])[0] as number;
-          let materialKey = Object.keys(percentsOfMaterials[i][j])[0];
+    if (bands[dnitBands]) {
+      band = {
+        higher: this.insertBlankPointsOnCurve(
+          [...bands[dnitBands].higher],
+          axisX,
+        ),
+        lower: this.insertBlankPointsOnCurve(
+          [...bands[dnitBands].lower],
+          axisX,
+        ),
+      };
+    }
 
-          if (materialValue !== null) {
-            let dosageObject = percentsOfDosage.find((e) => e.hasOwnProperty(materialKey));
-            let dosageValue = null;
+    // Cálculo da porcentagem total da composição
+    let sumOfPercents = Array(24).fill(null);
 
-            // Verifica se o objeto foi encontrado e, se sim, obtém o valor
-            if (dosageObject) {
-              dosageValue = dosageObject[materialKey];
-            }
+    percentsOfMaterials.forEach((material) => {
+      material.forEach((materialData, sieveIndex) => {
+        if (materialData === null) return;
 
-            if (materialValue !== null) {
-              let value = (materialValue * dosageValue) / 100;
-              percentsOfMaterials[i][j] = { [materialKey]: value };
-              sumOfPercents[j] += percentsOfMaterials[i][j][materialKey];
-            }
-          } else percentsOfMaterials[i][j] = null;
-        }
-      }
+        const materialId = Object.keys(materialData)[0];
+        const materialValue = Object.values(materialData)[0] as number;
 
-      tableRows.forEach((element) => {
-        Object.keys(element).forEach((keys) => {
-          const stringIndex = keys.indexOf('_');
-          const label = keys.substring(0, stringIndex);
-          const id = keys.substring(stringIndex + 1);
+        if (materialValue === null) return;
 
-          // Remove null values from the percentsOfMaterials array
-          const newArray = percentsOfMaterials.map((innerArray) =>
-            innerArray.filter((value) => value !== null)
-          );
+        const dosage = percentsOfDosage.find(
+          (item) => Object.prototype.hasOwnProperty.call(item, materialId),
+        );
 
-          const index = tableRows.indexOf(element);
+        const dosageValue = dosage ? dosage[materialId] : null;
 
-          if (label === 'passant') {
-            // Find the key in the current element that matches the pattern 'passant_${id}'
-            const key = Object.keys(tableRows[index]).find((k) => k === `passant_${id}`);
+        const value = (materialValue * dosageValue) / 100;
 
-            // If the key exists, find the corresponding value in the newArray
-            if (key) {
-              // Find the index in the newArray that contains the id
-              let newArrIndex = newArray.findIndex((e) => e[0] && e[0].hasOwnProperty(id));
+        material[sieveIndex] = {
+          [materialId]: value,
+        };
 
-              // If the index is not -1 and the value exists, insert the value into the newTableRows array
-              if (newArrIndex !== -1 && newArray[newArrIndex][index] && newArray[newArrIndex][index][id]) {
-                newTableRows[index][key] = newArray[newArrIndex][index][id];
-              } else {
-                // If the index is -1 or the value does not exist, add 'total_passant_${id}' with '---' to the object
-                if (!newTableRows[index]) newTableRows[index] = {}; // Make sure the object exists
-                newTableRows[index][`total_passant_${id}`] = '---';
-                console.log(`The id "${id}" was not found in the index ${index} of the newArray.`);
-              }
-            } else {
-              // If the key does not exist in the current element, add 'total_passant_${id}' with '---' to the object
-              if (!newTableRows[index]) newTableRows[index] = {}; // Make sure the object exists
-              newTableRows[index][`total_passant_${id}`] = '---';
-              console.log(`The key "passant_${id}" was not found in the object at index ${index}.`);
-            }
-          }
-        });
+        sumOfPercents[sieveIndex] =
+          (sumOfPercents[sieveIndex] ?? 0) + value;
       });
-      
-      const projections = [];
+    });
 
-      sumOfPercents.map((e, idx) => {
-        if (e !== null) {
-          const index = idx;
-          const sieve = AllSieves[index];
-          projections.push({ label: sieve.label, value: e.toFixed(2) });
-        }
-      });
+    // Atualização dos valores da tabela
+    const newTableRows = tableRows.map((row, rowIndex) => {
+      const updatedRow = { ...row };
 
-      sumOfPercents = this.insertBlankPointsOnCurve(sumOfPercents, axisX);
+      Object.keys(row).forEach((key) => {
+        const lastIndex = key.lastIndexOf('_');
 
-      const higherTolerance = [];
-      const lowerTolerance = [];
+        if (lastIndex === -1) return;
 
-      for (let i = 0; i < sumOfPercents.length; i++) {
-        if (sumOfPercents[i] === null) {
-          higherTolerance.push(null);
-          lowerTolerance.push(null);
+        const property = key.substring(0, lastIndex);
+
+        if (property !== 'passant') return;
+
+        const id = key.substring(lastIndex + 1);
+
+        const materialIndex = materialIndexes.get(id);
+        const sieveIndex = AllSieves.findIndex(
+          (sieve) => sieve.label === row.sieve_label,
+        );
+
+        const materialData =
+          materialIndex !== undefined && sieveIndex !== -1
+            ? percentsOfMaterials[materialIndex][sieveIndex]
+            : null;
+
+        const calculatedValue =
+          materialData && materialData[id] !== undefined
+            ? materialData[id]
+            : null;
+
+        if (calculatedValue !== null) {
+          updatedRow[key] = calculatedValue;
         } else {
-          let upperLimit = band.higher[i];
-          let lowerLimit = band.lower[i];
-
-          if (i < 9) {
-            upperLimit = Math.min(band.higher[i], sumOfPercents[i] + 7);
-            lowerLimit = Math.max(band.lower[i], sumOfPercents[i] - 7);
-          } else if (i > 8 && i < 16) {
-            upperLimit = Math.min(band.higher[i], sumOfPercents[i] + 5);
-            lowerLimit = Math.max(band.lower[i], sumOfPercents[i] - 5);
-          } else if (i > 15 && i < 19) {
-            upperLimit = Math.min(band.higher[i], sumOfPercents[i] + 3);
-            lowerLimit = Math.max(band.lower[i], sumOfPercents[i] - 3);
-          } else if (i === 19) {
-            upperLimit = Math.min(band.higher[i], sumOfPercents[i] + 2);
-            lowerLimit = Math.max(band.lower[i], sumOfPercents[i] - 2);
-          }
-
-          higherTolerance.push(upperLimit);
-          lowerTolerance.push(lowerLimit);
+          updatedRow[`total_passant_${id}`] = '---';
+          this.logger.warn(
+            `Material "${id}" não encontrado na linha ${rowIndex}.`,
+          );
         }
-      }
-
-      const pointsOfCurve = [];
-      for (let i = 0; i < sumOfPercents.length; i++) {
-        pointsOfCurve.push([
-          axisX[i],
-          band.higher[i],
-          higherTolerance[i],
-          sumOfPercents[i],
-          lowerTolerance[i],
-          band.lower[i],
-        ]);
-      }
-
-      newTableRows.map((row) => {
-        Object.values(row).some((value) => {
-          if (value === null) {
-            Object.keys(row).forEach((key) => {
-              if (row[key] === null) {
-                row[key] = '---';
-              }
-            });
-          }
-        });
       });
 
-      // 🟡 **1. Filtrar as bandas para manter apenas os pontos correspondentes às projections**
-     // 🟡 **1. Filtrar as bandas para manter apenas os pontos correspondentes às projections**
-// 🟡 **1. Filtrar as bandas para manter apenas os pontos correspondentes às projections**
-// No final do método calculateGranulometry, ANTES do return:
+      return updatedRow;
+    });
 
-// 🟡 **1. Filtrar as bandas CORRETAMENTE - VERSÃO SIMPLIFICADA**
-// 🟡 **SOLUÇÃO DEFINITIVA - Mapeamento correto**
-// 🟡 **CORREÇÃO DOS ÍNDICES - Versão final**
-// 🟡 **1. Filtrar as bandas CORRETAMENTE**
-// Função para garantir valores CORRETOS na banda C
-const ensureCorrectBandValues = (band, dnitBands) => {
-  if (dnitBands === 'C') {
-    console.log('=== APLICANDO CORREÇÃO PARA BANDA C ===');
-    
-    // Valores CORRETOS para Banda C
-    const correctValues = {
+    // Projeções da composição
+    const projections = sumOfPercents.reduce((result, value, index) => {
+      if (value !== null && AllSieves[index]) {
+        result.push({
+          label: AllSieves[index].label,
+          value: value.toFixed(2),
+        });
+      }
+
+      return result;
+    }, []);
+
+    sumOfPercents = this.insertBlankPointsOnCurve(
+      sumOfPercents,
+      axisX,
+    );
+
+    // Cálculo das tolerâncias
+    const higherTolerance = [];
+    const lowerTolerance = [];
+
+    sumOfPercents.forEach((value, index) => {
+      if (value === null) {
+        higherTolerance.push(null);
+        lowerTolerance.push(null);
+        return;
+      }
+
+      let tolerance = 0;
+
+      if (index < 9) {
+        tolerance = 7;
+      } else if (index < 16) {
+        tolerance = 5;
+      } else if (index < 19) {
+        tolerance = 3;
+      } else if (index === 19) {
+        tolerance = 2;
+      }
+
+      const upperLimit = Math.min(
+        band.higher[index],
+        value + tolerance,
+      );
+
+      const lowerLimit = Math.max(
+        band.lower[index],
+        value - tolerance,
+      );
+
+      higherTolerance.push(upperLimit);
+      lowerTolerance.push(lowerLimit);
+    });
+
+    // Pontos utilizados no gráfico
+    const pointsOfCurve = sumOfPercents.map((value, index) => [
+      axisX[index],
+      band.higher[index],
+      higherTolerance[index],
+      value,
+      lowerTolerance[index],
+      band.lower[index],
+    ]);
+
+    // Substituição de valores nulos na tabela
+    newTableRows.forEach((row) => {
+      Object.keys(row).forEach((key) => {
+        if (row[key] === null) {
+          row[key] = '---';
+        }
+      });
+    });
+
+    // Correção dos valores da Banda C
+    const correctBandCValues = {
       lower: {
-        6: 100,   // 3/4 pol - 19mm
-        8: 70,    // 3/8 pol - 9,5mm
-        10: 44,   // Nº4 - 4,8mm
-        12: 22,   // Nº8 - 2,4mm
-        14: 14,   // Nº16 - 1,2mm
-        15: 8,    // Nº30 - 0,6mm
-        17: 4,    // Nº50 - 0,3mm
-        19: 2     // Nº100 - 0,15mm
+        6: 100,
+        8: 70,
+        10: 44,
+        12: 22,
+        14: 14,
+        15: 8,
+        17: 4,
+        19: 2,
       },
       higher: {
-        6: 100,   // 3/4 pol - 19mm
-        8: 90,    // 3/8 pol - 9,5mm
-        10: 72,   // Nº4 - 4,8mm
-        12: 50,   // Nº8 - 2,4mm
-        14: 36.29, // Nº16 - 1,2mm
-        15: 26,   // Nº30 - 0,6mm
-        17: 16,   // Nº50 - 0,3mm
-        19: 10    // Nº100 - 0,15mm
-      }
+        6: 100,
+        8: 90,
+        10: 72,
+        12: 50,
+        14: 36.29,
+        15: 26,
+        17: 16,
+        19: 10,
+      },
     };
-    
-    // Aplicar correções
-    Object.keys(correctValues.lower).forEach(idxStr => {
-      const idx = parseInt(idxStr);
-      if (idx < band.lower.length) {
-        console.log(`Corrigindo band.lower[${idx}] de ${band.lower[idx]} para ${correctValues.lower[idx]}`);
-        band.lower[idx] = correctValues.lower[idx];
-      }
-    });
-    
-    Object.keys(correctValues.higher).forEach(idxStr => {
-      const idx = parseInt(idxStr);
-      if (idx < band.higher.length) {
-        console.log(`Corrigindo band.higher[${idx}] de ${band.higher[idx]} para ${correctValues.higher[idx]}`);
-        band.higher[idx] = correctValues.higher[idx];
-      }
-    });
-  }
-  
-  return band;
-};
-band = ensureCorrectBandValues(band, dnitBands);
-const filteredBand = {
-  lowerBand: [],
-  higherBand: []
-};
 
-// Mapeamento de CORREÇÃO baseado nos seus logs
-// AllSieves index → Band index correto
-const indexCorrection = {
-  6: 6, 
-  14: 15,  // "Nº30 - 0,6mm"   AllSieves: 14 → Band: 15
-  16: 17,  // "Nº50 - 0,3mm"   AllSieves: 16 → Band: 17  
-  18: 19   // "Nº100 - 0,15mm" AllSieves: 18 → Band: 19
-};
-
-// Para cada projection
-projections.forEach((proj) => {
-  const sieveLabel = proj.label;
-  
-  // 1. Encontrar índice no AllSieves
-  const sieveIndex = AllSieves.findIndex(sieve => sieve.label === sieveLabel);
-  
-  // 2. Aplicar correção se necessário
-  let bandIndex = sieveIndex;
-  if (indexCorrection[sieveIndex] !== undefined) {
-    bandIndex = indexCorrection[sieveIndex];
-  }
-  
-  // 3. Pegar valores da banda com índice CORRETO
-  let lowerValue = null;
-  let higherValue = null;
-  
-  if (bandIndex !== -1) {
-    if (bandIndex < band.lower.length) lowerValue = band.lower[bandIndex];
-    if (bandIndex < band.higher.length) higherValue = band.higher[bandIndex];
-  }
-  
-  filteredBand.lowerBand.push(lowerValue);
-  filteredBand.higherBand.push(higherValue);
-});
-
-// 🟡 **2. Criar dados formatados para a tabela (tableWithBands)**
-const tableWithBands = projections.map((proj, idx) => {
-  return {
-    sieve_label: proj.label,
-    projection: proj.value,
-    inferior: filteredBand.lowerBand[idx] !== null 
-      ? filteredBand.lowerBand[idx].toFixed(2) 
-      : '---',
-    superior: filteredBand.higherBand[idx] !== null 
-      ? filteredBand.higherBand[idx].toFixed(2) 
-      : '---'
-  };
-});
-
-// 🟡 **3. Debug para verificar**
-console.log('=== VALORES CORRETOS FINAIS ===');
-console.log('Peneira               | Projeção | Inferior | Superior');
-console.log('----------------------|----------|----------|----------');
-
-tableWithBands.forEach(row => {
-  console.log(`${row.sieve_label.padEnd(20)} | ${row.projection.padEnd(8)} | ${row.inferior.padEnd(8)} | ${row.superior}`);
-});
-
-// 🟡 **4. Retornar TODOS os dados necessários**
-const data = {
-  percentsOfMaterials,
-  sumOfPercents,
-  pointsOfCurve,
-  table_data: newTableRows,
-  projections,
-  bands: filteredBand,           // ← Bandas filtradas
-  dnitBands: band,               // ← Bandas completas (para o gráfico)
-  tableWithBands: tableWithBands // ← Dados já formatados para a tabela
-};
-
-return data;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async saveStep3Data(body: any, userId: string) {
-    try {
-      this.logger.log(
-        'save marshall granulometry composition step on granulometry-composition.marshall.service.ts > [body]',
-        { body },
+    if (dnitBands === 'C') {
+      Object.entries(correctBandCValues.lower).forEach(
+        ([index, value]) => {
+          band.lower[Number(index)] = value;
+        },
       );
 
-      const { name } = body.granulometryCompositionData;
-
-      const marshallExists: any = await this.marshallRepository.findOne(name, userId);
-
-      const { name: materialName, ...granulometryCompositionWithoutName } = body.granulometryCompositionData;
-
-      const marshallWithGranulometryComposition = {
-        ...marshallExists._doc,
-        granulometryCompositionData: granulometryCompositionWithoutName,
-      };
-
-      await this.marshallModel.updateOne({ _id: marshallExists._doc._id }, marshallWithGranulometryComposition);
-
-      if (marshallExists._doc.generalData.step < 3) {
-        await this.marshallRepository.saveStep(marshallExists, 3);
-      }
-
-      return true;
-    } catch (error) {
-      throw error;
+      Object.entries(correctBandCValues.higher).forEach(
+        ([index, value]) => {
+          band.higher[Number(index)] = value;
+        },
+      );
     }
+
+    // Mapeamento dos índices das peneiras
+    const indexCorrection = {
+      6: 6,
+      14: 15,
+      16: 17,
+      18: 19,
+    };
+
+    const filteredBand = {
+      lowerBand: [],
+      higherBand: [],
+    };
+
+    projections.forEach((projection) => {
+      const sieveIndex = AllSieves.findIndex(
+        (sieve) => sieve.label === projection.label,
+      );
+
+      const bandIndex =
+        indexCorrection[sieveIndex] !== undefined
+          ? indexCorrection[sieveIndex]
+          : sieveIndex;
+
+      filteredBand.lowerBand.push(
+        bandIndex !== -1 ? band.lower[bandIndex] ?? null : null,
+      );
+
+      filteredBand.higherBand.push(
+        bandIndex !== -1 ? band.higher[bandIndex] ?? null : null,
+      );
+    });
+
+    // Dados formatados para a tabela de bandas
+    const tableWithBands = projections.map((projection, index) => ({
+      sieve_label: projection.label,
+      projection: projection.value,
+      inferior:
+        filteredBand.lowerBand[index] !== null
+          ? filteredBand.lowerBand[index].toFixed(2)
+          : '---',
+      superior:
+        filteredBand.higherBand[index] !== null
+          ? filteredBand.higherBand[index].toFixed(2)
+          : '---',
+    }));
+
+    this.logger.log('Valores finais das projeções e bandas:');
+    this.logger.log(tableWithBands);
+
+    return {
+      percentsOfMaterials,
+      sumOfPercents,
+      pointsOfCurve,
+      table_data: newTableRows,
+      projections,
+      bands: filteredBand,
+      dnitBands: band,
+      tableWithBands,
+    };
   }
 
-  insertBlankPointsOnCurve(curve: number[], axisX: number[]): number[] {
+  
+  async saveStep3Data(body: any, userId: string) {
+    this.logger.log(
+      'save marshall granulometry composition step on granulometry-composition.marshall.service.ts > [body]',
+      { body },
+    );
+
+    const { name, ...granulometryCompositionWithoutName } =
+      body.granulometryCompositionData;
+
+    const marshallExists = await this.marshallRepository.findOne(
+      name,
+      userId,
+    );
+
+    await this.marshallModel.updateOne(
+      { _id: marshallExists._id },
+      {
+        $set: {
+          granulometryCompositionData: granulometryCompositionWithoutName,
+        },
+      },
+    );
+
+    if (marshallExists.step < 3) {
+      await this.marshallRepository.saveStep(marshallExists, 3);
+    }
+
+    return true;
+  }
+
+  insertBlankPointsOnCurve(
+    curve: number[],
+    axisX: number[],
+  ): number[] {
     for (let k = 0; k < curve.length; k++) {
-      if (curve[k] !== null) {
-        for (let i = k; i < curve.length; i++) {
-          if (curve[i] === null) {
-            for (let j = i; j < curve.length; j++) {
-              if (curve[j] !== null) {
-                curve = this.findEquationOfCurve(curve, axisX, curve[i - 1], curve[j], axisX[i - 1], axisX[j], i);
-                break;
-              }
-            }
-          }
+      if (curve[k] === null) continue;
+
+      for (let i = k; i < curve.length; i++) {
+        if (curve[i] !== null) continue;
+
+        for (let j = i; j < curve.length; j++) {
+          if (curve[j] === null) continue;
+
+          curve = this.findEquationOfCurve(
+            curve,
+            axisX,
+            curve[i - 1],
+            curve[j],
+            axisX[i - 1],
+            axisX[j],
+            i,
+          );
+
+          break;
         }
       }
     }
@@ -532,11 +511,16 @@ return data;
     x1: number,
     i: number,
   ): number[] {
-    if (y1 !== y2) {
-      let a = (y2 - y1) / (x2 - x1);
-      let b = (y1 * x2 - y2 * x1) / (x2 - x1);
-      curve[i] = a * axisX[i] + b;
-    } else curve[i] = y1;
+    if (y1 === y2) {
+      curve[i] = y1;
+      return curve;
+    }
+
+    const a = (y2 - y1) / (x2 - x1);
+    const b = (y1 * x2 - y2 * x1) / (x2 - x1);
+
+    curve[i] = a * axisX[i] + b;
+
     return curve;
   }
 }
