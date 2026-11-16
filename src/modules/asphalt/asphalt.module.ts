@@ -40,12 +40,12 @@ import { ElasticRecoveryModule } from './essays/elasticRecovery/elasticRecovery.
 import { ViscosityRotationalModule } from './essays/viscosityRotational/viscosityRotational.module';
 import { ViscosityRotational, ViscosityRotationalSchema } from './essays/viscosityRotational/schemas';
 // dosages
-import { Marshall, MarshallSchema } from './dosages/marshall/schemas'; 
+import { Marshall, MarshallSchema } from './dosages/marshall/schemas';
 import { MarshallModule } from './dosages/marshall/marshall.module';
 import { SuperpaveModule } from './dosages/superpave/superpave.module';
 import { IggModule } from './essays/igg/igg.module';
 import { Igg, IggSchema } from './essays/igg/schemas';
-import { Fwd, FwdSchema } from './essays/fwd/schema';
+import { FwdAnalysis, FwdAnalysisSchema } from './essays/fwd/schema/fwd.schema';
 import { FwdModule } from './essays/fwd/fwd.module';
 import { Superpave, SuperpaveSchema } from './dosages/superpave/schemas';
 
@@ -72,7 +72,7 @@ const Models: ModelDefinition[] = [
   { name: Marshall.name, schema: MarshallSchema },
   { name: Superpave.name, schema: SuperpaveSchema },
   { name: Igg.name, schema: IggSchema },
-  { name: Fwd.name, schema: FwdSchema },
+  { name: FwdAnalysis.name, schema: FwdAnalysisSchema },
   { name: Superpave.name, schema: SuperpaveSchema },
 ];
 

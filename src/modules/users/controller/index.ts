@@ -25,7 +25,11 @@ export class UsersController {
       connections: body.connections,
       lastLoginList: [new Date()],
       photo: null,
-
+      name: body.name,
+      email: body.email,
+      phone: body.phone,
+      dob: body.dob,
+      password: body.password,
     });
 
     if (user) this.logger.log(`user created with success > [id]: ${user._id}`);
@@ -77,4 +81,30 @@ export class UsersController {
 
     return user;
   }
+
+@Put('reset-password/:id')
+@ApiOperation({ summary: 'Reseta a senha de um usuário' })
+@ApiResponse({ status: 200, description: 'Senha resetada com sucesso!' })
+@ApiResponse({ status: 400, description: 'Usuário não encontrado!' })
+async resetPassword(
+  @Param('id') id: string, 
+  @Body() body: { password: string }
+): Promise<User> {
+  this.logger.log(`reset password for user > [id]: ${id}`);
+
+  const user = await this.usersService.resetPassword(id, body.password);
+
+  if (user) this.logger.log(`password reset with success > [user]: ${user._id}`);
+
+  return user;
+}
+
+@Put('complete-data/:id')
+@ApiOperation({ summary: 'Completa dados faltantes de um usuário' })
+async completeUserData(
+  @Param('id') id: string,
+  @Body() body: { email: string; name: string; password: string }
+): Promise<User> {
+  return await this.usersService.completeUserData(id, body);
+}
 }

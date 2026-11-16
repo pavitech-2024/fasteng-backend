@@ -21,6 +21,20 @@ export declare class GranulometryComposition_Marshall_Service {
         pointsOfCurve: any[];
         table_data: any;
         projections: any[];
+        bands: {
+            lowerBand: any[];
+            higherBand: any[];
+        };
+        dnitBands: {
+            higher: any[];
+            lower: any[];
+        };
+        tableWithBands: {
+            sieve_label: any;
+            projection: any;
+            inferior: any;
+            superior: any;
+        }[];
     }>;
     saveStep3Data(body: any, userId: string): Promise<boolean>;
     insertBlankPointsOnCurve(curve: number[], axisX: number[]): number[];

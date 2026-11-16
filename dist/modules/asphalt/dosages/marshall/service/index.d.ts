@@ -25,7 +25,9 @@ export declare class MarshallService {
     getAllDosages(userId: string): Promise<Marshall[]>;
     verifyInitMarshall(body: MarshallInitDto, userId: string): Promise<{
         success: boolean;
-        dosage: any;
+        dosage: import("mongoose").Document<unknown, {}, Marshall> & Marshall & Required<{
+            _id: string;
+        }>;
     } | {
         success: boolean;
         error: {
@@ -62,6 +64,7 @@ export declare class MarshallService {
         };
         dosage?: undefined;
     }>;
+    getAllDosagesFromAllUsers(page?: number, limit?: number): Promise<any>;
     saveMaterialSelectionStep(body: any, userId: string): Promise<{
         success: boolean;
         error?: undefined;
@@ -97,7 +100,7 @@ export declare class MarshallService {
             name: any;
         };
     }>;
-    calculateGranulometry(body: any): Promise<{
+    calculateStep3Data(body: any): Promise<{
         data: {
             percentsOfMaterials: any[];
             sumOfPercents: any[];
@@ -161,11 +164,27 @@ export declare class MarshallService {
     }>;
     getIndexesOfMissesSpecificGravity(aggregates: any): Promise<{
         data: {
-            missesSpecificGravity: {
-                value: any;
-                _id: any;
+            missesSpecificGravity: ({
+                value: number;
+                _id: string;
                 name: any;
-            }[];
+                hasRealData: boolean;
+                status: string;
+                materialType?: undefined;
+            } | {
+                value: number;
+                _id: string;
+                name: string;
+                materialType: "coarseAggregate" | "fineAggregate" | "filler" | "asphaltBinder" | "CAP" | "other";
+                hasRealData: boolean;
+                status: string;
+            })[];
+            summary: {
+                totalAggregates: number;
+                foundInDb: number;
+                hasRealData: number;
+                usingFallback: number;
+            };
         };
         success: boolean;
         error?: undefined;
@@ -205,7 +224,7 @@ export declare class MarshallService {
                 plusOne: any;
             };
             method: string;
-            listOfSpecificGravities: any;
+            listOfSpecificGravities: any[];
         };
         success: boolean;
         error?: undefined;
@@ -358,7 +377,10 @@ export declare class MarshallService {
     }>;
     confirmSpecificGravity(body: any): Promise<{
         data: {
-            confirmedSpecificGravity: any;
+            confirmedSpecificGravity: {
+                result: any;
+                type: string;
+            };
         };
         success: boolean;
         error?: undefined;
@@ -380,8 +402,8 @@ export declare class MarshallService {
                 values: {
                     volumeVoids: number;
                     apparentBulkSpecificGravity: number;
-                    vcb: number;
-                    vam: number;
+                    voidsFilledAsphalt: number;
+                    aggregateVolumeVoids: number;
                     ratioBitumenVoid: number;
                     stability: number;
                     fluency: number;
@@ -432,5 +454,53 @@ export declare class MarshallService {
             message: any;
             name: any;
         };
+    }>;
+    updateFatigueCurve(dosageId: string, fatigueData: {
+        k1?: number;
+        k2?: number;
+        observacoes?: string;
+    }): Promise<{
+        dosage: Marshall;
+        success: boolean;
+        error?: undefined;
+    } | {
+        success: boolean;
+        error: {
+            status: any;
+            message: any;
+            name: any;
+        };
+        dosage?: undefined;
+    }>;
+    updateResilienceModule(dosageId: string, resilienceData: {
+        moduloMedio?: number;
+        moduloInstantaneo?: number;
+        observacoes?: string;
+    }): Promise<{
+        dosage: Marshall;
+        success: boolean;
+        error?: undefined;
+    } | {
+        success: boolean;
+        error: {
+            status: any;
+            message: any;
+            name: any;
+        };
+        dosage?: undefined;
+    }>;
+    saveCompleteDosage(userId: string, completeData: any): Promise<{
+        success: boolean;
+        data: any;
+        message: string;
+        error?: undefined;
+    } | {
+        success: boolean;
+        error: {
+            message: any;
+            name: any;
+        };
+        data?: undefined;
+        message?: undefined;
     }>;
 }

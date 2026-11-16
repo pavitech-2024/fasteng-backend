@@ -33,11 +33,17 @@ let Calc_Rtfo_Service = Calc_Rtfo_Service_1 = class Calc_Rtfo_Service {
                 const weightLossAverage = resultList.reduce((total, sample) => total + sample.weightLoss, 0) / resultList.length;
                 const { material } = generalData;
                 const alerts = [];
-                if ((material.description.classification_CAP === 'CAP 30/45' || material.description.classification_CAP === 'CAP 50/70' || material.description.classification_CAP === 'CAP 85/100' || material.description.classification_CAP === 'CAP 150/200') &&
-                    Math.abs(weightLossAverage) > 0.50) {
+                if ((material.description.classification_CAP === 'CAP 30/45' ||
+                    material.description.classification_CAP === 'CAP 50/70' ||
+                    material.description.classification_CAP === 'CAP 85/100' ||
+                    material.description.classification_CAP === 'CAP 150/200') &&
+                    Math.abs(weightLossAverage) > 0.5) {
                     alerts.push(`A variação de massa para o ${material.description.classification_CAP} não deve ser superior a 0,5%.`);
                 }
-                if ((material.description.classification_AMP === 'AMP 50/65' || material.description.classification_AMP === 'AMP 55/75' || material.description.classification_AMP === 'AMP 60/85' || material.description.classification_AMP === 'AMP 65/90') &&
+                if ((material.description.classification_AMP === 'AMP 50/65' ||
+                    material.description.classification_AMP === 'AMP 55/75' ||
+                    material.description.classification_AMP === 'AMP 60/85' ||
+                    material.description.classification_AMP === 'AMP 65/90') &&
                     Math.abs(weightLossAverage) > 1) {
                     alerts.push(`A variação de massa para o ${material.description.classification_AMP} não deve ser superior a 1%.`);
                 }

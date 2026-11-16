@@ -41,7 +41,7 @@ export class SofteningPointController {
   @ApiOperation({ summary: 'Calcula os resultados do ensaio de ponto de amolecimento com os dados enviados.' })
   @ApiResponse({
     status: 200,
-    description: 'Resultados d ensaio de ponto de amolecimento calculados com sucesso.',
+    description: 'Resultados do ensaio de ponto de amolecimento calculados com sucesso.',
     content: { 'application/json': { schema: { example: { success: true, data: 'essay data' } } } },
   })
   @ApiResponse({ status: 400, description: 'Erro ao calcular os resultados do ensaio de ponto de amolecimento com os dados enviados.' })
@@ -64,8 +64,9 @@ export class SofteningPointController {
     content: { 'application/json': { schema: { example: { success: true, data: 'essay data' } } } },
   })
   @ApiResponse({ status: 400, description: 'Erro ao salvar os dados do ensaio de ponto de amolecimento no banco de dados.' })
-  async saveEssay(@Res() response: Response, @Body() body: Calc_SofteningPoint_Dto & Calc_SofteningPoint_Out) {
+  async saveEssay(@Res() response: Response, @Body() body: any) {
     this.logger.log('save softeningPoint > [body]');
+    this.logger.debug('Body received:', JSON.stringify(body));
 
     const softeningPoint = await this.softeningPointService.saveEssay(body);
 

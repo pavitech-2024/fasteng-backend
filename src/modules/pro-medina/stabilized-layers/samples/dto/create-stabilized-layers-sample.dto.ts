@@ -7,7 +7,4 @@ export class CreateStabilizedLayersSampleDto {
 
   @IsNotEmpty()
   step2Data: StabilizedLayers_Sample['step2Data'];
-
-  @IsNotEmpty()
-  step3Data: StabilizedLayers_Sample['step3Data'];
 }
