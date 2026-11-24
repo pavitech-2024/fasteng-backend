@@ -50,7 +50,9 @@ export declare class MarshallService {
         };
     }>;
     getDosageById(dosageId: string): Promise<{
-        dosage: Marshall;
+        dosage: import("mongoose").Document<unknown, {}, Marshall> & Marshall & Required<{
+            _id: string;
+        }>;
         success: boolean;
         materials?: undefined;
         error?: undefined;
@@ -460,7 +462,9 @@ export declare class MarshallService {
         k2?: number;
         observacoes?: string;
     }): Promise<{
-        dosage: Marshall;
+        dosage: import("mongoose").Document<unknown, {}, Marshall> & Marshall & Required<{
+            _id: string;
+        }>;
         success: boolean;
         error?: undefined;
     } | {
@@ -477,7 +481,9 @@ export declare class MarshallService {
         moduloInstantaneo?: number;
         observacoes?: string;
     }): Promise<{
-        dosage: Marshall;
+        dosage: import("mongoose").Document<unknown, {}, Marshall> & Marshall & Required<{
+            _id: string;
+        }>;
         success: boolean;
         error?: undefined;
     } | {

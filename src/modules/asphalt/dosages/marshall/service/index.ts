@@ -13,6 +13,12 @@ import { VolumetricParameters_Marshall_Service } from "./volumetric-parameters.s
 import { OptimumBinderContent_Marshall_Service } from "./optimum-binder.marshall.service";
 import { ConfirmCompression_Marshall_Service } from "./confirm-compression.marshall.service";
 
+type MarshallError = {
+  status?: number;
+  name?: string;
+  message?: string;
+};
+
 @Injectable()
 export class MarshallService {
   private logger = new Logger(MarshallService.name);
@@ -46,16 +52,17 @@ export class MarshallService {
   }
 
   async verifyInitMarshall(body: MarshallInitDto, userId: string) {
-    try {
-      const dosage = await this.generalData_Service.verifyInitMarshall(body, userId);
+  try {
+    const dosage = await this.generalData_Service.verifyInitMarshall(
+      body,
+      userId,
+    );
 
-      return dosage;
-    } catch (error) {
-      this.logger.error(`error on verify init > [error]: ${error}`);
-      const { status, name, message } = error;
-      return { success: false, error: { status, message, name } };
-    }
-  }
+    return dosage;
+  } catch (error: any) {
+  const { status, name, message } = error;
+}
+}
 
   async getUserMaterials(userId: string) {
     try {
@@ -64,7 +71,7 @@ export class MarshallService {
       this.logger.log(`materials returned > [materials]`)
 
       return { materials, success: true };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on getting all materials by user id > [error]: ${error}`);
       const { status, name, message } = error;
       return { materials: [], success: false, error: { status, message, name } };
@@ -78,7 +85,7 @@ export class MarshallService {
       this.logger.log(`dosage returned > [dosage]`);
 
       return { dosage, success: true };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on getting dosage by id > [error]: ${error}`);
       const { status, name, message } = error;
       return { materials: [], success: false, error: { status, message, name } };
@@ -115,7 +122,7 @@ async getAllDosagesFromAllUsers(page = 1, limit = 10): Promise<any> {
       const success = await this.materialSelection_Service.saveMaterials(body, userId);
 
       return { success }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on save materials data marshall step > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
@@ -279,7 +286,7 @@ async getAllDosagesFromAllUsers(page = 1, limit = 10): Promise<any> {
         data,
         success: true,
       }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on getting the step 3 data > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
@@ -319,7 +326,7 @@ async getAllDosagesFromAllUsers(page = 1, limit = 10): Promise<any> {
       };
 
       return { data, success: true };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on getting the step 3 data > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
@@ -331,7 +338,7 @@ async getAllDosagesFromAllUsers(page = 1, limit = 10): Promise<any> {
       const success = await this.granulometryComposition_Service.saveStep3Data(body, userId);
 
       return { success }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on save materials data abcp step > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
@@ -352,7 +359,7 @@ async getAllDosagesFromAllUsers(page = 1, limit = 10): Promise<any> {
         data, 
         success: true 
       };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on getting the step 3 data > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
@@ -364,7 +371,7 @@ async getAllDosagesFromAllUsers(page = 1, limit = 10): Promise<any> {
       const success = await this.setBinderTrial_Service.saveStep4Data(body, userId);
 
       return { success }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on save step data of marshall dosage > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
@@ -376,7 +383,7 @@ async getAllDosagesFromAllUsers(page = 1, limit = 10): Promise<any> {
       const data = await this.maximumMixtureDensity_Service.getIndexesOfMissesSpecificGravity(aggregates);
 
       return { data, success: true }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on save step data of marshall dosage > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
@@ -397,7 +404,7 @@ async getAllDosagesFromAllUsers(page = 1, limit = 10): Promise<any> {
         data, 
         success: true 
       };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on getting the step 5 dmt data > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
@@ -418,7 +425,7 @@ async getAllDosagesFromAllUsers(page = 1, limit = 10): Promise<any> {
         data, 
         success: true 
       };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on getting the step 5 dmt data > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
@@ -438,7 +445,7 @@ async getAllDosagesFromAllUsers(page = 1, limit = 10): Promise<any> {
         data, 
         success: true 
       };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on getting the step 5 dmt data > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
@@ -450,7 +457,7 @@ async getAllDosagesFromAllUsers(page = 1, limit = 10): Promise<any> {
       const success = await this.maximumMixtureDensity_Service.saveMistureMaximumDensityData(body, userId);
 
       return { success }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on save step data of marshall dosage > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
@@ -469,7 +476,7 @@ async getAllDosagesFromAllUsers(page = 1, limit = 10): Promise<any> {
         data, 
         success: true 
       };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on setting step 6 volumetric parameters data > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
@@ -481,7 +488,7 @@ async getAllDosagesFromAllUsers(page = 1, limit = 10): Promise<any> {
       const success = await this.volumetricParameters_Service.saveVolumetricParametersData(body, userId);
 
       return { success }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on save step 6 data of marshall dosage > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
@@ -500,7 +507,7 @@ async getAllDosagesFromAllUsers(page = 1, limit = 10): Promise<any> {
         data, 
         success: true 
       };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on setting step 7 optimum binder data > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
@@ -520,7 +527,7 @@ async getAllDosagesFromAllUsers(page = 1, limit = 10): Promise<any> {
         data, 
         success: true 
       };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on setting step 7 optimum binder dosage graph data > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
@@ -539,7 +546,7 @@ async getAllDosagesFromAllUsers(page = 1, limit = 10): Promise<any> {
         data, 
         success: true 
       };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on setting step 7 optimum binder dosage graph data > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
@@ -551,7 +558,7 @@ async getAllDosagesFromAllUsers(page = 1, limit = 10): Promise<any> {
       const success = await this.optimumBinder_Service.saveStep7Data(body, userId);
 
       return { success }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on save step 7 data of marshall dosage > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
@@ -570,7 +577,7 @@ async getAllDosagesFromAllUsers(page = 1, limit = 10): Promise<any> {
         data, 
         success: true 
       };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on confirming step 8 specific gravity > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
@@ -590,7 +597,7 @@ async getAllDosagesFromAllUsers(page = 1, limit = 10): Promise<any> {
         data, 
         success: true 
       };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on confirming step 8 specific gravity > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
@@ -602,7 +609,7 @@ async getAllDosagesFromAllUsers(page = 1, limit = 10): Promise<any> {
       const success = await this.confirmCompression_Service.saveStep8Data(body, userId);
 
       return { success }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on save step 8 data of marshall dosage > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
@@ -614,7 +621,7 @@ async getAllDosagesFromAllUsers(page = 1, limit = 10): Promise<any> {
       const success = await this.generalData_Service.saveMarshallDosage(body, userId);
 
       return { success }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on save step 8 data of marshall dosage > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
@@ -626,7 +633,7 @@ async getAllDosagesFromAllUsers(page = 1, limit = 10): Promise<any> {
       const success = await this.generalData_Service.deleteMarshallDosage(id);
 
       return { success }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on delete marshall dosage > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
@@ -679,7 +686,7 @@ async updateFatigueCurve(dosageId: string, fatigueData: {
       dosage: updatedDosage, 
       success: true 
     };
-  } catch (error) {
+  } catch (error: any) {
     this.logger.error(`❌ error on updating fatigue curve data: ${error}`);
     const { status, name, message } = error;
     return { success: false, error: { status, message, name } };
@@ -733,7 +740,7 @@ async updateResilienceModule(dosageId: string, resilienceData: {
       dosage: updatedDosage, 
       success: true 
     };
-  } catch (error) {
+  } catch (error: any) {
     this.logger.error(`❌ error on updating resilience module data: ${error}`);
     const { status, name, message } = error;
     return { success: false, error: { status, message, name } };
@@ -782,7 +789,7 @@ async saveCompleteDosage(userId: string, completeData: any) {
       message: existingDosage ? 'Dosagem atualizada com sucesso' : 'Dosagem criada com sucesso'
     };
 
-  } catch (error) {
+  } catch (error: any) {
     this.logger.error(`❌ Erro ao salvar dosagem completa: ${error.message}`);
     return {
       success: false,

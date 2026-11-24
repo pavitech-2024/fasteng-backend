@@ -13,7 +13,9 @@ export declare class GeneralData_Marshall_Service {
             _id: string;
         }>;
     }>;
-    getDosageById(dosageId: string): Promise<Marshall>;
+    getDosageById(dosageId: string): Promise<import("mongoose").Document<unknown, {}, Marshall> & Marshall & Required<{
+        _id: string;
+    }>>;
     saveMarshallDosage(body: any, userId: string): Promise<boolean>;
     deleteMarshallDosage(id: string): Promise<boolean>;
 }

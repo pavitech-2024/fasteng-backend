@@ -50,7 +50,7 @@ export class MarshallService {
       const dosage = await this.generalData_Service.verifyInitMarshall(body, userId);
 
       return dosage;
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on verify init > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
@@ -64,7 +64,7 @@ export class MarshallService {
       this.logger.log(`materials returned > [materials]`)
 
       return { materials, success: true };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on getting all materials by user id > [error]: ${error}`);
       const { status, name, message } = error;
       return { materials: [], success: false, error: { status, message, name } };
@@ -78,7 +78,7 @@ export class MarshallService {
       this.logger.log(`dosage returned > [dosage]`);
 
       return { dosage, success: true };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on getting dosage by id > [error]: ${error}`);
       const { status, name, message } = error;
       return { materials: [], success: false, error: { status, message, name } };
@@ -90,7 +90,7 @@ export class MarshallService {
       const success = await this.materialSelection_Service.saveMaterials(body, userId);
 
       return { success }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on save materials data marshall step > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
@@ -131,7 +131,7 @@ export class MarshallService {
       };
 
       return { data, success: true };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on getting the step 3 data > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
@@ -295,7 +295,7 @@ export class MarshallService {
         data,
         success: true,
       }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on getting the step 3 data > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
@@ -335,7 +335,7 @@ export class MarshallService {
       };
 
       return { data, success: true };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on getting the step 3 data > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
@@ -347,7 +347,7 @@ export class MarshallService {
       const success = await this.granulometryComposition_Service.saveStep3Data(body, userId);
 
       return { success }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on save materials data abcp step > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
@@ -368,7 +368,7 @@ export class MarshallService {
         data, 
         success: true 
       };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on getting the step 3 data > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
@@ -380,7 +380,7 @@ export class MarshallService {
       const success = await this.setBinderTrial_Service.saveStep4Data(body, userId);
 
       return { success }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on save step data of marshall dosage > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
@@ -392,7 +392,7 @@ export class MarshallService {
       const data = await this.maximumMixtureDensity_Service.getIndexesOfMissesSpecificGravity(aggregates);
 
       return { data, success: true }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on save step data of marshall dosage > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
@@ -413,7 +413,7 @@ export class MarshallService {
         data, 
         success: true 
       };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on getting the step 5 dmt data > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
@@ -434,7 +434,7 @@ export class MarshallService {
         data, 
         success: true 
       };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on getting the step 5 dmt data > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
@@ -454,7 +454,7 @@ export class MarshallService {
         data, 
         success: true 
       };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on getting the step 5 dmt data > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
@@ -466,7 +466,7 @@ export class MarshallService {
       const success = await this.maximumMixtureDensity_Service.saveMistureMaximumDensityData(body, userId);
 
       return { success }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on save step data of marshall dosage > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
@@ -485,7 +485,7 @@ export class MarshallService {
         data, 
         success: true 
       };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on setting step 6 volumetric parameters data > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
@@ -497,7 +497,7 @@ export class MarshallService {
       const success = await this.volumetricParameters_Service.saveVolumetricParametersData(body, userId);
 
       return { success }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on save step 6 data of marshall dosage > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
@@ -516,7 +516,7 @@ export class MarshallService {
         data, 
         success: true 
       };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on setting step 7 optimum binder data > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
@@ -536,7 +536,7 @@ export class MarshallService {
         data, 
         success: true 
       };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on setting step 7 optimum binder dosage graph data > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
@@ -555,7 +555,7 @@ export class MarshallService {
         data, 
         success: true 
       };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on setting step 7 optimum binder dosage graph data > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
@@ -567,7 +567,7 @@ export class MarshallService {
       const success = await this.optimumBinder_Service.saveStep7Data(body, userId);
 
       return { success }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on save step 7 data of marshall dosage > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
@@ -586,7 +586,7 @@ export class MarshallService {
         data, 
         success: true 
       };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on confirming step 8 specific gravity > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
@@ -606,7 +606,7 @@ export class MarshallService {
         data, 
         success: true 
       };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on confirming step 8 specific gravity > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
@@ -618,7 +618,7 @@ export class MarshallService {
       const success = await this.confirmCompression_Service.saveStep8Data(body, userId);
 
       return { success }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on save step 8 data of marshall dosage > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
@@ -630,7 +630,7 @@ export class MarshallService {
       const success = await this.generalData_Service.saveMarshallDosage(body, userId);
 
       return { success }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on save step 8 data of marshall dosage > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
@@ -642,7 +642,7 @@ export class MarshallService {
       const success = await this.generalData_Service.deleteMarshallDosage(id);
 
       return { success }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on delete marshall dosage > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };

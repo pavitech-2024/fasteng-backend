@@ -43,18 +43,15 @@ let MarshallRepository = class MarshallRepository {
     }
     findOne(name, userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const dosage = yield this.marshallModel.findOne({
+            return this.marshallModel.findOne({
                 "generalData.name": name,
-                "generalData.userId": userId
+                "generalData.userId": userId,
             });
-            return dosage;
         });
     }
     findOneAndUpdate(marshallFilterQuery, marshall) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.marshallModel.findOneAndUpdate(marshallFilterQuery, marshall, {
-                new: true,
-            });
+            return this.marshallModel.findOneAndUpdate(marshallFilterQuery, marshall, { new: true });
         });
     }
     findById(dosageId) {
@@ -64,10 +61,9 @@ let MarshallRepository = class MarshallRepository {
     }
     createPartialMarshall(marshall, userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const createdPartialMarshall = yield this.marshallModel.create({
+            return this.marshallModel.create({
                 generalData: Object.assign(Object.assign({}, marshall.generalData), { userId }),
             });
-            return createdPartialMarshall;
         });
     }
     saveStep(marshall, step) {
@@ -77,13 +73,16 @@ let MarshallRepository = class MarshallRepository {
     }
     findByIdAndUpdate(id, update, options) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.marshallModel.findByIdAndUpdate(id, update, Object.assign({ new: true }, options)).exec();
+            return this.marshallModel
+                .findByIdAndUpdate(id, update, Object.assign({ new: true }, options))
+                .exec();
         });
     }
     findAllWithPagination(skip, limit) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.marshallModel.find()
-                .select('generalData.userId generalData.name generalData.step')
+            return this.marshallModel
+                .find()
+                .select("generalData.userId generalData.name step")
                 .skip(skip)
                 .limit(limit)
                 .lean()
