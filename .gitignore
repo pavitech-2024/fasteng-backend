@@ -39,5 +39,7 @@ lerna-debug.log*
 # .env
 
 # bash
+dist
+*.tsbuildinfo
 
 bash.exe.stackdump

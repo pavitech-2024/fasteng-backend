@@ -14,4 +14,5 @@ export declare class MaterialSelection_Superpave_Service {
     private readonly rotationalViscosity_repository;
     private logger;
     constructor(superpaveModel: Model<SuperpaveDocument>, material_repository: MaterialsRepository, granulometry_repository: AsphaltGranulometryRepository, specifyMass_repository: SpecifyMassRepository, superpaveRepository: SuperpaveRepository, rotationalViscosity_repository: ViscosityRotationalRepository);
+    getMaterials(userId: string): Promise<import("../../../materials/schemas").Material[]>;
 }
