@@ -22,8 +22,4 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Object)
 ], CreateGranularLayersSampleDto.prototype, "step2Data", void 0);
-__decorate([
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", Object)
-], CreateGranularLayersSampleDto.prototype, "step3Data", void 0);
 //# sourceMappingURL=create-granular-layers-sample.dto.js.map

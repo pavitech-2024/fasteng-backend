@@ -13,6 +13,12 @@ import { VolumetricParameters_Marshall_Service } from "./volumetric-parameters.s
 import { OptimumBinderContent_Marshall_Service } from "./optimum-binder.marshall.service";
 import { ConfirmCompression_Marshall_Service } from "./confirm-compression.marshall.service";
 
+type MarshallError = {
+  status?: number;
+  name?: string;
+  message?: string;
+};
+
 @Injectable()
 export class MarshallService {
   private logger = new Logger(MarshallService.name);
@@ -46,16 +52,17 @@ export class MarshallService {
   }
 
   async verifyInitMarshall(body: MarshallInitDto, userId: string) {
-    try {
-      const dosage = await this.generalData_Service.verifyInitMarshall(body, userId);
+  try {
+    const dosage = await this.generalData_Service.verifyInitMarshall(
+      body,
+      userId,
+    );
 
-      return dosage;
-    } catch (error) {
-      this.logger.error(`error on verify init > [error]: ${error}`);
-      const { status, name, message } = error;
-      return { success: false, error: { status, message, name } };
-    }
-  }
+    return dosage;
+  } catch (error: any) {
+  const { status, name, message } = error;
+}
+}
 
   async getUserMaterials(userId: string) {
     try {
@@ -64,7 +71,7 @@ export class MarshallService {
       this.logger.log(`materials returned > [materials]`)
 
       return { materials, success: true };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on getting all materials by user id > [error]: ${error}`);
       const { status, name, message } = error;
       return { materials: [], success: false, error: { status, message, name } };
@@ -78,19 +85,44 @@ export class MarshallService {
       this.logger.log(`dosage returned > [dosage]`);
 
       return { dosage, success: true };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on getting dosage by id > [error]: ${error}`);
       const { status, name, message } = error;
       return { materials: [], success: false, error: { status, message, name } };
     }
   }
+// MarshallService
+async getAllDosagesFromAllUsers(page = 1, limit = 10): Promise<any> {
+  try {
+    const skip = (page - 1) * limit;
+    
+    // Busca com paginação
+    const [allDosages, total] = await Promise.all([
+      this.marshall_repository.findAllWithPagination(skip, limit),
+      this.marshall_repository.countAll()
+    ]);
+
+    this.logger.log(`📊 Retornando ${allDosages.length} dosagens de ${total} (página ${page})`);
+
+    return {
+      data: allDosages,
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
+      hasMore: skip + allDosages.length < total
+    };
+  } catch (error: any) {
+    this.logger.error(`❌ Erro ao buscar todas as dosagens: ${error?.message || error}`);
+    throw error;
+  }
+}
 
   async saveMaterialSelectionStep(body: any, userId: string) {
     try {
       const success = await this.materialSelection_Service.saveMaterials(body, userId);
 
       return { success }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on save materials data marshall step > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
@@ -254,14 +286,14 @@ export class MarshallService {
         data,
         success: true,
       }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on getting the step 3 data > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
     }
   }
 
-  async calculateGranulometry(body: any) {
+  async calculateStep3Data(body: any) {
     try {
       const { dnitBands } = body;
 
@@ -294,7 +326,7 @@ export class MarshallService {
       };
 
       return { data, success: true };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on getting the step 3 data > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
@@ -306,7 +338,7 @@ export class MarshallService {
       const success = await this.granulometryComposition_Service.saveStep3Data(body, userId);
 
       return { success }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on save materials data abcp step > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
@@ -327,7 +359,7 @@ export class MarshallService {
         data, 
         success: true 
       };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on getting the step 3 data > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
@@ -339,7 +371,7 @@ export class MarshallService {
       const success = await this.setBinderTrial_Service.saveStep4Data(body, userId);
 
       return { success }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on save step data of marshall dosage > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
@@ -351,7 +383,7 @@ export class MarshallService {
       const data = await this.maximumMixtureDensity_Service.getIndexesOfMissesSpecificGravity(aggregates);
 
       return { data, success: true }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on save step data of marshall dosage > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
@@ -372,7 +404,7 @@ export class MarshallService {
         data, 
         success: true 
       };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on getting the step 5 dmt data > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
@@ -393,7 +425,7 @@ export class MarshallService {
         data, 
         success: true 
       };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on getting the step 5 dmt data > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
@@ -413,7 +445,7 @@ export class MarshallService {
         data, 
         success: true 
       };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on getting the step 5 dmt data > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
@@ -425,7 +457,7 @@ export class MarshallService {
       const success = await this.maximumMixtureDensity_Service.saveMistureMaximumDensityData(body, userId);
 
       return { success }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on save step data of marshall dosage > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
@@ -444,7 +476,7 @@ export class MarshallService {
         data, 
         success: true 
       };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on setting step 6 volumetric parameters data > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
@@ -456,7 +488,7 @@ export class MarshallService {
       const success = await this.volumetricParameters_Service.saveVolumetricParametersData(body, userId);
 
       return { success }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on save step 6 data of marshall dosage > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
@@ -475,7 +507,7 @@ export class MarshallService {
         data, 
         success: true 
       };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on setting step 7 optimum binder data > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
@@ -495,7 +527,7 @@ export class MarshallService {
         data, 
         success: true 
       };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on setting step 7 optimum binder dosage graph data > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
@@ -514,7 +546,7 @@ export class MarshallService {
         data, 
         success: true 
       };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on setting step 7 optimum binder dosage graph data > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
@@ -526,7 +558,7 @@ export class MarshallService {
       const success = await this.optimumBinder_Service.saveStep7Data(body, userId);
 
       return { success }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on save step 7 data of marshall dosage > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
@@ -545,7 +577,7 @@ export class MarshallService {
         data, 
         success: true 
       };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on confirming step 8 specific gravity > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
@@ -565,7 +597,7 @@ export class MarshallService {
         data, 
         success: true 
       };
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on confirming step 8 specific gravity > [error]: ${error}`);
       const { status, name, message } = error;
       return { data: null, success: false, error: { status, message, name } };
@@ -577,7 +609,7 @@ export class MarshallService {
       const success = await this.confirmCompression_Service.saveStep8Data(body, userId);
 
       return { success }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on save step 8 data of marshall dosage > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
@@ -589,7 +621,7 @@ export class MarshallService {
       const success = await this.generalData_Service.saveMarshallDosage(body, userId);
 
       return { success }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on save step 8 data of marshall dosage > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
@@ -601,10 +633,174 @@ export class MarshallService {
       const success = await this.generalData_Service.deleteMarshallDosage(id);
 
       return { success }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`error on delete marshall dosage > [error]: ${error}`);
       const { status, name, message } = error;
       return { success: false, error: { status, message, name } };
     }
   }
+async updateFatigueCurve(dosageId: string, fatigueData: { 
+  k1?: number; 
+  k2?: number; 
+  observacoes?: string;
+}) {
+  try {
+    const dosage = await this.marshall_repository.findById(dosageId);
+    
+    if (!dosage) {
+      throw new NotFound(`Dosagem com ID ${dosageId} não encontrada`);
+    }
+
+    // ✅ CORRETO: Preserva dados existentes
+    const updateData: any = {
+      ...(dosage.fatigueCurveData || {}), // Mantém dados antigos
+      ...fatigueData,                      // Atualiza com novos
+      updatedAt: new Date(),
+    };
+
+    // Garantir que createdAt seja preservado
+    if (dosage.fatigueCurveData?.createdAt) {
+      updateData.createdAt = dosage.fatigueCurveData.createdAt;
+    } else if (!updateData.createdAt) {
+      updateData.createdAt = new Date();
+    }
+
+    // Converter para número
+    if (updateData.k1 !== undefined) updateData.k1 = Number(updateData.k1);
+    if (updateData.k2 !== undefined) updateData.k2 = Number(updateData.k2);
+
+    // ✅ CORRETO: Com { new: true }
+    const updatedDosage = await this.marshall_repository.findByIdAndUpdate(
+      dosageId,
+      {
+        $set: {
+          'fatigueCurveData': updateData,
+        },
+      },
+      { new: true } // 👈 ESSENCIAL!
+    );
+
+    this.logger.log(`✅ fatigue curve data updated for dosage: ${dosageId}`);
+
+    return { 
+      dosage: updatedDosage, 
+      success: true 
+    };
+  } catch (error: any) {
+    this.logger.error(`❌ error on updating fatigue curve data: ${error}`);
+    const { status, name, message } = error;
+    return { success: false, error: { status, message, name } };
+  }
+}
+
+async updateResilienceModule(dosageId: string, resilienceData: {
+  moduloMedio?: number;
+  moduloInstantaneo?: number;
+  observacoes?: string;
+}) {
+  try {
+    const dosage = await this.marshall_repository.findById(dosageId);
+    
+    if (!dosage) {
+      throw new NotFound(`Dosagem com ID ${dosageId} não encontrada`);
+    }
+
+    // ✅ CORRETO: Preserva dados existentes
+    const updateData: any = {
+      ...(dosage.resilienceModuleData || {}), // Mantém dados antigos
+      ...resilienceData,                       // Atualiza com novos
+      updatedAt: new Date(),
+    };
+
+    // Garantir que createdAt seja preservado
+    if (dosage.resilienceModuleData?.createdAt) {
+      updateData.createdAt = dosage.resilienceModuleData.createdAt;
+    } else if (!updateData.createdAt) {
+      updateData.createdAt = new Date();
+    }
+
+    // Converter para número
+    if (updateData.moduloMedio !== undefined) updateData.moduloMedio = Number(updateData.moduloMedio);
+    if (updateData.moduloInstantaneo !== undefined) updateData.moduloInstantaneo = Number(updateData.moduloInstantaneo);
+
+    // ✅ CORRETO: Com { new: true }
+    const updatedDosage = await this.marshall_repository.findByIdAndUpdate(
+      dosageId,
+      {
+        $set: {
+          'resilienceModuleData': updateData,
+        },
+      },
+      { new: true } // 👈 ESSENCIAL!
+    );
+
+    this.logger.log(`✅ resilience module data updated for dosage: ${dosageId}`);
+
+    return { 
+      dosage: updatedDosage, 
+      success: true 
+    };
+  } catch (error: any) {
+    this.logger.error(`❌ error on updating resilience module data: ${error}`);
+    const { status, name, message } = error;
+    return { success: false, error: { status, message, name } };
+  }
+}
+
+// Adicione este método no MarshallService (junto com os outros)
+
+async saveCompleteDosage(userId: string, completeData: any) {
+  try {
+    this.logger.log(`💾 Salvando dosagem completa para usuário: ${userId}`);
+
+    if (!completeData.generalData?.name) {
+      throw new Error('Nome da dosagem é obrigatório');
+    }
+
+    const dataToSave = {
+      ...completeData,
+      step: 9, // 👈 FORÇA O STEP PARA 9 (último passo)
+      generalData: {
+        ...completeData.generalData,
+        userId: userId
+      }
+    };
+
+    const existingDosage = await this.marshall_repository.findOne(
+      completeData.generalData.name,
+      userId
+    );
+
+    let savedDosage;
+
+    if (existingDosage) {
+      savedDosage = await this.marshall_repository.findByIdAndUpdate(
+        existingDosage._id,
+        { $set: dataToSave },
+        { new: true }
+      );
+    } else {
+      savedDosage = await this.marshall_repository.create(dataToSave);
+    }
+
+    return {
+      success: true,
+      data: savedDosage,
+      message: existingDosage ? 'Dosagem atualizada com sucesso' : 'Dosagem criada com sucesso'
+    };
+
+  } catch (error: any) {
+    this.logger.error(`❌ Erro ao salvar dosagem completa: ${error.message}`);
+    return {
+      success: false,
+      error: {
+        message: error.message,
+        name: error.name || 'SaveCompleteError'
+      }
+    };
+    
+  }
+  
+}
+
 }

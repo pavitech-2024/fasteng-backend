@@ -25,11 +25,6 @@ __decorate([
     (0, mongoose_1.Prop)({ type: Object }),
     __metadata("design:type", Object)
 ], StabilizedLayers_Sample.prototype, "step2Data", void 0);
-__decorate([
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, mongoose_1.Prop)({ type: Object }),
-    __metadata("design:type", Object)
-], StabilizedLayers_Sample.prototype, "step3Data", void 0);
 exports.StabilizedLayers_Sample = StabilizedLayers_Sample = __decorate([
     (0, mongoose_1.Schema)({ collection: 'stabilizedLayersSamples', timestamps: true })
 ], StabilizedLayers_Sample);

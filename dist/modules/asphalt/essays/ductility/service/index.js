@@ -17,7 +17,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var DuctilityService_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DuctilityService = void 0;
 const common_1 = require("@nestjs/common");
@@ -25,12 +24,11 @@ const exceptions_1 = require("../../../../../utils/exceptions");
 const repository_1 = require("../repository");
 const calc_ductility_service_1 = require("./calc.ductility.service");
 const general_data_ductility_service_1 = require("./general-data.ductility.service");
-let DuctilityService = DuctilityService_1 = class DuctilityService {
+let DuctilityService = class DuctilityService {
     constructor(generalData_Service, calc_Service, Ductility_Repository) {
         this.generalData_Service = generalData_Service;
         this.calc_Service = calc_Service;
         this.Ductility_Repository = Ductility_Repository;
-        this.logger = new common_1.Logger(DuctilityService_1.name);
     }
     verifyInitDuctility(body) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -75,9 +73,57 @@ let DuctilityService = DuctilityService_1 = class DuctilityService {
             }
         });
     }
+    getAllEssaysByUser(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const essays = yield this.Ductility_Repository.find({
+                    'generalData.userId': userId
+                });
+                return essays;
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    getAllEssaysByMaterial(materialId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const essays = yield this.Ductility_Repository.find({
+                    'generalData.material._id': materialId
+                });
+                return essays;
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    getAllEssays() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const essays = yield this.Ductility_Repository.findAll();
+                return essays;
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    getEssayById(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const essay = yield this.Ductility_Repository.findOne({ _id: id });
+                return essay;
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
 };
 exports.DuctilityService = DuctilityService;
-exports.DuctilityService = DuctilityService = DuctilityService_1 = __decorate([
+exports.DuctilityService = DuctilityService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [general_data_ductility_service_1.GeneralData_DUCTILITY_Service,
         calc_ductility_service_1.Calc_DUCTILITY_Service,

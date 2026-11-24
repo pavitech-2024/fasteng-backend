@@ -43,18 +43,15 @@ let MarshallRepository = class MarshallRepository {
     }
     findOne(name, userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const dosage = yield this.marshallModel.findOne({
+            return this.marshallModel.findOne({
                 "generalData.name": name,
-                "generalData.userId": userId
+                "generalData.userId": userId,
             });
-            return dosage;
         });
     }
     findOneAndUpdate(marshallFilterQuery, marshall) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.marshallModel.findOneAndUpdate(marshallFilterQuery, marshall, {
-                new: true,
-            });
+            return this.marshallModel.findOneAndUpdate(marshallFilterQuery, marshall, { new: true });
         });
     }
     findById(dosageId) {
@@ -64,27 +61,42 @@ let MarshallRepository = class MarshallRepository {
     }
     createPartialMarshall(marshall, userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const createdPartialMarshall = yield this.marshallModel.create({
-                    generalData: Object.assign(Object.assign({}, marshall.generalData), { userId }),
-                });
-                return createdPartialMarshall;
-            }
-            catch (error) {
-                console.error("Erro ao salvar o step:", error);
-                throw error;
-            }
+            return this.marshallModel.create({
+                generalData: Object.assign(Object.assign({}, marshall.generalData), { userId }),
+            });
         });
     }
     saveStep(marshall, step) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                yield this.marshallModel.updateOne({ _id: marshall._id }, { $set: { "generalData.step": step } });
-            }
-            catch (error) {
-                console.error("Erro ao salvar o passo:", error);
-                throw error;
-            }
+            yield this.marshallModel.updateOne({ _id: marshall._id }, { $set: { step } });
+        });
+    }
+    findByIdAndUpdate(id, update, options) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.marshallModel
+                .findByIdAndUpdate(id, update, Object.assign({ new: true }, options))
+                .exec();
+        });
+    }
+    findAllWithPagination(skip, limit) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.marshallModel
+                .find()
+                .select("generalData.userId generalData.name step")
+                .skip(skip)
+                .limit(limit)
+                .lean()
+                .exec();
+        });
+    }
+    countAll() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.marshallModel.countDocuments().exec();
+        });
+    }
+    findAll() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.marshallModel.find().lean().exec();
         });
     }
 };

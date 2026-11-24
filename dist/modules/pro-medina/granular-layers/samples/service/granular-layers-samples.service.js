@@ -31,7 +31,9 @@ let GranularLayersSamplesService = GranularLayersSamplesService_1 = class Granul
     createSample(sample) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const sampleFound = yield this.granularLayers_SamplesRepository.findOne({ name: sample.generalData.name });
+                const sampleFound = yield this.granularLayers_SamplesRepository.findOne({
+                    'generalData.name': sample.generalData.name
+                });
                 if (sampleFound) {
                     throw new common_1.HttpException({
                         status: common_1.HttpStatus.CONFLICT,

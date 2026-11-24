@@ -24,6 +24,7 @@ const common_1 = require("@nestjs/common");
 const general_data_marshall_service_1 = require("./general-data.marshall.service");
 const material_selection_marshall_service_1 = require("./material-selection.marshall.service");
 const index_1 = require("../repository/index");
+const exceptions_1 = require("../../../../../utils/exceptions");
 const granulometry_composition_marshall_service_1 = require("./granulometry-composition.marshall.service");
 const initial_binder_trial_service_1 = require("./initial-binder-trial.service");
 const maximumMixtureDensity_service_1 = require("./maximumMixtureDensity.service");
@@ -94,6 +95,29 @@ let MarshallService = MarshallService_1 = class MarshallService {
                 this.logger.error(`error on getting dosage by id > [error]: ${error}`);
                 const { status, name, message } = error;
                 return { materials: [], success: false, error: { status, message, name } };
+            }
+        });
+    }
+    getAllDosagesFromAllUsers() {
+        return __awaiter(this, arguments, void 0, function* (page = 1, limit = 10) {
+            try {
+                const skip = (page - 1) * limit;
+                const [allDosages, total] = yield Promise.all([
+                    this.marshall_repository.findAllWithPagination(skip, limit),
+                    this.marshall_repository.countAll()
+                ]);
+                this.logger.log(`📊 Retornando ${allDosages.length} dosagens de ${total} (página ${page})`);
+                return {
+                    data: allDosages,
+                    total,
+                    page,
+                    totalPages: Math.ceil(total / limit),
+                    hasMore: skip + allDosages.length < total
+                };
+            }
+            catch (error) {
+                this.logger.error(`❌ Erro ao buscar todas as dosagens: ${(error === null || error === void 0 ? void 0 : error.message) || error}`);
+                throw error;
             }
         });
     }
@@ -274,7 +298,7 @@ let MarshallService = MarshallService_1 = class MarshallService {
             }
         });
     }
-    calculateGranulometry(body) {
+    calculateStep3Data(body) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { dnitBands } = body;
@@ -625,6 +649,115 @@ let MarshallService = MarshallService_1 = class MarshallService {
                 this.logger.error(`error on delete marshall dosage > [error]: ${error}`);
                 const { status, name, message } = error;
                 return { success: false, error: { status, message, name } };
+            }
+        });
+    }
+    updateFatigueCurve(dosageId, fatigueData) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a;
+            try {
+                const dosage = yield this.marshall_repository.findById(dosageId);
+                if (!dosage) {
+                    throw new exceptions_1.NotFound(`Dosagem com ID ${dosageId} não encontrada`);
+                }
+                const updateData = Object.assign(Object.assign(Object.assign({}, (dosage.fatigueCurveData || {})), fatigueData), { updatedAt: new Date() });
+                if ((_a = dosage.fatigueCurveData) === null || _a === void 0 ? void 0 : _a.createdAt) {
+                    updateData.createdAt = dosage.fatigueCurveData.createdAt;
+                }
+                else if (!updateData.createdAt) {
+                    updateData.createdAt = new Date();
+                }
+                if (updateData.k1 !== undefined)
+                    updateData.k1 = Number(updateData.k1);
+                if (updateData.k2 !== undefined)
+                    updateData.k2 = Number(updateData.k2);
+                const updatedDosage = yield this.marshall_repository.findByIdAndUpdate(dosageId, {
+                    $set: {
+                        'fatigueCurveData': updateData,
+                    },
+                }, { new: true });
+                this.logger.log(`✅ fatigue curve data updated for dosage: ${dosageId}`);
+                return {
+                    dosage: updatedDosage,
+                    success: true
+                };
+            }
+            catch (error) {
+                this.logger.error(`❌ error on updating fatigue curve data: ${error}`);
+                const { status, name, message } = error;
+                return { success: false, error: { status, message, name } };
+            }
+        });
+    }
+    updateResilienceModule(dosageId, resilienceData) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a;
+            try {
+                const dosage = yield this.marshall_repository.findById(dosageId);
+                if (!dosage) {
+                    throw new exceptions_1.NotFound(`Dosagem com ID ${dosageId} não encontrada`);
+                }
+                const updateData = Object.assign(Object.assign(Object.assign({}, (dosage.resilienceModuleData || {})), resilienceData), { updatedAt: new Date() });
+                if ((_a = dosage.resilienceModuleData) === null || _a === void 0 ? void 0 : _a.createdAt) {
+                    updateData.createdAt = dosage.resilienceModuleData.createdAt;
+                }
+                else if (!updateData.createdAt) {
+                    updateData.createdAt = new Date();
+                }
+                if (updateData.moduloMedio !== undefined)
+                    updateData.moduloMedio = Number(updateData.moduloMedio);
+                if (updateData.moduloInstantaneo !== undefined)
+                    updateData.moduloInstantaneo = Number(updateData.moduloInstantaneo);
+                const updatedDosage = yield this.marshall_repository.findByIdAndUpdate(dosageId, {
+                    $set: {
+                        'resilienceModuleData': updateData,
+                    },
+                }, { new: true });
+                this.logger.log(`✅ resilience module data updated for dosage: ${dosageId}`);
+                return {
+                    dosage: updatedDosage,
+                    success: true
+                };
+            }
+            catch (error) {
+                this.logger.error(`❌ error on updating resilience module data: ${error}`);
+                const { status, name, message } = error;
+                return { success: false, error: { status, message, name } };
+            }
+        });
+    }
+    saveCompleteDosage(userId, completeData) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a;
+            try {
+                this.logger.log(`💾 Salvando dosagem completa para usuário: ${userId}`);
+                if (!((_a = completeData.generalData) === null || _a === void 0 ? void 0 : _a.name)) {
+                    throw new Error('Nome da dosagem é obrigatório');
+                }
+                const dataToSave = Object.assign(Object.assign({}, completeData), { step: 9, generalData: Object.assign(Object.assign({}, completeData.generalData), { userId: userId }) });
+                const existingDosage = yield this.marshall_repository.findOne(completeData.generalData.name, userId);
+                let savedDosage;
+                if (existingDosage) {
+                    savedDosage = yield this.marshall_repository.findByIdAndUpdate(existingDosage._id, { $set: dataToSave }, { new: true });
+                }
+                else {
+                    savedDosage = yield this.marshall_repository.create(dataToSave);
+                }
+                return {
+                    success: true,
+                    data: savedDosage,
+                    message: existingDosage ? 'Dosagem atualizada com sucesso' : 'Dosagem criada com sucesso'
+                };
+            }
+            catch (error) {
+                this.logger.error(`❌ Erro ao salvar dosagem completa: ${error.message}`);
+                return {
+                    success: false,
+                    error: {
+                        message: error.message,
+                        name: error.name || 'SaveCompleteError'
+                    }
+                };
             }
         });
     }

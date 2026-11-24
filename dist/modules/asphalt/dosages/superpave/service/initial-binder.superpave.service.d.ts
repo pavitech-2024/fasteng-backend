@@ -2,6 +2,24 @@ import { SpecifyMassRepository } from 'modules/asphalt/essays/specifyMass/reposi
 import { SuperpaveRepository } from '../repository';
 import { Model } from 'mongoose';
 import { SuperpaveDocument } from '../schemas';
+type CurveKey = 'lower' | 'average' | 'higher';
+export interface SpecificMassEntry {
+    bulk: number;
+    apparent: number;
+    absorption: number;
+}
+export interface CurveComposition {
+    combinedGsb: number;
+    combinedGsa: number;
+    gse: number;
+    vla: number;
+    tmn: number;
+    vle: number;
+    mag: number;
+    pli: number;
+    percentsOfDosageWithBinder: number[];
+    curve: CurveKey;
+}
 export declare class InitialBinder_Superpave_Service {
     private superpaveModel;
     private readonly specificMassRepository;
@@ -12,18 +30,7 @@ export declare class InitialBinder_Superpave_Service {
         specificMasses: any[];
     }>;
     calculateStep5Data(body: any): Promise<{
-        granulometryComposition: {
-            combinedGsb: number;
-            combinedGsa: number;
-            gse: number;
-            vla: number;
-            tmn: number;
-            vle: number;
-            mag: number;
-            pli: number;
-            percentsOfDosageWithBinder: number[];
-            curve: string;
-        }[];
+        granulometryComposition: CurveComposition[];
         turnNumber: {
             initialN: number;
             projectN: number;
@@ -31,12 +38,15 @@ export declare class InitialBinder_Superpave_Service {
             tex: string;
         };
     }>;
+    private buildSpecificMassesList;
+    private calculateCurveComposition;
     calculateDenominatorGsa_Gsb(listOfSpecificMasses: {
-        bulk: string;
-        apparent: string;
-    }[], percentsOfDosage: Record<string, string>[]): {
+        bulk: number;
+        apparent: number;
+    }[], percentsOfDosage: Record<string, string>): {
         denominatorGsb: number;
         denominatorGsa: number;
     };
     saveInitialBinderStep(body: any, userId: string): Promise<boolean>;
 }
+export {};
