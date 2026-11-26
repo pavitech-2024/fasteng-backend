@@ -74,6 +74,7 @@
 import { ValidationPipe, Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { setServers } from 'node:dns';
 import { AppModule } from './app.module';
 import * as bodyParser from 'body-parser';
 
@@ -85,6 +86,15 @@ import { SamplesModule } from './modules/soils/samples/samples.module';
 import { AllExceptionsFilter } from './config/filters/http-exception.filter'; // Ajuste o caminho conforme
 
 async function bootstrap() {
+  const dnsServersConfig = process.env.NODE_DNS_SERVERS;
+  if (dnsServersConfig !== undefined) {
+    const dnsServers = dnsServersConfig.split(',').map((server) => server.trim());
+    if (dnsServers.some((server) => server.length === 0)) {
+      throw new Error('NODE_DNS_SERVERS must contain comma-separated DNS server IP addresses.');
+    }
+    setServers(dnsServers);
+  }
+
   // Criar a app com logs detalhados
   const app = await NestFactory.create(AppModule, {
     logger: ['error', 'warn', 'debug', 'log'], // mais verboso
