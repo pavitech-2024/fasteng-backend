@@ -11,6 +11,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var MaterialSelection_Superpave_Service_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MaterialSelection_Superpave_Service = void 0;
@@ -33,6 +42,20 @@ let MaterialSelection_Superpave_Service = MaterialSelection_Superpave_Service_1 
         this.superpaveRepository = superpaveRepository;
         this.rotationalViscosity_repository = rotationalViscosity_repository;
         this.logger = new common_1.Logger(MaterialSelection_Superpave_Service_1.name);
+    }
+    getMaterials(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const materials = yield this.material_repository.findByUserId({
+                    userId: userId,
+                });
+                return materials;
+            }
+            catch (error) {
+                this.logger.error(`error on get materials > [error]: ${error}`);
+                throw error;
+            }
+        });
     }
 };
 exports.MaterialSelection_Superpave_Service = MaterialSelection_Superpave_Service;

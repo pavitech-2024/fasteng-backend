@@ -20,7 +20,11 @@ export class SuperpaveController {
 
     return this.superpaveService.getAllDosages(userId);
   }
-
+  @Get('material-selection/:id')
+   async getMaterialsByUserId(@Res() response: Response, @Param('id') userId: string) {
+   const materials = await this.superpaveService.getMaterials(userId);
+   return response.status(200).json(materials);
+    } 
   @Post('verify-init/:id')
   @ApiOperation({ summary: 'Verifica se é possível criar uma Superpave com os dados enviados.' })
   @ApiResponse({

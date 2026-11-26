@@ -35,6 +35,7 @@ export declare class SuperpaveService {
     private readonly rotationalViscosity_Service;
     private logger;
     constructor(superpave_repository: SuperpaveRepository, generalData_Service: GeneralData_Superpave_Service, granulometryEssay_Service: GranulometryEssay_Superpave_Service, materialSelection_Service: MaterialSelection_Superpave_Service, granulometryComposition_Service: GranulometryComposition_Superpave_Service, granulometryRepository: AsphaltGranulometryRepository, initialBinder_Service: InitialBinder_Superpave_Service, firstCompression_Service: FirstCompression_Superpave_Service, firstCompressionParams_Service: FirstCurvePercentages_Service, chosenCurvePercentages_Service: ChosenCurvePercentages_Superpave_Service, secondCompression_Service: SecondCompression_Superpave_Service, secondCompressionParameters_Service: SecondCompressionParameters_Superpave_Service, confirmCompaction_Service: ConfirmCompaction_Superpave_Service, resumeDosageEquation_Service: ResumeDosage_Superpave_Service, asphaltGranulometry_Service: AsphaltGranulometryService, rotationalViscosity_Service: ViscosityRotationalService);
+    getMaterials(userId: string): Promise<import("../../../materials/schemas").Material[]>;
     verifyInitSuperpave(body: SuperpaveInitDto, userId: string): Promise<{
         success: boolean;
         dosage: any;

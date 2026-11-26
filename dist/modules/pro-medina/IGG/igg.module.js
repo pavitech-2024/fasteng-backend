@@ -20,7 +20,7 @@ exports.IggModule = IggModule;
 exports.IggModule = IggModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            mongoose_1.MongooseModule.forFeature([{ name: igg_analysis_schema_1.IggAnalysis.name, schema: igg_analysis_schema_1.IggAnalysisSchema }], database_config_1.DATABASE_CONNECTION.PROMEDINA),
+            mongoose_1.MongooseModule.forFeature([{ name: igg_analysis_schema_1.IggAnalysis.name, schema: igg_analysis_schema_1.IggAnalysisSchema }], database_config_1.DATABASE_CONNECTION.ASPHALT),
         ],
         controllers: [igg_analysis_controller_1.IggAnalysisController],
         providers: [igg_analysis_service_1.IggAnalysisService, igg_analysis_repository_1.IggAnalysisRepository],

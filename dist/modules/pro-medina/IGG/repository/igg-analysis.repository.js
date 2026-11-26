@@ -74,7 +74,7 @@ let IggAnalysisRepository = class IggAnalysisRepository {
 exports.IggAnalysisRepository = IggAnalysisRepository;
 exports.IggAnalysisRepository = IggAnalysisRepository = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, mongoose_1.InjectModel)(igg_analysis_schema_1.IggAnalysis.name, database_config_1.DATABASE_CONNECTION.PROMEDINA)),
+    __param(0, (0, mongoose_1.InjectModel)(igg_analysis_schema_1.IggAnalysis.name, database_config_1.DATABASE_CONNECTION.ASPHALT)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], IggAnalysisRepository);
 //# sourceMappingURL=igg-analysis.repository.js.map

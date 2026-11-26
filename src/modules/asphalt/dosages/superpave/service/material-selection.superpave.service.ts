@@ -22,12 +22,19 @@ export class MaterialSelection_Superpave_Service {
     private readonly superpaveRepository: SuperpaveRepository,
     private readonly rotationalViscosity_repository: ViscosityRotationalRepository
   ) {}
+ 
+   async getMaterials(userId: string) {
+  try {
+    const materials = await this.material_repository.findByUserId({
+      userId: userId,
+    });
 
-  // async getMaterials(userId: string) {
-  //   try {
-  //     const materials = await this.material_repository.findByUserId({
-  //       userId: userId,
-  //     });
+    return materials;
+  } catch (error) {
+    this.logger.error(`error on get materials > [error]: ${error}`);
+    throw error;
+  }
+
 
   //     const granulometrys = await this.granulometry_repository.findAll();
   //     const specifyMasses = await this.specifyMass_repository.findAll();
@@ -86,4 +93,4 @@ export class MaterialSelection_Superpave_Service {
   //     throw error;
   //   }
   // }
-}
+}}

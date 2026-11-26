@@ -58,6 +58,11 @@ let SuperpaveService = SuperpaveService_1 = class SuperpaveService {
         this.rotationalViscosity_Service = rotationalViscosity_Service;
         this.logger = new common_1.Logger(SuperpaveService_1.name);
     }
+    getMaterials(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.materialSelection_Service.getMaterials(userId);
+        });
+    }
     verifyInitSuperpave(body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

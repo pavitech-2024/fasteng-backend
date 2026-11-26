@@ -38,6 +38,12 @@ let SuperpaveController = SuperpaveController_1 = class SuperpaveController {
             return this.superpaveService.getAllDosages(userId);
         });
     }
+    getMaterialsByUserId(response, userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const materials = yield this.superpaveService.getMaterials(userId);
+            return response.status(200).json(materials);
+        });
+    }
     verifyInitSuperpave(response, body, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             this.logger.log('verify init Superpave > [body]');
@@ -247,6 +253,14 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], SuperpaveController.prototype, "getAllByUserId", null);
+__decorate([
+    (0, common_1.Get)('material-selection/:id'),
+    __param(0, (0, common_1.Res)()),
+    __param(1, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", Promise)
+], SuperpaveController.prototype, "getMaterialsByUserId", null);
 __decorate([
     (0, common_1.Post)('verify-init/:id'),
     (0, swagger_1.ApiOperation)({ summary: 'Verifica se é possível criar uma Superpave com os dados enviados.' }),

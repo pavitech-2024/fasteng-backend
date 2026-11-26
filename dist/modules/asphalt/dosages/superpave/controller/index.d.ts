@@ -6,6 +6,7 @@ export declare class SuperpaveController {
     private logger;
     constructor(superpaveService: SuperpaveService);
     getAllByUserId(userId: string): Promise<import("../schemas").Superpave[]>;
+    getMaterialsByUserId(response: Response, userId: string): Promise<Response<any, Record<string, any>>>;
     verifyInitSuperpave(response: Response, body: SuperpaveInitDto, userId: string): Promise<Response<any, Record<string, any>>>;
     calculateGranulometryEssaysData(response: Response, body: any): Promise<Response<any, Record<string, any>>>;
     saveGranulometryEssayData(response: Response, body: any, userId: string): Promise<Response<any, Record<string, any>>>;

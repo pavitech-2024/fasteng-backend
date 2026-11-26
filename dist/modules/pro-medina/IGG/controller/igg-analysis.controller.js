@@ -123,7 +123,7 @@ __decorate([
 ], IggAnalysisController.prototype, "processAnalysis", null);
 exports.IggAnalysisController = IggAnalysisController = IggAnalysisController_1 = __decorate([
     (0, swagger_1.ApiTags)('IGG Analysis'),
-    (0, common_1.Controller)('promedina/igg/igg-analysis'),
+    (0, common_1.Controller)('asphalt/igg/igg-analysis'),
     __metadata("design:paramtypes", [igg_analysis_service_1.IggAnalysisService])
 ], IggAnalysisController);
 //# sourceMappingURL=igg-analysis.controller.js.map

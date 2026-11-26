@@ -42,6 +42,9 @@ export class SuperpaveService {
     private readonly asphaltGranulometry_Service: AsphaltGranulometryService,
     private readonly rotationalViscosity_Service: ViscosityRotationalService,
   ) {}
+  async getMaterials(userId: string) {
+  return this.materialSelection_Service.getMaterials(userId);
+   }
 
   async verifyInitSuperpave(body: SuperpaveInitDto, userId: string) {
     try {
