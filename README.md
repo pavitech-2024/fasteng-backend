@@ -57,3 +57,17 @@ $ yarn run test:e2e
 # test coverage
 $ yarn run test:cov
 ```
+
+## MongoDB DNS resolver (optional)
+
+If the default Node.js DNS resolver cannot resolve MongoDB SRV records, set
+`NODE_DNS_SERVERS` to one or more comma-separated DNS server IP addresses before
+starting the application. For example:
+
+```env
+NODE_DNS_SERVERS=8.8.8.8
+```
+
+This setting changes DNS servers used by Node.js DNS resolution for the whole
+process. Use DNS servers permitted by the runtime environment. When unset, the
+system default is unchanged.

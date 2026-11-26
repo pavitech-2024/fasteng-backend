@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
 const core_1 = require("@nestjs/core");
 const swagger_1 = require("@nestjs/swagger");
+const node_dns_1 = require("node:dns");
 const app_module_1 = require("./app.module");
 const bodyParser = require("body-parser");
 const auth_module_1 = require("./modules/auth/auth.module");
@@ -20,6 +21,14 @@ const samples_module_1 = require("./modules/soils/samples/samples.module");
 const http_exception_filter_1 = require("./config/filters/http-exception.filter");
 function bootstrap() {
     return __awaiter(this, void 0, void 0, function* () {
+        const dnsServersConfig = process.env.NODE_DNS_SERVERS;
+        if (dnsServersConfig !== undefined) {
+            const dnsServers = dnsServersConfig.split(',').map((server) => server.trim());
+            if (dnsServers.some((server) => server.length === 0)) {
+                throw new Error('NODE_DNS_SERVERS must contain comma-separated DNS server IP addresses.');
+            }
+            (0, node_dns_1.setServers)(dnsServers);
+        }
         const app = yield core_1.NestFactory.create(app_module_1.AppModule, {
             logger: ['error', 'warn', 'debug', 'log'],
         });
